@@ -12,52 +12,8 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-# Syntax
-{
-  compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
-}
-
-# Symbol name
-{
-  # A symbol name can't conatain "__"
-  {
-    my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
-    compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
-  }
-
-  # A symbol name can't end with "::"
-  {
-    my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
-    compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
-  }
-
-  # A symbol name can't contains "::::".
-  {
-    my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';
-    compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
-  }
-}
-
-# Fat comma
-{
-  # The string literal of the left operand of the fat camma can't contains "::".
-  {
-    my $source = 'class MyClass { static method main : void () { {Foo::Bar => 1}; } }';
-    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
-  }
-}
-
 # Class
 {
-  # Syntax
-  {
-    compile_not_ok_file('CompileError::Class::NotClosed');
-    {
-      my $source = 'class MyClass { static method main : void () {} } class MyClass2 { static method main : void () {} }';
-      compile_not_ok($source, qr/Unexpected token "class"/);
-    }
-  }
-  
   # Class descriptor
   {
     {

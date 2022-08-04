@@ -12,6 +12,11 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
+# Line number
+{
+  compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
+}
+
 # Class Name
 {
   {
@@ -83,6 +88,15 @@ use Test::More;
     {
       my $source = q|class MyClass { static method main : void () { '\xa; } }|;
       compile_not_ok($source, qr/The character literal must ends with "'"/);
+    }
+
+    # Syntax
+    {
+      compile_not_ok_file('CompileError::Class::NotClosed');
+      {
+        my $source = 'class MyClass { static method main : void () {} } class MyClass2 { static method main : void () {} }';
+        compile_not_ok($source, qr/Unexpected token "class"/);
+      }
     }
     
     # Extra
@@ -361,13 +375,43 @@ use Test::More;
       compile_not_ok_file('CompileError::LocalVar::LocalVarNameColon2Twice');
     }
   }
-  
-  # Block
+
+  # Symbol name
   {
+    # A symbol name can't conatain "__"
     {
-      my $source = q|class Tmp { static method main : void () { {} }|;
-      compile_not_ok($source, qr/Unexpected token "}"/);
+      my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
+      compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
     }
+
+    # A symbol name can't end with "::"
+    {
+      my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
+      compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
+    }
+
+    # A symbol name can't contains "::::".
+    {
+      my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';
+      compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
+    }
+  }
+}
+
+# Fat comma
+{
+  # The string literal of the left operand of the fat camma can't contains "::".
+  {
+    my $source = 'class MyClass { static method main : void () { {Foo::Bar => 1}; } }';
+    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
+  }
+}
+
+# Block
+{
+  {
+    my $source = q|class Tmp { static method main : void () { {} }|;
+    compile_not_ok($source, qr/Unexpected token "}"/);
   }
 }
 
