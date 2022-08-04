@@ -327,11 +327,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   int32_t moduler_dirs_str_offset = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
                     const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
-                    sprintf(moduler_dirs_str + moduler_dirs_str_offset, " %s", module_dir);
-                    moduler_dirs_str_offset += 1 + strlen(module_dir);
+                    sprintf(moduler_dirs_str + moduler_dirs_str_offset, "%s", module_dir);
+                    moduler_dirs_str_offset += strlen(module_dir);
+                    if (i != module_dirs_length - 1) {
+                      moduler_dirs_str[moduler_dirs_str_offset] = ' ';
+                      moduler_dirs_str_offset++;
+                    }
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Can't find the file \"%s\" to load the \"%s\" class in @INC (@INC contains:%s) at %s line %d", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Failed to load the class \"%s\". The module file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, moduler_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }
@@ -342,13 +346,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
                 if (file_size < 0) {
-                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
                 char* src = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
-                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, src);
                   return 0;
                 }
