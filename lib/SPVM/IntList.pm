@@ -205,7 +205,7 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
   method set_array : void ($array : int[])
 
-Set a array. Each element of the array is copied to the element of the list.
+Set an array. Each element of the array is copied to the element of the list.
 
 The array must be defined. Otherwise an excpetion will be thrown.
 

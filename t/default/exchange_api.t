@@ -160,7 +160,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# Convert a array reference to to SPVM numeric array
+# Convert an array reference to to SPVM numeric array
 {
   # new_byte_array
   {

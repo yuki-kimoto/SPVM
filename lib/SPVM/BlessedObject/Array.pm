@@ -68,10 +68,10 @@ This object contains SPVM array object.
 
 =head1 Usage
 
-  # Get the value of a array element
+  # Get the value of an array element
   my $value = $spvm_nums->get(2);
 
-  # Set the value of a array element
+  # Set the value of an array element
   $spvm_nums->set(2 => 5);
   
   # Convert SPVM array to Perl array reference
@@ -86,13 +86,13 @@ This object contains SPVM array object.
 
   my $value = $spvm_nums->get(2);
 
-Get the value of a array element.
+Get the value of an array element.
 
 =head2 set
 
   $spvm_nums->set(2 => 5);
 
-Set the value of a array element
+Set the value of an array element
 
 =head2 to_elems
 
