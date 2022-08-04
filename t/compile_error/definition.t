@@ -58,26 +58,6 @@ use Test::More;
     }
   }
   
-  # Class name
-  {
-    compile_not_ok_file('CompileError::Class::ClassNameDifferntFromModuleName', qr/The class name "ClassNameDifferntFromModuleNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromModuleName"/);
-    compile_not_ok_file('CompileError::Class::classPartNameStartWithLowerCase', qr/The part names of the class "CompileError::Class::classPartNameStartWithLowerCase" must begin with a upper case character/);
-    compile_not_ok_file('foo', qr/The class name "foo" must begin with a upper case character/);
-    compile_not_ok_file('4foo', qr/The class name "4foo" can't begin with a number/);
-    {
-      my $source = 'class MyClass:: { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "MyClass::" can't end with "::"|);
-    }
-    {
-      my $source = 'class ::MyClass { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "::MyClass" can't begin with "::"|);
-    }
-    {
-      my $source = 'class MyClass::::Foo { static method main : void () {} }';
-      compile_not_ok($source, qr|The class name "MyClass::::Foo" can't contains "::::"|);
-    }
-  }
-  
   # Class descriptor
   {
     {
@@ -108,35 +88,6 @@ use Test::More;
   {
     # Access control
     compile_not_ok_file('CompileError::ClassVar::Private');
-    
-    # Class variable name
-    {
-      compile_not_ok_file('CompileError::ClassVar::OurClassVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
-      compile_not_ok_file('CompileError::ClassVar::OurClassVarNameInvalidColon', qr/Unexpected token ":"/);
-      compile_not_ok_file('CompileError::ClassVar::OurClassVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
-      compile_not_ok_file('CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
-      compile_not_ok_file('CompileError::ClassVar::OurClassVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
-      {
-        my $source = 'class MyClass { our $NAME : int; static method main : void () { ${NAME = 1; } }';
-        compile_not_ok($source, qr/Need a closing brace "}" at the end of the variable name/);
-      }
-      {
-        my $source = 'class MyClass { our $MyClass::NAME : int; static method main : void () {  } }';
-        compile_not_ok($source, qr/The class varaible name "\$MyClass::NAME" in the class variable definition can't contain "::"/);
-      }
-      {
-        my $source = 'class MyClass { our $FOO : required int; }';
-        compile_not_ok($source, qr/Invalid class variable descriptor "required"/);
-      }
-      {
-        my $source = 'class MyClass { our $FOO : public private int; }';
-        compile_not_ok($source, qr/Only one of "private" or "public" class variable descriptors can be specified/);
-      }
-      {
-        my $source = 'class MyClass { our $FOO : int; our $FOO : int; }';
-        compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "MyClass"/);
-      }
-    }
     
     # Inheritance - extends syntax
     {
