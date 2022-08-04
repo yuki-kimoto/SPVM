@@ -358,7 +358,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the ref operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the ref operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -372,7 +372,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the dump operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the dump operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -613,7 +613,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (!SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                 if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The left operand of the == operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -621,7 +621,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && !SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the == operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -679,7 +679,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (!SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                 if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The left operand of the == operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -687,7 +687,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && !SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the == operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -1288,13 +1288,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 // Left left_operand must be object type
                 if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The left operand of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left operand of the isa operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
                 
                 // Right type must be object type
                 if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right type of the isa operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right type of the isa operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3015,21 +3015,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // weaken operator
               if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // unweaken operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // isweak operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be a object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
