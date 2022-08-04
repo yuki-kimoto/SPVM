@@ -344,7 +344,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object variable
               if (!(op_operand->id == SPVM_OP_C_ID_VAR && SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-                SPVM_COMPILER_error(compiler, "The operand of refcnt must be variable of object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the refcnt operator must be a variable of an object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -358,7 +358,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of ref operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the ref operator must be a object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -372,7 +372,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of dump operator must be a object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the dump operator must be a object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -403,7 +403,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (!is_length_type_integral_type_except_for_long) {
-                SPVM_COMPILER_error(compiler, "The length of the new_string_len operator must be an integral type except for a long type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the new_string_len operator must be an integral type except for a long type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -417,7 +417,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
               if (!class) {
-                SPVM_COMPILER_error(compiler, "The class \"%s\" not found. The operand of the class_id operator must be a existing class type at %s line %d", class_name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the class_id operator must be an existing class type. The class \"%s\" is not found at %s line %d", class_name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -470,7 +470,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
                 if (!(case_value_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && case_value_type->dimension == 0)) {
-                  SPVM_COMPILER_error(compiler, "case value must be int constant at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                  SPVM_COMPILER_error(compiler, "The operand of the case statement must be the int type at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                   return;
                 }
                 case_info->condition_value = constant->value.ival;
@@ -496,7 +496,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
                 SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
                 if (case_info->condition_value == case_info_next->condition_value) {
-                  SPVM_COMPILER_error(compiler, "The values of the case statements can't be duplicated at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                  SPVM_COMPILER_error(compiler, "The value of the case statement can't be duplicated at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                 }
               }
               
@@ -535,7 +535,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                 
                 if (switch_info->op_default) {
-                  SPVM_COMPILER_error(compiler, "Duplicate default statement at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Multiple default statements are not allowed at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
                 else {
@@ -583,7 +583,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (!is_valid_type) {
-                SPVM_COMPILER_error(compiler, "The operand of condition must be numeric type or object type or undef type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the bool type conversion must be one of a numeric type, an object type or the undef type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1806,7 +1806,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
@@ -1823,7 +1823,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1834,7 +1834,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of unary - operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the unary - operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1851,7 +1851,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of ~ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the ~ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
