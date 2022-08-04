@@ -62,7 +62,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass : pointer_t { has x : int; }';
-      compile_not_ok($source, qr|The class that has "pointer_t" descriptor can't have its fields|);
+      compile_not_ok($source, qr|The pointer class can't have fields|);
     }
   }
   
@@ -80,7 +80,7 @@ use Test::More;
     compile_not_ok_file('CompileError::Interface::StaticMethod', qr/interface.+instance/i);
     compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
     compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.+interface.+Stringable/i);
-    compile_not_ok_file('CompileError::Interface::NoMethods', qr/one required method/i);
+    compile_not_ok_file('CompileError::Interface::NoMethods', qr/The interface must have a required method/i);
     compile_not_ok_file('CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
     compile_not_ok_file('CompileError::Interface::HasImplNotFound', qr/interface.+TestCase::Pointable.+the method declaration.+not_found/i);
   }
@@ -123,15 +123,15 @@ use Test::More;
       compile_not_ok_file('CompileError::MultiNumeric::Fields17');
       {
         my $source = 'class MyClass_2i : mulnum_t { static method foo : void () {} }';
-        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have methods|);
+        compile_not_ok($source, qr|The multi-numeric type can't have methods|);
       }
       {
         my $source = 'class MyClass_2i : mulnum_t { our $foo : int; }';
-        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor can't have class variables|);
+        compile_not_ok($source, qr|The multi-numeric type can't have class variables|);
       }
       {
         my $source = 'class MyClass_2i : mulnum_t { }';
-        compile_not_ok($source, qr|The class that has the "mulnum_t" class descriptor must have at least one field|);
+        compile_not_ok($source, qr|The multi-numeric type must have at least one field|);
       }
     }
     # Access control
@@ -167,22 +167,22 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { static method main : void (); }';
-      compile_not_ok($source, qr/Non-native method must have its block/);
+      compile_not_ok($source, qr/The non-native method must have the block/);
     }
 
     # Destructor(DESTORY)
     {
       {
         my $source = 'class MyClass { static method DESTROY : void () { } }';
-        compile_not_ok($source, qr/\QThe destructor(the DESTROY method) must be an instance method/);
+        compile_not_ok($source, qr/\QThe DESTROY destructor method must be an instance method/);
       }
       {
         my $source = 'class MyClass { method DESTROY : int () { } }';
-        compile_not_ok($source, qr/\QThe return type of the destructor(the DESTROY method) must be the void type/);
+        compile_not_ok($source, qr/\QThe return type of the DESTROY destructor method must be the void type/);
       }
       {
         my $source = 'class MyClass { method DESTROY : void ($num : int) { } }';
-        compile_not_ok($source, qr/\QThe destructor(the DESTROY method) can't have arguments/);
+        compile_not_ok($source, qr/\QThe DESTROY destructor method can't have arguments/);
       }
     }
 
@@ -224,7 +224,7 @@ use Test::More;
     }
     {
       my $source = q|class MyClass { public private enum { ONE } }|;
-      compile_not_ok($source, qr/Only one of "private" or "public" enumeration descriptors can be specified/);
+      compile_not_ok($source, qr/Only one of enumeration descriptors "private" or "public" can be specified/);
     }
   }
 }

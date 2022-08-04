@@ -1896,7 +1896,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     if (class_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class descriptors "mulnum_t", "pointer_t" or "interface_t" can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of class descriptors \"mulnum_t\", \"pointer_t\" or \"interface_t\" can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "Only one of class descriptors \"private\" or \"public\" can be specified at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
@@ -1940,7 +1940,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // interface declarations
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "Multi-numeric types can't have \"interface\" syntax at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The multi-numeric type can't be the operand of the interface syntax at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
@@ -1949,7 +1949,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Interface classes can't have class variables at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface can't have class variables at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
 
@@ -2046,7 +2046,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_FIELD* field = op_decl->uv.field;
         
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "Interface classes can't have fields at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface can't have fields at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->fields, field);
         
@@ -2179,7 +2179,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
 
       if (class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The class that has \"pointer_t\" descriptor can't have its fields at %s line %d", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The pointer class can't have fields at %s line %d", field->op_field->file, field->op_field->line);
         continue;
       }
 
@@ -2189,7 +2189,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->{%s}\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the field \"%s->{%s}\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
       }
       else {
         SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
@@ -2238,7 +2238,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       
       if (must_have_block && !method->op_block) {
-        SPVM_COMPILER_error(compiler, "Non-native method must have its block at %s line %d", op_name_method->file, op_name_method->line);
+        SPVM_COMPILER_error(compiler, "The non-native method must have the block at %s line %d", op_name_method->file, op_name_method->line);
       }
       
       // Method check
@@ -2262,39 +2262,39 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
       // If Method is anon, method must be method
       if (strlen(method_name) == 0 && method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "An anon method must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
       }
 
       if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
         // Method having interface_t descriptor must be method
         if (method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "Methods of interface classes must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method of the interface must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
         }
         
         // If class is interface, the method must not be native
         if (method->is_native) {
-          SPVM_COMPILER_error(compiler, "Methods of interface classes  can't have native descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method of the interface can't have the native descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is interface, the method must not be precompile
         if (method->is_precompile) {
-          SPVM_COMPILER_error(compiler, "Methods of interface classes can't have precompile descriptors at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method of the interface can't have the precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
         
         // If class is interface, the method must not be precompile
         if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "Methods of interface classes can't have the blocks at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method of the interface can't have the block at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
         if (method->is_required) {
-          SPVM_COMPILER_error(compiler, "A class type can't have required methods at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method of the class can't have the required descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       
       if (method->is_native) {
         if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "Native methods can't have blocks at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The native method can't have the block at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       
@@ -2319,7 +2319,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           if (method->is_required) {
             if (class->required_method) {
-              SPVM_COMPILER_error(compiler, "A interface can't have multiple required method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "The interface can't have multiple required methods \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
             }
             class->required_method = method;
           }
@@ -2343,22 +2343,22 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // interface_t
     if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
       if (!class->required_method) {
-        SPVM_COMPILER_error(compiler, "A interface method must have one required method at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The interface must have a required method at %s line %d", op_class->file, op_class->line);
       }
     }
     // mulnum_t
     else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       if (class->methods->length > 0) {
-        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor can't have methods at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't have methods at %s line %d", op_class->file, op_class->line);
       }
       if (class->class_vars->length > 0) {
-        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor can't have class variables at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't have class variables at %s line %d", op_class->file, op_class->line);
       }
       if (class->fields->length == 0) {
-        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor must have at least one field at %s line %d", class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field at %s line %d", class->op_class->file, class->op_class->line);
       }
       else if (class->fields->length > 255) {
-        SPVM_COMPILER_error(compiler, "The class that has the \"mulnum_t\" class descriptor must have fields that length is less than or equal to 255. at %s line %d", class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type  must have fields that length is less than or equal to 255. at %s line %d", class->op_class->file, class->op_class->line);
       }
     }
   }
@@ -2434,7 +2434,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
   class_var->name = op_name->uv.name;
   
   if (strstr(name, "::")) {
-    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" in the class variable definition can't contain \"::\" at %s line %d", class_var->name, op_name->file, op_name->line);
+    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" can't contain \"::\" at %s line %d", class_var->name, op_name->file, op_name->line);
   }
   
   class_var->op_name = op_name;
@@ -2485,10 +2485,10 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
         }
       }
       if (field_method_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"rw\", \"ro\", \"wo\" class variable descriptors can be specifed at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable descriptors \"rw\", \"ro\", \"wo\" can be specifed at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" class variable descriptors can be specified at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable descriptors \"private\" or \"public\" can be specified at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -2553,15 +2553,15 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid field descriptor \"%s\" at %s line %d", SPVM_DESCRIPTOR_get_name(compiler, descriptor->id), op_descriptors->file, op_descriptors->line);
         }
       }
       
       if (field_method_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field descriptors \"rw\", \"ro\" or \"wo\" can be specifed at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" field descriptors can be specified at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field descriptors \"private\" or \"public\" can be specified at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -2651,16 +2651,16 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     }
     
     if (method->is_native && method->is_precompile) {
-      SPVM_COMPILER_error(compiler, "Only one of \"native\" and \"precompile\" method descriptors can be specified at %s line %d", op_descriptors->file, op_descriptors->line);
+      SPVM_COMPILER_error(compiler, "Only one of method descriptors \"native\" and \"precompile\" can be specified at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" method descriptors can be specified at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of method descriptors \"private\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
     }
   }
 
   // Native method can't have block
   if ((method->is_native) && op_block) {
-    SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d", op_block->file, op_block->line);
+    SPVM_COMPILER_error(compiler, "The native method can't have the block at %s line %d", op_block->file, op_block->line);
   }
   
   // method args
@@ -2723,17 +2723,17 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "The return type of the destructor(the DESTROY method) must be the void type at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type at %s line %d", op_method->file, op_method->line);
     }
     
     // DESTROY is instance method
     if (method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The destructor(the DESTROY method) must be an instance method at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method at %s line %d", op_method->file, op_method->line);
     }
 
     // DESTROY doesn't have arguments without invocant
     if (method->args_length != 1) {
-      SPVM_COMPILER_error(compiler, "The destructor(the DESTROY method) can't have arguments at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method can't have arguments at %s line %d", op_method->file, op_method->line);
     }
   }
   
@@ -2808,7 +2808,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
       compiler->current_enum_value = constant->value.ival;
     }
     else {
-      SPVM_COMPILER_error(compiler, "enum value must be int type at %s line %d", op_constant->file, op_constant->line);
+      SPVM_COMPILER_error(compiler, "The value of the enum must be int type at %s line %d", op_constant->file, op_constant->line);
     }
     
     compiler->current_enum_value++;
@@ -2890,7 +2890,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of \"private\" or \"public\" enumeration descriptors can be specified at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of enumeration descriptors \"private\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
       }
     }
   }
@@ -3205,7 +3205,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_dist);
   
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
-    SPVM_COMPILER_error(compiler, "special assign operator left value must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
+    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
   
   return op_special_assign;
@@ -3222,7 +3222,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_operand_dist->is_lvalue = 1;
   
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
-    SPVM_COMPILER_error(compiler, "assign operator left value must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
+    SPVM_COMPILER_error(compiler, "The left operand of the assign operator must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
   
   return op_assign;
