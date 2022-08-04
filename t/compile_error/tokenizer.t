@@ -84,4 +84,60 @@ use Test::More;
   }
 }
 
+# String literal
+{
+  {
+    my $source = q|class Tmp { static method main : void () { "Foo \xg Bar" } }|;
+    compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;
+    compile_not_ok($source, qr/The hexadecimal escape character is not closed by "}"/);
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { "\u" }|;
+    compile_not_ok($source, qr/Invalid string literal escape character "\\u"/);
+  }
+  
+  # Unicode escape character
+  {
+    {
+      my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
+        compile_not_ok($source, qr/One or more than one hexadecimal numbers must be followed by "\\N\{U\+" of the Unicode escape character/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
+      compile_not_ok($source, qr/Too big Unicode escape character/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "\N{U+DFFF}" }|;
+      compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "\N{U+DFFF}" }|;
+      compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
+    }
+    {
+      my $source = q|class Tmp { static method main : void () { "\N{U+D800}" }|;
+      compile_not_ok($source, qr/The code point of Unicode escape character must be a Unicode scalar value/);
+    }
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { " } }|;
+    compile_not_ok($source, qr/The string literal must be end with '"'/);
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { "$foo->{foo-" }|;
+    compile_not_ok($source, qr/The getting field in a string literal must be closed with "}"/);
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { "$foo->[3-" }|;
+    compile_not_ok($source, qr/The getting array element in a string literal must be closed with "]"/);
+  }
+  {
+    my $source = q|class Tmp { static method main : void () { "$foo->bar" }|;
+    compile_not_ok($source, qr/\QThe character after "->" in a string literal must be "[" or "{"/);
+  }
+}
+
 done_testing;

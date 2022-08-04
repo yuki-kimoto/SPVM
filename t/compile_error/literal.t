@@ -201,11 +201,11 @@ use Test::More;
   {
     {
       my $source = q|class Tmp { static method main : void () { "Foo \xg Bar" } }|;
-      compile_not_ok($source, qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;
-      compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
+      compile_not_ok($source, qr/The hexadecimal escape character is not closed by "}"/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "\u" }|;
@@ -216,7 +216,7 @@ use Test::More;
     {
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
-        compile_not_ok($source, qr/After "\\N\{U\+" of the Unicode escape character, one or more than one hexadecimal numbers must follow/);
+        compile_not_ok($source, qr/One or more than one hexadecimal numbers must be followed by "\\N\{U\+" of the Unicode escape character/);
       }
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
@@ -237,15 +237,15 @@ use Test::More;
     }
     {
       my $source = q|class Tmp { static method main : void () { " } }|;
-      compile_not_ok($source, qr/A string literal must be end with '"'/);
+      compile_not_ok($source, qr/The string literal must be end with '"'/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "$foo->{foo-" }|;
-      compile_not_ok($source, qr/Getting field in a string literal must be closed with "}"/);
+      compile_not_ok($source, qr/The getting field in a string literal must be closed with "}"/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "$foo->[3-" }|;
-      compile_not_ok($source, qr/Getting array element in a string literal must be closed with "]"/);
+      compile_not_ok($source, qr/The getting array element in a string literal must be closed with "]"/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "$foo->bar" }|;

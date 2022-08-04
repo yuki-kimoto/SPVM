@@ -1123,7 +1123,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_getting_field_brace = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "Getting field in a string literal must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting field in a string literal must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1133,7 +1133,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_bracket = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "Getting array element in a string literal must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting array element in a string literal must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1174,7 +1174,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->bufptr == '\0') {
-            SPVM_COMPILER_error(compiler, "A string literal must be end with '\"' at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The string literal must be end with '\"' at %s line %d", compiler->cur_file, compiler->cur_line);
             return 0;
           }
           
@@ -1267,7 +1267,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     string_literal_length++;
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "After \"\\x\" of the hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+                    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be follow by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
                   }
                   
                   if (has_brace) {
@@ -1275,7 +1275,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       char_ptr++;
                     }
                     else {
-                      SPVM_COMPILER_error(compiler, "The hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
                   }
                 }
@@ -1296,7 +1296,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     if (*char_ptr == '}') {
                       char_ptr++;
                       if (unicode_chars_length < 1) {
-                        SPVM_COMPILER_error(compiler, "After \"\\N{U+\" of the Unicode escape character, one or more than one hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
                       }
                       else if (unicode_chars_length > 8) {
                         SPVM_COMPILER_error(compiler, "Too big Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
