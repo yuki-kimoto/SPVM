@@ -12,6 +12,8 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
+# Compilation Errors in spvm_toke.c 
+
 # Line number
 {
   compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);

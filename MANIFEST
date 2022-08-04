@@ -329,6 +329,11 @@ t/builder_cc.t
 t/compile_error/definition.t
 t/compile_error/dist.pl
 t/compile_error/extra.t
+t/compile_error/extra_definition.t
+t/compile_error/extra_operator.t
+t/compile_error/extra_others.t
+t/compile_error/extra_statement.t
+t/compile_error/extra_type.t
 t/compile_error/lib/MyTest.pm
 t/compile_error/lib/SPVM/CompileError/Add/LeftIsNotNumeric.spvm
 t/compile_error/lib/SPVM/CompileError/Add/RightIsNotNumeric.spvm
@@ -446,6 +451,7 @@ t/compile_error/lib/SPVM/CompileError/Use/ImportMethodNotFound.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/IsweakFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/WeakenFieldNotObjectType.spvm
+t/compile_error/op.t
 t/compile_error/operator.t
 t/compile_error/perl_program.pl
 t/compile_error/statement.t
