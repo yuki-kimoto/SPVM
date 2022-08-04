@@ -1304,7 +1304,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             case SPVM_OP_C_ID_ARRAY_LENGTH: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
-              // First value must be array
+              // First value must be an array
               if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of the @ operator must be an array type at %s line %d", op_cur->file, op_cur->line);
                 return;
@@ -1755,7 +1755,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check if source can be assigned to dist
               // If needed, numeric conversion op is added
               dist_type = SPVM_OP_get_type(compiler, op_operand_dist);
-              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_operand_src, "assignment operator", op_cur->file, op_cur->line);
+              SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_operand_src, "the assignment operator", op_cur->file, op_cur->line);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2321,7 +2321,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
               
               if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
-                SPVM_COMPILER_error(compiler, "The operand of the dereference operaotr must be a numeric reference type or value reference type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the dereference operaotr must be a numeric reference type or a multi-numeric reference type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2350,7 +2350,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (found) {
-                  SPVM_COMPILER_error(compiler, "Redeclaration of variable \"%s\" at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  SPVM_COMPILER_error(compiler, "Redeclaration of the variable \"%s\" at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
                 else {
@@ -2361,7 +2361,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Type can't be detected
                 if (!op_cur->is_lvalue && var_decl->type == NULL) {
-                  SPVM_COMPILER_error(compiler, "Type can't be detected at %s line %d", var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  SPVM_COMPILER_error(compiler, "The type can't be detected at %s line %d", var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
               }
@@ -2443,7 +2443,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Local variable %s is not defined at %s line %d", var->name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The local variable \"%s\" is not defined at %s line %d", var->name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
@@ -2471,13 +2471,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (call_method->method->is_class_method) {
                 if (!call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "Class methods can't be called as instance methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The class method can't be called as an instance method \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
                 if (call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as class methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The instance method can't be called as a class method \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2494,7 +2494,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "Can't call the private method \"%s->%s\" at %s line %d", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The private method \"%s->%s\" can't be called at %s line %d", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2650,7 +2650,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               call_method->args_length = call_method_args_length;
               
               if (call_method->method->is_destructor) {
-                SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The DESTROY method can't be called at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2847,7 +2847,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (!op_cur->uv.class_var_access->class_var) {
-                SPVM_COMPILER_error(compiler, "Class variable not found \"%s\" at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The Class variable \"%s\" is not defined at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2867,7 +2867,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (is_private && !op_cur->uv.class_var_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, class_var_access_class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "Can't access to private class variable \"%s\" at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The private class variable \"%s\" can't be accessed at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2878,12 +2878,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
-              // Left operand must be array or string
+              // Left operand must be an array or string
               if (!SPVM_TYPE_is_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) &&
                 !SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
               )
               {
-                SPVM_COMPILER_error(compiler, "The array access invocant must be array or string at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The invocant of the array access must be an array type or the string type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2902,12 +2902,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 
                 if (last_type->dimension == 0 && last_type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-                  SPVM_COMPILER_error(compiler, "array index must be int type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The index of the array access must be the int type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "array index must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The index of the array access must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3008,28 +3008,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!field) {
                 const char* invoker_type_name = SPVM_TYPE_new_type_name(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag);
-                SPVM_COMPILER_error(compiler, "Unknown field %s->{%s} at %s line %d", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The field \"%s->{%s}\" is not defined at %s line %d", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
               // weaken operator
               if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the weaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the weaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // unweaken operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the unweaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the unweaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // isweak operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field targeted by the isweak operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the isweak operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3057,7 +3057,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private && !op_cur->uv.field_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, field->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "Can't access to private field \"%s\" at %s line %d", op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The private field \"%s\" can't be accessed at %s line %d", op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3071,7 +3071,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
                 if (is_basic_type_mulnum_t) {
                   if (array_element_type->dimension != 0) {
-                    SPVM_COMPILER_error(compiler, "mulnum_t array field access must be 1-dimension array at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The dimension of the element of the multi-numeric array must be 1 at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else {
@@ -3209,7 +3209,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               );
               
               if (!found_method) {
-                SPVM_COMPILER_error(compiler, "The interface or class \"%s\" doesn't have the method declaration \"%s\" at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
+                SPVM_COMPILER_error(compiler, "The method \"%s->%s\" is not defined \"%s\" at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
@@ -3235,7 +3235,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (!castability) {
                 const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
                 const char* cast_type_name = SPVM_TYPE_new_type_name(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag);
-                SPVM_COMPILER_error(compiler, "Can't perform the type cast from %s to %s at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
+                SPVM_COMPILER_error(compiler, "The type cast from \"%s\" to \"%s\" is not allowed at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
                 return;
               }
               
@@ -4205,16 +4205,16 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     
   if (!assignability) {
     if (mutable_invalid) {
-      SPVM_COMPILER_error(compiler, "Can't assign a non-mutable to a mutable type in %s, at %s line %d", place, file, line);
+      SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s, at %s line %d", place, file, line);
     }
     if (narrowing_conversion_error) {
-      SPVM_COMPILER_error(compiler, "Can't apply narrowing conversion in %s at %s line %d", place, file, line);
+      SPVM_COMPILER_error(compiler, "The narrowing type conversion can't be performed in %s at %s line %d", place, file, line);
       return NULL;
     }
     else {
       const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
       const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
-      SPVM_COMPILER_error(compiler, "Can't convert %s to %s by implicite type conversion in %s at %s line %d", src_type_name, dist_type_name, place, file, line);
+      SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed at %s line %d", src_type_name, dist_type_name, place, file, line);
       return NULL;
     }
   }
@@ -4262,26 +4262,26 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       if (!found_class) {
         const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, basic_type_name, strlen(basic_type_name));
         if (!not_found_class_class_name) {
-          SPVM_COMPILER_error(compiler, "Unknown class \"%s\" at %s line %d", basic_type_name, op_type->file, op_type->line);
+          SPVM_COMPILER_error(compiler, "The class \"%s\" is not defined at %s line %d", basic_type_name, op_type->file, op_type->line);
         }
       }
     }
     
-    // Reference type must be numeric refernce type or value reference type
+    // Reference type must be numeric refernce type or multi-numeric reference type
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-        SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or mulnum_t reference type \"%s\"\\ at %s line %d", basic_type_name, op_type->file, op_type->line);
+        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type \"%s\"\\ at %s line %d", basic_type_name, op_type->file, op_type->line);
       }
     }
     
     // mutable only allow string type
     if (type->flag & SPVM_TYPE_C_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-      SPVM_COMPILER_error(compiler, "The mutable type qualifier can use only string type at %s line %d", op_type->file, op_type->line);
+      SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type at %s line %d", op_type->file, op_type->line);
     }
 
     if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Multi dimensional array of any object is forbidden at %s line %d", op_type->file, op_type->line);
+      SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed at %s line %d", op_type->file, op_type->line);
     }
   }
 }
@@ -4350,7 +4350,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The \"%s->%s\" class method is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The class method \"%s->%s\" is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
       return;
     }
   }
@@ -4758,13 +4758,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           last_arg_type = arg_type;
         }
       }
-      if (args_stack_length > 255) {
-        SPVM_COMPILER_error(compiler, "Too many arguments at %s line %d", method->op_method->file, method->op_method->line);
+      if (!(args_stack_length <= 255)) {
+        SPVM_COMPILER_error(compiler, "The maximum length of arguments that can be defined is 255 at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       
       if (method->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
-        SPVM_COMPILER_error(compiler, "When ... is specified, last argument type must be array at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "\"...\" can't be specified for non-array types at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       

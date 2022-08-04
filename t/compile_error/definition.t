@@ -78,7 +78,7 @@ use Test::More;
     compile_not_ok_file('CompileError::Interface::HaveBlock', qr/interface.+block/i);
     compile_not_ok_file('CompileError::Interface::NativeMethod', qr/interface.+native/i);
     compile_not_ok_file('CompileError::Interface::StaticMethod', qr/interface.+instance/i);
-    compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign', qr/List to Stringable/i);
+    compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign', qr/The implicite type conversion from "List" to "Stringable" in the assignment operator is not allowed/i);
     compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.+interface.+Stringable/i);
     compile_not_ok_file('CompileError::Interface::NoMethods', qr/The interface must have a required method/i);
     compile_not_ok_file('CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
