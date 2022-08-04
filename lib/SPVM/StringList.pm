@@ -51,13 +51,29 @@ SPVM::StringList - Dynamic string array
 
 C<StringList> is a dynamic C<string> array.
 
+=head1 Enumerations
+
+  enum {
+    DEFAULT_CAPACITY = 4,
+  }
+
+=head2 DEFAULT_CAPACITY
+
+The default capacity. The value is C<4>.
+
 =head1 Fields
+
+=head2 capacity
+
+  has capacity : ro int;
+
+The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
   has length : ro int;
 
-The length.
+The length of the list.
 
 =head2 values
 
@@ -72,13 +88,13 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : StringList ($array = undef : string[])
+  static method new : StringList ($array = undef : string[], $capacity = -1 : int)
 
-Create a new C<StringList> object with a C<string> array.
+Create a new C<StringList> object using L</"new_len">.
 
-Internally, a new array is created, and each element of the specified array is copied to the new array.
+The passed length to L</"new_len"> is the length of the array. If the array is C<undef>, the length is C<0>.
 
-If the array is C<undef>, a new array that length is C<0> is created.
+The element's addresses of the string array are copied to the values of the the created array.
 
 B<Examples:>
 
@@ -87,9 +103,13 @@ B<Examples:>
 
 =head2 new_len
 
-  static method new_len : StringList ($length : int)
+  static method new_len : StringList ($length : int, $capacity = -1 : int)
 
-Create a new C<StringList> object with the length.
+Create a new C<StringList> object with the length and the capacity.
+
+If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+
+If the length is greater than the capacity, the capacity is set to the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -150,6 +170,18 @@ The offset must be greater than or equal to C<0>. Otherwise an excpetion will be
 The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 reserve
+
+  method reserve : void ($new_capacity : int)
+
+Reserve the elements with the new capacity.
+
+If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
+
+Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
+
+The new capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 resize
 

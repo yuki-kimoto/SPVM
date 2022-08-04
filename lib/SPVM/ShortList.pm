@@ -179,7 +179,7 @@ Reserve the elements with the new capacity.
 
 If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
 
-Note that L</"values> is replaced with the new values and the values of the original list are copied to the new values in the above case.
+Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
 
 The new capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 

@@ -60,13 +60,29 @@ SPVM::List - Dynamic Object Array
 
 C<List> is the dynamic object array that has a specified object array type.
 
+=head1 Enumerations
+
+  enum {
+    DEFAULT_CAPACITY = 4,
+  }
+
+=head2 DEFAULT_CAPACITY
+
+The default capacity. The value is C<4>.
+
 =head1 Fields
+
+=head2 capacity
+
+  has capacity : ro int;
+
+The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
   has length : ro int;
 
-The length.
+The length of the list.
 
 =head2 values
 
@@ -78,13 +94,13 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : List ($array = undef : object[])
+  static method new : List ($array = undef : object[], $capacity = -1 : int)
 
-Create a new C<List> object with the object array.
+Create a new C<List> object using L</"new_len">.
 
-Internally, a new array is created. The type of the created array is the same type as the array specified by the argument. Each element of the array specified by the arugment is copied to the element of the new array.
+The passed length to L</"new_len"> is the length of the array. If the array is C<undef>, the length is C<0>.
 
-If the array of the argument is C<undef>, 0-length internal array is created.
+The element's addresses of the object array are copied to the values of the the created array.
   
   # object[]
   my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
@@ -94,11 +110,15 @@ If the array of the argument is C<undef>, 0-length internal array is created.
 
 =head2 new_len
 
-  static method new_len : List ($proto_array : object[], $length : int)
+  static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int)
 
-Create a new C<List> object with the prototype array and the length of the created array.
+Create a new C<StringList> object with the prototype array, the length and the capacity.
 
-Internally, a new array is created. The type of the created array is the same type as the prototype array specified by the argument.
+If the prototype array is undefined, the prototype array is set to an C<object[]> object.
+
+If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+
+If the length is greater than the capacity, the capacity is set to the length.
 
 The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -152,6 +172,18 @@ Remove the element at the position of the index and return it.
 The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+
+=head2 reserve
+
+  method reserve : void ($new_capacity : int)
+
+Reserve the elements with the new capacity.
+
+If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
+
+Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
+
+The new capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 resize
 

@@ -20,6 +20,109 @@
       static method new : ByteList ($array = undef : byte[], $capacity = -1 : int)
       static method new_len : ByteList ($length : int, $capacity = -1 : int)
     * Add reserve method to ByteList class .
+    * Add capacity field is added to ShortList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of ShortList class.
+      [Before]
+      static method new : ShortList ($array = undef : short[])
+      static method new_len : ShortList ($length : int)
+      [After]
+      static method new : ShortList ($array = undef : short[], $capacity = -1 : int)
+      static method new_len : ShortList ($length : int, $capacity = -1 : int)
+    * Add reserve method to ShortList class .
+    * Add capacity field is added to IntList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of IntList class.
+      [Before]
+      static method new : IntList ($array = undef : int[])
+      static method new_len : IntList ($length : int)
+      [After]
+      static method new : IntList ($array = undef : int[], $capacity = -1 : int)
+      static method new_len : IntList ($length : int, $capacity = -1 : int)
+    * Add reserve method to IntList class .
+    * Add capacity field is added to LongList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of LongList class.
+      [Before]
+      static method new : LongList ($array = undef : long[])
+      static method new_len : LongList ($length : int)
+      [After]
+      static method new : LongList ($array = undef : long[], $capacity = -1 : int)
+      static method new_len : LongList ($length : int, $capacity = -1 : int)
+    * Add reserve method to LongList class .
+
+    * Add capacity field is added to FloatList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of FloatList class.
+      [Before]
+      static method new : FloatList ($array = undef : float[])
+      static method new_len : FloatList ($length : int)
+      [After]
+      static method new : FloatList ($array = undef : float[], $capacity = -1 : int)
+      static method new_len : FloatList ($length : int, $capacity = -1 : int)
+    * Add reserve method to FloatList class .
+
+    * Add capacity field is added to DoubleList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of DoubleList class.
+      [Before]
+      static method new : DoubleList ($array = undef : double[])
+      static method new_len : DoubleList ($length : int)
+      [After]
+      static method new : DoubleList ($array = undef : double[], $capacity = -1 : int)
+      static method new_len : DoubleList ($length : int, $capacity = -1 : int)
+    * Add reserve method to DoubleList class .
+
+    * Add capacity field is added to StringList class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of StringList class.
+      [Before]
+      static method new : StringList ($array = undef : string[])
+      static method new_len : StringList ($length : int)
+      [After]
+      static method new : StringList ($array = undef : string[], $capacity = -1 : int)
+      static method new_len : StringList ($length : int, $capacity = -1 : int)
+    * Add reserve method to StringList class .
+
+    * Add capacity field is added to List class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of List class.
+      [Before]
+      static method new : List ($array = undef : object[])
+      static method new_len : List ($length : int)
+      [After]
+      static method new : List ($array = undef : object[], $capacity = -1 : int)
+      static method new_len : List ($length : int, $capacity = -1 : int)
+    * Add reserve method to List class .
+
+    * Add capacity field is added to StringBuffer class.
+    
+      has capacity : ro int;
+    
+    * Add optional capacity argument is added to new and new_len of StringBuffer class.
+      [Before]
+      static method new : StringBuffer ($string = undef : string)
+      [After]
+      static method new : StringBuffer ($string = undef : string, $capacity = -1 : int)
+    * Add reserve method to StringBuffer class.
+    * Add new_len method to StringBuffer class.
+    
+      static method new_len : StringBuffer ($length : int, $capacity = -1 : int)
+
   [Specification Bug Fix]
     * The escape character of the string literal "\0" becomes 0x24 ($). This was wrongly 0x44 (D).
   [Incompatible Changes]
@@ -31,7 +134,7 @@
 0.9634 2022-08-03
   [Changes]
     * Add an optional argument to the following methods of StringBuffer class.
-      [Before]
+      [qBefore]
       static method new : StringBuffer ()
       [After]
       static method new : StringBuffer ($string = undef : string)

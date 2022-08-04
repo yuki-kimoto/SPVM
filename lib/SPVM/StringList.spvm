@@ -2,17 +2,18 @@ class StringList {
   use Fn;
   use Array;
   
+  # Enumerations
+  enum {
+    DEFAULT_CAPACITY = 4,
+  }
+  
   # Fields
+  has capacity : ro int;
   has length : ro int;
   has values : ro string[];
   
-  # Private fields
-  has capacity : int;
-  
   # Class methods
-  static method new : StringList ($array = undef : string[]) {
-    my $self = new StringList;
-    
+  static method new : StringList ($array = undef : string[], $capacity = -1 : int) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -21,30 +22,34 @@ class StringList {
       $length = 0;
     }
     
-    my $capacity = $length;
-    my $values = new string[$capacity];
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
+    my $self = &new_len($length, $capacity);
     
     if ($array) {
-      Array->memcpy_string_address($values, 0, $array, 0, $length);
+      Array->memcpy_string_address($self->{values}, 0, $array, 0, $length);
     }
-    
-    $self->{values} = $values;
     
     return $self;
   }
   
-  static method new_len : StringList ($length : int) {
+  static method new_len : StringList ($length : int, $capacity = -1 : int) {
     my $self = new StringList;
+    
     unless ($length >= 0) {
       die "The length must be greater than or equal to 0";
     }
-    my $capacity = $length;
+    
+    if ($capacity < 0) {
+      $capacity = &DEFAULT_CAPACITY;
+    }
+    
+    if ($length > $capacity) {
+      $capacity = $length;
+    }
+    
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     $self->{values} = new string[$capacity];
+    
     return $self;
   }
   
@@ -169,6 +174,22 @@ class StringList {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  method reserve : void ($new_capacity : int) {
+    unless ($new_capacity >= 0) {
+      die "The new capacity must be greater than or equal to 0";
+    }
+    
+    my $capacity = $self->{capacity};
+    
+    if ($new_capacity > $capacity) {
+      my $length = $self->{length};
+      my $new_values = new string[$new_capacity];
+      Array->memcpy_string_address($new_values, 0, $self->{values}, 0, $length);
+      $self->{values} = $new_values;
+      $self->{capacity} = $new_capacity;
+    }
   }
   
   method resize : void ($new_length : int) {

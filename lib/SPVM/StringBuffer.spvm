@@ -2,23 +2,53 @@ class StringBuffer {
   use Fn;
   use Array;
   
-  # Fields
-  has value : ro mutable string;
-  has length : ro int;
+  # Enumerations
+  enum {
+    DEFAULT_CAPACITY = 4,
+  }
   
-  # Private fields
-  has capacity : int;
+  # Fields
+  has capacity : ro int;
+  has length : ro int;
+  has value : ro mutable string;
   
   # Class methods
-  static method new : StringBuffer ($string = undef : string) {
-    my $self = new StringBuffer;
-    $self->{value} = (mutable string)new_string_len(0);
-    $self->{length} = 0;
-    $self->{capacity} = 0;
+  static method new : StringBuffer ($string = undef : string, $capacity = -1 : int) {
+    my $length : int;
+    if ($string) {
+      $length = length $string;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length, $capacity);
     
     if ($string) {
-      $self->push($string);
+      Fn->memcpy($self->{value}, 0, $string, 0, $length);
     }
+    
+    return $self;
+  }
+  
+  static method new_len : StringBuffer ($length : int, $capacity = -1 : int) {
+    
+    unless ($length >= 0) {
+      die "The length must be greater than or equal to 0";
+    }
+    
+    if ($capacity < 0) {
+      $capacity = &DEFAULT_CAPACITY;
+    }
+    
+    if ($length > $capacity) {
+      $capacity = $length;
+    }
+    
+    my $self = new StringBuffer;
+    $self->{value} = (mutable string)new_string_len($capacity);
+    $self->{capacity} = $capacity;
+    $self->{length} = $length;
     
     return $self;
   }
@@ -72,6 +102,22 @@ class StringBuffer {
     }
     
     $self->{length} = $new_length;
+  }
+  
+  method reserve : void ($new_capacity : int) {
+    unless ($new_capacity >= 0) {
+      die "The new capacity must be greater than or equal to 0";
+    }
+    
+    my $capacity = $self->{capacity};
+    
+    if ($new_capacity > $capacity) {
+      my $length = $self->{length};
+      my $new_value = (mutable string)new_string_len $new_capacity;
+      Fn->memcpy($new_value, 0, $self->{value}, 0, $length);
+      $self->{value} = $new_value;
+      $self->{capacity} = $new_capacity;
+    }
   }
   
   method to_string : string () {
