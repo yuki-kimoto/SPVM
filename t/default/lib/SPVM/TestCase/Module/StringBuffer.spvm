@@ -88,6 +88,13 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
     }
+    {
+      my $buffer= StringBuffer->new_len(3);
+      
+      unless ($buffer->to_string eq "\0\0\0") {
+        return 0;
+      }
+    }
     
     {
       my $buffer = StringBuffer->new_len(5);
