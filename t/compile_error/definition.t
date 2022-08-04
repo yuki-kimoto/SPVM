@@ -61,8 +61,8 @@ use Test::More;
   # Class name
   {
     compile_not_ok_file('CompileError::Class::ClassNameDifferntFromModuleName', qr/The class name "ClassNameDifferntFromModuleNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromModuleName"/);
-    compile_not_ok_file('CompileError::Class::classPartNameStartWithLowerCase', qr/The part names of the class "CompileError::Class::classPartNameStartWithLowerCase" must begin with an upper case character/);
-    compile_not_ok_file('foo', qr/The class name "foo" must begin with an upper case character/);
+    compile_not_ok_file('CompileError::Class::classPartNameStartWithLowerCase', qr/The part names of the class "CompileError::Class::classPartNameStartWithLowerCase" must begin with a upper case character/);
+    compile_not_ok_file('foo', qr/The class name "foo" must begin with a upper case character/);
     compile_not_ok_file('4foo', qr/The class name "4foo" can't begin with a number/);
     {
       my $source = 'class MyClass:: { static method main : void () {} }';
@@ -274,26 +274,6 @@ use Test::More;
     {
       my $source = q|class MyClass { public private enum { ONE } }|;
       compile_not_ok($source, qr/Only one of "private" or "public" enumeration descriptors can be specified/);
-    }
-  }
-}
-
-# Local variable
-{
-  # Local variable name
-  {
-    compile_not_ok_file('CompileError::LocalVar::LocalVarNameStartDigit', qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
-    compile_not_ok_file('CompileError::LocalVar::LocalVarNameInvalidColon', qr/Unknown class "BAR"/);
-    compile_not_ok_file('CompileError::LocalVar::LocalVarNameEndColon2', qr/The variable name "\$FOO::" can't end with "::"/);
-    compile_not_ok_file('CompileError::LocalVar::LocalVarNameContainsUnderScoreTwice', qr/The variable name "\$Foo__Bar" can't contain "__"/);
-    compile_not_ok_file('CompileError::LocalVar::LocalVarNameColon2Twice', qr/The variable name "\$FOO::::BAR" can't contain "::::"/);
-    {
-      my $source = 'class MyClass { static method main : void () { my ${name : int; } }';
-      compile_not_ok($source, qr/Need a closing brace "}"/);
-    }
-    {
-      my $source = 'class MyClass { static method main : void () { my $Foo::name : int; } }';
-      compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
     }
   }
 }

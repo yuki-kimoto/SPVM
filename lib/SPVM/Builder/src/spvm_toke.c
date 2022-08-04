@@ -1528,7 +1528,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
               else {
-                SPVM_COMPILER_error(compiler, "Need a closing brace \"}\" at the end of the variable name at %s line %d", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
               }
             }
             
