@@ -344,7 +344,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object variable
               if (!(op_operand->id == SPVM_OP_C_ID_VAR && SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-                SPVM_COMPILER_error(compiler, "Operand of refcnt must be variable of object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of refcnt must be variable of object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -583,7 +583,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (!is_valid_type) {
-                SPVM_COMPILER_error(compiler, "Operand of condition must be numeric type or object type or undef type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of condition must be numeric type or object type or undef type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1806,7 +1806,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
@@ -1823,7 +1823,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of unary + operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1834,7 +1834,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of unary - operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of unary - operator must be a numeric type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1851,7 +1851,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Operand must be numeric type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of ~ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of ~ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
