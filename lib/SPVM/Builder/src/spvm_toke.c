@@ -199,9 +199,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           // Check the class name
           {
-            // A class name must begin with a upper case character
+            // A class name must begin with an upper case character
             if (islower(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with a upper case character at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
@@ -212,7 +212,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (i > 1) {
                 if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
                   if (islower(class_name[i])) {
-                    SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with a upper case character at %s line %d", class_name, op_use->file, op_use->line);
+                    SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
                     return 0;
                   }
                 }

@@ -1919,7 +1919,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // Class name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(class_alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with a upper case character at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_class_name = op_use->uv.use->class_name;

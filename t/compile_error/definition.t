@@ -61,8 +61,8 @@ use Test::More;
   # Class name
   {
     compile_not_ok_file('CompileError::Class::ClassNameDifferntFromModuleName', qr/The class name "ClassNameDifferntFromModuleNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromModuleName"/);
-    compile_not_ok_file('CompileError::Class::classPartNameStartWithLowerCase', qr/The part names of the class "CompileError::Class::classPartNameStartWithLowerCase" must begin with a upper case character/);
-    compile_not_ok_file('foo', qr/The class name "foo" must begin with a upper case character/);
+    compile_not_ok_file('CompileError::Class::classPartNameStartWithLowerCase', qr/The part names of the class "CompileError::Class::classPartNameStartWithLowerCase" must begin with an upper case character/);
+    compile_not_ok_file('foo', qr/The class name "foo" must begin with an upper case character/);
     compile_not_ok_file('4foo', qr/The class name "4foo" can't begin with a number/);
     {
       my $source = 'class MyClass:: { static method main : void () {} }';
