@@ -1280,7 +1280,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       }
       int32_t is_odd = element_index % 2 == 1;
       if (is_odd) {
-        SPVM_COMPILER_error(compiler, "Odd number of elements in {} array init syntax at %s line %d", op_list_elements->file, op_list_elements->line);
+        SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number at %s line %d", op_list_elements->file, op_list_elements->line);
       }
     }
   }
