@@ -1934,14 +1934,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
         }
       }
-      // allow declarations
+      // allow statement
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
         SPVM_LIST_push(class->allows, op_decl->uv.allow);
       }
-      // interface declarations
+      // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "The multi-numeric type can't be the operand of the interface syntax at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface statement can't be used in the definition of the multi-numeric type at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
