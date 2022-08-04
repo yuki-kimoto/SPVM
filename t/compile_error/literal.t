@@ -182,18 +182,18 @@ use Test::More;
 
   # Caharater literal
   {
-    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteralEmpty', qr/A character literal can't be empty/);
-    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteral', qr/\QInvalid charater literal escape character "\A"/);
-    compile_not_ok_file('CompileError::Literal::Character::NotEnd', qr/A character literal must ends with "'"/);
-    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii1', qr/\QAfter "\x" of the hexadecimal escape character, one or tow hexadecimal numbers must follow/);
-    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii2', qr/A character literal must ends with "'"/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteralEmpty', qr/The character literal can't be empty/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidCharacterLiteral', qr/\Q"\A" is the invalid charater literal escape character/);
+    compile_not_ok_file('CompileError::Literal::Character::NotEnd', qr/The character literal must ends with "'"/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii1', qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
+    compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii2', qr/The character literal must ends with "'"/);
     {
       my $source = q|class Tmp { static method main : void () { '\x{a' } }|;
-      compile_not_ok($source, qr/The hexadecimal escape character that has the opening "\{" must have the closing "\}"/);
+      compile_not_ok($source, qr/The hexadecimal escape character is not closed by "}"/);
     }
     {
       my $source = q|class Tmp { static method main : void () { '\xaz' } }|;
-      compile_not_ok($source, qr/A character literal must ends with "'"/);
+      compile_not_ok($source, qr/The character literal must ends with "'"/);
     }
   }
 

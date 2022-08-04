@@ -885,7 +885,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "A character literal can't be empty at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character literal can't be empty at %s line %d", compiler->cur_file, compiler->cur_line);
           compiler->bufptr++;
         }
         else {
@@ -954,7 +954,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 ch = (char)strtol(hex_escape_char, &end, 16);
               }
               else {
-                SPVM_COMPILER_error(compiler, "After \"\\x\" of the hexadecimal escape character, one or tow hexadecimal numbers must follow at %s line %d", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be follow by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
               }
               
               if (has_brace) {
@@ -962,12 +962,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   compiler->bufptr++;
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "The hexadecimal escape character that has the opening \"{\" must have the closing \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                  SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                 }
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "Invalid charater literal escape character \"\\%c\" at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
               compiler->bufptr++;
             }
           }
@@ -980,7 +980,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "A character literal must ends with \"'\" at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The character literal must ends with \"'\" at %s line %d", compiler->cur_file, compiler->cur_line);
           }
         }
         
