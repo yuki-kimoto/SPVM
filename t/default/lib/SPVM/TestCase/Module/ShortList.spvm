@@ -5,26 +5,33 @@ class TestCase::Module::ShortList {
   
   # Fields
   static method fields : int () {
-    my $nums = ShortList->new([(short)1, 2, 3]);
-    
-    # length
-    my $length = $nums->length;
-    unless ($length == 3) {
-      return 0;
-    }
-    
-    # values
-    my $values = $nums->values;
-    $values->[2] = 4;
-    
-    unless ($nums->values->[0] == 1) {
-      return 0;
-    }
-    unless ($nums->values->[1] == 2) {
-      return 0;
-    }
-    unless ($nums->values->[2] == 4) {
-      return 0;
+    {
+      my $list = ShortList->new([(short)1, 2, 3]);
+      
+      # length
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      # values
+      my $values = $list->values;
+      $values->[2] = 4;
+      
+      unless ($list->values->[0] == 1) {
+        return 0;
+      }
+      unless ($list->values->[1] == 2) {
+        return 0;
+      }
+      unless ($list->values->[2] == 4) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -50,6 +57,38 @@ class TestCase::Module::ShortList {
       
       my $length = $list->length;
       unless ($length == 3) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    # capcity
+    {
+      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX()], 10);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->SHORT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -113,12 +152,40 @@ class TestCase::Module::ShortList {
       unless ($list->length == 32) {
         return 0;
       }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
     }
-
+    
+    {
+      my $list = ShortList->new_len(32, 10);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    
     {
       my $list = ShortList->new_len(0);
       
       unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = ShortList->new_len(0, 10);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -141,15 +208,15 @@ class TestCase::Module::ShortList {
       unless ($list->get(0) == 3) {
         return 0;
       }
-
+      
       unless ($list->get(0) isa short) {
         return 0;
       }
-
+      
       unless ($list->get(1) == 5) {
         return 0;
       }
-
+      
       unless ($list->get(2) == Fn->SHORT_MAX()) {
         return 0;
       }
@@ -329,7 +396,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     # Remove last
     {
       my $list = ShortList->new([(short)1, 2, 3]);
@@ -338,7 +405,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     # Remove first
     {
       my $list = ShortList->new([(short)1, 2, 3]);
@@ -347,7 +414,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     # Exception - remove to -1
     {
       my $list = ShortList->new([(short)1, 2, 3]);
@@ -357,7 +424,7 @@ class TestCase::Module::ShortList {
       }
     }
     $@ = undef;
-
+    
     # Exception - remove to length
     {
       my $list = ShortList->new([(short)1, 2, 3]);
@@ -387,7 +454,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       $list->replace(0, 2, [(short)10, 20]);
@@ -395,7 +462,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       $list->replace(2, 2, [(short)30, 40]);
@@ -403,7 +470,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       $list->replace(4, 0, [(short)50, 60]);
@@ -411,7 +478,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       eval { $list->replace(-1, 3, [(short)30, 40]); };
@@ -419,7 +486,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(short)30, 40, 50]); };
@@ -427,7 +494,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1]);
       $list->replace(1, 0, [(short)2, 3]);
@@ -435,7 +502,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1]);
       eval { $list->replace(2, 0, [(short)1, 2]); };
@@ -450,7 +517,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-
+    
     {
       my $list = ShortList->new([(short)1]);
       eval { $list->replace(2, 2, [(short)1, 2]); };
@@ -460,6 +527,39 @@ class TestCase::Module::ShortList {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = ShortList->new([(short)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = ShortList->new([(short)1, 2, 3]);
+      my $values = $list->values;
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      if ($list->values == $values) {
+        return 0;
+      }
+      
+      unless (Array->equals_short($list->to_array, $array)) {
+        return 0;
+      }
+    }
     
     return 1;
   }

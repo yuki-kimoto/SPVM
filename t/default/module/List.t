@@ -29,6 +29,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::List->push);
   ok(SPVM::TestCase::Module::List->remove);
   ok(SPVM::TestCase::Module::List->replace);
+  ok(SPVM::TestCase::Module::List->reserve);
   ok(SPVM::TestCase::Module::List->resize);
   ok(SPVM::TestCase::Module::List->shift);
   ok(SPVM::TestCase::Module::List->set);

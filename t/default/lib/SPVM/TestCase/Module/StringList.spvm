@@ -5,25 +5,30 @@ class TestCase::Module::StringList {
   
   # Fields
   static method fields : int () {
-    my $nums = StringList->new([(string)1, 2, 3]);
+    my $list = StringList->new([(string)1, 2, 3]);
     
     # length
-    my $length = $nums->length;
+    my $length = $list->length;
     unless ($length == 3) {
       return 0;
     }
     
     # values
-    my $values = $nums->values;
+    my $values = $list->values;
     $values->[2] = 4;
     
-    unless ($nums->values->[0] eq (string)1) {
+    unless ($list->values->[0] eq (string)1) {
       return 0;
     }
-    unless ($nums->values->[1] eq (string)2) {
+    unless ($list->values->[1] eq (string)2) {
       return 0;
     }
-    unless ($nums->values->[2] eq (string)4) {
+    unless ($list->values->[2] eq (string)4) {
+      return 0;
+    }
+    
+    # capacity
+    unless ($list->capacity == 4) {
       return 0;
     }
     
@@ -61,6 +66,15 @@ class TestCase::Module::StringList {
       unless ($list->length == 0) {
         return 0;
       }
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = StringList->new((string[])undef, 5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
     }
     
     # new without arugments
@@ -80,6 +94,19 @@ class TestCase::Module::StringList {
       my $list = StringList->new_len(32);
       
       unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    {
+      my $list = StringList->new_len(0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
         return 0;
       }
     }
@@ -423,6 +450,39 @@ class TestCase::Module::StringList {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = StringList->new([(string)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = StringList->new([(string)1, 2, 3]);
+      my $values = $list->values;
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      if ($list->values == $values) {
+        return 0;
+      }
+      
+      unless (Array->equals_string_address($list->to_array, $array)) {
+        return 0;
+      }
+    }
     
     return 1;
   }

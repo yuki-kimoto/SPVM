@@ -5,26 +5,33 @@ class TestCase::Module::DoubleList {
   
   # Fields
   static method fields : int () {
-    my $nums = DoubleList->new([(double)1, 2, 3]);
-    
-    # length
-    my $length = $nums->length;
-    unless ($length == 3) {
-      return 0;
-    }
-    
-    # values
-    my $values = $nums->values;
-    $values->[2] = 4;
-    
-    unless ($nums->values->[0] == 1) {
-      return 0;
-    }
-    unless ($nums->values->[1] == 2) {
-      return 0;
-    }
-    unless ($nums->values->[2] == 4) {
-      return 0;
+    {
+      my $list = DoubleList->new([(double)1, 2, 3]);
+      
+      # length
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      # values
+      my $values = $list->values;
+      $values->[2] = 4;
+      
+      unless ($list->values->[0] == 1) {
+        return 0;
+      }
+      unless ($list->values->[1] == 2) {
+        return 0;
+      }
+      unless ($list->values->[2] == 4) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -34,7 +41,7 @@ class TestCase::Module::DoubleList {
   static method new : int () {
     # new with array
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MAX()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DOUBLE_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -44,12 +51,44 @@ class TestCase::Module::DoubleList {
         return 0;
       }
       
-      unless ($list->get(2) == Fn->DBL_MAX()) {
+      unless ($list->get(2) == Fn->DOUBLE_MAX()) {
         return 0;
       }
       
       my $length = $list->length;
       unless ($length == 3) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    # capcity
+    {
+      my $list = DoubleList->new([(double)3, 5, Fn->DOUBLE_MAX()], 10);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->DOUBLE_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      # capacity
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -95,7 +134,7 @@ class TestCase::Module::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MAX());
+      $list->unshift(Fn->DOUBLE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -113,12 +152,40 @@ class TestCase::Module::DoubleList {
       unless ($list->length == 32) {
         return 0;
       }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
     }
-
+    
+    {
+      my $list = DoubleList->new_len(32, 10);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    
     {
       my $list = DoubleList->new_len(0);
       
       unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = DoubleList->new_len(0, 10);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 10) {
         return 0;
       }
     }
@@ -136,21 +203,21 @@ class TestCase::Module::DoubleList {
   # Instance methods
   static method get : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MAX()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DOUBLE_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
       }
-
+      
       unless ($list->get(0) isa double) {
         return 0;
       }
-
+      
       unless ($list->get(1) == 5) {
         return 0;
       }
-
-      unless ($list->get(2) == Fn->DBL_MAX()) {
+      
+      unless ($list->get(2) == Fn->DOUBLE_MAX()) {
         return 0;
       }
       
@@ -238,10 +305,10 @@ class TestCase::Module::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->DBL_MAX());
+      $list->push(Fn->DOUBLE_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == Fn->DBL_MAX()) {
+      unless ($pop0 == Fn->DOUBLE_MAX()) {
         return 0;
       }
       unless ($pop0 isa double) {
@@ -281,14 +348,14 @@ class TestCase::Module::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->DBL_MAX());
+      $list->push(Fn->DOUBLE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->DBL_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->DOUBLE_MAX()) {
         return 0;
       }
     }
@@ -329,7 +396,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     # Remove last
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -338,7 +405,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     # Remove first
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -347,7 +414,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     # Exception - remove to -1
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -357,7 +424,7 @@ class TestCase::Module::DoubleList {
       }
     }
     $@ = undef;
-
+    
     # Exception - remove to length
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -387,7 +454,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
       $list->replace(0, 2, [(double)10, 20]);
@@ -395,7 +462,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
       $list->replace(2, 2, [(double)30, 40]);
@@ -403,7 +470,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
       $list->replace(4, 0, [(double)50, 60]);
@@ -411,7 +478,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
       eval { $list->replace(-1, 3, [(double)30, 40]); };
@@ -419,7 +486,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(double)30, 40, 50]); };
@@ -427,7 +494,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1]);
       $list->replace(1, 0, [(double)2, 3]);
@@ -435,7 +502,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1]);
       eval { $list->replace(2, 0, [(double)1, 2]); };
@@ -450,7 +517,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
     }
-
+    
     {
       my $list = DoubleList->new([(double)1]);
       eval { $list->replace(2, 2, [(double)1, 2]); };
@@ -460,6 +527,39 @@ class TestCase::Module::DoubleList {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = DoubleList->new([(double)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = DoubleList->new([(double)1, 2, 3]);
+      my $values = $list->values;
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      if ($list->values == $values) {
+        return 0;
+      }
+      
+      unless (Array->equals_double($list->to_array, $array)) {
+        return 0;
+      }
+    }
     
     return 1;
   }
@@ -566,7 +666,7 @@ class TestCase::Module::DoubleList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => Fn->DBL_MAX());
+      $list->set(2 => Fn->DOUBLE_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -576,7 +676,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->DBL_MAX()) {
+      unless ($list->get(2) == Fn->DOUBLE_MAX()) {
         return 0;
       }
       
@@ -641,9 +741,9 @@ class TestCase::Module::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MAX());
+      $list->unshift(Fn->DOUBLE_MAX());
       
-      unless ($list->shift == Fn->DBL_MAX()) {
+      unless ($list->shift == Fn->DOUBLE_MAX()) {
         return 0;
       }
       
@@ -672,7 +772,7 @@ class TestCase::Module::DoubleList {
   
   static method to_array : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MAX()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DOUBLE_MAX()]);
       
       my $array = $list->to_array;
       
@@ -688,7 +788,7 @@ class TestCase::Module::DoubleList {
         return 0;
       }
 
-      unless ($array->[2] == Fn->DBL_MAX()) {
+      unless ($array->[2] == Fn->DOUBLE_MAX()) {
         return 0;
       }
       
@@ -708,14 +808,14 @@ class TestCase::Module::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->DBL_MAX());
+      $list->unshift(Fn->DOUBLE_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == Fn->DBL_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->DOUBLE_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }

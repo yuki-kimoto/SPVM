@@ -60,10 +60,57 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
       
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+      
       unless ($buffer->to_string eq "abc") {
         return 0;
       }
     }
+    
+    return 1;
+  }
+
+  static method new_len : int () {
+    
+    {
+      my $buffer = StringBuffer->new_len(0);
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 0) {
+        return 0;
+      }
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new_len(5);
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 5) {
+        return 0;
+      }
+      unless ($buffer->capacity == 5) {
+        return 0;
+      }
+    }
+    {
+      eval { StringBuffer->new_len(-1); };
+      unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
     
     return 1;
   }
@@ -212,6 +259,39 @@ class TestCase::Module::StringBuffer {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $buffer = StringBuffer->new("a");
+      $buffer->reserve(4);
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+      $buffer->reserve(0);
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("abc");
+      my $value = $buffer->value;
+      my $string = $buffer->to_string;
+      $buffer->reserve(5);
+      unless ($buffer->capacity == 5) {
+        return 0;
+      }
+      
+      if ($buffer->value == $value) {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq $string) {
+        return 0;
+      }
+    }
     
     return 1;
   }

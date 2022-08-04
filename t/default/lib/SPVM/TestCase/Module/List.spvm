@@ -15,6 +15,10 @@ class TestCase::Module::List {
       unless ($length == 3) {
         return 0;
       }
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
     }
     
     # values
@@ -33,6 +37,7 @@ class TestCase::Module::List {
         return 0;
       }
     }
+    
     
     return 1;
   }
@@ -61,6 +66,9 @@ class TestCase::Module::List {
         return 0;
       }
       
+      unless ($list->capacity == 4) {
+        return 0;
+      }
       $list->push(Int->new(1));
       unless ((int)$list->get(0) == 1) {
         return 0;
@@ -76,6 +84,17 @@ class TestCase::Module::List {
       }
       
       unless ($list->values isa object[]) {
+        return 0;
+      }
+    }
+    {
+      my $list = List->new(new object[5]);
+      
+      unless ($list->length == 5) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 5) {
         return 0;
       }
     }
@@ -101,6 +120,28 @@ class TestCase::Module::List {
       my $list = List->new_len(new Int[0], 32);
       
       unless ($list->length == 32) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = List->new_len(new Int[0], 0, 10);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 10) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = List->new_len(new Int[0], 0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
         return 0;
       }
     }
@@ -436,6 +477,39 @@ class TestCase::Module::List {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = List->new([(object)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = List->new([(object)1, 2, 3]);
+      my $values = $list->values;
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      if ($list->values == $values) {
+        return 0;
+      }
+      
+      unless (Array->equals_object_address($list->to_array, $array)) {
+        return 0;
+      }
+    }
     
     return 1;
   }
