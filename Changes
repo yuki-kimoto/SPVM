@@ -4,6 +4,8 @@
   [Bug Fix]
     * Fix the bug that the array initialization compilation error is not detected.
     * Fix the bug that non-interface type can be specified the operand of the interface statement.
+  [Test]
+    * Add many tests of compilation errors.
   [Incompatible Changes]
     * Fix the bug that the array initialization compilation error is not detected.
       For the reason of this, A compilation error occurs in the following code.
