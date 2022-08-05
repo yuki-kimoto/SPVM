@@ -417,6 +417,7 @@ t/compile_error/lib/SPVM/CompileError/Method/MethodNameStartDigit.spvm
 t/compile_error/lib/SPVM/CompileError/Method/TooManyArguments.spvm
 t/compile_error/lib/SPVM/CompileError/Method/TooManyArgumentsMulnum.spvm
 t/compile_error/lib/SPVM/CompileError/MultiNumeric/Fields17.spvm
+t/compile_error/lib/SPVM/CompileError/MultiNumeric/Fields256.spvm
 t/compile_error/lib/SPVM/CompileError/MultiNumeric/FieldsZero.spvm
 t/compile_error/lib/SPVM/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/compile_error/lib/SPVM/CompileError/Multiply/RightIsNotNumeric.spvm
