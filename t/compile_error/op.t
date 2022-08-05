@@ -55,11 +55,104 @@ use Test::More;
   }
 }
 
-# interface Statement
+# Multi-Numeric Type Definition
 {
   {
     my $source = 'class MyClass : mulnum_t { interface Stringable; }';
     compile_not_ok($source, qr/The interface statement can't be used in the definition of the multi-numeric type/);
+  }
+}
+
+
+# Interface Definition
+{
+  {
+    my $source = 'class MyClass : interface_t { our $FOO : int; }';
+    compile_not_ok($source, qr/The interface can't have class variables/);
+  }
+  {
+    my $source = 'class MyClass : interface_t { has foo : int; }';
+    compile_not_ok($source, qr/The interface can't have fields/);
+  }
+}
+
+# Pointer Class
+{
+  {
+    my $source = 'class MyClass : pointer_t { has foo : int; }';
+    compile_not_ok($source, qr/The pointer class can't have fields/);
+  }
+}
+
+# Field Definition
+{
+  {
+    my $source = 'class MyClass { has foo : int; has foo : int; }';
+    compile_not_ok($source, qr/Redeclaration of the field "foo" in the class "MyClass"/);
+  }
+}
+
+# Class Variable Definition
+{
+  {
+    my $source = 'class MyClass { our $FOO : int; our $FOO : int;}';
+    compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the class "MyClass"/);
+  }
+}
+
+# Method
+{
+  {
+    my $source = 'class MyClass { static method foo : void (); }';
+    compile_not_ok($source, qr/The non-native method must have the block/);
+  }
+  {
+    my $source = 'class MyClass { static method foo : void () { static method : int () { } } }';
+    compile_not_ok($source, qr/The anon method must be an instance method/);
+  }
+  {
+    my $source = 'class MyClass :interface_t { static method foo : void (); }';
+    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
+  }
+  {
+    my $source = 'class MyClass :interface_t { native method foo : void (); }';
+    compile_not_ok($source, qr/The method defined in the interface can't have the method descriptor "native"/);
+  }
+  {
+    my $source = 'class MyClass :interface_t { precompile method foo : void (); }';
+    compile_not_ok($source, qr/The method defined in the interface can't have the method descriptor "precompile"/);
+  }
+  {
+    my $source = 'class MyClass { required method foo : void () { } }';
+    compile_not_ok($source, qr/The method defined in the class can't have the method descriptor "required"/);
+  }
+  {
+    my $source = 'class MyClass { native method foo : void () { } }';
+    compile_not_ok($source, qr/The native method can't have the block/);
+  }
+  {
+    my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
+    compile_not_ok($source, qr/Redeclaration of the method "foo" in the class "MyClass"/);
+  }
+  {
+    my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
+    compile_not_ok($source, qr/The interface can't have multiple required methods/);
+  }
+  {
+    my $source = 'class MyClass : interface_t { method foo : void (); }';
+    compile_not_ok($source, qr/The interface must have a required method/);
+  }
+  {
+    my $source = 'class MyClass : mulnum_t { method foo : void () { } }';
+    compile_not_ok($source, qr/The multi-numeric type can't have methods/);
+  }
+  {
+    my $source = 'class MyClass : mulnum_t { our $FOO : int; }';
+    compile_not_ok($source, qr/The multi-numeric type can't have class variables/);
+  }
+  {
+    my $source = 'class MyClass : mulnum_t { }';
+    compile_not_ok($source, qr/The multi-numeric type must have at least one field/);
   }
 }
 

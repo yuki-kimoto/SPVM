@@ -2190,7 +2190,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the field \"%s->{%s}\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the field \"%s\" in the class \"%s\" at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
       }
       else {
         SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
@@ -2263,33 +2263,33 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
       // If Method is anon, method must be method
       if (strlen(method_name) == 0 && method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "An anon method must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "The anon method must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
       }
 
       if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
         // Method having interface_t descriptor must be method
         if (method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The method of the interface must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
         }
         
         // If class is interface, the method must not be native
         if (method->is_native) {
-          SPVM_COMPILER_error(compiler, "The method of the interface can't have the native descriptor at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the method descriptor \"native\" at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is interface, the method must not be precompile
         if (method->is_precompile) {
-          SPVM_COMPILER_error(compiler, "The method of the interface can't have the precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the method descriptor \"precompile\" at %s line %d", method->op_method->file, method->op_method->line);
         }
         
         // If class is interface, the method must not be precompile
         if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "The method of the interface can't have the block at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the block at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
         if (method->is_required) {
-          SPVM_COMPILER_error(compiler, "The method of the class can't have the required descriptor at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the class can't have the method descriptor \"required\" at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       
@@ -2302,7 +2302,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
       
       if (found_method) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" in the class \"%s\" at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
       }
       // Unknown method
       else {
@@ -2359,7 +2359,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field at %s line %d", class->op_class->file, class->op_class->line);
       }
       else if (class->fields->length > 255) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type  must have fields that length is less than or equal to 255. at %s line %d", class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255 at %s line %d", class->op_class->file, class->op_class->line);
       }
     }
   }
