@@ -2809,7 +2809,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
       compiler->current_enum_value = constant->value.ival;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The value of the enum must be int type at %s line %d", op_constant->file, op_constant->line);
+      SPVM_COMPILER_error(compiler, "The value of the enumeration must be int type at %s line %d", op_constant->file, op_constant->line);
     }
     
     compiler->current_enum_value++;

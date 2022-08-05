@@ -160,6 +160,134 @@ use Test::More;
   }
 }
 
+# Class Variable Name
+{
+  {
+    my $source = 'class MyClass { our $MyClass::FOO : int; }';
+    compile_not_ok($source, qr/The class varaible name "\$MyClass::FOO" can't contain "::"/);
+  }
+}
+
+# Class Variable Definition
+{
+  {
+    my $source = 'class MyClass { our $FOO : native int; }';
+    compile_not_ok($source, qr/Invalid class variable descriptor "native"/);
+  }
+  {
+    my $source = 'class MyClass { our $FOO : ro wo rw int; }';
+    compile_not_ok($source, qr/Only one of class variable descriptors "rw", "ro", "wo" can be specifed/);
+  }
+  {
+    my $source = 'class MyClass { our $FOO : private public int; }';
+    compile_not_ok($source, qr/Only one of class variable descriptors "private" or "public" can be specified/);
+  }
+}
+
+# Field Name
+{
+  {
+    my $source = 'class MyClass { has MyClass::foo : int; }';
+    compile_not_ok($source, qr/The field name "MyClass::foo" can't contain "::"/);
+  }
+}
+
+# Field Defintion
+{
+  {
+    my $source = 'class MyClass { has foo : native int; }';
+    compile_not_ok($source, qr/Invalid field descriptor "native"/);
+  }
+  {
+    my $source = 'class MyClass { has foo : ro wo rw int; }';
+    compile_not_ok($source, qr/Only one of field descriptors "rw", "ro" or "wo" can be specifed/);
+  }
+  {
+    my $source = 'class MyClass { has foo : private public int; }';
+    compile_not_ok($source, qr/Only one of field descriptors "private" or "public" can be specified/);
+  }
+}
+
+# Method name
+{
+  {
+    my $source = 'class MyClass { method MyClass::foo : void () { } }';
+    compile_not_ok($source, qr/The method name "MyClass::foo" can't contain "::"/);
+  }
+  {
+    my $source = 'class MyClass { method INIT : void () { } }';
+    compile_not_ok($source, qr/"INIT" can't be used as a method name/);
+  }
+  {
+    my $source = 'class MyClass { ro method foo : void () { } }';
+    compile_not_ok($source, qr/Invalid method descriptor "ro"/);
+  }
+  {
+    my $source = 'class MyClass { native precompile method foo : void () { } }';
+    compile_not_ok($source, qr/Only one of method descriptors "native" and "precompile" can be specified/);
+  }
+  {
+    my $source = 'class MyClass { native method foo : void () { } }';
+    compile_not_ok($source, qr/The native method can't have the block/);
+  }
+  {
+    my $source = 'class MyClass { method DESTROY : int () { } }';
+    compile_not_ok($source, qr/The return type of the DESTROY destructor method must be the void type/);
+  }
+  {
+    my $source = 'class MyClass { static method DESTROY : void () { } }';
+    compile_not_ok($source, qr/The DESTROY destructor method must be an instance method/);
+  }
+  {
+    my $source = 'class MyClass { method DESTROY : void ($var : int) { } }';
+    compile_not_ok($source, qr/The DESTROY destructor method can't have arguments/);
+  }
+}
+
+# Enumeration
+{
+  {
+    my $source = 'class MyClass { enum { FOO = 1L } }';
+    compile_not_ok($source, qr/The value of the enumeration must be int type/);
+  }
+  {
+    my $source = 'class MyClass { ro enum { FOO = 1 } }';
+    compile_not_ok($source, qr/Invalid enumeration descriptor "ro"/);
+  }
+  {
+    my $source = 'class MyClass { private public enum { FOO = 1 } }';
+    compile_not_ok($source, qr/Only one of enumeration descriptors "private" or "public" can be specified/);
+  }
+}
+
+# Local Variable
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $MyClass::foo; }; }';
+    compile_not_ok($source, qr/The local variable "\$MyClass::foo" can't contain "::"/);
+  }
+}
+
+# Mutable
+{
+  {
+    my $source = 'class MyClass { static method main : void () { ++1; }; }';
+    compile_not_ok($source, qr/\QThe operand of ++ operator must be mutable/);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { --1; }; }';
+    compile_not_ok($source, qr/\QThe operand of -- operator must be mutable/);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 += 1; }; }';
+    compile_not_ok($source, qr/The left operand of the special assign operator must be mutable/);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 = 1; }; }';
+    compile_not_ok($source, qr/The left operand of the assign operator must be mutable/);
+  }
+}
+
 # Extra
 {
   {
