@@ -291,6 +291,8 @@ ok(SPVM::TestCase::NativeAPI->new_memory_apis);
 
 ok(SPVM::TestCase::NativeAPI->new_memory_apis);
 
+ok(SPVM::TestCase::NativeAPI->dumpc);
+
 # Clear exception
 SPVM::set_exception(undef);
 

@@ -214,6 +214,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   197 new_string_array
   198 get_args_stack_length
   199 set_args_stack_length
+  200 dumpc
 
 =head2 class_vars_heap
 
@@ -2125,6 +2126,14 @@ Get the stack length of the arguments specified by the caller.
   void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 
 Set the stack length of the arguments for a method call.
+
+=head2 dumpc
+
+  const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+The alias for the following code using L</"dump">.
+
+  const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
 
 =head1 Compiler Native API
 

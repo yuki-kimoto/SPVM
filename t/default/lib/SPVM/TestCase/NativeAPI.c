@@ -215,6 +215,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_string_array != &env_array[197]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_args_stack_length != &env_array[198]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_args_stack_length != &env_array[199]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->dumpc != &env_array[200]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2798,6 +2799,21 @@ int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_1(SPVM_ENV* env, SPVM_V
 int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_2(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = env->get_args_stack_length(env, stack);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  
+  const char* dumpc = env->dumpc(env, stack, NULL);
+  
+  if (!strcmp(dumpc, "undef") == 0) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
   
   return 0;
 }

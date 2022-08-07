@@ -296,6 +296,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_string_array,
     SPVM_API_get_args_stack_length,
     SPVM_API_set_args_stack_length,
+    SPVM_API_dumpc,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -387,6 +388,16 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   string_buffer = NULL;
   
   return dump;
+}
+
+const char* SPVM_API_dumpc(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  SPVM_OBJECT* obj_dump = SPVM_API_dump(env, stack, object);
+  
+  const char* dump_chars = env->get_chars(env, stack, obj_dump);
+  
+  return dump_chars;
 }
 
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {

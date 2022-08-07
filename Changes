@@ -1,4 +1,9 @@
 0.9636 2022-08-05
+  [New Features]
+    * Add the following native API.
+    
+      const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  
   [Improve Compilation Error Messages]
     * Improve compillation error messages in many places.
   [Bug Fix]
