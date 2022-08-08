@@ -1076,6 +1076,7 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_operand_co
   SPVM_OP* op_condition = SPVM_OP_new_op(compiler, id, op_operand_condition->file, op_operand_condition->line);
   
   if (SPVM_OP_is_rel_op(compiler, op_operand_condition)) {
+    assert(op_operand_condition->moresib == 0);
     SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_operand_condition);
   }
   else {
@@ -1143,8 +1144,6 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
     }
   */
   
-  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
-  
   // my $.i
   SPVM_OP* op_var_init_name = SPVM_OP_new_op_name(compiler, "$.i", op_for->file, op_for->line);
   SPVM_OP* op_var_init = SPVM_OP_new_op_var(compiler, op_var_init_name);
@@ -1194,17 +1193,23 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   
   // $.i < $array_length
   SPVM_OP* op_numlt = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_LT, op_for->file, op_for->line);
-  SPVM_OP_build_comparison_op(compiler, op_numlt, op_var_increament, op_var_array_length);
+  SPVM_OP* op_numlt_comparison = SPVM_OP_build_comparison_op(compiler, op_numlt, op_var_increament, op_var_array_length);
   
-  SPVM_OP_insert_child(compiler, op_block, op_block->first, op_block_statements);
-  SPVM_OP_insert_child(compiler, op_block, op_block->first, op_assign_array_length);
-  SPVM_OP_insert_child(compiler, op_block, op_block->first, op_assign_init);
-  
-  SPVM_OP_insert_child(compiler, op_block, op_block->first, op_assign_element);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_inc_increament);
+  if (!op_block_statements) {
+    op_block_statements = SPVM_OP_new_op_list(compiler, op_for->file, op_for->line);
+  }
+  SPVM_OP_insert_child(compiler, op_block_statements, op_block_statements->first, op_assign_element);
+  SPVM_OP_insert_child(compiler, op_block_statements, op_block_statements->last, op_inc_increament);
   
   SPVM_OP* op_while = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WHILE, op_for->file, op_for->line);
-  SPVM_OP_build_while_statement(compiler, op_while, op_numlt, op_block_statements);
+  SPVM_OP_build_while_statement(compiler, op_while, op_numlt_comparison, op_block_statements);
+  
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
+  SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_for->file, op_for->line);
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign_init);
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign_array_length);
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_while);
+  SPVM_OP_insert_child(compiler, op_block, op_block->first, op_statements);
   
   return op_block;
 }
@@ -1218,6 +1223,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP* op_operand_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
   
   // Condition
+  assert(op_operand_condition->moresib == 0);
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_operand_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
 
