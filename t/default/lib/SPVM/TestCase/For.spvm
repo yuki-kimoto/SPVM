@@ -227,4 +227,39 @@ class TestCase::For {
     }
     return 0;
   }
+
+  static method foreach : int () {
+    {
+      my $array = [1, 2, 3];
+      my $total = 0;
+      for my $element (@$array) {
+        $total += $element;
+      }
+      
+      unless ($total == 6) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [1, 2, 3];
+      my $total = 0;
+      for my $element (@{$array}) {
+        $total += $element;
+      }
+      
+      unless ($total == 6) {
+        return 0;
+      }
+    }
+    
+    # Empty Block is OK
+    {
+      my $array = [1, 2, 3];
+      for my $element (@{$array}) {
+      }
+    }
+    
+    return 1;
+  }
 }

@@ -1219,24 +1219,17 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   SPVM_OP_insert_child(compiler, op_statements, op_statements->first, op_assign_element);
   SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_inc_increament);
   
-  // SPVM_DUMPER_dump_ast(compiler, op_block_statements);
-  
   SPVM_OP* op_while = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WHILE, op_for->file, op_for->line);
   SPVM_OP* op_loop = SPVM_OP_build_while_statement(compiler, op_while, op_numlt_comparison, op_block_statements);
-  
-  // SPVM_DUMPER_dump_ast(compiler, op_loop);
   
   SPVM_OP* op_block_new = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
   SPVM_OP* op_statements_new = SPVM_OP_new_op_list(compiler, op_for->file, op_for->line);
   SPVM_OP_insert_child(compiler, op_block_new, op_block_new->last, op_statements_new);
-  // SPVM_DUMPER_dump_ast(compiler, op_block_new);
   
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_init);
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array);
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array_length);
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_loop);
-
-  SPVM_DUMPER_dump_ast(compiler, op_block_new);
 
   return op_block_new;
 }

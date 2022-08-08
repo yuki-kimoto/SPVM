@@ -1,3 +1,31 @@
+0.9637 2022-08-08
+  [New Features]
+    * for-each Statement
+
+      The for-each statement is a statement to write the for statement for iterating easily.
+
+        for my VAR (@OPERATOR) {
+        
+        }
+        
+        for my VAR (@{OPERATOR}) {
+          
+        }
+
+      The following C<for> statement is the same as the following for-each statement.
+
+        # for
+        my $array = [1, 2, 3];
+        for (my $i = 0; $i < @$array; $i++) {
+          my $element = $array->[$i];
+        }
+        
+        # for-each
+        my $array = [1, 2, 3];
+        for my $element (@$array) {
+          
+        }
+      
 0.9636 2022-08-08
   [New Features]
     * Add the following native API.

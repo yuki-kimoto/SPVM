@@ -1155,7 +1155,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> method anon_method opt_args args arg has use require alias our
   %type <opval> opt_descriptors descriptors
   %type <opval> opt_statements statements statement if_statement else_statement
-  %type <opval> for_statement while_statement
+  %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
   %type <opval> unary_operator binary_operator comparison_operator isa
@@ -1163,7 +1163,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init die opt_extends
-  %type <opval> var_decl var interface
+  %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
@@ -1290,6 +1290,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   arg
     : var ':' qualified_type opt_type_comment
+    | var ASSIGN operator ':' qualified_type opt_type_comment
 
   opt_vaarg
     : /* Empty */
@@ -1314,6 +1315,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   statement
     : if_statement
     | for_statement
+    | foreach_statement
     | while_statement
     | block
     | switch_statement
@@ -1341,6 +1343,10 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   for_statement
     : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
+
+  foreach_statement
+    : FOR var_decl '(' '@' operator ')' block
+    | FOR var_decl '(' '@' '{' operator '}' ')' block
 
   while_statement
     : WHILE '(' operator ')' block
@@ -1600,7 +1606,11 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | type_comment
 
   type_comment
-    : OF type
+    : OF union_type
+
+  union_type
+    : union_type BIT_OR type
+    | type
 
   field_name
     : SYMBOL_NAME
@@ -6466,6 +6476,32 @@ Inside the for Block, you can use L</"next Statement"> to move immediately befor
     if ($i == 3) {
       next;
     }
+  }
+
+=head2 for-each Statement
+
+The for-each statement is a L<statement|/"Statement"> to write the L<for statement|/"for Statement"> for iterating easily.
+
+  for my VAR (@OPERATOR) {
+  
+  }
+  
+  for my VAR (@{OPERATOR}) {
+    
+  }
+
+The following C<for> statement is the same as the following for-each statement.
+
+  # for
+  my $array = [1, 2, 3];
+  for (my $i = 0; $i < @$array; $i++) {
+    my $element = $array->[$i];
+  }
+  
+  # for-each
+  my $array = [1, 2, 3];
+  for my $element (@$array) {
+    
   }
 
 =head2 return Statement

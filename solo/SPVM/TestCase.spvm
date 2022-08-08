@@ -109,6 +109,8 @@ SPVM::Test - SPVM test module
       }
       for my $num (@$nums) {
       }
+      for my $num (@{$nums}) {
+      }
     }
     
     # Optional arguments
