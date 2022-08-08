@@ -344,7 +344,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object variable
               if (!(op_operand->id == SPVM_OP_C_ID_VAR && SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-                SPVM_COMPILER_error(compiler, "The operand of the refcnt operator must be a variable of an object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the refcnt operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -534,13 +534,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_switch = SPVM_LIST_get(check_ast_info->op_switch_stack, check_ast_info->op_switch_stack->length - 1);
                 SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                 
-                if (switch_info->op_default) {
-                  SPVM_COMPILER_error(compiler, "Multiple default statements are not allowed at %s line %d", op_cur->file, op_cur->line);
-                  return;
-                }
-                else {
-                  switch_info->op_default = op_cur;
-                }
+                switch_info->op_default = op_cur;
               }
               break;
             }
@@ -648,7 +642,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (!is_valid_type) {
-                  SPVM_COMPILER_error(compiler, "The left and right operands of == operator must be a numeric type or object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left and right operands of == operator must be numeric types or object types at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
