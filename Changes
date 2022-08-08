@@ -3,6 +3,8 @@
     * Improve compilation error messages.
   [Ineffective Changes]
     * The refcnt operator receive an operater instead of a variable.
+    * op names become lower case.
+    * opcode names become lower case.
 0.9637 2022-08-08
   [New Features]
     * for-each Statement
