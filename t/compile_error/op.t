@@ -30,6 +30,14 @@ use Test::More;
   }
 }
 
+# Reference operator
+{
+  {
+    my $source = 'class MyClass { static method main : void () { \1; } }';
+    compile_not_ok($source, qr'The operand of the reference operator must be a variable');
+  }
+}
+
 # Class Name
 {
   compile_not_ok_file('CompileError::Class::ClassNameDifferntFromModuleName', qr/The class name "ClassNameDifferntFromModuleNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromModuleName"/);

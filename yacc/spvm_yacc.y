@@ -830,11 +830,11 @@ unary_operator
     }
   | DEREF var
     {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op_var(compiler, $1, $2);
     }
-  | CREATE_REF var
+  | CREATE_REF operator
     {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op_var(compiler, $1, $2);
     }
   | NEW_STRING_LEN operator
     {

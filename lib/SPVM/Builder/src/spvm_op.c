@@ -213,7 +213,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "precompile",
     "scalar",
     "array_field_access",
-    "ref",
+    "reference",
     "deref",
     "dot3",
     "string_length",
