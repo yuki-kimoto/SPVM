@@ -1232,6 +1232,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // SPVM_DUMPER_dump_ast(compiler, op_block_new);
   
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_init);
+  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array);
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array_length);
   SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_loop);
 
