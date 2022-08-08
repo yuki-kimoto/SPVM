@@ -443,7 +443,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Set exception var to undef in eval block start
                   {
                     SPVM_OPCODE opcode = {0};
-                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CLEAR_BEFORE_ERROR);
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR);
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                   {
@@ -3530,7 +3530,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_ERROR : {
                           
                           SPVM_OPCODE opcode = {0};
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_BEFORE_ERROR);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_EVAL_ERROR);
                           
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           opcode.operand0 = mem_id_out;

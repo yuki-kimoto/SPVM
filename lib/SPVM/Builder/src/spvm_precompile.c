@@ -267,7 +267,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_code = 1;\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t before_error = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error = 0;\n");
 
   int32_t method_mortal_stack_length = SPVM_API_RUNTIME_get_method_mortal_stack_length(runtime, method_id);
   if (method_mortal_stack_length > 0) {
@@ -2225,18 +2225,18 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CLEAR_BEFORE_ERROR: {
+      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    before_error = 0;\n"
+                                              "    eval_error = 0;\n"
                                               "  }\n");
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_BEFORE_ERROR: {
+      case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
                                               "      ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = before_error;\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = eval_error;\n"
                                               "  }\n");
         
         break;
@@ -3361,7 +3361,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    before_error = error;\n"
+                                              "    eval_error = error;\n"
                                               "    error = 0;\n"
                                               "    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n"
                                               "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));\n"

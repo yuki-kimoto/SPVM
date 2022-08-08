@@ -3726,11 +3726,11 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
 
-  // Exception flag
+  // Error
   int32_t error = 0;
 
-  // Exception flag
-  int32_t before_error = 0;
+  // Caught eval error
+  int32_t eval_error = 0;
   
   // Error code value
   int32_t error_code = 1;
@@ -6116,12 +6116,12 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         error = error_code;
         break;
       }
-      case SPVM_OPCODE_C_ID_CLEAR_BEFORE_ERROR: {
-        before_error = 0;
+      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
+        eval_error = 0;
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_BEFORE_ERROR: {
-        int_vars[opcode->operand0] = before_error;
+      case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
+        int_vars[opcode->operand0] = eval_error;
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
@@ -6829,7 +6829,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
         if (error) {
-          before_error = error;
+          eval_error = error;
           error = 0;
           
           int32_t method_id = opcode->operand1;
