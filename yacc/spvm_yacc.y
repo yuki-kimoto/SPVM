@@ -812,9 +812,9 @@ unary_operator
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
-  | REFCNT var
+  | REFCNT operator
     {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op_var(compiler, $1, $2);
     }
   | REFOP operator
     {

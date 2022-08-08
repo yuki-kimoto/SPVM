@@ -3103,6 +3103,18 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
   return op_unary;
 }
 
+SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
+  
+  if (op_first->id != SPVM_OP_C_ID_VAR) {
+    SPVM_COMPILER_error(compiler, "The operand must be a variable at %s line %d", op_first->file, op_first->line);
+  }
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_first);
+  
+  return op_unary;
+}
+
 SPVM_OP* SPVM_OP_build_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op_comparison, SPVM_OP* op_first, SPVM_OP* op_last) {
 
   SPVM_OP_insert_child(compiler, op_comparison, op_comparison->last, op_first);

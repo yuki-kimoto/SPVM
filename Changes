@@ -1,3 +1,8 @@
+0.9638 2022-08-09
+  [Compilation Error Message]
+    * Improve compilation error messages.
+  [Ineffective Changes]
+    * The refcnt operator receive an operater instead of a variable.
 0.9637 2022-08-08
   [New Features]
     * for-each Statement
