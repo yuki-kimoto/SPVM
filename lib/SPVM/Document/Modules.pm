@@ -96,7 +96,7 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<Unicode|SPVM::Unicode> - Unicode Utilities
 
-=item * L<Base64|SPVM::Base64> - Base 64
+=item * L<MIME::Base64|SPVM::MIME::Base64> - Base 64
 
 =item * L<Time::Local|SPVM::Time::Local> - Time Reverse Manipulation
 
