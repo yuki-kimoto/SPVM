@@ -1,6 +1,7 @@
 0.9638 2022-08-09
   [Compilation Error Message Improvement]
     * Improve compilation error messages.
+    * Fix wrong compilation error messages.
   [Ineffective Changes]
     * The refcnt operator receive an operater instead of a variable.
     * op names become lower case.

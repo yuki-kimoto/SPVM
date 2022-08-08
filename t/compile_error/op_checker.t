@@ -146,4 +146,80 @@ use Test::More;
   }
 }
 
+# !=
+{
+  {
+    my $source = 'class MyClass { static method main : void () { undef != 1; } }';
+    compile_not_ok($source, qr'The right operand of the != operator must be an object type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 != undef; } }';
+    compile_not_ok($source, qr'The left operand of the != operator must be an object type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 != Int->new(1); } }';
+    compile_not_ok($source, qr'The left and right operands of != operator must be numeric types or object types');
+  }
+}
+
+# >
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" > 1; } }';
+    compile_not_ok($source, qr'The left operand of the > operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 > "foo"; } }';
+    compile_not_ok($source, qr'The right operand of the > operator must be a numeric type');
+  }
+}
+
+# >=
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" >= 1; } }';
+    compile_not_ok($source, qr'The left operand of the >= operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 >= "foo"; } }';
+    compile_not_ok($source, qr'The right operand of the >= operator must be a numeric type');
+  }
+}
+
+# <
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" < 1; } }';
+    compile_not_ok($source, qr'The left operand of the < operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 < "foo"; } }';
+    compile_not_ok($source, qr'The right operand of the < operator must be a numeric type');
+  }
+}
+
+# <=
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" <= 1; } }';
+    compile_not_ok($source, qr'The left operand of the <= operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 <= "foo"; } }';
+    compile_not_ok($source, qr'The right operand of the <= operator must be a numeric type');
+  }
+}
+
+# <=>
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" <=> 1; } }';
+    compile_not_ok($source, qr'The left operand of the <=> operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 <=> "foo"; } }';
+    compile_not_ok($source, qr'The right operand of the <=> operator must be a numeric type');
+  }
+}
+
 done_testing;

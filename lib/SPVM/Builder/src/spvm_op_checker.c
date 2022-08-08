@@ -673,7 +673,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (!SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
                 if (!SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The left operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left operand of the != operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -681,7 +681,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && !SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                 if (!SPVM_TYPE_is_object_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the == operator must be an object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The right operand of the != operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -708,7 +708,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 if (!is_valid_type) {
-                  SPVM_COMPILER_error(compiler, "The left and right operands of == operator must be a numeric type or object type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The left and right operands of != operator must be numeric types or object types at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
