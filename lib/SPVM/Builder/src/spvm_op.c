@@ -1135,73 +1135,82 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   /*
     {
       my $.i = 0;
-      my $array_length = @$array;
-      while ($i < $array_length) {
-        my $element = $array->[$.i];
+      my $.array = $array;
+      my $.array_length = @$.array;
+      while ($.i < $.array_length) {
+        my $element = $.array->[$.i];
+        
+        # ...
         
         $.i++;
       }
     }
   */
+
+  SPVM_OP* op_var_init_name = SPVM_OP_new_op_name(compiler, "$.i", op_for->file, op_for->line);
+  SPVM_OP* op_var_init_orig = SPVM_OP_new_op_var(compiler, op_var_init_name);
+  SPVM_OP* op_var_array_name = SPVM_OP_new_op_name(compiler, "$.array", op_for->file, op_for->line);
+  SPVM_OP* op_var_array_orig = SPVM_OP_new_op_var(compiler, op_var_array_name);
+  SPVM_OP* op_var_array_length_name = SPVM_OP_new_op_name(compiler, "$.array_length", op_for->file, op_for->line);
+  SPVM_OP* op_var_array_length_orig = SPVM_OP_new_op_var(compiler, op_var_array_length_name);
   
   // my $.i
-  SPVM_OP* op_var_init_name = SPVM_OP_new_op_name(compiler, "$.i", op_for->file, op_for->line);
-  SPVM_OP* op_var_init = SPVM_OP_new_op_var(compiler, op_var_init_name);
+  SPVM_OP* op_var_init_for_decl = SPVM_OP_new_op_var_clone(compiler, op_var_init_orig, op_var_init_orig->file, op_var_init_orig->line);
   SPVM_OP* op_var_decl_init = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl_init, op_var_init, NULL, NULL);
+  SPVM_OP_build_var_decl(compiler, op_var_decl_init, op_var_init_for_decl, NULL, NULL);
 
   // 0
   SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_for->file, op_for->line);
   
   // my $.i = 0
   SPVM_OP* op_assign_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
-  SPVM_OP_build_assign(compiler, op_assign_init, op_var_init, op_constant_zero);
+  SPVM_OP_build_assign(compiler, op_assign_init, op_var_init_for_decl, op_constant_zero);
   
-  // SPVM_DUMPER_dump_ast(compiler, op_assign_init);
+  // my $.array
+  SPVM_OP* op_var_array_for_assign = SPVM_OP_new_op_var_clone(compiler, op_var_array_orig, op_var_array_orig->file, op_var_array_orig->line);
+  SPVM_OP* op_var_decl_array = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
+  SPVM_OP_build_var_decl(compiler, op_var_array_for_assign, op_var_array_for_assign, NULL, NULL);
   
-  // my $array_length
-  SPVM_OP* op_var_array_length_name = SPVM_OP_new_op_name(compiler, "$array_length", op_for->file, op_for->line);
-  SPVM_OP* op_var_array_length = SPVM_OP_new_op_var(compiler, op_var_array_length_name);
-  SPVM_OP* op_var_decl_array_length = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl_array_length, op_var_array_length, NULL, NULL);
-  
-  // @$array
-  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
-  SPVM_OP_build_array_length(compiler, op_array_length, op_array);
-  
-  // my $array_length = @$array
-  SPVM_OP* op_assign_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
-  SPVM_OP_build_assign(compiler, op_assign_array_length, op_var_array_length, op_array_length);
+  // my $.array = $array
+  SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
+  SPVM_OP_build_assign(compiler, op_assign_array,  op_var_array_for_assign, op_array);
 
-  // SPVM_DUMPER_dump_ast(compiler, op_assign_array_length);
+  // @$.array
+  SPVM_OP* op_var_array_for_length = SPVM_OP_new_op_var_clone(compiler, op_var_array_orig, op_var_array_orig->file, op_var_array_orig->line);
+  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_build_array_length(compiler, op_array_length, op_var_array_for_length);
+
+  // my $.array_length
+  SPVM_OP* op_var_array_length_for_assign = SPVM_OP_new_op_var_clone(compiler, op_var_array_length_orig, op_var_array_length_orig->file, op_var_array_length_orig->line);
+  SPVM_OP* op_var_decl_array_length = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
+  SPVM_OP_build_var_decl(compiler, op_var_array_length_for_assign, op_var_array_length_for_assign, NULL, NULL);
   
-  // $array->[$.i]
-  SPVM_OP* op_var_init_for_array_access = SPVM_OP_new_op_var(compiler, op_var_init_name);
-  SPVM_OP* op_array_access = SPVM_OP_build_array_access(compiler, op_array, op_var_init_for_array_access);
+  // my $.array_length = @$.array
+  SPVM_OP* op_assign_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
+  SPVM_OP_build_assign(compiler, op_assign_array_length, op_var_array_length_for_assign, op_array_length);
+
+  // $.i < $array_length
+  SPVM_OP* op_var_init_for_condition = SPVM_OP_new_op_var_clone(compiler, op_var_init_orig, op_var_array_orig->file, op_var_array_orig->line);
+  SPVM_OP* op_var_array_length_for_condition = SPVM_OP_new_op_var_clone(compiler, op_var_array_length_orig, op_var_array_orig->file, op_var_array_orig->line);
+  SPVM_OP* op_numlt = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_LT, op_for->file, op_for->line);
+  SPVM_OP* op_numlt_comparison = SPVM_OP_build_comparison_op(compiler, op_numlt, op_var_init_for_condition, op_var_array_length_for_condition);
+
+  // $.array->[$.i]
+  SPVM_OP* op_var_init_for_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_init_orig, op_var_init_orig->file, op_var_init_orig->line);
+  SPVM_OP* op_var_array_for_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_array_orig, op_var_array_orig->file, op_var_array_orig->line);
+  SPVM_OP* op_array_access = SPVM_OP_build_array_access(compiler, op_var_array_for_array_access, op_var_init_for_array_access);
   
-  // my $element = $array->[$.i]
+  // my $element = $.array->[$.i]
   SPVM_OP* op_assign_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
   SPVM_OP_build_assign(compiler, op_assign_element, op_var_element, op_array_access);
 
-  // SPVM_DUMPER_dump_ast(compiler, op_assign_element);
-  
   // $.i
-  SPVM_OP* op_var_init_for_increament = SPVM_OP_new_op_var(compiler, op_var_init_name);
+  SPVM_OP* op_var_init_for_increament = SPVM_OP_new_op_var_clone(compiler, op_var_init_orig, op_var_init_orig->file, op_var_init_orig->line);
   
   // ++$.i;
   SPVM_OP* op_inc_increament = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, op_for->file, op_for->line);
   SPVM_OP_build_inc(compiler, op_inc_increament, op_var_init_for_increament);
 
-  // SPVM_DUMPER_dump_ast(compiler, op_inc_increament);
-  
-  // $.i < $array_length
-  SPVM_OP* op_var_init_for_condition = SPVM_OP_new_op_var(compiler, op_var_init_name);
-  SPVM_OP* op_var_array_length_for_condition = SPVM_OP_new_op_var(compiler, op_var_array_length_name);
-  SPVM_OP* op_numlt = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_LT, op_for->file, op_for->line);
-  SPVM_OP* op_numlt_comparison = SPVM_OP_build_comparison_op(compiler, op_numlt, op_var_init_for_condition, op_var_array_length_for_condition);
-
-  // SPVM_DUMPER_dump_ast(compiler, op_numlt_comparison);
-  
   SPVM_OP* op_statements = op_block_statements->first;
   if (!op_statements) {
     op_statements = SPVM_OP_new_op_list(compiler, op_for->file, op_for->line);
@@ -1213,21 +1222,21 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // SPVM_DUMPER_dump_ast(compiler, op_block_statements);
   
   SPVM_OP* op_while = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WHILE, op_for->file, op_for->line);
-  SPVM_OP_build_while_statement(compiler, op_while, op_numlt_comparison, op_block_statements);
-  // SPVM_DUMPER_dump_ast(compiler, op_numlt_comparison);
-  // SPVM_DUMPER_dump_ast(compiler, op_assign_init);
+  SPVM_OP* op_loop = SPVM_OP_build_while_statement(compiler, op_while, op_numlt_comparison, op_block_statements);
+  
+  // SPVM_DUMPER_dump_ast(compiler, op_loop);
   
   SPVM_OP* op_block_new = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
   SPVM_OP* op_statements_new = SPVM_OP_new_op_list(compiler, op_for->file, op_for->line);
-  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_init);
-  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array_length);
-  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_while);
-
-
-  SPVM_OP_insert_child(compiler, op_block_new, op_block_new->first, op_statements_new);
-
+  SPVM_OP_insert_child(compiler, op_block_new, op_block_new->last, op_statements_new);
   // SPVM_DUMPER_dump_ast(compiler, op_block_new);
   
+  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_init);
+  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_assign_array_length);
+  SPVM_OP_insert_child(compiler, op_statements_new, op_statements_new->last, op_loop);
+
+  SPVM_DUMPER_dump_ast(compiler, op_block_new);
+
   return op_block_new;
 }
 
