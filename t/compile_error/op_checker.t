@@ -222,4 +222,64 @@ use Test::More;
   }
 }
 
+# gt
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 gt "foo"; } }';
+    compile_not_ok($source, 'The left operand of the gt operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" gt 1; } }';
+    compile_not_ok($source, 'The right operand of the gt operator must be the string type or the byte[] type');
+  }
+}
+
+# ge
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 ge "foo"; } }';
+    compile_not_ok($source, 'The left operand of the ge operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" ge 1; } }';
+    compile_not_ok($source, 'The right operand of the ge operator must be the string type or the byte[] type');
+  }
+}
+
+# lt
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 lt "foo"; } }';
+    compile_not_ok($source, 'The left operand of the lt operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" lt 1; } }';
+    compile_not_ok($source, 'The right operand of the lt operator must be the string type or the byte[] type');
+  }
+}
+
+# le
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 le "foo"; } }';
+    compile_not_ok($source, 'The left operand of the le operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" le 1; } }';
+    compile_not_ok($source, 'The right operand of the le operator must be the string type or the byte[] type');
+  }
+}
+
+# cmp
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 cmp "foo"; } }';
+    compile_not_ok($source, 'The left operand of the cmp operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" cmp 1; } }';
+    compile_not_ok($source, 'The right operand of the cmp operator must be the string type or the byte[] type');
+  }
+}
+
 done_testing;

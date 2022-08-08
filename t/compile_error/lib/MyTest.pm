@@ -9,6 +9,11 @@ our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
 sub compile_not_ok {
   my ($sources, $error_message_re) = @_;
   
+  unless (ref $error_message_re) {
+    my $quotemeta = quotemeta $error_message_re;
+    $error_message_re = qr/$quotemeta/;
+  }
+  
   unless (ref $sources eq 'ARRAY') {
     $sources = [$sources];
   }
