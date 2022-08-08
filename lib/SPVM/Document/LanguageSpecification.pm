@@ -1443,12 +1443,12 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : '+' operator %prec PLUS
     | '-' operator %prec MINUS
     | BIT_NOT operator
-    | REFCNT var
+    | REFCNT operator
     | REFOP operator
     | STRING_LENGTH operator
     | DUMP operator
     | DEREF var
-    | CREATE_REF var
+    | CREATE_REF operator
     | NEW_STRING_LEN operator
     | COPY operator
 
