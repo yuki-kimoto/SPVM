@@ -3106,7 +3106,7 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   if (op_first->id != SPVM_OP_C_ID_VAR) {
-    SPVM_COMPILER_error(compiler, "The operand must be a variable at %s line %d", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable at %s line %d", SPVM_OP_get_op_name(op_unary->id), op_first->file, op_first->line);
   }
   
   // Build op

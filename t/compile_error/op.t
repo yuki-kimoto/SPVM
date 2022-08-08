@@ -26,7 +26,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { refcnt 1; } }';
-    compile_not_ok($source, qr'The operand must be a variable');
+    compile_not_ok($source, qr'The operand of the refcnt operator must be a variable');
   }
 }
 
