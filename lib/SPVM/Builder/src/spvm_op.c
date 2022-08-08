@@ -1169,7 +1169,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // my $.array
   SPVM_OP* op_var_array_for_assign = SPVM_OP_new_op_var_clone(compiler, op_var_array_orig, op_var_array_orig->file, op_var_array_orig->line);
   SPVM_OP* op_var_decl_array = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
-  SPVM_OP_build_var_decl(compiler, op_var_array_for_assign, op_var_array_for_assign, NULL, NULL);
+  SPVM_OP_build_var_decl(compiler, op_var_decl_array, op_var_array_for_assign, NULL, NULL);
   
   // my $.array = $array
   SPVM_OP* op_assign_array = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
@@ -1183,7 +1183,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // my $.array_length
   SPVM_OP* op_var_array_length_for_assign = SPVM_OP_new_op_var_clone(compiler, op_var_array_length_orig, op_var_array_length_orig->file, op_var_array_length_orig->line);
   SPVM_OP* op_var_decl_array_length = SPVM_OP_new_op_var_decl(compiler, op_for->file, op_for->line);
-  SPVM_OP_build_var_decl(compiler, op_var_array_length_for_assign, op_var_array_length_for_assign, NULL, NULL);
+  SPVM_OP_build_var_decl(compiler, op_var_decl_array_length, op_var_array_length_for_assign, NULL, NULL);
   
   // my $.array_length = @$.array
   SPVM_OP* op_assign_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_for->file, op_for->line);
