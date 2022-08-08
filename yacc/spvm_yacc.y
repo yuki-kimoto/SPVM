@@ -34,7 +34,7 @@
 %type <opval> method anon_method opt_args args arg has use require alias our
 %type <opval> opt_descriptors descriptors
 %type <opval> opt_statements statements statement if_statement else_statement 
-%type <opval> for_statement while_statement 
+%type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_operator binary_operator comparison_operator isa
@@ -472,6 +472,7 @@ statements
 statement
   : if_statement
   | for_statement
+  | foreach_statement
   | while_statement
   | block
   | switch_statement
@@ -528,6 +529,16 @@ for_statement
   : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
     {
       $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $5, $7, $9);
+    }
+
+foreach_statement
+  : FOR var_decl '(' '@' operator ')' block
+    {
+      $$ = SPVM_OP_build_foreach_statement(compiler, $1, $2, $5, $7);
+    }
+  | FOR var_decl '(' '@' '{' operator '}' ')' block
+    {
+      $$ = SPVM_OP_build_foreach_statement(compiler, $1, $2, $6, $9);
     }
 
 while_statement
