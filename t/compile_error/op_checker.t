@@ -282,4 +282,51 @@ use Test::More;
   }
 }
 
+# .
+{
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) . "foo"; } }';
+    compile_not_ok($source, 'The left operand of the . operator must be the string type or the byte[] type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" . Int->new(1); } }';
+    compile_not_ok($source, 'The right operand of the . operator must be the string type or the byte[] type');
+  }
+}
+
+# Capture
+{
+  {
+    my $source = 'class MyClass { static method main : void () { [$foo : int] method : void () { }; } }';
+    compile_not_ok($source, 'The capture variable "$foo" is not defined');
+  }
+}
+
+# new
+{
+  {
+    my $source = 'class MyClass { static method main : void () { new int[1L]; } }';
+    compile_not_ok($source, 'The array length specified by the new operator must be the int type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { new int; } }';
+    compile_not_ok($source, q|The operand of the new operator can't be a numeric type|);
+  }
+  {
+    my $source = 'class MyClass { use Stringable; static method main : void () {  new Stringable; } }';
+    compile_not_ok($source, q|The operand of the new operator can't be an interface type|);
+  }
+  {
+    my $source = [
+      'class MyClass { use MyPoint; static method main : void () { new MyPoint; } }',
+      'class MyPoint : pointer_t;',
+    ];
+    compile_not_ok($source, q|The operand of the new operator can't be a pointer class type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () {  new Int; } }';
+    compile_not_ok($source, q|The object can't be created from the private class|);
+  }
+}
+
 done_testing;

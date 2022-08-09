@@ -1162,7 +1162,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   if (!is_length_type_integral_type_except_for_long) {
                     const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                    SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integral type except for a long type at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be the int type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                 }
