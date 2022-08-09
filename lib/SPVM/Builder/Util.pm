@@ -179,9 +179,10 @@ sub unindent {
 
 sub extract_usage {
   my $file = @_ ? "$_[0]" : (caller)[1];
-
+  
   open my $handle, '>', \my $output;
-  pod2usage -exitval => 'noexit', -input => $file, -output => $handle;
+  
+  pod2usage -exitval => 'noexit', -input => $file, -output => $handle, -verbose => 99, -sections => "Usage";
   $output =~ s/^.*\n|\n$//;
   $output =~ s/\n$//;
 

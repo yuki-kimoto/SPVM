@@ -23,7 +23,7 @@ SPVM::Builder::Util::getopt
 ;
 
 if ($help) {
-  die SPVM::Builder::Util::extract_usage;
+  print SPVM::Builder::Util::extract_usage;
 }
 elsif ($show_version) {
   my $version_string = "spvmdist v$SPVM::VERSION";
@@ -62,7 +62,7 @@ else {
 
 spvmdist - Generating SPVM Distribution
 
-=head1 Synopsis
+=head1 Usage
 
   usage: spvmdist [<options>] <class_name> [<dir>]
     
@@ -74,7 +74,7 @@ spvmdist - Generating SPVM Distribution
     spvmdist --precompile Foo
     spvmdist --resource Foo
 
-  Options:
+  options:
     -h, --help                     Show this message
     -v, --version                  Show the version
     -q, --quiet                    Quiet output

@@ -25,6 +25,22 @@ my $blib_lib = File::Spec->rel2abs('blib/lib');
 my $blib_arch = File::Spec->rel2abs('blib/arch');
 my $include_blib = "-I$blib_arch -I$blib_lib";
 
+# -h, --help
+{
+  {
+    my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path -h);
+    warn $spvmdist_cmd;
+    my $output = `$spvmdist_cmd`;
+    like($output, qr/\Qusage: spvmdist [<options>] <class_name> [<dir>]/);
+  }
+  {
+    my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --help);
+    warn $spvmdist_cmd;
+    my $output = `$spvmdist_cmd`;
+    like($output, qr/\Qusage: spvmdist [<options>] <class_name> [<dir>]/);
+  }
+}
+
 # Minimal
 {
   my $tmp_dir = File::Temp->newdir;
