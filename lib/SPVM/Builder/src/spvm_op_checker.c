@@ -1221,7 +1221,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Can receive only integral type
               if (!SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) || !SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the ^ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left and right operand of the ^ operator must be an integral type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               

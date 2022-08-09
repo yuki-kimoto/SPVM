@@ -329,4 +329,18 @@ use Test::More;
   }
 }
 
+# ^
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1d ^ 1; } }';
+    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integral type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 ^ 1d; } }';
+    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integral type');
+  }
+}
+
+# TODO SPVM_OP_C_ID_ISA
+
 done_testing;
