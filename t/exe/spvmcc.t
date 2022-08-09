@@ -31,6 +31,20 @@ else {
   $dev_null = '/dev/null';
 }
 
+# -h, --help
+{
+  {
+    my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc -h);
+    my $output = `$spvmdist_cmd`;
+    like($output, qr/\Qusage: spvmcc [<options>] <class_name>/);
+  }
+  {
+    my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc --help);
+    my $output = `$spvmdist_cmd`;
+    like($output, qr/\Qusage: spvmcc [<options>] <class_name>/);
+  }
+}
+
 {
   mkpath $exe_dir;
 

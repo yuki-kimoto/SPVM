@@ -1,6 +1,8 @@
 0.9638 2022-08-09
   [Fix Bug]
     * Fix the bug that spvmdist command can't show help
+  [Test Improvement]
+    * Add spvmcc -h, --help option tests
   [Compilation Error Message Improvement]
     * Improve compilation error messages.
     * Fix wrong compilation error messages.
@@ -8,6 +10,8 @@
     * The refcnt operator receive an operater instead of a variable.
     * op names become lower case.
     * opcode names become lower case.
+  [Incompatible Changes]
+    * spvmdist and spvmcc help message is output to stdout, instead of stderr.
 0.9637 2022-08-08
   [New Features]
     * for-each Statement

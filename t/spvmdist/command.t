@@ -29,13 +29,11 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 {
   {
     my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path -h);
-    warn $spvmdist_cmd;
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmdist [<options>] <class_name> [<dir>]/);
   }
   {
     my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --help);
-    warn $spvmdist_cmd;
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmdist [<options>] <class_name> [<dir>]/);
   }

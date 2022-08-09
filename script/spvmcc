@@ -20,7 +20,7 @@ SPVM::Builder::Util::getopt
 ;
 
 if ($help) {
-  die SPVM::Builder::Util::extract_usage;
+  print SPVM::Builder::Util::extract_usage;
 }
 elsif ($show_version) {
   my $version_string = "spvmcc v$SPVM::VERSION";
@@ -57,18 +57,17 @@ else {
 
 =encoding utf8
 
-=head1 NAME
+=head1 Name
 
 spvmcc - SPVM compiler to create exe file
 
-=head1 SYNOPSIS
+=head1 Usage
 
-  Usage: spvmcc [OPTIONS] [CLASS_NAME]
+  usage: spvmcc [<options>] <class_name>
     
-    # lib/SPVM/Myapp.spvm
     spvmcc -I lib/SPVM -o myapp Myapp
 
-  Options:
+  options:
     -h, --help                     Show this message
     -v, --version                  Show the version
     -o, --output                   Output file name
@@ -78,6 +77,6 @@ spvmcc - SPVM compiler to create exe file
     -f, --force                    Force compile and link
     -c, --config                   Config file
     
-=head1 DESCRIPTION
+=head1 Description
 
 spvmcc is SPVM compiler to create executable file.
