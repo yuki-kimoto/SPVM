@@ -602,16 +602,132 @@ use Test::More;
   }
 }
 
-# TODO after SPVM_OP_C_ID_LEFT_SHIFT
-
-# Extra
+# << Left Shift
 {
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" << 1; } }';
+    compile_not_ok($source, q|The left operand of the << operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 << 1d; } }';
+    compile_not_ok($source, q|The right operand of the << operator must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 << 1L; } }';
+    compile_not_ok($source, q|The right operand of the << operator must be the int type|);
+  }
+}
+
+# >> Right Arithmetic Shift
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" >> 1; } }';
+    compile_not_ok($source, q|The left operand of the >> operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 >> 1d; } }';
+    compile_not_ok($source, q|The right operand of the >> operator must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 >> 1L; } }';
+    compile_not_ok($source, q|The right operand of the >> operator must be the int type|);
+  }
+}
+
+# >>> Right Logical Shift
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" >>> 1; } }';
+    compile_not_ok($source, q|The left operand of the >>> operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 >>> 1d; } }';
+    compile_not_ok($source, q|The right operand of the >>> operator must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 >>> 1L; } }';
+    compile_not_ok($source, q|The right operand of the >>> operator must be the int type|);
+  }
+}
+
+# die
+{
+  {
+    my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
+    compile_not_ok($source, q|The implicite type conversion from "Int" to "string" in the assignment operator is not allowed|);
+  }
+}
+
+# warn
+{
+  {
+    my $source = 'class MyClass { static method main : void () { warn Int->new(1); } }';
+    compile_not_ok($source, q|The operand of the warn statement must be the string type|);
+  }
+}
+
+# print
+{
+  {
+    my $source = 'class MyClass { static method main : void () { print Int->new(1); } }';
+    compile_not_ok($source, q|The operand of the print statement must be the string type|);
+  }
+}
+
+# make_read_only
+{
+  {
+    my $source = 'class MyClass { static method main : void () { make_read_only 1; } }';
+    compile_not_ok($source, q|The operand of the make_read_only statement must be the string type|);
+  }
+}
+
+# is_read_only
+{
+  {
+    my $source = 'class MyClass { static method main : void () { is_read_only 1; } }';
+    compile_not_ok($source, q|The operand of the is_read_only operator must be the string type|);
+  }
+}
+
+# Reference
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; \$var; } }';
+    compile_not_ok($source, q|The operand of the refernece operator must be a numeric type or a multi-numeric type|);
+  }
+}
+
+# Dereference
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; $$var; } }';
+    compile_not_ok($source, q|The operand of the dereference operaotr must be a numeric reference type or a multi-numeric reference type|);
+  }
+}
+
+# Variable
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; my $var = 0; } }';
+    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+  }
   {
     my $source = 'class MyClass { static method main : void () { my $var; } }';
     compile_not_ok($source, q|The type of the variable "$var" must be defined|);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { $var; } }';
+    compile_not_ok($source, q|The local variable "$var" is not defined|);
+  }
 }
 
-# TODO SPVM_OP_C_ID_ISA
+# Method Call
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
+    compile_not_ok($source, q|The instance method "new" in the class "Int" is not defined|);
+  }
+}
 
 done_testing;

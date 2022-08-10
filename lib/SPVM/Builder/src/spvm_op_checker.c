@@ -2234,21 +2234,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               break;
             }
             case SPVM_OP_C_ID_DIE: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-
-              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_conversion(compiler, op_cur->first);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
-              }
-              
-              first_type = SPVM_OP_get_type(compiler, op_cur->first);
-
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the die statement must be the string type at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
+              // Nothing to do
               break;
             }
             case SPVM_OP_C_ID_WARN: {
@@ -2496,19 +2482,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
               const char* method_name = call_method->method->name;
               
-              if (call_method->method->is_class_method) {
-                if (!call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "The class method can't be called as an instance method \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-              else {
-                if (call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "The instance method can't be called as a class method \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
-                  return;
-                }
-              }
-
               // Access control
               int32_t is_private;
               if (call_method->method->access_control_type == SPVM_DESCRIPTOR_C_ID_PRIVATE) {
@@ -2521,7 +2494,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "The private method \"%s->%s\" can't be called at %s line %d", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The call of the private method \"%s\" is not allowed at %s line %d", call_method->method->name, call_method->method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2648,7 +2621,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
                   call_method_args_length++;
                   if (call_method_args_length > args_length) {
-                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                    int32_t args_length_for_user = args_length;
+                    if (!call_method->method->is_class_method) {
+                      args_length_for_user--;
+                    }
+                    
+                    SPVM_COMPILER_error(compiler, "The length of the arguments passed to the method \"%s\" in the class \"%s\" must be less than or equal to %d at %s line %d", method_name, op_cur->uv.call_method->method->class->name, args_length_for_user, op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2670,7 +2648,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (call_method_args_length < call_method->method->required_args_length) {
-                SPVM_COMPILER_error(compiler, "Too few arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                int32_t required_args_length_for_user = call_method->method->required_args_length;
+                if (!call_method->method->is_class_method) {
+                  required_args_length_for_user--;
+                }
+                
+                SPVM_COMPILER_error(compiler, "The length of the arguments passed to the method \"%s\" in the class \"%s\" must be at least more than or equal to %d at %s line %d", method_name, op_cur->uv.call_method->method->class->name, required_args_length_for_user, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3236,7 +3219,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               );
               
               if (!found_method) {
-                SPVM_COMPILER_error(compiler, "The method \"%s->%s\" is not defined at %s line %d", class_name, method_name, op_name_method->file, op_name_method->line);
+                SPVM_COMPILER_error(compiler, "The method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
@@ -4380,7 +4363,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The class method \"%s->%s\" is not defined at %s line %d", found_class->name, method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The class method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, found_class->name, op_call_method->file, op_call_method->line);
       return;
     }
   }
@@ -4413,7 +4396,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
         SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
         if (!class_static) {
-          SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
           return;
         }
         SPVM_METHOD* found_method = SPVM_HASH_get(
@@ -4425,7 +4408,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
           call_method->method = found_method;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
           return;
         }
       }
@@ -4469,7 +4452,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The instance method \"%s->%s\" is not defined at %s line %d", class->name, method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
       return;
     }
   }
