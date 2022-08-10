@@ -1,10 +1,26 @@
 0.9639 2022-08-10
   [New Features]
     * Add the is_type operator.
+    * Add Error::NotSupported class. This class is default loaded.
   [Compilation Error Message Improvement]
     * Improve compilation error messages.
   [Test Improvement]
     * Add many compilation error tests.
+  [Document Fix]
+    * Fix the document bug of Class IDs of SPVM::Document::NativeAPI
+      [Before]
+        =head2 Class IDs
+
+          1  SPVM_NATIVE_C_CLASS_ID_ERROR
+          2  SPVM_NATIVE_C_CLASS_ID_ERROR
+      
+      [After]
+        =head2 Class IDs
+
+          1  SPVM_NATIVE_C_CLASS_ID_ERROR
+          2  SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
+          3  SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
+      
   [Document Fix]]
     * Add all standard modules to SPVM::Document::Modules.
       Until now, default loaded modules were removed.

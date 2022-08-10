@@ -2505,6 +2505,8 @@ The following modules are loaded by default. These modules are deeply related to
 
 =item * L<Error::System|SPVM::Error::System>
 
+=item * L<Error::NotSupported|SPVM::Error::NotSupported>
+
 =item * L<CommandInfo|SPVM::CommandInfo>
 
 =back

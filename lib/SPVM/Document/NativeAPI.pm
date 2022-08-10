@@ -2180,6 +2180,7 @@ L<SPVM::Document::NativeAPI::Allocator>
   18 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
   19 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
   20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
+  21 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
@@ -2259,6 +2260,14 @@ The basic type ID of L<BOOL|SPVM::BOOL> type.
 
 The basic type ID of L<Error|SPVM::Error> type.
 
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
+
+The basic type ID of L<Error::System|SPVM::Error::System> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
+
+The basic type ID of L<Error::NotSupported|SPVM::Error::NotSupported> type.
+
 =head2 Constant Values of Basic Type Categories
 
   0 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
@@ -2317,7 +2326,8 @@ The basic type category for the any object type.
 =head2 Class IDs
 
   1  SPVM_NATIVE_C_CLASS_ID_ERROR
-  2  SPVM_NATIVE_C_CLASS_ID_ERROR
+  2  SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
+  3  SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
@@ -2325,9 +2335,13 @@ These IDs are permanently same for the binary compatibility after the future rel
 
 The class id of L<Error|SPVM::Error> class.
 
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
+=head3 SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
 
-The basic type is unknown.
+The class id of L<Error::System|SPVM::Error::System> class.
+
+=head3 SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
+
+The class id of L<Error::NotSupported|SPVM::Error::NotSupported> class.
 
 =head1 Utility Functions
 

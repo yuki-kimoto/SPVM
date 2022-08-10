@@ -45,6 +45,14 @@ class TestCase::ClassId {
         return 0;
       }
     }
+
+    # Error::NotSupported
+    {
+      my $class_id_error_not_supported = class_id Error::NotSupported;
+      unless ($class_id_error_not_supported == 3) {
+        return 0;
+      }
+    }
     
     return 1;
   }

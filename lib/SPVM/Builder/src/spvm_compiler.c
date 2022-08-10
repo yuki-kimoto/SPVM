@@ -91,6 +91,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   const char* spvm_error_system_module_source = "class Error::System;";
   SPVM_HASH_set(compiler->module_source_symtable, "Error::System", strlen("Error::System"), (void*)spvm_error_system_module_source);
   
+  // Add Error::NotSupported source
+  const char* spvm_error_not_supported_module_source = "class Error::NotSupported;";
+  SPVM_HASH_set(compiler->module_source_symtable, "Error::NotSupported", strlen("Error::NotSupported"), (void*)spvm_error_not_supported_module_source);
+
   // Add Byte source
   const char* spvm_byte_module_source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->module_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_module_source);
@@ -236,6 +240,7 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
   SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
   SPVM_COMPILER_use(compiler, "Error", "Error", 0);
   SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
+  SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
   SPVM_COMPILER_use(compiler, "Int", "Int", 0);
