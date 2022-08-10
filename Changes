@@ -5,6 +5,58 @@
     * Improve compilation error messages.
   [Test Improvement]
     * Add many compilation error tests.
+  [Document Fix]]
+    * Add all standard modules to SPVM::Document::Modules.
+      Until now, default loaded modules were removed.
+      The following is the current list of standard modules.
+      
+      Array
+      Bool
+      Byte
+      ByteList
+      Cloneable
+      Cloner
+      CommandInfo
+      Comparator
+      Comparator::Byte
+      Comparator::Double
+      Comparator::Float
+      Comparator::Int
+      Comparator::Long
+      Comparator::Short
+      Comparator::String
+      Complex_2d
+      Complex_2f
+      Double
+      DoubleList
+      EqualityChecker
+      EqualityChecker::Address
+      Error
+      Error::NotSupported
+      Error::System
+      Float
+      FloatList
+      Fn
+      Format
+      Hash
+      Hash::Entry
+      Int
+      IntList
+      List
+      Long
+      LongList
+      Point
+      Point3D
+      Short
+      ShortList
+      Sort
+      Stringable
+      StringBuffer
+      Stringer
+      StringList
+      Time
+      Time::Info
+
 0.9638 2022-08-10
   [Fix Bug]
     * Fix the bug that spvmdist command can't show help

@@ -12,11 +12,19 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Array|SPVM::Array>
 
+=item * L<Bool|SPVM::Bool>
+
+=item * L<Byte|SPVM::Byte>
+
 =item * L<ByteList|SPVM::ByteList>
 
 =item * L<Cloneable|SPVM::Cloneable>
 
 =item * L<Cloner|SPVM::Cloner>
+
+=item * L<CommandInfo|SPVM::CommandInfo>
+
+=item * L<Comparator|SPVM::Comparator>
 
 =item * L<Comparator::Byte|SPVM::Comparator::Byte>
 
@@ -30,19 +38,27 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Comparator::Short|SPVM::Comparator::Short>
 
-=item * L<Comparator|SPVM::Comparator>
-
 =item * L<Comparator::String|SPVM::Comparator::String>
 
 =item * L<Complex_2d|SPVM::Complex_2d>
 
 =item * L<Complex_2f|SPVM::Complex_2f>
 
+=item * L<Double|SPVM::Double>
+
 =item * L<DoubleList|SPVM::DoubleList>
+
+=item * L<EqualityChecker|SPVM::EqualityChecker>
 
 =item * L<EqualityChecker::Address|SPVM::EqualityChecker::Address>
 
-=item * L<EqualityChecker|SPVM::EqualityChecker>
+=item * L<Error|SPVM::Error>
+
+=item * L<Error::NotSupported|SPVM::Error::NotSupported>
+
+=item * L<Error::System|SPVM::Error::System>
+
+=item * L<Float|SPVM::Float>
 
 =item * L<FloatList|SPVM::FloatList>
 
@@ -50,19 +66,25 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Format|SPVM::Format>
 
+=item * L<Hash|SPVM::Hash>
+
 =item * L<Hash::Entry|SPVM::Hash::Entry>
 
-=item * L<Hash|SPVM::Hash>
+=item * L<Int|SPVM::Int>
 
 =item * L<IntList|SPVM::IntList>
 
 =item * L<List|SPVM::List>
 
+=item * L<Long|SPVM::Long>
+
 =item * L<LongList|SPVM::LongList>
+
+=item * L<Point|SPVM::Point>
 
 =item * L<Point3D|SPVM::Point3D>
 
-=item * L<Point|SPVM::Point>
+=item * L<Short|SPVM::Short>
 
 =item * L<ShortList|SPVM::ShortList>
 
@@ -76,9 +98,9 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<StringList|SPVM::StringList>
 
-=item * L<Time::Info|SPVM::Time::Info>
-
 =item * L<Time|SPVM::Time>
+
+=item * L<Time::Info|SPVM::Time::Info>
 
 =back
 
