@@ -451,6 +451,7 @@ t/compile_error/lib/SPVM/CompileError/Weaken/IsweakFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/UnweakenFieldNotObjectType.spvm
 t/compile_error/lib/SPVM/CompileError/Weaken/WeakenFieldNotObjectType.spvm
 t/compile_error/op.t
+t/compile_error/op_checker.t
 t/compile_error/perl_program.pl
 t/compile_error/toke.t
 t/default/000_000_use_spvm.t
@@ -499,6 +500,7 @@ t/default/if.t
 t/default/increment.t
 t/default/inline.t
 t/default/interface.t
+t/default/is_type.t
 t/default/isa.t
 t/default/lib/SPVM/4foo.spvm
 t/default/lib/SPVM/EmptyClass.spvm
@@ -556,6 +558,7 @@ t/default/lib/SPVM/TestCase/Inline.spvm
 t/default/lib/SPVM/TestCase/Interface.spvm
 t/default/lib/SPVM/TestCase/InterfaceType.spvm
 t/default/lib/SPVM/TestCase/Isa.spvm
+t/default/lib/SPVM/TestCase/IsType.spvm
 t/default/lib/SPVM/TestCase/LINEN.spvm
 t/default/lib/SPVM/TestCase/LINER.spvm
 t/default/lib/SPVM/TestCase/LINERN.spvm
