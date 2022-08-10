@@ -2121,6 +2121,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ISWEAK);
                   keyword_token = ISWEAK;
                 }
+                else if (strcmp(symbol_name, "is_type") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_TYPE);
+                  keyword_token = IS_TYPE;
+                }
                 else if (strcmp(symbol_name, "is_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   keyword_token = IS_READ_ONLY;

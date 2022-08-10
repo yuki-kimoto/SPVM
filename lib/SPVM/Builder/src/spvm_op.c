@@ -209,6 +209,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "string_le",
     "string_cmp",
     "isa",
+    "is_type",
     "sequence",
     "precompile",
     "scalar",
@@ -366,7 +367,10 @@ int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_IS_TYPE:
+    {
       return 1;
+    }
   }
   
   return 0;
@@ -1454,9 +1458,12 @@ int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_IS_TYPE:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_HAS_IMPL:
+    {
       return 0;
+    }
     default: {
       SPVM_OP* op_var = SPVM_OP_get_target_op_var(compiler, op);
       
@@ -1519,6 +1526,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_IS_TYPE:
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:
@@ -3128,20 +3136,19 @@ SPVM_OP* SPVM_OP_build_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op_compar
   return op_assign;
 }
 
-SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_operand, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_type, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_operand);
-  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_type);
+  SPVM_OP_insert_child(compiler, op_is_type, op_is_type->last, op_operand);
+  SPVM_OP_insert_child(compiler, op_is_type, op_is_type->last, op_type);
 
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_isa->file, op_isa->line);
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_is_type->file, op_is_type->line);
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_isa->file, op_isa->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_isa);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_is_type->file, op_is_type->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_is_type);
   
   return op_assign;
 }
-
 
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   

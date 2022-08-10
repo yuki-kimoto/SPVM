@@ -1293,6 +1293,40 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_IS_TYPE: {
+              
+              SPVM_TYPE* left_operand_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_OP* op_type = op_cur->last;
+              
+              SPVM_TYPE* right_type = op_type->uv.type;
+
+              if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of the is_type operator must be an object type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of the is_type operator must be an object type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of the is_type operator can't be the any object type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              if (SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of the is_type operator can't be the any object array type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              if (SPVM_TYPE_is_interface_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of the is_type operator can't be an interface type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_ARRAY_LENGTH: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
@@ -3601,9 +3635,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_LE:
                         case SPVM_OP_C_ID_STRING_CMP:
                         case SPVM_OP_C_ID_ISA:
+                        case SPVM_OP_C_ID_IS_TYPE:
                         case SPVM_OP_C_ID_BOOL:
+                        {
                           assert(0);
                           break;
+                        }
                       }
                     }
 

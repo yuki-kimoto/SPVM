@@ -4195,6 +4195,20 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t m
         
         break;
       }
+      case SPVM_OPCODE_C_ID_IS_TYPE: {
+        void* object = *(void**)&object_vars[opcode->operand1];
+        int32_t dist_basic_type_id = opcode->operand2;
+        int32_t dist_type_dimension = opcode->operand3;
+
+        if (object) {
+          int_vars[0] = env->is_type(env, stack, object, dist_basic_type_id, dist_type_dimension);
+        }
+        else {
+          int_vars[0] = 0;
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_STRING_EQ:
       case SPVM_OPCODE_C_ID_STRING_NE:
       case SPVM_OPCODE_C_ID_STRING_GT:

@@ -251,6 +251,7 @@ The list of keywords:
   if
   isa
   isweak
+  is_type
   is_read_only
   interface
   int
@@ -1158,7 +1159,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_operator binary_operator comparison_operator isa
+  %type <opval> unary_operator binary_operator comparison_operator isa is_type
   %type <opval> call_spvm_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow has_impl
@@ -1174,7 +1175,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
   %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE NUMERIC_CMP STRING_CMP
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
@@ -1424,6 +1425,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | isweak_field
     | comparison_operator
     | isa
+    | is_type
     | TRUE
     | FALSE
     | is_read_only
@@ -1497,6 +1499,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   isa
     : operator ISA type
+
+  is_type
+    : operator IS_TYPE type
 
   logical_operator
     : operator LOGICAL_OR operator
@@ -1792,6 +1797,9 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>ISWEAK</td><td>isweak</td>
+  </tr>
+  <tr>
+    <td>IS_TYPE</td><td>is_type</td>
   </tr>
   <tr>
     <td>IS_READ_ONLY</td><td>is_read_only</td>
@@ -7414,6 +7422,40 @@ B<Examples:>
   }
   
   if ($value isa int) {
+    
+  }
+
+=head2 is_type Operator
+
+The C<is_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the type of the instance of the left operand is the right type.
+
+  LEFT_OPERAND is_type RIGHT_TYPE
+
+If the type of the instance of the left operand is the right type, return C<1>. Otherwise return C<0>.
+
+The return type is L<int type|/"int Type">.
+
+The left operand of the is_type operator must be an object type. Otherwise a compilation error will occur.
+
+The right type of the is_type operator must be an object type. Otherwise a compilation error will occur.
+
+The right type of the is_type operator can't be the any object type. If so, a compilation error will occur.
+
+The right type of the is_type operator can't be the any object array type. If so, a compilation error will occur.
+
+The right type of the is_type operator can't be an interface type. If so, a compilation error will occur.
+
+B<Examples:>
+
+  if ($object is_type Point) {
+    
+  }
+  
+  if ($object is_type int[]) {
+    
+  }
+  
+  if ($object is_type Stringable[]) {
     
   }
   

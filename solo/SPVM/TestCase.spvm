@@ -101,6 +101,13 @@ SPVM::Test - SPVM test module
 
   static method main : int ($start_file : string, $args : string[]) {
     
+    {
+      my $nums = new int[3];
+      
+      if ($nums is_type Int) {
+        warn "is_type";
+      }
+    }
     # for-each
     {
       my $nums = [1, 2, 3];

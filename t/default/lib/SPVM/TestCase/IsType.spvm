@@ -1,0 +1,59 @@
+class TestCase::IsType {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  use Comparator;
+  use Complex_2d;
+  use Complex_2f;
+
+  static method is_type : int () {
+    {
+      my $minimal = TestCase::Minimal->new;
+      unless ($minimal is_type TestCase::Minimal) {
+        return 0;
+      }
+
+      my $object : object = $minimal;
+      unless ($object is_type TestCase::Minimal) {
+        return 0;
+      }
+    }
+
+    {
+      my $minimals = new TestCase::Minimal[3];
+      my $nums = new int[3];
+      
+      unless ($minimals is_type TestCase::Minimal[]) {
+        return 0;
+      }
+
+      unless ($nums is_type int[]) {
+        return 0;
+      }
+    }
+
+    {
+      my $minimal = TestCase::Minimal->new;
+      if ($minimal is_type TestCase::Simple) {
+        return 0;
+      }
+    }
+
+    {
+      my $minimal : TestCase::Minimal = undef;
+      
+      if ($minimal is_type TestCase::Minimal) {
+        return 0;
+      }
+    }
+
+    {
+      my $stringables = new Stringable[3];
+      
+      unless ($stringables is_type Stringable[]) {
+        return 0;
+      }
+    }
+  
+    return 1;
+  }
+}

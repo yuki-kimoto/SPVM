@@ -4171,7 +4171,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
-                        case SPVM_OP_C_ID_ISA: {
+                        case SPVM_OP_C_ID_ISA:
+                        case SPVM_OP_C_ID_IS_TYPE:
+                        {
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           
                           SPVM_OP* op_type = op_assign_src->last;
@@ -4179,11 +4181,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE opcode = {0};
                           
+                          if (op_assign_src->id == SPVM_OP_C_ID_ISA) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
+                          }
+                          else if (op_assign_src->id == SPVM_OP_C_ID_IS_TYPE) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
+                          }
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
-
                           opcode.operand1 = mem_id_in;
-
+                          
                           opcode.operand2 = type->basic_type->id;
                           int32_t operand3 = type->dimension;
                           assert(operand3 < 0xFFFF);
