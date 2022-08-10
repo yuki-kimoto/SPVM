@@ -1251,9 +1251,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_ref_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 1;
               }
-              else {
+              else if (SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
                 compile_time_check = 0;
               }
+              else {
+                assert(0);
+              }
+              
               if (compile_time_check) {
                 // If left type is same as right type, this return true, otherwise return false
                 if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
@@ -1283,12 +1287,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Left left_operand must be object type
                 if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
                   SPVM_COMPILER_error(compiler, "The left operand of the isa operator must be an object type at %s line %d", op_cur->file, op_cur->line);
-                  return;
-                }
-                
-                // Right type must be object type
-                if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The right operand of the isa operator must be an object type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }

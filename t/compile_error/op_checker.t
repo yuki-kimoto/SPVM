@@ -341,6 +341,14 @@ use Test::More;
   }
 }
 
+# isa
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 isa Int; } }';
+    compile_not_ok($source, 'The left operand of the isa operator must be an object type');
+  }
+}
+
 # TODO SPVM_OP_C_ID_ISA
 
 done_testing;
