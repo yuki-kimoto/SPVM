@@ -121,7 +121,7 @@ DEVELOPERS NOTE
 
     Get the linkgs of SPVM modules for POD
     
-      find lib | grep -P '\.spvm$' | sort | perl -p -e 'chomp;s|lib/SPVM/||;s/\.spvm$//; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
+      find lib | grep -P '\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
 
     Get SPVM source files
     
