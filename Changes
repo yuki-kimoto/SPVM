@@ -1,6 +1,10 @@
 0.9639 2022-08-10
   [New Features]
     * Add the is_type operator.
+  [Compilation Error Message Improvement]
+    * Improve compilation error messages.
+  [Test Improvement]
+    * Add many compilation error tests.
 0.9638 2022-08-10
   [Fix Bug]
     * Fix the bug that spvmdist command can't show help

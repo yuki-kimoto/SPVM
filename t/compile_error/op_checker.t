@@ -349,6 +349,269 @@ use Test::More;
   }
 }
 
+# is_type
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 is_type Int; } }';
+    compile_not_ok($source, 'The left operand of the is_type operator must be an object type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type int; } }';
+    compile_not_ok($source, 'The right type of the is_type operator must be an object type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object; } }';
+    compile_not_ok($source, q|The right type of the is_type operator can't be the any object type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object[]; } }';
+    compile_not_ok($source, q|The right type of the is_type operator can't be the any object array type|);
+  }
+  {
+    my $source = 'class MyClass { use Stringable; static method main : void () { Int->new(1) is_type Stringable; } }';
+    compile_not_ok($source, q|The right type of the is_type operator can't be an interface type|);
+  }
+}
+
+# @ - Array Length
+{
+  {
+    my $source = 'class MyClass { static method main : void () { @1; } }';
+    compile_not_ok($source, 'The right operand of the @ operator must be an array type');
+  }
+}
+
+# length
+{
+  {
+    my $source = 'class MyClass { static method main : void () { length new int[3]; } }';
+    compile_not_ok($source, 'The operand of the length operator must be the string type');
+  }
+}
+
+# ++,-- Increment, Decrement
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; $var++; } }';
+    compile_not_ok($source, 'The operand of the increment operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; ++$var; } }';
+    compile_not_ok($source, 'The operand of the increment operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; $var--; } }';
+    compile_not_ok($source, 'The operand of the decrement operator must be a numeric type');
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "foo"; --$var; } }';
+    compile_not_ok($source, 'The operand of the decrement operator must be a numeric type');
+  }
+  
+}
+
+# = Assignment
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = undef; } }';
+    compile_not_ok($source, q|The type of "$var" can't be detected|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
+    compile_not_ok($source, q|The implicite type conversion from "string" to "byte" in the assignment operator is not allowed|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
+    compile_not_ok($source, q|The setting character of a non-mutable string is not allowed|);
+  }
+}
+
+# return
+{
+  {
+    my $source = 'class MyClass { static method main : void () { return 1; } }';
+    compile_not_ok($source, q|The void method can't return the value|);
+  }
+  {
+    my $source = 'class MyClass { static method main : int () { return; } }';
+    compile_not_ok($source, q|The non-void method must return a value|);
+  }
+}
+
+# + Unary Plus
+{
+  {
+    my $source = 'class MyClass { static method main : void () { +"foo"; } }';
+    compile_not_ok($source, q|The operand of the unary + operator must be a numeric type|);
+  }
+}
+
+# - Unary Minus
+{
+  {
+    my $source = 'class MyClass { static method main : void () { -"foo"; } }';
+    compile_not_ok($source, q|The operand of the unary - operator must be a numeric type|);
+  }
+}
+
+# copy
+{
+  {
+    my $source = 'class MyClass { static method main : void () { copy 1; } }';
+    compile_not_ok($source, q|The operand of the copy operator must be an object type|);
+  }
+}
+
+# ~ Bit Not
+{
+  {
+    my $source = 'class MyClass { static method main : void () { ~ 1d; } }';
+    compile_not_ok($source, q|The operand of the ~ operator must be an integral type|);
+  }
+}
+
+# + Addition
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" + 1; } }';
+    compile_not_ok($source, q|The left operand of the + operator must be a numeric type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 + "foo"; } }';
+    compile_not_ok($source, q|The right operand of the + operator must be a numeric type|);
+  }
+}
+
+# - Subtract
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" - 1; } }';
+    compile_not_ok($source, q|The left operand of the - operator must be a numeric type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 - "foo"; } }';
+    compile_not_ok($source, q|The right operand of the - operator must be a numeric type|);
+  }
+}
+
+# * Multiplication
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" * 1; } }';
+    compile_not_ok($source, q|The left operand of the * operator must be a numeric type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 * "foo"; } }';
+    compile_not_ok($source, q|The right operand of the * operator must be a numeric type|);
+  }
+}
+
+# / Division
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" / 1; } }';
+    compile_not_ok($source, q|The left operand of the / operator must be a numeric type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 / "foo"; } }';
+    compile_not_ok($source, q|The right operand of the / operator must be a numeric type|);
+  }
+}
+
+# divui
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1L divui 1; } }';
+    compile_not_ok($source, q|The left operand of the divui operator must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 divui 1L; } }';
+    compile_not_ok($source, q|The right operand of the divui operator must be the int type|);
+  }
+}
+
+# divul
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 divul 1L; } }';
+    compile_not_ok($source, q|The left operand of the divul operator must be the long type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1L divul 1; } }';
+    compile_not_ok($source, q|The right operand of the divul operator must be the long type|);
+  }
+}
+
+# % Division
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" % 1; } }';
+    compile_not_ok($source, q|The left operand of the % operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 % "foo"; } }';
+    compile_not_ok($source, q|The right operand of the % operator must be an integral type|);
+  }
+}
+
+# remui
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1L remui 1; } }';
+    compile_not_ok($source, q|The left operand of the remui operator must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 remui 1L; } }';
+    compile_not_ok($source, q|The right operand of the remui operator must be the int type|);
+  }
+}
+
+# remul
+{
+  {
+    my $source = 'class MyClass { static method main : void () { 1 remul 1L; } }';
+    compile_not_ok($source, q|The left operand of the remul operator must be the long type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1L remul 1; } }';
+    compile_not_ok($source, q|The right operand of the remul operator must be the long type|);
+  }
+}
+
+# & Division
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" & 1; } }';
+    compile_not_ok($source, q|The left operand of the & operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 & "foo"; } }';
+    compile_not_ok($source, q|The right operand of the & operator must be an integral type|);
+  }
+}
+
+# | Division
+{
+  {
+    my $source = 'class MyClass { static method main : void () { "foo" | 1; } }';
+    compile_not_ok($source, q|The left operand of the \| operator must be an integral type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 | "foo"; } }';
+    compile_not_ok($source, q|The right operand of the \| operator must be an integral type|);
+  }
+}
+
+# TODO after SPVM_OP_C_ID_LEFT_SHIFT
+
+# Extra
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var; } }';
+    compile_not_ok($source, q|The type of the variable "$var" must be defined|);
+  }
+}
+
 # TODO SPVM_OP_C_ID_ISA
 
 done_testing;
