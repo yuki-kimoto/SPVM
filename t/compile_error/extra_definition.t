@@ -31,14 +31,14 @@ use Test::More;
 
   # Interface
   {
-    compile_not_ok_file('CompileError::Interface::HaveBlock', qr/interface.+block/i);
-    compile_not_ok_file('CompileError::Interface::NativeMethod', qr/interface.+native/i);
-    compile_not_ok_file('CompileError::Interface::StaticMethod', qr/interface.+instance/i);
-    compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign', qr/The implicite type conversion from "List" to "Stringable" in the assignment operator is not allowed/i);
-    compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod', qr/CompileError::Interface::NotHaveInterfaceMethod.+to_string.+interface.+Stringable/i);
-    compile_not_ok_file('CompileError::Interface::NoMethods', qr/The interface must have a required method/i);
-    compile_not_ok_file('CompileError::Interface::MultiRequiredMethods', qr/multiple required method/i);
-    compile_not_ok_file('CompileError::Interface::HasImplNotFound', qr/The method "TestCase::Pointable->not_found" is not defined/i);
+    compile_not_ok_file('CompileError::Interface::HaveBlock');
+    compile_not_ok_file('CompileError::Interface::NativeMethod');
+    compile_not_ok_file('CompileError::Interface::StaticMethod');
+    compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign');
+    compile_not_ok_file('CompileError::Interface::NotHaveInterfaceMethod');
+    compile_not_ok_file('CompileError::Interface::NoMethods');
+    compile_not_ok_file('CompileError::Interface::MultiRequiredMethods');
+    compile_not_ok_file('CompileError::Interface::HasImplNotFound');
   }
   # Class variable difinition
   {
@@ -49,23 +49,23 @@ use Test::More;
     {
       {
         my $source = 'class MyClass extends Stringable {}';
-        compile_not_ok($source, qr/The parant class must be a class type/);
+        compile_not_ok($source);
       }
       {
         my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer_t {}'];
-        compile_not_ok($source, qr/The parant class must be a non-pointer class type/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass extends MyClass {}';
-        compile_not_ok($source, qr/The name of the parant class must be different from the name of the class/);
+        compile_not_ok($source);
       }
       {
         my $source = ['class MyClass extends MyClass2 {}', 'class MyClass2 extends MyClass {}'];
-        compile_not_ok($source, qr/The all super classes must be different from its own class. Recursive inheritance isn't allowed/);
+        compile_not_ok($source);
       }
       {
         my $source = ['class MyClass extends MyParentClass { has x : int; }', 'class MyParentClass { has x : int; }'];
-        compile_not_ok($source, qr/The field that has the same name as the field of the super class can't be defined/);
+        compile_not_ok($source);
       }
     }
   }
@@ -79,15 +79,15 @@ use Test::More;
       compile_not_ok_file('CompileError::MultiNumeric::Fields17');
       {
         my $source = 'class MyClass_2i : mulnum_t { static method foo : void () {} }';
-        compile_not_ok($source, qr|The multi-numeric type can't have methods|);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass_2i : mulnum_t { our $foo : int; }';
-        compile_not_ok($source, qr|The multi-numeric type can't have class variables|);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass_2i : mulnum_t { }';
-        compile_not_ok($source, qr|The multi-numeric type must have at least one field|);
+        compile_not_ok($source);
       }
     }
     # Access control
@@ -97,47 +97,47 @@ use Test::More;
     
     # Field name
     {
-      compile_not_ok_file('CompileError::Field::HasFieldNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
-      compile_not_ok_file('CompileError::Field::HasFieldNameStartDigit',qr/Unexpected token "3f"/);
+      compile_not_ok_file('CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+      compile_not_ok_file('CompileError::Field::HasFieldNameStartDigit');
       {
         my $source = 'class MyClass { has foo::x : int; }';
-        compile_not_ok($source, qr/The field name "foo::x" can't contain "::"/);
+        compile_not_ok($source);
       }
     }
   }
 
   # Method definition
   {
-    compile_not_ok_file('CompileError::Method::INIT', qr/"INIT" can't be used as a method name/);
-    compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The maximum length of arguments that can be defined is 255/i);
-    compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum'. qr/Too many arguments/i);
+    compile_not_ok_file('CompileError::Method::INIT');
+    compile_not_ok_file('CompileError::Method::TooManyArguments');
+    compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum');
     
     # Method name
     {
-      compile_not_ok_file('CompileError::Method::MethodNameStartDigit', qr/Unexpected token "3f"/);
-      compile_not_ok_file('CompileError::Method::MethodNameContainsUnderScoreTwice', qr/The symbol name "Foo__Bar" can't constain "__"/);
+      compile_not_ok_file('CompileError::Method::MethodNameStartDigit');
+      compile_not_ok_file('CompileError::Method::MethodNameContainsUnderScoreTwice');
       {
         my $source = 'class MyClass { static method foo::main : void () { } }';
-        compile_not_ok($source, qr/The method name "foo::main" can't contain "::"/);
+        compile_not_ok($source);
       }
     }
     {
       my $source = 'class MyClass { static method main : void (); }';
-      compile_not_ok($source, qr/The non-native method must have the block/);
+      compile_not_ok($source);
     }
     # Destructor(DESTORY)
     {
       {
         my $source = 'class MyClass { static method DESTROY : void () { } }';
-        compile_not_ok($source, qr/\QThe DESTROY destructor method must be an instance method/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { method DESTROY : int () { } }';
-        compile_not_ok($source, qr/\QThe return type of the DESTROY destructor method must be the void type/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { method DESTROY : void ($num : int) { } }';
-        compile_not_ok($source, qr/\QThe DESTROY destructor method can't have arguments/);
+        compile_not_ok($source);
       }
     }
 
@@ -145,41 +145,41 @@ use Test::More;
     {
       {
         my $source = 'class MyClass { static method foo : void ($args0 = Int->new(1) : int) { } }';
-        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be a constant value/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 = 0.3 : float) { } }';
-        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be able to assigned to its argument/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 = "abc" : object) { } }';
-        compile_not_ok($source, qr/The default value of the optional argument "\$args0" must be undef/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 = undef : int*) { } }';
-        compile_not_ok($source, qr/The types other than the numeric type and the object type can't be an optional argument/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { use Complex_2d; static method foo : void ($args0 = 0 : Complex_2d) { } }';
-        compile_not_ok($source, qr/The types other than the numeric type and the object type can't be an optional argument/);
+        compile_not_ok($source);
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 = 0 : int, $args1 : int) { } }';
-        compile_not_ok($source, qr/The argument after optional arguments must be an optional argument/);
+        compile_not_ok($source);
       }
     }
   }
 
   # Enumeration definition
   {
-    compile_not_ok_file('CompileError::Enum::PrivateAccess', qr/The private method "TestCase::Enum->PRIVATE_VALUE" can't be called/);
+    compile_not_ok_file('CompileError::Enum::PrivateAccess');
     {
       my $source = q|class MyClass { interface_t enum { ONE } }|;
-      compile_not_ok($source, qr/Invalid enumeration descriptor "interface_t"/);
+      compile_not_ok($source);
     }
     {
       my $source = q|class MyClass { public private enum { ONE } }|;
-      compile_not_ok($source, qr/Only one of enumeration descriptors "private" or "public" can be specified/);
+      compile_not_ok($source);
     }
   }
 }

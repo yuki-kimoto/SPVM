@@ -1180,7 +1180,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                    SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a multi numeric type at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a multi-numeric type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->is_pointer) {
@@ -2912,7 +2912,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The index of the array access must be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The index of the array access must be the int type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2999,7 +2999,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 is_valid_invoker_type = 0;
               }
               if (!is_valid_invoker_type) {
-                SPVM_COMPILER_error(compiler, "The type of the invocant of the field access must be a class type, or a multi numeric type, or a multi numeric reference type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The invocant of the field access must be a class type, or a multi-numeric type, or a multi-numeric reference type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3013,28 +3013,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!field) {
                 const char* invoker_type_name = SPVM_TYPE_new_type_name(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag);
-                SPVM_COMPILER_error(compiler, "The field \"%s->{%s}\" is not defined at %s line %d", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The field \"%s\" in the class \"%s\" is not defined at %s line %d", op_name->uv.name, invoker_type_name, op_cur->file, op_cur->line);
                 return;
               }
               
               // weaken operator
               if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the weaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The field \"%s\" in the class \"%s\" operated by the weaken operator must be an object type at %s line %d", field->op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // unweaken operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the unweaken operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The field \"%s\" in the class \"%s\" operated by the unweaken operator must be an object type at %s line %d", field->op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               // isweak operator
               else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
                 if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the field of the operand of the isweak operator must be an object type \"%s\" \"%s\" at %s line %d", field->class->op_name->uv.name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The field \"%s\" in the class \"%s\" operated by the isweak operator must be an object type at %s line %d", field->op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3050,7 +3050,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (field->class->is_anon) {
                   is_private = 0;
                 }
-                // If multi numeric type, field is public
+                // If multi-numeric type, field is public
                 else if (field->class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
                   is_private = 0;
                 }
@@ -3062,7 +3062,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private && !op_cur->uv.field_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, field->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "The private field \"%s\" can't be accessed at %s line %d", op_name->uv.name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The private field \"%s\" in the class \"%s\" can't be accessed at %s line %d", op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3074,36 +3074,30 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                 
                 int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
-                if (is_basic_type_mulnum_t) {
-                  if (array_element_type->dimension != 0) {
-                    SPVM_COMPILER_error(compiler, "The dimension of the element of the multi-numeric array must be 1 at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-                  else {
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                    
-                    SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
-                    op_array_field_access->is_lvalue = op_cur->is_lvalue;
+                if (is_basic_type_mulnum_t && array_element_type->dimension == 0) {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
+                  op_array_field_access->is_lvalue = op_cur->is_lvalue;
 
-                    op_cur = op_array_field_access;
-                    
-                    SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
-                    array_field_access->field = field;
-                    
-                    SPVM_OP* op_array = op_array_access->first;
-                    SPVM_OP* op_index = op_array_access->last;
-                    SPVM_OP_cut_op(compiler, op_array_access->first);
-                    SPVM_OP_cut_op(compiler, op_array_access->last);
-                    
-                    SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
-                    SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
-                    
-                    SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
-                    
-                    SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, check_ast_info);
-                    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                      return;
-                    }
+                  op_cur = op_array_field_access;
+                  
+                  SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
+                  array_field_access->field = field;
+                  
+                  SPVM_OP* op_array = op_array_access->first;
+                  SPVM_OP* op_index = op_array_access->last;
+                  SPVM_OP_cut_op(compiler, op_array_access->first);
+                  SPVM_OP_cut_op(compiler, op_array_access->last);
+                  
+                  SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
+                  SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
+                  
+                  SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, check_ast_info);
+                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                    return;
                   }
                 }
               }

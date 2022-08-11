@@ -768,4 +768,51 @@ use Test::More;
   }
 }
 
+# Array Access
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 1; $var->[0]; } }';
+    compile_not_ok($source, q|The invocant of the array access must be an array type or the string type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = new int[1]; $var->[1L]; } }';
+    compile_not_ok($source, q|The index of the array access must be the int type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = new int[1]; $var->["foo"]; } }';
+    compile_not_ok($source, q|The index of the array access must be the int type|);
+  }
+}
+
+# Field Access
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 1; $var->{x}; } }';
+    compile_not_ok($source, q|The invocant of the field access must be a class type, or a multi-numeric type, or a multi-numeric reference type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
+    compile_not_ok($source, q|The field "foo" in the class "MyClass" is not defined|);
+  }
+  {
+    my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
+    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the weaken operator must be an object type|);
+  }
+  {
+    my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; unweaken $object->{x}; } }';
+    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the unweaken operator must be an object type|);
+  }
+  {
+    my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; isweak $object->{x}; } }';
+    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the isweak operator must be an object type|);
+  }
+  {
+    my $source = [
+      'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
+      'class MyClass2 : public { has x : private int; }'
+    ];
+    compile_not_ok($source, q|The private field "x" in the class "MyClass2" can't be accessed|);
+  }
+}
+
 done_testing;

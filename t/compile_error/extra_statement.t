@@ -15,11 +15,11 @@ use Test::More;
 {
   {
     my $source = 'class Tmp { use Fn; static method main : void () { switch (1) { case Fn->INT32_MAX: {} } }}';
-    compile_not_ok($source, qr/The operand of the case statement must be a constant value/);
+    compile_not_ok($source);
   }
   {
     my $source = 'class Tmp { use Fn; static method main : void () { switch (1) { case 1: {} case 1: {} } }}';
-    compile_not_ok($source, qr/The value of the case statement can't be duplicated/);
+    compile_not_ok($source);
   }
   
   

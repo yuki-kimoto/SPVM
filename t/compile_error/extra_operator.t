@@ -13,19 +13,19 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 use Test::More;
 # Call method
 {
-  compile_not_ok_file('CompileError::CallMethod::NotFound', qr/The class method "CompileError::CallMethod::NotFound->NOT_FOUND_METHOD" is not defined/);
-  compile_not_ok_file('CompileError::CallMethod::ClassNotFound', qr/The "NotFoundClass" class is not yet loaded/);
+  compile_not_ok_file('CompileError::CallMethod::NotFound');
+  compile_not_ok_file('CompileError::CallMethod::ClassNotFound',);
   {
     my $source = 'class Tmp { static method main : int () { my $num = 1; $num->foo; }  }';
-    compile_not_ok($source, qr/The invocant type of the method "foo" must be a class type or an interface type/);
+    compile_not_ok($source);
   }
   {
     my $source = 'class Tmp { static method main : int () { &foo; } method foo : void () {} }';
-    compile_not_ok($source, qr/The class method "Tmp->foo" is not defined/);
+    compile_not_ok($source);
   }
   {
     my $source = 'class Tmp { static method main : int () { my $object = new Tmp; $object->foo; } static method foo : void () {} }';
-    compile_not_ok($source, qr/The instance method "Tmp->foo" is not defined/);
+    compile_not_ok($source);
   }
 }
 
