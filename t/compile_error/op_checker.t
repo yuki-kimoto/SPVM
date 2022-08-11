@@ -922,5 +922,28 @@ use Test::More;
     compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
   }
 }
+# Multi-Numeric Type
+{
+  {
+    my $source = 'class MyClass_1i : mulnum_t { has x : object; }';
+    compile_not_ok($source, q|The multi-numeric type must have the only fields of numeric types|);
+  }
+  {
+    my $source = 'class MyClass_2i : mulnum_t { has x : int; has y : long; }';
+    compile_not_ok($source, q|The fields of the multi-numeric type must be of the same type|);
+  }
+  {
+    my $source = 'class MyClass : mulnum_t { has x : int; has y : int; }';
+    compile_not_ok($source, q|The type name for the int multi-numeric with the field length of 2 must end with "_2i"|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; our $FOO : Complex_2d; }';
+    compile_not_ok($source, q|The multi-numeric type can't used in the definition of the class variable|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; has foo : Complex_2d; }';
+    compile_not_ok($source, q|The multi-numeric type can't used in the definition of the field|);
+  }
+}
 
 done_testing;

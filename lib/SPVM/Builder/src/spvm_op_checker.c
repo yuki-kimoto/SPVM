@@ -4632,57 +4632,51 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type must have obly fields that type is a numeric type at %s line %d", first_field->op_field->file, first_field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type must have the only fields of numeric types at %s line %d", first_field->op_field->file, first_field->op_field->line);
         return;
       }
-      else {
-        int32_t field_index;
-        for (field_index = 0; field_index < class->fields->length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
-          if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-            SPVM_COMPILER_error(compiler, "The field must be the %s type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
-            return;
-          }
-        }
-        
-        // Check type name
-        char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
-        switch (first_field_type->basic_type->id) {
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
-            sprintf(tail_name, "_%db", fields->length);
-            break;
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
-            sprintf(tail_name, "_%ds", fields->length);
-            break;
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-            sprintf(tail_name, "_%di", fields->length);
-            break;
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-            sprintf(tail_name, "_%dl", fields->length);
-            break;
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-            sprintf(tail_name, "_%df", fields->length);
-            break;
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-            sprintf(tail_name, "_%dd", fields->length);
-            break;
-          default:
-            assert(0);
-        }
-        int32_t tail_name_length = (int32_t)strlen(tail_name);
-        
-        char* found_pos_ptr = strstr(class_name, tail_name);
-        if (found_pos_ptr) {
-          if (*(found_pos_ptr + tail_name_length) != '\0') {
-            SPVM_COMPILER_error(compiler, "The type name must end with \"%s\" at %s line %d", tail_name, class->op_class->file, class->op_class->line);
-            return;
-          }
-        }
-        else {
-          SPVM_COMPILER_error(compiler, "The type name must end with \"%s\" at %s line %d", tail_name, class->op_class->file, class->op_class->line);
+      
+      int32_t field_index;
+      for (field_index = 0; field_index < class->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
+        if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
+          SPVM_COMPILER_error(compiler, "The fields of the multi-numeric type must be of the same type at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
           return;
         }
+      }
+      
+      // Check type name
+      char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
+      switch (first_field_type->basic_type->id) {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
+          sprintf(tail_name, "_%db", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
+          sprintf(tail_name, "_%ds", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
+          sprintf(tail_name, "_%di", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
+          sprintf(tail_name, "_%dl", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
+          sprintf(tail_name, "_%df", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
+          sprintf(tail_name, "_%dd", fields->length);
+          break;
+        default:
+          assert(0);
+      }
+      int32_t tail_name_length = (int32_t)strlen(tail_name);
+      int32_t class_name_length = strlen(class_name);
+      
+      char* found_pos_ptr = strstr(class_name + class_name_length - tail_name_length, tail_name);
+      if (!found_pos_ptr) {
+        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\" at %s line %d", first_field_type->basic_type->name, class->fields->length, tail_name, class->op_class->file, class->op_class->line);
+        return;
       }
     }
 
@@ -4694,7 +4688,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // valut_t can't become class variable
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type can't be a class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't used in the definition of the class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
     }
@@ -4707,7 +4701,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // valut_t can't become field
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type can't be a field at %s line %d", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type can't used in the definition of the field at %s line %d", field->op_field->file, field->op_field->line);
         return;
       }
     }
