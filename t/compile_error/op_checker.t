@@ -815,4 +815,44 @@ use Test::More;
   }
 }
 
+# has_impl
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; has_impl $var->x; } }';
+    compile_not_ok($source, q|he invocant of the has_impl operator must be a class type or an interface type|);
+  }
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; has_impl $point->not_defined; } }';
+    compile_not_ok($source, q|The method "not_defined" in the class "Point" checked by the has_impl operator must be defined|);
+  }
+  
+}
+
+# Type Case
+{
+  {
+    my $source = 'class MyClass { static method main : void () { (Int)"foo"; } }';
+    compile_not_ok($source, q|The type cast from "string" to "Int" is not allowed|);
+  }
+}
+
+# Assignability
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the assignment operator|);
+  }
+  {
+    my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the return statement|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the class method "foo" in the class "MyClass"|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the instance method "foo" in the class "MyClass"|);
+  }
+}
 done_testing;

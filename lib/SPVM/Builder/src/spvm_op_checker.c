@@ -1815,7 +1815,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 if (op_operand) {
                   // Automatical numeric conversion
-                  SPVM_OP_CHECKER_check_assign(compiler, method->return_type, op_operand, "return statement", op_cur->file, op_cur->line);
+                  SPVM_OP_CHECKER_check_assign(compiler, method->return_type, op_operand, "the return statement", op_cur->file, op_cur->line);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -2635,8 +2635,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric conversion op is added
-                  char place[50];
-                  sprintf(place, "%dth argument", call_method_args_length);
+                  char place[255];
+                  int32_t call_method_args_length_for_user = call_method_args_length;
+                  if (!call_method->method->is_class_method) {
+                    call_method_args_length_for_user--;
+                  }
+                  sprintf(place, "the %dth argument of the %s method \"%s\" in the class \"%s\"", call_method_args_length_for_user, call_method->method->is_class_method ? "class" : "instance", method_name, op_cur->uv.call_method->method->class->name);
                   
                   // Invocant is not checked.
                   op_operand = SPVM_OP_CHECKER_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
@@ -3208,7 +3212,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               );
               
               if (!found_method) {
-                SPVM_COMPILER_error(compiler, "The method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
+                SPVM_COMPILER_error(compiler, "The method \"%s\" in the class \"%s\" checked by the has_impl operator must be defined at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
@@ -4207,7 +4211,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     
   if (!assignability) {
     if (mutable_invalid) {
-      SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s, at %s line %d", place, file, line);
+      SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s at %s line %d", place, file, line);
     }
     if (narrowing_conversion_error) {
       SPVM_COMPILER_error(compiler, "The narrowing type conversion can't be performed in %s at %s line %d", place, file, line);
