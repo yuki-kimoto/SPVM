@@ -422,7 +422,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
-    compile_not_ok($source, q|The setting character of a non-mutable string is not allowed|);
+    compile_not_ok($source, q|Characters cannot be set to non-mutable strings|);
   }
 }
 
@@ -718,7 +718,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
-    compile_not_ok($source, q|The local variable "$var" is not defined|);
+    compile_not_ok($source, q|The variable "$var" is not defined|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { $MyClass::FOO; } }';
+    compile_not_ok($source, q|The variable "$MyClass::FOO" is not defined|);
   }
 }
 
@@ -727,6 +731,40 @@ use Test::More;
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
     compile_not_ok($source, q|The instance method "new" in the class "Int" is not defined|);
+  }
+  {
+    my $source = [
+      'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
+      'class MyClass2 { static private method foo : void () {} }'
+    ];
+    compile_not_ok($source, q|The private method "foo" can't be called|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    compile_not_ok($source, q|The length of the arguments passed to the class method "foo" in the class "MyClass" must be at least 1|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    compile_not_ok($source, q|The length of the arguments passed to the instance method "foo" in the class "MyClass" must be at least 1|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    compile_not_ok($source, q|The length of the arguments passed to the instance method "foo" in the class "MyClass" must be less than or equal to 2|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->DESTROY; } method DESTROY : void () {} }';
+    compile_not_ok($source, q|The DESTROY method can't be called|);
+  }
+}
+
+# Class Variable Access
+{
+  {
+    my $source = [
+      'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
+      'class MyClass2 { our $FOO : private int; }'
+    ];
+    compile_not_ok($source, q|The private class variable "$MyClass2::FOO" can't be accessed|);
   }
 }
 

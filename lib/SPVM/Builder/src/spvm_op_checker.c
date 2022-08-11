@@ -1794,7 +1794,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 int32_t is_mutable = array_type->flag & SPVM_TYPE_C_FLAG_MUTABLE;
 
                 if(!is_mutable) {
-                  SPVM_COMPILER_error(compiler, "The setting character of a non-mutable string is not allowed at %s line %d", op_operand_dist->file, op_operand_dist->line);
+                  SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings at %s line %d", op_operand_dist->file, op_operand_dist->line);
                   return;
                 }
               }
@@ -2456,7 +2456,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "The local variable \"%s\" is not defined at %s line %d", var->name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The variable \"%s\" is not defined at %s line %d", var->name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
@@ -2494,7 +2494,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "The call of the private method \"%s\" is not allowed at %s line %d", call_method->method->name, call_method->method->class->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The private method \"%s\" can't be called at %s line %d", call_method->method->name, call_method->method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2626,7 +2626,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       args_length_for_user--;
                     }
                     
-                    SPVM_COMPILER_error(compiler, "The length of the arguments passed to the method \"%s\" in the class \"%s\" must be less than or equal to %d at %s line %d", method_name, op_cur->uv.call_method->method->class->name, args_length_for_user, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The length of the arguments passed to the %s method \"%s\" in the class \"%s\" must be less than or equal to %d at %s line %d", call_method->method->is_class_method ? "class" : "instance", method_name, op_cur->uv.call_method->method->class->name, args_length_for_user, op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2653,7 +2653,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   required_args_length_for_user--;
                 }
                 
-                SPVM_COMPILER_error(compiler, "The length of the arguments passed to the method \"%s\" in the class \"%s\" must be at least more than or equal to %d at %s line %d", method_name, op_cur->uv.call_method->method->class->name, required_args_length_for_user, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The length of the arguments passed to the %s method \"%s\" in the class \"%s\" must be at least %d at %s line %d", call_method->method->is_class_method ? "class" : "instance", method_name, op_cur->uv.call_method->method->class->name, required_args_length_for_user, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2853,11 +2853,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Check field name
               SPVM_OP_CHECKER_resolve_class_var_access(compiler, op_cur, class->op_class);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
-              if (!op_cur->uv.class_var_access->class_var) {
-                SPVM_COMPILER_error(compiler, "The Class variable \"%s\" is not defined at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
               
