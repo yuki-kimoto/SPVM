@@ -4268,7 +4268,7 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       if (!found_class) {
         const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, basic_type_name, strlen(basic_type_name));
         if (!not_found_class_class_name) {
-          SPVM_COMPILER_error(compiler, "The class \"%s\" is not defined at %s line %d", basic_type_name, op_type->file, op_type->line);
+          SPVM_COMPILER_error(compiler, "The class \"%s\" is not yet loaded at %s line %d", basic_type_name, op_type->file, op_type->line);
         }
       }
     }
@@ -4276,7 +4276,7 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     // Reference type must be numeric refernce type or multi-numeric reference type
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type \"%s\"\\ at %s line %d", basic_type_name, op_type->file, op_type->line);
+        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type at %s line %d", op_type->file, op_type->line);
       }
     }
     
@@ -4336,20 +4336,19 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     }
     
     SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-    if (found_class) {
-      found_method = SPVM_HASH_get(
-        found_class->method_symtable,
-        method_name,
-        strlen(method_name)
-      );
-      
-      if (found_method && !found_method->is_class_method) {
-        found_method = NULL;
-      }
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
+    // This checking is needed because in the method call the class is not chekced in some cases.
+    if (!found_class) {
+      SPVM_COMPILER_error(compiler, "The class \"%s\" is not yet loaded at %s line %d", class_name, op_call_method->file, op_call_method->line);
       return;
+    }
+    found_method = SPVM_HASH_get(
+      found_class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
+    
+    if (found_method && !found_method->is_class_method) {
+      found_method = NULL;
     }
   
     if (found_method) {
@@ -4364,7 +4363,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   else {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
     if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant type of the method \"%s\" must be a class type or an interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The invocant of the method \"%s\" must be a class type or an interface type at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
     
@@ -4373,80 +4372,101 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     assert(class);
     
-    const char* real_method_name;
-    int32_t call_parent_method = 0;
-    if (strstr(method_name, "SUPER::") == method_name) {
-      real_method_name = method_name + 7;
-      call_parent_method = 1;
-      call_method->call_super = 1;
-    }
-    else {
-      // Static instance method call
-      char* last_colon_pos = strrchr(method_name, ':');
-      if (last_colon_pos) {
-        call_method->is_static_instance_method_call = 1;
-        real_method_name = last_colon_pos + 1;
-        int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
-        SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
-        if (!class_static) {
-          SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        SPVM_METHOD* found_method = SPVM_HASH_get(
-          class_static->method_symtable,
-          real_method_name,
-          strlen(real_method_name)
-        );
-        if (found_method) {
-          call_method->method = found_method;
+    // Class
+    if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      const char* real_method_name;
+      int32_t call_parent_method = 0;
+      if (strstr(method_name, "SUPER::") == method_name) {
+        real_method_name = method_name + 7;
+        call_parent_method = 1;
+        call_method->call_super = 1;
+      }
+      else {
+        // Static instance method call
+        char* last_colon_pos = strrchr(method_name, ':');
+        if (last_colon_pos) {
+          call_method->is_static_instance_method_call = 1;
+          real_method_name = last_colon_pos + 1;
+          int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
+          SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
+          if (!class_static) {
+            SPVM_COMPILER_error(compiler, "The class specified in the static method call \"%s\" is not loaded at %s line %d", method_name, op_call_method->file, op_call_method->line);
+            return;
+          }
+          SPVM_METHOD* found_method = SPVM_HASH_get(
+            class_static->method_symtable,
+            real_method_name,
+            strlen(real_method_name)
+          );
+          if (found_method) {
+            call_method->method = found_method;
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", real_method_name, class->name, op_call_method->file, op_call_method->line);
+            return;
+          }
         }
         else {
-          SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+          real_method_name = method_name;
+        }
+      }
+      
+      // Search the method of the super class
+      SPVM_METHOD* found_method = NULL;
+      SPVM_CLASS* parent_class = NULL;
+      if (call_parent_method) {
+        parent_class = class->parent_class;
+        if (!parent_class) {
           return;
         }
       }
       else {
-        real_method_name = method_name;
+        parent_class = class;
       }
-    }
-    
-    SPVM_METHOD* found_method = NULL;
-    SPVM_CLASS* parent_class = NULL;
-    if (call_parent_method) {
-      parent_class = class->parent_class;
-      if (!parent_class) {
+      
+      while (1) {
+        found_method = SPVM_HASH_get(
+          parent_class->method_symtable,
+          real_method_name,
+          strlen(real_method_name)
+        );
+        if (found_method) {
+          break;
+        }
+        parent_class = class->parent_class;
+        if (!parent_class) {
+          break;
+        }
+      }
+      
+      if (found_method && found_method->is_class_method) {
+        SPVM_COMPILER_error(compiler, "The method \"%s\" is defined in the class \"%s\", but this method is not an instance method at %s line %d", method_name, parent_class->name, op_call_method->file, op_call_method->line);
+        return;
+      }
+
+      if (found_method) {
+        call_method->method = found_method;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The instance method \"%s\" is not defined in the class \"%s\" or the super classes at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
         return;
       }
     }
+    // Interface
     else {
-      parent_class = class;
-    }
-    
-    while (1) {
-      found_method = SPVM_HASH_get(
-        parent_class->method_symtable,
-        real_method_name,
-        strlen(real_method_name)
+      SPVM_METHOD* found_method = SPVM_HASH_get(
+        class->method_symtable,
+        method_name,
+        strlen(method_name)
       );
+      
       if (found_method) {
-        break;
+        call_method->method = found_method;
       }
-      parent_class = class->parent_class;
-      if (!parent_class) {
-        break;
+      else {
+        SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the interface \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+        return;
       }
-    }
-    
-    if (found_method && found_method->is_class_method) {
-      found_method = NULL;
-    }
-
-    if (found_method) {
-      call_method->method = found_method;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
-      return;
     }
   }
 }

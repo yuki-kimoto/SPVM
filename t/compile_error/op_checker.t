@@ -729,10 +729,6 @@ use Test::More;
 # Method Call
 {
   {
-    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
-    compile_not_ok($source, q|The instance method "new" in the class "Int" is not defined|);
-  }
-  {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
@@ -854,5 +850,77 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
     compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the instance method "foo" in the class "MyClass"|);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
+    compile_not_ok($source, q|The implicite type conversion from "string" to "int" in the assignment operator is not allowed|);
+  }
 }
+
+# Resove types
+{
+  {
+    my $source = 'class MyClass { static method main : void () { new NotFound; } }';
+    compile_not_ok($source, q|The class "NotFound" is not yet loaded|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void ($arg : Int*) {} }';
+    compile_not_ok($source, q|The reference type must be a numeric refernce type or a multi-numeric reference type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : mutable int;} }';
+    compile_not_ok($source, q|The type qualifier "mutable" is only allowed in the string type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : object[][];} }';
+    compile_not_ok($source, q|The multi dimensional array of any object is not allowed|);
+  }
+}
+
+# Resove method call
+{
+  {
+    my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
+    compile_not_ok($source, q|The class method "not_defined" in the class "MyClass" is not defined|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
+    compile_not_ok($source, q|The invocant of the method "new" must be a class type or an interface type|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $point = Point->new; } }';
+    compile_not_ok($source, q|The class "Point" is not yet loaded|);
+  }
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';
+    compile_not_ok($source, q|The class method "not_defined" in the class "Point" is not defined|);
+  }
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
+    compile_not_ok($source, q|The instance method "not_found" in the class "Point" is not defined|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
+    compile_not_ok($source, q|The method "new" is defined in the class "Int", but this method is not an instance method|);
+  }
+  {
+    my $source = [
+      'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->foo; } }',
+      'class MyClass2 extends MyClass : public { static method foo : void () {} }',
+    ];
+    compile_not_ok($source, q|The method "foo" is defined in the class "MyClass2", but this method is not an instance method|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+  }
+}
+
 done_testing;
