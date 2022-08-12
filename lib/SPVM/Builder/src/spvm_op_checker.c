@@ -4858,8 +4858,16 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The parant class must be a class type at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
+      if (!SPVM_TYPE_is_class_type(compiler, class->type->basic_type->id, class->type->dimension, class->type->flag)) {
+        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
       if (parent_class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The parant class must be a non-pointer class type at %s line %d", class->op_extends->file, class->op_extends->line);
+        SPVM_COMPILER_error(compiler, "The parant class can't be a pointer class type at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
+      if (class->is_pointer) {
+        SPVM_COMPILER_error(compiler, "The current class can't be a pointer class type when the class becomes a child class at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
       if (strcmp(class->name, parent_class->name) == 0) {
@@ -4892,7 +4900,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       SPVM_TYPE* interface_type = interface->type;
       if (!SPVM_TYPE_is_interface_type(compiler, interface_type->basic_type->id, interface_type->dimension, interface_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The operand of the interface statement msut be an interface type at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
+        SPVM_COMPILER_error(compiler, "The operand of the interface statement must be an interface type at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
         return;
       }
       

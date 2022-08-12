@@ -988,6 +988,34 @@ use Test::More;
     compile_not_ok($source, q|The return type can't be a reference|);
   }
 }
+
+# Inheritance
+{
+  {
+    my $source = 'class MyClass extends Stringable {}';
+    compile_not_ok($source, q|The parant class must be a class type|);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 {}',
+      'class MyClass2 : pointer_t;',
+    ];
+    compile_not_ok($source, q|The parant class can't be a pointer class|);
+  }
+  {
+    my $source = 'class MyClass extends MyClass {}';
+    compile_not_ok($source, q|The name of the parant class must be different from the name of the class|);
+  }
+  {
+    my $source = 'class MyClass extends Point : interface_t { required method foo : void (); }';
+    compile_not_ok($source, q|The current class must be a class type when the class becomes a child class|);
+  }
+  {
+    my $source = 'class MyClass extends Point : pointer_t { }';
+    compile_not_ok($source, q|The current class can't be a pointer class type when the class becomes a child class|);
+  }
+}
+
 # Extra
 {
   # Optional Argument

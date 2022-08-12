@@ -4,6 +4,10 @@
     * Add Error::NotSupported class. This class is default loaded.
   [Compilation Error Message Improvement]
     * Improve compilation error messages.
+  [Bug Fix]
+    * Fix the bug that non-class types become child classes.
+    * Fix the bug that pointer class types become child classes.
+    
   [Test Improvement]
     * Add many compilation error tests.
   [Document Fix]
