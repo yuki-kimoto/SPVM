@@ -2057,6 +2057,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
           SPVM_COMPILER_error(compiler, "The interface statement can't be used in the definition of the multi-numeric type at %s line %d", op_decl->file, op_decl->line);
         }
+        const char* interface_name = op_decl->uv.interface->class_name;
+        
+        if (strcmp(class->name, interface_name) == 0) {
+          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface at %s line %d", op_decl->file, op_decl->line);
+        }
+        
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
       // Class var declarations

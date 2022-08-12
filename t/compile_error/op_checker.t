@@ -1016,6 +1016,14 @@ use Test::More;
   }
 }
 
+# interface Statement
+{
+  {
+    my $source = 'class MyClass  { interface Point; }';
+    compile_not_ok($source, q|The interface specified by the interface statement must be an interface type|);
+  }
+}
+
 # Extra
 {
   # Optional Argument

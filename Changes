@@ -7,7 +7,7 @@
   [Bug Fix]
     * Fix the bug that non-class types become child classes.
     * Fix the bug that pointer class types become child classes.
-    
+    * Fix the bug that the interface name specified by the interface statement becomes the same name of the current interface.
   [Test Improvement]
     * Add many compilation error tests.
   [Document Fix]

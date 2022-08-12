@@ -4900,7 +4900,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       SPVM_TYPE* interface_type = interface->type;
       if (!SPVM_TYPE_is_interface_type(compiler, interface_type->basic_type->id, interface_type->dimension, interface_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The operand of the interface statement must be an interface type at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
+        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
         return;
       }
       
