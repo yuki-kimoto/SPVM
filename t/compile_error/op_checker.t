@@ -1022,6 +1022,37 @@ use Test::More;
     my $source = 'class MyClass  { interface Point; }';
     compile_not_ok($source, q|The interface specified by the interface statement must be an interface type|);
   }
+  {
+    my $source = 'class MyClass  { interface Stringable; }';
+    compile_not_ok($source, q|The class "MyClass" must have the method "to_string" defined as a required method in the interface "Stringable"|);
+  }
+}
+
+# Inheritance
+{
+  {
+    my $source = [
+      'class MyClass extends MyClass2;',
+      'class MyClass2 extends MyClass3;',
+      'class MyClass3 extends MyClass;',
+    ];
+    compile_not_ok($source, q|Recursive inheritance. Found the current class "MyClass" in a super class|);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { has x : int; }',
+      'class MyClass2 { has x : int; }',
+    ];
+    compile_not_ok($source, q|Fields that are defined in the super class can't be defined. The field "x" is already defined in the super class|);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { has x : int; }',
+      'class MyClass2 extends MyClass3 {  }',
+      'class MyClass3 { has x : int; }',
+    ];
+    compile_not_ok($source, q|Fields that are defined in the super class can't be defined. The field "x" is already defined in the super class|);
+  }
 }
 
 # Extra

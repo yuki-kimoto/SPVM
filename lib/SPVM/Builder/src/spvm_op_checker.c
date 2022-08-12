@@ -4927,7 +4927,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
       }
       if (!method_found) {
-        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined in the interface \"%s\" at %s line %d", class->name, required_method->name, interface->name, class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined as a required method in the interface \"%s\" at %s line %d", class->name, required_method->name, interface->name, class->op_class->file, class->op_class->line);
       }
     }
   }
@@ -5024,7 +5024,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     while (1) {
       if (parent_class) {
         if (strcmp(parent_class->name, class->name) == 0) {
-          SPVM_COMPILER_error(compiler, "The all super classes must be different from its own class. Recursive inheritance isn't allowed at %s line %d", class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class at %s line %d", class->name, class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }
@@ -5063,7 +5063,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_LIST_push(all_fields, new_field);
         SPVM_FIELD* found_field = SPVM_HASH_get(all_field_symtable, new_field->name, strlen(new_field->name));
         if (found_field) {
-          SPVM_COMPILER_error(compiler, "The field that has the same name as the field of the super class can't be defined at %s line %d", class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "Fields that are defined in the super class can't be defined. The field \"%s\" is already defined in the super class at %s line %d", found_field->name, class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }
