@@ -946,4 +946,55 @@ use Test::More;
   }
 }
 
+# Optional Argument
+{
+  {
+    my $source = 'class MyClass {  static method main : void ($arg1 = Int->new(1) : int) { } }';
+    compile_not_ok($source, q|The default value of the optional argument "$arg1" must be a constant value|);
+  }
+  {
+    my $source = 'class MyClass {  static method main : void ($arg1 = 1000 : byte) { } }';
+    compile_not_ok($source, q|The default value of the optional argument "$arg1" must be able to be assigned to the argument|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : Complex_2d) { } }';
+    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
+    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
+    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int, $arg2 : int) { } }';
+    compile_not_ok($source, q|Arguments after optional arguments must be optional arguments|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int...) { } }';
+    compile_not_ok($source, q|"..." must be used with array types|);
+  }
+
+  compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The stack length of arguments must be less than or equal to 255/);
+  compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum', qr/The stack length of arguments must be less than or equal to 255/);
+}
+
+# Return type
+{
+  {
+    my $source = 'class MyClass { static method main : int* () { } }';
+    compile_not_ok($source, q|The return type can't be a reference|);
+  }
+}
+# Extra
+{
+  # Optional Argument
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int..., $arg2 : int) { } }';
+    compile_not_ok($source, q|Unexpected token ","|);
+  }
+}
+
 done_testing;

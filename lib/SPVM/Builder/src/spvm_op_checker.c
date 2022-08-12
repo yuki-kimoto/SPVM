@@ -4744,7 +4744,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               );
               
               if (!assignability) {
-                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to assigned to its argument at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to be assigned to the argument at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
                 return;
               }
             }
@@ -4756,13 +4756,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type can't be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type can't be used in the optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
         else {
           if (found_optional_arg) {
-            SPVM_COMPILER_error(compiler, "The argument after optional arguments must be an optional argument at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Arguments after optional arguments must be optional arguments at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
@@ -4778,13 +4778,14 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           last_arg_type = arg_type;
         }
       }
-      if (!(args_stack_length <= 255)) {
-        SPVM_COMPILER_error(compiler, "The maximum length of arguments that can be defined is 255 at %s line %d", method->op_method->file, method->op_method->line);
+
+      if (method->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
+        SPVM_COMPILER_error(compiler, "\"...\" must be used with array types at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       
-      if (method->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
-        SPVM_COMPILER_error(compiler, "\"...\" can't be specified for non-array types at %s line %d", method->op_method->file, method->op_method->line);
+      if (!(args_stack_length <= 255)) {
+        SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255 at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       
