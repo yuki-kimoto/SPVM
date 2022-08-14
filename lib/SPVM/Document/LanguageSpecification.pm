@@ -6103,15 +6103,15 @@ Type comments have no meanings at runtime.
 
 Statements are syntax or operations that are written direct under a L<scope block|/"Scope Block">.
 
-=head2 empty Statement
+=head2 Empty Statement
 
-An empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
+The empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
 
   ;
 
-=head2 Operation Statement
+=head2 Operator Statement
 
-The operation statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
+The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
 
 A operation statement is composed of an L<operator|/"Operator"> and C<;>.
 
@@ -6124,6 +6124,19 @@ B<Examples:>
   1 + 2;
   foo();
   my $num = 1 + 2;
+
+=head2 void Returning Operator Statement
+
+The void returning operator statement is the L<statement|/"Statement"> to execute an L<void returning operator|/"void Returning Operator">.
+
+The statement is composed of L<void returning operator|/"void Returning Operator"> and C<;>.
+
+  VOID_RETURN_OPERATOR;
+
+B<Examples:>
+
+  die "Error";
+  warn "Warning";
 
 =head2 if Statement
 
