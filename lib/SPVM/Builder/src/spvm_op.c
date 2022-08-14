@@ -168,7 +168,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "block_end",
     "exception_var",
     "new",
-    "stab",
     "byte",
     "short",
     "int",
@@ -708,7 +707,7 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   SPVM_OP_get_before(compiler, op_target, &op_before, &next_is_child);
   
   // Stab
-  SPVM_OP* op_stab = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_STAB, op_target->file, op_target->line);
+  SPVM_OP* op_stab = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_target->file, op_target->line);
   if (next_is_child) {
     
     // One child

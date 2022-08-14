@@ -2,11 +2,12 @@
   [Document Fix]
     * Fix the parsing difinition. I have forgot to add the void returning operator in before release.
     * Rename the headding "empty Statement" to "Empty Statement".
-    * Rename Operation Statement to Operator Statement
+    * Rename Operation Statement to Operator Statement.
     * Add void Returning Operator Statement.
   [Internal Ineffective Changes]
     * Revmoe unneeded SPVM_OP_C_ID_ELEMENT, SPVM_OP_C_ID_OARRAY, SPVM_OP_C_ID_SET, SPVM_OP_C_ID_GET ops.
-    * Rename SPVM_OP_C_ID_NULL to SPVM_OP_C_ID_DO_NOTHING
+    * Rename SPVM_OP_C_ID_NULL to SPVM_OP_C_ID_DO_NOTHING.
+    * Remove SPVM_OP_C_ID_STAB.
 0.9639 2022-08-15
   [New Features]
     * Add the is_type operator.
