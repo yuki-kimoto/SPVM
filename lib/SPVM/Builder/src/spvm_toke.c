@@ -486,7 +486,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->bufptr == '+') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           return INC;
         }
         else if (*compiler->bufptr == '=') {
@@ -499,7 +499,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           return '+';
         }
         break;
@@ -515,7 +515,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         else if (*compiler->bufptr == '>') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           compiler->expect_method_name = 1;
           compiler->before_token_is_arrow = 1;
           
@@ -523,7 +523,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         else if (*compiler->bufptr == '-') {
           compiler->bufptr++;
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           return DEC;
         }
         else if (*compiler->bufptr == '=') {
@@ -536,7 +536,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);;
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);;
           return '-';
         }
         break;
@@ -556,7 +556,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // * is used in MULTIPLY operator or type reference
         else {
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           yylvalp->opval = op;
           return '*';
         }
@@ -735,7 +735,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // =>
           if (*compiler->bufptr == '>') {
             compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
             yylvalp->opval = op;
             return ',';
           }
@@ -2486,7 +2486,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         // Return character
         compiler->bufptr++;
-        yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NULL);
+        yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
         
         // Expect field name
         if (before_token_is_arrow && ch == '{') {

@@ -3017,7 +3017,7 @@ yyreduce:
   case 85:
 #line 500 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
 #line 3023 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3256,7 +3256,7 @@ yyreduce:
   case 113:
 #line 669 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
 #line 3262 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3321,7 +3321,7 @@ yyreduce:
   case 120:
 #line 714 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
 #line 3327 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -4292,7 +4292,7 @@ yyreduce:
   case 262:
 #line 1347 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
 #line 4298 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

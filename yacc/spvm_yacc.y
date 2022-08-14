@@ -498,7 +498,7 @@ statement
   | void_return_operator ';'
   | ';'
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
 
 void_return_operator
@@ -667,7 +667,7 @@ if_statement
 else_statement
   : /* NULL */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     };
   | ELSE block
     {
@@ -712,7 +712,7 @@ opt_operators
 opt_operator
   : /* Empty */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
   | operator
 
@@ -1345,7 +1345,7 @@ return_type
 opt_type_comment
   : /* Empty */
     {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
   | type_comment
 

@@ -1240,7 +1240,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_while->file, op_while->line);
   
   // Init statement. This is null.
-  SPVM_OP* op_operand_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
+  SPVM_OP* op_operand_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_while->file, op_while->line);
   
   // Condition
   assert(op_operand_condition->moresib == 0);
@@ -1255,7 +1255,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
   
   // Next value. This is null.
-  SPVM_OP* op_operand_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
+  SPVM_OP* op_operand_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_while->file, op_while->line);
 
   SPVM_OP* op_block_init = SPVM_OP_new_op_block(compiler, op_while->file, op_while->line);
   op_block_init->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INIT;
@@ -3502,7 +3502,7 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_operand_length);
   }
   else {
-    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_type_child->file, op_type_child->line);
+    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_child->file, op_type_child->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
   }
 
