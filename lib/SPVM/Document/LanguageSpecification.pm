@@ -1165,7 +1165,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> assign inc dec allow has_impl
   %type <opval> new array_init die opt_extends
   %type <opval> var_decl var interface union_type
-  %type <opval> operator opt_operators operators opt_operator logical_operator
+  %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -1324,23 +1324,26 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | default_statement
     | eval_block
     | if_require_statement
-    | operator ';'
     | LAST ';'
     | NEXT ';'
     | BREAK ';'
     | RETURN ';'
     | RETURN operator ';'
-    | die
-    | WARN operator ';'
-    | PRINT operator ';'
-    | weaken_field ';'
-    | unweaken_field ';'
+    | operator ';'
+    | void_return_operator ';'
     | ';'
-    | MAKE_READ_ONLY operator ';'
+
+  void_return_operator
+    : die
+    | WARN operator
+    | PRINT operator
+    | weaken_field
+    | unweaken_field
+    | MAKE_READ_ONLY operator
 
   die
-    : DIE operator ';'
-    | DIE ';'
+    : DIE operator
+    | DIE
 
   for_statement
     : FOR '(' opt_operator ';' operator ';' opt_operator ')' block

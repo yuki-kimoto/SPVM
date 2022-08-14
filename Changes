@@ -1,3 +1,7 @@
+0.9640 2022-08-15
+  [Document Fix]
+    * Fix the parsing difinition. I have forgot to add the void returning operator in before release.
+      
 0.9639 2022-08-15
   [New Features]
     * Add the is_type operator.
