@@ -8,6 +8,8 @@
     * Revmoe unneeded SPVM_OP_C_ID_ELEMENT, SPVM_OP_C_ID_OARRAY, SPVM_OP_C_ID_SET, SPVM_OP_C_ID_GET ops.
     * Rename SPVM_OP_C_ID_NULL to SPVM_OP_C_ID_DO_NOTHING.
     * Remove SPVM_OP_C_ID_STAB.
+    * Remove SPVM_OP_C_ID_PRECOMPILE, SPVM_OP_C_ID_RW, SPVM_OP_C_ID_RO, SPVM_OP_C_ID_WO, SPVM_OP_C_ID_REQUIRED.
+    * Reorder ops.
 0.9639 2022-08-15
   [New Features]
     * Add the is_type operator.
