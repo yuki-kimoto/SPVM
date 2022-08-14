@@ -43,7 +43,7 @@
 %type <opval> assign inc dec allow has_impl
 %type <opval> new array_init die opt_extends
 %type <opval> var_decl var interface union_type
-%type <opval> operator opt_operators operators opt_operator logical_operator
+%type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name class_name class_alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -480,10 +480,6 @@ statement
   | default_statement
   | eval_block
   | if_require_statement
-  | operator ';'
-    {
-      $$ = SPVM_OP_build_value_op_statement(compiler, $1);
-    }
   | LAST ';'
   | NEXT ';'
   | BREAK ';'
@@ -495,32 +491,39 @@ statement
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
-  | die
-  | WARN operator ';'
+  | operator ';'
     {
-      $$ = SPVM_OP_build_warn(compiler, $1, $2);
+      $$ = SPVM_OP_build_operator_statement(compiler, $1);
     }
-  | PRINT operator ';'
-    {
-      $$ = SPVM_OP_build_print(compiler, $1, $2);
-    }
-  | weaken_field ';'
-  | unweaken_field ';'
+  | void_return_operator ';'
   | ';'
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, compiler->cur_file, compiler->cur_line);
     }
-  | MAKE_READ_ONLY operator ';'
+
+void_return_operator
+  : die
+  | WARN operator
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, $2);
+    }
+  | PRINT operator
+    {
+      $$ = SPVM_OP_build_print(compiler, $1, $2);
+    }
+  | weaken_field
+  | unweaken_field
+  | MAKE_READ_ONLY operator
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
     }
 
 die
-  : DIE operator ';'
+  : DIE operator
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
     }
-  | DIE ';'
+  | DIE
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL);
     }

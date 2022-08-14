@@ -1,15 +1,11 @@
-0.9639 2022-08-10
+0.9639 2022-08-15
   [New Features]
     * Add the is_type operator.
     * Add Error::NotSupported class. This class is default loaded.
-  [Compilation Error Message Improvement]
-    * Improve compilation error messages.
   [Bug Fix]
     * Fix the bug that non-class types become child classes.
     * Fix the bug that pointer class types become child classes.
     * Fix the bug that the interface name specified by the interface statement becomes the same name of the current interface.
-  [Test Improvement]
-    * Add many compilation error tests.
   [Document Fix]
     * Fix the document bug of Class IDs of SPVM::Document::NativeAPI
       [Before]
@@ -24,8 +20,6 @@
           1  SPVM_NATIVE_C_CLASS_ID_ERROR
           2  SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
           3  SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
-      
-  [Document Fix]]
     * Add all standard modules to SPVM::Document::Modules.
       Until now, default loaded modules were removed.
       The following is the current list of standard modules.
@@ -76,6 +70,18 @@
       StringList
       Time
       Time::Info
+    * die, warn, print, weaken, unweaken, make_read_only statement become void returning operators instead of statements.
+  [Compilation Error Message Improvement]
+    * Improve compilation error messages.
+  [Document Improvement]
+    * Add the docs of the void returning operator.
+    * Improve the doc of the new operator
+  [Test Improvement]
+    * Add many compilation error tests.
+  [Ineffective Changes]
+    * die, warn, print, weaken, unweaken, make_read_only statement become void returning operators instead of statements.
+  [Internal Ineffective Changes]
+    * Rename SPVM_OP_build_value_op_statement to SPVM_OP_build_operator_statement
 
 0.9638 2022-08-10
   [Fix Bug]

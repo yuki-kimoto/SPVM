@@ -6548,9 +6548,17 @@ The C<last> statement" is a L<statement|/"Statement"> to move to the outside of 
 
 See also L</"while Statement">, L</"for Statement">.
 
-=head2 warn Statement
+=head1 void Returning Operator
 
-The C<warn> statement is a L<statement|/"Statement"> to print a warning string to the standard error.
+The void returning operator is the operation that return type is C<void>.
+
+Note that this is not an L<operator|Operator> because the operator is defined as the operation that returns the value.
+
+void returning operators are the L<warn operator|/"warn Operator">, the L<die operator|/"die Operator">, the L<print operator|/"print Operator">, the L<make_read_only operator|/"make_read_only Operator">, the L<weaken operator|/"weaken Operator">, and the L<unweaken operator|/"unweaken Operator">.
+
+=head2 warn Operator
+
+The C<warn> operator is a L<void retruning operator|/"void Returning Operator"> to print a warning string to the standard error.
 
   warn OPERNAD;
 
@@ -6564,9 +6572,9 @@ If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: s
 
 The buffer of the standard error is flushed after the printing.
 
-=head2 die Statement
+=head2 die Operator
 
-The C<die> statement is a L<statement|/"Statement"> to L<throw an exception|/"Throwing Exception">.
+The C<die> operator is a L<void retruning operator|/"void Returning Operator"> to L<throw an exception|/"Throwing Exception">.
 
   die OPERAND;
 
@@ -6602,9 +6610,9 @@ B<Examples:>
     # ...
   }
 
-=head2 print Statement
+=head2 print Operator
 
-The C<print> statement is a L<statement|/"Statement"> to print a L<string|/"String"> to the standard output.
+The C<print> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> to the standard output.
 
   print OPERAND;
 
@@ -6612,9 +6620,9 @@ The oeprand must be a L<string type|/"String Type">.
 
 If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
 
-=head2 make_read_only Statement
+=head2 make_read_only Operator
 
-The C<make_read_only> statement is a L<statement|/"Statement"> to make the L<string|/"Strings"> read-only.
+The C<make_read_only> operator is a L<void retruning operator|/"void Returning Operator"> to make the L<string|/"Strings"> read-only.
 
   make_read_only OPERAND;
 
@@ -6631,9 +6639,9 @@ Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<
   # The conversion to the string type qualified by mutable throw an exception.
   my $string_mut = (mutable string)$string;
 
-=head2 weaken Statement
+=head2 weaken Operator
 
-The C<weaken> statement is a L<statement|/"Statement"> to create a L<weak reference|/"Weak Reference">.
+The C<weaken> operator is a L<void retruning operator|/"void Returning Operator"> to create a L<weak reference|/"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
@@ -6650,9 +6658,9 @@ B<Examples:>
   # weaken
   weaken $object->{point};
 
-=head2 unweaken Statement
+=head2 unweaken Operator
 
-The C<unweaken> statement is a L<statement|/"Statement"> to unweakens a L<weak reference|/"Weak Reference">.
+The C<unweaken> operator is a L<void retruning operator|/"void Returning Operator"> to unweakens a L<weak reference|/"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
@@ -6671,7 +6679,7 @@ B<Examples:>
 
 =head1 Operator
 
-An operator performs an L<operator|/"Operator">.
+The operator performs an operation that returns the value.
 
 Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator">, and L<assignment operators|/"Assignment Operator">.
 
@@ -8138,9 +8146,9 @@ B<Examples:>
 
 The C<new> operator is an L<operator|/"Operator"> to create an object or an array.
 
-=head2 Creating Object
+=head3 Creating Object
 
-The creating object is an L<operator|/"Operator"> to create an object using the C<new> keyword.
+The creating object is an L<operator|/"Operator"> to create an object using the L<new operator|/"new Operator">.
 
   new CLASS_NAME;
 
@@ -8154,9 +8162,9 @@ B<Examples:>
 
   my $object = new Foo;
 
-=head2 Creating Array
+=head3 Creating Array
 
-The creating array is an L<operator|/"Operator"> to create an array using the C<new> keyword.
+The creating array is an L<operator|/"Operator"> to create an array using the L<new operator|/"new Operator">.
 
   new BasicType[LENGTH]
 
@@ -8177,9 +8185,9 @@ B<Examples:>
   my $objects = new object[3];
   my $values = new Complex_2d[3]
 
-=head3 Multi Dimensional Array
+=head3 Creating Multi-Dimensional Array
 
-Multi dimensional arrays can be created.
+Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
 
   new BasicType[][LENGTH]
   new BasicType[][]...[LENGTH]
@@ -8572,13 +8580,13 @@ The return value is the class id.
 
 The return type is the L<int type|/"int Type">.
 
-=head2 error_code
+=head2 error_code Operator
 
 The C<error_code> is an L<operator|/"Operator"> to get the value of the error code.
 
   error_code
 
-=head2 set_error_code
+=head2 set_error_code Operator
 
 The C<set_error_code> operator is an L<operator|/"Operator"> to set the value of the error code.
 
@@ -8586,7 +8594,7 @@ The C<set_error_code> operator is an L<operator|/"Operator"> to set the value of
 
 The type of the operand must be the L<int type|/"int Type">.
 
-=head2 error
+=head2 error Operator
 
 The C<error> operatoer is an L<operator|/"Operator"> to get the current error code.
 
@@ -8602,7 +8610,7 @@ Explains exceptions.
 
 =head2 Throwing Exception
 
-You can throw an exception using the L<die statement|/"die Statement">.
+You can throw an exception using the L<die statement|/"die Operator">.
 
   die OPERAND;
 
@@ -8678,7 +8686,7 @@ In this case, both objects are not destroyed when the Scope ends. This is becaus
 
 Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
 
-In such a case, it is possible to release correctly by setting one Field to Weak Reference using L</"weaken Statement">.
+In such a case, it is possible to release correctly by setting one Field to Weak Reference using the L<weaken operator/"weaken Operator">.
 
   {
     my $foo = new Foo;
@@ -8712,7 +8720,7 @@ Even if there are 3 circular references, you can release them correctly by setti
     weaken $foo->{bar};
   }
 
-As a syntax related to Weak Reference, Weak Reference can be destroyed L</"weaken Statement">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
+As a syntax related to Weak Reference, Weak Reference can be destroyed the L<weaken operator/"weaken Operator">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
 
 =head1 See Also
 

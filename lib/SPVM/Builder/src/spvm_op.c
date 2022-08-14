@@ -3369,7 +3369,7 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
   return op_return;
 }
 
-SPVM_OP* SPVM_OP_build_value_op_statement(SPVM_COMPILER* compiler, SPVM_OP* op_value_op) {
+SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_value_op) {
   
   // Free tmp vars at end of value_op statement
   SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_value_op->file, op_value_op->line);
