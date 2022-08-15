@@ -7887,37 +7887,6 @@ B<Examples:>
     # ...
   }
 
-=head2 Type Cast
-
-The type cast is the L<operator|/"Operator"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
-
-  # Type Cast
-  (TYPE)OPERAND
-  
-  # Postfix Type Cast
-  OPERAND->(TYPE)
-
-If the type cast doesn't have the L<castability|"Castability">, a compilation error will occur.
-
-A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
-
-The behaviors of type casts are explained in L</"Castability">.
-
-B<Examples:>
-  
-  # Explicte long to int type conversion
-  my $num = (int)123L;
-
-  # Explicte byte[] to string type conversion
-  my $num = (string)new byte[3];
-
-  # Explicte string to byte[] type conversion
-  my $num = (byte[])"Hello";
-
-  # Postfix type cast
-  my $point = Point->new;
-  my $stringable = $point->(Stringable);
-
 =head2 Getting Local Variable
 
 The getting local variable is an L<operator|/"Operator"> to get the value of the L<local variable|/"Local Variable">.
@@ -8579,6 +8548,37 @@ The C<error> operatoer is an L<operator|/"Operator"> to get the current error co
 This value is set to C<0> at the beginning of the L<eval block|eval Block>.
 
 If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<error_code|/"error_code">.
+
+=head2 Type Cast
+
+The type cast is the L<operator|/"Operator"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
+
+  # Type Cast
+  (TYPE)OPERAND
+  
+  # Postfix Type Cast
+  OPERAND->(TYPE)
+
+If the type cast doesn't have the L<castability|"Castability">, a compilation error will occur.
+
+A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
+
+The behaviors of type casts are explained in L</"Castability">.
+
+B<Examples:>
+  
+  # Explicte long to int type conversion
+  my $num = (int)123L;
+
+  # Explicte byte[] to string type conversion
+  my $num = (string)new byte[3];
+
+  # Explicte string to byte[] type conversion
+  my $num = (byte[])"Hello";
+
+  # Postfix type cast
+  my $point = Point->new;
+  my $stringable = $point->(Stringable);
 
 =head1 Method Call
 
