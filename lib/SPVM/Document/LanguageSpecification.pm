@@ -213,6 +213,25 @@ B<Examples:>
   ${name
   $3foo
 
+=head2 Current Class
+
+C<&> before method name means the current class. C<&> is replaced with C<CURRENT_CLASS_NAME-E<gt>>.
+
+B<Examples:>
+
+  class Foo {
+    
+    static method test : void () {
+      # This means Foo->sum(1, 2)
+      my $ret = &sum(1, 2);
+    }
+  
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+    
+  }
+
 =head2 Keyword
 
 The list of keywords:
@@ -6697,7 +6716,7 @@ B<Examples:>
 
 The operator performs an operation that returns the value.
 
-Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator">, and L<assignment operators|/"Assignment Operator">.
+Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator"> the L<method call|/"Method Call">, and L<assignment operators|/"Assignment Operator">.
 
 =head2 Unary Operator
 
@@ -8271,65 +8290,6 @@ B<Examples:>
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Method Call
-
-Method calls are L</"Class Method Call"> and L</"Instance Method Call">.
-
-=head3 Class Method Call
-
-A method defined as the L<class method|/"Class Method"> can be called using the class method call.
-
-  ClassName->MethodName(ARGS1, ARGS2, ...);
-
-If the number of arguments does not correct, a compilation error will occur.
-
-If the types of arguments have no type compatible, a compilation error will occur.
-
-B<Examples:>
-
-  my $ret = Foo->bar(1, 2, 3);
-
-=head3 Instance Method Call
-
-A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
-
-  Object->MethodName(ARGS1, ARGS2, ...);
-
-If the number of arguments does not correct, a compilation error will occur.
-
-If the types of arguments have no type compatible, a compilation error will occur.
-
-B<Examples:>
-  
-  $object->bar(5, 3. 6);
-
-C<SUPER::> qualifier call the method of the super class.
-
-  $object->SUPER::bar(5, 3. 6);
-
-A instance method can be called statically by specifing the calss name.
-
-  $point3d->Point::clear;
-
-=head3 Current Class
-
-B<&> before method name means the current class. You can call method using C<&> keyword instead of the current class name.
-
-B<Examples:>
-
-  class Foo {
-    
-    static method test : void () {
-      # This means Foo->sum(1, 2)
-      my $ret = &sum(1, 2);
-    }
-  
-    static method sum : int ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
-    
-  }
-
 =head2 Reference Operator
 
 The reference operator C<\> is the L<operator|/"Operator"> to create a L<reference|/"Reference">.
@@ -8619,6 +8579,46 @@ The C<error> operatoer is an L<operator|/"Operator"> to get the current error co
 This value is set to C<0> at the beginning of the L<eval block|eval Block>.
 
 If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<error_code|/"error_code">.
+
+=head1 Method Call
+
+The method call is an L<operator|/"Operator"> that calls a L<method|/"Method">.
+
+=head2 Class Method Call
+
+A method defined as the L<class method|/"Class Method"> can be called using the class method call.
+
+  ClassName->MethodName(ARGS1, ARGS2, ...);
+
+If the number of arguments does not correct, a compilation error will occur.
+
+If the types of arguments have no type compatible, a compilation error will occur.
+
+B<Examples:>
+
+  my $ret = Foo->bar(1, 2, 3);
+
+=head2 Instance Method Call
+
+A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
+
+  Object->MethodName(ARGS1, ARGS2, ...);
+
+If the number of arguments does not correct, a compilation error will occur.
+
+If the types of arguments have no type compatible, a compilation error will occur.
+
+B<Examples:>
+  
+  $object->bar(5, 3. 6);
+
+C<SUPER::> qualifier call the method of the super class.
+
+  $object->SUPER::bar(5, 3. 6);
+
+A instance method can be called statically by specifing the calss name.
+
+  $point3d->Point::clear;
 
 =head1 Exception
 
