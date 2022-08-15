@@ -5,10 +5,10 @@
 #include "spvm_native.h"
 
 #include "spvm_api.h"
+#include "spvm_api_vm.h"
 #include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
-#include "spvm_vm.h"
 
 #include "spvm_strerror.h"
 #include "spvm_object.h"
@@ -1364,7 +1364,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
       }
       // Call sub virtual machine
       else {
-        error = SPVM_VM_call_spvm_method_vm(env, stack, method_id, args_stack_length);
+        error = SPVM_API_VM_call_spvm_method_vm(env, stack, method_id, args_stack_length);
       }
     }
   }

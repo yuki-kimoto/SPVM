@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "spvm_api.h"
+#include "spvm_api_vm.h"
 #include "spvm_native.h"
 
 #include "spvm_allocator.h"
@@ -35,7 +36,7 @@
 
 static const char* FILE_NAME = "spvm_vm.c";
 
-int32_t SPVM_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   (void)env;
 
   // Opcode relative index
