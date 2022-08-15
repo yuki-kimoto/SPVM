@@ -115,6 +115,7 @@ lib/SPVM/Builder/include/spvm_typedecl.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_var_decl.h
+lib/SPVM/Builder/include/spvm_vm.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
@@ -165,6 +166,7 @@ lib/SPVM/Builder/src/spvm_type.c
 lib/SPVM/Builder/src/spvm_use.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_var_decl.c
+lib/SPVM/Builder/src/spvm_vm.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
 lib/SPVM/Builder/Util.pm
@@ -220,6 +222,7 @@ lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
 lib/SPVM/Error.pm
+lib/SPVM/Error/NotSupported.pm
 lib/SPVM/Error/System.pm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
