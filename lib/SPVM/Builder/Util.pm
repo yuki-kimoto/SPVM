@@ -437,6 +437,7 @@ sub get_spvm_core_common_source_file_names {
     spvm_runtime.c
     spvm_strerror.c
     spvm_string_buffer.c
+    spvm_vm.c
   );
   
   return \@spvm_core_source_file_names;
@@ -502,6 +503,7 @@ sub get_spvm_core_header_file_names {
     spvm_weaken_backref.h
     spvm_yacc.h
     spvm_yacc_util.h
+    spvm_vm.h
   );
   
   return \@spvm_core_header_file_names;
