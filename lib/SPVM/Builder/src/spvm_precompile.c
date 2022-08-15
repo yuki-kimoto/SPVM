@@ -5045,7 +5045,7 @@ void SPVM_PRECOMPILE_add_divide_integral(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\"));\n"
                                         "    error = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -5064,7 +5064,7 @@ void SPVM_PRECOMPILE_add_divide_unsigned_int(SPVM_PRECOMPILE* precompile, SPVM_S
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\"));\n"
                                         "    error = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -5083,7 +5083,7 @@ void SPVM_PRECOMPILE_add_divide_unsigned_long(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
-                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"0 division\"));\n"
+                                        "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\"));\n"
                                         "    error = 1;\n"
                                         "  } else {\n"
                                         "    ");
@@ -5114,7 +5114,7 @@ void SPVM_PRECOMPILE_add_remainder_integral(SPVM_PRECOMPILE* precompile, SPVM_ST
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\");\n"
                                         "    env->set_exception(env, stack, exception);\n"
                                         "    error = 1;\n"
                                         "  }\n"
@@ -5135,7 +5135,7 @@ void SPVM_PRECOMPILE_add_remainder_unsigned_int(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\");\n"
                                         "    env->set_exception(env, stack, exception);\n"
                                         "    error = 1;\n"
                                         "  }\n"
@@ -5156,7 +5156,7 @@ void SPVM_PRECOMPILE_add_remainder_unsigned_long(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, in2_index);
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) {\n"
-                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"0 division\");\n"
+                                        "    void* exception = env->new_string_nolen_raw(env, stack, \"Integral type values can't be divided by 0\");\n"
                                         "    env->set_exception(env, stack, exception);\n"
                                         "    error = 1;\n"
                                         "  }\n"

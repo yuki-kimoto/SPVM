@@ -37,18 +37,38 @@
 static const char* FILE_NAME = "spvm_vm.c";
 
 enum {
-  SPVM_API_EXCEPTION_ALLOCATE_CALL_STACK,
-  SPVM_API_EXCEPTION_MOVE_OBJECT_WITH_TYPE_CHECKING,
-  SPVM_API_EXCEPTION_MOVE_OBJECT_CHECK_READ_ONLY,
+  SPVM_API_EXCEPTION_CALL_STACK_ALLOCATION_FAILED,
+  SPVM_API_EXCEPTION_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
+  SPVM_API_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,
   SPVM_API_EXCEPTION_DIVIDE_ZERO,
-  
+  SPVM_API_EXCEPTION_CONCAT_LEFT_UNDEFINED,
+  SPVM_API_EXCEPTION_CONCAT_RIGHT_UNDEFINED,
+  SPVM_API_EXCEPTION_NEW_OBJECT_FAILED,
+  SPVM_API_EXCEPTION_NEW_ARRAY_FAILED,
+  SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL,
+  SPVM_API_EXCEPTION_NEW_STRING_FAILED,
+  SPVM_API_EXCEPTION_STRING_LENGTH_SMALL,
+  SPVM_API_EXCEPTION_ARRAY_UNDEFINED,
+  SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE,
+  SPVM_API_EXCEPTION_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE,
+  SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED,
 };
 
 static const char* exception_messages[] = {
   "The memory allocation for the call stack failed",
   "The value can't be cast to the non-assignable type",
   "The read-only string can't be cast to the mutable string type",
-  "Integral type values can't be divided by 0.",
+  "Integral type values can't be divided by 0",
+  "The left operand of the \".\" operator must be defined",
+  "The right operand of the \".\" operator must be defined",
+  "The object creating failed",
+  "The array creating failed",
+  "The length of the array must be greater than or equal to 0",
+  "The string creating failed",
+  "The length of the string must be greater than or equal to 0",
+  "The array must be defined",
+  "The index of the array access must be greater than or equal to 0 and less than the length of the array"
+  "The element can't be assigned to the non-assignable type",
 };
 
 int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
@@ -145,7 +165,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
     
     call_stack = SPVM_API_new_memory_stack(env, stack, total_vars_byte_size + 1);
     if (call_stack == NULL) {
-      void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ALLOCATE_CALL_STACK]);
+      void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_CALL_STACK_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
       error = 1;
       return error;
@@ -468,7 +488,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_MOVE_OBJECT_WITH_TYPE_CHECKING]);
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -478,7 +498,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
         void* string = *(void**)&object_vars[opcode->operand1];
         if (env->is_read_only(env, stack, string)) {
-          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_MOVE_OBJECT_CHECK_READ_ONLY]);
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -734,12 +754,12 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* string1 = *(void**)&object_vars[opcode->operand1];
         void* string2 = *(void**)&object_vars[opcode->operand2];
         if (string1 == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "\".\" operater left value must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_CONCAT_LEFT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else if (string2 == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "\".\" operater right value must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_CONCAT_RIGHT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1050,7 +1070,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         void* object = env->new_object_raw(env, stack, basic_type_id);
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for object");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_OBJECT_FAILED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1068,7 +1088,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_object_array_raw(env, stack, basic_type_id, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't create the object array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1077,7 +1097,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1091,7 +1111,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_muldim_array_raw(env, stack, basic_type_id, element_dimension, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for multi dimention array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1100,7 +1120,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1114,7 +1134,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_mulnum_array_raw(env, stack, basic_type_id, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for muti numeric array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1123,7 +1143,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1134,7 +1154,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_byte_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for byte array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1143,7 +1163,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1157,7 +1177,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_short_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for short array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1167,7 +1187,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1181,7 +1201,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_int_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for int array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1191,7 +1211,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1204,7 +1224,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_long_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for long array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1213,7 +1233,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1225,7 +1245,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_float_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for float array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1234,7 +1254,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1246,7 +1266,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* object = env->new_double_array_raw(env, stack, length);
           if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for double array");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_ARRAY_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1255,7 +1275,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the array must be greater than or equal to 0");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRRAY_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1267,7 +1287,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, &constant_string_length);
         void* string = env->new_string_raw(env, stack, constant_string, constant_string_length);
         if (string == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for string");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_STRING_FAILED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1282,7 +1302,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         if (length >= 0) {
           void* string = env->new_string_raw(env, stack, NULL, length);
           if (string == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, "The new_string_len operator can't allocate enough memory");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_NEW_STRING_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1291,7 +1311,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "The length of the new_string_len operator must be a positive number");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_STRING_LENGTH_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1312,13 +1332,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1332,13 +1352,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1352,13 +1372,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1372,13 +1392,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1392,13 +1412,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1412,13 +1432,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1433,13 +1453,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand2];
         
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1454,13 +1474,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1474,13 +1494,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1494,13 +1514,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1514,13 +1534,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1534,13 +1554,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1554,13 +1574,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1575,13 +1595,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1597,13 +1617,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1615,7 +1635,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
               SPVM_API_OBJECT_ASSIGN(env, stack, element_address, object);
             }
             else {
-              void* exception = env->new_string_nolen_raw(env, stack, "Assigned element type is invalid");
+              void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE]);
               env->set_exception(env, stack, exception);
               error = 1;
             }
@@ -1628,13 +1648,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -1647,7 +1667,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
         if (*(void**)&object_vars[opcode->operand1] == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't get the array length of undef.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1664,7 +1684,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1681,7 +1701,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1698,7 +1718,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1715,7 +1735,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1732,7 +1752,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1749,7 +1769,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1766,7 +1786,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the getting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1783,7 +1803,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1799,7 +1819,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1815,7 +1835,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1831,7 +1851,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1847,7 +1867,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1863,7 +1883,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1879,7 +1899,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -1896,7 +1916,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The invocant of the setting field must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -2380,13 +2400,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2405,13 +2425,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2429,13 +2449,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2453,13 +2473,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2478,13 +2498,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2503,13 +2523,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2527,13 +2547,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2551,13 +2571,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2575,13 +2595,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2599,13 +2619,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2623,13 +2643,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2647,13 +2667,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2673,13 +2693,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2696,13 +2716,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2719,13 +2739,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2742,13 +2762,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2765,13 +2785,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2788,13 +2808,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2810,13 +2830,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2832,13 +2852,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2854,13 +2874,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2876,13 +2896,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2898,13 +2918,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -2920,13 +2940,13 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The array must be defined");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Index is out of range");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
