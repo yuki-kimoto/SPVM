@@ -503,6 +503,6 @@ struct spvm_opcode {
 SPVM_OPCODE* SPVM_OPCODE_new();
 const char* const* SPVM_OPCODE_C_ID_NAMES(void);
 
-const char* SPVM_OPCODE_get_opcode_name(SPVM_COMPILER* compiler, int32_t opcode_id);
+const char* SPVM_OPCODE_get_opcode_name(int32_t opcode_id);
 
 #endif

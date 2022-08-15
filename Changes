@@ -16,6 +16,14 @@
     * Reorder ops.
     * The part of spvm_api.c and spvm_api.h is separated to spvm_vm.c and spvm_api_vm.h.
     * SPVM_API_call_spvm_method_vm in spvm_api.c is renamed to SPVM_API_VM_call_spvm_method_vm in spvm_api_vm.c.
+    * Reorder opcodes in spvm_api_vm.c.
+    * Reorder opcodes in spvm_precompile.c.
+    * Change the definition of the following function
+      [Before]
+      const char* SPVM_OPCODE_get_opcode_name(SPVM_COMPILER* compiler, int32_t opcode_id);
+      [After]
+      const char* SPVM_OPCODE_get_opcode_name(int32_t opcode_id);
+      
 0.9639 2022-08-15
   [New Features]
     * Add the is_type operator.

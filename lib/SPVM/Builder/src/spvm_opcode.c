@@ -500,6 +500,6 @@ SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
   return opcode;
 }
 
-const char* SPVM_OPCODE_get_opcode_name(SPVM_COMPILER* compiler, int32_t opcode_id) {
+const char* SPVM_OPCODE_get_opcode_name(int32_t opcode_id) {
   return (SPVM_OPCODE_C_ID_NAMES())[opcode_id];
 }
