@@ -10,6 +10,7 @@
     * Remove SPVM_OP_C_ID_STAB.
     * Remove SPVM_OP_C_ID_PRECOMPILE, SPVM_OP_C_ID_RW, SPVM_OP_C_ID_RO, SPVM_OP_C_ID_WO, SPVM_OP_C_ID_REQUIRED.
     * Remove SPVM_OP_C_ID_SELF.
+    * Remove SPVM_OP_C_ID_BLOCK_END.
     * Reorder ops.
 0.9639 2022-08-15
   [New Features]
