@@ -4,6 +4,16 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+enum {
+  STACK_INDEX_EXCEPTION = 511,
+  STACK_INDEX_MORTAL_STACK = 510,
+  STACK_INDEX_MORTAL_STACK_TOP = 509,
+  STACK_INDEX_MORTAL_STACK_CAPACITY = 508,
+  STACK_INDEX_MEMORY_BLOCKS_COUNT = 507,
+  STACK_INDEX_ARGS_LENGTH = 506,
+  STACK_INDEX_CALL_DEPTH = 505,
+};
+
 /*
   Runtime information APIs
 */

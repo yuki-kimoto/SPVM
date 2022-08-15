@@ -1,25 +1,21 @@
-#include <stdint.h>
-#include <assert.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stddef.h>
 #include <inttypes.h>
-#include <stdarg.h>
+#include <stdlib.h>
+#include <assert.h>
 
-#include "spvm_api.h"
-#include "spvm_vm.h"
 #include "spvm_native.h"
 
-#include "spvm_allocator.h"
+#include "spvm_api.h"
+#include "spvm_api_runtime.h"
+#include "spvm_api_allocator.h"
+#include "spvm_api_string_buffer.h"
+#include "spvm_vm.h"
 
-#include "spvm_list.h"
+#include "spvm_strerror.h"
+#include "spvm_object.h"
+#include "spvm_allocator.h"
+#include "spvm_weaken_backref.h"
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
-
-#include "spvm_opcode.h"
-#include "spvm_object.h"
-#include "spvm_weaken_backref.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_constant_string.h"
@@ -30,24 +26,10 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_method.h"
 
-#include "spvm_api_string_buffer.h"
-#include "spvm_api_allocator.h"
-#include "spvm_api_runtime.h"
-
-#include "spvm_strerror.h"
-
 #ifndef SPVM_NO_COMPILER_API
 #  include "spvm_api_compiler.h"
 #  include "spvm_api_precompile.h"
 #endif
-
-static int32_t STACK_INDEX_EXCEPTION = 511;
-static int32_t STACK_INDEX_MORTAL_STACK = 510;
-static int32_t STACK_INDEX_MORTAL_STACK_TOP = 509;
-static int32_t STACK_INDEX_MORTAL_STACK_CAPACITY = 508;
-static int32_t STACK_INDEX_MEMORY_BLOCKS_COUNT = 507;
-static int32_t STACK_INDEX_ARGS_LENGTH = 506;
-static int32_t STACK_INDEX_CALL_DEPTH = 505;
 
 static const char* FILE_NAME = "spvm_api.c";
 

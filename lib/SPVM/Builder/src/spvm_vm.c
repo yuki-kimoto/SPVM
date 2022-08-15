@@ -33,21 +33,6 @@
 #include "spvm_api_allocator.h"
 #include "spvm_api_runtime.h"
 
-#include "spvm_strerror.h"
-
-#ifndef SPVM_NO_COMPILER_API
-#  include "spvm_api_compiler.h"
-#  include "spvm_api_precompile.h"
-#endif
-
-static int32_t STACK_INDEX_EXCEPTION = 511;
-static int32_t STACK_INDEX_MORTAL_STACK = 510;
-static int32_t STACK_INDEX_MORTAL_STACK_TOP = 509;
-static int32_t STACK_INDEX_MORTAL_STACK_CAPACITY = 508;
-static int32_t STACK_INDEX_MEMORY_BLOCKS_COUNT = 507;
-static int32_t STACK_INDEX_ARGS_LENGTH = 506;
-static int32_t STACK_INDEX_CALL_DEPTH = 505;
-
 static const char* FILE_NAME = "spvm_vm.c";
 
 int32_t SPVM_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
