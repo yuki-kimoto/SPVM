@@ -52,6 +52,11 @@ enum {
   SPVM_API_EXCEPTION_ARRAY_ACCESS_INDEX_OUT_OF_RANGE,
   SPVM_API_EXCEPTION_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE,
   SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED,
+  SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF,
+  SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE,
+  SPVM_API_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED,
+  SPVM_API_EXCEPTION_COPY_OPERAND_INVALID,
+  SPVM_API_EXCEPTION_ERROR_CODE_TOO_SMALL,
 };
 
 static const char* exception_messages[] = {
@@ -69,6 +74,11 @@ static const char* exception_messages[] = {
   "The array must be defined",
   "The index of the array access must be greater than or equal to 0 and less than the length of the array"
   "The element can't be assigned to the non-assignable type",
+  "The unboxing conversion can't be performed on the undefined value",
+  "The source of the unboxing conversion must be the corresponding numeric object type",
+  "The memory allocation for the weaken back reference failed",
+  "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type",
+  "The error code must be greater than or equal to 1",
 };
 
 int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
@@ -2162,7 +2172,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
         int32_t tmp_error_code = int_vars[opcode->operand1];
         if (tmp_error_code < 1) {
-          void* exception = env->new_string_nolen_raw(env, stack, "The error code must be greater than or equal to 1");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ERROR_CODE_TOO_SMALL]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -2212,7 +2222,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         if (object) {
           if (!(env->is_string(env, stack, object) || env->is_numeric_array(env, stack, object) || env->is_mulnum_array(env, stack, object))) {
-            void* exception = env->new_string_nolen_raw(env, stack, "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_COPY_OPERAND_INVALID]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3087,7 +3097,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to weaken an object field must be defined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3095,7 +3105,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
           int32_t status = env->weaken(env, stack, get_field_object_address);
           if (status != 0) {
-            void* exception = env->new_string_nolen_raw(env, stack, "Can't allocate memory for weaken back reference");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3108,7 +3118,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to unweaken an object field must be defined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3124,7 +3134,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, "Object to isweak an object field must be defined.");
+          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3389,7 +3399,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3401,7 +3411,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             byte_vars[opcode->operand0] = *(int8_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Byte.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3411,7 +3421,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3423,7 +3433,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             short_vars[opcode->operand0] = *(int16_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Short.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3433,7 +3443,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3445,7 +3455,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             int_vars[opcode->operand0] = *(int32_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Int.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3455,7 +3465,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3467,7 +3477,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             long_vars[opcode->operand0] = *(int64_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Long.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3477,7 +3487,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3489,7 +3499,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             float_vars[opcode->operand0] = *(float*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Float.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
@@ -3500,7 +3510,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't convert undef value.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -3512,7 +3522,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             double_vars[opcode->operand0] = *(double*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, stack, "The source type must be Double.");
+            void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
             env->set_exception(env, stack, exception);
             error = 1;
           }
