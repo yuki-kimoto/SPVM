@@ -7901,7 +7901,7 @@ If the type cast doesn't have the L<castability|"Castability">, a compilation er
 
 A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
 
-The behavior of type casts are explains in L<Castability>.
+The behaviors of type casts are explained in L</"Castability">.
 
 B<Examples:>
   
