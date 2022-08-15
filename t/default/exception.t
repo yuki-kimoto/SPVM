@@ -20,7 +20,7 @@ my $file = basename $0;
   my $error = $@;
   my $die_line = SPVM::TestCase::Exception->ZERO_DIVIDE_INT_LINE;
   ok($die_line > 0);
-  like($error, qr|\Q0 division|);
+  like($error, qr|\Qdivided by 0|);
   like($error, qr/\Q$file/);
   like($error, qr/$line/);
   like($error, qr/$die_line/);

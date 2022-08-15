@@ -36,6 +36,21 @@
 
 static const char* FILE_NAME = "spvm_vm.c";
 
+enum {
+  SPVM_API_EXCEPTION_ALLOCATE_CALL_STACK,
+  SPVM_API_EXCEPTION_MOVE_OBJECT_WITH_TYPE_CHECKING,
+  SPVM_API_EXCEPTION_MOVE_OBJECT_CHECK_READ_ONLY,
+  SPVM_API_EXCEPTION_DIVIDE_ZERO,
+  
+};
+
+static const char* exception_messages[] = {
+  "The memory allocation for the call stack failed",
+  "The value can't be cast to the non-assignable type",
+  "The read-only string can't be cast to the mutable string type",
+  "Integral type values can't be divided by 0.",
+};
+
 int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   (void)env;
 
@@ -130,7 +145,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
     
     call_stack = SPVM_API_new_memory_stack(env, stack, total_vars_byte_size + 1);
     if (call_stack == NULL) {
-      void* exception = env->new_string_nolen_raw(env, stack, "Can't alloc call stack memory");
+      void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_ALLOCATE_CALL_STACK]);
       env->set_exception(env, stack, exception);
       error = 1;
       return error;
@@ -453,7 +468,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         }
         else {
-          void* exception = env->new_string_nolen_raw(env, stack, "Can't perform the type cast to incompatible object type.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_MOVE_OBJECT_WITH_TYPE_CHECKING]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -463,7 +478,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
         void* string = *(void**)&object_vars[opcode->operand1];
         if (env->is_read_only(env, stack, string)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "Read-only strings can't be converted to mutable strings.");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_MOVE_OBJECT_CHECK_READ_ONLY]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -530,7 +545,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_DIVIDE_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -542,7 +557,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_DIVIDE_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -564,7 +579,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -576,7 +591,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -588,7 +603,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_REMAINDER_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -599,7 +614,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_REMAINDER_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -610,7 +625,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT: {
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }
@@ -621,7 +636,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG: {
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, "0 division");
+          void* exception = env->new_string_nolen_raw(env, stack, exception_messages[SPVM_API_EXCEPTION_DIVIDE_ZERO]);
           env->set_exception(env, stack, exception);
           error = 1;
         }

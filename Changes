@@ -1,3 +1,8 @@
+0.9641 2022-08-16
+  [Improvement Exception Messages]
+    * Improve many exception messages.
+  [Internal Ineffective Changes]
+    * The exception messages are shared.
 0.9640 2022-08-15
   [Document Fix]
     * Fix the parsing difinition. I have forgot to add the void returning operator in before release.
