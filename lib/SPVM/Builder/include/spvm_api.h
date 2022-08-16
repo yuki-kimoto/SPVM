@@ -291,6 +291,11 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
 // Error
 const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
+// Object flag
+int32_t SPVM_API_check_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+void SPVM_API_enable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+void SPVM_API_disable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 #define SPVM_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))

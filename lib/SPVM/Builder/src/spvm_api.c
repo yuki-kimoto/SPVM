@@ -280,6 +280,9 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_args_stack_length,
     SPVM_API_set_args_stack_length,
     SPVM_API_dumpc,
+    SPVM_API_check_flag_pointer_dont_free,
+    SPVM_API_enable_flag_pointer_dont_free,
+    SPVM_API_disable_flag_pointer_dont_free,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3685,4 +3688,24 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   (void)env;
   
   stack[STACK_INDEX_ARGS_LENGTH].ival = args_length;
+}
+
+int32_t SPVM_API_check_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  int32_t pointer_dont_free = object->flag & SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
+  
+  return pointer_dont_free;
+}
+
+void SPVM_API_enable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  object->flag |= SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
+}
+
+void SPVM_API_disable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  object->flag &= ~SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
 }

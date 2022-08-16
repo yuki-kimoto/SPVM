@@ -1,4 +1,27 @@
 0.9641 2022-08-16
+  [New Features]
+    * Add the following native APIs.
+    
+    =head2 check_flag_pointer_dont_free
+
+      int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+    Check the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+    If true, return C<1>. Otherwise return C<0>.
+
+    =head2 enable_flag_pointer_dont_free
+
+      void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+    Enable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+    =head2 disable_flag_pointer_dont_free
+
+      void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+    Disable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
   [Improvement Exception Messages]
     * Improve many exception messages.
   [Internal Ineffective Changes]

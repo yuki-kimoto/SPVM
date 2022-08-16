@@ -215,6 +215,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   198 get_args_stack_length
   199 set_args_stack_length
   200 dumpc
+  201 check_flag_pointer_dont_free
+  202 enable_flag_pointer_dont_free
+  203 disable_flag_pointer_dont_free
 
 =head2 class_vars_heap
 
@@ -2134,6 +2137,26 @@ Set the stack length of the arguments for a method call.
 The alias for the following code using L</"dump">.
 
   const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
+
+=head2 check_flag_pointer_dont_free
+
+  int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Check the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+If true, return C<1>. Otherwise return C<0>.
+
+=head2 enable_flag_pointer_dont_free
+
+  void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Enable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+=head2 disable_flag_pointer_dont_free
+
+  void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Disable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
 
 =head1 Compiler Native API
 

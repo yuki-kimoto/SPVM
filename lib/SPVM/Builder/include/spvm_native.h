@@ -298,6 +298,9 @@ struct spvm_env {
   int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
   const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_env_runtime {
