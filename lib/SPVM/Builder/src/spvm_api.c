@@ -283,6 +283,10 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_check_flag_pointer_dont_free,
     SPVM_API_enable_flag_pointer_dont_free,
     SPVM_API_disable_flag_pointer_dont_free,
+    SPVM_API_get_pointer_length,
+    SPVM_API_set_pointer_length,
+    SPVM_API_get_pointer_any_info,
+    SPVM_API_set_pointer_any_info,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -2553,7 +2557,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t 
     return NULL;
   }
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * 2;
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_byte_size);
@@ -3708,4 +3712,30 @@ void SPVM_API_disable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, S
   (void)env;
   
   object->flag &= ~SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
+}
+
+int32_t SPVM_API_get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  int32_t length = object->length;
+  
+  return length;
+}
+
+void SPVM_API_set_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
+  (void)env;
+  
+  object->length = length;
+}
+
+void* SPVM_API_get_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  return *(void**)((intptr_t)object + env->object_header_byte_size + sizeof(void*));
+}
+
+void SPVM_API_set_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* any_info) {
+  (void)env;
+  
+  *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(void*)) = any_info;
 }

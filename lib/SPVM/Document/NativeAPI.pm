@@ -218,6 +218,10 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   201 check_flag_pointer_dont_free
   202 enable_flag_pointer_dont_free
   203 disable_flag_pointer_dont_free
+  204 get_pointer_length
+  205 set_pointer_length
+  206 get_pointer_any_info
+  207 set_pointer_any_info
 
 =head2 class_vars_heap
 
@@ -2146,6 +2150,8 @@ Check the flag that indicates that the pointer set by L</"set_pointer"> doesn't 
 
 If true, return C<1>. Otherwise return C<0>.
 
+The default value is C<0>.
+
 =head2 enable_flag_pointer_dont_free
 
   void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -2157,6 +2163,30 @@ Enable the flag that indicates that the pointer set by L</"set_pointer"> doesn't
   void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 Disable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+=head2 get_pointer_length
+
+  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Get the length of the array set by L</"set_pointer">. The default value is C<0>.
+
+=head2 set_pointer_length
+
+  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
+
+Set the length of the array set by L</"set_pointer">. It is useful when the data is the pointer to an array.
+
+=head2 get_pointer_any_info
+
+  void* (*get_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Get the any infomation of the pointer set by L</"set_pointer">.
+
+=head2 set_pointer_any_info
+
+  void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
+
+Set the any infomation of the pointer set by L</"set_pointer">.
 
 =head1 Compiler Native API
 

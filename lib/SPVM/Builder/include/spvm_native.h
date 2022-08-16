@@ -301,6 +301,10 @@ struct spvm_env {
   int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
+  void* (*get_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
 };
 
 struct spvm_env_runtime {
