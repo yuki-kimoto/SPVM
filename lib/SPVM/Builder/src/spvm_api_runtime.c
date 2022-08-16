@@ -181,6 +181,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_build,
     SPVM_API_RUNTIME_get_class_parent_class_id,
     SPVM_API_RUNTIME_get_method_required_args_length,
+    SPVM_API_RUNTIME_get_class_is_pointer,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -474,6 +475,17 @@ int32_t SPVM_API_RUNTIME_get_class_name_id(SPVM_RUNTIME* runtime, int32_t class_
   int32_t class_name_id = class->name_id;
   
   return class_name_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_is_pointer(SPVM_RUNTIME* runtime, int32_t class_id) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  assert(class);
+  
+  int32_t class_is_pointer = class->is_pointer;
+  
+  return class_is_pointer;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {

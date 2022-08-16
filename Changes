@@ -1,3 +1,9 @@
+0.9641 2022-08-17
+  [New Features]
+    * Add the following runtime native APIs.
+    
+      int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+    
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.

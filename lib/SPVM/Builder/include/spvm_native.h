@@ -392,6 +392,7 @@ struct spvm_env_runtime {
   void (*build)(void* runtime, int32_t* spvm_32bit_codes);
   int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);
   int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
+  int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
 };
 
 struct spvm_env_compiler {
