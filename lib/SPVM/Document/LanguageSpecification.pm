@@ -2289,6 +2289,17 @@ L<Examples:>
   # The name of the anon class
   Foo::Bar::anon::3::23;
 
+=head2 Pointer Class
+
+The pointer class is the L<class|/"Class"> that has the L<class descriptor|/"Class Descriptor"> C<pointer_t>.
+
+  # Pointer Class
+  class Foo : pointer_t {
+  
+  }
+
+The type of a pointer class is the L<class type|/"Class Type">.
+
 =head1 Inheritance
 
 A class inherits a class using the C<extends> keyword.
@@ -4063,17 +4074,6 @@ The C<double> type is a L<floating point type|/"Floating Point Type"> that repre
 The class type is the type that can create the object using a L<new operator|/"new Operator">.
 
   new ClassType;
-
-=head2 Pointer Type
-
-The pointer type is the type that has a L<class descriptor|/"Class Descriptor"> C<pointer_t>.
-
-  # Pointer Type
-  class Foo: pointer_t {
-  
-  }
-
-A pointer type is a L<class type|/"Class Type">.
 
 =head2 Basic Object Type
 

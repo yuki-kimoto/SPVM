@@ -270,6 +270,24 @@ int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__is_class(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  void* object = stack[0].oval;
+  
+  int32_t is_class;
+  if (env->is_class(env, stack, object)) {
+    is_class = 1;
+  }
+  else {
+    is_class = 0;
+  }
+  
+  stack[0].ival = is_class;
+  
+  return 0;
+}
+
 int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
@@ -320,6 +338,24 @@ int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   stack[0].ival = is_object_array;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  void* object = stack[0].oval;
+  
+  int32_t is_pointer_class;
+  if (env->is_pointer_class(env, stack, object)) {
+    is_pointer_class = 1;
+  }
+  else {
+    is_pointer_class = 0;
+  }
+  
+  stack[0].ival = is_pointer_class;
   
   return 0;
 }

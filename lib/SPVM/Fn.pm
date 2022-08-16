@@ -390,7 +390,7 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"The array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -399,6 +399,14 @@ L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
   static method is_blank : int ($code_point : int)
 
 If the Unicode code point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>, return C<1>. Otherwise return C<0>.
+
+=head2 is_class
+
+  static method is_class : int ($object : object)
+
+If the object is defined and the type of the object is the L<class type|SPVM::Document::LanguageSpecification/"Class Type">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
 =head2 is_cntrl
 
@@ -469,6 +477,14 @@ Current Perl C<\s> in ASCII mode is the same as L</"is_space">.
   static method is_perl_word : int ($code_point : int)
 
 If the Unicode code point is an Perl ASCII word character C<a-zA-Z0-9_>, return C<1>. Otherwise return C<0>.
+
+=head2 is_pointer_class
+
+  static method is_pointer_class : int ($object : object)
+
+If the object is defined and the object is a L<pointer class|SPVM::Document::LanguageSpecification/"Pointer Class">, return C<1>. Otherwise return C<0>.
+
+L<SPVM::Document::NativeAPI/"is_pointer_class"> is used to check the type.
 
 =head2 is_print
 

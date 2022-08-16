@@ -4,6 +4,8 @@ class TestCase::Module::Fn {
   use Complex_2d;
   use Time;
   use Array;
+  use Time::Info;
+  use Point;
   
   static method GET_CODE_POINT_ERROR_OVER_STRING_RANGE : int () {
     
@@ -1259,6 +1261,54 @@ class TestCase::Module::Fn {
     return 1;
   }
 
+  static method is_class : int () {
+    
+    # Class
+    {
+      my $object = Point->new;
+      
+      unless (Fn->is_class($object)) {
+        return 0;
+      }
+    }
+
+    # Class
+    {
+      my $object = (Stringable)Point->new;
+      
+      unless (Fn->is_class($object)) {
+        return 0;
+      }
+    }
+    
+    # Array
+    {
+      my $object = new byte[3];
+      
+      if (Fn->is_class($object)) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_class($string)) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      if (Fn->is_class(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method is_cntrl : int () {
 
     my $ok = 1;
@@ -1635,6 +1685,63 @@ class TestCase::Module::Fn {
       return 0;
     }
 
+    return 1;
+  }
+
+  static method is_pointer_class : int () {
+    
+    # Class
+    {
+      my $object = Time::Info->new;
+      
+      unless (Fn->is_pointer_class($object)) {
+        return 0;
+      }
+    }
+    
+    # Class
+    {
+      my $object = Point->new;
+      
+      if (Fn->is_pointer_class($object)) {
+        return 0;
+      }
+    }
+
+    # Interface
+    {
+      my $object = (Stringable)Point->new;
+      
+      if (Fn->is_pointer_class($object)) {
+        return 0;
+      }
+    }
+    
+    # Array
+    {
+      my $object = new byte[3];
+      
+      if (Fn->is_pointer_class($object)) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_pointer_class($string)) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      if (Fn->is_pointer_class(undef)) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 

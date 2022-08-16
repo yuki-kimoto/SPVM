@@ -243,6 +243,8 @@ class Fn {
     }
   }
   
+  native static method is_class : int ($object : object);
+  
   static method is_cntrl : int ($code_point : int) {
     
     if (($code_point >= 0x00 && $code_point <= 0x1f) || $code_point == 0x7f) {
@@ -334,6 +336,8 @@ class Fn {
     }
     return $ispword;
   }
+  
+  native static method is_pointer_class : int ($object : object);
   
   static method is_print : int ($code_point : int) {
     
