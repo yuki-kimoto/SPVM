@@ -14,6 +14,8 @@
       int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   [Document Fix]
     * Remove the headding "Pointer Type" and add "Pointer Class".
+    * SPVM::Document::LanguageSpecification is renamed to SPVM::Document::Language.
+      SPVM::Document::LanguageSpecification remains and the content is the link to SPVM::Document::Language.
 
 0.9640 2022-08-16
   [New Features]

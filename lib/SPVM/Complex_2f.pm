@@ -18,7 +18,7 @@ SPVM::Complex_2f - float Complex Type
   
 =head1 Description
 
-C<Complex_2f> is a L<multi-numeric type|SPVM::Document::LanguageSpecification/"Multi-Numeric Type"> to represent a float complex number.
+C<Complex_2f> is a L<multi-numeric type|SPVM::Document::Language/"Multi-Numeric Type"> to represent a float complex number.
 
 =head1 Fields
 

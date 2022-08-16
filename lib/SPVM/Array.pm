@@ -361,7 +361,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
   static method dump_unsigned_byte : string ($array : byte[])
 
-Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 8-bit integer.
+Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 8-bit integer.
 
   my $ret = dump $array;
 
@@ -369,7 +369,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 
   static method dump_unsigned_int : string ($array : int[])
 
-Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 32-bit integer.
+Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 32-bit integer.
 
   my $ret = dump $array;
 
@@ -377,7 +377,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 
   static method dump_unsigned_long : string ($array : long[])
 
-Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 64-bit integer.
+Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 64-bit integer.
 
   my $ret = dump $array;
 
@@ -385,7 +385,7 @@ Same as the following code using the L<dump operator|SPVM::Document::LanguageSpe
 
   static method dump_unsigned_short : string ($array : short[])
 
-Same as the following code using the L<dump operator|SPVM::Document::LanguageSpecification/"dump Operator"> operator, but the elements are displayed as unsigned 16-bit integer.
+Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 16-bit integer.
 
   my $ret = dump $array;
 

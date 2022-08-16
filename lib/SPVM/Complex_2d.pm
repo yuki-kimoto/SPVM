@@ -18,7 +18,7 @@ SPVM::Complex_2d - double Complex Type
   
 =head1 Description
 
-C<Complex_2d> is a L<multi-numeric type|SPVM::Document::LanguageSpecification/"Multi-Numeric Type"> to represent a double complex number.
+C<Complex_2d> is a L<multi-numeric type|SPVM::Document::Language/"Multi-Numeric Type"> to represent a double complex number.
 
 =head1 Fields
 

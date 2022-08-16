@@ -414,7 +414,7 @@ SPVM Language Specification.
 
 =over 2
 
-=item * L<Language Specification|SPVM::Document::LanguageSpecification>
+=item * L<Language Specification|SPVM::Document::Language>
 
 =back
 

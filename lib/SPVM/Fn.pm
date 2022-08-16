@@ -289,7 +289,7 @@ The alias for the following code using L</"index>.
 
   static method copy_string : string ($string : string)
 
-The alias for the following code using the L<copy operator|SPVM::Document::LanguageSpecification/"copy Operator">
+The alias for the following code using the L<copy operator|SPVM::Document::Language/"copy Operator">
 
   my $ret = copy $string;
 
@@ -390,7 +390,7 @@ If the Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherwi
 
   static method is_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<array type|SPVM::Document::LanguageSpecification/"Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<array type|SPVM::Document::Language/"Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -404,7 +404,7 @@ If the Unicode code point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>,
 
   static method is_class : int ($object : object)
 
-If the object is defined and the type of the object is the L<class type|SPVM::Document::LanguageSpecification/"Class Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<class type|SPVM::Document::Language/"Class Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
@@ -442,7 +442,7 @@ If the Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. O
 
   static method is_mulnum_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::LanguageSpecification/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
@@ -450,7 +450,7 @@ L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
   static method is_numeric_array : int ($object : object)
 
-If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::LanguageSpecification/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is the L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
@@ -458,7 +458,7 @@ L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
   static method is_object_array : int ($object : object)
 
-If the object is defined and the type of the object is an L<object array type|SPVM::Document::LanguageSpecification/"Object Array Type">, return C<1>. Otherwise return C<0>.
+If the object is defined and the type of the object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
@@ -482,7 +482,7 @@ If the Unicode code point is an Perl ASCII word character C<a-zA-Z0-9_>, return 
 
   static method is_pointer_class : int ($object : object)
 
-If the object is defined and the object is a L<pointer class|SPVM::Document::LanguageSpecification/"Pointer Class">, return C<1>. Otherwise return C<0>.
+If the object is defined and the object is a L<pointer class|SPVM::Document::Language/"Pointer Class">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_pointer_class"> is used to check the type.
 
