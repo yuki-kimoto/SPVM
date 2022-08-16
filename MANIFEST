@@ -643,6 +643,10 @@ t/default/lib/SPVM/TestCase/Pointable.spvm
 t/default/lib/SPVM/TestCase/Pointer.c
 t/default/lib/SPVM/TestCase/Pointer.config
 t/default/lib/SPVM/TestCase/Pointer.spvm
+t/default/lib/SPVM/TestCase/PointerDontFree.c
+t/default/lib/SPVM/TestCase/PointerDontFree.config
+t/default/lib/SPVM/TestCase/PointerDontFree.spvm
+t/default/lib/SPVM/TestCase/PointerEmpty.spvm
 t/default/lib/SPVM/TestCase/PointForTest.spvm
 t/default/lib/SPVM/TestCase/Precedence.spvm
 t/default/lib/SPVM/TestCase/Print.spvm
@@ -793,5 +797,6 @@ t/utils/get_native_api_indexes.pl
 t/utils/sort_method_name_native.pl
 t/utils/sort_method_name_pod.pl
 t/utils/sort_method_name_spvm.pl
+t/utils/sort_opcode_vm.pl
 yacc/bison.sh
 yacc/spvm_yacc.y
