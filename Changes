@@ -3,6 +3,7 @@
     * Improve many exception messages.
   [Internal Ineffective Changes]
     * The exception messages are shared.
+    * Add SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE to spvm_object.h
 0.9640 2022-08-15
   [Document Fix]
     * Fix the parsing difinition. I have forgot to add the void returning operator in before release.
