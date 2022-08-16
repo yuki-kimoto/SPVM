@@ -3,7 +3,11 @@
     * Add the following runtime native APIs.
     
       int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+    * Add the following native APIs.
     
+      int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.

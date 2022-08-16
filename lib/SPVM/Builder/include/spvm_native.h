@@ -305,6 +305,8 @@ struct spvm_env {
   void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
   void* (*get_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
+  int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_env_runtime {

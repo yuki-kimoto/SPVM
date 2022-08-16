@@ -287,6 +287,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_pointer_length,
     SPVM_API_get_pointer_any_info,
     SPVM_API_set_pointer_any_info,
+    SPVM_API_is_class,
+    SPVM_API_is_pointer_class,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -1537,6 +1539,78 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   }
 
   return is_mulnum_array;
+}
+
+int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t is_class;
+  if (object) {
+    int32_t object_type_dimension = object->type_dimension;
+    if (object_type_dimension == 0) {
+      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      
+      switch (object_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
+          is_class = 1;
+          break;
+        }
+        default: {
+          is_class = 0;
+        }
+      }
+    }
+    else {
+      is_class = 0;
+    }
+  }
+  else {
+    is_class = 0;
+  }
+  
+  return is_class;
+}
+
+int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  int32_t is_pointer_class;
+  if (object) {
+    int32_t object_type_dimension = object->type_dimension;
+    if (object_type_dimension == 0) {
+      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      
+      switch (object_basic_type_category) {
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
+          int32_t class_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, object_basic_type_id);
+          int32_t class_is_pointer = SPVM_API_RUNTIME_get_class_is_pointer(runtime, class_id);
+          
+          if (class_is_pointer) {
+            is_pointer_class = 1;
+          }
+          else {
+            is_pointer_class = 0;
+          }
+          break;
+        }
+        default: {
+          is_pointer_class = 0;
+        }
+      }
+    }
+    else {
+      is_pointer_class = 0;
+    }
+  }
+  else {
+    is_pointer_class = 0;
+  }
+  
+  return is_pointer_class;
 }
 
 int32_t SPVM_API_get_elem_byte_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array) {

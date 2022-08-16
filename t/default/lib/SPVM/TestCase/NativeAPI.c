@@ -223,6 +223,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_pointer_length != &env_array[205]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_pointer_any_info != &env_array[206]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_pointer_any_info != &env_array[207]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->is_class != &env_array[208]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->is_pointer_class != &env_array[209]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 

@@ -222,7 +222,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   205 set_pointer_length
   206 get_pointer_any_info
   207 set_pointer_any_info
-
+  208 is_class
+  209 is_pointer_class
+  
 =head2 class_vars_heap
 
   void* class_vars_heap;
@@ -2187,6 +2189,22 @@ Get the any infomation of the pointer set by L</"set_pointer">.
   void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
 
 Set the any infomation of the pointer set by L</"set_pointer">.
+
+=head2 is_class
+
+  int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+If the object is a instance of a class, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
+
+=head2 is_pointer_class
+
+  int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+If the object is a instance of a pointer class, returns C<1>, otherwise returns C<0>.
+
+If the object is C<NULL>, returns C<0>.
 
 =head1 Compiler Native API
 
