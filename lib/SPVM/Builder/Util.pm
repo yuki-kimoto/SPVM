@@ -25,10 +25,9 @@ sub need_generate {
   
   # SPVM::Builder modules
   my @spvm_core_files;
-  my $spvm_core_files_mtime_max;
-  if (my $builder_loaded_file = $INC{'SPVM/Builder.pm'}) {
+  if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
     my $builder_loaded_dir = $builder_loaded_file;
-    $builder_loaded_dir =~ s|SPVM/Builder\.pm$||;
+    $builder_loaded_dir =~ s|SPVM/Builder/Util\.pm$||;
     
     # SPVM::Builder module files
     my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
@@ -59,13 +58,18 @@ sub need_generate {
       }
       push @spvm_core_files, $spvm_core_source_file;
     }
-    
-    $spvm_core_files_mtime_max = 0;
-    for my $spvm_core_file (@spvm_core_files) {
-      my $spvm_core_file_mtime = (stat($spvm_core_file))[9];
-      if ($spvm_core_file_mtime > $spvm_core_files_mtime_max) {
-        $spvm_core_files_mtime_max = $spvm_core_file_mtime;
-      }
+  }
+  
+  unless (@spvm_core_files) {
+    confess "[Unexpected Error]SPVM source files are not found";
+  }
+  
+  my $spvm_core_files_mtime_max;
+  $spvm_core_files_mtime_max = 0;
+  for my $spvm_core_file (@spvm_core_files) {
+    my $spvm_core_file_mtime = (stat($spvm_core_file))[9];
+    if ($spvm_core_file_mtime > $spvm_core_files_mtime_max) {
+      $spvm_core_files_mtime_max = $spvm_core_file_mtime;
     }
   }
 

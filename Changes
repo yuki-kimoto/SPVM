@@ -16,7 +16,9 @@
     * Remove the headding "Pointer Type" and add "Pointer Class".
     * SPVM::Document::LanguageSpecification is renamed to SPVM::Document::Language.
       SPVM::Document::LanguageSpecification remains and the content is the link to SPVM::Document::Language.
-
+  [Internal Ineffective Changes]
+    * In SPVM::Builder::Util::need_generate, SPVM core source files are searched from SPVM::Builder::Util path instead fo SPVM::Builder path.
+    
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.
