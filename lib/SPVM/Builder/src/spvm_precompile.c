@@ -38,6 +38,10 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
+
+  SPVM_STRING_BUFFER_add(string_buffer, "// ");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Class
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
@@ -45,18 +49,16 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
   int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
   
-  // Head part - include and define
-  SPVM_PRECOMPILE_build_head(precompile, string_buffer);
-  
   // Constant strings
   if (!class_is_anon) {
+    // Head part - include and define
+    SPVM_PRECOMPILE_build_head(precompile, string_buffer);
     SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class_name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
   
   // Method decrations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Method declarations\n");
   {
     int32_t method_index;
     for (method_index = 0; method_index < class_methods_length; method_index++) {
@@ -72,10 +74,8 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
       }
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // Method implementations
-  SPVM_STRING_BUFFER_add(string_buffer, "// Method implementations\n");
   {
     int32_t method_index;
     for (method_index = 0; method_index < class_methods_length; method_index++) {
@@ -88,7 +88,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
       }
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
   
   // If the class has anon methods, the anon methods is merged to this class
   int32_t class_anon_methods_length = SPVM_API_RUNTIME_get_class_anon_methods_length(runtime, class_id);
@@ -102,6 +101,8 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
       SPVM_PRECOMPILE_create_precompile_source(precompile, string_buffer, anon_method_class_name);
     }
   }
+
+  SPVM_STRING_BUFFER_add(string_buffer, "\n");
 }
 
 void SPVM_PRECOMPILE_build_head(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer) {
@@ -153,6 +154,56 @@ void SPVM_PRECOMPILE_build_head(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER*
     "} while (0)\\\n"
     "\n"
     "#endif\n"
+    "enum {\n"
+    "  SPVM_API_C_STRING_CALL_STACK_ALLOCATION_FAILED,\n"
+    "  SPVM_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,\n"
+    "  SPVM_API_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,\n"
+    "  SPVM_API_C_STRING_DIVIDE_ZERO,\n"
+    "  SPVM_API_C_STRING_CONCAT_LEFT_UNDEFINED,\n"
+    "  SPVM_API_C_STRING_CONCAT_RIGHT_UNDEFINED,\n"
+    "  SPVM_API_C_STRING_NEW_OBJECT_FAILED,\n"
+    "  SPVM_API_C_STRING_NEW_ARRAY_FAILED,\n"
+    "  SPVM_API_C_STRING_ARRRAY_LENGTH_SMALL,\n"
+    "  SPVM_API_C_STRING_NEW_STRING_FAILED,\n"
+    "  SPVM_API_C_STRING_STRING_LENGTH_SMALL,\n"
+    "  SPVM_API_C_STRING_ARRAY_UNDEFINED,\n"
+    "  SPVM_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE,\n"
+    "  SPVM_API_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE,\n"
+    "  SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED,\n"
+    "  SPVM_API_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF,\n"
+    "  SPVM_API_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE,\n"
+    "  SPVM_API_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED,\n"
+    "  SPVM_API_C_STRING_COPY_OPERAND_INVALID,\n"
+    "  SPVM_API_C_STRING_ERROR_CODE_TOO_SMALL,\n"
+    "  SPVM_API_C_STRING_WARN_AT,\n"
+    "  SPVM_API_C_STRING_WARN_UNDEF,\n"
+    "  SPVM_API_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,\n"
+    "};\n"
+    "static const char* string_literals[] = {\n"
+    "  \"The memory allocation for the call stack failed\",\n"
+    "  \"The value can't be cast to the non-assignable type\",\n"
+    "  \"The read-only string can't be cast to the mutable string type\",\n"
+    "  \"Integral type values can't be divided by 0\",\n"
+    "  \"The left operand of the \\\".\\\" operator must be defined\",\n"
+    "  \"The right operand of the \\\".\\\" operator must be defined\",\n"
+    "  \"The object creating failed\",\n"
+    "  \"The array creating failed\",\n"
+    "  \"The length of the array must be greater than or equal to 0\",\n"
+    "  \"The string creating failed\",\n"
+    "  \"The length of the string must be greater than or equal to 0\",\n"
+    "  \"The array must be defined\",\n"
+    "  \"The index of the array access must be greater than or equal to 0 and less than the length of the array\",\n"
+    "  \"The element can't be assigned to the non-assignable type\",\n"
+    "  \"The invocant of the field access must be defined\",\n"
+    "  \"The unboxing conversion can't be performed on the undefined value\",\n"
+    "  \"The source of the unboxing conversion must be the corresponding numeric object type\",\n"
+    "  \"The memory allocation for the weaken back reference failed\",\n"
+    "  \"The operand of the copy operator must be a string type, a numeric type, or a multi numeric type\",\n"
+    "  \"The error code must be greater than or equal to 1\",\n"
+    "  \" at %s%s%s line %d\\n\",\n"
+    "  \"Warning: something's wrong at %s%s%s line %d\\n\",\n"
+    "  \"The implementation of the instance method \\\"%s\\\" defined in \\\"%s\\\" is not found\",\n"
+    "};\n"
   );
 }
 

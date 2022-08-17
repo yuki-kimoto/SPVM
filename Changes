@@ -12,6 +12,8 @@
     
       int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
       int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  [Chagnes]
+    * SPVM::Builder::Util::API::create_make_rule_native and SPVM::Builder::Util::API::create_make_rule_precompile output SPVM core files dependency.
   [Document Fix]
     * Remove the headding "Pointer Type" and add "Pointer Class".
     * SPVM::Document::LanguageSpecification is renamed to SPVM::Document::Language.
@@ -20,6 +22,7 @@
     * In SPVM::Builder::Util::need_generate, SPVM core source files are searched from SPVM::Builder::Util path instead fo SPVM::Builder path.
     * Add SPVM::Builder::Util::get_spvm_core_files and use it from SPVM::Builder::Util::need_generate.
     * Remove the tail slash of builder dir in SPVM::Builder::Util::get_spvm_core_files.
+    * Add shared error messages to spvm_precompile.c
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.
