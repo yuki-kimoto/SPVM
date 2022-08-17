@@ -1,3 +1,15 @@
+0.9643 2022-08-18
+  [Compilation Error Messages Improvement]
+    * Improve the following compilation error message.
+      
+      class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }
+      
+      [Before]
+      Understandable Message.
+      
+      [After]
+      The method of the super class can't be called from the interface type
+
 0.9642 2022-08-17
   [Improvement Exception Messages]
     * Improve many exception messages.

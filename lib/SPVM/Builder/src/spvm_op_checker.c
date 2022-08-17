@@ -4371,46 +4371,46 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     
     SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     assert(class);
-    
-    // Class
-    if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      const char* real_method_name;
-      int32_t call_parent_method = 0;
-      if (strstr(method_name, "SUPER::") == method_name) {
-        real_method_name = method_name + 7;
-        call_parent_method = 1;
-        call_method->call_super = 1;
-      }
-      else {
-        // Static instance method call
-        char* last_colon_pos = strrchr(method_name, ':');
-        if (last_colon_pos) {
-          call_method->is_static_instance_method_call = 1;
-          real_method_name = last_colon_pos + 1;
-          int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
-          SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
-          if (!class_static) {
-            SPVM_COMPILER_error(compiler, "The class specified in the static method call \"%s\" is not loaded at %s line %d", method_name, op_call_method->file, op_call_method->line);
-            return;
-          }
-          SPVM_METHOD* found_method = SPVM_HASH_get(
-            class_static->method_symtable,
-            real_method_name,
-            strlen(real_method_name)
-          );
-          if (found_method) {
-            call_method->method = found_method;
-          }
-          else {
-            SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", real_method_name, class->name, op_call_method->file, op_call_method->line);
-            return;
-          }
+
+    const char* real_method_name;
+    int32_t call_parent_method = 0;
+    if (strstr(method_name, "SUPER::") == method_name) {
+      real_method_name = method_name + 7;
+      call_parent_method = 1;
+      call_method->call_super = 1;
+    }
+    else {
+      // Static instance method call
+      char* last_colon_pos = strrchr(method_name, ':');
+      if (last_colon_pos) {
+        call_method->is_static_instance_method_call = 1;
+        real_method_name = last_colon_pos + 1;
+        int32_t class_name_static_length = (last_colon_pos - 1) - method_name;
+        SPVM_CLASS* class_static = SPVM_HASH_get(compiler->class_symtable, method_name, class_name_static_length);
+        if (!class_static) {
+          SPVM_COMPILER_error(compiler, "The class specified in the static method call \"%s\" is not loaded at %s line %d", method_name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        SPVM_METHOD* found_method = SPVM_HASH_get(
+          class_static->method_symtable,
+          real_method_name,
+          strlen(real_method_name)
+        );
+        if (found_method) {
+          call_method->method = found_method;
         }
         else {
-          real_method_name = method_name;
+          SPVM_COMPILER_error(compiler, "The instance method \"%s\" in the class \"%s\" is not defined at %s line %d", real_method_name, class->name, op_call_method->file, op_call_method->line);
+          return;
         }
       }
+      else {
+        real_method_name = method_name;
+      }
+    }
       
+    // Class
+    if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       // Search the method of the super class
       SPVM_METHOD* found_method = NULL;
       SPVM_CLASS* parent_class = NULL;
@@ -4454,10 +4454,15 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     }
     // Interface
     else {
+      if (call_method->call_super) {
+        SPVM_COMPILER_error(compiler, "The method of the super class can't be called from the interface type", method_name, class->name, op_call_method->file, op_call_method->line);
+        return;
+      }
+      
       SPVM_METHOD* found_method = SPVM_HASH_get(
         class->method_symtable,
-        method_name,
-        strlen(method_name)
+        real_method_name,
+        strlen(real_method_name)
       );
       
       if (found_method) {

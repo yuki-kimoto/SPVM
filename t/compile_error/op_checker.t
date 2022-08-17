@@ -914,6 +914,10 @@ use Test::More;
     compile_not_ok($source, q|The method "foo" is defined in the class "MyClass2", but this method is not an instance method|);
   }
   {
+    my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }';
+    compile_not_ok($source, q|The method of the super class can't be called from the interface type|);
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
     compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
   }
