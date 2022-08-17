@@ -688,9 +688,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+                                              "        void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "Checking object type\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1257,9 +1257,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":New object\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1294,9 +1294,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "    if (");
         SPVM_STRING_BUFFER_add(string_buffer, "access_basic_type_id");
         SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":New object array\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1340,9 +1340,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":New multi dimentional array\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1388,9 +1388,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_basic_type_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "New multi numeric array\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1897,11 +1897,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
 
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The Field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -1974,11 +1974,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2025,11 +2025,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2103,11 +2103,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable is not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2138,11 +2138,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable is not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2201,11 +2201,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable is not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2238,11 +2238,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    if ("
                                               "access_class_var_id"
                                               " < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable is not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2273,11 +2273,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_var_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable is not found ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " ");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2319,9 +2319,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (dist_basic_type_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":Is type\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2363,9 +2363,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (dist_basic_type_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type is not found:");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":Is type\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -2553,9 +2553,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_class_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class is not found:");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The class \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ":New object\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -3137,11 +3137,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -3184,11 +3184,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -3229,11 +3229,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
@@ -3997,11 +3997,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "    if (call_method_id < 0) {\n"
-                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"Can't find the method \\\"");
+                                              "      void* exception = env->new_string_nolen_raw(env, stack, \"The method \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" defined in \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\"\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);"
                                               "      error = 1;\n"
                                               "    }\n");
@@ -5850,11 +5850,11 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         "    if ("
                                         "access_field_id");
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "->");
+  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+  SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                         "      env->set_exception(env, stack, exception);\n"
                                         "      error = 1;\n"
                                         "    }\n"
@@ -5900,12 +5900,12 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                         "    if ("
                                         "access_field_id"
-                                        " < 0) {\n"
-                                        "      void* exception = env->new_string_nolen_raw(env, stack, \"The field ");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "->");
+                                        " < 0) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, " is not defined\");\n"
+  SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
+  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                         "      env->set_exception(env, stack, exception);\n"
                                         "      error = 1;\n"
                                         "    }\n"
