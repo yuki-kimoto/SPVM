@@ -16,14 +16,8 @@ use Encode 'decode';
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions.
 
-sub need_generate {
-  my ($opt) = @_;
+sub get_spvm_core_files {
   
-  my $force = $opt->{force};
-  my $input_files = $opt->{input_files};
-  my $output_file = $opt->{output_file};
-  
-  # SPVM::Builder modules
   my @spvm_core_files;
   if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
     my $builder_loaded_dir = $builder_loaded_file;
@@ -63,6 +57,19 @@ sub need_generate {
   unless (@spvm_core_files) {
     confess "[Unexpected Error]SPVM source files are not found";
   }
+  
+  return \@spvm_core_files;
+}
+
+sub need_generate {
+  my ($opt) = @_;
+  
+  my $force = $opt->{force};
+  my $input_files = $opt->{input_files};
+  my $output_file = $opt->{output_file};
+  
+  # SPVM::Builder modules
+  my @spvm_core_files = @{&get_spvm_core_files};
   
   my $spvm_core_files_mtime_max;
   $spvm_core_files_mtime_max = 0;

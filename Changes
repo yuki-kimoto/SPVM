@@ -18,7 +18,7 @@
       SPVM::Document::LanguageSpecification remains and the content is the link to SPVM::Document::Language.
   [Internal Ineffective Changes]
     * In SPVM::Builder::Util::need_generate, SPVM core source files are searched from SPVM::Builder::Util path instead fo SPVM::Builder path.
-    
+    * Add SPVM::Builder::Util::get_spvm_core_files and use it from SPVM::Builder::Util::need_generate.
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.
