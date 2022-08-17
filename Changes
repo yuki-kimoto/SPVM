@@ -1,8 +1,22 @@
+0.9642 2022-08-17
+  [Improvement Exception Messages]
+    * Improve many exception messages.
+  [Exception Messages Fix]
+    * Fix many exception messages.
+  [Chagnes]
+    * SPVM::Builder::Util::API::create_make_rule_native and SPVM::Builder::Util::API::create_make_rule_precompile output SPVM core files dependency.
+  [Internal Ineffective Changes]
+    * In SPVM::Builder::Util::need_generate, SPVM core source files are searched from SPVM::Builder::Util path instead fo SPVM::Builder path.
+    * Add SPVM::Builder::Util::get_spvm_core_files and use it from SPVM::Builder::Util::need_generate.
+    * Remove the tail slash of builder dir in SPVM::Builder::Util::get_spvm_core_files.
+    * Add shared error messages to spvm_precompile.c
+    * The names of the opcodes become upper case again.
+
 0.9641 2022-08-17
   [New Features]
     * Add the following methods to Fn class.
       static method is_class : int ($object : object)
-      static method is_class : int ($object : object)
+      static method is_pointer_class : int ($object : object)
     
     * Add the following runtime native APIs.
     
@@ -12,22 +26,10 @@
     
       int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
       int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  [Improvement Exception Messages]
-    * Improve many exception messages.
-  [Exception Messages Fix]
-    * Fix many exception messages.
-  [Chagnes]
-    * SPVM::Builder::Util::API::create_make_rule_native and SPVM::Builder::Util::API::create_make_rule_precompile output SPVM core files dependency.
   [Document Fix]
     * Remove the headding "Pointer Type" and add "Pointer Class".
     * SPVM::Document::LanguageSpecification is renamed to SPVM::Document::Language.
       SPVM::Document::LanguageSpecification remains and the content is the link to SPVM::Document::Language.
-  [Internal Ineffective Changes]
-    * In SPVM::Builder::Util::need_generate, SPVM core source files are searched from SPVM::Builder::Util path instead fo SPVM::Builder path.
-    * Add SPVM::Builder::Util::get_spvm_core_files and use it from SPVM::Builder::Util::need_generate.
-    * Remove the tail slash of builder dir in SPVM::Builder::Util::get_spvm_core_files.
-    * Add shared error messages to spvm_precompile.c
-    * The names of the opcodes become upper case again.
 0.9640 2022-08-16
   [New Features]
     * Add the following native APIs.
