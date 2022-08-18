@@ -11,7 +11,11 @@ use SPVM 'TestCase::ConditionalBranch';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Conditinal Branch - if, elsif, else, unless
+# Conditional Branch
+#   if Statement
+#   elsif Statement
+#   else Statement
+#   unless Statement
 {
   ok(SPVM::TestCase::ConditionalBranch->if_bool());
   ok(SPVM::TestCase::ConditionalBranch->if_true());
