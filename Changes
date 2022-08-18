@@ -3,6 +3,11 @@
     * Add heading "Conditional Branch".
     * Add heading "Loop Syntax".
     * Reorder a heading. "void Reterning Operator" is moved after "Operator".
+    * Reorder headding. The following headding is moved after "Loop Syntax".
+      "Empty Statement"
+      "Operator Statement"
+      "void Returning Operator Statement"
+    
   [Test Improvement]
     * Cleanup tests for statements.
       if.t unless.t -> conditional_branch.t

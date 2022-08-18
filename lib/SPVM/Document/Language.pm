@@ -6133,41 +6133,6 @@ Type comments have no meanings at runtime.
 
 Statements are syntax or operations that are written direct under a L<scope block|/"Scope Block">.
 
-=head2 Empty Statement
-
-The empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
-
-  ;
-
-=head2 Operator Statement
-
-The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
-
-A operation statement is composed of an L<operator|/"Operator"> and C<;>.
-
-  OPERATOR;
-
-B<Examples:>
-
-  1;
-  $var;
-  1 + 2;
-  foo();
-  my $num = 1 + 2;
-
-=head2 void Returning Operator Statement
-
-The void returning operator statement is the L<statement|/"Statement"> to execute an L<void returning operator|/"void Returning Operator">.
-
-The statement is composed of L<void returning operator|/"void Returning Operator"> and C<;>.
-
-  VOID_RETURN_OPERATOR;
-
-B<Examples:>
-
-  die "Error";
-  warn "Warning";
-
 =head2 Conditional Branch
 
 =head3 if Statement
@@ -6597,6 +6562,41 @@ If the return type of the method is the non-void type, the operand must be exist
 The type of the operand must be able to L<assign|/"Assignability"> to the return type of the method.
 
 If the syntax of the return statement is invalid, an compilation error will occur.
+
+=head2 Empty Statement
+
+The empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
+
+  ;
+
+=head2 Operator Statement
+
+The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
+
+A operation statement is composed of an L<operator|/"Operator"> and C<;>.
+
+  OPERATOR;
+
+B<Examples:>
+
+  1;
+  $var;
+  1 + 2;
+  foo();
+  my $num = 1 + 2;
+
+=head2 void Returning Operator Statement
+
+The void returning operator statement is the L<statement|/"Statement"> to execute an L<void returning operator|/"void Returning Operator">.
+
+The statement is composed of L<void returning operator|/"void Returning Operator"> and C<;>.
+
+  VOID_RETURN_OPERATOR;
+
+B<Examples:>
+
+  die "Error";
+  warn "Warning";
 
 =head1 Operator
 
