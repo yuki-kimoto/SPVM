@@ -1,7 +1,8 @@
 0.9644 2022-08-18
   [Document Improvement]
-    * Add heading "Conditional Branch"
-    * Add heading "Loop Syntax"
+    * Add heading "Conditional Branch".
+    * Add heading "Loop Syntax".
+    * Reorder a heading. "void Reterning Operator" is moved after "Operator".
   [Test Improvement]
     * Cleanup tests for statements.
       if.t unless.t -> conditional_branch.t

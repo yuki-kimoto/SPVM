@@ -6598,135 +6598,6 @@ The type of the operand must be able to L<assign|/"Assignability"> to the return
 
 If the syntax of the return statement is invalid, an compilation error will occur.
 
-=head1 void Returning Operator
-
-The void returning operator is the operation that return type is C<void>.
-
-Note that this is not an L<operator|Operator> because the operator is defined as the operation that returns the value.
-
-void returning operators are the L<warn operator|/"warn Operator">, the L<die operator|/"die Operator">, the L<print operator|/"print Operator">, the L<make_read_only operator|/"make_read_only Operator">, the L<weaken operator|/"weaken Operator">, and the L<unweaken operator|/"unweaken Operator">.
-
-=head2 warn Operator
-
-The C<warn> operator is a L<void retruning operator|/"void Returning Operator"> to print a warning string to the standard error.
-
-  warn OPERNAD;
-
-The operand must be L</"String Type">.
-
-If the end character of the string is C<\n>, C<warn> statement prints the string itself.
-
-If not, the current file name and current line number are added to the end of the string.
-
-If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
-
-The buffer of the standard error is flushed after the printing.
-
-=head2 die Operator
-
-The C<die> operator is a L<void retruning operator|/"void Returning Operator"> to L<throw an exception|/"Throwing Exception">.
-
-  die OPERAND;
-
-The operand must be the L<string type|/"String Type">. If not a compilation error will occur.
-
-You can specify the error message to the operand.
-
-  # Throw an exception
-  die "Error";
-
-The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
-
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
-
-The stack traces constain the class names, the method names, the file names and the line numbers.
-
-  Error
-  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-  from TestCase->main at SPVM/TestCase.spvm line 1198
-
-The exception can be catched using an L<eval block|/"Exception Catching">.
-
-B<Examples:>
-  
-  # Catch the exception
-  eval {
-    # Throw an exception
-    die "Error";
-  };
-  
-  # Check the exception
-  if ($@) {
-    # ...
-  }
-
-=head2 print Operator
-
-The C<print> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> to the standard output.
-
-  print OPERAND;
-
-The oeprand must be a L<string type|/"String Type">.
-
-If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
-
-=head2 make_read_only Operator
-
-The C<make_read_only> operator is a L<void retruning operator|/"void Returning Operator"> to make the L<string|/"Strings"> read-only.
-
-  make_read_only OPERAND;
-
-The oeprand must be a L<string type|/"String Type">.
-
-Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<mutable|/"mutable Type Qualifier">.
-
-  # A string
-  my $string = new_string_len 3;
-  
-  # Make the string read-only
-  make_read_only $string;
-  
-  # The conversion to the string type qualified by mutable throw an exception.
-  my $string_mut = (mutable string)$string;
-
-=head2 weaken Operator
-
-The C<weaken> operator is a L<void retruning operator|/"void Returning Operator"> to create a L<weak reference|/"Weak Reference">.
-
-  weaken OBJECT->{FIELD_NAME};
-
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
-
-If the field name is not found, a compilation error will occur.
-
-The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error will occur.
-
-See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
-
-B<Examples:>
-
-  # weaken
-  weaken $object->{point};
-
-=head2 unweaken Operator
-
-The C<unweaken> operator is a L<void retruning operator|/"void Returning Operator"> to unweakens a L<weak reference|/"Weak Reference">.
-
-  unweaken OBJECT->{FIELD_NAME};
-
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
-
-If the field name is not found, a compilation error will occur.
-
-The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error will occur.
-
-See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
-
-B<Examples:>
-
-  # unweaken
-  unweaken $object->{point};
-
 =head1 Operator
 
 The operator performs an operation that returns the value.
@@ -8594,6 +8465,135 @@ B<Examples:>
   # Postfix type cast
   my $point = Point->new;
   my $stringable = $point->(Stringable);
+
+=head1 void Returning Operator
+
+The void returning operator is the operation that return type is C<void>.
+
+Note that this is not an L<operator|Operator> because the operator is defined as the operation that returns the value.
+
+void returning operators are the L<warn operator|/"warn Operator">, the L<die operator|/"die Operator">, the L<print operator|/"print Operator">, the L<make_read_only operator|/"make_read_only Operator">, the L<weaken operator|/"weaken Operator">, and the L<unweaken operator|/"unweaken Operator">.
+
+=head2 warn Operator
+
+The C<warn> operator is a L<void retruning operator|/"void Returning Operator"> to print a warning string to the standard error.
+
+  warn OPERNAD;
+
+The operand must be L</"String Type">.
+
+If the end character of the string is C<\n>, C<warn> statement prints the string itself.
+
+If not, the current file name and current line number are added to the end of the string.
+
+If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
+
+The buffer of the standard error is flushed after the printing.
+
+=head2 die Operator
+
+The C<die> operator is a L<void retruning operator|/"void Returning Operator"> to L<throw an exception|/"Throwing Exception">.
+
+  die OPERAND;
+
+The operand must be the L<string type|/"String Type">. If not a compilation error will occur.
+
+You can specify the error message to the operand.
+
+  # Throw an exception
+  die "Error";
+
+The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
+
+The stack traces constain the class names, the method names, the file names and the line numbers.
+
+  Error
+  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+  from TestCase->main at SPVM/TestCase.spvm line 1198
+
+The exception can be catched using an L<eval block|/"Exception Catching">.
+
+B<Examples:>
+  
+  # Catch the exception
+  eval {
+    # Throw an exception
+    die "Error";
+  };
+  
+  # Check the exception
+  if ($@) {
+    # ...
+  }
+
+=head2 print Operator
+
+The C<print> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> to the standard output.
+
+  print OPERAND;
+
+The oeprand must be a L<string type|/"String Type">.
+
+If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
+
+=head2 make_read_only Operator
+
+The C<make_read_only> operator is a L<void retruning operator|/"void Returning Operator"> to make the L<string|/"Strings"> read-only.
+
+  make_read_only OPERAND;
+
+The oeprand must be a L<string type|/"String Type">.
+
+Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the string type qualified by mutable throw an exception.
+  my $string_mut = (mutable string)$string;
+
+=head2 weaken Operator
+
+The C<weaken> operator is a L<void retruning operator|/"void Returning Operator"> to create a L<weak reference|/"Weak Reference">.
+
+  weaken OBJECT->{FIELD_NAME};
+
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+
+If the field name is not found, a compilation error will occur.
+
+The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error will occur.
+
+See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
+
+B<Examples:>
+
+  # weaken
+  weaken $object->{point};
+
+=head2 unweaken Operator
+
+The C<unweaken> operator is a L<void retruning operator|/"void Returning Operator"> to unweakens a L<weak reference|/"Weak Reference">.
+
+  unweaken OBJECT->{FIELD_NAME};
+
+The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+
+If the field name is not found, a compilation error will occur.
+
+The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error will occur.
+
+See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
+
+B<Examples:>
+
+  # unweaken
+  unweaken $object->{point};
 
 =head1 Method Call
 
