@@ -1,8 +1,9 @@
 class TestCase::ConditionalBranch {
+  use Point;
   
-  static method if_bool : int () {
+  static method if_condition_types : int () {
     
-    # Bool - byte true
+    # Condition - byte
     {
       my $pass = 0;
       if ((byte)1) {
@@ -17,7 +18,7 @@ class TestCase::ConditionalBranch {
       }
     }
 
-    # Bool - short
+    # Condition - short
     {
       my $pass = 0;
       if ((short)1) {
@@ -31,7 +32,7 @@ class TestCase::ConditionalBranch {
       }
     }
     
-    # Bool - int
+    # Condition - int
     {
       my $pass = 0;
       if (1) {
@@ -45,7 +46,7 @@ class TestCase::ConditionalBranch {
       }
     }
 
-    # Bool - long
+    # Condition - long
     {
       my $pass = 0;
       if (1L) {
@@ -59,7 +60,7 @@ class TestCase::ConditionalBranch {
       }
     }
 
-    # Bool - float
+    # Condition - float
     {
       my $pass = 0;
       if (1.5f) {
@@ -73,7 +74,7 @@ class TestCase::ConditionalBranch {
       }
     }
 
-    # Bool - double
+    # Condition - double
     {
       my $pass = 0;
       if (1.5) {
@@ -84,6 +85,91 @@ class TestCase::ConditionalBranch {
       }
       unless ($pass) {
         return 0;
+      }
+    }
+
+    # Condition - undef
+    {
+      my $pass = 0;
+      if (undef) {
+        $pass = 1;
+      }
+      unless ($pass == 0) {
+        return 0;
+      }
+    }
+
+    # Condition - object
+    {
+      # Defined object
+      {
+        my $pass = 0;
+        my $point = Point->new;
+        if ($point) {
+          $pass = 1;
+        }
+        unless ($pass == 1) {
+          return 0;
+        }
+      }
+
+      # Undefined object
+      {
+        my $pass = 0;
+        my $point : Point = undef;;
+        if ($point) {
+          $pass = 1;
+        }
+        unless ($pass == 0) {
+          return 0;
+        }
+      }
+    }
+
+    # Condition - Bool object
+    {
+      # Bool->TRUE
+      {
+        my $pass = 0;
+        if (Bool->TRUE) {
+          $pass = 1;
+        }
+        unless ($pass == 1) {
+          return 0;
+        }
+      }
+      
+      # Bool->FALSE
+      {
+        my $pass = 0;
+        if (Bool->FALSE) {
+          $pass = 1;
+        }
+        unless ($pass == 0) {
+          return 0;
+        }
+      }
+      
+      # true
+      {
+        my $pass = 0;
+        if (true) {
+          $pass = 1;
+        }
+        unless ($pass == 1) {
+          return 0;
+        }
+      }
+      
+      # false
+      {
+        my $pass = 0;
+        if (false) {
+          $pass = 1;
+        }
+        unless ($pass == 0) {
+          return 0;
+        }
       }
     }
     

@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 #   else Statement
 #   unless Statement
 {
-  ok(SPVM::TestCase::ConditionalBranch->if_bool());
+  ok(SPVM::TestCase::ConditionalBranch->if_condition_types());
   ok(SPVM::TestCase::ConditionalBranch->if_true());
   ok(SPVM::TestCase::ConditionalBranch->if_false());
   ok(SPVM::TestCase::ConditionalBranch->elsif_match());
