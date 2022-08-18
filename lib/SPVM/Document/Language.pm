@@ -6168,7 +6168,9 @@ B<Examples:>
   die "Error";
   warn "Warning";
 
-=head2 if Statement
+=head2 Conditional Branch
+
+=head3 if Statement
 
 The C<if> statement is a L<statement|/"Statement"> for conditional branch.
 
@@ -6279,7 +6281,7 @@ When a variable is declared in the conditional part of if Statement, it must be 
     }
   }
 
-=head2 unless Statement
+=head3 unless Statement
 
 The C<unless> statement is a L<statement|/"Statement"> for conditional branches. 
 
@@ -6293,7 +6295,7 @@ This is the same as the following L<if Statement|/"if Statement">.
     
   }
 
-=head2 switch Statement
+=head3 switch Statement
 
 The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
 
@@ -6417,21 +6419,23 @@ B<Examples:>
     }
   }
 
-=head2 case Statement
+=head4 case Statement
 
 The C<case> statement is the L<statement|/"Statement"> that specifies a case value and a branch of a L<switch statement|/"switch Statement">.
 
-=head2 default Statement
+=head4 default Statement
 
 The C<default> statement is a L<statement|/"Statement"> that specifies a default branch of a L<switch statement|/"switch Statement">.
 
-=head2 break Statement
+=head4 break Statement
 
 The C<break> statement is a L<statement|/"Statement"> to jump to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
 
   break;
 
-=head2 while Statement
+=head2 Loop Syntax
+
+=head3 while Statement
 
 The C<while> statement is a L<statement|/"Statement"> for repeating.
 
@@ -6489,7 +6493,7 @@ The while Statement is internally enclosed by an invisible L</"Simple Block">.
     }
   }
 
-=head2 for Statement
+=head3 for Statement
 
 The C<for> Statement is a L<statement|/"Statement"> for repeating.
 
@@ -6534,7 +6538,7 @@ Inside the for Block, you can use L</"next Statement"> to move immediately befor
     }
   }
 
-=head2 for-each Statement
+=head3 for-each Statement
 
 The for-each statement is a L<statement|/"Statement"> to write the L<for statement|/"for Statement"> for iterating easily.
 
@@ -6560,6 +6564,22 @@ The following C<for> statement is the same as the following for-each statement.
     
   }
 
+=head3 next Statement
+
+The C<next> statement is a L<statement|/"Statement"> to move to the beginning of the next loop block.
+
+  next;
+
+See also L</"while Statement">, L</"for Statement">.
+
+=head3 last Statement
+
+The C<last> statement" is a L<statement|/"Statement"> to move to the outside of the loop block.
+
+  last;
+
+See also L</"while Statement">, L</"for Statement">.
+
 =head2 return Statement
 
 The C<return> statement is a L<statement|/"Statement"> to return a value.
@@ -6577,22 +6597,6 @@ If the return type of the method is the non-void type, the operand must be exist
 The type of the operand must be able to L<assign|/"Assignability"> to the return type of the method.
 
 If the syntax of the return statement is invalid, an compilation error will occur.
-
-=head2 next Statement
-
-The C<next> statement is a L<statement|/"Statement"> to move to the beginning of the next loop block.
-
-  next;
-
-See also L</"while Statement">, L</"for Statement">.
-
-=head2 last Statement
-
-The C<last> statement" is a L<statement|/"Statement"> to move to the outside of the loop block.
-
-  last;
-
-See also L</"while Statement">, L</"for Statement">.
 
 =head1 void Returning Operator
 
