@@ -269,44 +269,6 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
-        if (error) {
-          eval_error = error;
-          error = 0;
-          
-          int32_t method_id = opcode->operand1;
-          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-          int32_t line = opcode->operand2;
-          
-          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
-          SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
-          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
-          
-          // Exception stack trace
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
-          opcode_rel_index = opcode->operand0;
-          continue;
-        }
-        break;
-      }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
-        
-        if (error) {
-          int32_t method_id = opcode->operand1;
-          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-          int32_t line = opcode->operand2;
-          
-          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
-          SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
-          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
-
-          // Exception stack trace
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
-          opcode_rel_index = opcode->operand0;
-          continue;
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
         // Default branch
@@ -2069,6 +2031,44 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         env->set_exception(env, stack, NULL);
         
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
+        if (error) {
+          eval_error = error;
+          error = 0;
+          
+          int32_t method_id = opcode->operand1;
+          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+          int32_t line = opcode->operand2;
+          
+          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
+          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
+          
+          // Exception stack trace
+          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
+          opcode_rel_index = opcode->operand0;
+          continue;
+        }
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
+        
+        if (error) {
+          int32_t method_id = opcode->operand1;
+          SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+          int32_t line = opcode->operand2;
+          
+          const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+          SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
+          const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
+
+          // Exception stack trace
+          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
+          opcode_rel_index = opcode->operand0;
+          continue;
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_ISA: {
