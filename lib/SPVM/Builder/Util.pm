@@ -342,9 +342,6 @@ sub create_make_rule {
     push @deps, $spvm_file;
   }
   
-  my $spvm_core_file = &get_spvm_core_files;
-  push @deps, @$spvm_core_file;
-  
   # Shared library file
   my $dynamic_lib_rel_file = convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
