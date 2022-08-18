@@ -251,9 +251,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_END_METHOD: {
         goto label_END_OF_METHOD;
       }
-      case SPVM_OPCODE_C_ID_GOTO:
+      case SPVM_OPCODE_C_ID_GOTO: {
         opcode_rel_index = opcode->operand0;
         continue;
+      }
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
         if (int_vars[0] == 0) {
           opcode_rel_index = opcode->operand0;
