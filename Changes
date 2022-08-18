@@ -1,3 +1,10 @@
+0.9644 2022-08-18
+  [Exception Message Improvement[
+    * The following exception message is improved.
+      [Before]
+      The private method \"%s\" can't be called at %s line %d
+      [After]
+      The private method \"%s\" in the class \"%s\"can't be called
 0.9643 2022-08-18
   [Revert]
     * Revert the following changes.
