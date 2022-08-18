@@ -23,8 +23,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::ConditionalBranch->elsif_match());
   ok(SPVM::TestCase::ConditionalBranch->else_match());
   ok(SPVM::TestCase::ConditionalBranch->condition_my());
-  ok(SPVM::TestCase::ConditionalBranch->unless_ok);
-  ok(SPVM::TestCase::ConditionalBranch->unless_not_ok);
+  ok(SPVM::TestCase::ConditionalBranch->unless_true_condition);
+  ok(SPVM::TestCase::ConditionalBranch->unless_false_condition);
+  ok(SPVM::TestCase::ConditionalBranch->unless_elsif);
   ok(SPVM::TestCase::ConditionalBranch->unless_else);
 }
 
