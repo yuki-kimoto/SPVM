@@ -168,6 +168,21 @@ class TestCase::Interface {
       }
     }
     
+    # call_to_string
+    {
+      my $interface = new TestCase::Interface;
+      unless ($interface->test_call_to_string) {
+        return 0;
+      }
+    }
+
+    # call_to_string_precompile
+    {
+      my $interface = new TestCase::Interface;
+      unless ($interface->test_call_to_string_precompile) {
+        return 0;
+      }
+    }
     $@ = undef;
     
     return 1;
@@ -189,6 +204,31 @@ class TestCase::Interface {
     return 1;
   }
 
+  method test_call_to_string : int () {
+    # Call call_to_string
+    {
+      my $string = $self->call_to_string;
+      unless ($string eq "call_to_string TestCase::Interface") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  method test_call_to_string_precompile : int () {
+    # Call call_to_string_precompile
+    {
+      my $string = $self->call_to_string_precompile;
+      unless ($string eq "call_to_string_precompile TestCase::Interface") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  
   # method interface_shared2 : string ($num : int);
 
   static method join_stringables : string ($stringables : Stringable[]) {
@@ -319,5 +359,9 @@ class TestCase::Interface {
   
   method call_to_string : string () {
     return $self->TestCase::InterfaceType::call_to_string;
+  }
+
+  method call_to_string_precompile : string () {
+    return $self->TestCase::InterfaceType::call_to_string_precompile;
   }
 }

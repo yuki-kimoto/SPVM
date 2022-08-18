@@ -3967,7 +3967,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           }
           case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
           {
-            SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, \"");
+            SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id_static(env, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);

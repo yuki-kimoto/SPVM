@@ -2379,8 +2379,6 @@ A interface is defined using a L<class definition|/"Class Definition"> with a L<
     method foo : int ($num : long);
   }
 
-A interface can have multiple method declarations. The methods can't have the method blocks.
-
 A interface must have only one required method. The required method is the method that has the L<method descriptor|/"Method Descriptors"> C<required>.
 
 The type of the interface is the L</"Interface Type">.
@@ -2420,6 +2418,19 @@ A interface can have L<interface Guarantees|/"Interface Guarantee">.
 If the interface definition is invalid, a compilation error will occur.
 
 C<new> operator can't create the objects from interfaces.
+
+The interface can have the method implementation.
+
+  class Stringable: interface_t {
+    required method to_string : string ();
+    method call_to_string : string () {
+      return "foo " . $self->to_string;
+    }
+  }
+
+This method is called by the static instance method call.
+
+  $self->Stringable::call_to_string;
 
 =head1 Module
 

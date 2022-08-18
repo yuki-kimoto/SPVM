@@ -900,7 +900,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
-    compile_not_ok($source, q|The instance method "not_found" in the class "Point" is not defined|);
+    compile_not_ok($source, q|The instance method "not_found" is not defined in the class "Point" or the super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';

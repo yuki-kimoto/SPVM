@@ -4,6 +4,27 @@
       0.9642 2022-08-17
         [Chagnes]
           * SPVM::Builder::Util::API::create_make_rule_native and SPVM::Builder::Util::API::create_make_rule_precompile output SPVM core files dependency.
+  [New Features]
+    * The method defined in the interface method can have the block.
+    * The above method is called by using static instance method call.
+      
+      class MyStringable : interface_t {
+        method to_string : string ();
+        
+        method call_to_string : string () {
+          return "call_to_string " . $self->to_string;
+        }
+      }
+      
+      class MyClass {
+        interface MyStringable;
+        
+        static method main : int () {
+          my $object = new MyClass;
+          $object->MyStringable::call_to_string;
+        }
+      }
+    
   [Compilation Error Messages Improvement]
     * Improve the following compilation error message.
       

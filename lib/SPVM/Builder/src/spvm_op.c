@@ -2379,21 +2379,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (method->is_class_method) {
           SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
         }
-        
-        // If class is interface, the method must not be native
-        if (method->is_native) {
-          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the method descriptor \"native\" at %s line %d", method->op_method->file, method->op_method->line);
-        }
-
-        // If class is interface, the method must not be precompile
-        if (method->is_precompile) {
-          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the method descriptor \"precompile\" at %s line %d", method->op_method->file, method->op_method->line);
-        }
-        
-        // If class is interface, the method must not be precompile
-        if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "The method defined in the interface can't have the block at %s line %d", method->op_method->file, method->op_method->line);
-        }
       }
       else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
         if (method->is_required) {
