@@ -176,7 +176,7 @@ class TestCase::ConditionalBranch {
     return 1;
   }
   
-  static method if_true : int () {
+  static method if_condition_true : int () {
     
     if (1) {
       return 1;
@@ -185,7 +185,7 @@ class TestCase::ConditionalBranch {
     return 0;
   }
 
-  static method if_false : int () {
+  static method if_condition_false : int () {
     
     if (0) {
       return 0;
@@ -194,7 +194,7 @@ class TestCase::ConditionalBranch {
     return 1;
   }
   
-  static method elsif_match : int () {
+  static method elsif_condition_true : int () {
     
     my $num = 2;
     if ($num == 1) {
@@ -209,10 +209,11 @@ class TestCase::ConditionalBranch {
     else {
       return 0;
     }
+    
     return 0;
   }
 
-  static method else_match : int () {
+  static method elsif_condition_false : int () {
     
     my $num = 4;
     if ($num == 1) {
@@ -230,7 +231,33 @@ class TestCase::ConditionalBranch {
     return 0;
   }
 
-  static method condition_my : int () {
+  static method elsif_only : int () {
+    
+    my $num = 2;
+    if ($num == 1) {
+      return 0;
+    }
+    elsif ($num == 2) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method else_only : int () {
+    
+    my $num = 2;
+    if ($num == 1) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method if_condition_my : int () {
     # Check my declaration in if condition part - if condition part is true
     {
       my $check1 = 0;
@@ -282,7 +309,7 @@ class TestCase::ConditionalBranch {
       }
     }
 
-    # Optional tests
+    # Extra
     {
       my $num = 5;
       if (my $num = 3) {

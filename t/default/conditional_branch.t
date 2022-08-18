@@ -18,11 +18,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 #   unless Statement
 {
   ok(SPVM::TestCase::ConditionalBranch->if_condition_types());
-  ok(SPVM::TestCase::ConditionalBranch->if_true());
-  ok(SPVM::TestCase::ConditionalBranch->if_false());
-  ok(SPVM::TestCase::ConditionalBranch->elsif_match());
-  ok(SPVM::TestCase::ConditionalBranch->else_match());
-  ok(SPVM::TestCase::ConditionalBranch->condition_my());
+  ok(SPVM::TestCase::ConditionalBranch->if_condition_true());
+  ok(SPVM::TestCase::ConditionalBranch->if_condition_false());
+  ok(SPVM::TestCase::ConditionalBranch->elsif_condition_true());
+  ok(SPVM::TestCase::ConditionalBranch->elsif_condition_false());
+  ok(SPVM::TestCase::ConditionalBranch->elsif_only());
+  ok(SPVM::TestCase::ConditionalBranch->else_only());
+  ok(SPVM::TestCase::ConditionalBranch->if_condition_my());
   ok(SPVM::TestCase::ConditionalBranch->unless_true_condition);
   ok(SPVM::TestCase::ConditionalBranch->unless_false_condition);
   ok(SPVM::TestCase::ConditionalBranch->unless_elsif);
