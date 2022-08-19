@@ -4998,14 +4998,16 @@ Otherwise, the assignability is false.
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>X[][]...</td><td>X[][]...</td><td>None</td></tr>
+  <tr><td>True</td><td>X[]...[]</td><td>X[]...[]</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
+
+(C<[]...[]> means two or more C<[]>)
 
 B<Examples:>
 
@@ -5636,17 +5638,19 @@ Otherwise, the castability is false.
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>ANY_X[][]...</td><td>ANY_X[][]...</td><td>None</td></tr>
-  <tr><td>True</td><td>ANY_X[][]...</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[][]...</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[][]...</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X[][]...</td><td>SUPER_CLASS_Y[][]...</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td><td>None</td></tr>
+  <tr><td>True</td><td>ANY_X[]...[]</td><td>ANY_X[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>ANY_X[]...[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>ANY_X[]...[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>ANY_X[]...[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>CLASS_X[]...[]</td><td>SUPER_CLASS_Y[]...[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
+
+(C<[]...[]> means two or more C<[]>)
 
 B<Examples:>
 
@@ -6096,14 +6100,16 @@ If the type of distribution is an L<interface type|/"Interface Type">, an L<inte
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[][]...</td><td>CLASS_Y[][]...</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[][]...</td><td>INTERFACE_HAVING_Y[][]...</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td></tr>
   <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
 </table>
 
 =end html
+
+(C<[]...[]> means two or more C<[]>)
 
 =head1 Type Comment
 
@@ -8080,7 +8086,9 @@ B<Examples:>
 Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
 
   new BasicType[][LENGTH]
-  new BasicType[][]...[LENGTH]
+  new BasicType[]...[][LENGTH]
+
+(C<[]...[]> means two or more C<[]>)
 
 B<Examples:>
 
