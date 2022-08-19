@@ -2671,7 +2671,7 @@ It is defined by the C<ro> or C<rw> L<class variable descriptors|/"Class Variabl
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its getting method name is C<FOO>.
 
-Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed to each class variable getting method.
+Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable getting method.
 
 B<Examples:>
 
@@ -2694,7 +2694,7 @@ It is defined by the C<wo>  or C<rw> L<class variable descriptors|/"Class Variab
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its setting method name is C<SET_FOO>.
 
-Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed to each class variable setting method.
+Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable setting method.
 
 B<Examples:>
 
@@ -2820,7 +2820,7 @@ A field getting method is an L<instance method|/"Instance Method">. It has no ar
 
 A field setting method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type/"void Type">.
 
-Inline expansion to the field access is performed to field getting and setting methods. The performance penalty using field methods is nothing.
+Inline expansion to the field access is performed on field getting and setting methods. The performance penalty using field methods is nothing.
 
 B<Examples:>
 
@@ -3127,7 +3127,7 @@ Constant Method is a Method that the return type is a L<numeric type|/"Numeric T
   static method foo : float () { return 5.0f; }
   static method foo : double () { return 5.0; }
 
-Inline Expansion optimization is performed to Constant Method.
+Inline Expansion optimization is performed on Constant Method.
 
 Note that SPVM does not perform constant convolution optimization, so if a constant is calculated, it will not performe Inline Expansion.
 
@@ -5955,7 +5955,7 @@ Unboxing Type Conversion is an L<operator|/"Operator"> to convert the value of N
 
 =head2 Conditional Type Conversion
 
-The conditional type conversion is a L<type conversion|/"Type Conversion"> that is performed to the L<conditional operand|/"Conditional Operand">.
+The conditional type conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
 The type of the operand of the conditional type conversion must be one of a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
 
@@ -5971,7 +5971,7 @@ If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FAL
 
 If the type is a L<numeric type|/"Numeric Type"> except for L<int type|/"int Type">, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
-And the following operation in C<C language> is performed to the operand .
+And the following operation in C<C language> is performed on the operand .
 
   !!OPERAND
 
@@ -6287,7 +6287,7 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
 
 The condition must be an L<integral type|/"Integral Type"> that numeric order is less than or equal to the L<int type|/"int Type">. Otherwise a compilation occur will occur.
 
-The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> to the L<int type|/"int Type"> is performed to the value of the condition.
+The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> to the L<int type|/"int Type"> is performed on the value of the condition.
 
 The value of the L<case statement|/"case Statement"> must be one of a L<character literal|/"Character Literal">, an L<integer literal|/"Integer Literal> or an L<enumeration call|/"Enumeration Call">.
 
@@ -6698,7 +6698,7 @@ The addition operator C<+> is a L<binary operator|/"Binary Operator"> to calcula
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
 The addition operator performs the operation that exactly same as the following operation in C language.
 
@@ -6714,7 +6714,7 @@ The subtraction operator C<-> is a L<binary operator|/"Binary Operator"> to calc
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
 The subtraction operator performs the operation that exactly same as the following operation in C language.
 
@@ -6730,7 +6730,7 @@ The multiplication operator is a L<binary operator|/"Binary Operator"> to calcul
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
 The multiplication operator performs the operation that exactly same as the following operation in C language.
 
@@ -6746,7 +6746,7 @@ The division operator C</> is a L<binary operator|/"Binary Operator"> to culcura
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
 The division operator performs the operation that exactly same as the following operation in C language.
 
@@ -6796,7 +6796,7 @@ The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calcul
 
 The left operand and the right operand must be an L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed to the left operand and the right operand.
+L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
 The remainder operator performs the operation that exactly same as the following operation in C language.
 
@@ -7067,11 +7067,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator">
 
 The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
 The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
@@ -7087,11 +7087,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
 The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
 The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
@@ -7107,11 +7107,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
 The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the left operand.
+L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
 The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed to the right operand.
+L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
