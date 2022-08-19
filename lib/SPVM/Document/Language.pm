@@ -3421,18 +3421,18 @@ Scope blocks are the L<simple block|/"Simple Block">, the L<method block|/"Metho
 
 =head3 Simple Block
 
-A simple block is a L<scope block|/"Scope Block">.
+The simple block is a L<scope block|/"Scope Block">.
 
   # Simple block
   {
     1;
   }
 
-A simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"The array Initialization">.
+The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"The array Initialization">.
 
 =head3 Method Block
 
-A method block is a L<scope block|/"Scope Block">.
+The method block is a L<scope block|/"Scope Block">.
 
   # Method block
   static method foo : int () {
@@ -3441,7 +3441,7 @@ A method block is a L<scope block|/"Scope Block">.
 
 =head3 eval Block
 
-a C<eval> block is a L<scope block|/"Scope Block">.
+The C<eval> block is a L<scope block|/"Scope Block">.
 
   # eval block
   eval {
@@ -3450,7 +3450,7 @@ a C<eval> block is a L<scope block|/"Scope Block">.
 
 =head3 if Block
 
-A C<if> block is a L<scope block|/"Scope Block">.
+The C<if> block is a L<scope block|/"Scope Block">.
 
   # if block
   if (CONDITION) {
@@ -3459,7 +3459,7 @@ A C<if> block is a L<scope block|/"Scope Block">.
 
 =head3 elsif Block
 
-A C<elsif> block is a L<scope block|/"Scope Block">.
+The C<elsif> block is a L<scope block|/"Scope Block">.
 
   # elsif block
   elsif (CONDITION) {
@@ -3468,7 +3468,7 @@ A C<elsif> block is a L<scope block|/"Scope Block">.
 
 =head3 else Block
 
-A C<else> block is a L<scope block|/"Scope Block">.
+The C<else> block is a L<scope block|/"Scope Block">.
 
   # else block
   else {
@@ -3477,7 +3477,7 @@ A C<else> block is a L<scope block|/"Scope Block">.
 
 =head3 for Block
 
-A C<for> block is a L<scope block|/"Scope Block">.
+The C<for> block is a L<scope block|/"Scope Block">.
 
   # for Block 
   for (my $i = 0; $i < 3; $i++) {
@@ -3486,7 +3486,7 @@ A C<for> block is a L<scope block|/"Scope Block">.
 
 =head3 while Block
 
-A C<while> block is a L<scope block|/"Scope Block">.
+The C<while> block is a L<scope block|/"Scope Block">.
 
   # while block
   while (CONDITION) {
@@ -3495,7 +3495,7 @@ A C<while> block is a L<scope block|/"Scope Block">.
 
 =head3 switch Block
 
-A C<switch> block is a L<scope block|/"Scope Block">.
+The C<switch> block is a L<scope block|/"Scope Block">.
   
   # switch block
   switch (CONDITION) {
@@ -3510,7 +3510,7 @@ The C<INIT> block is a L<block|/"Block"> to be executed just after the program s
   
   }
 
-A C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
+The C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
 
   class Foo {
     INIT {
@@ -6137,9 +6137,21 @@ Type comments have no meanings at runtime.
 
 =head1 Statement
 
-Statements are syntax or operations that are written direct under a L<scope block|/"Scope Block">.
+Statements are the list of the statement.
+
+Statements are written direct under the L<scope block|/"Scope Block">.
+  
+  # Scope block
+  {
+    # Statements
+    STATEMENT1
+    STATEMENT2
+    STATEMENT3
+  }
 
 =head2 Conditional Branch
+
+The conditional branch is explained in the following topics.
 
 =head3 if Statement
 
@@ -6149,23 +6161,120 @@ The C<if> statement is a L<statement|/"Statement"> for conditional branch.
   
   }
 
-The condition the L<conditional type conversion|/"Conditional Type Conversion"> is executed and Block is executed if the value is non-zero.
+First, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the condition.
 
-If you want to write more than one condition, you can continue with "elsif Statement". The condition determination is performed from above, and each operand is the L<conditional type conversion|/"Conditional Type Conversion"> is executed, and a corresponding Block is executed if the value is non-zero.
+Next, if the condition is not C<0>, the execution position jumps to the beginning of the L<if block|/"if Block">. Otherwise jumps to the end of the L<if block|/"if Block">.
+
+The L<local variable declartion|/"Local Variable Declaration"> and the initialization in the condition of the C<if> statement are allowed.
+
+  if (my $condition = 1) {
+  
+  }
+
+This is parsed as the following code.
+
+  {
+    my $condition = 1;
+    if ($condition) {
+    
+    }
+  }
+
+B<Examples:>
+
+  # if statement.
+  my $flag = 1;
+  
+  if ($flag == 1) {
+    print "One\n";
+  }
+
+=head3 elsif Statement
+
+The C<elsif> statement is a L<statement|/"Statement"> for conditional branch used with the L<if statement|/"if Statement">.
+
+  if (CONDITION1) {
+  
+  }
+  elsif (CONDITION2) {
+  
+  }
+
+If the C<condition 1> doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
+
+Next, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the C<condition 2>.
+
+Next, if the C<condition 2> is not C<0>, the execution position jumps to the beginning of the L<elsif block|/"elsif Block">. Otherwise jumps to the end of the L<elsif block|/"elsif Block">
+
+Multiple C<elsif> statements are allowed.
+
+  if (CONDITION1) {
+  
+  }
+  elsif (CONDITION2) {
+  
+  }
+  elsif (CONDITION3) {
+  
+  }
+
+The L<local variable declartion|/"Local Variable Declaration"> and the initialization in the condition of the C<elsif> statement are allowed.
+
+  if (my $condition = 1) {
+  
+  }
+  elsif (my $condition = 2) {
+  
+  }
+
+This is parsed as the following code.
+
+  {
+    my $condition = 1;
+    if ($condition) {
+      
+    }
+    else {
+      my $condition = 2;
+      if ($condition) {
+        
+      }
+    }
+  }
+
+B<Examples:>
+
+  # elsif statement.
+  my $flag = 2;
+  
+  if ($flag == 1) {
+    print "One\n";
+  }
+  elsif ($flag == 2) {
+    print "Two\n";
+  }
+
+=head3 else Statement
+
+The C<else> statement is a L<statement|/"Statement"> for conditional branch used with the L<if statement|if Statement> or the L<elsif statement|elsif Statement>.
 
   if (CONDITION) {
   
   }
-  elsif(CONDITION) {
+  else {
   
   }
 
-You can use C<else> statement to describe what happens if or if the elsif Statement does not meet the criteria. If the if statement and elsif statement condition determination are all false, the statement inside the elseBlock is executed. Elsif Statement does not have to be.
+If the condition doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
 
-  if (CONDITION) {
+Next, the execution position jumps to the beginning of the L<else block|/"else Block">.
+
+The C<elsif> statements with the L<else statement|/"else Statement"> are allowed.
+
+  if (CONDITION1) {
   
   }
-  elsif (CONDITION) {
+  elsif (CONDITION2) {
   
   }
   else {
@@ -6174,8 +6283,8 @@ You can use C<else> statement to describe what happens if or if the elsif Statem
 
 B<Examples:>
 
-  # An example of if Statement.
-  my $flag = 1;
+  # else statement.
+  my $flag = 3;
   
   if ($flag == 1) {
     print "One\n";
@@ -6187,83 +6296,39 @@ B<Examples:>
     print "Other";
   }
 
-The C<if> Statement is internally surrounded by an invisible Simple Block.
-
-  {
-    if (CONDITION) {
-  
-    }
-  }
-
-C<elsif> is internally expanded into C<if> Statement and C<else> Statement.
-
-  #Before deployment
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-  else {
-  
-  }
-  
-  #After deployment
-  if (CONDITION1) {
-  }
-  else {
-    if (CONDITION2) {
-  
-    }
-    else {
-  
-    }
-  }
-
-When a variable is declared in the conditional part of if Statement, it must be surrounded by invisible L</"Simple Block">. Be aware that elsif is internally expanded into if Statement and else Statement.
-
-  #Before deployment
-  my $num = 1;
-  if (my $num = 2) {
-  
-  }
-  elsif (my $num = 3) {
-  
-  }
-  else {
-  
-  }
-  
-  #After deployment
-  my $num = 1;
-  {
-    if (my $num = 2) {
-  
-    }
-    else {
-      {
-        if (my $num = 3) {
-          
-        }
-        else {
-          
-        }
-      }
-    }
-  }
-
 =head3 unless Statement
 
-The C<unless> statement is a L<statement|/"Statement"> for conditional branches. 
+The C<unless> statement is a L<statement|/"Statement"> for conditional branch that does the opposite of the L<if statement|/"if Statement">.
 
   unless (CONDITION) {
     
   }
 
-This is the same as the following L<if Statement|/"if Statement">.
+The C<unless> statement is the same as the following L<if Statement|/"if Statement">.
 
   if (!CONDITION) {
     
+  }
+
+The C<unless> statements with the L<elsif statement|/"elsif Statement"> and the L<else statement|/"else  Statement"> are allowed.
+
+  unless (CONDITION1) {
+    
+  }
+  elsif (CONDITION2) (
+    
+  }
+  else {
+    
+  }
+
+B<Examples:>
+
+  # unless statement.
+  my $flag = 1;
+  
+  unless ($flag == 0) {
+    print "Not Zero\n";
   }
 
 =head3 switch Statement
