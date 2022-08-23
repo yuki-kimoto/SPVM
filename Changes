@@ -1,4 +1,4 @@
-0.9644 2022-08-18
+0.9644 2022-08-23
   [Document Improvement]
     * Add heading "Conditional Branch".
     * Add heading "Loop Syntax".
@@ -16,6 +16,9 @@
       Integral Type Within int
       The integral type within int is the integral type within the int type.
       In other words, the integral types within int are the byte type, the short type, and the int type.
+  [Document Fix]
+    * The heading "Integral Type" is renamed to "Integer Type". This was my English mistake.
+      And the contens.
   [Test Improvement]
     * Cleanup tests for statements.
       if.t unless.t -> conditional_branch.t
@@ -30,7 +33,9 @@
     * Add the following functions to "spvm_basic_type.c"
       int32_t SPVM_BASIC_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id);
     * Add the following functions to "spvm_type.c"
-      int32_t SPVM_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);    
+      int32_t SPVM_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+    * "integral_type" is replaced to "integer_type".
+
 0.9643 2022-08-18
   [Revert]
     * Revert the following changes.

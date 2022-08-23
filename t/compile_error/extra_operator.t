@@ -84,8 +84,8 @@ use Test::More;
 
 # Remainder - Compile Error
 {
-  compile_not_ok_file('CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integral/);
-  compile_not_ok_file('CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integral/);
+  compile_not_ok_file('CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integer/);
+  compile_not_ok_file('CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integer/);
   compile_not_ok_file('CompileError::Remainder::RemuiLeftIsNotInt', qr/left.+remui.+int/);
   compile_not_ok_file('CompileError::Remainder::RemuiRightIsNotInt', qr/right.+remui.+int/);
   compile_not_ok_file('CompileError::Remainder::RemulLeftIsNotLong', qr/left.+remul.+long/);

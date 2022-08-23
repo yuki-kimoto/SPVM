@@ -333,11 +333,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1d ^ 1; } }';
-    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integral type');
+    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integer type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 ^ 1d; } }';
-    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integral type');
+    compile_not_ok($source, 'The left and right operand of the ^ operator must be an integer type');
   }
 }
 
@@ -466,7 +466,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { ~ 1d; } }';
-    compile_not_ok($source, q|The operand of the ~ operator must be an integral type|);
+    compile_not_ok($source, q|The operand of the ~ operator must be an integer type|);
   }
 }
 
@@ -546,11 +546,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" % 1; } }';
-    compile_not_ok($source, q|The left operand of the % operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the % operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 % "foo"; } }';
-    compile_not_ok($source, q|The right operand of the % operator must be an integral type|);
+    compile_not_ok($source, q|The right operand of the % operator must be an integer type|);
   }
 }
 
@@ -582,11 +582,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" & 1; } }';
-    compile_not_ok($source, q|The left operand of the & operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the & operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 & "foo"; } }';
-    compile_not_ok($source, q|The right operand of the & operator must be an integral type|);
+    compile_not_ok($source, q|The right operand of the & operator must be an integer type|);
   }
 }
 
@@ -594,11 +594,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" | 1; } }';
-    compile_not_ok($source, q|The left operand of the \| operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the \| operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 | "foo"; } }';
-    compile_not_ok($source, q|The right operand of the \| operator must be an integral type|);
+    compile_not_ok($source, q|The right operand of the \| operator must be an integer type|);
   }
 }
 
@@ -606,7 +606,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" << 1; } }';
-    compile_not_ok($source, q|The left operand of the << operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the << operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 << 1d; } }';
@@ -622,7 +622,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" >> 1; } }';
-    compile_not_ok($source, q|The left operand of the >> operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the >> operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 >> 1d; } }';
@@ -638,7 +638,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" >>> 1; } }';
-    compile_not_ok($source, q|The left operand of the >>> operator must be an integral type|);
+    compile_not_ok($source, q|The left operand of the >>> operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 >>> 1d; } }';

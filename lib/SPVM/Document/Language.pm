@@ -458,7 +458,7 @@ Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floatin
 
 =head2 Integer Literal
 
-A interger literal is a L<numeric literal/"Numeric Literal"> to write a constant value that type is an L<integral type|/"Integral Type"> in source codes.
+A interger literal is a L<numeric literal/"Numeric Literal"> to write a constant value that type is an L<integer type|/"Integer Type"> in source codes.
 
 =head3 Integer Literal Decimal Notation
 
@@ -3934,13 +3934,13 @@ The list of initial values.
 
 =head2 Numeric Type
 
-The numeric type are the L<integral type|/"Integral Type"> and L</"Floating Point Type">.
+The numeric type are the L<integer type|/"Integer Type"> and L</"Floating Point Type">.
 
 =head3 Numeric Type Order
 
 a L<numeric type|/"Numeric Type"> has the type order. The order is "byte", "short", "int", "long", "float", "double" from the smallest.
 
-=head2 Integral Type
+=head2 Integer Type
 
 Integral types are the following four types.
 
@@ -4008,29 +4008,29 @@ Integral types are the following four types.
 
 See also L<arithmetic operators|/"Arithmetic Operator"> to calculate integer values.
 
-Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> integral types.
+Note that SPVM has only B<singed> integer types, and doesn't have B<unsigned> integer types.
 
-=head2 Integral Type Within int
+=head2 Integer Type Within int
 
-The integral type within C<int> is the L<integral type|/"Integral Type"> within the L<int type|/"int Type">.
+The integer type within C<int> is the L<integer type|/"Integer Type"> within the L<int type|/"int Type">.
 
-In other words, the integral types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the L<int type|/"int Type">.
+In other words, the integer types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the L<int type|/"int Type">.
 
 =head2 byte Type
 
-C<byte> type is the L<integral type|/"Integral Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
+C<byte> type is the L<integer type|/"Integer Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
 
 =head2 short Type
 
-C<short> type  is the L<integral type|/"Integral Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
+C<short> type  is the L<integer type|/"Integer Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
 
 =head2 int Type
 
-C<int> type is  is the L<integral type|/"Integral Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
+C<int> type is  is the L<integer type|/"Integer Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
 
 =head2 long Type
 
-C<long> type is the L<integral type|/"Integral Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
+C<long> type is the L<integer type|/"Integer Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
 
 =head2 Floating Point Type
 
@@ -6356,7 +6356,7 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
     }
   }
 
-The condition must be an L<integral type|/"Integral Type"> that numeric order is less than or equal to the L<int type|/"int Type">. Otherwise a compilation occur will occur.
+The condition must be an L<integer type|/"Integer Type"> that numeric order is less than or equal to the L<int type|/"int Type">. Otherwise a compilation occur will occur.
 
 The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> to the L<int type|/"int Type"> is performed on the value of the condition.
 
@@ -6825,7 +6825,7 @@ The division operator performs the operation that exactly same as the following 
 
 The return type of the division operator is the type after L</"Binary Numeric Type Conversion"> is performed.
 
-If the two operands are L<integral types|/"Integral Type"> and the value of the right operand is C<0>, an L<exception|/"Exception"> is thrown.
+If the two operands are L<integer types|/"Integer Type"> and the value of the right operand is C<0>, an L<exception|/"Exception"> is thrown.
 
 =head2 Division Unsigned Int Operator
 
@@ -6865,7 +6865,7 @@ The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calcul
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type|/"Integral Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type|/"Integer Type">, otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
@@ -7065,7 +7065,7 @@ The bit AND operator C<&> is an L<operator|/"Operator"> to performe a bit AND op
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type/"Integral Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type/"Integer Type">, otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
@@ -7088,7 +7088,7 @@ The bit OR operator C<|> is an L<operator|/"Operator"> to performe a bit OR oper
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integral type/"Integral Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type/"Integer Type">, otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
@@ -7111,7 +7111,7 @@ The bit NOT operator C<~> is an L<unary operator|/"Unary Operator"> to perform t
 
   ~OPERAND
 
-The type of the operand must is an L<integral type|/"Integral Type">, otherwise a compilation error will occur.
+The type of the operand must is an L<integer type|/"Integer Type">, otherwise a compilation error will occur.
 
 The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
@@ -7136,11 +7136,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator">
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
@@ -7156,11 +7156,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
@@ -7176,11 +7176,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-The left operand must be the L<integral type|/"Integral Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integral type|/"Integral Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
@@ -7706,7 +7706,7 @@ The string creation operator C<new_string_len> is an L<unary operator|/"Unary Op
 
   new_string_len OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is the L<integral type|/"Integral Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is the L<integer type|/"Integer Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
 
 The string creation operator returns the string that is created with the lenght.
 

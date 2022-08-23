@@ -609,11 +609,11 @@ int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_typ
   }
 }
 
-int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_integer_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  int32_t basic_type_is_integral_type = SPVM_BASIC_TYPE_is_integral_type(compiler, basic_type_id);
-  if (dimension == 0 && basic_type_is_integral_type && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  int32_t basic_type_is_integer_type = SPVM_BASIC_TYPE_is_integer_type(compiler, basic_type_id);
+  if (dimension == 0 && basic_type_is_integer_type && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
@@ -621,11 +621,11 @@ int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_i
   }
 }
 
-int32_t SPVM_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
-  int32_t basic_type_is_integral_type_within_int = SPVM_BASIC_TYPE_is_integral_type_within_int(compiler, basic_type_id);
-  if (dimension == 0 && basic_type_is_integral_type_within_int && !(flag & SPVM_TYPE_C_FLAG_REF)) {
+  int32_t basic_type_is_integer_type_within_int = SPVM_BASIC_TYPE_is_integer_type_within_int(compiler, basic_type_id);
+  if (dimension == 0 && basic_type_is_integer_type_within_int && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     return 1;
   }
   else {
