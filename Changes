@@ -29,7 +29,7 @@
       The private method \"%s\" can't be called at %s line %d
       [After]
       The private method \"%s\" in the class \"%s\" can't be called
-  [Internal Changes]
+  [Internal Changes Without Effect]
     * Add the following functions to "spvm_basic_type.c"
       int32_t SPVM_BASIC_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id);
     * Add the following functions to "spvm_type.c"
