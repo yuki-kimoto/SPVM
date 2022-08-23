@@ -287,6 +287,17 @@ int32_t SPVM_BASIC_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_
   }
 }
 
+int32_t SPVM_BASIC_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+  (void)compiler;
+  
+  if (basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t interface_basic_type_id) {
   (void)compiler;
   
