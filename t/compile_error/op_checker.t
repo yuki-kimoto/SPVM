@@ -82,6 +82,14 @@ use Test::More;
   }
 }
 
+# new_string_len
+{
+  {
+    my $source = 'class MyClass { static method main : void () { new_string_len 1L; } }';
+    compile_not_ok($source, qr|The operand of the new_string_len operator must be an integer type within int|);
+  }
+}
+
 # class_id
 {
   {

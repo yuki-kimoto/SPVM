@@ -22,7 +22,7 @@
   [Test Improvement]
     * Cleanup tests for statements.
       if.t unless.t -> conditional_branch.t
-      
+    * Add the test of the compilation error of the new_string_len operator
   [Exception Message Improvement[
     * The following exception message is improved.
       [Before]
@@ -35,7 +35,8 @@
     * Add the following functions to "spvm_type.c"
       int32_t SPVM_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
     * "integral_type" is replaced to "integer_type".
-
+    * "integer_type_except_for_long" is replaced to "integer_type_within_int".
+    
 0.9643 2022-08-18
   [Revert]
     * Revert the following changes.
