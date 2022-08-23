@@ -4010,6 +4010,12 @@ See also L<arithmetic operators|/"Arithmetic Operator"> to calculate integer val
 
 Note that SPVM has only B<singed> integral types, and doesn't have B<unsigned> integral types.
 
+=head2 Integral Type Within int
+
+The integral type within C<int> is the L<integral type|/"Integral Type"> within the L<int type|/"int Type">.
+
+In other words, the integral types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the L<int type|/"int Type">.
+
 =head2 byte Type
 
 C<byte> type is the L<integral type|/"Integral Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.

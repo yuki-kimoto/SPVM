@@ -12,7 +12,10 @@
     * Improve the doc of elsif Statement
     * Improve the doc of else Statement
     * Improve the doc of unless Statement
-    
+    * Add the "Integral Type Within int" headding
+      Integral Type Within int
+      The integral type within int is the integral type within the int type.
+      In other words, the integral types within int are the byte type, the short type, and the int type.
   [Test Improvement]
     * Cleanup tests for statements.
       if.t unless.t -> conditional_branch.t
