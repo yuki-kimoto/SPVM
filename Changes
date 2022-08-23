@@ -12,7 +12,7 @@
     * Improve the doc of elsif Statement
     * Improve the doc of else Statement
     * Improve the doc of unless Statement
-    * Add the "Integral Type Within int" headding
+    * Add the "Integral Type Within int" heading
       Integral Type Within int
       The integral type within int is the integral type within the int type.
       In other words, the integral types within int are the byte type, the short type, and the int type.
