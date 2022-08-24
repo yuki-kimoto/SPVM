@@ -7712,6 +7712,8 @@ The C<new_string_len> operator is an L<unary operator|/"Unary Operator"> to crea
 
 The type of the operand must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
 
+The L<integer promotional type conversion|Integer Promotional Type Conversion> is performed on the operand.
+
 The C<new_string_len> operator returns a new string that length is the length specified by the operand and all characters are C<\0>.
 
 The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as C<C language> string ending with C<\0>.
