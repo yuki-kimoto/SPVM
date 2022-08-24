@@ -7704,17 +7704,21 @@ B<Examples:>
   
 Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
-=head2 String Creating Operator
+=head2 new_string_len Operator
 
-The string creation operator C<new_string_len> is an L<unary operator|/"Unary Operator"> to create a L<string|/"String"> with the length.
+The C<new_string_len> operator is an L<unary operator|/"Unary Operator"> to create a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is the L<integer type|/"Integer Type"> except for a L<long type|/"long Type">, otherwise a compilation error will occur.
+The type of the operand must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
 
-The string creation operator returns the string that is created with the lenght.
+The C<new_string_len> operator returns a new string that length is the length specified by the operand and all characters are C<\0>.
 
-The return type is a L<string type|/"String Type">.
+The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as C<C language> string ending with C<\0>.
+
+The return type is the L<string type|/"String Type">.
+
+The length specified by the operand must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 B<Examples:>
   

@@ -1,5 +1,5 @@
 0.9644 2022-08-23
-  [Document Improvement]
+  [Document Changes]
     * Add heading "Conditional Branch".
     * Add heading "Loop Syntax".
     * Reorder a heading. "void Reterning Operator" is moved after "Operator".
@@ -17,7 +17,8 @@
       The integral type within int is the integral type within the int type.
       In other words, the integral types within int are the byte type, the short type, and the int type.
     * Add the heading "Integer Promotional Type Conversion" 
-
+    * 
+    
   [Document Fix]
     * The heading "Integral Type" is renamed to "Integer Type". This was my English mistake.
       And the contens.
