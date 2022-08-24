@@ -1129,28 +1129,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_operand);
                   
                   assert(index_type);
-                  int32_t is_length_type_integer_type_within_int;
-                  if (SPVM_TYPE_is_integer_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
-                    SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_index_operand);
-                    
-                    SPVM_TYPE* index_type_after_conversion = SPVM_OP_get_type(compiler, op_type->last);
-                    
-                    if (SPVM_TYPE_is_int_type(compiler, index_type_after_conversion->basic_type->id, index_type_after_conversion->dimension, index_type_after_conversion->flag)) {
-                      is_length_type_integer_type_within_int = 1;
-                    }
-                    else {
-                      is_length_type_integer_type_within_int = 0;
-                    }
-                  }
-                  else {
-                    is_length_type_integer_type_within_int = 0;
-                  }
-                  
-                  if (!is_length_type_integer_type_within_int) {
+                  if (!SPVM_TYPE_is_integer_type_within_int(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
                     const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                    SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be the int type at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integer type within int at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
+                  SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_index_operand);
                 }
                 // Numeric type
                 else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {

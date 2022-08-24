@@ -314,7 +314,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { new int[1L]; } }';
-    compile_not_ok($source, 'The array length specified by the new operator must be the int type');
+    compile_not_ok($source, q|The array length specified by the new operator must be an integer type within int|);
   }
   {
     my $source = 'class MyClass { static method main : void () { new int; } }';
