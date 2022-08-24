@@ -977,7 +977,7 @@ int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_
   return mulnum_field_basic_type_id;
 }
 
-int32_t SPVM_TYPE_check_assignability(
+int32_t SPVM_TYPE_can_assign(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
@@ -1373,7 +1373,7 @@ int32_t SPVM_TYPE_check_assignability(
   return assignability;
 }
 
-int32_t SPVM_TYPE_check_castability(
+int32_t SPVM_TYPE_can_cast(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag)

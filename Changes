@@ -46,6 +46,9 @@
       void SPVM_OP_CHECKER_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_term);
       void SPVM_OP_CHECKER_perform_integer_promotional_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_unary);
       void SPVM_OP_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
+    * Rename the following functions in spvm_type.c
+      SPVM_TYPE_check_assignability to SPVM_TYPE_can_assign
+      SPVM_TYPE_check_castability to SPVM_TYPE_can_cast
 
 0.9643 2022-08-18
   [Revert]

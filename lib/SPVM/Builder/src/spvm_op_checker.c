@@ -3215,7 +3215,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast);
               assert(cast_type);
               
-              int32_t castability = SPVM_TYPE_check_castability(
+              int32_t castability = SPVM_TYPE_can_cast(
                 compiler,
                 cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
                 src_type->basic_type->id, src_type->dimension, src_type->flag
@@ -4188,7 +4188,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
   
-  int32_t assignability = SPVM_TYPE_check_assignability(
+  int32_t assignability = SPVM_TYPE_can_assign(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
@@ -4717,7 +4717,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               int32_t need_implicite_conversion = 0;
               int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
-              int32_t assignability = SPVM_TYPE_check_assignability(
+              int32_t assignability = SPVM_TYPE_can_assign(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
