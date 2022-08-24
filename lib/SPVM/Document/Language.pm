@@ -3136,7 +3136,7 @@ Note that SPVM does not perform constant convolution optimization, so if a const
 
 =head1 Enumeration
 
-The enumeration defines constant values.
+The enumeration is the syntax to define constant values of the L<int type|/"int Type">.
 
 =head2 Enumeration Definition
 
@@ -3236,31 +3236,28 @@ B<The list of enumeration descriptors:>
 
 If both C<public> and C<private> descriptors are specified, a compilation error will occur.
 
-=head2 Enumeration Call
+=head2 Getting Enumeration Value
 
-The value of enumeration called as a L<class method call|/"Class Method Call">.
+The value of the enumeration can be got using the L<class method call|/"Class Method Call">.
 
   my $flag1 = Foo->FLAG1;
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-In special cases, a value of an enumeration can be used as the operand of a L<case statement|/"case Statement">.
+As special cases, the value of the enumeration can be used as the operand of the L<case statement|/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
-      
-      break;
+      # ...
     }
     case Foo->FLAG2: {
-      
-      break:
+      # ...
     }
     case Foo->FLAG3: {
-      
-      break:
+      # ...
     }
     default: {
-      
+      # ...
     }
   }
 
@@ -6364,7 +6361,7 @@ The condition must be an L<integer type|/"Integer Type"> that numeric order is l
 
 The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> to the L<int type|/"int Type"> is performed on the value of the condition.
 
-The value of the L<case statement|/"case Statement"> must be one of a L<character literal|/"Character Literal">, an L<integer literal|/"Integer Literal> or an L<enumeration call|/"Enumeration Call">.
+The value of the L<case statement|/"case Statement"> must be one of a L<character literal|/"Character Literal">, an L<integer literal|/"Integer Literal> or the L<getting enumeration value|/"Getting Enumeration Value">.
 
 If the value is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
 
