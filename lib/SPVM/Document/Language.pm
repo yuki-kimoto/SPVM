@@ -5715,9 +5715,13 @@ B<Examples:>
   # Implicte int to string type conversion
   my $string : string = 4;
 
+=head2 Integer Promotional Type Conversion
+
+The integer promotional type conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the L<int type|/"int Type"> using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+
 =head2 Numeric Widening Type Conversion
 
-The numeric widening type conversion is a L<conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Type"> to a large-order L<numeric type|/"Numeric Type">.
+The numeric widening type conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Type"> to a large-order L<numeric type|/"Numeric Type">.
 
 See also L<numeric types order|/"Numeric Type Order"> abount the order of numeric type.
 
