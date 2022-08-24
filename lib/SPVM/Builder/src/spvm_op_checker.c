@@ -391,7 +391,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
 
-              SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_length_operand);
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_length_operand);
               
               break;
             }
@@ -425,7 +425,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_switch_condition = op_cur->first;
               
               // Perform numeric widening conversion
-              SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_switch_condition->first->first);
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_switch_condition->first->first);
               
               SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_switch_condition->first);
               if (!operand_type || !(operand_type->dimension == 0 && operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
@@ -548,7 +548,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))
               {
                 // Convert byte or short type to int type
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_first);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -614,7 +614,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   is_valid_type = 1;
                   
-                  SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+                  SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -680,7 +680,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   is_valid_type = 1;
                   
-                  SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+                  SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -719,7 +719,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -744,7 +744,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -769,7 +769,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -794,7 +794,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -819,7 +819,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -958,7 +958,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left type is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_numeric_to_string_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -971,7 +971,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right operand is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_conversion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_perform_numeric_to_string_conversion(compiler, op_cur->last);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1131,7 +1131,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   assert(index_type);
                   int32_t is_length_type_integer_type_within_int;
                   if (SPVM_TYPE_is_integer_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
-                    SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_index_operand);
+                    SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_index_operand);
                     
                     SPVM_TYPE* index_type_after_conversion = SPVM_OP_get_type(compiler, op_type->last);
                     
@@ -1211,7 +1211,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1824,7 +1824,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply unary widening conversion
-              SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1841,7 +1841,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Apply unary widening conversion
-              SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1869,7 +1869,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply unary widening conversion
-              SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1893,7 +1893,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1917,7 +1917,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1941,7 +1941,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1965,7 +1965,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2025,7 +2025,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Apply binary numeric conversion
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2084,7 +2084,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2107,7 +2107,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              SPVM_OP_CHECKER_apply_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              SPVM_OP_CHECKER_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2120,7 +2120,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be a numeric type
               if (SPVM_TYPE_is_integer_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2132,7 +2132,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right operand must be int type
               if (SPVM_TYPE_is_integer_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->last);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2155,7 +2155,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be a numeric type
               if (SPVM_TYPE_is_integer_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2167,7 +2167,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right operand must be int type
               if (SPVM_TYPE_is_integer_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->last);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2190,7 +2190,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Left operand must be a numeric type
               if (SPVM_TYPE_is_integer_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2202,7 +2202,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right operand must be int type
               if (SPVM_TYPE_is_integer_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->last);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2227,7 +2227,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_numeric_to_string_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2245,7 +2245,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_conversion(compiler, op_cur->first);
+                SPVM_OP_CHECKER_perform_numeric_to_string_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2889,7 +2889,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Right operand must be integer
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_integer_promotional_conversion(compiler, op_cur->last);
+                SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->last);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -3268,7 +3268,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
   
 }
 
-void SPVM_OP_CHECKER_apply_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
+void SPVM_OP_CHECKER_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
   
@@ -3290,7 +3290,7 @@ void SPVM_OP_CHECKER_apply_numeric_to_string_conversion(SPVM_COMPILER* compiler,
   SPVM_OP_replace_op(compiler, op_stab, op_convert);
 }
 
-void SPVM_OP_CHECKER_apply_integer_promotional_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
+void SPVM_OP_CHECKER_perform_integer_promotional_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
   
@@ -3316,7 +3316,7 @@ void SPVM_OP_CHECKER_apply_integer_promotional_conversion(SPVM_COMPILER* compile
   }
 }
 
-void SPVM_OP_CHECKER_apply_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
+void SPVM_OP_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_first);
   SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_last);
