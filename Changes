@@ -17,7 +17,7 @@
       The integral type within int is the integral type within the int type.
       In other words, the integral types within int are the byte type, the short type, and the int type.
     * Add the heading "Integer Promotional Type Conversion" 
-    * 
+    * Rename the heading "String Creating Operator" to "ew_string_len Operator".
     
   [Document Fix]
     * The heading "Integral Type" is renamed to "Integer Type". This was my English mistake.
