@@ -425,13 +425,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_switch_condition = op_cur->first;
               
               // Perform numeric widening conversion
-              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_switch_condition->first->first);
               
               SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_switch_condition->first);
-              if (!operand_type || !(operand_type->dimension == 0 && operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
-                SPVM_COMPILER_error(compiler, "The condition of the switch statement must be the int type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The condition of the switch statement must be an integer type within int at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              
+              SPVM_OP_CHECKER_perform_integer_promotional_conversion(compiler, op_switch_condition->first->first);
               
               SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
               SPVM_LIST* cases = switch_info->case_infos;

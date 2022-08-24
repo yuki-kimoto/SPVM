@@ -110,23 +110,23 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { switch (1d) { } } }';
-    compile_not_ok($source, qr'The condition of the switch statement must be the int type');
+    compile_not_ok($source, q|The condition of the switch statement must be an integer type within int|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case Int->new(1): { } } } }';
-    compile_not_ok($source, qr'The operand of the case statement must be a constant value');
+    compile_not_ok($source, q|The operand of the case statement must be a constant value|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case "foo": { } } } }';
-    compile_not_ok($source, qr'The operand of the case statement must be the int type');
+    compile_not_ok($source, q|The operand of the case statement must be the int type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } case 1: { } } } }';
-    compile_not_ok($source, qr"The value of the case statement can't be duplicated");
+    compile_not_ok($source, q|The value of the case statement can't be duplicated|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } default: { } default: { } } } }';
-    compile_not_ok($source, qr'Unexpected token "default"');
+    compile_not_ok($source, q|Unexpected token "default"|);
   }
 }
 

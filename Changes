@@ -32,6 +32,17 @@
       The private method \"%s\" can't be called at %s line %d
       [After]
       The private method \"%s\" in the class \"%s\" can't be called
+    * The following exception message is improved.
+      [Before]
+      The array length specified by the new operator must be the int type
+      [After]
+      The array length specified by the new operator must be an integer type within int
+    * The following exception message is improved.
+      [Before]
+      The condition of the switch statement must be the int type
+      [After]
+      The condition of the switch statement must be an integer type within int
+
   [Internal Changes Without Effect]
     * Add the following functions to "spvm_basic_type.c"
       int32_t SPVM_BASIC_TYPE_is_integral_type_within_int(SPVM_COMPILER* compiler, int32_t basic_type_id);
