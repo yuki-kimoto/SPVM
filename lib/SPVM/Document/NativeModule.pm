@@ -8,7 +8,7 @@ The native module is the module that is implemented by native language such as C
 
 =head1 Native Method Declaration
 
-A native method declaration are written using the method descriptor C<native> in a SPVM module file. The method can't have the block. it ends with a semicolon.
+A native method declaration are written using the method attribute C<native> in a SPVM module file. The method can't have the block. it ends with a semicolon.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -520,7 +520,7 @@ The exception is stored in env.
 
 There is a type called pointer type in SPVM, but I will explain how to use it.
 
-The pointer type definition specifies the pointer_t descriptor in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
+The pointer type definition specifies the pointer_t attribute in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
 
   # SPVM/MyTimeInfo.spvm
   class MyTimeInfo : pointer_t {

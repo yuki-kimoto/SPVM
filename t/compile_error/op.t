@@ -47,15 +47,15 @@ use Test::More;
 {
   {
     my $source = 'class MyClass : native;';
-    compile_not_ok($source, qr/Invalid class descriptor "native"/);
+    compile_not_ok($source, qr/Invalid class attribute "native"/);
   }
   {
     my $source = 'class MyClass : mulnum_t pointer_t interface_t;';
-    compile_not_ok($source, qr/Only one of class descriptors "mulnum_t", "pointer_t" or "interface_t" can be specified/);
+    compile_not_ok($source, qr/Only one of class attributes "mulnum_t", "pointer_t" or "interface_t" can be specified/);
   }
   {
     my $source = 'class MyClass : private public;';
-    compile_not_ok($source, qr/Only one of class descriptors "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class attributes "private" or "public" can be specified/);
   }
 }
 
@@ -136,7 +136,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { required method foo : void () { } }';
-    compile_not_ok($source, qr/The method defined in the class can't have the method descriptor "required"/);
+    compile_not_ok($source, qr/The method defined in the class can't have the method attribute "required"/);
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
@@ -180,15 +180,15 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $FOO : native int; }';
-    compile_not_ok($source, qr/Invalid class variable descriptor "native"/);
+    compile_not_ok($source, qr/Invalid class variable attribute "native"/);
   }
   {
     my $source = 'class MyClass { our $FOO : ro wo rw int; }';
-    compile_not_ok($source, qr/Only one of class variable descriptors "rw", "ro", "wo" can be specifed/);
+    compile_not_ok($source, qr/Only one of class variable attributes "rw", "ro", "wo" can be specifed/);
   }
   {
     my $source = 'class MyClass { our $FOO : private public int; }';
-    compile_not_ok($source, qr/Only one of class variable descriptors "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class variable attributes "private" or "public" can be specified/);
   }
 }
 
@@ -204,15 +204,15 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has foo : native int; }';
-    compile_not_ok($source, qr/Invalid field descriptor "native"/);
+    compile_not_ok($source, qr/Invalid field attribute "native"/);
   }
   {
     my $source = 'class MyClass { has foo : ro wo rw int; }';
-    compile_not_ok($source, qr/Only one of field descriptors "rw", "ro" or "wo" can be specifed/);
+    compile_not_ok($source, qr/Only one of field attributes "rw", "ro" or "wo" can be specifed/);
   }
   {
     my $source = 'class MyClass { has foo : private public int; }';
-    compile_not_ok($source, qr/Only one of field descriptors "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of field attributes "private" or "public" can be specified/);
   }
 }
 
@@ -228,11 +228,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { ro method foo : void () { } }';
-    compile_not_ok($source, qr/Invalid method descriptor "ro"/);
+    compile_not_ok($source, qr/Invalid method attribute "ro"/);
   }
   {
     my $source = 'class MyClass { native precompile method foo : void () { } }';
-    compile_not_ok($source, qr/Only one of method descriptors "native" and "precompile" can be specified/);
+    compile_not_ok($source, qr/Only one of method attributes "native" and "precompile" can be specified/);
   }
   {
     my $source = 'class MyClass { native method foo : void () { } }';
@@ -260,11 +260,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { ro enum { FOO = 1 } }';
-    compile_not_ok($source, qr/Invalid enumeration descriptor "ro"/);
+    compile_not_ok($source, qr/Invalid enumeration attribute "ro"/);
   }
   {
     my $source = 'class MyClass { private public enum { FOO = 1 } }';
-    compile_not_ok($source, qr/Only one of enumeration descriptors "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of enumeration attributes "private" or "public" can be specified/);
   }
 }
 

@@ -89,7 +89,7 @@ See also <a href="/language.html#language-class">Class - SPVM Language Specifica
 =head3 Method Definition
 
 
-The C<method> keyword defines a method. If the method doesn't have the instance, you define a static method using a C<static> descriptor.
+The C<method> keyword defines a method. If the method doesn't have the instance, you define a static method using a C<static> attribute.
 
   
   class MyMath {

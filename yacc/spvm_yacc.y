@@ -15,12 +15,12 @@
   #include "spvm_block.h"
   #include "spvm_list.h"
   #include "spvm_class.h"
-  #include "spvm_descriptor.h"
+  #include "spvm_attribute.h"
   #include "spvm_constant_string.h"
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-%token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
+%token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -32,7 +32,7 @@
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg has use require alias our
-%type <opval> opt_descriptors descriptors
+%type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
@@ -106,7 +106,7 @@ class
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS basic_type opt_extends ':' opt_descriptors class_block END_OF_FILE
+  | CLASS basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
@@ -114,7 +114,7 @@ class
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
     }
-  | CLASS basic_type opt_extends ':' opt_descriptors ';' END_OF_FILE
+  | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
@@ -190,11 +190,11 @@ init_block
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
 
-      SPVM_OP* op_list_descriptors = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-      SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
+      SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
 
-      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, $2, NULL, NULL, 1, 0);
+      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, $2, NULL, NULL, 1, 0);
     }
     
 use
@@ -238,7 +238,7 @@ interface
     }
 
 enumeration
-  : opt_descriptors ENUM enumeration_block
+  : opt_attributes ENUM enumeration_block
     {
       $$ = SPVM_OP_build_enumeration(compiler, $2, $3, $1);
     }
@@ -297,43 +297,43 @@ enumeration_value
     }
 
 our
-  : OUR VAR_NAME ':' opt_descriptors qualified_type opt_type_comment ';'
+  : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
     {
       $$ = SPVM_OP_build_our(compiler, $1, $2, $4, $5);
     }
 
 has
-  : HAS field_name ':' opt_descriptors qualified_type opt_type_comment ';'
+  : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
     {
       $$ = SPVM_OP_build_has(compiler, $1, $2, $4, $5);
     }
 
 method
-  : opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
+  : opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
      {
        $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
      }
-  | opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
+  | opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
      {
        $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
      }
-  | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
      }
-  | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
+  | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
      {
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
      }
 
 anon_method
-  : opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  : opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
        int32_t is_init = 0;
        int32_t is_anon = 1;
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
      }
-  | '[' args ']' opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -401,12 +401,12 @@ opt_vaarg
     }
   | DOT3
 
-opt_descriptors
+opt_attributes
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  | descriptors
+  | attributes
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -418,8 +418,8 @@ opt_descriptors
       }
     }
     
-descriptors
-  : descriptors DESCRIPTOR
+attributes
+  : attributes ATTRIBUTE
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -433,7 +433,7 @@ descriptors
       
       $$ = op_list;
     }
-  | DESCRIPTOR
+  | ATTRIBUTE
 
 opt_statements
   : /* Empty */

@@ -19,6 +19,20 @@
     * Add the heading "Integer Promotional Type Conversion" 
     * Rename the heading "String Creating Operator" to "new_string_len Operator".
     * Rename the heading "Enumeration Call" to "Getting Enumeration Value".
+    * Rename the following heading and the content.
+      [Before]
+      "Enumeration Descriptors"
+      "Method Descriptors"
+      "Field Descriptor"
+      "Class Variable Descriptor"
+      "Class Descriptor"
+      [After]
+      "Enumeration Attributes"
+      "Method Attributes"
+      "Field Attribute"
+      "Class Variable Attribute"
+      "Class Attribute"
+
   [Document Fix]
     * The heading "Integral Type" is renamed to "Integer Type". This was my English mistake.
       And the contens.
@@ -63,7 +77,10 @@
     * Rename the following functions in spvm_type.c
       SPVM_TYPE_check_assignability to SPVM_TYPE_can_assign
       SPVM_TYPE_check_castability to SPVM_TYPE_can_cast
-
+    * Replace "descriptor" to "attribute".
+      Rename "spvm_descriptor.c" to "spvm_attribute.c"
+      Rename "spvm_descriptor.h" to "spvm_attribute.h"
+      
 0.9643 2022-08-18
   [Revert]
     * Revert the following changes.

@@ -1162,7 +1162,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> DESCRIPTOR MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -1173,7 +1173,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> opt_declarations declarations declaration
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
   %type <opval> method anon_method opt_args args arg has use require alias our
-  %type <opval> opt_descriptors descriptors
+  %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
@@ -1215,9 +1215,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   class
     : CLASS basic_type opt_extends class_block END_OF_FILE
-    | CLASS basic_type opt_extends ':' opt_descriptors class_block END_OF_FILE
+    | CLASS basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
     | CLASS basic_type opt_extends ';' END_OF_FILE
-    | CLASS basic_type opt_extends ':' opt_descriptors ';' END_OF_FILE
+    | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
 
   opt_extends
     : /* Empty */
@@ -1265,7 +1265,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : INTERFACE class_name ';'
 
   enumeration
-    : opt_descriptors ENUM enumeration_block
+    : opt_attributes ENUM enumeration_block
 
   enumeration_block
     : '{' opt_enumeration_values '}'
@@ -1284,20 +1284,20 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | method_name ASSIGN CONSTANT
 
   our
-    : OUR VAR_NAME ':' opt_descriptors qualified_type opt_type_comment ';'
+    : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
 
   has
-    : HAS field_name ':' opt_descriptors qualified_type opt_type_comment ';'
+    : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
 
   method
-    : opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
-    | opt_descriptors METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
-    | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
-    | opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
+    : opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
+    | opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
+    | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
 
   anon_method
-    : opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
-    | '[' args ']' opt_descriptors METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    : opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    | '[' args ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
 
   opt_args
     : /* Empty */
@@ -1316,13 +1316,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : /* Empty */
     | DOT3
 
-  opt_descriptors
+  opt_attributes
     : /* Empty */
-    | descriptors
+    | attributes
 
-  descriptors
-    : descriptors DESCRIPTOR
-    | DESCRIPTOR
+  attributes
+    : attributes ATTRIBUTE
+    | ATTRIBUTE
 
   opt_statements
     : /* Empty */
@@ -1731,7 +1731,7 @@ The list of syntax parsing tokens:
     <td>DEREF</td><td>$</td>
   </tr>
   <tr>
-    <td>DESCRIPTOR</td><td>The name of a descriptor</td>
+    <td>ATTRIBUTE</td><td>The name of a attribute</td>
   </tr>
   <tr>
     <td>DIE</td><td>die</td>
@@ -2067,19 +2067,19 @@ B<Examples:>
   
   }
 
-L<Class descriptors|/"Class Descriptor"> can be written after C<:>.
+L<Class attributes|/"Class Attribute"> can be written after C<:>.
 
-  class CLASS_NAME : CLASS_DESCRIPTOR {
+  class CLASS_NAME : CLASS_ATTRIBUTE {
   
   }
   
-  class CLASS_NAME : CLASS_DESCRIPTOR1 CLASS_DESCRIPTOR2 CLASS_DESCRIPTOR3 {
+  class CLASS_NAME : CLASS_ATTRIBUTE1 CLASS_ATTRIBUTE2 CLASS_ATTRIBUTE3 {
   
   }
 
 B<Examples:>
 
-  # Class descriptors
+  # Class attributes
   class Point : public {
   
   }
@@ -2126,16 +2126,16 @@ In a class block, L<loading modules|/"Loading Module">, L<class variables|/"Clas
 
 If more than one class is defined in a L<module|/"Module"> file, a compilation error will occur.
 
-=head2 Class Descriptor
+=head2 Class Attribute
 
-The list of class descriptors.
+The list of class attributes.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Class descriptors
+      Class attributes
    </th>
     <th>
       Descriptions
@@ -2291,7 +2291,7 @@ L<Examples:>
 
 =head2 Pointer Class
 
-The pointer class is the L<class|/"Class"> that has the L<class descriptor|/"Class Descriptor"> C<pointer_t>.
+The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attribute"> C<pointer_t>.
 
   # Pointer Class
   class Foo : pointer_t {
@@ -2372,14 +2372,14 @@ Explains interfaces.
 
 =head2 Interface Definition
 
-A interface is defined using a L<class definition|/"Class Definition"> with a L<class descriptor/"Class Descriptor"> C<interface_t>.
+A interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attribute"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
     method foo : int ($num : long);
   }
 
-A interface must have only one required method. The required method is the method that has the L<method descriptor|/"Method Descriptors"> C<required>.
+A interface must have only one required method. The required method is the method that has the L<method attribute|/"Method Attributes"> C<required>.
 
 The type of the interface is the L</"Interface Type">.
 
@@ -2573,10 +2573,10 @@ The class variable mame must follow the rule defined in the L<class variable nam
 
 If a class name with the same name is defined, a compilation error will occur.
 
-L<Class variable descriptors|/"Class Variable Descriptor"> can be specified.
+L<Class variable attributes|/"Class Variable Attribute"> can be specified.
 
-  our CLASS_VARIABLE_NAME : DESCRIPTOR TYPE;
-  our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTOR3 TYPE;
+  our CLASS_VARIABLE_NAME : ATTRIBUTE TYPE;
+  our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTE3 TYPE;
 
 B<Examples:>
 
@@ -2594,16 +2594,16 @@ B<Examples:>
     our $NUM_RW : rw int;
   }
 
-=head2 Class Variable Descriptor
+=head2 Class Variable Attribute
 
-The list of class variable descriptors.
+The list of class variable attributes.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptors
+      Attributes
    </th>
     <th>
       Descriptions
@@ -2653,7 +2653,7 @@ The list of class variable descriptors.
 
 =end html
 
-If both C<public> and C<private> descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> attributes are specified, a compilation error will occur.
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error will occur
 
@@ -2667,7 +2667,7 @@ A class variable getting method is a L<method|/"Method"> to perform the L<gettin
 
 It has no arguments and the return type is the same as the type of the class variable.
 
-It is defined by the C<ro> or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
+It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its getting method name is C<FOO>.
 
@@ -2690,7 +2690,7 @@ A class variable setting method is a L<method|/"Method"> to perform the L<settin
 
 It has an argument that type is the same as the type of the class variable. The return type is the L<void type/"void Type">.
 
-It is defined by the C<wo>  or C<rw> L<class variable descriptors|/"Class Variable Descriptors">.
+It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its setting method name is C<SET_FOO>.
 
@@ -2748,21 +2748,21 @@ Field Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Objec
 
 If more than one field names Variable with the same name is defined, a compilation error will occur.
 
-Field Descriptor can be specified together in Field Definition.
+Field Attribute can be specified together in Field Definition.
 
-  has FIELD_NAME : DESCRIPTOR TYPE_NAME;
-  has FIELD_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE_NAME;
+  has FIELD_NAME : ATTRIBUTE TYPE_NAME;
+  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEN TYPE_NAME;
 
-=head2 Field Descriptor
+=head2 Field Attribute
 
-The list of field descriptors.
+The list of field attributes.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptors
+      Attributes
    </th>
     <th>
       Descriptions
@@ -2812,7 +2812,7 @@ The list of field descriptors.
 
 =end html
 
-If both C<public> and C<private> Descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> Attributes are specified, a compilation error will occur.
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error will occur
 
@@ -2919,13 +2919,13 @@ The type of the return value must be the L<void type/"void Type">, a L<numeric t
 
 Defined methods can be called using L</"Method Call"> syntax.
 
-A method can have L<method descriptors|/"Method Descriptors">.
+A method can have L<method attributes|/"Method Attributes">.
 
-  DESCRIPTORS static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+  ATTRIBUTES static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
   
   }
 
-A method has L</"Method Block"> except for the case that the method has the C<native> L<method descriptors|/"Method Descriptors">. 
+A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
 
 =head3 Variable Length Arguments
 
@@ -3012,16 +3012,16 @@ An instance method can be called from the object.
   my $point = Point->new;
   $point->set_x(3);
 
-=head2 Method Descriptors
+=head2 Method Attributes
 
-Method descriptors are descriptors used in a L<method definition|/"Method Definition">.
+Method attributes are attributes used in a L<method definition|/"Method Definition">.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptors
+      Attributes
    </th>
     <th>
       Descriptions
@@ -3069,13 +3069,13 @@ Method descriptors are descriptors used in a L<method definition|/"Method Defini
   </tr>
 </table>
 
-If C<native> and C<precompile> descriptors can't used together.
+If C<native> and C<precompile> attributes can't used together.
 
-C<public> and C<private> descriptors can't be used together.
+C<public> and C<private> attributes can't be used together.
 
 C<required> can be only used in a method of a L<interface|/"Interface">.
 
-If the specifed descriptor is not found or the way to specify is invalid, a compilation error will occur.
+If the specifed attribute is not found or the way to specify is invalid, a compilation error will occur.
 
 B<Examples:>
   
@@ -3098,7 +3098,7 @@ B<Examples:>
 
 A native method is the L<method|/"Method"> that is written by native languages such as C<C language>, C<C++>.
 
-A native method is defined by the C<native> L<method descriptor|/"Method Descriptors">.
+A native method is defined by the C<native> L<method attribute|/"Method Attributes">.
 
   native sum : int ($num1 : int, $num2 : int);
 
@@ -3108,7 +3108,7 @@ About the way to write native methods, please see L<SPVM Native Module|SPVM::Doc
 
 =head2 Precompiled Method
 
-If the class has the C<precompile> L<class descriptor|/"Class Descriptor">, the methods of the class are precompiled.
+If the class has the C<precompile> L<class attribute|/"Class Attribute">, the methods of the class are precompiled.
 
 The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
 
@@ -3191,9 +3191,9 @@ B<Examples:>
     }
   }
 
-=head2 Enumeration Descriptors
+=head2 Enumeration Attributes
 
-Descriptors can be specified to an enumeration definition.
+Attributes can be specified to an enumeration definition.
 
   private enum {
     FLAG1,
@@ -3201,14 +3201,14 @@ Descriptors can be specified to an enumeration definition.
     FLAG3,
   }
 
-B<The list of enumeration descriptors:>
+B<The list of enumeration attributes:>
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Descriptors
+      Attributes
    </th>
     <th>
       Descriptions
@@ -3234,7 +3234,7 @@ B<The list of enumeration descriptors:>
 
 =end html
 
-If both C<public> and C<private> descriptors are specified, a compilation error will occur.
+If both C<public> and C<private> attributes are specified, a compilation error will occur.
 
 =head2 Getting Enumeration Value
 
@@ -3659,7 +3659,7 @@ A multi-numeric value is a value that represents continuous multiple numeric val
 
 =head2 Multi-Numeric Type Definition
 
-A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class descriptor|/"Class Descriptor">.
+A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
 
   # Continuous two 64bit floating point
   class Complex_2d : mulnum_t {
@@ -4179,9 +4179,9 @@ The undefined type is the type of L<undef|/"Undefined Value"> value.
 
 =head2 Interface Type
 
-The interface type is a type that is defined using a C<class> keyword and a L<class descriptor|/"Class Descriptor"> C<interface_t>.
+The interface type is a type that is defined using a C<class> keyword and a L<class attribute|/"Class Attribute"> C<interface_t>.
 
-  class Stringable: interface_t {
+  class Stringable : interface_t {
     required method to_string : string ();
   }
 

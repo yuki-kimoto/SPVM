@@ -14,7 +14,7 @@ use Test::More;
 
 # Class
 {
-  # Class descriptor
+  # Class attribute
   {
     {
       my $source = 'class MyClass : pointer_t { has x : int; }';

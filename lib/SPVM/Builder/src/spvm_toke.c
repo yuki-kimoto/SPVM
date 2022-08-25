@@ -16,7 +16,7 @@
 #include "spvm_var.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_descriptor.h"
+#include "spvm_attribute.h"
 #include "spvm_type.h"
 #include "spvm_use.h"
 #include "spvm_basic_type.h"
@@ -2138,9 +2138,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = INT;
                 }
                 else if (strcmp(symbol_name, "interface_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 break;
               }
@@ -2182,9 +2182,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = MY;
                 }
                 else if (strcmp(symbol_name, "mulnum_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_MULNUM_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_MULNUM_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "method") == 0) {
                   SPVM_OP* op_method = SPVM_TOKE_new_op_with_column(compiler, SPVM_OP_C_ID_METHOD, column);
@@ -2202,10 +2202,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case 'n' : {
                 if (strcmp(symbol_name, "native") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
                   
-                  keyword_token = DESCRIPTOR;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "ne") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_NE);
@@ -2246,28 +2246,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = PRINT;
                 }
                 else if (strcmp(symbol_name, "private") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PRIVATE, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRIVATE, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
                   
-                  keyword_token = DESCRIPTOR;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "public") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
                   
-                  keyword_token = DESCRIPTOR;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "precompile") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_PRECOMPILE, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRECOMPILE, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
                   
-                  keyword_token = DESCRIPTOR;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "pointer_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
                   
-                  keyword_token = DESCRIPTOR;
+                  keyword_token = ATTRIBUTE;
                 }
                 break;
               }
@@ -2297,19 +2297,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = REQUIRE;
                 }
                 else if (strcmp(symbol_name, "required") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_REQUIRED, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_REQUIRED, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "rw") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_RW, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RW, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "ro") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_RO, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RO, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 break;
               }
@@ -2319,9 +2319,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = SET_ERROR_CODE;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "switch") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SWITCH);
@@ -2391,9 +2391,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = WEAKEN;
                 }
                 else if (strcmp(symbol_name, "wo") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_WO, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  keyword_token = DESCRIPTOR;
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_WO, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
                 }
                 break;
               }

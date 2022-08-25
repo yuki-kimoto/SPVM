@@ -58,7 +58,7 @@ extern int SPVM_yydebug;
     ALLOW = 268,
     CURRENT_CLASS = 269,
     MUTABLE = 270,
-    DESCRIPTOR = 271,
+    ATTRIBUTE = 271,
     MAKE_READ_ONLY = 272,
     INTERFACE = 273,
     ERROR_CODE = 274,

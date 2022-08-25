@@ -408,7 +408,7 @@ sub get_spvm_core_compiler_only_source_file_names {
     spvm_class_var.c
     spvm_compiler.c
     spvm_constant.c
-    spvm_descriptor.c
+    spvm_attribute.c
     spvm_dumper.c
     spvm_field_access.c
     spvm_field.c
@@ -477,7 +477,7 @@ sub get_spvm_core_header_file_names {
     spvm_compiler.h
     spvm_constant.h
     spvm_constant_string.h
-    spvm_descriptor.h
+    spvm_attribute.h
     spvm_dumper.h
     spvm_field_access.h
     spvm_field.h

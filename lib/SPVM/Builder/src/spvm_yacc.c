@@ -82,7 +82,7 @@
   #include "spvm_block.h"
   #include "spvm_list.h"
   #include "spvm_class.h"
-  #include "spvm_descriptor.h"
+  #include "spvm_attribute.h"
   #include "spvm_constant_string.h"
 
 #line 89 "spvm_yacc.tab.c" /* yacc.c:339  */
@@ -133,7 +133,7 @@ extern int SPVM_yydebug;
     ALLOW = 268,
     CURRENT_CLASS = 269,
     MUTABLE = 270,
-    DESCRIPTOR = 271,
+    ATTRIBUTE = 271,
     MAKE_READ_ONLY = 272,
     INTERFACE = 273,
     ERROR_CODE = 274,
@@ -597,7 +597,7 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "CLASS", "HAS", "METHOD", "OUR", "ENUM",
   "MY", "USE", "AS", "REQUIRE", "ALIAS", "ALLOW", "CURRENT_CLASS",
-  "MUTABLE", "DESCRIPTOR", "MAKE_READ_ONLY", "INTERFACE", "ERROR_CODE",
+  "MUTABLE", "ATTRIBUTE", "MAKE_READ_ONLY", "INTERFACE", "ERROR_CODE",
   "ERROR", "IF", "UNLESS", "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT",
   "SWITCH", "CASE", "DEFAULT", "BREAK", "EVAL", "SYMBOL_NAME", "VAR_NAME",
   "CONSTANT", "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT",
@@ -620,8 +620,8 @@ static const char *const yytname[] =
   "init_block", "use", "require", "alias", "allow", "interface",
   "enumeration", "enumeration_block", "opt_enumeration_values",
   "enumeration_values", "enumeration_value", "our", "has", "method",
-  "anon_method", "opt_args", "args", "arg", "opt_vaarg", "opt_descriptors",
-  "descriptors", "opt_statements", "statements", "statement",
+  "anon_method", "opt_args", "args", "arg", "opt_vaarg", "opt_attributes",
+  "attributes", "opt_statements", "statements", "statement",
   "void_return_operator", "die", "for_statement", "foreach_statement",
   "while_statement", "switch_statement", "switch_block",
   "opt_case_statements", "case_statements", "case_statement",
@@ -2628,11 +2628,11 @@ yyreduce:
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
 
-      SPVM_OP* op_list_descriptors = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-      SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
+      SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
 
-      (yyval.opval) = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, (yyvsp[0].opval), NULL, NULL, 1, 0);
+      (yyval.opval) = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, (yyvsp[0].opval), NULL, NULL, 1, 0);
     }
 #line 2638 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

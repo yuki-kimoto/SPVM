@@ -33,7 +33,7 @@
 #include "spvm_use.h"
 #include "spvm_interface.h"
 #include "spvm_constant_string.h"
-#include "spvm_descriptor.h"
+#include "spvm_attribute.h"
 
 int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
   
@@ -1161,7 +1161,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   // Access control
                   int32_t is_private;
-                  if (class->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
+                  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
                     is_private = 0;
                   }
                   // Default
@@ -2455,7 +2455,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Access control
               int32_t is_private;
-              if (call_method->method->access_control_type == SPVM_DESCRIPTOR_C_ID_PRIVATE) {
+              if (call_method->method->access_control_type == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
                 is_private = 1;
               }
               // Default
@@ -2837,7 +2837,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               int32_t is_private;
               // Public flag
-              if (class_var->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
+              if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
                 is_private = 0;
               }
               // Default is private
@@ -3016,7 +3016,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Access control
               int32_t is_private;
-              if (field->access_control_type == SPVM_DESCRIPTOR_C_ID_PUBLIC) {
+              if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
                 is_private = 0;
               }
               // Default
@@ -4808,7 +4808,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
 
-      // Copy has_precomile_descriptor from anon method defined class
+      // Copy has_precomile_attribute from anon method defined class
       if (method->anon_method_defined_class_name) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
@@ -4910,7 +4910,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
       
-      // Set method precompile flag if class have precompile descriptor
+      // Set method precompile flag if class have precompile attribute
       if (class->is_precompile) {
         int32_t can_precompile;
         if (method->is_class_var_setter) {

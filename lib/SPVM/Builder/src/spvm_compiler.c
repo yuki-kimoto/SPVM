@@ -288,8 +288,8 @@ int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_na
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.block);
         break;
       }
-      case SPVM_OP_C_ID_DESCRIPTOR: {
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.descriptor);
+      case SPVM_OP_C_ID_ATTRIBUTE: {
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.attribute);
         break;
       }
       case SPVM_OP_C_ID_USE: {

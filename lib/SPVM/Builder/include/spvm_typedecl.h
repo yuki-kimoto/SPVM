@@ -174,9 +174,9 @@ typedef struct spvm_op SPVM_OP;
 struct spvm_field;
 typedef struct spvm_field SPVM_FIELD;
 
-// spvm_descriptor.h
-struct spvm_descriptor;
-typedef struct spvm_descriptor SPVM_DESCRIPTOR;
+// spvm_attribute.h
+struct spvm_attribute;
+typedef struct spvm_attribute SPVM_ATTRIBUTE;
 
 // spvm_method.h
 struct spvm_method;
