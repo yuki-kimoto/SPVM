@@ -215,13 +215,13 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   198 get_args_stack_length
   199 set_args_stack_length
   200 dumpc
-  201 check_flag_pointer_dont_free
-  202 enable_flag_pointer_dont_free
-  203 disable_flag_pointer_dont_free
-  204 get_pointer_length
-  205 set_pointer_length
-  206 get_pointer_any_info
-  207 set_pointer_any_info
+  201 reserved201
+  202 reserved202
+  203 reserved203
+  204 reserved204
+  205 reserved205
+  206 reserved206
+  207 reserved207
   208 is_class
   209 is_pointer_class
   
@@ -339,30 +339,6 @@ Check the runtime type assignability of an array element.
   void* runtime;
 
 A pointer to the runtime information. This is used internally.
-
-=head2 reserved16
-
-  void* reserved16;
-
-Reserved.
-
-=head2 reserved17
-
-  void* reserved17;
-
-Reserved.
-
-=head2 reserved18
-
-  void* reserved18;
-
-Reserved.
-
-=head2 reserved19
-
-  void* reserved19;
-
-Reserved.
 
 =head2 get_basic_type_id
 
@@ -1970,18 +1946,6 @@ The charaters of the after the given length are filled with C<\0>.
 
 Check the type of the object has the interface.
 
-=head2 reserved176
-
-  void* reserved176
-
-=head2 reserved177
-
-  void* reserved177
-
-=head2 reserved178
-
-  void* reserved178
-
 =head2 print
 
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
@@ -2143,52 +2107,6 @@ Set the stack length of the arguments for a method call.
 The alias for the following code using L</"dump">.
 
   const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
-
-=head2 check_flag_pointer_dont_free
-
-  int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Check the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
-
-If true, return C<1>. Otherwise return C<0>.
-
-The default value is C<0>.
-
-=head2 enable_flag_pointer_dont_free
-
-  void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Enable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
-
-=head2 disable_flag_pointer_dont_free
-
-  void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Disable the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
-
-=head2 get_pointer_length
-
-  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Get the length of the array set by L</"set_pointer">. The default value is C<0>.
-
-=head2 set_pointer_length
-
-  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
-
-Set the length of the array set by L</"set_pointer">. It is useful when the data is the pointer to an array.
-
-=head2 get_pointer_any_info
-
-  void* (*get_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Get the any infomation of the pointer set by L</"set_pointer">.
-
-=head2 set_pointer_any_info
-
-  void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
-
-Set the any infomation of the pointer set by L</"set_pointer">.
 
 =head2 is_class
 

@@ -280,13 +280,13 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_args_stack_length,
     SPVM_API_set_args_stack_length,
     SPVM_API_dumpc,
-    SPVM_API_check_flag_pointer_dont_free,
-    SPVM_API_enable_flag_pointer_dont_free,
-    SPVM_API_disable_flag_pointer_dont_free,
-    SPVM_API_get_pointer_length,
-    SPVM_API_set_pointer_length,
-    SPVM_API_get_pointer_any_info,
-    SPVM_API_set_pointer_any_info,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
   };
@@ -3768,48 +3768,3 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   stack[STACK_INDEX_ARGS_LENGTH].ival = args_length;
 }
 
-int32_t SPVM_API_check_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  int32_t pointer_dont_free = object->flag & SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
-  
-  return pointer_dont_free;
-}
-
-void SPVM_API_enable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  object->flag |= SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
-}
-
-void SPVM_API_disable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  object->flag &= ~SPVM_OBJECT_C_FLAG_POINTER_DONT_FREE;
-}
-
-int32_t SPVM_API_get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  int32_t length = object->length;
-  
-  return length;
-}
-
-void SPVM_API_set_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
-  (void)env;
-  
-  object->length = length;
-}
-
-void* SPVM_API_get_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  return *(void**)((intptr_t)object + env->object_header_byte_size + sizeof(void*));
-}
-
-void SPVM_API_set_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* any_info) {
-  (void)env;
-  
-  *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(void*)) = any_info;
-}

@@ -251,10 +251,6 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 // New object by name
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
 SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
-int32_t SPVM_API_get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
-void SPVM_API_set_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length);
-void* SPVM_API_get_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
-void SPVM_API_set_pointer_any_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* any_info);
 
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception);
@@ -296,11 +292,6 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
 
 // Error
 const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
-
-// Object flag
-int32_t SPVM_API_check_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
-void SPVM_API_enable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
-void SPVM_API_disable_flag_pointer_dont_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))

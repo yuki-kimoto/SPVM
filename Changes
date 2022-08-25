@@ -1,3 +1,14 @@
+0.9645 2022-08-26
+  [Incompatible Changes]
+    * Remove the following native APIs. These are added 0.9640(2022-08-16)
+      int32_t (*check_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      void (*enable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      void (*disable_flag_pointer_dont_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
+      void* (*get_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      void (*set_pointer_any_info)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* any_info);
+
 0.9644 2022-08-26
   [Document Changes]
     * Add heading "Conditional Branch".

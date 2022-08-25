@@ -293,10 +293,6 @@ ok(SPVM::TestCase::NativeAPI->new_memory_apis);
 
 ok(SPVM::TestCase::NativeAPI->dumpc);
 
-ok(SPVM::TestCase::NativeAPI->check_flag_pointer_dont_free);
-ok(SPVM::TestCase::NativeAPI->get_pointer_length);
-ok(SPVM::TestCase::NativeAPI->get_pointer_any_info);
-
 # Clear exception
 SPVM::set_exception(undef);
 
