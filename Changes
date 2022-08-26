@@ -1,3 +1,10 @@
+0.9646 2022-08-26
+  [Needed Resource Changes]
+    * The pointer class need the following memory because of the feature that any information can be saved.
+      [Before]
+      (intptr_t)env->object_header_byte_size + sizeof(void*) * 2;
+      [After]
+      (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * 2;
 0.9645 2022-08-26
   [Incompatible Changes]
     * Remove the following native APIs. These are added 0.9640(2022-08-16)

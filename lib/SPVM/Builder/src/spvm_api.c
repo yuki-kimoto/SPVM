@@ -2630,8 +2630,10 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t 
   if (!class) {
     return NULL;
   }
-
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * 2;
+  
+  // First data is the pointer data. The default is NULL (oval).
+  // Second data is the length of the pointer fields. The default is 0 (ival).
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * 2;
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_byte_size);
