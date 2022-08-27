@@ -3798,3 +3798,108 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   stack[STACK_INDEX_ARGS_LENGTH].ival = args_length;
 }
 
+int32_t SPVM_API_get_pointer_fields_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+
+  // Get fields length
+  int32_t fields_length = *(int32_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE));
+  
+  return fields_length;
+}
+
+int8_t SPVM_API_get_pointer_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  int8_t value = *(int8_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+
+  return value;
+}
+
+int16_t SPVM_API_get_pointer_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  int16_t value = *(int16_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+int32_t SPVM_API_get_pointer_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  int32_t value = *(int32_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+int64_t SPVM_API_get_pointer_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  int64_t value = *(int64_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+float SPVM_API_get_pointer_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  float value = *(float*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+double SPVM_API_get_pointer_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  double value = *(double*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+void* SPVM_API_get_pointer_field_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index) {
+
+  // Get field value
+  void* value = *(void**)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index));
+  
+  return value;
+}
+
+void SPVM_API_set_pointer_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, int8_t value) {
+
+  // Get field value
+  *(int8_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, int16_t value) {
+
+  // Get field value
+  *(int16_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, int32_t value) {
+
+  // Get field value
+  *(int32_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, int64_t value) {
+
+  // Get field value
+  *(int64_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, float value) {
+
+  // Get field value
+  *(float*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, double value) {
+
+  // Get field value
+  *(double*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+void SPVM_API_set_pointer_field_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_index, void* value) {
+
+  // Get field value
+  *(void**)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
