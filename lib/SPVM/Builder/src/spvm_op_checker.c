@@ -4828,14 +4828,17 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
-      if (parent_class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The parant class can't be a pointer class type at %s line %d", class->op_extends->file, class->op_extends->line);
-        return;
+      if (!(parent_class->is_pointer && class->is_pointer)) {
+        if (parent_class->is_pointer) {
+          SPVM_COMPILER_error(compiler, "The parant class can't be a pointer class type at %s line %d", class->op_extends->file, class->op_extends->line);
+          return;
+        }
+        if (class->is_pointer) {
+          SPVM_COMPILER_error(compiler, "The current class can't be a pointer class type when the class becomes a child class at %s line %d", class->op_extends->file, class->op_extends->line);
+          return;
+        }
       }
-      if (class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The current class can't be a pointer class type when the class becomes a child class at %s line %d", class->op_extends->file, class->op_extends->line);
-        return;
-      }
+      
       if (strcmp(class->name, parent_class->name) == 0) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
