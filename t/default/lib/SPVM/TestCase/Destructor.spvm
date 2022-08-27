@@ -1,6 +1,7 @@
 class TestCase::Destructor {
   use TestCase::Minimal;
   
+  has y : public int;
   has minimal : public TestCase::Minimal;
   
   static method new : TestCase::Destructor () {
@@ -8,6 +9,10 @@ class TestCase::Destructor {
   }
   
   method DESTROY : void () {
-    $self->{minimal}->{x} = 3;
+    if ($self->{minimal}) {
+      $self->{minimal}->{x} = 3;
+    }
+    
+    $self->{y} = 5;
   }
 }

@@ -755,10 +755,6 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
     compile_not_ok($source, q|The length of the arguments passed to the instance method "foo" in the class "MyClass" must be less than or equal to 2|);
   }
-  {
-    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->DESTROY; } method DESTROY : void () {} }';
-    compile_not_ok($source, q|The DESTROY method can't be called|);
-  }
 }
 
 # Class Variable Access

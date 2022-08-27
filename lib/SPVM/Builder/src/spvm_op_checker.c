@@ -2634,11 +2634,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               call_method->args_length = call_method_args_length;
               
-              if (call_method->method->is_destructor) {
-                SPVM_COMPILER_error(compiler, "The DESTROY method can't be called at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-              
               // Inline expansion
               {
                 // Enum is replaced to constant value
