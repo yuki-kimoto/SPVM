@@ -216,15 +216,30 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_args_stack_length != &env_array[198]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_args_stack_length != &env_array[199]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->dumpc != &env_array[200]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved201 != &env_array[201]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved202 != &env_array[202]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved203 != &env_array[203]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_with_fields_raw != &env_array[201]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_with_fields != &env_array[202]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_with_fields_by_name != &env_array[203]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved204 != &env_array[204]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved205 != &env_array[205]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved206 != &env_array[206]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved207 != &env_array[207]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_class != &env_array[208]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_pointer_class != &env_array[209]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_fields_length != &env_array[210]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_byte != &env_array[211]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_short != &env_array[212]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_int != &env_array[213]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_long != &env_array[214]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_float != &env_array[215]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_double != &env_array[216]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_field_pointer != &env_array[217]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_byte != &env_array[218]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_short != &env_array[219]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_int != &env_array[220]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_long != &env_array[221]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_float != &env_array[222]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_double != &env_array[223]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_field_pointer != &env_array[224]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 

@@ -215,16 +215,31 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   198 get_args_stack_length
   199 set_args_stack_length
   200 dumpc
-  201 reserved201
-  202 reserved202
-  203 reserved203
+  201 new_pointer_with_fields
+  202 new_pointer_with_fields_raw
+  203 new_pointer_with_fields_by_name
   204 reserved204
   205 reserved205
   206 reserved206
   207 reserved207
   208 is_class
   209 is_pointer_class
-  
+  210 get_pointer_fields_length
+  211 get_pointer_field_byte
+  212 get_pointer_field_short
+  213 get_pointer_field_int
+  214 get_pointer_field_long
+  215 get_pointer_field_float
+  216 get_pointer_field_double
+  217 get_pointer_field_pointer
+  218 set_pointer_field_byte
+  219 set_pointer_field_short
+  220 set_pointer_field_int
+  221 set_pointer_field_long
+  222 set_pointer_field_float
+  223 set_pointer_field_double
+  224 set_pointer_field_pointer
+
 =head2 class_vars_heap
 
   void* class_vars_heap;
@@ -575,7 +590,7 @@ Create a new string object by specifying C language char* type value. this value
 
   void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
 
-Do the same as C<new_string_nolen_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_string_nolen_raw>.
+Do the same as C<new_string_nolen_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_raw>.
 
 B<Examples:>
 
@@ -593,7 +608,7 @@ If the length of bytes is lower than the specified length or the bytes is NULL, 
 
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 
-Same as C<new_string_raw>, and add the created string object to the mortal stack of the environment. Usually use this function instead of C<new_string_raw>.
+Same as C<new_string_raw>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_raw>.
 
 B<Examples:>
 
@@ -609,7 +624,7 @@ Create a pointer type object by specifying a basic type ID and a C language poin
 
   void* (*new_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
 
-Do the same as C<new_pointer_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_pointer_raw>.
+Do the same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
 
 B<Examples:>
 
@@ -627,7 +642,7 @@ Concat two strings.
 
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
 
-Do the same as C<concat_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<concat_raw>.
+Do the same as C<concat_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_raw>.
 
 =head2 new_stack_trace_raw
 
@@ -1311,7 +1326,7 @@ B<Examples:>
 
   void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
 
-This is same as C<new_pointer> function, but you can specify class name directly.
+This is same as L</"new_pointer"> function, but you can specify class name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1818,7 +1833,7 @@ Get the string which dump the object. The string is the same as the return value
 
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Do the same as C<dump_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<dump_raw>.
+Do the same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
 
 =head2 call_class_method
 
@@ -2108,6 +2123,24 @@ The alias for the following code using L</"dump">.
 
   const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
 
+=head2 new_pointer_with_fields_raw
+
+  void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
+  
+Create a pointer type object by specifying a basic type ID and a C language pointer with the length of the pointer fields. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+
+=head2 new_pointer_with_fields
+
+  void* (*new_pointer_with_fields)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
+
+Do the same as L</"new_pointer_with_fields_raw">, and push the created object to the mortal stack using L</"push_mortal"> function.
+
+=head2 new_pointer_with_fields_by_name
+
+  void* (*new_pointer_with_fields_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t fields_length, int32_t* error, const char* file, int32_t line);
+
+This is same as L</"new_pointer_with_fields"> function, but you can specify class name directly.
+
 =head2 is_class
 
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -2123,6 +2156,96 @@ If the object is C<NULL>, returns C<0>.
 If the object is a instance of a pointer class, returns C<1>, otherwise returns C<0>.
 
 If the object is C<NULL>, returns C<0>.
+
+=head2 get_pointer_fields_length
+
+  int32_t (*get_pointer_fields_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Get the length of the pointer fields.
+
+=head2 get_pointer_field_byte
+
+  int8_t (*get_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<byte> value of a pointer field with the field index.
+
+=head2 get_pointer_field_short
+
+  int16_t (*get_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<short> value of a pointer field with the field index.
+
+=head2 get_pointer_field_int
+
+  int32_t (*get_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<int> value of a pointer field with the field index.
+
+=head2 get_pointer_field_long
+
+  int64_t (*get_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<long> value of a pointer field with the field index.
+
+=head2 get_pointer_field_float
+
+  float (*get_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<float> value of a pointer field with the field index.
+
+=head2 get_pointer_field_double
+
+  double (*get_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the C<double> value of a pointer field with the field index.
+
+=head2 get_pointer_field_pointer
+
+  void* (*get_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+
+Get the pointer value of a pointer field with the field index.
+
+=head2 set_pointer_field_byte
+
+  void (*set_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int8_t value);
+
+Set the C<byte> value of a pointer field with the field index.
+
+=head2 set_pointer_field_short
+
+  void (*set_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int16_t value);
+
+Set the C<short> value of a pointer field with the field index.
+
+=head2 set_pointer_field_int
+
+  void (*set_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int32_t value);
+
+Set the C<int> value of a pointer field with the field index.
+
+=head2 set_pointer_field_long
+
+  void (*set_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int64_t value);
+
+Set the C<long> value of a pointer field with the field index.
+
+=head2 set_pointer_field_float
+
+  void (*set_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, float value);
+
+Set the C<float> value of a pointer field with the field index.
+
+=head2 set_pointer_field_double
+
+  void (*set_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, double value);
+
+Set the C<double> value of a pointer field with the field index.
+
+=head2 set_pointer_field_pointer
+
+  void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
+
+Set the pointer value of a pointer field with the field index.
 
 =head1 Compiler Native API
 
