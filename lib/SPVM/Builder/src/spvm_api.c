@@ -756,6 +756,19 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   return object;
 }
 
+SPVM_OBJECT* SPVM_API_new_pointer_with_fields_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t fields_length, int32_t* error, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t id = env->get_basic_type_id(env, class_name);
+  if (id < 0) {
+    *error = 1;
+    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    return NULL;
+  };
+  SPVM_OBJECT* object = SPVM_API_new_pointer_with_fields(env, stack, id, pointer, fields_length);
+  return object;
+}
+
 SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
@@ -2261,6 +2274,16 @@ SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basi
   return object;
 }
 
+SPVM_OBJECT* SPVM_API_new_pointer_with_fields(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_pointer_with_fields_raw(env, stack, basic_type_id, pointer, fields_length);
+  
+  SPVM_API_push_mortal(env, stack, object);
+  
+  return object;
+}
+
 SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes) {
   (void)env;
   
@@ -2614,6 +2637,11 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
 }
 
 SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer) {
+  int32_t fields_length = 0;
+  return SPVM_API_new_pointer_with_fields_raw(env, stack, basic_type_id, pointer, fields_length);
+}
+
+SPVM_OBJECT* SPVM_API_new_pointer_with_fields_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -2633,7 +2661,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t 
   
   // First data is the pointer data. The default is NULL (oval).
   // Second data is the length of the pointer fields. The default is 0 (ival).
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * 2;
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + fields_length);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_byte_size);
