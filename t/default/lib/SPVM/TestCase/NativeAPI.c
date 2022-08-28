@@ -2843,3 +2843,189 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__pointer_fields(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  (void)env;
+  (void)stack;
+  
+  const char* message = "5";
+  int32_t e;
+  int32_t fields_length = 4;
+  void* obj_pointer = env->new_pointer_with_fields_by_name(env, stack, "TestCase::Pointer", (void*)message, fields_length, &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  // get_pointer
+  const char* message2 = env->get_pointer(env, stack, obj_pointer);
+  if (!(strcmp(message2, "5") == 0)) {
+    stack[0].ival = 1;
+    return 0;
+  }
+  
+  // get_pointer_fields_length
+  int32_t fields_length2 = env->get_pointer_fields_length(env, stack, obj_pointer);
+  if (!(fields_length2 == 4)) {
+    stack[0].ival = 1;
+    return 0;
+  }
+  
+  // Default field values
+  {
+    int64_t first_field_long = env->get_pointer_field_long(env, stack, obj_pointer, 0);
+    if (!(first_field_long == 0)) {
+      stack[0].ival = 1;
+      return 0;
+    }
+    
+    int64_t last_field_long = env->get_pointer_field_long(env, stack, obj_pointer, 3);
+    if (!(first_field_long == 0)) {
+      stack[0].ival = 1;
+      return 0;
+    }
+  }
+  
+  {
+    env->set_pointer_field_byte(env, stack, obj_pointer, 0, INT8_MIN);
+    env->set_pointer_field_byte(env, stack, obj_pointer, 3, INT8_MIN + 1);
+    {
+      int8_t field_value = env->get_pointer_field_byte(env, stack, obj_pointer, 0);
+      if (!(field_value == INT8_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      int8_t field_value = env->get_pointer_field_byte(env, stack, obj_pointer, 3);
+      if (!(field_value == INT8_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+  
+  {
+    env->set_pointer_field_short(env, stack, obj_pointer, 0, INT16_MIN);
+    env->set_pointer_field_short(env, stack, obj_pointer, 3, INT16_MIN + 1);
+    {
+      int16_t field_value = env->get_pointer_field_short(env, stack, obj_pointer, 0);
+      if (!(field_value == INT16_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      int16_t field_value = env->get_pointer_field_short(env, stack, obj_pointer, 3);
+      if (!(field_value == INT16_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+
+  {
+    env->set_pointer_field_int(env, stack, obj_pointer, 0, INT32_MIN);
+    env->set_pointer_field_int(env, stack, obj_pointer, 3, INT32_MIN + 1);
+    {
+      int32_t field_value = env->get_pointer_field_int(env, stack, obj_pointer, 0);
+      if (!(field_value == INT32_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      int32_t field_value = env->get_pointer_field_int(env, stack, obj_pointer, 3);
+      if (!(field_value == INT32_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+
+  {
+    env->set_pointer_field_long(env, stack, obj_pointer, 0, INT64_MIN);
+    env->set_pointer_field_long(env, stack, obj_pointer, 3, INT64_MIN + 1);
+    {
+      int64_t field_value = env->get_pointer_field_long(env, stack, obj_pointer, 0);
+      if (!(field_value == INT64_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      int64_t field_value = env->get_pointer_field_long(env, stack, obj_pointer, 3);
+      if (!(field_value == INT64_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+  
+  {
+    env->set_pointer_field_float(env, stack, obj_pointer, 0, FLT_MIN);
+    env->set_pointer_field_float(env, stack, obj_pointer, 3, FLT_MIN + 1);
+    {
+      float field_value = env->get_pointer_field_float(env, stack, obj_pointer, 0);
+      if (!(field_value == FLT_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      float field_value = env->get_pointer_field_float(env, stack, obj_pointer, 3);
+      if (!(field_value == FLT_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+
+  {
+    env->set_pointer_field_double(env, stack, obj_pointer, 0, DBL_MIN);
+    env->set_pointer_field_double(env, stack, obj_pointer, 3, DBL_MIN + 1);
+    {
+      double field_value = env->get_pointer_field_double(env, stack, obj_pointer, 0);
+      if (!(field_value == DBL_MIN)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      double field_value = env->get_pointer_field_double(env, stack, obj_pointer, 3);
+      if (!(field_value == DBL_MIN + 1)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+
+  {
+    {
+      const char* message = "5";
+      env->set_pointer_field_pointer(env, stack, obj_pointer, 0, (void*)message);
+    }
+    {
+      const char* message = "6";
+      env->set_pointer_field_pointer(env, stack, obj_pointer, 3, (void*)message);
+    }
+    {
+      const char* field_value = env->get_pointer_field_pointer(env, stack, obj_pointer, 0);
+      if (!(strcmp(field_value, "5") == 0)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+    {
+      const char* field_value = env->get_pointer_field_pointer(env, stack, obj_pointer, 3);
+      if (!(strcmp(field_value, "6") == 0)) {
+        stack[0].ival = 1;
+        return 0;
+      }
+    }
+  }
+
+  env->set_pointer(env, stack, obj_pointer, NULL);
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}

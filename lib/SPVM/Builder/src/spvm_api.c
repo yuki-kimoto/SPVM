@@ -2685,6 +2685,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_raw(SPVM_ENV* env, SPVM_VALUE* sta
   }
   
   *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size) = pointer;
+  *(int32_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE)) = fields_length;
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
@@ -3814,7 +3815,7 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
 }
 
 int32_t SPVM_API_get_pointer_fields_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-
+  
   // Get fields length
   int32_t fields_length = *(int32_t*)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE));
   

@@ -1288,4 +1288,5 @@ class TestCase::NativeAPI {
   native static method get_args_stack_length_1 : int ($args0 : int);
   native static method get_args_stack_length_2 : int ($args0 : int, $args1 : int);
   native static method dumpc : int ();
+  native static method pointer_fields : int ();
 }

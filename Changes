@@ -1,4 +1,4 @@
-0.9646 2022-08-26
+0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.
       void* (*new_pointer_with_fields)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
@@ -24,6 +24,10 @@
     * The pointer class can inherit a pointer class.
     * DESTROY method can be called as a instance method.
     * The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
+  [Test Improvement]
+    * Add tests of pointer fields native APIs.
+  [Bug Fix]
+    * Fix the bug that native API new_pointer_with_fields_raw can't set the length of the fields.
   [Needed Resource Changes]
     * The pointer class need the following memory because of the feature that any information can be saved.
       [Before]
