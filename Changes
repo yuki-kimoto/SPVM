@@ -23,6 +23,7 @@
       void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
     * The pointer class can inherit a pointer class.
     * DESTROY method can be called as a instance method.
+    * The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
   [Needed Resource Changes]
     * The pointer class need the following memory because of the feature that any information can be saved.
       [Before]

@@ -2228,6 +2228,8 @@ B<Examples:>
     }
   }
 
+The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
+
 =head2 Allowing Private Access
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.

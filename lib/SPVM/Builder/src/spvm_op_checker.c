@@ -4993,6 +4993,13 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           break;
         }
         
+        // Inherit destructor
+        if (!class->destructor_method) {
+          if (parent_class->destructor_method) {
+            class->destructor_method = parent_class->destructor_method;
+          }
+        }
+        
         SPVM_LIST_push(class_stack, parent_class);
         parent_class = parent_class->parent_class;
       }
