@@ -644,6 +644,7 @@ t/default/lib/SPVM/TestCase/Pointable.spvm
 t/default/lib/SPVM/TestCase/Pointer.c
 t/default/lib/SPVM/TestCase/Pointer.config
 t/default/lib/SPVM/TestCase/Pointer.spvm
+t/default/lib/SPVM/TestCase/PointerChild.spvm
 t/default/lib/SPVM/TestCase/PointerEmpty.spvm
 t/default/lib/SPVM/TestCase/PointForTest.spvm
 t/default/lib/SPVM/TestCase/Precedence.spvm
