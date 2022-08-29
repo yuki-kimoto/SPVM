@@ -255,6 +255,8 @@ lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
+lib/SPVM/Pointable.pm
+lib/SPVM/Pointable.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
