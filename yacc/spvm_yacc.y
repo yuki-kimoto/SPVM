@@ -305,7 +305,7 @@ our
 has
   : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_has(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
     }
 
 method
@@ -1200,11 +1200,11 @@ isweak_field
 has_impl
   : HAS_IMPL var ARROW method_name
     {
-      $$ = SPVM_OP_build_has_impl(compiler, $1, $2, $4);
+      $$ = SPVM_OP_build_field_impl(compiler, $1, $2, $4);
     }
   | HAS_IMPL var
     {
-      $$ = SPVM_OP_build_has_impl(compiler, $1, $2, NULL);
+      $$ = SPVM_OP_build_field_impl(compiler, $1, $2, NULL);
     }
 
 array_length

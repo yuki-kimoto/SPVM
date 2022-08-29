@@ -2777,7 +2777,7 @@ yyreduce:
   case 44:
 #line 307 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_has(compiler, (yyvsp[-6].opval), (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-2].opval));
+      (yyval.opval) = SPVM_OP_build_field(compiler, (yyvsp[-6].opval), (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-2].opval));
     }
 #line 2783 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -4073,7 +4073,7 @@ yyreduce:
   case 232:
 #line 1202 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_has_impl(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_field_impl(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
 #line 4079 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -4081,7 +4081,7 @@ yyreduce:
   case 233:
 #line 1206 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_has_impl(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_field_impl(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
     }
 #line 4087 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

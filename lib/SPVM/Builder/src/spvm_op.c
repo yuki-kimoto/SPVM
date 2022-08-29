@@ -1783,7 +1783,7 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
   return op_field_access;
 }
 
-SPVM_OP* SPVM_OP_build_has_impl(SPVM_COMPILER* compiler, SPVM_OP* op_has_impl, SPVM_OP* op_var, SPVM_OP* op_name) {
+SPVM_OP* SPVM_OP_build_field_impl(SPVM_COMPILER* compiler, SPVM_OP* op_has_impl, SPVM_OP* op_var, SPVM_OP* op_name) {
   
   if (!op_name) {
     op_name = SPVM_OP_new_op_name(compiler, "", op_var->file, op_var->line);
@@ -2275,7 +2275,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_TYPE* type_new_capture_var_decl = SPVM_TYPE_new(compiler, capture_var_decl->type->basic_type->id, capture_var_decl->type->dimension, capture_var_decl->type->flag);
           SPVM_OP* op_type_new_capture_var_decl = SPVM_OP_new_op_type(compiler, type_new_capture_var_decl, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
-          SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, op_type_new_capture_var_decl);
+          SPVM_OP_build_field(compiler, op_field, op_name_field, NULL, op_type_new_capture_var_decl);
           SPVM_LIST_push(class->fields, op_field->uv.field);
           op_field->uv.field->is_captured = 1;
         }
@@ -2605,7 +2605,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
   return op_class_var;
 }
 
-SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
 
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
