@@ -1193,10 +1193,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a pointer class type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
-                  
+
                   if (!(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
                     SPVM_CLASS* cur_class = method->class;
-                    if (!SPVM_OP_is_allowed(compiler, cur_class->op_class, new_class->op_class)) {
+                    if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
                       if (!SPVM_OP_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
                         SPVM_COMPILER_error(compiler, "The object of the %s class \"%s\" can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
                         return;
@@ -2481,8 +2481,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
               const char* method_name = call_method->method->name;
 
-              if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                if (!SPVM_OP_CHECKER_can_access(compiler, method->class->op_class->uv.class, call_method->method->class->op_class->uv.class, call_method->method->access_control_type)) {
+              if (!SPVM_OP_is_allowed(compiler, method->class, call_method->method->class)) {
+                if (!SPVM_OP_CHECKER_can_access(compiler, method->class, call_method->method->class, call_method->method->access_control_type)) {
                   SPVM_COMPILER_error(compiler, "The %s method \"%s\" of the class \"%s\" can't be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -2859,7 +2859,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               if (is_private && !op_cur->uv.class_var_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, class_var_access_class->op_class)) {
+                if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
                   SPVM_COMPILER_error(compiler, "The private class variable \"%s\" can't be accessed at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -3049,7 +3049,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private && !op_cur->uv.field_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, field->class->op_class)) {
+                if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
                   SPVM_COMPILER_error(compiler, "The private field \"%s\" in the class \"%s\" can't be accessed at %s line %d", op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
