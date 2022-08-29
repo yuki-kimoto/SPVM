@@ -792,7 +792,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The field "foo" in the class "MyClass" is not defined|);
+    compile_not_ok($source, q|The field "foo" is not defined in the class "MyClass" or the super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';

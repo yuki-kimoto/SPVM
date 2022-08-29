@@ -41,7 +41,7 @@ C<Point3D> inherits the fields of L<Point|SPVM::Point/"Fields">.
 
 =head2 z
 
-  has z : rw int;
+  has z : rw protected int;
 
 C<z>.
 

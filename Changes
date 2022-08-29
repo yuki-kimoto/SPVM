@@ -7,6 +7,21 @@
     * Implement the compilation error check of "protected" field.
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
+    * The field searching of the field access is used for the class and the super classes.
+  [Changes]
+    * The definition of the fields are changes in Point class.
+      [Before]
+      has x : rw int;
+      has y : rw int;
+      [After]
+      has x : rw protected int;
+      has y : rw protected int;
+    * The definition of the fields are changes in Point3D class.
+      [Before]
+      has z : rw int;
+      [After]
+      has z : rw protected int;
+      
   [Compilation Error Messages Improvement]
     * Improve the following compilation error message.
       [Before]

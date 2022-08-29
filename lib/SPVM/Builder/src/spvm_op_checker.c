@@ -4438,14 +4438,32 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
   SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_operand);
   SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
   const char* field_name = op_name->uv.name;
+
+  // Search the field of the super class
+  SPVM_FIELD* found_field = NULL;
+  SPVM_CLASS* parent_class = class;
   
-  SPVM_FIELD* found_field = SPVM_HASH_get(
-    class->field_symtable,
-    field_name,
-    strlen(field_name)
-  );
+  while (1) {
+    found_field = SPVM_HASH_get(
+      parent_class->field_symtable,
+      field_name,
+      strlen(field_name)
+    );
+    if (found_field) {
+      break;
+    }
+    parent_class = class->parent_class;
+    if (!parent_class) {
+      break;
+    }
+  }
+  
   if (found_field) {
     op_field_access->uv.field_access->field = found_field;
+  }
+  else {
+    SPVM_COMPILER_error(compiler, "The field \"%s\" is not defined in the class \"%s\" or the super classes at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
+    return;
   }
 }
 
@@ -4519,27 +4537,28 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
   int32_t alignment_index = 0;
   int32_t offset = 0;
   int32_t offset_byte_size;
+  
   // 8 byte data
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    SPVM_TYPE* field_type = field->type;
+  for (int32_t merged_field_index = 0; merged_field_index < class->merged_fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, merged_field_index);
+    SPVM_TYPE* merged_field_type = merged_field->type;
     
     int32_t next_offset;
-    if (SPVM_TYPE_is_double_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
-      || SPVM_TYPE_is_long_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
       offset_byte_size = 8;
     }
-    else if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
-      || SPVM_TYPE_is_int_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
       offset_byte_size = 4;
     }
-    else if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
       offset_byte_size = 2;
     }
-    else if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
       offset_byte_size = 1;
     }
-    else if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
       offset_byte_size = sizeof(void*);
     }
     else {
@@ -4563,13 +4582,20 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
       assert(offset % alignment_byte_size == 0);
     }
 
-    field->offset = offset;
+    merged_field->offset = offset;
     
     offset += offset_byte_size;
   }
-  
-  
+
   class->fields_byte_size = offset;
+  
+  int32_t merged_fields_original_offset = class->merged_fields_original_offset;
+  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, field_index + merged_fields_original_offset);
+    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+    
+    field->offset = merged_field->offset;
+  }
 }
 
 void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
@@ -5050,7 +5076,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    class->merged_field = merged_fields;
+    class->merged_fields = merged_fields;
     SPVM_HASH_free(merged_field_symtable);
     
     // Add parent interfaces
@@ -5074,8 +5100,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
 
-    class->fields = class->merged_field;
-    
     for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
       field->index = field_index;

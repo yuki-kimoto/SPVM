@@ -4,8 +4,8 @@ class Point {
   interface Cloneable;
   
   # Fields
-  has x : rw int;
-  has y : rw int;
+  has x : rw protected int;
+  has y : rw protected int;
   
   # Class methods
   static method new : Point ($x = 0 : int, $y = 0 : int) {
