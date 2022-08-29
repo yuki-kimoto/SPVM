@@ -1195,9 +1195,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   
                   if (!(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    if (!SPVM_OP_is_allowed(compiler, method->class->op_class, new_class->op_class)) {
-                      if (!SPVM_OP_CHECKER_can_access(compiler, method->class->op_class->uv.class, new_class->op_class->uv.class, class->access_control_type)) {
-                        SPVM_COMPILER_error(compiler, "The object of the %s class \"%s\" can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class->access_control_type), new_class->op_class->uv.class->name, method->class->op_class->uv.class->name, op_cur->file, op_cur->line);
+                    SPVM_CLASS* cur_class = method->class;
+                    if (!SPVM_OP_is_allowed(compiler, cur_class->op_class, new_class->op_class)) {
+                      if (!SPVM_OP_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
+                        SPVM_COMPILER_error(compiler, "The object of the %s class \"%s\" can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
                         return;
                       }
                     }
