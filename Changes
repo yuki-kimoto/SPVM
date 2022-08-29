@@ -21,7 +21,7 @@
       has z : rw int;
       [After]
       has z : rw protected int;
-      
+    * Allow the field definition the name is the same as the super class.
   [Compilation Error Messages Improvement]
     * Improve the following compilation error message.
       [Before]

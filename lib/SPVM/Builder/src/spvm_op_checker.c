@@ -5027,7 +5027,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     SPVM_CLASS* cur_class = class;
-    SPVM_HASH* merged_field_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
@@ -5056,15 +5055,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           new_field->access_control_type = field->access_control_type;
         }
         SPVM_LIST_push(merged_fields, new_field);
-        SPVM_FIELD* found_field = SPVM_HASH_get(merged_field_symtable, new_field->name, strlen(new_field->name));
-        if (found_field) {
-          SPVM_COMPILER_error(compiler, "Fields that are defined in the super class can't be defined. The field \"%s\" is already defined in the super class at %s line %d", found_field->name, class->op_extends->file, class->op_extends->line);
-          compile_error = 1;
-          break;
-        }
-        else {
-          SPVM_HASH_set(merged_field_symtable, new_field->name, strlen(new_field->name), new_field);
-        }
         merged_fields_index++;
       }
       
@@ -5077,7 +5067,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     class->merged_fields = merged_fields;
-    SPVM_HASH_free(merged_field_symtable);
     
     // Add parent interfaces
     class->interfaces = merged_interfaces;
