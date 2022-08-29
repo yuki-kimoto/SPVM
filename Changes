@@ -1,3 +1,31 @@
+0.9648 2022-08-30
+  [New Features]
+    * Add Pointable module.
+    * Add Pointable interface to Point class.
+    * Add the following method to Point class.
+      
+      required method pointable : int ();
+    
+  [Incompatible Changes]
+    * All method call that is called from the class is resolved in compilation time.
+      [Before]
+      # (0, 0, 0)
+      my $point3d = Point3D->new(1, 2, 3);
+      my $point = (Point)$point3d;
+      $point->clear;
+      [After]
+      # (0, 0, 3) because $point is Point class.
+      my $point3d = Point3D->new(1, 2, 3);
+      my $point = (Point)$point3d;
+      $point->clear;
+      
+      Please rewrite to
+      
+      # (0, 0, 0).
+      my $point3d = Point3D->new(1, 2, 3);
+      my $point = (Point)$point3d;
+      $point->(Pointable)->clear;
+    
 0.9647 2022-08-29
   [New Features]
     * Add "protected" attribute.
@@ -5,6 +33,8 @@
     * Implement the compilation error check of "protected" method.
     * Implement the compilation error check of "protected" class variable.
     * Implement the compilation error check of "protected" field.
+  [Bug Fix]
+    * Fix the bug that private field is searched.
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
     * The field searching of the field access is used for the class and the super classes.

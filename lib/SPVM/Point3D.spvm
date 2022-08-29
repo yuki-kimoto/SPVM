@@ -21,6 +21,8 @@ class Point3D extends Point {
   }
   
   # Instance methods
+  method pointable : int () { return 1; }
+  
   method clear : void () {
     $self->SUPER::clear;
     $self->{z} = 0;

@@ -4393,6 +4393,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       }
 
       if (found_method) {
+        call_method->is_static_instance_method_call = 1;
         call_method->method = found_method;
       }
       else {

@@ -277,7 +277,7 @@ class TestCase::Module::Point3D {
     {
       my $point3d = Point3D->new(1, 2, 3);
       my $point = (Point)$point3d;
-      $point->clear;
+      $point->(Pointable)->clear;
       unless ($point3d->x == 0) {
         return 0;
       }
@@ -294,7 +294,7 @@ class TestCase::Module::Point3D {
       }
       
       my $point_string = $point->to_string;
-      unless ($point_string eq "(0,0,0)") {
+      unless ($point_string eq "(0,0)") {
         return 0;
       }
       

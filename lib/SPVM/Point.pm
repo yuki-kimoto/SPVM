@@ -35,6 +35,8 @@ C<Point> class has the following interfaces.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
+=item * L<Cloneable|SPVM::Pointable>
+
 =back
 
 =head1 Fields
@@ -70,6 +72,12 @@ The alias for the following code using L</"new">
 This method is deprecated and will be removed after 2022-09-03.
 
 =head1 Instance Methods
+
+=head2 pointable
+
+  required method pointable : int ();
+
+Return C<1>.
 
 =head2 clear
 
