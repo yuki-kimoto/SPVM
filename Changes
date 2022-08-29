@@ -30,6 +30,7 @@
       [After]
       int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist);
     * Add SPVM_OP_CHECKER_can_access.
+    * Add SPVM_ATTRIBUTE_C_ID_UNKNOWN.
 0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.
