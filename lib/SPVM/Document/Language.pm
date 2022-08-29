@@ -2343,7 +2343,7 @@ B<Examples:>
 
   class Point3D extends Point {
     
-    has z : rw int;
+    has z : rw protected int;
     
     static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
       my $self = new Point3D;
