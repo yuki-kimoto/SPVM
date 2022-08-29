@@ -2296,7 +2296,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
       // The default of the access controll of the field is private.
       if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+        // If anon method, field is public
+        if (class->is_anon) {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+        }
+        // If multi-numeric type, field is public
+        else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+        }
+        // Default is private
+        else {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+        }
       }
 
       if (class->is_pointer) {

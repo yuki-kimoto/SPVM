@@ -3020,27 +3020,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // Access control
-              int32_t is_private;
-              if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-                is_private = 0;
+              int32_t can_access;
+              if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
+                can_access = 0;
               }
-              // Default
+              else if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
+                can_access = 0;
+              }
+              else if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
+                can_access = 1;
+              }
               else {
-                // If anon method, field is public
-                if (field->class->is_anon) {
-                  is_private = 0;
-                }
-                // If multi-numeric type, field is public
-                else if (field->class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                  is_private = 0;
-                }
-                // Default is private
-                else {
-                  is_private = 1;
-                }
+                assert(0);
               }
               
-              if (is_private && !op_cur->uv.field_access->inline_expansion) {
+              if (!can_access && !op_cur->uv.field_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
                   SPVM_COMPILER_error(compiler, "The private field \"%s\" in the class \"%s\" can't be accessed at %s line %d", op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
