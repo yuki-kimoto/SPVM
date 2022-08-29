@@ -1,6 +1,8 @@
 0.9647 2022-08-30
   [New Features]
     * Add "protected" attribute.
+  [Imcompative Changes]
+    * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
 0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.

@@ -4344,7 +4344,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       const char* rel_method_name = method_name + 7;
       method_name = rel_method_name;
       call_parent_method = 1;
-      call_method->call_super = 1;
+      call_method->is_static_instance_method_call = 1;
     }
     else {
       // Static instance method call
@@ -4410,7 +4410,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     }
     // Instance method call from class from interface
     else {
-      if (call_method->call_super) {
+      if (call_parent_method) {
         SPVM_COMPILER_error(compiler, "The method of the super class can't be called from the interface type", method_name, class->name, op_call_method->file, op_call_method->line);
         return;
       }

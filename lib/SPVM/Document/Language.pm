@@ -8756,7 +8756,7 @@ B<Examples:>
   
   $object->bar(5, 3. 6);
 
-C<SUPER::> qualifier call the method of the super class.
+The C<SUPER::> qualifier calls the method of the super class of the current class.
 
   $object->SUPER::bar(5, 3. 6);
 

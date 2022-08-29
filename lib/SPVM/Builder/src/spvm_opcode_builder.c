@@ -1460,7 +1460,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             opcode.operand1 = call_method->method->id;
                           }
                           
-                          opcode.operand2 = call_method->args_length << 16 | call_method->call_super & 0xFFFF;
+                          opcode.operand2 = call_method->args_length << 16;
                           
                           int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                           int32_t operand3 = call_method_return_type_stack_length;
