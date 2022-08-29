@@ -1952,9 +1952,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   class->name = op_name_class->uv.name;
 
-  // Default is private
-  class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-
   // Class attributes
   int32_t class_attributes_count = 0;
   int32_t access_control_attributes_count = 0;
@@ -2009,6 +2006,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     if (access_control_attributes_count > 1) {
       SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
+  }
+  
+  // The default of the access controll is private
+  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
   // Declarations
