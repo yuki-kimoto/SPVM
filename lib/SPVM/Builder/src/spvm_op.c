@@ -1975,7 +1975,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          // Default
+          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
           access_control_attributes_count++;
           break;
         }
@@ -2554,7 +2554,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
       
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          // Default is private
+          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
           access_control_attributes_count++;
           break;
         }
@@ -2631,7 +2631,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
       
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          // Default is private
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
           access_control_attributes_count++;
           break;
         }
@@ -2738,7 +2738,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          // Default is public
+          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
           break;
         }
@@ -2999,7 +2999,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             break;
           }
           case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-            // Default is public
+            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
             access_control_attributes_count++;
             break;
           }
