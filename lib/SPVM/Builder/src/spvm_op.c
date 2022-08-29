@@ -252,13 +252,13 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, SPVM_OP* op_class_dist) {
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist) {
   (void)compiler;
   
-  SPVM_LIST* allows = op_class_dist->uv.class->allows;
+  SPVM_LIST* allows = class_dist->allows;
   
-  const char* current_class_name = op_class_current->uv.class->name;
-  const char* dist_class_name = op_class_dist->uv.class->name;
+  const char* current_class_name = class_current->name;
+  const char* dist_class_name = class_dist->name;
   
   int32_t is_allowed = 0;
   if (strcmp(current_class_name, dist_class_name) == 0) {

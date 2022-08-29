@@ -3,6 +3,13 @@
     * Add "protected" attribute.
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
+  [Internal Changes Without Effect]
+    * Change the definition of the following function.
+      [Before]
+      int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, SPVM_OP* op_class_dist);
+      [After]
+      int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist);
+
 0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.

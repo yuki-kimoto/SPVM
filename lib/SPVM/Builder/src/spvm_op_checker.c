@@ -1170,7 +1170,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   
                   if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    if (!SPVM_OP_is_allowed(compiler, method->class->op_class, new_class->op_class)) {
+                    if (!SPVM_OP_is_allowed(compiler, method->class, new_class)) {
                       SPVM_COMPILER_error(compiler, "The object can't be created from the private class at %s line %d", op_cur->file, op_cur->line);
                       return;
                     }
@@ -2464,7 +2464,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
+                if (!SPVM_OP_is_allowed(compiler, method->class, call_method->method->class)) {
                   SPVM_COMPILER_error(compiler, "The private method \"%s\" in the class \"%s\" can't be called at %s line %d", call_method->method->name, call_method->method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -2841,7 +2841,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               if (is_private && !op_cur->uv.class_var_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, class_var_access_class->op_class)) {
+                if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
                   SPVM_COMPILER_error(compiler, "The private class variable \"%s\" can't be accessed at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
@@ -3031,7 +3031,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private && !op_cur->uv.field_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, field->class->op_class)) {
+                if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
                   SPVM_COMPILER_error(compiler, "The private field \"%s\" in the class \"%s\" can't be accessed at %s line %d", op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
                   return;
                 }
