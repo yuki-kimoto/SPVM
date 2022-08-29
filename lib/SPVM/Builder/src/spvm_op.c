@@ -2294,6 +2294,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     for (int32_t i = 0; i < class->fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
 
+      // The default of the access controll of the field is private.
+      if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+      }
+
       if (class->is_pointer) {
         SPVM_COMPILER_error(compiler, "The pointer class can't have fields at %s line %d", field->op_field->file, field->op_field->line);
         continue;
@@ -2676,11 +2681,6 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
         SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_field->file, op_field->line);
       }
     }
-  }
-  
-  // The default of the access controll of the field is private.
-  if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
   field->op_field = op_field;
