@@ -5050,7 +5050,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    class->tmp_merged_fields = all_fields;
+    class->merged_field = all_fields;
     SPVM_HASH_free(all_field_symtable);
     
     // Add parent interfaces
@@ -5074,7 +5074,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
 
-    class->fields = class->tmp_merged_fields;
+    class->fields = class->merged_field;
     
     for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
