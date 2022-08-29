@@ -2483,7 +2483,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (!SPVM_OP_is_allowed(compiler, method->class, call_method->method->class)) {
                 if (!SPVM_OP_CHECKER_can_access(compiler, method->class, call_method->method->class, call_method->method->access_control_type)) {
-                  SPVM_COMPILER_error(compiler, "The %s method \"%s\" of the class \"%s\" can't be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The %s method \"%s\" of the class \"%s\" can't be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2848,20 +2848,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CLASS_VAR* class_var = class_var_access->class_var;
               SPVM_CLASS* class_var_access_class = class_var->class;
               
-              int32_t is_private;
-              // Public flag
-              if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-                is_private = 0;
-              }
-              // Default is private
-              else {
-                is_private = 1;
-              }
-
-              if (is_private && !op_cur->uv.class_var_access->inline_expansion) {
+              if (!op_cur->uv.class_var_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
-                  SPVM_COMPILER_error(compiler, "The private class variable \"%s\" can't be accessed at %s line %d", op_cur->uv.class_var_access->op_name->uv.name, op_cur->file, op_cur->line);
-                  return;
+                  if (!SPVM_OP_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
+                    SPVM_COMPILER_error(compiler, "The %s class variable \"%s\" of the class \"%s\" can't be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
+                    return;
+                  }
                 }
               }
               

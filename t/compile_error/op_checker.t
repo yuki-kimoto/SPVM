@@ -764,7 +764,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private class variable "$MyClass2::FOO" can't be accessed|);
+    compile_not_ok($source, q|The private class variable "$FOO" of the class "MyClass2" can't be accessed from the current class "MyClass"|);
   }
 }
 

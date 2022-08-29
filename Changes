@@ -3,6 +3,7 @@
     * Add "protected" attribute.
     * Implement the compilation error check of "protected" class.
     * Implement the compilation error check of "protected" method.
+    * Implement the compilation error check of "protected" class variable.
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
   [Compilation Error Messages Improvement]
@@ -16,6 +17,12 @@
       The private method "foo" in the class "MyClass2" can't be called
       [After]
       The private method "foo" of the class "MyClass2" can't be called from the current class "MyClass"
+    * Improve the following compilation error message.
+      [Before]
+      The private class variable "$MyClass2::FOO" can't be accessed
+      [After]
+      The private class variable "$FOO" of the class "MyClass2" can't be accessed from the current class "MyClass"
+      
   [Internal Changes Without Effect]
     * Change the definition of the following function.
       [Before]
