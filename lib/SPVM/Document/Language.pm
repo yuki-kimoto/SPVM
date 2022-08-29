@@ -295,6 +295,7 @@ The list of keywords:
   object
   print
   private
+  protected
   public
   precompile
   pointer_t
@@ -2159,6 +2160,14 @@ The list of class attributes.
   </tr>
   <tr>
     <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This class is protected. In other classes except for the child classes, this class cannot be used as the operand of <a href="#Creating-Object">new operator</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>interface_t</b>
     </td>
     <td>
@@ -2193,7 +2202,7 @@ The list of class attributes.
 
 =end html
 
-If both C<public> and C<private> are specifed, a compilation error will occur.
+Only one of class attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
 If more than one of C<interface_t>, C<mulnum_t>, and C<pointer_t> are specified, a compilation error will occur.
 
@@ -2605,7 +2614,7 @@ The list of class variable attributes.
 <table>
   <tr>
     <th>
-      Attributes
+      Class Variable Attributes
    </th>
     <th>
       Descriptions
@@ -2625,6 +2634,14 @@ The list of class variable attributes.
     </td>
     <td>
       The class variable is private. The class variable can't be accessed from other classes. This is default setting.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      The class variable is protected. The class variable can't be accessed from other classes except for the child classes.
     </td>
   </tr>
   <tr>
@@ -2655,7 +2672,7 @@ The list of class variable attributes.
 
 =end html
 
-If both C<public> and C<private> attributes are specified, a compilation error will occur.
+Only one of class variable attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error will occur
 
@@ -2772,18 +2789,26 @@ The list of field attributes.
   </tr>
   <tr>
     <td>
-      <b>public</b>
-    </td>
-    <td>
-      This field is public. This field can be accessed from other class.
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>private</b>
     </td>
     <td>
       This field is private. This field can't be accessed from other class. This is default setting.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This field is protected. This field can't be accessed from other class except for the child classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      This field is public. This field can be accessed from other class.
     </td>
   </tr>
   <tr>
@@ -2814,7 +2839,7 @@ The list of field attributes.
 
 =end html
 
-If both C<public> and C<private> Attributes are specified, a compilation error will occur.
+Only one of field attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error will occur
 
@@ -3031,18 +3056,26 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
   </tr>
   <tr>
     <td>
-      <b>public</b>
-    </td>
-    <td>
-      This method is public. This method can be accessed from other classes. This is default setting.
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>private</b>
     </td>
     <td>
       This method is private. This method can not be accessed from other classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This method is protected. This method can not be accessed from other classes except for the child classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      This method is public. This method can be accessed from other classes. This is default setting.
     </td>
   </tr>
   <tr>
@@ -3073,7 +3106,7 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
 
 If C<native> and C<precompile> attributes can't used together.
 
-C<public> and C<private> attributes can't be used together.
+Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
 C<required> can be only used in a method of a L<interface|/"Interface">.
 
@@ -3218,25 +3251,33 @@ B<The list of enumeration attributes:>
   </tr>
   <tr>
     <td>
-      <b>public</b>
-    </td>
-    <td>
-      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>private</b>
     </td>
     <td>
       This enumeration is private. Each value of this enumeration can not be accessed from other classes.
     </td>
   </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This enumeration is protected. Each value of this enumeration can not be accessed from other classes except for the child classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
+    </td>
+  </tr>
 </table>
 
 =end html
 
-If both C<public> and C<private> attributes are specified, a compilation error will occur.
+Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
 =head2 Getting Enumeration Value
 

@@ -1979,6 +1979,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           access_control_attributes_count++;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
           class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
@@ -2002,7 +2007,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer_t\" or \"interface_t\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\" or \"public\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
   }
   
@@ -2553,6 +2558,11 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           access_control_attributes_count++;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
           class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
@@ -2582,7 +2592,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
         SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\" or \"public\" can be specified at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -2625,6 +2635,11 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           access_control_attributes_count++;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
           field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
@@ -2655,7 +2670,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
         SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\" or \"public\" can be specified at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -2717,6 +2732,11 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           access_control_attributes_count++;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
           // Default is public
           access_control_attributes_count++;
@@ -2748,7 +2768,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified at %s line %d", op_attributes->file, op_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
     }
   }
 
@@ -2973,6 +2993,11 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             access_control_attributes_count++;
             break;
           }
+          case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+            access_control_attributes_count++;
+            break;
+          }
           case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
             // Default is public
             access_control_attributes_count++;
@@ -2984,7 +3009,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
       }
     }
   }

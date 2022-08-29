@@ -55,7 +55,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : private public;';
-    compile_not_ok($source, qr/Only one of class attributes "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class attributes "private", "protected" or "public" can be specified/);
   }
 }
 
@@ -188,7 +188,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { our $FOO : private public int; }';
-    compile_not_ok($source, qr/Only one of class variable attributes "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class variable attributes "private", "protected" or "public" can be specified/);
   }
 }
 
@@ -212,7 +212,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { has foo : private public int; }';
-    compile_not_ok($source, qr/Only one of field attributes "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of field attributes "private", "protected" or "public" can be specified/);
   }
 }
 
@@ -264,7 +264,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { private public enum { FOO = 1 } }';
-    compile_not_ok($source, qr/Only one of enumeration attributes "private" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of enumeration attributes "private", "protected" or "public" can be specified/);
   }
 }
 
