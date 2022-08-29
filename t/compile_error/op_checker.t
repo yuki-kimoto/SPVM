@@ -333,7 +333,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object can't be created from the private class|);
+    compile_not_ok($source, q|The object of the private class "Int" can't be created from the current class "MyClass"|);
   }
 }
 

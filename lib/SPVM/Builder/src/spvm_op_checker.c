@@ -35,6 +35,41 @@
 #include "spvm_constant_string.h"
 #include "spvm_attribute.h"
 
+int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
+  
+  int32_t can_access = 0;
+  
+  if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      can_access = 0;
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_to->type->basic_type->id, class_from->type->basic_type->id)) {
+        can_access = 1;
+      }
+      else {
+        can_access = 0;
+      }
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
+    can_access = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return can_access;
+}
+
 int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
   
   SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
@@ -1159,20 +1194,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   
-                  // Access control
-                  int32_t is_private;
-                  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-                    is_private = 0;
-                  }
-                  // Default
-                  else {
-                    is_private = 1;
-                  }
-                  
-                  if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
+                  if (!(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
                     if (!SPVM_OP_is_allowed(compiler, method->class->op_class, new_class->op_class)) {
-                      SPVM_COMPILER_error(compiler, "The object can't be created from the private class at %s line %d", op_cur->file, op_cur->line);
-                      return;
+                      if (!SPVM_OP_CHECKER_can_access(compiler, method->class->op_class->uv.class, new_class->op_class->uv.class, class->access_control_type)) {
+                        SPVM_COMPILER_error(compiler, "The object of the %s class \"%s\" can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class->access_control_type), new_class->op_class->uv.class->name, method->class->op_class->uv.class->name, op_cur->file, op_cur->line);
+                        return;
+                      }
                     }
                   }
                 }
