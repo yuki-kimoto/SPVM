@@ -820,6 +820,20 @@ use Test::More;
     ];
     compile_not_ok($source, q|The protected field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
   }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
+      'class MyClass2 : protected { has x : protected int; }'
+    ];
+    compile_ok($source);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { use MyClass2; static method main : void () { my $object = new MyClass; $object->{x};  } }',
+      'class MyClass2 { has x : protected int; }'
+    ];
+    compile_ok($source);
+  }
 }
 
 # has_impl

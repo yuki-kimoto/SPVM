@@ -28,7 +28,8 @@
       The private field "x" in the class "MyClass2" can't be accessed
       [After]
       The private field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"
-      
+  [Test Improvement]
+    * Add "protected" tests.
   [Internal Changes Without Effect]
     * Change the definition of the following function.
       [Before]
@@ -38,7 +39,7 @@
     * Add SPVM_OP_CHECKER_can_access.
     * Add SPVM_ATTRIBUTE_C_ID_UNKNOWN.
     * Rename SPVM_OP_build_has to SPVM_OP_build_field.
-
+    * Add compile_ok, compile_ok_file to MyTest.pm.
 0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.
