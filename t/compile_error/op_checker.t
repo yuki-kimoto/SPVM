@@ -811,7 +811,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : private int; }'
     ];
-    compile_not_ok($source, q|The private field "x" in the class "MyClass2" can't be accessed|);
+    compile_not_ok($source, q|The private field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
   }
 }
 

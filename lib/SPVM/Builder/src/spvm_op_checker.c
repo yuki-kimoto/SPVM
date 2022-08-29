@@ -3019,25 +3019,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
 
-              // Access control
-              int32_t can_access;
-              if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-                can_access = 0;
-              }
-              else if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-                can_access = 0;
-              }
-              else if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-                can_access = 1;
-              }
-              else {
-                assert(0);
-              }
-              
-              if (!can_access && !op_cur->uv.field_access->inline_expansion) {
+              SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
+              if (!op_cur->uv.field_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
-                  SPVM_COMPILER_error(compiler, "The private field \"%s\" in the class \"%s\" can't be accessed at %s line %d", op_name->uv.name, field->class->op_name->uv.name, op_cur->file, op_cur->line);
-                  return;
+                  if (!SPVM_OP_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
+                    SPVM_COMPILER_error(compiler, "The %s field \"%s\" in the class \"%s\" can't be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
+                    return;
+                  }
                 }
               }
               
