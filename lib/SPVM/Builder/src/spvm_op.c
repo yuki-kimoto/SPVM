@@ -2624,8 +2624,6 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   // Set field informaiton
   op_field->uv.field = field;
 
-  field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-  
   // Field attributes
   if (op_attributes) {
     SPVM_OP* op_attribute = op_attributes->first;
@@ -2680,6 +2678,11 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
     }
   }
   
+  // The default of the access controll of the field is private.
+  if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+  }
+  
   field->op_field = op_field;
   
   return op_field;
@@ -2721,8 +2724,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (!is_init && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" can't be used as a method name at %s line %d", op_name_method->file, op_name_method->line);
   }
-
-  method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
 
   // Method attributes
   int32_t access_control_attributes_count = 0;
@@ -2776,7 +2777,12 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
     }
   }
-
+  
+  // The default of the access controll of the method is publice.
+  if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+  }
+  
   // Native method can't have block
   if ((method->is_native) && op_block) {
     SPVM_COMPILER_error(compiler, "The native method can't have the block at %s line %d", op_block->file, op_block->line);
@@ -2983,8 +2989,6 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
     SPVM_METHOD* method = op_method->uv.method;
 
-    method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-
     // Enumeration attributes
     int32_t access_control_attributes_count = 0;
     if (op_attributes) {
@@ -3016,6 +3020,11 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
       if (access_control_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
       }
+    }
+    
+    // The default of the access controll of the enumeration is public.
+    if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+      method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     }
   }
   
