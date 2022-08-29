@@ -2,14 +2,20 @@
   [New Features]
     * Add "protected" attribute.
     * Implement the compilation error check of "protected" class.
+    * Implement the compilation error check of "protected" method.
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
   [Compilation Error Messages Improvement]
-    * Improve the following compilation error messages.
+    * Improve the following compilation error message.
       [Before]
       The object can't be created from the private class
       [After]
       The object of the private class "Int" can't be created from the current class "MyClass"
+    * Improve the following compilation error message.
+      [Before]
+      The private method "foo" in the class "MyClass2" can't be called
+      [After]
+      The private method "foo" of the class "MyClass2" can't be called from the current class "MyClass"
       
 0.9646 2022-08-29
   [New Features]

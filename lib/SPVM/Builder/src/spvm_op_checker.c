@@ -2479,20 +2479,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
               const char* method_name = call_method->method->name;
-              
-              // Access control
-              int32_t is_private;
-              if (call_method->method->access_control_type == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-                is_private = 1;
-              }
-              // Default
-              else {
-                is_private = 0;
-              }
-              
-              if (is_private) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "The private method \"%s\" in the class \"%s\" can't be called at %s line %d", call_method->method->name, call_method->method->class->name, op_cur->file, op_cur->line);
+
+              if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
+                if (!SPVM_OP_CHECKER_can_access(compiler, method->class->op_class->uv.class, call_method->method->class->op_class->uv.class, call_method->method->access_control_type)) {
+                  SPVM_COMPILER_error(compiler, "The %s method \"%s\" of the class \"%s\" can't be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
