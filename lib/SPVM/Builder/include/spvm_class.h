@@ -36,6 +36,7 @@ struct spvm_class {
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
   int32_t id;
+  int32_t merged_fields_original_offset;
   int32_t fields_byte_size;
   int8_t has_init_block;
   int8_t is_anon;

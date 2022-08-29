@@ -5002,6 +5002,8 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     SPVM_CLASS* cur_class = class;
     SPVM_HASH* all_field_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    int32_t merged_fields_original_offset_set = 0;
+    int32_t all_fields_index = 0;
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
       SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
       
@@ -5014,6 +5016,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_FIELD* new_field;
         if (strcmp(field->class->name, cur_class->name) == 0) {
           new_field = field;
+          if (!merged_fields_original_offset_set) {
+            class->merged_fields_original_offset = all_fields_index;
+            merged_fields_original_offset_set = 1;
+          }
         }
         // Clone field
         else {
@@ -5033,6 +5039,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         else {
           SPVM_HASH_set(all_field_symtable, new_field->name, strlen(new_field->name), new_field);
         }
+        all_fields_index++;
       }
       
       // All interfaces

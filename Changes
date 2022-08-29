@@ -40,6 +40,7 @@
     * Add SPVM_ATTRIBUTE_C_ID_UNKNOWN.
     * Rename SPVM_OP_build_has to SPVM_OP_build_field.
     * Add compile_ok, compile_ok_file to MyTest.pm.
+    * Add merged_fields_original_offset to spvm_class.c and set it.
 0.9646 2022-08-29
   [New Features]
     * Add the following native APIs.
