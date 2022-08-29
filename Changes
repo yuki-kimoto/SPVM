@@ -1,4 +1,4 @@
-0.9647 2022-08-30
+0.9647 2022-08-29
   [New Features]
     * Add "protected" attribute.
     * Implement the compilation error check of "protected" class.
