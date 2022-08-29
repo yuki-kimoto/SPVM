@@ -2544,8 +2544,6 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
 
   op_class_var->uv.class_var = class_var;
 
-  class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-
   // Class variable attributes
   if (op_attributes) {
     int32_t field_method_attributes_count = 0;
@@ -2597,6 +2595,11 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
         SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
+  }
+  
+  // The default of the access controll of the class variable is private.
+  if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
   return op_class_var;
