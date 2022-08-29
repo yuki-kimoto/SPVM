@@ -1193,21 +1193,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a pointer class type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
-                  
-                  // Access control
-                  int32_t is_private;
-                  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-                    is_private = 0;
-                  }
-                  // Default
-                  else {
-                    is_private = 1;
-                  }
-                  
-                  if (is_private && !(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    if (!SPVM_OP_is_allowed(compiler, method->class, new_class)) {
-                      SPVM_COMPILER_error(compiler, "The object can't be created from the private class at %s line %d", op_cur->file, op_cur->line);
-                      return;
+
+                  if (!(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
+                    SPVM_CLASS* cur_class = method->class;
+                    if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
+                      if (!SPVM_OP_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
+                        SPVM_COMPILER_error(compiler, "The object of the %s class \"%s\" can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
+                        return;
+                      }
                     }
                   }
                 }
