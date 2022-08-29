@@ -200,7 +200,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   183 get_class_id
   184 new_stack
   185 free_stack
-  186 get_instance_method_id_super
+  186 reserved186
   187 new_memory_env
   188 free_memory_env
   189 get_memory_blocks_count_env
@@ -2000,10 +2000,6 @@ Call C<INIT> blocks.
 =head2 free_stack
 
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-=head2 get_instance_method_id_super
-
-  int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name);
 
 =head2 new_memory_env
 

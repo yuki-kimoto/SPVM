@@ -201,7 +201,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_class_id != &env_array[183]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->new_stack != &env_array[184]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->free_stack != &env_array[185]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_instance_method_id_super != &env_array[186]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved186 != &env_array[186]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->new_memory_env != &env_array[187]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->free_memory_env != &env_array[188]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_memory_blocks_count_env!= &env_array[189]) { stack[0].ival = 0; return 0;}

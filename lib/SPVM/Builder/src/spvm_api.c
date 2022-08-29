@@ -265,7 +265,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_class_id,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
-    SPVM_API_get_instance_method_id_super,
+    NULL,
     SPVM_API_new_memory_env,
     SPVM_API_free_memory_env,
     SPVM_API_get_memory_blocks_count_env,
@@ -3078,11 +3078,6 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
 
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name) {
   int32_t is_parent = 0;
-  return SPVM_API_get_instance_method_id_common(env, object, method_name, is_parent);
-}
-
-int32_t SPVM_API_get_instance_method_id_super(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name) {
-  int32_t is_parent = 1;
   return SPVM_API_get_instance_method_id_common(env, object, method_name, is_parent);
 }
 

@@ -3796,16 +3796,9 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, decl_method_id);
         void* object = stack[0].oval;
         const char* decl_method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method->name_id, NULL);
-        int32_t is_call_super = opcode->operand2 & 0xFFFF;
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         
-        int32_t call_method_id;
-        if (is_call_super) {
-          call_method_id = env->get_instance_method_id_super(env, object, decl_method_name);
-        }
-        else {
-          call_method_id = env->get_instance_method_id(env, object, decl_method_name);
-        }
+        int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name);
 
         stack_index = 0;
         if (call_method_id < 0) {

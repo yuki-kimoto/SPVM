@@ -8,6 +8,8 @@
   [Imcompative Changes]
     * SUPER:: qualifier calls the method of the super class of the current class, instead of the instance.
     * The field searching of the field access is used for the class and the super classes.
+    * Remove the following API.
+      int32_t (*get_instance_method_id_super)(SPVM_ENV* env, void* object, const char* method_name);
   [Changes]
     * The definition of the fields are changes in Point class.
       [Before]
@@ -45,6 +47,7 @@
       The private field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"
   [Test Improvement]
     * Add "protected" tests.
+    * Fix inheritance tests.
   [Internal Changes Without Effect]
     * Change the definition of the following function.
       [Before]
