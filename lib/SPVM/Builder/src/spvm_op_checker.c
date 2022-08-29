@@ -35,6 +35,41 @@
 #include "spvm_constant_string.h"
 #include "spvm_attribute.h"
 
+int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
+  
+  int32_t can_access = 0;
+  
+  if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      can_access = 0;
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_to->type->basic_type->id, class_from->type->basic_type->id)) {
+        can_access = 1;
+      }
+      else {
+        can_access = 0;
+      }
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
+    can_access = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return can_access;
+}
+
 int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
   
   SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
