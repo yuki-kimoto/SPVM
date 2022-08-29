@@ -813,6 +813,13 @@ use Test::More;
     ];
     compile_not_ok($source, q|The private field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
   }
+  {
+    my $source = [
+      'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
+      'class MyClass2 : public { has x : protected int; }'
+    ];
+    compile_not_ok($source, q|The protected field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
+  }
 }
 
 # has_impl
