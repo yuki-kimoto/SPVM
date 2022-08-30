@@ -3,7 +3,11 @@
     * Improve the doc of the unary plus operator.
     * Improve the doc of the unary minus operator.
     * Improve many parts. The numeric widening type conversion is replaced with the integer promotional type conversion.
-    * Improve the doc of the switch statement
+    * Improve the doc of the switch statement.
+    * Improve the doc of "Loop Syntax".
+    * Improve the doc of "return Statemenet".
+    * Improve the doc of "Empty Statemenet".
+    * Improve the doc of "Operator Statemenet".
   [Document Fix]
     * Fix the type of the heading "Character Literal".
 

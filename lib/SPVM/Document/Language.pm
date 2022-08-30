@@ -2707,7 +2707,7 @@ B<Examples:>
 
 A class variable setting method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
-It has an argument that type is the same as the type of the class variable. The return type is the L<void type/"void Type">.
+It has an argument that type is the same as the type of the class variable. The return type is the L<void type|/"void Type">.
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -2845,7 +2845,7 @@ If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a co
 
 A field getting method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field getting method is the same as its field type.
 
-A field setting method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type/"void Type">.
+A field setting method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
 
 Inline expansion to the field access is performed on field getting and setting methods. The performance penalty using field methods is nothing.
 
@@ -2942,7 +2942,7 @@ The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
 The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">. Otherwise a compilation error will occur.
 
-The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error will occur.
+The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error will occur.
 
 Defined methods can be called using L</"Method Call"> syntax.
 
@@ -6573,148 +6573,139 @@ The C<break> statement is a L<statement|/"Statement"> to jump to the end of the 
 
 =head3 while Statement
 
-The C<while> statement is a L<statement|/"Statement"> for repeating.
+The C<while> statement is a L<statement|/"Statement"> for loop.
 
   while (CONDITION) {
   
   }
 
-The L<operator|/"Operator"> can be described in the condition operator. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for condition operator, and if the value is not 0, Block is executed. Exit the otherwise Block.
+First, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the condition.
+
+Next, If the condition is C<0>, the program jumps to the end of the L<while block|/"while Block">. Otherwise the program goes to the beginning of the L<while block|/"while Block">.
+
+When the program reaches the end of the L<while block|/"while Block">, it jumps back to the while statement and evaluates the condition again.
 
 B<Examples:>
 
-An example of a while Statement.
-
+  # The while statement
   my $i = 0;
-  while ($i <5) {
+  while ($i < 5) {
   
     print "$i\n";
   
     $i++;
   }
 
-Inside the while block, you can leave the while block by using L</"last Statement">.
-
+The L<last statement|/"last Statement"> is used inside the L<while block|/"while Block">. By The L<last statement|/"last Statement">, the program jumps to the end of the current L<while block|/"while Block">.
+  
+  # The last statement
   while (1) {
+    # The program jumps to the end fo the current while block.
     last;
   }
 
-Inside a while block, you can use L</"next Statement"> to move to the condition immediately before the next condition operator.
+The L<next statement|/"next Statement"> is used inside the L<while block|/"while Block">. By The L<last statement|/"last Statement">, the program goes back to the C<while> statement of the current L<while block|/"while Block">.
 
   my $i = 0;
-  while ($i <5) {
+  while ($i < 5) {
   
     if ($i == 3) {
       $i++;
+      
+      # the program goes back to the while statement of the current while block.
       next;
     }
-  
+    
     print "$i\n";
     $i++;
   }
 
-The while Statement is internally enclosed by an invisible L</"Simple Block">.
-
-  {
-    while (CONDITION) {
-    $i++;
+The C<while> statement is enclosed by an inbisible L<simple block|/"Simple Block">.
+  
+  # The while statement
+  while (1) {
+    
   }
-  
-  # After expansion
-  my $num = 5;
+
+  # The above is the same as the following.
   {
-    while (my $num = 3) {
-  
-      $i++;
+    while (1) {
+      
     }
   }
 
 =head3 for Statement
 
-The C<for> Statement is a L<statement|/"Statement"> for repeating.
+The C<for> Statement is a L<statement|/"Statement"> to write loop syntax easily.
 
+  # The for statement.
   for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
   
   }
 
-The L<operator|/"Operator"> can be described in the initialization operator. Generally, write operator such as initialization of loop variable. Initialization operator can be omitted.
-
-Condition operator, the L<operator|/"Operator"> can be described. The L<conditional type conversion|/"Conditional Type Conversion"> is executed for the condition operator, and if the value is not 0, Block is executed. Exit the otherwise block.
-
-The L<operator|/"Operator"> can be described in INCREMENT_STATEMENT. Generally, operator of Increment of loop variable is described. INCREMENT_STATEMENT can be omitted.
-
-for Statement has the same meaning as the following while Statement. INCREMENT_STATEMENT is executed at the end of Block. Initialization operator is enclosed in L</"Simple Block">.
-
+The C<for> statement is the alias for the C<while> statement.
+  
+  # The above for statemenet is the same as the following while statemenet.
   {
     INIT_STATEMENT;
     while (CONDITION) {
+      
+      # ...
+      
       INCREMENT_STATEMENT;
     }
   }
 
-B<Exampels fo for statements:>
+B<Exampels:>
 
-  # for statements
-  for (my $i = 0; $i <5; $i++) {
+  # The for statement
+  for (my $i = 0; $i < 5; $i++) {
     print "$i\n";
-  }
-
-Inside the for Block, you can exit the for Block using L</"last Statement">.
-
-  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
-  
-  }
-
-Inside the for Block, you can use L</"next Statement"> to move immediately before the next INCREMENT_STATEMENT to be executed.
-
-  for (my $i = 0; $i <5; $i++) {
-  
-    if ($i == 3) {
-      next;
-    }
   }
 
 =head3 for-each Statement
 
-The for-each statement is a L<statement|/"Statement"> to write the L<for statement|/"for Statement"> for iterating easily.
-
-  for my VAR (@OPERATOR) {
+The for-each statement is a L<statement|/"Statement"> to write loop syntax easily for the simple iteration.
+  
+  # The for-each statemenet
+  for my VAR (@ARRAY) {
   
   }
   
-  for my VAR (@{OPERATOR}) {
+  for my VAR (@{ARRAY}) {
     
   }
 
-The following C<for> statement is the same as the following for-each statement.
+The above for-each statement is the same as the following the L<for statement|/"for Statement">.
 
-  # for
-  my $array = [1, 2, 3];
-  for (my $i = 0; $i < @$array; $i++) {
-    my $element = $array->[$i];
+  for (my $i = 0; $i < @ARRAY; $i++) {
+    my VAR = ARRAY->[$i];
+    
   }
-  
-  # for-each
+
+B<Example:>
+
+  # The for-each statemenet
   my $array = [1, 2, 3];
   for my $element (@$array) {
-    
+    print "$elemenet\n";
   }
 
 =head3 next Statement
 
-The C<next> statement is a L<statement|/"Statement"> to move to the beginning of the next loop block.
+The C<next> statement is a L<statement|/"Statement"> to go back to the L<while statement|/"while Statement"> of the current L<while block|/"while Block">.
 
   next;
 
-See also L</"while Statement">, L</"for Statement">.
+See also the L<while statement|/"while Statement">.
 
 =head3 last Statement
 
-The C<last> statement" is a L<statement|/"Statement"> to move to the outside of the loop block.
+The C<last> statement is a L<statement|/"Statement"> to jump to the end of the current L<while block|/"while Block">.
 
   last;
 
-See also L</"while Statement">, L</"for Statement">.
+See also the L<while statement|/"while Statement">.
 
 =head2 return Statement
 
@@ -6726,18 +6717,17 @@ The C<return> statement is a L<statement|/"Statement"> to return a value.
   // non-void
   return OPERAND;
 
-If the return type of the method is the L<void type/"void Type">, the operand cannot exist.
+If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the operand can't exist. If so, a compilation error will occur.
 
-If the return type of the method is the non-void type, the operand must be exist.
+If the return type of the current L<method|/"Method Definition"> is the non-void type, the operand must exist. Otherwise a compilation error will occur.
 
-The type of the operand must be able to L<assign|/"Assignability"> to the return type of the method.
-
-If the syntax of the return statement is invalid, an compilation error will occur.
+The type of the operand must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error will occur.
 
 =head2 Empty Statement
 
-The empty statement is a L<statement|/"Statement"> that do nothing and ends with just C<;>.
+The empty statement C<;> is a L<statement|/"Statement"> to do nothing.
 
+  # The empty statemenet
   ;
 
 =head2 Operator Statement
@@ -6745,7 +6735,8 @@ The empty statement is a L<statement|/"Statement"> that do nothing and ends with
 The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
 
 A operation statement is composed of an L<operator|/"Operator"> and C<;>.
-
+  
+  # The operator statemenet
   OPERATOR;
 
 B<Examples:>
@@ -6753,7 +6744,7 @@ B<Examples:>
   1;
   $var;
   1 + 2;
-  foo();
+  &foo();
   my $num = 1 + 2;
 
 =head2 void Returning Operator Statement
