@@ -3,6 +3,9 @@
     * Improve the doc of the unary plus operator.
     * Improve the doc of the unary minus operator.
     * Improve many parts. The numeric widening type conversion is replaced with the integer promotional type conversion.
+    * Improve the doc of the switch statement
+  [Document Fix]
+    * Fix the type of the heading "Character Literal".
 
 0.9648 2022-08-30
   [New Features]

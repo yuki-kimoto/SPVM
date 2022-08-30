@@ -706,7 +706,7 @@ B<Examples:>
   0x3d3d.edP-3D
   0x3d3dP+3
 
-=head2 Charater Literal
+=head2 Character Literal
 
 A character literal is a L<literal|/"Literal"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
@@ -714,7 +714,7 @@ A character literal represents an ASCII character.
 
 A character literal begins with C<'>.
 
-And is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Charater Literal Escape Characters">.
+And is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Character Literal Escape Characters">.
 
 And ends with C<'>.
 
@@ -722,7 +722,7 @@ The return type is the L<byte type|/"byte Type">.
 
 If the format of the character literal is invalid, a compilation error will occur.
 
-=head3 Charater Literal Escape Characters
+=head3 Character Literal Escape Characters
 
 The list of character literal escape characters.
 
@@ -3540,6 +3540,28 @@ The C<switch> block is a L<scope block|/"Scope Block">.
   # switch block
   switch (CONDITION) {
   
+  }
+
+=head3 case Block
+
+The C<case> block is a L<scope block|/"Scope Block">.
+  
+  # case block
+  switch (CONDITION) {
+    case CASE_VALUE1: {
+      # ...
+    }
+  }
+
+=head3 default Block
+
+The C<default> block is a L<scope block|/"Scope Block">.
+  
+  # default block
+  switch (CONDITION) {
+    default: {
+      # ...
+    }
   }
 
 =head2 INIT Block
@@ -6404,21 +6426,21 @@ The condition must be an L<integer type within int|/"Integer Type Within int">. 
 
 The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the condition.
 
-The value of the L<case statement|/"case Statement"> must be one of a L<character literal|/"Character Literal">, an L<integer literal|/"Integer Literal> or the L<getting enumeration value|/"Getting Enumeration Value">.
+The value of the L<case statement|/"case Statement"> must be one of the L<character literal|/"Character Literal">, the L<integer literal|/"Integer Literal"> or the L<getting enumeration value|/"Getting Enumeration Value">.
 
-If the value is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
+If it is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
 
-The values of the case statements can't be duplicated. If they are duplicated, a compilation error will occur.
+The values of the case statements can't be duplicated. If so, a compilation error will occur.
 
-If the value of the condition matches a value of a case statement, the program jumps to the block of the case statement.
+If the condition matches the value of a C<case> statement, the program jumps to the beginning of the L<case block|/"case Block">.
 
-If it doesn't match and the default statement exists, the program jumps to the block of the default statement.
+If the condition doesn't match any C<case> statements and the default statement exists, the program jumps to the beginning the L<default block|/"default Block">.
 
-If it doesn't match and the default statement doesn't exists, the program jumps to the end of the switch block.
+If the condition doesn't match any C<case> statements and the default statement doesn't exists, the program jumps to the end of the L<switch block|/"switch Block">.
 
-The case statements and the default statement can be ommited.
+The C<case> statements and the default statement can be ommited.
 
-The break statement jumps to the end of the switch block.
+The C<break> statement jumps to the end of the L<switch block|/"switch Block">.
 
   switch (CONDITION) {
     case CASE_VALUE1: {
@@ -6435,9 +6457,22 @@ The break statement jumps to the end of the switch block.
     }
   }
 
-If the last statment of the case block is not the break statement, a break statement is added to the end of the case block.
+If the last statment of the L<case block|/"case Block"> is not the C<break> statement, a C<break> statement is added to the end of the L<case block|/"case Block">.
+  
+  # The break statement is ommitted.
+  switch (CONDITION) {
+    case CASE_VALUE1: {
+    }
+  }
+  
+  # The above becomes the following.
+  switch (CONDITION) {
+    case CASE_VALUE1: {
+      break;
+    }
+  }
 
-Multiple case values are specified at once.
+Multiple C<case> statements before a L<case block|/"case Block"> can be specified at once.
 
   switch (CONDITION) {
     case CASE_VALUE1:
@@ -6509,14 +6544,29 @@ B<Examples:>
 
 The C<case> statement is the L<statement|/"Statement"> that specifies a case value and a branch of a L<switch statement|/"switch Statement">.
 
+  # The case statement
+  switch (CONDITION) {
+    case CASE_VALUE1: {
+      # ...
+    }
+  }
+
 =head4 default Statement
 
 The C<default> statement is a L<statement|/"Statement"> that specifies a default branch of a L<switch statement|/"switch Statement">.
+
+  # The default statement
+  switch (CONDITION) {
+    default: {
+      # ...
+    }
+  }
 
 =head4 break Statement
 
 The C<break> statement is a L<statement|/"Statement"> to jump to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
 
+  # The break statement
   break;
 
 =head2 Loop Syntax
