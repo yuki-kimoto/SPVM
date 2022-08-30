@@ -2505,7 +2505,7 @@ You can create an alias at the same time as loading a class by C<use>.
 
 In SPVM, there is an if require Statement that loads a module only if it exists in the module path, and if it does not exist, the block does not exist.
 
-It was designed to implement a part of features of "#ifdef" in C language.
+It was designed to implement a part of features of "#ifdef" in C<C language>.
 
   if (require Foo) {
   
@@ -2763,7 +2763,7 @@ Field Definition must be specify the L<type|/"Type">. The Type must be a L<numer
 
 Field names must follows the rule specified in L</"Field Name">.
 
-Field Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
+Field Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error will occur.
 
 If more than one field names Variable with the same name is defined, a compilation error will occur.
 
@@ -2940,9 +2940,9 @@ The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is C<0>. The max length of arguments is C<255>.
 
-The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">, otherwise a compilation error will occur.
+The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">. Otherwise a compilation error will occur.
 
-The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">, otherwise a compilation error will occur.
+The type of the return value must be the L<void type/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error will occur.
 
 Defined methods can be called using L</"Method Call"> syntax.
 
@@ -2962,7 +2962,7 @@ C<...> after the type of the argument indicates the argument is a variable lengt
   
   }
 
-The type of the variable length argument must be the L<array type|/"The array Type">.
+The type of the variable length argument must be the L<array type|/"Array Type">.
 
 A variable length argument can recieve multiple values.
 
@@ -2979,7 +2979,7 @@ A variable length argument can recieve an array.
   # Pass array to a variable lenght argument
   sprintf("Value  %d %f", [(object)1, 2.0]);
 
-If you want to treat the value as an individual element, cast it to type other than the L<array type|/"The array Type">..
+If you want to treat the value as an individual element, cast it to type other than the L<array type|/"Array Type">..
 
   sprintf("aaa %p", (object)[(object)1, 2.0]);
 
@@ -4058,19 +4058,19 @@ In other words, the integer types within C<int> are the L<byte type|/"byte Type"
 
 =head2 byte Type
 
-C<byte> type is the L<integer type|/"Integer Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
+C<byte> type is the L<integer type|/"Integer Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C<C language>.
 
 =head2 short Type
 
-C<short> type  is the L<integer type|/"Integer Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
+C<short> type  is the L<integer type|/"Integer Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C<C language>.
 
 =head2 int Type
 
-C<int> type is  is the L<integer type|/"Integer Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C language.
+C<int> type is  is the L<integer type|/"Integer Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of C<C language>.
 
 =head2 long Type
 
-C<long> type is the L<integer type|/"Integer Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
+C<long> type is the L<integer type|/"Integer Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C<C language>.
 
 =head2 Floating Point Type
 
@@ -4134,11 +4134,11 @@ The class type is the type that can create the object using a L<new operator|/"n
 
 =head2 Basic Object Type
 
-Basic object types are the L<class type|/"Class Type">, the L<array type|/"The array Type">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
+Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array Type">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
 
 =head2 Object Type
 
-Object types are the L<basic object types|/"Basic Object Type"> and the L<array types|/"The array Type">.
+Object types are the L<basic object types|/"Basic Object Type"> and the L<array types|/"Array Type">.
 
 A object type can be assigned to a L<any object type|/"Any Object Type">.
 
@@ -4254,7 +4254,7 @@ B<void Type> is a special Type that can only be used in the return type of the L
 
 The basic types are L<numeric types|/"Numeric Type">, L<multi-numeric types|/"Multi-Numeric Type">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
 
-Another definition of basic types are the types that is not L<array types|"The array Type"> and can become the element of L<array types|"The array Type">.
+Another definition of basic types are the types that is not L<array types|"Array Type"> and can become the element of L<array types|"Array Type">.
 
 =head2 Array Type
 
@@ -4309,13 +4309,13 @@ Each element are initialized by the L<initial value/"Initial Value"> when the L<
 
 =head3 byte[] Type
 
-The C<byte[]> type is an L<array type|/"The array Type"> that the element type is C<byte>.
+The C<byte[]> type is an L<array type|/"Array Type"> that the element type is C<byte>.
 
   byte[]
 
 =head3 Object Array Type
 
-Object array types are the L<array type|/"The array Type"> that the type of the element is an L<object type|/"Object Type">.
+Object array types are the L<array type|/"Array Type"> that the type of the element is an L<object type|/"Object Type">.
 
 B<Examples:>
 
@@ -4328,7 +4328,7 @@ B<Examples:>
 
 =head3 String Array Type
 
-String array types are the L<array type|/"The array Type"> that the type of the element is the L<string type|/"String Type">.
+String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"String Type">.
 
 B<Examples:>
 
@@ -4337,7 +4337,7 @@ B<Examples:>
 
 =head3 Class Array Type
 
-Class array types are the L<array type|/"The array Type"> that the type of the element is the L<class type|/"Class Type">.
+Class array types are the L<array type|/"Array Type"> that the type of the element is the L<class type|/"Class Type">.
 
 B<Examples:>
 
@@ -4346,7 +4346,7 @@ B<Examples:>
 
 =head3 Interface Array Type
 
-Interface array types are the L<array type|/"The array Type"> that the type of the element is the L<interface type|/"Interface Type">.
+Interface array types are the L<array type|/"Array Type"> that the type of the element is the L<interface type|/"Interface Type">.
 
 B<Examples:>
 
@@ -4355,7 +4355,7 @@ B<Examples:>
 
 =head3 Multi-Dimensional Array Type
 
-The multi-dimensional array type is the L<array type|/"The array Type"> that the type of the element is an L<array type|/"The array Type">.
+The multi-dimensional array type is the L<array type|/"Array Type"> that the type of the element is an L<array type|/"Array Type">.
 
 B<Examples:>
 
@@ -4364,7 +4364,7 @@ B<Examples:>
 
 =head3 Multi-Numeric Array Type
 
-A multi-numeric array type is an L<array type|/"The array Type"> that the basic type is a L<multi-numeric type|"Multi-Numeric Type">.
+A multi-numeric array type is an L<array type|/"Array Type"> that the basic type is a L<multi-numeric type|"Multi-Numeric Type">.
 
 =begin html
 
@@ -4398,7 +4398,7 @@ The any object array type C<object[]> is the type that any L<object array type|/
 
 If a invalid type is assigned, a compilation error will occur.
 
-Any Object Array Type is an L<array type|/"The array Type">.
+Any Object Array Type is an L<array type|/"Array Type">.
 
 You can get the array length using the L<array length operator|/"The array Length Operator">.
 
@@ -4449,7 +4449,7 @@ The multi-numeric type can be used as the return L<type|/"Type"> of the L<method
 
   static method add_double_complex : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) { ... }
 
-The multi-numeric type can be used as a L<basic type|/"Basic Type"> of the L<array type|/"The array Type"> .
+The multi-numeric type can be used as a L<basic type|/"Basic Type"> of the L<array type|/"Array Type"> .
 
   my $points = new Complex_2d[5];
 
@@ -6019,7 +6019,7 @@ If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE
 
 If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, return C<0>.
 
-If the type is a L<numeric type|/"Numeric Type"> except for L<int type|/"int Type">, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
+If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
 
 And the following operation in C<C language> is performed on the operand .
 
@@ -6400,9 +6400,9 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
     }
   }
 
-The condition must be an L<integer type|/"Integer Type"> that numeric order is less than or equal to the L<int type|/"int Type">. Otherwise a compilation occur will occur.
+The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> to the L<int type|/"int Type"> is performed on the value of the condition.
+The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the condition.
 
 The value of the L<case statement|/"case Statement"> must be one of a L<character literal|/"Character Literal">, an L<integer literal|/"Integer Literal> or the L<getting enumeration value|/"Getting Enumeration Value">.
 
@@ -6771,13 +6771,13 @@ The unary plus operator C<+> is an L<unary operator|/"Unary Operator"> to return
 
   +OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> applys to the operand.
+If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
 
-returns the value copied from the value of the operand.
+The unary plus operator C<+> returns the copied value of the operand.
 
-the return type of the unary plus pperator is the type that L</"Numeric Widening Type Conversion"> is performed.
+The return type is the type of the operand or the type that the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on.
 
 B<Examples:>
   
@@ -6790,15 +6790,15 @@ The unary minus operator C<-> is an L<unary operator|/"Unary Operator"> to retur
 
   -OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> applys to the operand.
+If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
 
-the unary minus operator performs the following operation of C language.
+The unary minus operator C<-> performs the following operation of C<C language>.
 
   -x
 
-Return type of an unary minus operator is the type that L</"Numeric Widening Type Conversion"> is performed.
+The return type is the type of the operand or the type that the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on.
 
 B<Examples:>
 
@@ -6811,11 +6811,11 @@ The addition operator C<+> is a L<binary operator|/"Binary Operator"> to calcula
 
   LEFT_OPERAND + RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
-The addition operator performs the operation that exactly same as the following operation in C language.
+The addition operator performs the operation that exactly same as the following operation in C<C language>.
 
   x + y;
 
@@ -6827,11 +6827,11 @@ The subtraction operator C<-> is a L<binary operator|/"Binary Operator"> to calc
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
-The subtraction operator performs the operation that exactly same as the following operation in C language.
+The subtraction operator performs the operation that exactly same as the following operation in C<C language>.
 
   x - y;
 
@@ -6843,11 +6843,11 @@ The multiplication operator is a L<binary operator|/"Binary Operator"> to calcul
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
-The multiplication operator performs the operation that exactly same as the following operation in C language.
+The multiplication operator performs the operation that exactly same as the following operation in C<C language>.
 
   x * y;
 
@@ -6859,11 +6859,11 @@ The division operator C</> is a L<binary operator|/"Binary Operator"> to culcura
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
-The division operator performs the operation that exactly same as the following operation in C language.
+The division operator performs the operation that exactly same as the following operation in C<C language>.
 
   x / y;
 
@@ -6877,9 +6877,9 @@ The division unsigned int operator C<divui> is a L<binary operator|/"Binary Oper
 
   LEFT_OPERAND divui RIGHT_OPERAND
 
-The left operand and the right operand must be an L<int type|/"int Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<int type|/"int Type">. Otherwise a compilation error will occur.
 
-The division unsigned int operator performs the operation that exactly same as the following operation in C language.
+The division unsigned int operator performs the operation that exactly same as the following operation in C<C language>.
 
   (uint32_t)x / (uint32_t)y;
 
@@ -6893,9 +6893,9 @@ The division unsigned long operator C<divul> is a L<binary operator|/"Binary Ope
 
   LEFT_OPERAND divul RIGHT_OPERAND
 
-The left operand and the right operand must be an L<long type|/"long Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<long type|/"long Type">. Otherwise a compilation error will occur.
 
-The division unsigned long operator performs the operation that exactly same as the following operation in C language.
+The division unsigned long operator performs the operation that exactly same as the following operation in C<C language>.
 
   (uint64_t)x / (uint64_t)y;
 
@@ -6909,11 +6909,11 @@ The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calcul
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type|/"Integer Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
 
-The remainder operator performs the operation that exactly same as the following operation in C language.
+The remainder operator performs the operation that exactly same as the following operation in C<C language>.
 
   x % y;
 
@@ -6927,9 +6927,9 @@ The remainder unsigned int operator C<remui> is a L<binary operator|/"Binary Ope
 
   LEFT_OPERAND remui RIGHT_OPERAND
 
-The left operand and the right operand must be a L<int type|/"int Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<int type|/"int Type">. Otherwise a compilation error will occur.
 
-The remainder unsigned int operator performs the operation that exactly same as the following operation in C language.
+The remainder unsigned int operator performs the operation that exactly same as the following operation in C<C language>.
 
   (uint32_t)x % (uint32_t)y;
 
@@ -6943,9 +6943,9 @@ The remainder unsigned long operator C<remul> is a L<binary operator|/"Binary Op
 
   LEFT_OPERAND remul RIGHT_OPERAND
 
-The left operand and the right operand must be a L<long type|/"long Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<long type|/"long Type">. Otherwise a compilation error will occur.
 
-The remainder unsigned long operator performs the operation that exactly same as the following operation in C language.
+The remainder unsigned long operator performs the operation that exactly same as the following operation in C<C language>.
 
   (ulong64_t)x % (ulong64_t)y;
 
@@ -6964,7 +6964,7 @@ The pre-increment operator adds C<1> to the value of the operand and returns the
   # Pre-increment operator
   ++OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The pre-increment operator performs the same operation as the following.
 
@@ -6998,7 +6998,7 @@ The post-increment operator adds C<1> to the value of the operand and returns th
   # Post-increment operator
   OPERAND++
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The post-increment operator performs the same operation as the following.
 
@@ -7036,7 +7036,7 @@ The pre-decrement operator subtracts C<1> to the value of the operand and return
   # Pre-decrement operator
   --OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The pre-decrement operator performs the same operation as the following.
 
@@ -7070,7 +7070,7 @@ The post-decrement operator subtracts C<1> to the value of the operand and retur
   # Post-decrement operator
   OPERAND--
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The post-decrement operator performs the same operation as the following.
 
@@ -7109,7 +7109,7 @@ The bit AND operator C<&> is an L<operator|/"Operator"> to performe a bit AND op
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type/"Integer Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
@@ -7132,7 +7132,7 @@ The bit OR operator C<|> is an L<operator|/"Operator"> to performe a bit OR oper
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type/"Integer Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error will occur.
 
 A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
 
@@ -7155,7 +7155,7 @@ The bit NOT operator C<~> is an L<unary operator|/"Unary Operator"> to perform t
 
   ~OPERAND
 
-The type of the operand must is an L<integer type|/"Integer Type">, otherwise a compilation error will occur.
+The type of the operand must is an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
 
@@ -7180,17 +7180,17 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator">
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
-The calculation result of the left shift operator is the same as the following calculation in C language.
+The calculation result of the left shift operator is the same as the following calculation in C<C language>.
 
   x << y;
 
@@ -7200,17 +7200,17 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
-The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in C language.
+The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in C<C language>.
 
   x >> y;
 
@@ -7220,17 +7220,17 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">, otherwise a compilation error will occur.
+The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the left operand.
 
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">, otherwise a compilation error will occur.
+The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
 L</"Numeric Widening Type Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
-The operation result of logical right shift Operator is the same as the following calculation in C language.
+The operation result of logical right shift Operator is the same as the following calculation in C<C language>.
   
   // In the case that the left operand is a int type
   (uint32_t)x >> y;
@@ -7347,7 +7347,7 @@ The types of the left operand and the right operand must be comparable types. Ot
 
 In Numeric Type Comparison, L</"Binary Numeric Type Conversion"> is performed for The left operand and the right operand.
 
-the Numeric Comparison Operation is performed that exactly same as the following operation in C language.
+the Numeric Comparison Operation is performed that exactly same as the following operation in C<C language>.
 
   # Numeric Type Comparison, Object Type Comparison
   (int32_t)(x == y);
@@ -7591,7 +7591,7 @@ String concatenation operator C<.> is a L<binary operator|/"Binary Operator"> to
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left operand and the right operand must be a L<string type|/"String Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">, otherwise a compilation error will occur.
+The left operand and the right operand must be a L<string type|/"String Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
 If the type of the operand is numeric type, a L<numeric to string type conversion|/"Numeric to String Type Conversion"> is performed.
 
@@ -7726,7 +7726,7 @@ The array length operator is an L<unary operator|/"Unary Operator"> to get the l
 
   @OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"The array Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error will occur.
 
 The array length operator returns the L<int type|/"int Type"> value that is the length of the L<array|/"Array">.
 
@@ -7752,7 +7752,7 @@ The C<new_string_len> operator is an L<unary operator|/"Unary Operator"> to crea
 
 The type of the operand must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
 
-The L<integer promotional type conversion|Integer Promotional Type Conversion> is performed on the operand.
+The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
 
 The C<new_string_len> operator returns a new string that length is the length specified by the operand and all characters are C<\0>.
 
@@ -7773,7 +7773,7 @@ The C<copy> operator is an L<unary operator|/"Unary Operator"> to copy the objec
 
   copy OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">, otherwise a compilation error will occur.
+The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">. Otherwise a compilation error will occur.
 
 If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
 An L<exception|/"Exception"> is thorwn.
@@ -7795,7 +7795,7 @@ The C<is_read_only> is an L<unary operator|/"Unary Operator"> to check if the L<
 
   is_read_only OPERAND
 
-The operand must be a L<string type|/"String Type">, otherwise a compilation error will occur.
+The operand must be a L<string type|/"String Type">. Otherwise a compilation error will occur.
 
 If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise returns C<0>.
 
@@ -7835,7 +7835,7 @@ The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of t
 
   scalar OPERAND
 
-The operand must be an L</"The array Length Operator">, otherwise a compilation error will occur.
+The operand must be an L</"The array Length Operator">. Otherwise a compilation error will occur.
 
 B<Examples:>
   
@@ -7855,7 +7855,7 @@ The C<isweak> operator checks whether the L<field|/"Field"> is L<weak reference|
 
   isweak OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
@@ -7880,11 +7880,11 @@ The C<has_impl> operator checks the existence of the method implementation.
 
   has_impl OPERAND
 
-The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">, otherwise a compilation error will occur.
+The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">. Otherwise a compilation error will occur.
 
 If the class or the interface doesn't have the method declaration, a compilation error will occur.
 
-The method name must be a L<method name|/"Method Name">, otherwise a compilation error will occur.
+The method name must be a L<method name|/"Method Name">. Otherwise a compilation error will occur.
 
 If method name is not specified, the method name become C<"">.
 
@@ -7916,7 +7916,7 @@ The setting local variable is an L<operator|/"Operator"> to set the value of L</
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<assignability|/"Assignability">, otherwise a compilation error will occur.
+The assignment of the value must satisfy the L<assignability|/"Assignability">. Otherwise a compilation error will occur.
 
 The return value is the value after the assignment.
 
@@ -8050,9 +8050,9 @@ The return value is the value after the setting.
 
 The return type is the field type.
 
-If the type of assigned value is a L<basic object type|/"Object Type">, Reference Count of the object is incremented by C<1>.
+If the type of assigned value is a L<basic object type|/"Object Type">, the reference count of the object is incremented by C<1>.
 
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
+If an object has already been assigned to the field before the assignment, the reference count of that object is decremented by C<1>.
 
 B<Examples:>
 
@@ -8101,19 +8101,23 @@ B<Examples:>
 
 =head2 Getting Array Element
 
-B<Getting Array Element operator> is an L<operator|/"Operator"> to get a Element Value of the L<array|/"Array">.
+The getting array element is an L<operator|/"Operator"> to get the element of the L<array|/"Array">.
 
   ARRAY->[INDEX]
 
-Array operator must be the L<array type|/"The array Type">.
+The array must be the L<array type|/"Array Type">.
 
-the index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-Getting Array Element operator returns the Element Value of the Index.
+The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the index.
 
-If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
+The getting array element returns the element that is specifed by the index.
 
-If the index is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
+The return type is the type of the element.
+
+The array must be defined. Otherwise an exception will be thrown.
+
+The index must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 B<Examples:>
 
@@ -8128,25 +8132,27 @@ B<Examples:>
 
 =head2 Setting Array Element
 
-Setting Array Element operator is an L<operator|/"Operator"> to set a Element Value of a Array using L</"Assignment Operator">.
+The setting array element is an L<operator|/"Operator"> to set the element of the array using the L<assignment operator|/"Assignment Operator">.
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
-The array must be the L<array type|/"The array Type">.
+The array must be the L<array type|/"Array Type">.
 
-The index must be the L<int type|/"int Type"> or the type that become the L<int type|/"int Type"> by L</"Numeric Widening Type Conversion">.
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The assignment must satisfy the L<assignability|/"Assignability">.
+The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the index.
 
-Setting Array Element operator returns the value of the element after setting.
+The right operand must be L<assigned|/"Assignability"> to the element of the array.
 
-If the array is L<undef|/"Undefined Value">, a Runtime Exception occurs.
+The setting array element returns the value of the element that is set.
 
-If the index is less than 0 or more than the max index of the Array, a Runtime Exception occurs.
+The array must be defined. Otherwise an exception will be thrown.
 
-If the right operand is an L<object type|/"Object Type">, Reference Count of the object is incremented by C<1>.
+The index must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-If an object has already been assigned to Field before the assignment, the reference count of that object is decremented by C<1>.
+If the right operand is an L<object type|/"Object Type">, the reference count of the object is incremented by C<1>.
+
+If an object has already been assigned to the field before the assignment, the reference count of the object is decremented by C<1>.
 
 B<Examples:>
 
@@ -8171,7 +8177,7 @@ The creating object is an L<operator|/"Operator"> to create an object using the 
 
 The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
 
-The fields of the created object are initialized by the rule of L<initial value|/"Initial Value">.
+The fields of the created object are initialized by the L<initial value|/"Initial Value">.
 
 The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
 
@@ -8187,13 +8193,15 @@ The creating array is an L<operator|/"Operator"> to create an array using the L<
 
 The type must be a L<basic type|/"Basic Type">.
 
-The type of length must be the L<int type|/"int Type"> or the type that become L<int type|/"int Type"> after the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-If the length is less than C<0>, an exception is thrown.
+The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the length.
 
-All elements of the array are initialized by the rule of L<initial value|/"Initial Value">.
+The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The type of created array is the L<array type|/"The array Type">.
+All elements of the array are initialized by the L<initial value|/"Initial Value">.
+
+The type of the created array is the L<array type|/"Array Type">.
 
 B<Examples:>
 
@@ -8304,7 +8312,7 @@ Obtaining a value by Dereference is an L<operator|/"Operator"> to obtain the act
 
   $VARIABLE
 
-The variable Type must be Reference Type, otherwise a compilation error will occur.
+The variable Type must be Reference Type. Otherwise a compilation error will occur.
 
 The value obtained by Dereference returns the L<operator|/"Operator">.
 
@@ -8324,9 +8332,9 @@ Setting a value with Dereference is an L<operator|/"Operator"> to set the actual
 
   $VARIABLE = OPERAND
 
-The variable Type must be Reference Type, otherwise a compilation error will occur.
+The variable Type must be Reference Type. Otherwise a compilation error will occur.
 
-The type of operator must match the type of the variable when dereferenced, otherwise a compilation error will occur.
+The type of operator must match the type of the variable when dereferenced. Otherwise a compilation error will occur.
 
 Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
 
@@ -8634,7 +8642,7 @@ You can specify the error message to the operand.
 
 The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
+If an exception will be thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
 
 The stack traces constain the class names, the method names, the file names and the line numbers.
 
@@ -8692,7 +8700,7 @@ The C<weaken> operator is a L<void retruning operator|/"void Returning Operator"
 
   weaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
@@ -8711,7 +8719,7 @@ The C<unweaken> operator is a L<void retruning operator|/"void Returning Operato
 
   unweaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">, otherwise a compilation error will occur.
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error will occur.
 
 If the field name is not found, a compilation error will occur.
 
@@ -8820,7 +8828,7 @@ The object is destroyed when the reference count becomes C<0>.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by C<1> before Garbage Collection
 
-When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before Reference Count is decremented by C<1>.
+When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all fields of Object Type that are not Undefined Value is decremented by C<1> before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before the reference count is decremented by C<1>.
 
 When the object has Back references of Weak Reference, Undefined Value is assigned to all fields registered as back References and all back References are deleted.
 
@@ -8830,7 +8838,7 @@ The above process is done recursively.
 
 Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
 
-SPVM has GC of Reference Count Type. In the GC of Reference Count Type, the object is automatically destroyed when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically destroyed. not.
+SPVM has GC of the reference count Type. In the GC of the reference count Type, the object is automatically destroyed when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically destroyed. not.
 
 This is an example when the field of the object is circularly referenced.
 
@@ -8844,7 +8852,7 @@ This is an example when the field of the object is circularly referenced.
 
 In this case, both objects are not destroyed when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
 
-Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has a Reference Count GC.
+Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has the reference count GC.
 
 In such a case, it is possible to release correctly by setting one Field to Weak Reference using the L<weaken operator/"weaken Operator">.
 
@@ -8858,11 +8866,11 @@ In such a case, it is possible to release correctly by setting one Field to Weak
     weaken $foo->{bar};
   }
 
-Before the weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 2.
+Before the weaken statement is executed, $foo has the reference count of 2 and $bar has the reference count of 2.
 
 If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be destroyed even if the scope ends.
 
-When a weaken statement is executed, $foo has a Reference Count of 2 and $bar has a Reference Count of 1.
+When a weaken statement is executed, $foo has the reference count of 2 and $bar has the reference count of 1.
 
 When the Scope ends, the reference count of $bar is decremented by C<1> and becomes 0, so it is destroyed correctly.
 
