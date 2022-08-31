@@ -23,9 +23,14 @@ class TestCase::Object {
   static method destructor : int () {
     {
       my $minimal = TestCase::Minimal->new();
-      TestCase::Object->destructor_call($minimal);
+      my $ret = TestCase::Object->destructor_call($minimal);
       
       unless ($minimal->{x} == 3) {
+        return 0;
+      }
+      
+      # The destructor doesn't change the return value.
+      unless ($ret == 5) {
         return 0;
       }
     }
@@ -45,5 +50,7 @@ class TestCase::Object {
   static method destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor->new();
     $dest->{minimal} = $minimal;
+    
+    return 5;
   }
 }
