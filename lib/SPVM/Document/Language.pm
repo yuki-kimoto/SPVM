@@ -2392,7 +2392,7 @@ A interface is defined using a L<class definition|/"Class Definition"> with a L<
 
 A interface must have only one required method. The required method is the method that has the L<method attribute|/"Method Attributes"> C<required>.
 
-The type of the interface is the L</"Interface Type">.
+The type of the interface is the L<interface type|/"Interface Type">.
 
 The class that has L<interface Guarantees|/"Interface Guarantee"> must have the required method that is declared in the interface. Otherwise a compilation error will occur.
 
@@ -2749,28 +2749,33 @@ See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting cl
 
 =head1 Field
 
+Fields are the data that an object has.
+
 =head2 Field Definition
 
-Field is a data area in a L</"object created using new keyword">
+The C<has> keyword defines a field.
+  
+  # The field definition
+  has FIELD_NAME : OPT_ATTRIBUTES TYPE;
+  
+  # An examples
+  has name : string;
+  has age : protected int;
+  has max : protected rw int
 
-C<has> keyword defines a field.
+The field is defined directly under the L<class block|/"Class Block">.
 
-  has FIELD_NAME : TYPE;
+  class MyClass {
+    has name : string;
+  }
 
-Field must be defined directly under the L<class definition|/"Class Definition">.
+The field definition needs the L<type|/"Type">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise an compilation error will occur.
 
-Field Definition must be specify the L<type|/"Type">. The Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
+The field names must follows the rule of the L<field name|/"Field Name">. Otherwise an compilation error will occur.
 
-Field names must follows the rule specified in L</"Field Name">.
+Field names cannot be duplicated. If so, a compilation error will occur.
 
-Field Type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error will occur.
-
-If more than one field names Variable with the same name is defined, a compilation error will occur.
-
-Field Attribute can be specified together in Field Definition.
-
-  has FIELD_NAME : ATTRIBUTE TYPE_NAME;
-  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEN TYPE_NAME;
+L<Field attributes|/"Field Attribute"> can be specified.
 
 =head2 Field Attribute
 
@@ -4888,10 +4893,10 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
 =end html
 
 B<Examples:>
-  
+
   # The assignability is false
   undef = Point->new;
-  
+
 =head2 Assignability to Numeric Array
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
@@ -5037,21 +5042,21 @@ B<Examples:>
 
   my $any_objects0 : object[];
   my $any_objects : object[] = $any_objects0;
-
+  
   my $points : Point[];
   my $any_object : object[] = $points;
-
+  
   my $any_object : object[] = undef;
-
+  
   my $points_2dim : Point[][];
   my $any_object : object[] = $points_2dim;
-
+  
   my $stringables : Stringable[];
   my $any_object : object[] = $stringables;
   
   my $strings : string[];
   my $any_object : object[] = $strings;
-  
+
 =head2 Assignability to Multi-Dimensional Array
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
@@ -5724,12 +5729,12 @@ B<Examples:>
 
   my $points_2dim : Point[][];
   my $muldim_array : Point[][] = $points_2dim;
-
+  
   my $muldim_array : Point[][] = undef;
-
+  
   my $strings_2dim : String[][];
   my $muldim_array : Stringable[][] = $strings_2dim;
-
+  
   {
     my $cb = method : string ($object : object) {
       my $point = (Point)$object;
@@ -5737,7 +5742,7 @@ B<Examples:>
     };
     my $muldim_array : Stringer[][] = [[$cb]];
   }
-  
+
 =head1 Type Conversion
 
 Type conversion is explained.
@@ -5750,10 +5755,10 @@ B<Examples:>
   
   # The explicte type conversion from long to int 
   my $num = (int)123L;
-
+  
   # The explicte type conversion from byte[] to string
   my $num = (string)new byte[3];
-
+  
   # The explicte type conversion from string to byte[]
   my $num = (byte[])"Hello";
 
@@ -6198,11 +6203,11 @@ The type comment can be used the type of the L<field decralation|/"Field Definit
   our $POINTS : List of Point;
   
   my $points : List of Point;
-
-  static method foo : List of Point ($arg : List of Point) { ... }
-
-  my $replace : object of string|Regex::Replacer;
   
+  static method foo : List of Point ($arg : List of Point) { ... }
+  
+  my $replace : object of string|Regex::Replacer;
+
 If the type specified as the type comment is not found, a compilation error will occur.
 
 Type comments have no meanings at runtime.
@@ -7077,7 +7082,7 @@ The pre-decrement operator subtracts C<1> to the value of the operand and return
   # Pre-decrement operator
   --OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
+The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The pre-decrement operator performs the same operation as the following.
 
@@ -7778,11 +7783,11 @@ B<Examples:>
   # Getting the length of the array.
   my $nums = new byte[10];
   my $length = @$nums;
-
+  
   # Getting the length of the array with a scalar operator. This is exactly same as the avobe
   my $nums = new byte[10];
   my $length = scalar @$nums;
-  
+
 Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
 =head2 new_string_len Operator
