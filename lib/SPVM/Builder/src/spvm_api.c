@@ -2836,6 +2836,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         // Call destructor
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
           int32_t args_stack_length = 1;
+          SPVM_VALUE save_stack0 = stack[0];
           stack[0].oval = object;
           int32_t error = SPVM_API_call_spvm_method(env, stack, class->destructor_method_id, args_stack_length);
           
@@ -2845,6 +2846,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             const char* exception_chars = env->get_chars(env, stack, exception);
             fprintf(stderr, "(in cleanup) %s\n", exception_chars);
           }
+          
+          stack[0] = save_stack0;
           
           assert(object->ref_count > 0);
         }

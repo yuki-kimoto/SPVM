@@ -1,4 +1,6 @@
 0.9649 2022-08-30
+  [Bug Fix]
+    * Fix the bug that the destcutor changes the original return vlaue.
   [Document Improvement]
     * Improve the doc of the unary plus operator.
     * Improve the doc of the unary minus operator.
