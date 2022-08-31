@@ -1,3 +1,39 @@
+0.9650 2022-09-01
+  [Incompatible Document Changes]
+    * Rename the heading.
+      [Before]String Type
+      [After]string Type
+
+      [Before]Integer Promotional Type Conversion
+      [After]Integer Promotional Conversion
+
+      [Before]Numeric Widening Type Conversion
+      [After]Numeric Widening Conversion
+
+      [Before]Numeric Narrowing Type Conversion
+      [After]Numeric Narrowing Conversion
+
+      [Before]Binary Numeric Type Conversion
+      [After]Binary Numeric Conversion
+
+      [Before]Numeric-to-String Type Conversion
+      [After]Numeric-to-String Conversion
+
+      [Before]String-to-byte[] Type Conversion
+      [After]String-to-byte[] Conversion
+
+      [Before]byte[]-to-String Type Conversion
+      [After]byte[]-to-string Conversion
+
+      [Before]Boxing Type Conversion
+      [After]Boxing Conversion
+
+      [Before]Unboxing Type Conversion
+      [After]Unboxing Conversion
+
+      [Before]Conditional Type Conversion
+      [After]Bool Conversion
+
 0.9649 2022-08-31
   [Bug Fix]
     * Fix the bug that the destcutor changes the original return vlaue.

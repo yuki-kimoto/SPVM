@@ -847,9 +847,9 @@ B<Examples:>
 
 =head2 String Literal
 
-A string literal is a L<literal|/"Literal"> to write a constant value that type is the L<string type|/"String Type"> in source codes.
+A string literal is a L<literal|/"Literal"> to write a constant value that type is the L<string type|/"string Type"> in source codes.
 
-The return type is a L<string type|/"String Type">.
+The return type is a L<string type|/"string Type">.
 
 A character literal begins with C<">.
 
@@ -3610,7 +3610,7 @@ B<Examples:>
 
 =head1 String
 
-SPVM has the L<string type|/"String Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
+SPVM has the L<string type|/"string Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
   
   # Create a string using a string literal
   my $string = "Hello";
@@ -3618,7 +3618,7 @@ SPVM has the L<string type|/"String Type">. A string is created by L</"String Li
   # Create a string using a string creation operator
   my $string = new_string_len 3;
   
-  # Create a string using a type conversion to the string type
+  # Create a string using the type cast to the string type
   my $bytes = [(byte)93, 94, 95];
   my $string = (string)$bytes;
 
@@ -4156,7 +4156,7 @@ The class type is the type that can create the object using a L<new operator|/"n
 
 =head2 Basic Object Type
 
-Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array Type">, the L<string type|/"String Type">, and the L<any object type|/"Any Object Type">.
+Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array Type">, the L<string type|/"string Type">, and the L<any object type|/"Any Object Type">.
 
 =head2 Object Type
 
@@ -4236,7 +4236,7 @@ The list of numeric object types:
 
 =end html
 
-See also L</"Boxing Type Conversion"> and L</"Unboxing Type Conversion">.
+See also the L<boxing conversion|/"Boxing Conversion"> and L</"Unboxing Conversion">.
 
 =head2 Undefined Type
 
@@ -4274,7 +4274,7 @@ B<void Type> is a special Type that can only be used in the return type of the L
 
 =head2 Basic Type
 
-The basic types are L<numeric types|/"Numeric Type">, L<multi-numeric types|/"Multi-Numeric Type">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"String Type">.
+The basic types are L<numeric types|/"Numeric Type">, L<multi-numeric types|/"Multi-Numeric Type">, the L<class type|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"string Type">.
 
 Another definition of basic types are the types that is not L<array types|"Array Type"> and can become the element of L<array types|"Array Type">.
 
@@ -4350,7 +4350,7 @@ B<Examples:>
 
 =head3 String Array Type
 
-String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"String Type">.
+String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"string Type">.
 
 B<Examples:>
 
@@ -4439,7 +4439,7 @@ You can get and set the element using the L<get array element|/"Getting Array El
 
 When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - C<1>, an L<exception|/"Exception"> is thrown.
 
-=head2 String Type
+=head2 string Type
 
 The C<string> type is a L<type|/"Type"> for the L</"String">.
 
@@ -4567,7 +4567,7 @@ Explains the assignability to the L<numeric types|"Numeric Type">.
 
 If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than or equal to the L<nemric type order|/"Numeric Type Order"> of the right operand, the assignability is true.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 =begin html
 
@@ -4579,21 +4579,21 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater
   <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
 </table>
 
 =end html
@@ -4616,22 +4616,22 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is less th
 
 The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
 
-If the condition is ture, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
+If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
 
 =begin html
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>False</td><td>byte</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>byte</td><td>double</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>short</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>Conditional True</td><td>short</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>False</td><td>short</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>short</td><td>double</td><td>None</td></tr>
-  <tr><td>Conditional True</td><td>int</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>Conditional True</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>False</td><td>int</td><td>float</td><td>None</td></tr>
   <tr><td>False</td><td>int</td><td>double</td><td>None</td></tr>
   <tr><td>False</td><td>long</td><td>float</td><td>None</td></tr>
@@ -4654,12 +4654,12 @@ If the type of the left operand is a L<numeric type|/"Numeric Type"> correspondi
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -4674,13 +4674,13 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
 
-The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the numeric type is performed.
+The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -4739,15 +4739,15 @@ B<Examples:>
 
 =head2 Assignability to String
 
-If the type of the left operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type">, the assignability is true.
+If the type of the left operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type">, the assignability is true.
 
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is true.
+If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is true.
 
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
+If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 =begin html
 
@@ -4758,7 +4758,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Num
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>False</td><td>mutable string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
+  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>numeric-to-string conversion</td></tr>
   <tr><td>True</td><td>string</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -4777,14 +4777,14 @@ If the type of the left operand is a L<numeric object type|/"Numeric Object Type
 
 Otherwise, the assignability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -4854,14 +4854,14 @@ If the type of the left operand is the L<any object type|/"Any Object Type"> and
 
 Otherwise, the assignability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -5109,9 +5109,9 @@ The castability to the L<numeric types|/"Numeric Type"> is explained.
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the castability is true.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric narrowing type conversion|/"Numeric Narrowing Type Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
 
 If the L<nemric type order|/"Numeric Type Order"> of the left operand is equal to the L<nemric type order|/"Numeric Type Order"> of the right operand, copying is performed.
 
@@ -5125,36 +5125,36 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is equal t
   <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
   <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
   <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Type-Conversion">Numeric Widening Type Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>short</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>int</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>long</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>float</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>double</td><td><a href="#Numeric Narrowing Type Conversion">Numeric Narrowing Type Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>byte</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>short</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>int</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>long</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>True</td><td>float</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
 </table>
 
 =end html
@@ -5188,12 +5188,12 @@ If the type of the left operand is a L<numeric type|/"Numeric Type"> correspondi
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>byte</td><td>Byte</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>short</td><td>Short</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>int</td><td>Int</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>long</td><td>Long</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>float</td><td>Float</td><td>Unboxing Type Conversion</td></tr>
-  <tr><td>True</td><td>double</td><td>Double</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>True</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -5208,13 +5208,13 @@ B<Examples:>
 
 If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
-The L<unboxing type conversion|/"Unboxing Type Conversion"> corresponding to the numeric type is performed.
+The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td>Unboxing Type Conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -5275,17 +5275,17 @@ B<Examples:>
 
 =head2 Castability to String
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<string type|/"String Type">, the castability is true.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is the L<string type|/"string Type">, the castability is true.
 
-If the type of the left operand is the L<string type|/"String Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"String Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<Numeric-to-String type conversion|/"Numeric-to-String Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"String Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
 
 =begin html
 
@@ -5296,7 +5296,7 @@ If the type of the left operand is the L<string type|/"String Type"> and the typ
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>string</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String type conversion</td></tr>
+  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String Conversion</td></tr>
   <tr><td>True</td><td>string</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>string</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
@@ -5318,7 +5318,7 @@ If the type of the right operand is the same type of the left operand, a L<numer
 
 The type of the right operand is other than above, the castability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 If the type of the left operand is the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
@@ -5327,7 +5327,7 @@ If the type of the left operand is the type of the right operand is the L<any ob
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
@@ -5434,14 +5434,14 @@ If the type of the right operand is an L<object type|/"Object Type">, a L<numeri
 
 Otherwise, the castability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing type conversion|/"Boxing Type Conversion"> is performed.
+If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td>Boxing type conversion</td></tr>
+  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -5456,7 +5456,7 @@ B<Examples:>
 
 =head2 Castability to Numeric Array
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, the castability is true.
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"string Type">, the castability is true.
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the types of the right operands are the following cases:
 
@@ -5464,7 +5464,7 @@ If the type of the right operand is the same type of the left operand, the L<any
 
 Otherwise, the castability is false.
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"String Type">, L<String-to-byte[] Type Conversion> is performed.
+If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
 If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
@@ -5472,7 +5472,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Type Conversion</a></td></tr>
+  <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
   <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td></tr>
@@ -5748,13 +5748,13 @@ The explicite type conversion is the L<type conversion|/"Type Conversion"> perfo
 
 B<Examples:>
   
-  # Explicte long to int type conversion
+  # The explicte type conversion from long to int 
   my $num = (int)123L;
 
-  # Explicte byte[] to string type conversion
+  # The explicte type conversion from byte[] to string
   my $num = (string)new byte[3];
 
-  # Explicte string to byte[] type conversion
+  # The explicte type conversion from string to byte[]
   my $num = (byte[])"Hello";
 
 =head2 Implicite Type Conversion
@@ -5765,25 +5765,25 @@ See L<"Assignability"> if you know when implicite type conversion is performed.
 
 B<Examples:>
   
-  # Implicite int to double type conversion
+  # The implicite type conversion from int to double 
   my $num : double = 5;
   
-  # Implicte double to Double type conversion
+  # The implicite type conversion from double to Double
   my $num_object : Double = 5.1;
   
-  # Implicte Double to double type conversion
+  # The implicite type conversion from Double to double
   my $num : double = Double->new(5.1);
   
-  # Implicte int to string type conversion
+  # The implicite type conversion from int to string
   my $string : string = 4;
 
-=head2 Integer Promotional Type Conversion
+=head2 Integer Promotional Conversion
 
-The integer promotional type conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the L<int type|/"int Type"> using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the L<int type|/"int Type"> using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-=head2 Numeric Widening Type Conversion
+=head2 Numeric Widening Conversion
 
-The numeric widening type conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Type"> to a large-order L<numeric type|/"Numeric Type">.
+The numeric widening conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Type"> to a large-order L<numeric type|/"Numeric Type">.
 
 See also L<numeric types order|/"Numeric Type Order"> abount the order of numeric type.
 
@@ -5861,11 +5861,11 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening type conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
-=head2 Numeric Narrowing Type Conversion
+=head2 Numeric Narrowing Conversion
 
-The numeric narrowing type conversion is a L<conversion|"Type Conversion"> from a large-order L<numeric type|/"Numeric Type"> to a small-order L<numeric type|/"Numeric Type">.
+The numeric narrowing conversion is a L<conversion|"Type Conversion"> from a wide L<numeric type|/"Numeric Type"> to a narrow L<numeric type|/"Numeric Type">.
 
 See also L<numeric types order|/"Numeric Type Order"> abount the order of numeric type.
 
@@ -5873,102 +5873,102 @@ The return value of a converion are same as the return value of the type cast of
   
   (TYPE)OPERAND
 
-b<double to float:>
+B<double to float:>
 
   double from = value;
   float to = (float)from;
 
-b<double to long:>
+B<double to long:>
 
   double from = value;
   int64_t to = (int64_t)from;
 
-b<double to int:>
+B<double to int:>
 
   double from = value;
   int32_t to = (int32_t)from;
 
-b<double to short:>
+B<double to short:>
 
   double from = value;
   int16_t to = (int16_t)from;
 
-b<double to byte:>
+B<double to byte:>
 
   double from = value;
   int8_t to = (int8_t)from;
 
-b<float to long:>
+B<float to long:>
 
   float from = value;
   int64_t to = (int64_t)from;
 
-b<float to int:>
+B<float to int:>
 
   float from = value;
   int32_t to = (int32_t)from;
 
-b<float to short:>
+B<float to short:>
 
   float from = value;
   int16_t to = (int16_t)from;
 
-b<float to byte:>
+B<float to byte:>
 
   float from = value;
   int8_t to = (int8_t)from;
 
-b<long to int:>
+B<long to int:>
 
   int64_t from = value;
   int32_t to = (int32_)from;
 
-b<long to short:>
+B<long to short:>
 
   int64_t from = value;
   int16_t to = (int16_t)from;
 
-b<long to byte:>
+B<long to byte:>
 
   int64_t from = value;
   int8_t to = (int8_t)from;
 
-b<int to short:>
+B<int to short:>
 
   int32_t from = value;
   int16_t to = (int16_t)from;
 
-b<int to byte:>
+B<int to byte:>
 
   int32_t from = value;
   int16_t to = (int16_t)from;
 
-b<short to byte:>
+B<short to byte:>
 
   int16_t from = value;
   int8_t to = (int8_t)from;
 
-The numeric narrowing type conversion is performed in some of the L<type casts|/"Type Cast">.
+The numeric narrowing conversion is performed in some of the L<type casts|/"Type Cast">.
 
-=head2 Binary Numeric Type Conversion
+=head2 Binary Numeric Conversion
 
-The binary numeric type conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type">.
+The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type">.
 
 The following rules apply in order.
 
-1. If the left operand or the right operand is the L<double type|/"double Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+1. If the left operand or the right operand is the L<double type|/"double Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-2. If the left operand or the right operand is the L<float type|/"float Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+2. If the left operand or the right operand is the L<float type|/"float Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-3. If the left operand or the right operand is the L<long type|/"long Type">, the operand of the small type is converted to the big type using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+3. If the left operand or the right operand is the L<long type|/"long Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-4, Otherwise, both the left operand and the right operand are converted to the L<int type|/"int Type"> using the L<numeric widening type conversion|/"Numeric Widening Type Conversion">.
+4, Otherwise, both the left operand and the right operand are converted to the L<int type|/"int Type"> using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-=head2 Numeric-to-String Type Conversion
+=head2 Numeric-to-String Conversion
 
-The numeric-to-String type conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Type"> to the L<string type|/"String Type">.
+The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Type"> to the L<string type|/"string Type">.
 
-  # Numeric-to-String type conversion
+  # The numeric-to-string conversion
   my $byte = (byte)1;
   my $short = (short)2;
   my $int = 3;
@@ -5994,44 +5994,44 @@ The numeric-to-String type conversion is a L<type conversion|/"Type Conversion">
   # The string is "3.3"
   my $string_double = (string)$double;
 
-=head2 String-to-byte[] Type Conversion
+=head2 String-to-byte[] Conversion
 
-The String-to-byte[] type conversion is a L</"Type Conversion"> from L</"String Type"> to L</"byte[] Type">.
+The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.
 
-  # String-to-byte[] Type Conversion
+  # The String-to-byte[] conversion
   my $string : string = "Hello";
   my $bytes : byte[] = (byte[])$string;
 
 A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
 
-=head2 byte[]-to-String Type Conversion
+=head2 byte[]-to-string Conversion
 
-The byte[]-to-String type conversion is a L</"Type Conversion"> from L</"byte[] type"> to L</"String Type">.
+The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the L<byte[] type|/"byte[] type"> to the L<string Type|/"string Type">.
 
-  # byte[]-to-String type conversion
+  # byte[]-to-string conversion
   my $bytes : byte[] = new byte[3];
   $bytes->[0] = 'a';
   $bytes->[1] = 'b';
   $bytes->[2] = 'c';
   my $string : string = (string)$bytes;
 
-A new string is created and all elements in the byte[] object are copied to the characters of the string.
+A new string is created and all elements in the C<byte[]> object are copied to the characters of the string.
 
-=head2 Boxing Type Conversion
+=head2 Boxing Conversion
 
-Boxing Type Conversion is the operation to convert the value of Numeric Type to Numeric Object Type.
+The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of L<numeric type|/"Numeric Type"> to the corresponding L<numeric object type|/"Numeric Object Type">.
 
-=head2 Unboxing Type Conversion
+=head2 Unboxing Conversion
 
-Unboxing Type Conversion is an L<operator|/"Operator"> to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
+The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Type"> to the value of the corresponding L<numeric type|/"Numeric Type">.
 
-=head2 Conditional Type Conversion
+=head2 Bool Conversion
 
-The conditional type conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
+The bool conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the operand of the conditional type conversion must be one of a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
+The type of the operand of the bool conversion must be one of a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
 
-The conditional type conversion returns the following value corresponding to the type of the condional operand.
+The bool conversion returns the following value corresponding to the type of the condional operand.
 
 If the type is the L<int type|/"int Type">, return the value.
 
@@ -6041,7 +6041,7 @@ If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE
 
 If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, return C<0>.
 
-If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
+If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
 And the following operation in C<C language> is performed on the operand .
 
@@ -6233,7 +6233,7 @@ The C<if> statement is a L<statement|/"Statement"> for conditional branch.
   
   }
 
-First, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the condition.
+First, The L<bool conversion|/"Bool Conversion"> is performed on the condition.
 
 Next, if the condition is not C<0>, the execution position jumps to the beginning of the L<if block|/"if Block">. Otherwise jumps to the end of the L<if block|/"if Block">.
 
@@ -6274,7 +6274,7 @@ The C<elsif> statement is a L<statement|/"Statement"> for conditional branch use
 
 If the C<condition 1> doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
 
-Next, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the C<condition 2>.
+Next, The L<bool conversion|/"Bool Conversion"> is performed on the C<condition 2>.
 
 Next, if the C<condition 2> is not C<0>, the execution position jumps to the beginning of the L<elsif block|/"elsif Block">. Otherwise jumps to the end of the L<elsif block|/"elsif Block">
 
@@ -6424,7 +6424,7 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
 
 The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the condition.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the condition.
 
 The value of the L<case statement|/"case Statement"> must be one of the L<character literal|/"Character Literal">, the L<integer literal|/"Integer Literal"> or the L<getting enumeration value|/"Getting Enumeration Value">.
 
@@ -6579,7 +6579,7 @@ The C<while> statement is a L<statement|/"Statement"> for loop.
   
   }
 
-First, The L<conditional type conversion|/"Conditional Type Conversion"> is performed on the condition.
+First, The L<bool conversion|/"Bool Conversion"> is performed on the condition.
 
 Next, If the condition is C<0>, the program jumps to the end of the L<while block|/"while Block">. Otherwise the program goes to the beginning of the L<while block|/"while Block">.
 
@@ -6814,11 +6814,11 @@ The unary plus operator C<+> is an L<unary operator|/"Unary Operator"> to return
 
 The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
+If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
 The unary plus operator C<+> returns the copied value of the operand.
 
-The return type is the type of the operand or the type that the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on.
+The return type is the type of the operand or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
 
 B<Examples:>
   
@@ -6833,13 +6833,13 @@ The unary minus operator C<-> is an L<unary operator|/"Unary Operator"> to retur
 
 The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
+If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
 The unary minus operator C<-> performs the following operation of C<C language>.
 
   -x
 
-The return type is the type of the operand or the type that the L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on.
+The return type is the type of the operand or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
 
 B<Examples:>
 
@@ -6854,13 +6854,13 @@ The addition operator C<+> is a L<binary operator|/"Binary Operator"> to calcula
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
+the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
 The addition operator performs the operation that exactly same as the following operation in C<C language>.
 
   x + y;
 
-The return type of the addition operator is the type that L</"Binary Numeric Type Conversion"> is performed.
+The return type of the addition operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 =head2 Subtraction Operator
 
@@ -6870,13 +6870,13 @@ The subtraction operator C<-> is a L<binary operator|/"Binary Operator"> to calc
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
+the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
 The subtraction operator performs the operation that exactly same as the following operation in C<C language>.
 
   x - y;
 
-The return type of the subtraction operator is the type that L</"Binary Numeric Type Conversion"> is performed.
+The return type of the subtraction operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 =head2 Multiplication Operator
 
@@ -6886,13 +6886,13 @@ The multiplication operator is a L<binary operator|/"Binary Operator"> to calcul
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
+the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
 The multiplication operator performs the operation that exactly same as the following operation in C<C language>.
 
   x * y;
 
-The return type of the multiplication operator is the type after L</"Binary Numeric Type Conversion"> is performed.
+The return type of the multiplication operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 =head2 Division Operator
 
@@ -6902,13 +6902,13 @@ The division operator C</> is a L<binary operator|/"Binary Operator"> to culcura
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
+the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
 The division operator performs the operation that exactly same as the following operation in C<C language>.
 
   x / y;
 
-The return type of the division operator is the type after L</"Binary Numeric Type Conversion"> is performed.
+The return type of the division operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 If the two operands are L<integer types|/"Integer Type"> and the value of the right operand is C<0>, an L<exception|/"Exception"> is thrown.
 
@@ -6952,13 +6952,13 @@ The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calcul
 
 The left operand and the right operand must be an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
-L</"Binary Numeric Type Conversion"> is performed on the left operand and the right operand.
+the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
 The remainder operator performs the operation that exactly same as the following operation in C<C language>.
 
   x % y;
 
-the return type of Remainder Operator is the type that L</"Binary Numeric Type Conversion"> is performed.
+the return type of Remainder Operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 If the right operand is C<0>, the remainder operator throw an L<exception|/"Exception">.
 
@@ -7152,13 +7152,13 @@ The bit AND operator C<&> is an L<operator|/"Operator"> to performe a bit AND op
 
 The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error will occur.
 
-A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
+A L<binary numeric widening conversion|/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
   x & y;
 
-The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
 B<Examples:>
   
@@ -7175,13 +7175,13 @@ The bit OR operator C<|> is an L<operator|/"Operator"> to performe a bit OR oper
 
 The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error will occur.
 
-A L<binary numeric widening type conversion|/"Binary Numeric Type Conversion"> is performed.
+A L<binary numeric widening conversion|/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
   x | y;
 
-The return type is the type after the L<binary numeric widening type conversion|/"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
 B<Examples:>
   
@@ -7198,13 +7198,13 @@ The bit NOT operator C<~> is an L<unary operator|/"Unary Operator"> to perform t
 
 The type of the operand must is an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
-The L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
+The L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 The return value is the same as the follwoing operation of C<C language>.
 
   ~x
 
-The return type is the type that the L<numeric widening type conversion|/"Numeric Widening Type Conversion"> is performed.
+The return type is the type that the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 B<Examples:>
   
@@ -7223,11 +7223,11 @@ The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator">
 
 The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the left operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
 
 The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the right operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
@@ -7243,11 +7243,11 @@ The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binar
 
 The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the left operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
 
 The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the right operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
@@ -7263,11 +7263,11 @@ The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Bina
 
 The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the left operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
 
 The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error will occur.
 
-L</"Numeric Widening Type Conversion"> is performed on the right operand.
+The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
 
 The return type is the same as the type of the left operand.
 
@@ -7386,7 +7386,7 @@ The list of numeric comparison operators.
 
 The types of the left operand and the right operand must be comparable types. Otherwise a compilation error will occur.
 
-In Numeric Type Comparison, L</"Binary Numeric Type Conversion"> is performed for The left operand and the right operand.
+In Numeric Type Comparison, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed for The left operand and the right operand.
 
 the Numeric Comparison Operation is performed that exactly same as the following operation in C<C language>.
 
@@ -7413,7 +7413,7 @@ The string comparison operator is a L<comparison operator|/"Comparison Operator"
 
   LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
 
-The type of the left operand and the right operand must be the L<string type|/"String Type"> or L<byte[] type|"byte[] Type">.
+The type of the left operand and the right operand must be the L<string type|/"string Type"> or L<byte[] type|"byte[] Type">.
 
 The return type is the L<int type|/"int Type">. If the condition is satisfied, return C<1>, otherwise C<0>.
 
@@ -7600,9 +7600,9 @@ The left operand and the right operand must be an L<operator|/"Operator">.
 
 The return type of the logical AND operator is the L<int type|/"int Type">.
 
-Thg logical AND operator performs the L<conditional type conversion|/"Conditional Type Conversion"> to the left operand. If the evaluated value is C<0>, return C<0>. Otherwise proceed to the evaluation of the right operand.
+Thg logical AND operator performs the L<bool conversion|/"Bool Conversion"> to the left operand. If the evaluated value is C<0>, return C<0>. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<conditional type conversion|/"Conditional Type Conversion"> to the right operand. If the evaluated value is C<0>, return C<0>. Otherwise return the evaluated value.
+It performs the L<bool conversion|/"Bool Conversion"> to the right operand. If the evaluated value is C<0>, return C<0>. Otherwise return the evaluated value.
 
 =head3 Logical OR Operator
 
@@ -7612,9 +7612,9 @@ The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical OR operator is the L<int type|/"int Type">.
 
-Thg logical OR operator performs the L<conditional type conversion|/"Conditional Type Conversion"> to the left operand. If the evaluated value is not C<0>, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
+Thg logical OR operator performs the L<bool conversion|/"Bool Conversion"> to the left operand. If the evaluated value is not C<0>, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<conditional type conversion|/"Conditional Type Conversion"> to the right operand. If the evaluated value is not C<0>, return the evaluated value. Otherwise return C<0>.
+It performs the L<bool conversion|/"Bool Conversion"> to the right operand. If the evaluated value is not C<0>, return the evaluated value. Otherwise return C<0>.
 
 =head3 Logical NOT Operator
 
@@ -7624,7 +7624,7 @@ The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical NOT operator is the L<int type|/"int Type">.
 
-Thg logical NOT operator performs the L<conditional type conversion|/"Conditional Type Conversion"> to the operand. If the evaluated value is C<0>, returns C<1>. Otherwise return C<0>.
+Thg logical NOT operator performs the L<bool conversion|/"Bool Conversion"> to the operand. If the evaluated value is C<0>, returns C<1>. Otherwise return C<0>.
 
 =head2 String Concatenation Operator
 
@@ -7632,11 +7632,11 @@ String concatenation operator C<.> is a L<binary operator|/"Binary Operator"> to
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left operand and the right operand must be a L<string type|/"String Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
+The left operand and the right operand must be a L<string type|/"string Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-If the type of the operand is numeric type, a L<numeric to string type conversion|/"Numeric to String Type Conversion"> is performed.
+If the type of the operand is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-The return type is a L<string type|/"String Type">.
+The return type is a L<string type|/"string Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
@@ -7793,13 +7793,13 @@ The C<new_string_len> operator is an L<unary operator|/"Unary Operator"> to crea
 
 The type of the operand must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
 
-The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the operand.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
 The C<new_string_len> operator returns a new string that length is the length specified by the operand and all characters are C<\0>.
 
 The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as C<C language> string ending with C<\0>.
 
-The return type is the L<string type|/"String Type">.
+The return type is the L<string type|/"string Type">.
 
 The length specified by the operand must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -7816,7 +7816,7 @@ The C<copy> operator is an L<unary operator|/"Unary Operator"> to copy the objec
 
 The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">. Otherwise a compilation error will occur.
 
-If the type of operand is none of a L<string type|/"String Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
+If the type of operand is none of a L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
 An L<exception|/"Exception"> is thorwn.
 
 The C<copy> operator returns the copied object.
@@ -7836,7 +7836,7 @@ The C<is_read_only> is an L<unary operator|/"Unary Operator"> to check if the L<
 
   is_read_only OPERAND
 
-The operand must be a L<string type|/"String Type">. Otherwise a compilation error will occur.
+The operand must be a L<string type|/"string Type">. Otherwise a compilation error will occur.
 
 If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise returns C<0>.
 
@@ -7856,7 +7856,7 @@ The string length operator C<length> is an L<unary operator|/"Unary Operator"> t
 
 The returned length is the byte size. Note that the length is not the count of C<UTF-8> characters.
 
-The type of the operand must be the L<string type|/"String Type">. Otherwise a compilation error will occur.
+The type of the operand must be the L<string type|/"string Type">. Otherwise a compilation error will occur.
 
 The return type is the L<int type|/"int Type">.
 
@@ -8035,7 +8035,7 @@ The setting exception variable is an L<operator|/"Operator"> to get the value of
 
 The return value is the value of L<exception variable|/"Exception Variable">.
 
-The return type is the L<string type|/"String Type">.
+The return type is the L<string type|/"string Type">.
 
 B<Examples:>
   
@@ -8048,11 +8048,11 @@ The setting exception variable is an L<operator|/"Operator"> to set the value of
 
   $@ = VALUE
 
-The type of the assigned value must be L</"String Type">.
+The type of the assigned value must be the L<string Type|/"string Type">.
 
 The return value is the value after the setting.
 
-The return type is the L<string type|/"String Type">.
+The return type is the L<string type|/"string Type">.
 
 The reference count of the assigned value is incremented by C<1>.
 
@@ -8150,7 +8150,7 @@ The array must be the L<array type|/"Array Type">.
 
 The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the index.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
 The getting array element returns the element that is specifed by the index.
 
@@ -8181,7 +8181,7 @@ The array must be the L<array type|/"Array Type">.
 
 The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the index.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
 The right operand must be L<assigned|/"Assignability"> to the element of the array.
 
@@ -8236,7 +8236,7 @@ The type must be a L<basic type|/"Basic Type">.
 
 The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
 
-The L<integer promotional type conversion|/"Integer Promotional Type Conversion"> is performed on the length.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
@@ -8631,13 +8631,13 @@ The behaviors of type casts are explained in L</"Castability">.
 
 B<Examples:>
   
-  # Explicte long to int type conversion
+  # The explicte type conversion from long to int 
   my $num = (int)123L;
 
-  # Explicte byte[] to string type conversion
+  # The explicte type conversion from byte[] to string
   my $num = (string)new byte[3];
 
-  # Explicte string to byte[] type conversion
+  # The explicte type conversion from string to byte[]
   my $num = (byte[])"Hello";
 
   # Postfix type cast
@@ -8658,7 +8658,7 @@ The C<warn> operator is a L<void retruning operator|/"void Returning Operator"> 
 
   warn OPERNAD;
 
-The operand must be L</"String Type">.
+The operand must be the L<string Type|/"string Type">.
 
 If the end character of the string is C<\n>, C<warn> statement prints the string itself.
 
@@ -8674,7 +8674,7 @@ The C<die> operator is a L<void retruning operator|/"void Returning Operator"> t
 
   die OPERAND;
 
-The operand must be the L<string type|/"String Type">. If not a compilation error will occur.
+The operand must be the L<string type|/"string Type">. If not a compilation error will occur.
 
 You can specify the error message to the operand.
 
@@ -8712,7 +8712,7 @@ The C<print> operator is a L<void retruning operator|/"void Returning Operator">
 
   print OPERAND;
 
-The oeprand must be a L<string type|/"String Type">.
+The oeprand must be a L<string type|/"string Type">.
 
 If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
 
@@ -8722,9 +8722,9 @@ The C<make_read_only> operator is a L<void retruning operator|/"void Returning O
 
   make_read_only OPERAND;
 
-The oeprand must be a L<string type|/"String Type">.
+The oeprand must be a L<string type|/"string Type">.
 
-Read-only strings can't be cast to L<string type|/"String Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+Read-only strings can't be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
 
   # A string
   my $string = new_string_len 3;
