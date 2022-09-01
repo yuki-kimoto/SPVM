@@ -118,6 +118,62 @@ use Test::More;
       }
     }
   }
+  # The source type is an object type
+  {
+    {
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : byte; my $dist : Byte = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : short; my $dist : Short = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : int; my $dist : Int = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : long; my $dist : Long = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : float; my $dist : Float = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : double; my $dist : Double = $source; } }';
+        compile_ok($source);
+      }
+    }
+
+    {
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : byte; my $dist : Short = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "byte" to "Short" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : short; my $dist : Int = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "short" to "Int" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : int; my $dist : Long = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "int" to "Long" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : long; my $dist : Float = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "long" to "Float" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : float; my $dist : Double = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "float" to "Double" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : double; my $dist : Byte = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "double" to "Byte" in the assignment operator is not allowed|);
+      }
+    }
+  }
 }
 
 
