@@ -121,6 +121,7 @@ use Test::More;
 
   # The source type is an object type
   {
+    # The source type is the corresponding numeric object type
     {
       {
         my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist : byte = $source; } }';
@@ -148,6 +149,35 @@ use Test::More;
       }
     }
     
+    # The source type is the any object type
+    {
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : byte = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : short = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : int = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : long = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : float = $source; } }';
+        compile_ok($source);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : object; my $dist : double = $source; } }';
+        compile_ok($source);
+      }
+    }
+    
+    # The source type is not the corresponding numeric object type
     {
       {
         my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist : short = $source; } }';
@@ -172,6 +202,21 @@ use Test::More;
       {
         my $source = 'class MyClass { static method main : void () { my $source : Double; my $dist : byte = $source; } }';
         compile_not_ok($source, q|The implicite type conversion from "Double" to "byte" in the assignment operator is not allowed|);
+      }
+    }
+    # The source type is other types
+    {
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : int[]; my $dist : int = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "int[]" to "int" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : int = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "int*" to "int" in the assignment operator is not allowed|);
+      }
+      {
+        my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : int = $source; } }';
+        compile_not_ok($source, q|The implicite type conversion from "Complex_2d" to "int" in the assignment operator is not allowed|);
       }
     }
   }
