@@ -1,4 +1,9 @@
 0.9650 2022-09-01
+  [Compilation Error Message Improvement]
+    * The following compilation error message is changed.
+      [Before]The narrowing type conversion can't be performed in %s at %s line %d
+      [After]The implicite narrowing conversion from \"%s\" to \"%s\" in %s is not allowed at %s line %d
+
   [Incompatible Document Changes]
     * Rename the heading.
       [Before]String Type

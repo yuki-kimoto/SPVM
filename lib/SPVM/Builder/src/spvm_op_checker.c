@@ -4168,16 +4168,16 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   );
     
   if (!assignability) {
+    const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
+    const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
     if (mutable_invalid) {
       SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s at %s line %d", place, file, line);
     }
     if (narrowing_conversion_error) {
-      SPVM_COMPILER_error(compiler, "The narrowing type conversion can't be performed in %s at %s line %d", place, file, line);
+      SPVM_COMPILER_error(compiler, "The implicite narrowing conversion from \"%s\" to \"%s\" in %s is not allowed at %s line %d", src_type_name, dist_type_name, place, file, line);
       return NULL;
     }
     else {
-      const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
-      const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
       SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed at %s line %d", src_type_name, dist_type_name, place, file, line);
       return NULL;
     }
