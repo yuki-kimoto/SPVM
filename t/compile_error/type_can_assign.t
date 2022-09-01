@@ -220,7 +220,56 @@ use Test::More;
       }
     }
   }
-  
+}
+
+# The dist type is the multi-numeric type
+{
+  # The source type is the multi-numeric type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : Complex_2d = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d; my $dist : Complex_2f = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "Complex_2d" to "Complex_2f" in the assignment operator is not allowed|);
+    }
+  }
+  # The source type is not multi-numeric type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : double = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "Complex_2d" to "double" in the assignment operator is not allowed|);
+    }
+  }
+}
+
+# The dist type is the reference type
+{
+  # The source type is the reference type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : int* = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d*; my $dist : Complex_2d* = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : int*; my $dist : long* = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "int*" to "long*" in the assignment operator is not allowed|);
+    }
+  }
+  # The source type is not the reference type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : int = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "int*" to "int" in the assignment operator is not allowed|);
+    }
+  }
+}
+
 =pod
 
   # The source type is an object type
@@ -281,8 +330,5 @@ use Test::More;
   }
 
 =cut
-
-}
-
 
 done_testing;
