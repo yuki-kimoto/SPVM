@@ -1,4 +1,52 @@
 0.9650 2022-09-01
+  [Incompatible Changes]
+    * Rename the following methods in Time::Info
+      [Before]
+      native method sec : int ();
+      native method min : int ();
+      native method hour : int ();
+      native method mday : int ();
+      native method mon : int ();
+      native method year : int ();
+      native method wday : int ();
+      native method yday : int ();
+      native method hour : int ();
+      native method mday : int ();
+      native method mon : int ();
+      native method year : int ();
+      native method wday : int ();
+      native method yday : int ();
+      native method isdst : int ();
+      native method set_sec : int ($sec : int);
+      native method set_min : int ($min : int);
+      native method set_hour : int ($hour : int);
+      native method set_mday : int ($mday : int);
+      native method set_mon : int ($mon : int);
+      native method set_year : int ($year : int);
+      native method set_wday : int ($wday : int);
+      native method set_yday : int ($yday : int);
+      native method set_isdst : int ($isdst : int);
+
+      [After]
+      native method tm_sec : int ();
+      native method tm_min : int ();
+      native method tm_hour : int ();
+      native method tm_mday : int ();
+      native method tm_mon : int ();
+      native method tm_year : int ();
+      native method tm_wday : int ();
+      native method tm_yday : int ();
+      native method tm_isdst : int ();
+      native method set_tm_sec : int ($sec : int);
+      native method set_tm_min : int ($min : int);
+      native method set_tm_hour : int ($hour : int);
+      native method set_tm_mday : int ($mday : int);
+      native method set_tm_mon : int ($mon : int);
+      native method set_tm_year : int ($year : int);
+      native method set_tm_wday : int ($wday : int);
+      native method set_tm_yday : int ($yday : int);
+      native method set_tm_isdst : int ($isdst : int);
+      
   [Compilation Error Message Improvement]
     * The following compilation error message is changed.
       [Before]The narrowing type conversion can't be performed in %s at %s line %d

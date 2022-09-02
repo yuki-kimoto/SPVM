@@ -29,7 +29,7 @@ int32_t SPVM__Time__Info__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_sec(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -40,7 +40,7 @@ int32_t SPVM__Time__Info__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__min(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_min(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -50,7 +50,7 @@ int32_t SPVM__Time__Info__min(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
-int32_t SPVM__Time__Info__hour(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_hour(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -61,7 +61,7 @@ int32_t SPVM__Time__Info__hour(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__mday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_mday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -72,7 +72,7 @@ int32_t SPVM__Time__Info__mday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__mon(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_mon(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -83,7 +83,7 @@ int32_t SPVM__Time__Info__mon(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__year(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_year(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -94,7 +94,7 @@ int32_t SPVM__Time__Info__year(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__wday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_wday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -105,7 +105,7 @@ int32_t SPVM__Time__Info__wday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__yday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_yday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -116,7 +116,7 @@ int32_t SPVM__Time__Info__yday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__isdst(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__tm_isdst(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -127,7 +127,7 @@ int32_t SPVM__Time__Info__isdst(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_sec(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -140,7 +140,7 @@ int32_t SPVM__Time__Info__set_sec(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_min(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_min(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -153,7 +153,7 @@ int32_t SPVM__Time__Info__set_min(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_hour(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_hour(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -166,7 +166,7 @@ int32_t SPVM__Time__Info__set_hour(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_mday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_mday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -179,7 +179,7 @@ int32_t SPVM__Time__Info__set_mday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_mon(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_mon(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -192,7 +192,7 @@ int32_t SPVM__Time__Info__set_mon(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_year(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_year(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -205,7 +205,7 @@ int32_t SPVM__Time__Info__set_year(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_wday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_wday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -218,7 +218,7 @@ int32_t SPVM__Time__Info__set_wday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_yday(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_yday(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   
@@ -231,7 +231,7 @@ int32_t SPVM__Time__Info__set_yday(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Time__Info__set_isdst(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__Info__set_tm_isdst(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   

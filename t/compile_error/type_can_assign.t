@@ -510,4 +510,36 @@ use Test::More;
   }
 }
 
+# The dist type is the interface type
+{
+  # The source type is the interface type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist : Stringable = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = [
+        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
+        'class MyInterface : interface_t { interface Stringable; required method to_string : string (); }',
+      ];
+      compile_ok($source);
+    }
+    {
+      my $source = [
+        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
+        'class MyInterface : interface_t { required method to_string : string (); }',
+      ];
+      compile_ok($source);
+    }
+    {
+      my $source = [
+        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
+        'class MyInterface : interface_t { required method foo : string (); }',
+      ];
+      compile_not_ok($source, q|The implicite type conversion from "MyInterface" to "Stringable" in the assignment operator is not allowed|);
+    }
+  }
+}
+
 done_testing;

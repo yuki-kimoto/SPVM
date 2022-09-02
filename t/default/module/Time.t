@@ -37,15 +37,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   
   my $time_info = SPVM::TestCase::Module::Time->localtime($time);
   
-  is($perl_localtime[0], $time_info->sec);
-  is($perl_localtime[1], $time_info->min);
-  is($perl_localtime[2], $time_info->hour);
-  is($perl_localtime[3], $time_info->mday);
-  is($perl_localtime[4], $time_info->mon);
-  is($perl_localtime[5], $time_info->year);
-  is($perl_localtime[6], $time_info->wday);
-  is($perl_localtime[7], $time_info->yday);
-  is($perl_localtime[8], $time_info->isdst);
+  is($perl_localtime[0], $time_info->tm_sec);
+  is($perl_localtime[1], $time_info->tm_min);
+  is($perl_localtime[2], $time_info->tm_hour);
+  is($perl_localtime[3], $time_info->tm_mday);
+  is($perl_localtime[4], $time_info->tm_mon);
+  is($perl_localtime[5], $time_info->tm_year);
+  is($perl_localtime[6], $time_info->tm_wday);
+  is($perl_localtime[7], $time_info->tm_yday);
+  is($perl_localtime[8], $time_info->tm_isdst);
 }
 
 # gmtime
@@ -55,15 +55,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   
   my $time_info = SPVM::TestCase::Module::Time->gmtime($time);
   
-  is($perl_gmtime[0], $time_info->sec);
-  is($perl_gmtime[1], $time_info->min);
-  is($perl_gmtime[2], $time_info->hour);
-  is($perl_gmtime[3], $time_info->mday);
-  is($perl_gmtime[4], $time_info->mon);
-  is($perl_gmtime[5], $time_info->year);
-  is($perl_gmtime[6], $time_info->wday);
-  is($perl_gmtime[7], $time_info->yday);
-  is($perl_gmtime[8], $time_info->isdst);
+  is($perl_gmtime[0], $time_info->tm_sec);
+  is($perl_gmtime[1], $time_info->tm_min);
+  is($perl_gmtime[2], $time_info->tm_hour);
+  is($perl_gmtime[3], $time_info->tm_mday);
+  is($perl_gmtime[4], $time_info->tm_mon);
+  is($perl_gmtime[5], $time_info->tm_year);
+  is($perl_gmtime[6], $time_info->tm_wday);
+  is($perl_gmtime[7], $time_info->tm_yday);
+  is($perl_gmtime[8], $time_info->tm_isdst);
 }
 
 # All object is freed
