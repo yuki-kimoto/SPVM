@@ -83,11 +83,9 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->contains);
     ok(SPVM::TestCase::Module::Fn->copy_string);
     ok(SPVM::TestCase::Module::Fn->crand);
-    ok(SPVM::TestCase::Module::Fn->get_next_code_point);
     ok(SPVM::TestCase::Module::Fn->get_code_point);
     ok(SPVM::TestCase::Module::Fn->hex);
     ok(SPVM::TestCase::Module::Fn->index);
-    ok(SPVM::TestCase::Module::Fn->index_len);
     ok(SPVM::TestCase::Module::Fn->is_alnum);
     ok(SPVM::TestCase::Module::Fn->is_alpha);
     ok(SPVM::TestCase::Module::Fn->is_array);
@@ -121,9 +119,7 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->rand);
     ok(SPVM::TestCase::Module::Fn->repeat);
     ok(SPVM::TestCase::Module::Fn->rindex);
-    ok(SPVM::TestCase::Module::Fn->rindex_len);
     ok(SPVM::TestCase::Module::Fn->split);
-    ok(SPVM::TestCase::Module::Fn->split_limit);
     ok(SPVM::TestCase::Module::Fn->substr);
     ok(SPVM::TestCase::Module::Fn->to_double);
     ok(SPVM::TestCase::Module::Fn->to_float);
@@ -134,7 +130,6 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->to_lower);
     ok(SPVM::TestCase::Module::Fn->to_upper);
     ok(SPVM::TestCase::Module::Fn->trim);
-    ok(SPVM::TestCase::Module::Fn->trim_ascii_space);
     ok(SPVM::TestCase::Module::Fn->uc);
     ok(SPVM::TestCase::Module::Fn->ucfirst);
   }
@@ -176,9 +171,9 @@ my $nan_re = qr/(nan|ind)/i;
       my $string = "foo,bar,baz,,";
       {
         is_deeply([split $sep, $string, -1], SPVM::Fn->split($sep, $string)->to_elems);
-        is_deeply([split $sep, $string, 1], SPVM::Fn->split_limit($sep, $string, 1)->to_elems);
-        is_deeply([split $sep, $string, 2], SPVM::Fn->split_limit($sep, $string, 2)->to_elems);
-        is_deeply([split $sep, $string, 3], SPVM::Fn->split_limit($sep, $string, 3)->to_elems);
+        is_deeply([split $sep, $string, 1], SPVM::Fn->split($sep, $string, 1)->to_elems);
+        is_deeply([split $sep, $string, 2], SPVM::Fn->split($sep, $string, 2)->to_elems);
+        is_deeply([split $sep, $string, 3], SPVM::Fn->split($sep, $string, 3)->to_elems);
       }
     }
   }

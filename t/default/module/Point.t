@@ -25,7 +25,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   
   # Class methods
   ok(SPVM::TestCase::Module::Point->new);
-  ok(SPVM::TestCase::Module::Point->new_xy);
   ok(SPVM::TestCase::Module::Point->clear);
   ok(SPVM::TestCase::Module::Point->to_string);
   

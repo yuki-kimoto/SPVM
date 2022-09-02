@@ -53,16 +53,6 @@ C<z>.
 
 Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z">.
 
-=head2 new_xyz
-
-  method new_xyz : Point3D ($x : int, $y : int, $z : int)
-
-The alias for the following code using L</"new">
-
-  my $point = Point3D->new($x, $y, $z);
-
-This method is deprecated and will be removed after 2022-09-03.
-
 =head1 Instance Methods
 
 C<Point3D> inherits the instance methods of L<Point|SPVM::Point/"Instance Methods">.

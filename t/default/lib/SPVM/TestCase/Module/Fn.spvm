@@ -655,81 +655,6 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method get_next_code_point : int () {
-    
-    {
-      my $string = "あaい";
-      
-      my $offset = 0;
-      
-      # あ
-      {
-        my $code_point = Fn->get_next_code_point($string, \$offset);
-        
-        unless ($code_point == 0x3042) {
-          return 0;
-        }
-        
-        unless ($offset == 3) {
-          return 0;
-        }
-      }
-      
-      # a
-      {
-        my $code_point = Fn->get_next_code_point($string, \$offset);
-        
-        unless ($code_point == 'a') {
-          return 0;
-        }
-        
-        unless ($offset == 4) {
-          return 0;
-        }
-      }
-      
-      # い
-      {
-        my $code_point = Fn->get_next_code_point($string, \$offset);
-        
-        unless ($code_point == 0x3044) {
-          return 0;
-        }
-        
-        unless ($offset == 7) {
-          return 0;
-        }
-      }
-      
-      # End
-      {
-        my $code_point = Fn->get_next_code_point($string, \$offset);
-        
-        unless ($code_point == -1) {
-          return 0;
-        }
-      }
-    }
-    
-    {
-      my $string = "あaい";
-      my $code_points = [0x3042, 'a', 0x3044];
-      
-      my $offset = 0;
-      my $i = 0;
-      while ((my $code_point = Fn->get_next_code_point($string, \$offset)) >= 0) {
-        
-        unless ($code_point == $code_points->[$i]) {
-          return 0;
-        }
-        
-        $i++;
-      }
-    }
-    
-    return 1;
-  }
-  
   static method get_code_point : int () {
     
     {
@@ -818,7 +743,7 @@ class TestCase::Module::Fn {
       {
         my $string = (string)undef;
         my $offset = 0;
-        eval { Fn->get_next_code_point($string, \$offset); };
+        eval { Fn->get_code_point($string, \$offset); };
         unless (Fn->contains($@, "The string must be defined")) {
           return 0;
         }
@@ -827,7 +752,7 @@ class TestCase::Module::Fn {
       {
         my $string = "あaい";
         my $offset = -1;
-        eval { Fn->get_next_code_point($string, \$offset); };
+        eval { Fn->get_code_point($string, \$offset); };
         unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
           return 0;
         }
@@ -1071,76 +996,6 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method index_len : int () {
-    
-    {
-      my $string = "abcde";
-      my $substring = "bcd";
-      my $found_offset = Fn->index_len($string, $substring, 0, length $string);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abcde";
-      my $substring = "bcd";
-      my $found_offset = Fn->index_len($string, $substring, 0, 4);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abcde";
-      my $substring = "bcd";
-      my $found_offset = Fn->index_len($string, $substring, 0, 3);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-    }
-    
-    # Exception
-    {
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->index_len($string, $substring, 0, length $string + 1); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->index_len($string, $substring, 1, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->index_len($string, $substring, 2, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-      {
-        my $string = "abcde";
-        my $substring = "pq";
-        eval { Fn->index_len($string, $substring, 2, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-
   static method is_alnum : int () {
 
     my $ok = 1;
@@ -1981,30 +1836,6 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method look_next_code_point : int () {
-    
-    {
-      my $string = "あaい";
-      
-      my $found_offset = 0;
-      
-      # あ
-      {
-        my $code_point = Fn->look_next_code_point($string, \$found_offset);
-        
-        unless ($code_point == 0x3042) {
-          return 0;
-        }
-        
-        unless ($found_offset == 0) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-  
   static method look_code_point : int () {
     
     {
@@ -2722,153 +2553,6 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method rindex_len : int () {
-    
-    {
-      my $string = "abab";
-      my $substring = "ab";
-      my $offset = 0;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == 2) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abab";
-      my $substring = "ab";
-      my $offset = 1;
-      my $found_offset = Fn->rindex_len($string, $substring, 1, length $string - $offset);
-      unless ($found_offset == 2) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abab";
-      my $substring = "ab";
-      my $offset = 2;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == 2) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abab";
-      my $substring = "ab";
-      my $offset = 3;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abab";
-      my $substring = "pq";
-      my $offset = 2;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abcab";
-      my $substring = "bca";
-      my $offset = 0;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcab";
-      my $substring = "bca";
-      my $offset = 0;
-      my $length = 4;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, $length);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcab";
-      my $substring = "bca";
-      my $offset = 1;
-      my $length = 4;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, $length);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcab";
-      my $substring = "bca";
-      my $offset = 2;
-      my $length = 3;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, $length);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "abcab";
-      my $substring = "bca";
-      my $offset = 2;
-      my $lenght = 2;
-      my $found_offset = Fn->rindex_len($string, $substring, $offset, length $string - $offset);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-    }
-    
-    # Exception
-    {
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->rindex_len($string, $substring, 0, length $string + 1); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->rindex_len($string, $substring, 1, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-      {
-        my $string = "abcde";
-        my $substring = "bcd";
-        eval { Fn->rindex_len($string, $substring, 2, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-      {
-        my $string = "abcde";
-        my $substring = "pq";
-        eval { Fn->rindex_len($string, $substring, 2, length $string); };
-        unless ($@) {
-          return 0;
-        }
-      }
-    }
-    
-    return 1;
-  }
-
   static method split : int () {
     {
       my $string = "foo,bar,baz";
@@ -3112,169 +2796,6 @@ class TestCase::Module::Fn {
       }
     }
 
-    return 1;
-  }
-  
-  static method split_limit : int () {
-    {
-      my $string = "foo,bar,baz";
-      my $splited_strings = Fn->split_limit(",", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo,bar,";
-      my $splited_strings = Fn->split_limit(",", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = ",foo,,bar,,";
-      my $splited_strings = Fn->split_limit(",", $string, -1);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo : bar : baz";
-      my $splited_strings = Fn->split_limit(" : ", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "foo : bar : ";
-      my $splited_strings = Fn->split_limit(" : ", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
-        return 0;
-      }
-    }
-    {
-      my $string = " : foo :  : bar :  : ";
-      my $splited_strings = Fn->split_limit(" : ", $string, -1);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo---bar---baz";
-      my $splited_strings = Fn->split_limit("---", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "foo---bar---";
-      my $splited_strings = Fn->split_limit("---", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
-        return 0;
-      }
-    }
-    {
-      my $string = "---foo------bar------";
-      my $splited_strings = Fn->split_limit("---", $string, -1);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo--!bar---baz";
-      my $splited_strings = Fn->split_limit("---", $string, -1);
-      unless (Array->equals_string($splited_strings, ["foo--!bar", "baz"])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo,bar,baz";
-      my $splited_strings = Fn->split_limit(",", $string, 1);
-      unless (Array->equals_string($splited_strings, ["foo,bar,baz"])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo,bar,baz";
-      my $splited_strings = Fn->split_limit(",", $string, 2);
-      unless (Array->equals_string($splited_strings, ["foo", "bar,baz"])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo,bar,baz";
-      my $splited_strings = Fn->split_limit(",", $string, 3);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "foo,bar,baz";
-      my $splited_strings = Fn->split_limit(",", $string, 4);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", "baz"])) {
-        return 0;
-      }
-    }
-
-    # Exceptions
-    {
-      {
-        my $sep = (string)undef;
-        my $string = "foo,bar,baz";
-        my $limit = -1;
-        eval {
-          Fn->split_limit($sep, $string, $limit);
-        };
-        unless (Fn->contains($@, "The separator must be defined")) {
-          return 0;
-        }
-      }
-      
-      {
-        my $sep = ",";
-        my $string = (string)undef;
-        my $limit = -1;
-        eval {
-          Fn->split_limit($sep, $string, $limit);
-        };
-        unless (Fn->contains($@, "The string must be defined")) {
-          return 0;
-        }
-      }
-      
-      {
-        my $sep = "";
-        my $string = "foo,bar,baz";
-        my $limit = -1;
-        eval {
-          Fn->split_limit($sep, $string, $limit);
-        };
-        unless (Fn->contains($@, "The length of the separator must be greater than 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        my $sep = ",";
-        my $string = "foo,bar,baz";
-        my $limit = 0;
-        eval {
-          Fn->split_limit($sep, $string, $limit);
-        };
-        unless (Fn->contains($@, "The limit can't be 0")) {
-          return 0;
-        }
-      }
-    }
-    
     return 1;
   }
   
@@ -3829,47 +3350,6 @@ class TestCase::Module::Fn {
     }
     
     $@ = undef;
-    
-    return 1;
-  }
-  
-  static method trim_ascii_space : int () {
-    
-    # no left and right spaces
-    {
-      my $string = (string)"ab  c";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
-        return 0;
-      }
-    }
-    
-    # left spaces
-    {
-      my $string = (string)"  \t  \nab  c";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
-        return 0;
-      }
-    }
-    
-    # right spaces
-    {
-      my $string = (string)"ab  c  \t  \n";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
-        return 0;
-      }
-    }
-    
-    # left and right spaces
-    {
-      my $string = (string)"  \t  \nab  c  \t  \n";
-      my $trimed_string = Fn->trim_ascii_space($string);
-      unless ($trimed_string eq "ab  c") {
-        return 0;
-      }
-    }
     
     return 1;
   }

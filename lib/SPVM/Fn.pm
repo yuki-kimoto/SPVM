@@ -310,14 +310,6 @@ B<Examples:>
   my $crand0 = Fn->crand(\$seed);
   my $crand1 = Fn->crand(\$seed);
 
-=head2 get_next_code_point
-
-  static method get_next_code_point : int ($string : string, $offset_ref : int*)
-
-The same as L</"get_code_point">.
-
-This method is depracated. Use L</"get_code_point"> instead.
-
 =head2 get_code_point
 
   static method get_code_point : int ($string : string, $offset_ref : int*)
@@ -363,16 +355,6 @@ The substring must be defined. Otherwise an exception will occur.
 The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
-
-=head2 index_len
-
-  static method index_len : int ($string : string, $substring : string, $offset : int, $length : int)
-
-The alias for the following code using L</"index">.
-
-  my $ret = Fn->index($string, $substring, $offset, $length);
-
-This method is deprecated and will be removed after 2022-09-03.
 
 =head2 is_alnum
 
@@ -548,12 +530,6 @@ If the first character of the string is an ASCII uppercase character C<A-Z>, it 
 
 The string must be defined. Otherwise an exception will occur.
 
-=head2 look_next_code_point
-
-  static method look_next_code_point : int ($string : string, $offset_ref : int*)
-
-The same as L</"look_code_point">, but this method is depracated. Use L</"look_code_point"> instead.
-
 =head2 look_code_point
 
   static method look_code_point : int ($string : string, $offset_ref : int*)
@@ -675,16 +651,6 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will oc
 
 The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
 
-=head2 rindex_len
-
-  static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int)
-
-The alias for the following code using L</"rindex">.
-
-  my $ret = Fn->rindex($string, $substring, $offset, $length);
-
-This method is deprecated and will be removed after 2022-09-03.
-
 =head2 shorten
 
     static method shorten : void ($string : mutable string, $length : int32_t)
@@ -710,16 +676,6 @@ The separator must be defined. Otherwise an exception will occur.
 The string must be defined. Otherwise an exception will occur.
 
 The limit can't be C<0>. Otherwise an exception will occur.
-
-=head2 split_limit
-
-  static method split_limit : string[] ($sep : string, $string : string, $limit : int)
-
-The alias for the following code using L</"split">.
-
-  my $ret = Fn->split($sep, $string, $limit);
-
-This method is deprecated and will be removed after 2022-09-03.
 
 =head2 substr
 
@@ -828,12 +784,6 @@ If the code point is not an ASCII uppercase character, return the code point spe
 If the code point is the ASCII lowercase character C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>.
 
 If the code point is not an ASCII lowercase character, return the code point specified by the argument.
-
-=head2 trim_ascii_space
-
-  static method trim_ascii_space : string ($string : string)
-
-The same as L</"trim">. This method is deprecated. Use L</"trim"> instead.
 
 =head2 trim
 

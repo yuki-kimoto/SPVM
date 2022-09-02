@@ -171,56 +171,6 @@ class Array {
     return &copy_object($array, undef, $offset, $length);
   }
   
-  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int) {
-    warn "Array->copy_range_byte(\$array, \$offset, \$length) is deprecated. Use Array->copy_byte(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_byte($array, $offset, $length);
-  }
-  
-  static method copy_range_double : double[] ($array : double[], $offset : int, $length : int) {
-    warn "Array->copy_range_double(\$array, \$offset, \$length) is deprecated. Use Array->copy_double(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_double($array, $offset, $length);
-  }
-  
-  static method copy_range_float : float[] ($array : float[], $offset : int, $length : int) {
-    warn "Array->copy_range_float(\$array, \$offset, \$length) is deprecated. Use Array->copy_float(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_float($array, $offset, $length);
-  }
-  
-  static method copy_range_int : int[] ($array : int[], $offset : int, $length : int) {
-    warn "Array->copy_range_int(\$array, \$offset, \$length) is deprecated. Use Array->copy_int(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_int($array, $offset, $length);
-  }
-  
-  static method copy_range_long : long[] ($array : long[], $offset : int, $length : int) {
-    warn "Array->copy_range_long(\$array, \$offset, \$length) is deprecated. Use Array->copy_long(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_long($array, $offset, $length);
-  }
-  
-  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner) {
-    warn "Array->copy_range_object(\$array, \$offset, \$length, \$cloner) is deprecated. Use Array->copy_object(\$array, \$cloner, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_object($array, $cloner, $offset, $length);
-  }
-  
-  static method copy_range_object_address : object[] ($array : object[], $offset : int, $length : int) {
-    warn "Array->copy_range_object_address(\$array, \$offset, \$length) is deprecated. Use Array->copy_object_address(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_range_object($array, $offset, $length, undef);
-  }
-  
-  static method copy_range_short : short[] ($array : short[], $offset : int, $length : int) {
-    warn "Array->copy_range_short(\$array, \$offset, \$length) is deprecated. Use Array->copy_short(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_short($array, $offset, $length);
-  }
-  
-  static method copy_range_string : string[] ($array : string[], $offset : int, $length : int) {
-    warn "Array->copy_range_string(\$array, \$offset, \$length) is deprecated. Use Array->copy_string(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_string($array, $offset, $length);
-  }
-  
-  static method copy_range_string_address : string[] ($array : string[], $offset : int, $length : int) {
-    warn "Array->copy_range_string_address(\$array, \$offset, \$length) is deprecated. Use Array->copy_string_address(\$array, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &copy_string_address($array, $offset, $length);
-  }
-  
   static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int) {
     
     unless ($array) {
@@ -637,10 +587,6 @@ class Array {
   static method memcpy_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
     &memcpy_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
-  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
-    warn "Array->memcpy_string is deprecated. Use memcpy_string_address instead";
-    &memcpy_string_address($dest, $dest_offset, $source, $source_offset, $length);
-  }
   precompile static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
       die "The destination must be defined";
@@ -677,10 +623,6 @@ class Array {
       $dest->[$dist_index] = $source->[$source_index];
     }
   }
-  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
-    warn "Array->memcpy_object is deprecated. Use memcpy_object_address instead";
-    &memcpy_object_address($dest, $dest_offset, $source, $source_offset, $length);
-  }
   
   native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
@@ -690,10 +632,6 @@ class Array {
   native static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
   static method memmove_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
     &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
-  }
-  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
-    warn "Array->memmove_string is deprecated. Use memmove_string_address instead";
-    &memmove_string_address($dest, $dest_offset, $source, $source_offset, $length);
   }
   static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
@@ -739,10 +677,6 @@ class Array {
         $dest->[$dist_index] = $source->[$source_index];
       }
     }
-  }
-  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
-    warn "Array->memmove_object is deprecated. Use memmove_object_address instead";
-    &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
   
   precompile static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int) {

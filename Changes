@@ -46,7 +46,39 @@
       native method set_tm_wday : int ($wday : int);
       native method set_tm_yday : int ($yday : int);
       native method set_tm_isdst : int ($isdst : int);
-      
+    * Remove the following deprecated methods.
+      Point->new_xy
+      Point3D->new_xyz
+      Array->copy_range_byte
+      Array->copy_range_double
+      Array->copy_range_float
+      Array->copy_range_int
+      Array->copy_range_long
+      Array->copy_range_object
+      Array->copy_range_object_address
+      Array->copy_range_short
+      Array->copy_range_string
+      Array->copy_range_string_address
+      Array->copy_range_object
+      Array->copy_range_object_address
+      Array->copy_range_short
+      Array->copy_range_string
+      Array->copy_range_string_address
+      Array->memcpy_object
+      Array->memcpy_string
+      Array->memmove_object
+      Array->memmove_string
+      Fn->get_next_code_point
+      Fn->look_next_code_point
+      Fn->index_len
+      Fn->rindex_len
+      Fn->split_limit
+      Fn->trim_ascii_space
+      Fn->index_len
+      Fn->rindex_len
+      Fn->split_limit
+      Fn->trim_ascii_space
+
   [Compilation Error Message Improvement]
     * The following compilation error message is changed.
       [Before]The narrowing type conversion can't be performed in %s at %s line %d

@@ -119,21 +119,7 @@ class TestCase::Module::Point {
     
     return 1;
   }
-  static method new_xy : int () {
-    
-    {
-      my $point = Point->new_xy(1, 2);
-      unless ($point->x == 1) {
-        return 0;
-      }
-      unless ($point->y == 2) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
+  
   static method clear : int () {
     
     {

@@ -112,11 +112,6 @@ class Fn {
   
   native static method get_code_point : int ($string : string, $offset_ref : int*);
   
-  static method get_next_code_point : int ($string : string, $offset_ref : int*) {
-    warn "Fn->get_next_code_point is renamed to Fn->get_code_point. Fn->get_next_code_point is deprecated";
-    return &get_code_point($string, $offset_ref);
-  }
-  
   precompile static method hex : int ($hex_string : string) {
     
     unless ($hex_string) {
@@ -203,11 +198,6 @@ class Fn {
       }
     }
     return -1;
-  }
-  
-  static method index_len : int ($string : string, $substring : string, $offset : int, $length : int) {
-    warn "Fn->index_len(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->index(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &index($string, $substring, $offset, $length);
   }
   
   static method is_alnum : int ($code_point : int) {
@@ -491,11 +481,6 @@ class Fn {
     $$offset_ref = $save_offset;
     return $code_point;
   }
-  static method look_next_code_point : int ($string : string, $offset_ref : int*) {
-    warn "Fn->look_next_code_point is renamed to Fn->look_code_point. Fn->look_next_code_point is deprecated";
-    return &look_code_point($string, $offset_ref);
-  }
-  
   native static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
   
   native static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
@@ -615,11 +600,6 @@ class Fn {
     return -1;
   }
   
-  static method rindex_len : int ($string : string, $substring : string, $offset : int, $length : int) {
-    warn "Fn->rindex_len(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->rindex(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &rindex($string, $substring, $offset, $length);
-  }
-  
   native static method shorten : void ($string : mutable string, $length : int);
   
   precompile static method split : string[] ($sep : string, $string : string, $limit = -1 : int) {
@@ -691,11 +671,6 @@ class Fn {
     my $separated_strings = $separated_strings_list->to_array;
     
     return $separated_strings;
-  }
-  
-  static method split_limit : string[] ($sep : string, $string : string, $limit : int) {
-    warn "Fn->split_limit(\$string, \$substring, \$offset, \$length) is deprecated. Use Fn->split(\$string, \$substring, \$offset, \$length) instead. This method will be removed after 2022-09-03";
-    return &split($sep, $string, $limit);
   }
   
   static method substr : string ($string : string, $offset : int, $length = -1 : int) {
@@ -804,11 +779,6 @@ class Fn {
     }
     
     return $trimed_string;
-  }
-  
-  static method trim_ascii_space : string ($string : string) {
-    warn "Fn->trim_ascii_space is deprecated. Use Fn->trim isntead";
-    return &trim($string);
   }
   
   precompile static method uc : string ($string : string) {

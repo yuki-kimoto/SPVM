@@ -215,106 +215,6 @@ The alias for the following code using L</"copy_object">.
 
   my $ret = &copy_object($array, undef, $offset, $length);
 
-=head2 copy_range_byte
-
-  static method copy_range_byte : byte[] ($array : byte[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_byte">
-
-  my $ret = Array->copy_byte($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_double
-
-  static method copy_range_double : double[] ($array : double[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_double">
-
-  my $ret = Array->copy_double($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_float
-
-  static method copy_range_float : float[] ($array : float[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_float">
-
-  my $ret = Array->copy_float($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_int
-
-  static method copy_range_int : int[] ($array : int[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_int">
-
-  my $ret = Array->copy_int($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_long
-
-  static method copy_range_long : long[] ($array : long[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_long">
-
-  my $ret = Array->copy_long($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_object
-
-  static method copy_range_object : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
-
-The alias for the following code using L</"copy_object">
-
-  my $ret = Array->copy_object($array, $cloner, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_object_address
-
-  static method copy_range_object_address : object[] ($array : object[], $offset : int, $length : int, $cloner : Cloner)
-
-The alias for the following code using L</"copy_range_object">.
-
-  my $ret = &copy_range_object($array, $offset, $length, undef);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_short
-
-  static method copy_range_short : short[] ($array : short[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_short">
-
-  my $ret = Array->copy_short($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_string
-  
-  static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_string">
-
-  my $ret = Array->copy_string($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
-=head2 copy_range_string_address
-  
-  static method copy_range_string : string[] ($array : string[], $offset : int, $length : int)
-
-The alias for the following code using L</"copy_string_address">
-
-  my $ret = Array->copy_string_address($array, $offset, $length);
-
-This method is depracated and will be removed after 2022-08-03.
-
 =head2 copy_short
 
   static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int)
@@ -677,12 +577,6 @@ The offset of the destination + the length specified by the argument must be les
 
 The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
 
-=head2 memcpy_object
-
-  static method memcpy_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
-
-The alias for L</"memcpy_object_address">. This method is deprecated.
-
 =head2 memcpy_short
 
   static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
@@ -714,12 +608,6 @@ The offset of the source + the length specified by the argument must be less tha
   static method memcpy_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
 
 The alias for L</"memcpy_object_address">.
-
-=head2 memcpy_string
-
-  static method memcpy_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
-
-The alias for L</"memcpy_string_address">. This method is deprecated.
 
 =head2 memmove_byte
 
@@ -757,12 +645,6 @@ The same as L</"memcpy_long">, but even if the range of the source and the range
 
 The same as L</"memcpy_object_address">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
-=head2 memmove_object
-
-  static method memmove_object : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
-
-The alias for L</"memmove_object_address">. This method is deprecated.
-
 =head2 memmove_short
 
   static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
@@ -776,12 +658,6 @@ The same as L</"memcpy_short">, but even if the range of the source and the rang
 The same as the following code using L</"memmove_object_address">.
 
   &memmove_object_address($dest, $dest_offset, $source, $source_offset, $length);
-
-=head2 memmove_string
-
-  static method memmove_string : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int);
-
-The alias for L</"memmove_string_address">. This method is deprecated.
 
 =head2 memset_byte
 

@@ -173,26 +173,6 @@ class TestCase::Module::Point3D {
     return 1;
   }
   
-  static method new_xyz : int () {
-    {
-      my $point3d = Point3D->new_xyz(1, 2, 3);
-      unless ($point3d isa Point3D) {
-        return 0;
-      }
-      unless ($point3d->x == 1) {
-        return 0;
-      }
-      unless ($point3d->y == 2) {
-        return 0;
-      }
-      unless ($point3d->z == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
   # Instance methods
   static method clear : int () {
     {
