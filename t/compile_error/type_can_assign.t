@@ -366,6 +366,7 @@ use Test::More;
       compile_ok($source);
     }
   }
+  
   # The source type is not the correspoint numeric type
   {
     {
@@ -462,6 +463,49 @@ use Test::More;
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist : Int = $source; } }';
       compile_not_ok($source, q|The implicite type conversion from "Point" to "Int" in the assignment operator is not allowed|);
+    }
+  }
+}
+
+# The dist type is the class type
+{
+  # The source type is the same class type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist : Point = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # The source type is the child class type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point3D; my $dist : Point = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # The source type is the parent class type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point; my $dist : Point3D = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "Point" to "Point3D" in the assignment operator is not allowed|);
+    }
+  }
+  # The source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist : MyClass = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # The source type is ohters
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : MyClass; my $dist : Point = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "MyClass" to "Point" in the assignment operator is not allowed|);
+    }
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : MyClass; my $dist : int = $source; } }';
+      compile_not_ok($source, q|The implicite type conversion from "MyClass" to "int" in the assignment operator is not allowed|);
     }
   }
 }
