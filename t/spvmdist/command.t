@@ -279,6 +279,42 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
+# --native c Foo::Bar::Baz
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c Foo::Bar::Baz);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo-Bar-Baz/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo::Bar::Baz')"));
+
+  my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.config";
+  ok(-f $native_config_file);
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  
+  my $native_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.c";
+  ok(-f $native_module_file);
+  ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, 'static const char* FILE_NAME = "Foo/Bar/Baz.c";'));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__Bar__Baz__foo"));
+
+  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_include_dir);
+
+  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_module_src_dir);
+
+  chdir($save_cur_dir) or die;
+}
+
 # --native c++
 {
   my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
