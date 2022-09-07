@@ -601,6 +601,26 @@ class Fn {
   }
   
   native static method shorten : void ($string : mutable string, $length : int);
+
+  precompile static method shorten_null_char : void ($string : mutable string) {
+    
+    if (!$string) {
+      die "The string must be defined";
+    }
+    
+    my $null_char_offset = -1;
+    for (my $i = 0; $i < length $string; $i++) {
+      my $char = $string->[$i];
+      if ($char == '\0') {
+        $null_char_offset = $i;
+        last;
+      }
+    }
+    
+    if ($null_char_offset >= 0) {
+      Fn->shorten($string, $null_char_offset);
+    }
+  }
   
   precompile static method split : string[] ($sep : string, $string : string, $limit = -1 : int) {
     unless ($sep) {

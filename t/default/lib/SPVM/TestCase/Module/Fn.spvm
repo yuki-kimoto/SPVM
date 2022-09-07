@@ -2604,6 +2604,73 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+
+  static method shorten_null_char : int () {
+    
+    # Contain \0
+    {
+      my $string = copy "abc\0def";
+      
+      Fn->shorten_null_char((mutable string)$string);
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = copy "abc\0def\0ghi";
+      
+      Fn->shorten_null_char((mutable string)$string);
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = copy "\0";
+      
+      Fn->shorten_null_char((mutable string)$string);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
+    # Don't contain \0
+    {
+      my $string = copy "abc";
+      
+      Fn->shorten_null_char((mutable string)$string);
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = copy "";
+      
+      Fn->shorten_null_char((mutable string)$string);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      my $string = (string)undef;
+      
+      eval { Fn->shorten_null_char((mutable string)$string); };
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
   
   static method split : int () {
     {
