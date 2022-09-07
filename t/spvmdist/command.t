@@ -267,6 +267,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
   ok(-f $native_module_file);
   ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, 'static const char* FILE_NAME = "Foo.c";'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
 
   my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";

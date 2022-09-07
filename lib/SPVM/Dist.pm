@@ -380,14 +380,30 @@ sub generate_native_module_file {
     $extern_c_start = '';
     $extern_c_end = '';
   }
+
+  # Generate file
+  my $native_module_ext;
+  if (defined $native) {
+    if ($native eq 'c') {
+      $native_module_ext = 'c';
+    }
+    elsif ($native eq 'c++') {
+      $native_module_ext = 'cpp';
+    }
+  }
   
   # Content
   my $native_class_name = $class_name;
   $native_class_name =~ s/::/__/g;
+  my $native_module_file = $class_name;
+  $native_module_file =~ s/::/\//g;
+  $native_module_file .= ".$native_module_ext";
   my $native_module_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
+
+static const char* FILE_NAME = "$native_module_file";
 
 int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
@@ -399,16 +415,6 @@ int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 $extern_c_end
 EOS
   
-  # Generate file
-  my $native_module_ext;
-  if (defined $native) {
-    if ($native eq 'c') {
-      $native_module_ext = 'c';
-    }
-    elsif ($native eq 'c++') {
-      $native_module_ext = 'cpp';
-    }
-  }
   my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_module_ext);
   $native_module_rel_file =  $self->create_lib_rel_file($native_module_rel_file);
   $self->generate_file($native_module_rel_file, $native_module_content);
