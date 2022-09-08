@@ -69,9 +69,9 @@ Create a new C<Point> object with L</"x"> and L</"y">.
 
 Initialize L</"x"> and L</"y">.
 
-=head2 pointable
+=head2 has_interfaces
 
-  method pointable : int ();
+  method has_interfaces : int ();
 
 Return C<1>.
 

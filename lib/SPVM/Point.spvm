@@ -23,7 +23,7 @@ class Point {
     $self->{y} = $y;
   }
   
-  method pointable : int () { return 1; }
+  method has_interfaces : int () { return 1; }
 
   method clear : void () {
     $self->{x} = 0;

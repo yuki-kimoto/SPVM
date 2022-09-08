@@ -40,6 +40,9 @@
       
   [Test Changes]
     * Move shorten test from string.t to module/Fn.t
+  [Incompatible Changes]
+    * Rename the pointable method in the Point class to the has_interfaces method.
+    * Rename the pointable method in the Pointable class to the has_interfaces method.
     
 0.9650 2022-09-02
   [Incompatible Changes]
