@@ -1,0 +1,6 @@
+class Point::Interface : interface_t {
+  
+  required method has_interfaces : int ();
+  
+  method clear : void ();
+}

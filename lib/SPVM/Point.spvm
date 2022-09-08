@@ -2,7 +2,7 @@ class Point {
   # Interfaces
   interface Stringable;
   interface Cloneable;
-  interface Pointable;
+  interface Point::Interface;
   
   # Fields
   has x : rw protected int;

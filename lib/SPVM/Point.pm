@@ -35,7 +35,7 @@ C<Point> class has the following interfaces.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
-=item * L<Cloneable|SPVM::Pointable>
+=item * L<Cloneable|SPVM::Point::Interface>
 
 =back
 

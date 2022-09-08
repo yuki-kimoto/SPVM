@@ -257,7 +257,7 @@ class TestCase::Module::Point3D {
     {
       my $point3d = Point3D->new(1, 2, 3);
       my $point = (Point)$point3d;
-      $point->(Pointable)->clear;
+      $point->(Point::Interface)->clear;
       unless ($point3d->x == 0) {
         return 0;
       }

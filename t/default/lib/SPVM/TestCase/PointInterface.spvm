@@ -1,4 +1,4 @@
-class TestCase::Pointable : interface_t {
+class TestCase::PointInterface : interface_t {
   interface Stringable;
   
   required method x : int ();

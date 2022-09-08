@@ -253,10 +253,10 @@ lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
 lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
+lib/SPVM/Point/Interface.pm
+lib/SPVM/Point/Interface.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
-lib/SPVM/Pointable.pm
-lib/SPVM/Pointable.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
@@ -460,6 +460,7 @@ t/compile_error/op.t
 t/compile_error/op_checker.t
 t/compile_error/perl_program.pl
 t/compile_error/toke.t
+t/compile_error/type_can_assign.t
 t/default/000_000_use_spvm.t
 t/default/000_001_use_spvm_noimport.t
 t/default/000_002_use_spvm_call_exchange_api_only.t
@@ -642,13 +643,13 @@ t/default/lib/SPVM/TestCase/Point_3f.spvm
 t/default/lib/SPVM/TestCase/Point_3i.spvm
 t/default/lib/SPVM/TestCase/Point_3l.spvm
 t/default/lib/SPVM/TestCase/Point_3s.spvm
-t/default/lib/SPVM/TestCase/Pointable.spvm
 t/default/lib/SPVM/TestCase/Pointer.c
 t/default/lib/SPVM/TestCase/Pointer.config
 t/default/lib/SPVM/TestCase/Pointer.spvm
 t/default/lib/SPVM/TestCase/PointerChild.spvm
 t/default/lib/SPVM/TestCase/PointerEmpty.spvm
 t/default/lib/SPVM/TestCase/PointForTest.spvm
+t/default/lib/SPVM/TestCase/PointInterface.spvm
 t/default/lib/SPVM/TestCase/Precedence.spvm
 t/default/lib/SPVM/TestCase/Print.spvm
 t/default/lib/SPVM/TestCase/Private.spvm
