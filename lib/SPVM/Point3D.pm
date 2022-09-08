@@ -57,6 +57,12 @@ Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, 
 
 C<Point3D> inherits the instance methods of L<Point|SPVM::Point/"Instance Methods">.
 
+=head2 init
+
+  protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
+
+Initialize L</"x">, L</"y">, and L</"z">.
+
 =head2 clear
 
   method clear : void ()

@@ -1,6 +1,0 @@
-class Pointable : interface_t {
-  
-  required method pointable : int ();
-  
-  method clear : void ();
-}

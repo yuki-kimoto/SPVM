@@ -7,15 +7,18 @@ class Point3D extends Point {
   static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
     my $self = new Point3D;
     
-    $self->{x} = $x;
-    $self->{y} = $y;
-    $self->{z} = $z;
+    $self->init($x, $y, $z);
     
     return $self;
   }
   
   # Instance methods
-  method pointable : int () { return 1; }
+  method has_interfaces : int () { return 1; }
+  
+  protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+    $self->SUPER::init($x, $y);
+    $self->{z} = $z;
+  }
   
   method clear : void () {
     $self->SUPER::clear;

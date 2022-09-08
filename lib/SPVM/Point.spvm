@@ -2,7 +2,7 @@ class Point {
   # Interfaces
   interface Stringable;
   interface Cloneable;
-  interface Pointable;
+  interface Point::Interface;
   
   # Fields
   has x : rw protected int;
@@ -12,14 +12,18 @@ class Point {
   static method new : Point ($x = 0 : int, $y = 0 : int) {
     my $self = new Point;
     
-    $self->{x} = $x;
-    $self->{y} = $y;
+    $self->init($x, $y);
     
     return $self;
   }
   
   # Instance methods
-  method pointable : int () { return 1; }
+  protected method init : Point ($x = 0 : int, $y = 0 : int) {
+    $self->{x} = $x;
+    $self->{y} = $y;
+  }
+  
+  method has_interfaces : int () { return 1; }
 
   method clear : void () {
     $self->{x} = 0;

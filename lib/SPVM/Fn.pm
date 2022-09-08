@@ -663,6 +663,23 @@ The string must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
+=head2 shorten_null_char
+
+  static method shorten_null_char : void ($string : mutable string)
+
+Shorten the string just before the first null character C<\0>.
+
+If null characters is not found, do nothing.
+
+The string must be defined. Otherwise an exception will occur.
+
+B<Example:>
+  
+  my $message = (mutable string)copy "foo\0bar";
+  
+  # "foo"
+  my $message_shoten = Fn->shorten_null_char($message);
+  
 =head2 split
 
   static method split : string[] ($sep : string, $string : string, $limit = -1 : int)
