@@ -19,6 +19,24 @@
         
         # "foo"
         my $message_shoten = Fn->shorten_null_char($message);
+    
+    * Add the init method to the Point class
+    
+      =head2 init
+
+        protected method init : Point ($x = 0 : int, $y = 0 : int)
+
+      Initialize L</"x"> and L</"y">.
+
+
+    * Add the init method to the Point3D class
+    
+      =head2 init
+
+        protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
+
+      Initialize L</"x">, L</"y">, and L</"z">.
+
       
   [Test Changes]
     * Move shorten test from string.t to module/Fn.t

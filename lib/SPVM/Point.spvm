@@ -12,13 +12,17 @@ class Point {
   static method new : Point ($x = 0 : int, $y = 0 : int) {
     my $self = new Point;
     
-    $self->{x} = $x;
-    $self->{y} = $y;
+    $self->init($x, $y);
     
     return $self;
   }
   
   # Instance methods
+  protected method init : Point ($x = 0 : int, $y = 0 : int) {
+    $self->{x} = $x;
+    $self->{y} = $y;
+  }
+  
   method pointable : int () { return 1; }
 
   method clear : void () {

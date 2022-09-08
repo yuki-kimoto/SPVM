@@ -63,9 +63,15 @@ Create a new C<Point> object with L</"x"> and L</"y">.
 
 =head1 Instance Methods
 
+=head2 init
+
+  protected method init : Point ($x = 0 : int, $y = 0 : int)
+
+Initialize L</"x"> and L</"y">.
+
 =head2 pointable
 
-  required method pointable : int ();
+  method pointable : int ();
 
 Return C<1>.
 
