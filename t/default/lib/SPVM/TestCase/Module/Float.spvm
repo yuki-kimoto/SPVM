@@ -9,6 +9,13 @@ class TestCase::Module::Float {
     unless ($value1 == Fn->FLT_MIN()) {
       return 0;
     }
+
+    $oval->set_value(5f);
+    
+    unless ($oval->value == 5) {
+      return 0;
+    }
+    
     
     return 1;
   }

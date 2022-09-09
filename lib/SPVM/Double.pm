@@ -4,28 +4,25 @@ package SPVM::Double;
 
 =head1 Name
 
-SPVM::Double - Double object
+SPVM::Double - Double Class
 
 =head1 Usage
-
-  use Double;
   
-  my $double_object = Double->new(0.25);
+  my $double_object = Double->new(5);
   my $double_value = $double_object->value;
+  $double_object->set_value(10);
 
 =head1 Description
 
-L<Double|SPVM::Double> object stores a C<double> value.
+C<Double> is the class to hold a value of the C<double> type.
 
-This object is immutable and its value cannot be changed.
-
-L<Double|SPVM::Double> is automatically loaded just after the program starts.
+This class is automatically loaded.
 
 =head1 Fields
 
 =head2 value
 
-  has value : ro double;
+  has value : rw double;
 
 The value.
 
@@ -36,4 +33,3 @@ The value.
   static method new : Double ($value : double)
 
 Create a new L<Double|SPVM::Double> object with a C<double> value.
-

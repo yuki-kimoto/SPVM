@@ -8,6 +8,13 @@ class TestCase::Module::Int {
     unless ($value1 == Fn->INT32_MIN()) {
       return 0;
     }
+
+    $oval->set_value(5);
+    
+    unless ($oval->value == 5) {
+      return 0;
+    }
+    
     
     return 1;
   }

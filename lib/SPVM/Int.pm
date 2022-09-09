@@ -4,28 +4,25 @@ package SPVM::Int;
 
 =head1 Name
 
-SPVM::Int - Int object
+SPVM::Int - Int Class
 
 =head1 Usage
-
-  use Int;
-
+  
   my $int_object = Int->new(5);
   my $int_value = $int_object->value;
+  $int_object->set_value(10);
 
 =head1 Description
 
-L<Int|SPVM::Int> object stores a C<int> value.
+C<Int> is the class to hold a value of the C<int> type.
 
-This object is immutable and its value cannot be changed.
-
-L<Int|SPVM::Int> is automatically loaded just after the program starts.
+This class is automatically loaded.
 
 =head1 Fields
 
 =head2 value
 
-  has value : ro int;
+  has value : rw int;
 
 The value.
 
@@ -36,4 +33,3 @@ The value.
   static method new : Int ($value : int)
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.
-

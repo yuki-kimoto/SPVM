@@ -4,28 +4,25 @@ package SPVM::Byte;
 
 =head1 Name
 
-SPVM::Byte - Byte object
+SPVM::Byte - Byte Class
 
 =head1 Usage
   
-  use Byte;
-  
   my $byte_object = Byte->new(5);
   my $byte_value = $byte_object->value;
+  $byte_object->set_value(10);
 
 =head1 Description
 
-L<Byte|SPVM::Byte> object holds a byte type value.
+C<Byte> is the class to hold a value of the C<byte> type.
 
-This object is immutable and its value cannot be changed.
-
-L<Byte|SPVM::Byte> is automatically loaded just after the program starts.
+This class is automatically loaded.
 
 =head1 Fields
 
 =head2 value
 
-  has value : ro byte;
+  has value : rw byte;
 
 The value.
 
@@ -36,4 +33,3 @@ The value.
   static method new : Byte ($value : byte)
 
 Create a new L<Byte|SPVM::Byte> object with a C<byte> value.
-
