@@ -136,6 +136,18 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<SPVM::Digest::SHA> - SPVM extension for SHA-1/224/256/384/512
 
+=item * L<SPVM::Sys> - System Calls
+
+=item * L<SPVM::Sys::IO> - System Calls for File IO
+
+=item * L<SPVM::Sys::FileTest> - File Test
+
+=item * L<SPVM::Sys::Socket> - System Calls for Sockect
+
+=item * L<SPVM::Sys::User> - System Calls for User Manipulation
+
+=item * L<SPVM::Sys::Process> - System Calls for Process
+
 =back
 
 =head2 Resource Modules

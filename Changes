@@ -1,3 +1,21 @@
+0.9653 2022-09-14
+  [Document Improvement]
+    * Add the link from SPVM::Document::LanguageSpecification to SPVM::Document::Language
+    * Add the following CPAN modules to SPVM::Document::Modules
+    
+      =item * L<SPVM::Sys> - System Calls
+
+      =item * L<SPVM::Sys::IO> - System Calls for File IO
+
+      =item * L<SPVM::Sys::FileTest> - File Test
+
+      =item * L<SPVM::Sys::Socket> - System Calls for Sockect
+
+      =item * L<SPVM::Sys::User> - System Calls for User Manipulation
+
+      =item * L<SPVM::Sys::Process> - System Calls for Process
+    
+
 0.9652 2022-09-09
   [Incompatible Changes]
     * The numeric class(Byte, Short, Int, Long, Float, Double) become mutable.
