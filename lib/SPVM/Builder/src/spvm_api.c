@@ -304,6 +304,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_pointer_field_float,
     SPVM_API_set_pointer_field_double,
     SPVM_API_set_pointer_field_pointer,
+    SPVM_API_strerror_string,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3775,7 +3776,7 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
   return class_id;
 }
 
-const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
+void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
   
   if (length < 0) {
     return NULL;
@@ -3791,6 +3792,19 @@ const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_va
   int32_t status = SPVM_STRERROR_strerror(errno_value, strerror_value, length);
   
   if (status == 0) {
+    return obj_strerror_value;
+  }
+  else {
+    return NULL;
+  }
+}
+
+const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
+  
+  void* obj_strerror_value = SPVM_API_strerror_string(env, stack, errno_value, length);
+  
+  if (obj_strerror_value) {
+    char* strerror_value = (char*)env->get_chars(env, stack, obj_strerror_value);
     return strerror_value;
   }
   else {

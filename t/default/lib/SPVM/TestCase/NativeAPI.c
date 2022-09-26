@@ -240,6 +240,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_pointer_field_float != &env_array[222]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_pointer_field_double != &env_array[223]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_pointer_field_pointer != &env_array[224]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->strerror_string != &env_array[225]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2720,6 +2721,17 @@ int32_t SPVM__TestCase__NativeAPI__strerror_value(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
   
   stack[0].oval = obj_strerror_value;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__strerror_string_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t errno_value = stack[0].ival;
+  
+  void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
+  
+  stack[0].oval = strerror_string_value;
   
   return 0;
 }

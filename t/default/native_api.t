@@ -271,6 +271,15 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   }
 }
 
+# strerror_string
+{
+  if ($!{EAGAIN}) {
+    my $strerror_string = SPVM::TestCase::NativeAPI->strerror_string_value(Errno::EAGAIN);
+    ok(ref $strerror_string);
+    is("$strerror_string", $! = Errno::EAGAIN);
+  }
+}
+
 # new_object_array_raw
 {
   ok(SPVM::TestCase::NativeAPI->new_object_array_raw);

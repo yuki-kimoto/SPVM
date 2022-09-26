@@ -239,6 +239,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   222 set_pointer_field_float
   223 set_pointer_field_double
   224 set_pointer_field_pointer
+  225 strerror_string
 
 =head2 class_vars_heap
 
@@ -2242,6 +2243,12 @@ Set the C<double> value of a pointer field with the field index.
   void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
 
 Set the pointer value of a pointer field with the field index.
+
+=head2 strerror_string
+
+  void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+
+Same as the L</"strerror"> function, but return a C<string> object.
 
 =head1 Compiler Native API
 

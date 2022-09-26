@@ -1,4 +1,9 @@
 0.9653 2022-09-14
+  [New Features]
+    * Add the strerror_string native API.
+    
+      void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+
   [Document Improvement]
     * Add the link from SPVM::Document::LanguageSpecification to SPVM::Document::Language
     * Add the following CPAN modules to SPVM::Document::Modules
