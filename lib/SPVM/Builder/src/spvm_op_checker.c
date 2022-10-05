@@ -4928,6 +4928,12 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
           
           if (strcmp(method->name, interface_method->name) == 0) {
+            
+            if (method->is_class_method) {
+              SPVM_COMPILER_error(compiler, "The method \"%s\" in the class \"%s\" must an instance method because the method \"%s\" is defined as an instance method in the interface \"%s\" at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
+              return;
+            }
+            
             // Check the equality of the arguments
             SPVM_LIST* method_var_decls = method->var_decls;
             
@@ -4935,7 +4941,15 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             
             if (method->args_length != interface_method->args_length) {
               SPVM_COMPILER_error(compiler, "The length of the arguments of the method \"%s\" in the class \"%s\" must be equal to the length of the arguments of the method \"%s\" in the interface \"%s\" at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
-        return;
+              return;
+            }
+            
+            for (int32_t arg_index = 0; arg_index < interface_method->args_length; arg_index++) {
+              SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
+              SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
+              
+              SPVM_TYPE* method_var_decl_type = method_var_decl->type;
+              SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
             }
           }
         }

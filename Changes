@@ -24,6 +24,7 @@
       The field "port" is not defined in the class "Sys::Socket::Sockaddr::In" or its super classes
   [Bug Fix With Incompatible Changes]
     * Fix the bug that the method is defined by the different legnth of the arguments of the method in the interface.
+    * Fix the bug that the method is defined as a class method although the method is defined in the interface.
     
 0.9653 2022-09-27
   [New Features]
