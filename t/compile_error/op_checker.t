@@ -792,7 +792,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The field "foo" is not defined in the class "MyClass" or the super classes|);
+    compile_not_ok($source, q|The field "foo" is not defined in the class "MyClass" or its super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
@@ -913,7 +913,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
@@ -929,7 +929,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
-    compile_not_ok($source, q|The instance method "not_found" is not defined in the class "Point" or the super classes|);
+    compile_not_ok($source, q|The instance method "not_found" is not defined in the class "Point" or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
@@ -948,11 +948,19 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or the super classes|);
+    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
+  }
+  {
+    my $source = [
+      'class MyClass { use MySockaddrIn; static method main : void () { my $result_address = new MySockaddrIn; $result_address->port;} }',
+      'class MySockaddrIn extends MySockaddr : public;',
+      'class MySockaddr : public;',
+    ];
+    compile_not_ok($source, q|The instance method "port" is not defined in the class "MySockaddrIn" or its super classes|);
   }
 }
 # Multi-Numeric Type

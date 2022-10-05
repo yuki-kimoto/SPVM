@@ -4387,7 +4387,8 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         if (found_method) {
           break;
         }
-        parent_class = class->parent_class;
+        parent_class = parent_class->parent_class;
+        
         if (!parent_class) {
           break;
         }
@@ -4403,7 +4404,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The instance method \"%s\" is not defined in the class \"%s\" or the super classes at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "The instance method \"%s\" is not defined in the class \"%s\" or its super classes at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
         return;
       }
     }
@@ -4469,7 +4470,7 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
     op_field_access->uv.field_access->field = found_field;
   }
   else {
-    SPVM_COMPILER_error(compiler, "The field \"%s\" is not defined in the class \"%s\" or the super classes at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
+    SPVM_COMPILER_error(compiler, "The field \"%s\" is not defined in the class \"%s\" or its super classes at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
     return;
   }
 }

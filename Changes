@@ -10,6 +10,19 @@
   [Bug Fix]
     * Fixed the bug that the void returning method can be assigned and a segfault occured.
     * Fixed the bug that when the class that has the super class was assigned to a non-assignable type, a segfault occured.
+    * Fixed the bug that when the instance method is not found in its super classes, a infinity loop occured.
+  [Compilation Error Messgae Changes]
+    * A compilation error message was changed.
+      [Before]
+      The instance method "port" is not defined in the class "Sys::Socket::Sockaddr::In" or the super classes
+      [After]
+      The instance method "port" is not defined in the class "Sys::Socket::Sockaddr::In" or its super classes
+    * A compilation error message was changed.
+      [Before]
+      The field "port" is not defined in the class "Sys::Socket::Sockaddr::In" or the super classes
+      [After]
+      The field "port" is not defined in the class "Sys::Socket::Sockaddr::In" or its super classes
+    
 0.9653 2022-09-27
   [New Features]
     * Add the strerror_string native API.

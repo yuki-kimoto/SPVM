@@ -546,7 +546,7 @@ use Test::More;
 {
   {
     my $source = [
-      'class MyClass { use MyIn_addr;use MySockaddrIn; use Sys::Socket; static method main : void ($in_addr : MyIn_addr) { my $sin_addr = new MySockaddrIn; my $status = &main($sin_addr); } }',
+      'class MyClass { use MyIn_addr;use MySockaddrIn; static method main : void ($in_addr : MyIn_addr) { my $sin_addr = new MySockaddrIn; my $status = &main($sin_addr); } }',
       'class MySockaddrIn extends MySockaddr : public;',
       'class MySockaddr : public;',
       'class MyIn_addr : public;',
