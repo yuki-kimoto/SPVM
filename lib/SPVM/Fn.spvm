@@ -557,7 +557,21 @@ class Fn {
     
     return $repeat_string;
   }
-  
+
+  precompile static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte) {
+    
+    unless ($string) {
+      die "The string must be defined";
+    }
+    
+    my $string_length = length $string;
+    for (my $i = 0; $i < $string_length; $i++) {
+      if ($string->[$i] == $from_ch) {
+        $string->[$i] = $to_ch;
+      }
+    }
+  }
+
   precompile static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
     unless ($string) {
       die "The string must be defined";

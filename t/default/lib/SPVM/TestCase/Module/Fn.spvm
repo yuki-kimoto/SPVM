@@ -2293,6 +2293,28 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+
+  static method replace_chars : int () {
+    
+    my $string = (mutable string)copy "abacad";
+    Fn->replace_chars($string, 'a', 'A');
+    
+    unless ($string eq "AbAcAd") {
+      return 0;
+    }
+    
+    # Exception
+    {
+      eval { Fn->replace_chars(undef, 'a', 'A'); };
+      unless (Fn->contains($@, "The string must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
   
   static method rindex : int () {
     

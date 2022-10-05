@@ -1,3 +1,9 @@
+0.9654 2022-10-05
+  [New Features]
+    * Add the replace_chars method to the Fn class.
+    
+      static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte)
+    
 0.9653 2022-09-27
   [New Features]
     * Add the strerror_string native API.

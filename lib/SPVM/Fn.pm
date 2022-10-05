@@ -633,6 +633,14 @@ B<Examples:>
   # "abcabcabc"
   my $repeat_string = Fn->repeat("abc", 3);
 
+=head2 replace_chars
+
+  static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte)
+
+Replaces all characters specified by the second argument in the string with the characters specified by the third argument.
+
+The string must be defined. Otherwise an exception will occur.
+
 =head2 rindex
 
   static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
