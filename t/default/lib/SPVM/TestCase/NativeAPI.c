@@ -241,6 +241,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_pointer_field_double != &env_array[223]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_pointer_field_pointer != &env_array[224]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->strerror_string != &env_array[225]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_basic_type_id_by_name!= &env_array[226]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2699,6 +2700,42 @@ int32_t SPVM__TestCase__NativeAPI__get_class_id_by_name(SPVM_ENV* env, SPVM_VALU
     int32_t error_class_id = env->get_class_id_by_name(env, stack, "NotFoundClass", &e, FILE_NAME, __LINE__);
     
     if (!(error_class_id < 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!(e == 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  return 0;
+}
+
+
+int32_t SPVM__TestCase__NativeAPI__get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t e;
+  
+  {
+    int32_t int_basic_type_id = env->get_basic_type_id_by_name(env, stack, "int", &e, FILE_NAME, __LINE__);
+    
+    if (!(int_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!(e == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+
+  {
+    int32_t not_found_basic_type_id = env->get_basic_type_id_by_name(env, stack, "NotFoundBasicType", &e, FILE_NAME, __LINE__);
+    
+    if (!(not_found_basic_type_id < 0)) {
       stack[0].ival = 0;
       return 0;
     }

@@ -305,6 +305,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_set_pointer_field_double,
     SPVM_API_set_pointer_field_pointer,
     SPVM_API_strerror_string,
+    SPVM_API_get_basic_type_id_by_name,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3771,9 +3772,19 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
   if (class_id < 0) {
     *error = 1;
     env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
-    return class_id;
   };
   return class_id;
+}
+
+int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t basic_type_id = env->get_basic_type_id(env, basic_type_name);
+  if (basic_type_id < 0) {
+    *error = 1;
+    env->die(env, stack, "The basic_type \"%s\" is not loaded", basic_type_name, file, line);
+  };
+  return basic_type_id;
 }
 
 void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {

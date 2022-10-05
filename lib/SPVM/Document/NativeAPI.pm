@@ -240,6 +240,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   223 set_pointer_field_double
   224 set_pointer_field_pointer
   225 strerror_string
+  226 get_basic_type_id_by_name
 
 =head2 class_vars_heap
 
@@ -2080,9 +2081,9 @@ The argv must be a C<string[]> object. Otherwise return non-zero value.
 
   int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
 
-Get class id by the class name.
+Gets the class id by the class name.
 
-If the class is not found, C<error> is set to C<1>. Otherwise set to C<0>.
+If the class is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
 
 =head2 strerror
 
@@ -2249,6 +2250,14 @@ Set the pointer value of a pointer field with the field index.
   void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
 Same as the L</"strerror"> function, but return a C<string> object.
+
+=head2 get_basic_type_id_by_name
+
+  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line);
+
+Gets the basic_type id by the basic_type name.
+
+If the basic_type is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
 
 =head1 Compiler Native API
 
