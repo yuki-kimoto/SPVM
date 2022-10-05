@@ -69,9 +69,9 @@ Initialize L</"x">, L</"y">, and L</"z">.
 
 Set L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to C<0>.
 
-=head2 cloneable_clone
+=head2 clone
 
-  method cloneable_clone : object ()
+  method clone : Point3D ()
 
 Create a new C<Point3D> object that clones myself.
 

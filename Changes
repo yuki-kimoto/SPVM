@@ -29,6 +29,23 @@
     * Fixed the bug that the invalid return type of the method defined in the interface could be defined.
   [Specification Changes]
     * If a method defined in the interface is defined, the method must have the same type of arguments as the method defined in the interface, and the return value must be able to be assigned without an implicite conversion to the method defined in the interface. Otherwise a compilation error will occur.
+  [Incompatible Changes]
+    * Changed the name of the following method in the Cloneable interface.
+      [Before]
+        required method cloneable_clone : object ()
+      [After]
+        required method clone : object ()
+    * Changed the definition of the following method in the Point class.
+      [Before]
+        method cloneable_clone : object ()
+      [After]
+        method clone : Point ()
+
+    * Changed the definition of the following method in the Point3D class.
+      [Before]
+        method cloneable_clone : object ()
+      [After]
+        method clone : Point3D ()
 
 0.9653 2022-09-27
   [New Features]

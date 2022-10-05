@@ -31,7 +31,7 @@ class TestCase::Module::Point3D {
     {
       my $point3d = Point3D->new(1, 2, 3);
       my $cloneable = (Cloneable)$point3d;
-      my $point3d_clone = (Point3D)$cloneable->cloneable_clone;
+      my $point3d_clone = (Point3D)$cloneable->clone;
       unless ($point3d_clone->x == $point3d->x && $point3d_clone->y == $point3d->y && $point3d_clone->z == $point3d->z) {
         return 0;
       }

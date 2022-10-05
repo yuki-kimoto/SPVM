@@ -28,7 +28,7 @@ class TestCase::Module::Point {
     {
       my $point = Point->new(1, 2);
       my $cloneable = (Cloneable)$point;
-      my $point_clone = (Point)$cloneable->cloneable_clone;
+      my $point_clone = (Point)$cloneable->clone;
       unless ($point_clone->x == $point->x && $point_clone->y == $point->y) {
         return 0;
       }
@@ -198,7 +198,7 @@ class TestCase::Module::Point {
     {
       my $point = Point->new(1, 2);
       my $cloneable = (Cloneable)$point;
-      my $point_clone = (Point)$cloneable->cloneable_clone;
+      my $point_clone = (Point)$cloneable->clone;
       unless ($point_clone->x == $point->x && $point_clone->y == $point->y) {
         return 0;
       }

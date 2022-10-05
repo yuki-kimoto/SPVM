@@ -4,14 +4,14 @@ package SPVM::Cloneable;
 
 =head1 Name
 
-SPVM::Cloneable - A Interface Type to Clone a Object
+SPVM::Cloneable - Interface Type to Clone Object
 
 =head1 Usage
   
   class Point {
     interface Cloneable;
     
-    method cloneable_clone : object () {
+    method clone : Point () {
       my $new_point = Point->new($self->x, $self->y);
       
       return $new_point;
@@ -26,8 +26,8 @@ L<Cloneable|SPVM::Cloneable> is a callback interface to clone a object.
 
 Interface methods.
 
-=head2 cloneable_clone
+=head2 clone
 
-  required method cloneable_clone : object ();
+  required method clone : object ();
 
 The implementation must return the cloned object.

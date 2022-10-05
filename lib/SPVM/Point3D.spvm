@@ -25,7 +25,7 @@ class Point3D extends Point {
     $self->{z} = 0;
   }
   
-  method cloneable_clone : object () {
+  method clone : Point3D () {
     my $self_clone = Point3D->new($self->x, $self->y, $self->z);
     
     return $self_clone;

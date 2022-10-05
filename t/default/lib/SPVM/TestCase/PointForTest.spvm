@@ -27,7 +27,7 @@ class TestCase::PointForTest {
     return $string;
   }
   
-  method cloneable_clone : object () {
+  method clone : TestCase::PointForTest () {
     my $point_clone = TestCase::PointForTest->new_xy($self->x, $self->y);
     
     return $point_clone;

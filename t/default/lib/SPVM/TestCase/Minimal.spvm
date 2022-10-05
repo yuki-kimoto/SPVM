@@ -29,7 +29,7 @@ class TestCase::Minimal : public {
     return $str;
   }
 
-  method cloneable_clone : object () {
+  method clone : object () {
     my $new_minimal = TestCase::Minimal->new;
     
     $new_minimal->set_x($self->x);

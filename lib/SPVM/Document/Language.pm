@@ -2372,7 +2372,7 @@ B<Examples:>
       return $string;
     }
     
-    method cloneable_clone : object () {
+    method clone : object () {
       my $self_clone = Point3D->new($self->x, $self->y, $self->z);
       
       return $self_clone;

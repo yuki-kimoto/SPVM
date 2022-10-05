@@ -30,7 +30,7 @@ class Point {
     $self->{y} = 0;
   }
   
-  method cloneable_clone : object () {
+  method clone : Point () {
     my $self_clone = Point->new($self->x, $self->y);
     
     return $self_clone;

@@ -81,9 +81,9 @@ Return C<1>.
 
 Set L</"x"> and L</"y"> to C<0>.
 
-=head2 cloneable_clone
+=head2 clone
 
-  method cloneable_clone : object ()
+  method clone : Point ()
 
 Create a new C<Point> object that clones myself.
 

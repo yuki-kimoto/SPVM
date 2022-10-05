@@ -98,7 +98,7 @@ class TestCase::Interface {
       
       my $cloneable = (Cloneable)$minimal;
       
-      my $minimal2 = (TestCase::Minimal)$cloneable->cloneable_clone;
+      my $minimal2 = (TestCase::Minimal)$cloneable->clone;
       
       if ($minimal == $minimal2) {
         return 0;
