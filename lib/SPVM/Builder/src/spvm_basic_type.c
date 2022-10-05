@@ -340,16 +340,16 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
   SPVM_CLASS* super_class = super_basic_type->class;
   SPVM_CLASS* child_class = child_basic_type->class;
   
-  const char* parent_class_name = child_class->parent_class_name;
+  const char* cur_parent_class_name = child_class->parent_class_name;
   while (1) {
-    if (parent_class_name) {
-      if (strcmp(super_class->name, parent_class_name) == 0) {
+    if (cur_parent_class_name) {
+      if (strcmp(super_class->name, cur_parent_class_name) == 0) {
         return 1;
       }
       else {
-        SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class->name, strlen(parent_class->name));
-        assert(parent_class);
-        parent_class_name = parent_class->name;
+        SPVM_CLASS* cur_parent_class = SPVM_HASH_get(compiler->class_symtable, cur_parent_class_name, strlen(cur_parent_class_name));
+        assert(cur_parent_class);
+        cur_parent_class_name = cur_parent_class->parent_class_name;
       }
     }
     else {

@@ -542,4 +542,17 @@ use Test::More;
   }
 }
 
+# Extra
+{
+  {
+    my $source = [
+      'class MyClass { use MyIn_addr;use MySockaddrIn; use Sys::Socket; static method main : void ($in_addr : MyIn_addr) { my $sin_addr = new MySockaddrIn; my $status = &main($sin_addr); } }',
+      'class MySockaddrIn extends MySockaddr : public;',
+      'class MySockaddr : public;',
+      'class MyIn_addr : public;',
+    ];
+    compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the class method "main" in the class "MyClass" is not allowed|);
+  }
+}
+
 done_testing;

@@ -9,7 +9,7 @@
       int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line);
   [Bug Fix]
     * Fixed the bug that the void returning method can be assigned and a segfault occured.
-    
+    * Fixed the bug that when the class that has the super class was assigned to a non-assignable type, a segfault occured.
 0.9653 2022-09-27
   [New Features]
     * Add the strerror_string native API.
