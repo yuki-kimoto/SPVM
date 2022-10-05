@@ -4906,18 +4906,31 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
       assert(interface);
       
-      SPVM_METHOD* required_method = interface->required_method;
-      assert(required_method);
+      SPVM_METHOD* interface_required_method = interface->required_method;
       
-      int32_t method_found = 0;
-      for (int32_t class_method_index = 0; class_method_index < class->methods->length; class_method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, class_method_index);
-        if (strcmp(method->name, required_method->name) == 0) {
-          method_found = 1;
+      int32_t require_method_found = 0;
+      for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
+        if (strcmp(method->name, interface_required_method->name) == 0) {
+          require_method_found = 1;
         }
       }
-      if (!method_found) {
-        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined as a required method in the interface \"%s\" at %s line %d", class->name, required_method->name, interface->name, class->op_class->file, class->op_class->line);
+      
+      if (!require_method_found) {
+        SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined as a required method in the interface \"%s\" at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
+      }
+      
+      for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
+        SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
+        
+        for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
+          SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
+          
+          if (strcmp(method->name, interface_method->name) == 0) {
+            // Check the assignablity
+            
+          }
+        }
       }
     }
   }
