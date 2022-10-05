@@ -4918,6 +4918,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       if (!require_method_found) {
         SPVM_COMPILER_error(compiler, "The class \"%s\" must have the method \"%s\" defined as a required method in the interface \"%s\" at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
+        return;
       }
       
       for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
@@ -4927,8 +4928,15 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
           
           if (strcmp(method->name, interface_method->name) == 0) {
-            // Check the assignablity
+            // Check the equality of the arguments
+            SPVM_LIST* method_var_decls = method->var_decls;
             
+            SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
+            
+            if (method->args_length != interface_method->args_length) {
+              SPVM_COMPILER_error(compiler, "The length of the arguments of the method \"%s\" in the class \"%s\" must be equal to the length of the arguments of the method \"%s\" in the interface \"%s\" at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
+        return;
+            }
           }
         }
       }

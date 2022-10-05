@@ -1067,6 +1067,10 @@ use Test::More;
     my $source = 'class MyClass  { interface Stringable; }';
     compile_not_ok($source, q|The class "MyClass" must have the method "to_string" defined as a required method in the interface "Stringable"|);
   }
+  {
+    my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
+    compile_not_ok($source, q|The length of the arguments of the method "to_string" in the class "MyClass" must be equal to the length of the arguments of the method "to_string" in the interface "Stringable|);
+  }
 }
 
 # Inheritance
