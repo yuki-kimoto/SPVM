@@ -4151,6 +4151,14 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   int32_t src_type_dimension = src_type->dimension;
   int32_t src_type_flag = src_type->flag;
 
+  const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
+  const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
+
+  if (SPVM_TYPE_is_void_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    SPVM_COMPILER_error(compiler, "The void type can't be assigned in %s at %s line %d", place, file, line);
+    return NULL;
+  }
+
   SPVM_CONSTANT* src_constant = NULL;
   if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
     src_constant = op_src->uv.constant;
@@ -4168,8 +4176,6 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   );
     
   if (!assignability) {
-    const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
-    const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
     if (mutable_invalid) {
       SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s at %s line %d", place, file, line);
     }

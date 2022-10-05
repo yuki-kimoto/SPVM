@@ -1,12 +1,14 @@
 0.9654 2022-10-05
   [New Features]
-    * Add the replace_chars method to the Fn class.
+    * Added the replace_chars method to the Fn class.
     
       static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte)
 
-    * Add the get_basic_type_id_by_name native API.
+    * Added the get_basic_type_id_by_name native API.
 
       int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line);
+  [Bug Fix]
+    * Fixed the bug that the void returning method can be assigned and a segfault occured.
     
 0.9653 2022-09-27
   [New Features]

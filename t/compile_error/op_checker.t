@@ -860,6 +860,10 @@ use Test::More;
 # Assignability
 {
   {
+    my $source = q|class MyClass { static method main : void () { my $ret = &main(); } }|;
+    compile_not_ok($source, q|The void type can't be assigned in the assignment operator|);
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
     compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the assignment operator|);
   }
