@@ -1075,6 +1075,13 @@ use Test::More;
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
     compile_not_ok($source, q|The method "to_string" in the class "MyClass" must an instance method because the method "to_string" is defined as an instance method in the interface "Stringable"|);
   }
+  {
+    my $source = [
+      'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
+      'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
+    ];
+    compile_not_ok($source, q|The type of the 2th argument of the method "foo" in the class "MyClass" must be equal to the type of the 2th argument of the method "foo" in the interface "MyInterface"|);
+  }
 }
 
 # Inheritance

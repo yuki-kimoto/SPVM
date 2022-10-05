@@ -4944,12 +4944,17 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               return;
             }
             
-            for (int32_t arg_index = 0; arg_index < interface_method->args_length; arg_index++) {
+            for (int32_t arg_index = 1; arg_index < interface_method->args_length; arg_index++) {
               SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
               SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
               
               SPVM_TYPE* method_var_decl_type = method_var_decl->type;
               SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
+              
+              if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The type of the %dth argument of the method \"%s\" in the class \"%s\" must be equal to the type of the %dth argument of the method \"%s\" in the interface \"%s\" at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
+                return;
+              }
             }
           }
         }
