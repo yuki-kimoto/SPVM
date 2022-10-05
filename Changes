@@ -25,8 +25,11 @@
   [Bug Fix With Incompatible Changes]
     * Fixed the bug that the method could be defined by the different legnth of the arguments of the method in the interface.
     * Fixed the bug that the method could be defined as a class method although the method is defined in the interface.
-    * Fixed the bug that the differnet type of the argument of the method could be defined.
-    
+    * Fixed the bug that the differnet type of the argument of the method defined in the interface could be defined.
+    * Fixed the bug that the invalid return type of the method defined in the interface could be defined.
+  [Specification Changes]
+    * If a method defined in the interface is defined, the method must have the same type of arguments as the method defined in the interface, and the return value must be able to be assigned without an implicite conversion to the method defined in the interface. Otherwise a compilation error will occur.
+
 0.9653 2022-09-27
   [New Features]
     * Add the strerror_string native API.

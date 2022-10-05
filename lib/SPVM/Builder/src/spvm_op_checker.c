@@ -4956,6 +4956,40 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                 return;
               }
             }
+            
+            // Check the assignability of the return value
+            SPVM_TYPE* method_return_type = method->return_type;
+            SPVM_TYPE* interface_method_return_type = interface_method->return_type;
+            
+            int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
+            int32_t interface_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag);
+            
+            if (method_return_type_is_void && interface_method_return_type_is_void) {
+              // OK
+            }
+            else {
+              SPVM_CONSTANT* src_constant = NULL;
+              int32_t need_implicite_conversion = 0;
+              int32_t narrowing_conversion_error = 0;
+              int32_t mutable_invalid = 0;
+              int32_t assignability = SPVM_TYPE_can_assign(
+                compiler,
+                interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
+                method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
+                src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+              );
+              
+              if (assignability) {
+                if (need_implicite_conversion) {
+                  SPVM_COMPILER_error(compiler, "The return type of the \"%s\" in the class \"%s\" must be able to be assigned without an implicite type conversion to the return type of the method \"%s\" in the interface \"%s\" at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "The return type of the \"%s\" in the class \"%s\" must be able to be assigned to the return type of the method \"%s\" in the interface \"%s\" at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
+                return;
+              }
+            }
           }
         }
       }

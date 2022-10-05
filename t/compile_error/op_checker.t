@@ -1082,6 +1082,42 @@ use Test::More;
     ];
     compile_not_ok($source, q|The type of the 2th argument of the method "foo" in the class "MyClass" must be equal to the type of the 2th argument of the method "foo" in the interface "MyInterface"|);
   }
+  {
+    my $source = [
+      'class MyClass { interface MyInterface; method foo : MyClass () {} }',
+      'class MyInterface : interface_t { required method foo : object (); }',
+    ];
+    compile_ok($source);
+  }
+  {
+    my $source = [
+      'class MyClass { interface MyInterface; method foo : object () {} }',
+      'class MyInterface : interface_t { required method foo : MyClass  (); }',
+    ];
+    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned to the return type of the method "foo" in the interface "MyInterface"|);
+  }
+  {
+    my $source = [
+      'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point3D () {} }',
+      'class MyInterface : interface_t { required method foo : Point (); }',
+    ];
+    compile_ok($source);
+  }
+  {
+    my $source = [
+      'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
+      'class MyInterface : interface_t { required method foo : Point3D  (); }',
+    ];
+    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned to the return type of the method "foo" in the interface "MyInterface"|);
+  }
+
+  {
+    my $source = [
+      'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
+      'class MyInterface : interface_t { required method foo : long  (); }',
+    ];
+    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned without an implicite type conversion to the return type of the method "foo" in the interface "MyInterface"|);
+  }
 }
 
 # Inheritance

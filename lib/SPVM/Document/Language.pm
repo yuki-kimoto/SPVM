@@ -2270,6 +2270,8 @@ The C<interface> syntax must be defined directory under the L<class definition|/
 
 If the required method of the interface is not defined in the current class, a compilation error will occur.
 
+If a method defined in the interface is defined, the method must have the same type of arguments as the method defined in the interface, and the return value must be able to be assigned without an implicite conversion to the method defined in the interface. Otherwise a compilation error will occur.
+
 The current class B<is expected to> have all methods defined in the interface.
 
 B<Examples:>
