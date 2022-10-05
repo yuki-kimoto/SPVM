@@ -4902,16 +4902,16 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     // Check the class has interface methods
-    for (int32_t i = 0; i < class->interfaces->length; i++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, i);
+    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
       assert(interface);
       
       SPVM_METHOD* required_method = interface->required_method;
       assert(required_method);
       
       int32_t method_found = 0;
-      for (int32_t i = 0; i < class->methods->length; i++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      for (int32_t class_method_index = 0; class_method_index < class->methods->length; class_method_index++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, class_method_index);
         if (strcmp(method->name, required_method->name) == 0) {
           method_found = 1;
         }
