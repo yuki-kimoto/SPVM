@@ -1723,3 +1723,13 @@ int32_t SPVM_TYPE_can_cast(
   
   return castability;
 }
+
+int32_t SPVM_TYPE_equals(SPVM_COMPILER* compiler, int32_t basic_type_id1, int32_t type_dimension1, int32_t type_flag1, int32_t basic_type_id2, int32_t type_dimension2, int32_t type_flag2) {
+  
+  if (basic_type_id1 == basic_type_id2 && type_dimension1 == type_dimension2 && type_flag1 == type_flag2) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}

@@ -133,4 +133,6 @@ int32_t SPVM_TYPE_is_super_class(SPVM_COMPILER* compiler,
   int32_t super_basic_type_id, int32_t super_dimension, int32_t super_flag,
   int32_t child_basic_type_id, int32_t child_dimension, int32_t child_flag);
 
+int32_t SPVM_TYPE_equals(SPVM_COMPILER* compiler, int32_t basic_type_id1, int32_t type_dimension1, int32_t type_flag1, int32_t basic_type_id2, int32_t type_dimension2, int32_t type_flag2);
+
 #endif
