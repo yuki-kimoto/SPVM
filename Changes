@@ -21,6 +21,31 @@
         method set_tm_wday : void ($tm_wday : int);
         method set_tm_yday : void ($tm_yday : int);
         method set_tm_isdst : void ($tm_isdst : int);
+  [Document Bug Fix]
+    * Fixed the document bugs that getter method names are wrong in the Time::Info class.
+      [Before]
+        method sec : int ();
+        method min : int ();
+        method hour : int ();
+        method mday : int ();
+        method mon : int ();
+        method year : int ();
+        method wday : int ();
+        method yday : int ();
+        method isdst : int ();
+      
+      [After]
+        method tm_sec : int ();
+        method tm_min : int ();
+        method tm_hour : int ();
+        method tm_mday : int ();
+        method tm_mon : int ();
+        method tm_year : int ();
+        method tm_wday : int ();
+        method tm_yday : int ();
+        method tm_isdst : int ();
+  [Document Inprovemeth]
+    * Improved the doc of the Time::Info class.
     
 0.9654 2022-10-05
   [New Features]
