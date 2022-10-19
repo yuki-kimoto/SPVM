@@ -1,3 +1,6 @@
+0.9656 2022-10-19
+  [Document Improvement]
+    * Improved and fixed the doc of the "Anon Method" in SPVM::Document::Language.
 0.9655 2022-10-12
   [Bug Fix With Incompatible Changes]
     * The return types of the following methods in the Time::Info class. This change will probably not break existing code.

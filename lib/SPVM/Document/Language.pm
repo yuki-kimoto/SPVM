@@ -8497,11 +8497,16 @@ B<Examples:>
 
 =head2 Anon Method
 
-The anon method is an L<operator|/"Operator"> to define an L<anon calss|/"Anon Class"> and define an L<instance method|/"Instance Method"> that has 0-length name and create the object by the L<new|/"Creating Object"> operator.
+The anon method is an L<operator|/"Operator"> to define an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
 
-  method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ...) {
+It creates an object object from the anon class by the L<new|/"Creating Object"> operator and returns the object.
+  
+  # Anon method
+  method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
   
   }
+
+The way to define the method is the same as the L<method definition|/"Method Definition">.
 
 B<Examples:>
   
@@ -8520,13 +8525,15 @@ B<Examples:>
 See also L<Comparator|SPVM::Comparator>.
 
 The above example is the same as the following codes.
-
+  
+  # Foo/Bar.spvm
   class Foo::Bar {
     method some_method : void () {
       my $comparator = (Comparator)new Foo::Bar::anon::3::31;
     }
   }
-
+  
+  # Foo/Bar/anon/3/31.spvm
   class Foo::Bar::anon::3::31 : public {
     method : int ($x1 : object, $x2 : object) {
       my $point1 = (Point)$x1;
@@ -8538,10 +8545,10 @@ The above example is the same as the following codes.
 
 =head3 Capture
 
-The capture is a syntax to pass L<local variables|/"Local Variable"> to an L<anon method|/"Anon Method">.
+The capture is a syntax to use externally defined L<local variables|/"Local Variable"> in an L<anon method|/"Anon Method">.
 
   # Capture
-  [VAR_NAME1 : Type1, VAR_NAME2 : Type2] method METHOD_NAME : int ($x1 : object, $x2 : object) {
+  [VAR1 : TYPE1, VAR2 : TYPE2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
   
   };
 
@@ -8549,8 +8556,11 @@ B<Examples:>
 
   class Foo::Bar {
     method some_method : void () {
+      # Externally defined local variables
       my $foo = 1;
       my $bar = 5L;
+      
+      # Capture
       my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
         print "$foo\n";
         print "$bar\n";
@@ -8558,22 +8568,26 @@ B<Examples:>
     }
   }
 
-A capture is actually implemented as a L<field|/"Field">.
+Externally defined local variables are implemented as L<fields|/"Field"> of the anon class internally.
 
 The above example is the same as the following codes.
 
+  # Foo/Bar.spvm
   class Foo::Bar {
     method some_method : void () {
+      # Externally defined local variables
       my $foo = 1;
       my $bar = 5L;
       
+      # Capture
       my $anon = new Foo::Bar::anon::5::61;
       $anon->{foo} = $foo;
       $anon->{bar} = $bar;
       my $comparator = (Comparator)$anon;
     }
   }
-
+  
+  # Foo/Bar/anon/5/61.spvm
   class Foo::Bar::anon::5::61 : public {
     has foo : public int;
     has bar : public long;
