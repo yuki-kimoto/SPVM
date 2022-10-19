@@ -1,4 +1,6 @@
 0.9656 2022-10-19
+  [New Features]
+    * Added the Scope::Guard class.
   [Document Improvement]
     * Improved and fixed the doc of the "Anon Method" in SPVM::Document::Language.
 0.9655 2022-10-12

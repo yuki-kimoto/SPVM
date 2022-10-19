@@ -1,0 +1,3 @@
+class Scope::Guard::Handler : interface_t {
+  required method : void ();
+}

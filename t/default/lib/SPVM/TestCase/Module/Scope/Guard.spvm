@@ -1,0 +1,7 @@
+class TestCase::Module::Scope::Guard {
+  use Scope::Guard;
+  static method basic : int () {
+    
+    return 1;
+  }
+}

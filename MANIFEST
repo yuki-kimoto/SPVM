@@ -257,6 +257,10 @@ lib/SPVM/Point/Interface.pm
 lib/SPVM/Point/Interface.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
+lib/SPVM/Scope/Guard.pm
+lib/SPVM/Scope/Guard.spvm
+lib/SPVM/Scope/Guard/Handler.pm
+lib/SPVM/Scope/Guard/Handler.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
@@ -602,6 +606,7 @@ t/default/lib/SPVM/TestCase/Module/Long.spvm
 t/default/lib/SPVM/TestCase/Module/LongList.spvm
 t/default/lib/SPVM/TestCase/Module/Point.spvm
 t/default/lib/SPVM/TestCase/Module/Point3D.spvm
+t/default/lib/SPVM/TestCase/Module/Scope/Guard.spvm
 t/default/lib/SPVM/TestCase/Module/Short.spvm
 t/default/lib/SPVM/TestCase/Module/ShortList.spvm
 t/default/lib/SPVM/TestCase/Module/Sort.spvm
@@ -722,6 +727,7 @@ t/default/module/Long.t
 t/default/module/LongList.t
 t/default/module/Point.t
 t/default/module/Point3D.t
+t/default/module/Scope_Guard.t
 t/default/module/Short.t
 t/default/module/ShortList.t
 t/default/module/Sort.t

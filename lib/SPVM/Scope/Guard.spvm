@@ -1,0 +1,26 @@
+class Scope::Guard {
+  
+  use Scope::Guard::Handler;
+  
+  has handler : ro Scope::Guard::Handler;
+  has dismiss : rw byte;
+  
+  static method new : Scope::Guard ($handler : Scope::Guard::Handler) {
+    
+    my $self = new Scope::Guard;
+    
+    unless ($handler) {
+      die "The \$handler must be defined";
+    }
+    
+    $self->{handler} = $handler;
+    
+    return $self;
+  }
+  
+  method DESTROY : void () {
+    unless ($self->{dismiss}) {
+      $self->{handler}->();
+    }
+  }
+}
