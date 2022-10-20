@@ -1,3 +1,10 @@
+0.9657 2022-10-20
+  [Changes]
+    * Changed a warning message when an exception is thrown in the DESTROY method.
+      [Before]
+      (in cleanup)...
+      [After]
+      (An exception thrown in the DESTROY method is converted to a warning)...
 0.9656 2022-10-19
   [New Features]
     * Added the Scope::Guard class.
