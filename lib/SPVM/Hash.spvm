@@ -169,6 +169,8 @@ class Hash {
 
   native static method _murmur_hash : long ($string : string, $seed : int);
 
+  private native static method _siphash13 : long ($string : string, $seed : string);
+
   method set_byte : void ($name : string, $value : byte) {
     $self->set($name => Byte->new($value));
   }

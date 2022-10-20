@@ -148,3 +148,20 @@ int32_t SPVM__Hash__build_seed128(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  void* object = stack[0].oval;
+  const char* buf = env->get_chars(env, stack, object);
+  uint32_t len = env->length(env, stack, object);
+
+  void* obj_seed = stack[1].oval;
+  const char* seed = env->get_chars(env, stack, obj_seed);
+ 
+  int64_t hash = siphash13(*(uint64_t*)seed, (*(uint64_t*)(seed + 8)), buf, len);
+ 
+  stack[0].lval = hash;
+
+  return 0;
+}
