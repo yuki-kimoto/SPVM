@@ -25,7 +25,9 @@ SPVM::Hash - Hash Data Structure
   
 =head1 Description
 
-L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative array.
+C<Hash> is Hash Data Structure. This is generally called associative array.
+
+The hash function is C<siphash-1-3>.
 
 =head1 Class Methods
 
