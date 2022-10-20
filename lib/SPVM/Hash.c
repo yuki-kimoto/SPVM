@@ -159,8 +159,8 @@ int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_seed = stack[1].oval;
   const char* seed = env->get_chars(env, stack, obj_seed);
  
-  int64_t hash = siphash13(*(uint64_t*)seed, (*(uint64_t*)(seed + 8)), buf, len);
- 
+  uint64_t hash = siphash13(*(uint64_t*)seed, (*(uint64_t*)(seed + 8)), buf, len);
+  
   stack[0].lval = hash;
 
   return 0;

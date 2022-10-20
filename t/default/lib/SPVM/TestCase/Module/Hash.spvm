@@ -65,6 +65,7 @@ class TestCase::Module::Hash {
         }
       }
     }
+    
 
     # string values
     {

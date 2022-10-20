@@ -5,6 +5,7 @@
       (in cleanup)...
       [After]
       (An exception thrown in the DESTROY method is converted to a warning)...
+    * The Hash class uses siphash-1-3 as the hash function instead of MurmurHash.
 0.9656 2022-10-19
   [New Features]
     * Added the Scope::Guard class.

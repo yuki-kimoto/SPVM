@@ -21,6 +21,10 @@ class Hash {
     $self->{bucket_count} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
+
+    my $seed_int32 = (int)(Time->time * class_id Hash);
+    $self->{seed128} = (mutable string)new_string_len 16;
+    $self->build_seed128($seed_int32, $self->{seed128});
     
     my $length : int;
     if ($key_values) {
@@ -46,10 +50,6 @@ class Hash {
       }
     }
     
-    my $seed_int32 = (int)(Time->time * class_id Hash);
-    $self->{seed128} = (mutable string)new_string_len 16;
-    $self->build_seed128($seed_int32, $self->{seed128});
-    
     return $self;
   }
 
@@ -64,12 +64,13 @@ class Hash {
       $self->_rehash;
     }
     my $count = $self->{count};
-    Hash->_set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
+    $self->_set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
+    
     $self->{count} = $count;
   }
 
   precompile method get : object ($key : string) {
-    my $index = Hash->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
       return undef;
@@ -86,7 +87,7 @@ class Hash {
   }
 
   precompile method exists : int ($key : string) {
-    my $index = Hash->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
 
     unless ($ref) {
@@ -104,7 +105,7 @@ class Hash {
   }
 
   precompile method delete : object ($key : string) {
-    my $index = Hash->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
     unless ($ref) {
@@ -223,19 +224,24 @@ class Hash {
     return $self->{entries};
   }
 
-  static method _index_by_key : int ($key : string, $bucket_count : int) {
-    my $default_seed = 123456789;
-    return (int)(Hash->_murmur_hash($key, $default_seed) % $bucket_count);
+  method _index_by_key : int ($key : string, $bucket_count : int) {
+    my $default_seed = $self->{seed128};
+    
+    my $hash = Hash->_siphash13($key, $default_seed);
+    my $index_by_key = (int)($hash remul (long)$bucket_count);
+    
+    return $index_by_key;
   }
 
-  precompile static method _set_to_container : void (
+  precompile method _set_to_container : void (
     $entries : Hash::Entry[],
     $bucket_count : int,
     $count_ref : int*,
     $key : string,
     $val : object)
   {
-    my $index = Hash->_index_by_key($key, $bucket_count);
+    my $index = $self->_index_by_key($key, $bucket_count);
+    
     my $ref = $entries->[$index];
     unless ($ref) {
       $entries->[$index] = new Hash::Entry;
@@ -289,7 +295,7 @@ class Hash {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        Hash->_set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
+        $self->_set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
         $ref = $ref->{next_entry};
       }
     }
