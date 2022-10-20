@@ -2,10 +2,12 @@ class Hash {
   use Hash::Entry;
   use Fn;
   use Array;
+  use Time;
 
   has bucket_count : int;
   has count : ro int;
   has entries : Hash::Entry[];
+  has seed128 : private mutable string;
 
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
@@ -44,8 +46,14 @@ class Hash {
       }
     }
     
+    my $seed_int32 = (int)(Time->time * class_id Hash);
+    $self->{seed128} = (mutable string)new_string_len 16;
+    $self->build_seed128($seed_int32, $self->{seed128});
+    
     return $self;
   }
+
+  native private method build_seed128 : void ($seed_int32 : int, $seed128 : mutable string);
 
   method set : void ($key : string, $val : object) {
     unless ($key) {
