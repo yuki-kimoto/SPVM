@@ -15,8 +15,8 @@ use SPVM 'TestCase::Say';
 
 my $test_tmp_dir = "$FindBin::Bin/../test_files_tmp";
 
-my $script_file = "$test_tmp_dir/print-script.pl";
-my $output_file = "$test_tmp_dir/print-output.txt";
+my $script_file = "$test_tmp_dir/say-script.pl";
+my $output_file = "$test_tmp_dir/say-output.txt";
 
 mkpath $test_tmp_dir;
 
