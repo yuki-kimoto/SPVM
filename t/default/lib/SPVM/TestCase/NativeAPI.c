@@ -219,10 +219,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_pointer_with_fields_raw != &env_array[201]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->new_pointer_with_fields != &env_array[202]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->new_pointer_with_fields_by_name != &env_array[203]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved204 != &env_array[204]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved205 != &env_array[205]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved206 != &env_array[206]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved207 != &env_array[207]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_no_need_free != &env_array[204]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_no_need_free != &env_array[205]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_pointer_length != &env_array[206]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_pointer_length != &env_array[207]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_class != &env_array[208]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_pointer_class != &env_array[209]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_pointer_fields_length != &env_array[210]) { stack[0].ival = 0; return 0;}
@@ -3078,3 +3078,66 @@ int32_t SPVM__TestCase__NativeAPI__pointer_fields(SPVM_ENV* env, SPVM_VALUE* sta
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__get_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  {
+    int32_t e = 0;
+    int32_t num = 0;
+    int32_t* num_ptr = &num;
+    void* obj_pointer = env->new_pointer_by_name(env, stack, "TestCase::PointerNoNeedFree", num_ptr, &e, FILE_NAME, __LINE__);
+    if (e) { return e; }
+    
+    if (env->get_pointer_no_need_free(env, stack, obj_pointer)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    env->set_pointer_no_need_free(env, stack, obj_pointer, 1);
+    
+    if (!env->get_pointer_no_need_free(env, stack, obj_pointer)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+
+    env->set_pointer_no_need_free(env, stack, obj_pointer, 0);
+    if (env->get_pointer_no_need_free(env, stack, obj_pointer)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    // Enable
+    env->set_pointer_no_need_free(env, stack, obj_pointer, 1);
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  {
+    int32_t e = 0;
+    int32_t num = 0;
+    int32_t* num_ptr = &num;
+    void* obj_pointer = env->new_pointer_by_name(env, stack, "TestCase::PointerEmpty", num_ptr, &e, FILE_NAME, __LINE__);
+    if (e) { return e; }
+    
+    if (!(env->get_pointer_length(env, stack, obj_pointer) == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    env->set_pointer_length(env, stack, obj_pointer, 3);
+    
+    if (!(env->get_pointer_length(env, stack, obj_pointer) == 3)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+

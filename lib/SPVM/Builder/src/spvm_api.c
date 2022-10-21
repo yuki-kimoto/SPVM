@@ -283,10 +283,10 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_pointer_with_fields_raw,
     SPVM_API_new_pointer_with_fields,
     SPVM_API_new_pointer_with_fields_by_name,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    SPVM_API_get_pointer_no_need_free,
+    SPVM_API_set_pointer_no_need_free,
+    SPVM_API_get_pointer_length,
+    SPVM_API_set_pointer_length,
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
     SPVM_API_get_pointer_fields_length,
@@ -3941,4 +3941,37 @@ void SPVM_API_set_pointer_field_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 
   // Get field value
   *(void**)((intptr_t)object + env->object_header_byte_size + sizeof(SPVM_VALUE) * (2 + field_index)) = value;
+}
+
+int32_t SPVM_API_get_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  int32_t flag = object->flag & SPVM_OBJECT_C_FLAG_POINTER_NO_NEED_FREE;
+  
+  return flag;
+}
+
+void SPVM_API_set_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t flag) {
+  (void)env;
+  
+  if (flag) {
+    object->flag |= SPVM_OBJECT_C_FLAG_POINTER_NO_NEED_FREE;
+  }
+  else {
+    object->flag &= ~SPVM_OBJECT_C_FLAG_POINTER_NO_NEED_FREE;
+  }
+}
+
+int32_t SPVM_API_get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  int32_t length = object->length;
+  
+  return length;
+}
+
+void SPVM_API_set_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
+  (void)env;
+  
+  object->length = length;
 }

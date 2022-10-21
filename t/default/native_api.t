@@ -309,6 +309,9 @@ ok(SPVM::TestCase::NativeAPI->dumpc);
 
 ok(SPVM::TestCase::NativeAPI->pointer_fields);
 
+ok(SPVM::TestCase::NativeAPI->get_pointer_no_need_free);
+ok(SPVM::TestCase::NativeAPI->get_pointer_length);
+
 # Clear exception
 SPVM::set_exception(undef);
 

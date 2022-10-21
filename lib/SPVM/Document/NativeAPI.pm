@@ -218,10 +218,10 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   201 new_pointer_with_fields
   202 new_pointer_with_fields_raw
   203 new_pointer_with_fields_by_name
-  204 reserved204
-  205 reserved205
-  206 reserved206
-  207 reserved207
+  204 get_pointer_no_need_free
+  205 set_pointer_no_need_free
+  206 get_pointer_length
+  207 set_pointer_length
   208 is_class
   209 is_pointer_class
   210 get_pointer_fields_length
@@ -356,6 +356,30 @@ Check the runtime type assignability of an array element.
   void* runtime;
 
 A pointer to the runtime information. This is used internally.
+
+=head2 reserved16
+
+  void* reserved16;
+
+Reserved.
+
+=head2 reserved17
+
+  void* reserved17;
+
+Reserved.
+
+=head2 reserved18
+
+  void* reserved18;
+
+Reserved.
+
+=head2 reserved19
+
+  void* reserved19;
+
+Reserved.
 
 =head2 get_basic_type_id
 
@@ -1963,6 +1987,18 @@ The charaters of the after the given length are filled with C<\0>.
 
 Check the type of the object has the interface.
 
+=head2 reserved176
+
+  void* reserved176
+
+=head2 reserved177
+
+  void* reserved177
+
+=head2 reserved178
+
+  void* reserved178
+
 =head2 print
 
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
@@ -2244,6 +2280,30 @@ Set the C<double> value of a pointer field with the field index.
   void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
 
 Set the pointer value of a pointer field with the field index.
+
+=head2 get_pointer_no_need_free
+
+  void (*get_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Sets the the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+=head2 set_pointer_no_need_free
+
+  void (*set_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t flag);
+
+Gets the the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+
+=head2 get_pointer_length
+
+  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Gets the length of the array set by L</"set_pointer">. The default value is C<0>.
+
+=head2 set_pointer_length
+
+  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
+
+Sets the length of the array set by L</"set_pointer">. It is useful when the data is the pointer to an array.
 
 =head2 strerror_string
 

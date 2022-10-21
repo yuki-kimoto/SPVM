@@ -301,10 +301,10 @@ struct spvm_env {
   void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
   void* (*new_pointer_with_fields)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
   void* (*new_pointer_with_fields_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t fields_length, int32_t* error, const char* file, int32_t line);
-  void* reserved204;
-  void* reserved205;
-  void* reserved206;
-  void* reserved207;
+  int32_t (*get_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*set_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t flag);
+  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_pointer_fields_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
