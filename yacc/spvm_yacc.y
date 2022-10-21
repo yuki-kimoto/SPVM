@@ -25,7 +25,7 @@
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
-%token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_classes classes class class_block
@@ -508,6 +508,10 @@ void_return_operator
       $$ = SPVM_OP_build_warn(compiler, $1, $2);
     }
   | PRINT operator
+    {
+      $$ = SPVM_OP_build_print(compiler, $1, $2);
+    }
+  | SAY operator
     {
       $$ = SPVM_OP_build_print(compiler, $1, $2);
     }

@@ -2130,6 +2130,20 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         break;
       }
+      case SPVM_OPCODE_C_ID_SAY: {
+        void* object = object_vars[opcode->operand0];
+        if (object) {
+          const char* bytes = env->get_chars(env, stack, object);
+          int32_t string_length = env->length(env, stack, object);
+          
+          if (string_length > 0) {
+            size_t ret = fwrite(bytes, 1, string_length, stdout);
+          }
+        }
+        fprintf(stdout, "\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         

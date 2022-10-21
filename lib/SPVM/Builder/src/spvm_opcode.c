@@ -285,6 +285,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "IS_TYPE",
     "HAS_IMPL",
     "PRINT",
+    "SAY",
     "WARN",
     "DIE",
     "GET_ERROR_CODE",

@@ -308,6 +308,7 @@ The list of keywords:
   required
   rw
   ro
+  say
   set_error_code
   static
   switch
@@ -1168,7 +1169,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
-  %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block
   %type <opval> opt_declarations declarations declaration
@@ -1357,6 +1358,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : die
     | WARN operator
     | PRINT operator
+    | SAY operator
     | weaken_field
     | unweaken_field
     | MAKE_READ_ONLY operator
@@ -1937,6 +1939,9 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>RW</td><td>rw</td>
+  </tr>
+  <tr>
+    <td>SAY</td><td>say</td>
   </tr>
   <tr>
     <td>SCALAR</td><td>scalar</td>
@@ -8736,6 +8741,16 @@ The C<print> operator is a L<void retruning operator|/"void Returning Operator">
 The oeprand must be a L<string type|/"string Type">.
 
 If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
+
+=head2 say Operator
+
+The C<say> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> with a line break C<\n> to the standard output.
+
+  say OPERAND;
+
+The oeprand must be a L<string type|/"string Type">.
+
+If the value of the operand is an L<undef|/"Undefined Value">, print C<\n>.
 
 =head2 make_read_only Operator
 

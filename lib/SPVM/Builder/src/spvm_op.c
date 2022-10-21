@@ -1487,6 +1487,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_DIE:
     case SPVM_OP_C_ID_WARN:
     case SPVM_OP_C_ID_PRINT:
+    case SPVM_OP_C_ID_SAY:
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
     {
       // Dummy int variable
