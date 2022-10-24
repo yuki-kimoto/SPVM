@@ -465,7 +465,6 @@ t/compile_error/op_checker.t
 t/compile_error/perl_program.pl
 t/compile_error/toke.t
 t/compile_error/type_can_assign.t
-t/default/compile_native_api.pl
 t/default/definition/any_object_array.t
 t/default/definition/array.t
 t/default/definition/array_big.t
@@ -706,9 +705,11 @@ t/default/module/Sort.t
 t/default/module/StringBuffer.t
 t/default/module/StringList.t
 t/default/module/Time.t
-t/default/native_api.t
-t/default/native_api_cached.t
-t/default/native_api_cpp.t
+t/default/native_api/compile_native_api.pl
+t/default/native_api/native_api.t
+t/default/native_api/native_api_cached.t
+t/default/native_api/native_api_cpp.t
+t/default/native_api/resource.t
 t/default/op/__CLASS__.t
 t/default/op/__FILE__.t
 t/default/op/__LINE__.t
@@ -750,7 +751,6 @@ t/default/op/warn.t
 t/default/op/weaken.t
 t/default/parser/inline.t
 t/default/parser/precedence.t
-t/default/resource.t
 t/default/statement/alias.t
 t/default/statement/allow.t
 t/default/statement/begin.t
