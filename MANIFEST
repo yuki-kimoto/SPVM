@@ -479,8 +479,8 @@ t/default/definition/local_var.t
 t/default/definition/mulnum.t
 t/default/definition/mulnum_array.t
 t/default/definition/type_comment.t
-t/default/exchange_api.t
-t/default/exchange_api_call_method.t
+t/default/exchange_api/exchange_api.t
+t/default/exchange_api/exchange_api_call_method.t
 t/default/extra/examples.t
 t/default/lib/SPVM/4foo.spvm
 t/default/lib/SPVM/EmptyClass.spvm
