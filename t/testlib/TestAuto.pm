@@ -9,17 +9,20 @@ use File::Find;
 use File::Basename 'basename', 'dirname';
 
 sub import {
+  my $test_dir;
   if ($FindBin::Bin =~ /\/precompile$/) {
+    $test_dir = 't/precompile';
+    
     # Set build directory
-    my $test_precompile_dir = 't/precompile/lib';
-    my $test_precompile_dir_re = quotemeta($test_precompile_dir);
+    my $test_lib_dir = "$test_dir/lib";
+    my $test_lib_dir_re = quotemeta($test_lib_dir);
     
     find(
       {
         wanted => sub {
           my $class_name = $File::Find::name;
           if ($class_name =~ /\.spvm$/) {
-            $class_name =~ s|$test_precompile_dir_re||;
+            $class_name =~ s|$test_lib_dir_re||;
             $class_name =~ s|^/SPVM/||;
             $class_name =~ s|/|::|g;
             $class_name =~ s|\.spvm$||;
@@ -29,20 +32,20 @@ sub import {
         },
         no_chdir => 1,
       },
-      $test_precompile_dir
+      $test_lib_dir
     );
 
     $ENV{SPVM_TEST_PRECOMPILE} = 1;
-    $ENV{SPVM_TEST_LIB_DIR} = "$test_precompile_dir";
-    $ENV{SPVM_BUILD_DIR} = 't/precompile/.spvm_build';
   }
   else {
-    # Set build directory
-    $ENV{SPVM_TEST_LIB_DIR} = "t/default/lib";
-    $ENV{SPVM_BUILD_DIR} = 't/default/.spvm_build';
+    $test_dir = 't/default';
   }
   
-  unshift @INC, $ENV{SPVM_TEST_LIB_DIR};
+  my $test_lib_dir = "$test_dir/lib";
+  unshift @INC, $test_lib_dir;
+  
+  $ENV{SPVM_TEST_DIR} = $test_dir;
+  $ENV{SPVM_BUILD_DIR} = "$test_dir/.spvm_build";
 }
 
 1;
