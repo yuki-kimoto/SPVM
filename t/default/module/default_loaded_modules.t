@@ -13,13 +13,7 @@ use SPVM 'Long';
 use SPVM 'Float';
 use SPVM 'Double';
 
-
-use FindBin;
-use lib "$FindBin::Bin/lib";
-
 use SPVM;
-
-
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

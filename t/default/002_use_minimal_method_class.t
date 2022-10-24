@@ -6,9 +6,6 @@ use warnings;
 
 use Test::More;
 
-use FindBin;
-use lib "$FindBin::Bin/lib";
-
 use SPVM 'MinimalMethod';
 
 ok(1);

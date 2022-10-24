@@ -33,8 +33,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # sum.pl
   use strict;
   use warnings;
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
 
   use SPVM 'MyMath';
 

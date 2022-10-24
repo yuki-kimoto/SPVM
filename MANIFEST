@@ -483,12 +483,11 @@ t/default/comment.t
 t/default/compile_native_api.pl
 t/default/conditional_branch.t
 t/default/constant.t
-t/default/default_loaded_modules.t
 t/default/enum.t
-t/default/examples.t
 t/default/exception.t
 t/default/exchange_api.t
 t/default/exchange_api_call_method.t
+t/default/extra/examples.t
 t/default/fat_camma.t
 t/default/field.t
 t/default/increment.t
@@ -697,6 +696,7 @@ t/default/module/Bool.t
 t/default/module/Byte.t
 t/default/module/ByteList.t
 t/default/module/CommandInfo.t
+t/default/module/default_loaded_modules.t
 t/default/module/Double.t
 t/default/module/DoubleList.t
 t/default/module/Error_System.t
