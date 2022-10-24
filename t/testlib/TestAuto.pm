@@ -10,12 +10,21 @@ use File::Basename 'basename', 'dirname';
 
 sub import {
   my $test_dir;
-  if ($FindBin::Bin =~ /\/precompile$/) {
+  if ($FindBin::Bin =~ /t\/builder\b/) {
+    $test_dir = 't/builder';
+  }
+  elsif ($FindBin::Bin =~ /t\/default\b/) {
+    $test_dir = 't/default';
+  }
+  elsif ($FindBin::Bin =~ /t\/precompile\b/) {
     $test_dir = 't/precompile';
     $ENV{SPVM_TEST_PRECOMPILE} = 1;
   }
+  elsif ($FindBin::Bin =~ /t\/spvmcc\b/) {
+    $test_dir = 't/spvmcc';
+  }
   else {
-    $test_dir = 't/default';
+    die "\"$FindBin::Bin\" is an invalid test directory";
   }
   
   my $test_lib_dir = "$test_dir/lib";
@@ -26,9 +35,3 @@ sub import {
 }
 
 1;
-
-=pod
-
-=DESCRITPION
-
-if test scritp file is in precompile directory, precompile test is automatically on.

@@ -18,17 +18,17 @@ use SPVM::Builder::Exe;
 
 my $file = 't/' . basename $0;
 
-use FindBin;
+my $test_dir = $ENV{SPVM_TEST_DIR};
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 {
-  my $exe_dir = 't/spvmcc/.spvm_build/work/exe';
+  my $exe_dir = "$build_dir/work/exe";
   mkpath $exe_dir;
   
   my $class_name = 'MyExe';
-  my $build_dir = 't/spvmcc/.spvm_build';
-  my $module_dirs = [map { "$_/SPVM" } 't/spvmcc/lib', @INC];
+  my $module_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
-  my $config_file = 't/spvmcc/myexe.config';
+  my $config_file = "$test_dir/myexe.config";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     class_name => $class_name,
@@ -49,7 +49,7 @@ use FindBin;
     ok($link_info->class_name, 'TestCase::NativeAPI2');
     ok($link_info->ld, $config->ld);
     ok($link_info->ldflags, $config->ldflags);
-    like($link_info->output_file, qr|t/spvmcc/.spvm_build/work/myexe$Config{exe_ext}|);
+    like($link_info->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
     my $is_object_file_infos = 1;
     for my $object_file_info (@{$link_info->object_file_infos}) {
       unless ($object_file_info->isa('SPVM::Builder::ObjectFileInfo')) {
@@ -74,12 +74,11 @@ use FindBin;
 
 # Exe name contain sub directory
 {
-  my $exe_dir = 't/spvmcc/.spvm_build/work/exe';
+  my $exe_dir = "$test_dir/.spvm_build/work/exe";
   mkpath $exe_dir;
   
   my $class_name = 'MyExe::Foo::Bar';
-  my $build_dir = 't/spvmcc/.spvm_build';
-  my $module_dirs = [map { "$_/SPVM" } 't/spvmcc/lib', @INC];
+  my $module_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
