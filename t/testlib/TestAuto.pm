@@ -12,29 +12,6 @@ sub import {
   my $test_dir;
   if ($FindBin::Bin =~ /\/precompile$/) {
     $test_dir = 't/precompile';
-    
-    # Set build directory
-    my $test_lib_dir = "$test_dir/lib";
-    my $test_lib_dir_re = quotemeta($test_lib_dir);
-    
-    find(
-      {
-        wanted => sub {
-          my $class_name = $File::Find::name;
-          if ($class_name =~ /\.spvm$/) {
-            $class_name =~ s|$test_lib_dir_re||;
-            $class_name =~ s|^/SPVM/||;
-            $class_name =~ s|/|::|g;
-            $class_name =~ s|\.spvm$||;
-            
-            SPVM::Precompile->import($class_name);
-          }
-        },
-        no_chdir => 1,
-      },
-      $test_lib_dir
-    );
-
     $ENV{SPVM_TEST_PRECOMPILE} = 1;
   }
   else {
