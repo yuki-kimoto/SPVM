@@ -598,6 +598,17 @@ use Test::More;
   }
 }
 
+# Dist type is undef type
+{
+  # Source type is object type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; undef = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
