@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use Config;
 
+use FindBin;
+
 use Test::More;
 use Time::HiRes 'sleep';
 
@@ -14,7 +16,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 # Wait 2 seconds because the time in 1 secend is not detected.
 my $wait_time = 1.1;
 
-my $compile_native_api_prgoram = "$^X -Mblib $test_dir/native_api/compile_native_api.pl";
+my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
 my $module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
 unless (-f $module_file) {
