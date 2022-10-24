@@ -6,8 +6,6 @@ use warnings;
 
 use Test::More;
 
-use FindBin;
-
 use SPVM 'TestCase::NativeAPICpp';
 
 # Start objects count

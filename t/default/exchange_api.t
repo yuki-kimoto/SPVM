@@ -6,7 +6,6 @@ use warnings;
 use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
-use FindBin;
 use POSIX();
 use Encode 'encode';
 
@@ -14,7 +13,6 @@ use Test::More;
 
 my $file = basename $0;
 
-use FindBin;
 use Encode 'decode', 'encode';
 
 use SPVM 'TestCase'; my $use_test_line = __LINE__;

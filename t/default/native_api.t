@@ -6,7 +6,6 @@ use warnings;
 
 use Test::More;
 
-use FindBin;
 use Config;
 use Errno;
 
