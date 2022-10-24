@@ -7,10 +7,6 @@ use Devel::Peek;
 
 use Test::More;
 
-
-use FindBin;
-use lib "$FindBin::Bin/lib";
-
 use SPVM 'TestCase::Dump';
 
 # Start objects count

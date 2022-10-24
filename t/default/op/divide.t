@@ -6,13 +6,7 @@ use warnings;
 
 use Test::More;
 
-
-use FindBin;
-use lib "$FindBin::Bin/lib";
-
 use SPVM 'TestCase::Divide';
-
-
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

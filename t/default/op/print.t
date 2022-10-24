@@ -3,7 +3,6 @@ use TestAuto;
 
 use strict;
 use warnings;
-use FindBin;
 use File::Path 'mkpath';
 
 use Test::More;
@@ -13,7 +12,7 @@ use SPVM 'TestCase::Print';
 
 
 
-my $test_tmp_dir = "$FindBin::Bin/../../test_files_tmp";
+my $test_tmp_dir = "t/test_files_tmp";
 
 my $script_file = "$test_tmp_dir/print-script.pl";
 my $output_file = "$test_tmp_dir/print-output.txt";
@@ -29,7 +28,6 @@ use TestAuto;
 
 use strict;
 use warnings;
-use FindBin;
 
 use SPVM 'TestCase::Print';
 
