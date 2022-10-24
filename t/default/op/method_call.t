@@ -9,7 +9,7 @@ use Test::More;
 
 use SPVM 'TestCase::Method';
 
-
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -202,7 +202,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Check precompile module file
   {
-    my $precompile_module_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
+    my $precompile_module_file = "$build_dir/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
     ok(-f $precompile_module_file);
   }
   

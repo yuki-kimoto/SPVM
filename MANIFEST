@@ -690,7 +690,6 @@ t/default/literal_string.t
 t/default/literal_undef.t
 t/default/local_var.t
 t/default/logical_operator.t
-t/default/method.t
 t/default/module/Array.t
 t/default/module/Bool.t
 t/default/module/Byte.t
@@ -740,6 +739,7 @@ t/default/op/dump.t
 t/default/op/error_code.t
 t/default/op/is_type.t
 t/default/op/isa.t
+t/default/op/method_call.t
 t/default/op/multiply.t
 t/default/op/new.t
 t/default/op/print.t
