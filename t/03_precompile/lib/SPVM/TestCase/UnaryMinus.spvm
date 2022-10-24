@@ -1,0 +1,88 @@
+class TestCase::UnaryMinus : precompile {
+  use Fn;
+  use Array;
+
+  static method unary_minus_byte : int () {
+    my $value = -(byte)Fn->INT8_MAX();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->INT8_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method unary_minus_short : int () {
+    my $value = -(short)Fn->INT16_MAX();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->INT16_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method unary_minus_int : int () {
+    my $value = -Fn->INT32_MAX();
+    
+    unless ($value isa int) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->INT32_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method unary_minus_long : int () {
+    my $value = -Fn->INT64_MAX();
+    
+    unless ($value isa long) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->INT64_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method unary_minus_float : int () {
+    my $value = -Fn->FLT_MAX();
+    
+    unless ($value isa float) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->FLT_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  static method unary_minus_double : int () {
+    my $value = -Fn->DBL_MAX();
+    
+    unless ($value isa double) {
+      return 0;
+    }
+    
+    unless ($value == -Fn->DBL_MAX()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

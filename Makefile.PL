@@ -119,7 +119,7 @@ WriteMakefile(
     OBJECT            => '$(O_FILES)', # link all the C files too
     INC => $inc,
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/default/.spvm_build t/precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
+    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/default/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
     DEFINE => "@defines -o \$@",
     META_MERGE => {
         'meta-spec' => { version => 2 },
@@ -187,17 +187,17 @@ sub MY::postamble {
           push @test_files, $rel_path;
         }
       },
-      "$FindBin::Bin/t/default"
+      "$FindBin::Bin/t/02_vm"
     );
     my $test_files_str = join(' ', @test_files);
     
-    my $time_stamp_file = "$FindBin::Bin/t/precompile/time_stamp.txt";
+    my $time_stamp_file = "$FindBin::Bin/t/03_precompile/time_stamp.txt";
     
     $make_rule .= "dynamic :: $time_stamp_file\n";
     $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
     $make_rule .= "$time_stamp_file :: $test_files_str\n";
-    $make_rule .= "\tperl t/utils/copy_default_to_precompile.pl\n";
+    $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
   }
   
   return $make_rule;

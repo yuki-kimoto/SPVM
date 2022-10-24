@@ -1,0 +1,21 @@
+class TestCase::Module::Int : precompile {
+  use Fn;
+  use Array;
+  static method basic : int () {
+    my $oval = Int->new(Fn->INT32_MIN());
+    my $value1 = $oval->value;
+    
+    unless ($value1 == Fn->INT32_MIN()) {
+      return 0;
+    }
+
+    $oval->set_value(5);
+    
+    unless ($oval->value == 5) {
+      return 0;
+    }
+    
+    
+    return 1;
+  }
+}

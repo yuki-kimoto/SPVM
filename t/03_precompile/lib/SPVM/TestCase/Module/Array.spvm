@@ -1,0 +1,4490 @@
+class TestCase::Module::Array : precompile {
+  use Array;
+  use TestCase::Minimal;
+  use Point;
+  use EqualityChecker::Address;
+  use Fn;
+  
+  static method copy_byte : int () {
+    # Copy array
+    {
+      my $array = [(byte)1, 2, Fn->BYTE_MIN()];
+      my $array_out = Array->copy_byte($array);
+      
+      unless ($array isa byte[]) {
+        return 0;
+      }
+      unless ($array->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->BYTE_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19];
+      my $range = Array->copy_byte($array, 0, 7);
+      unless (Array->equals_byte($range, [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19];
+      my $range = Array->copy_byte($array, 1, 3);
+      unless (Array->equals_byte($range, [(byte)-7, 9, Fn->BYTE_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_byte([(byte)5, -7, 9], 1, -1);
+      unless (Array->equals_byte($range, [(byte)-7, 9])) {
+        return 0;
+      }
+    }
+
+    {
+      my $range = Array->copy_byte([(byte)5, -7, 9], 1);
+      unless (Array->equals_byte($range, [(byte)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_byte(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_byte([(byte)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_byte([(byte)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_double : int () {
+    # Copy array
+    {
+      my $array = [(double)0.5, 0.25, Fn->DOUBLE_MIN()];
+      my $array_out = Array->copy_double($array);
+      
+      unless ($array isa double[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 0.5) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 0.25) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->DOUBLE_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19];
+      my $range = Array->copy_double($array, 0, 7);
+      unless (Array->equals_double($range, [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19];
+      my $range = Array->copy_double($array, 1, 3);
+      unless (Array->equals_double($range, [(double)-7, 9, Fn->DOUBLE_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_double([(double)5, -7, 9], 1, -1);
+      unless (Array->equals_double($range, [(double)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_double([(double)5, -7, 9], 1);
+      unless (Array->equals_double($range, [(double)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_double(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_double([(double)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_double([(double)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_float : int () {
+    # Copy array
+    {
+      my $array = [(float)0.5f, 0.25f, Fn->FLOAT_MIN()];
+      my $array_out = Array->copy_float($array);
+      
+      unless ($array isa float[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 0.5) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 0.25) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->FLOAT_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19];
+      my $range = Array->copy_float($array, 0, 7);
+      unless (Array->equals_float($range, [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19];
+      my $range = Array->copy_float($array, 1, 3);
+      unless (Array->equals_float($range, [(float)-7, 9, Fn->FLOAT_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_float([(float)5, -7, 9], 1, -1);
+      unless (Array->equals_float($range, [(float)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_float([(float)5, -7, 9], 1);
+      unless (Array->equals_float($range, [(float)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_float(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_float([(float)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_float([(float)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_int : int () {
+    # Copy array
+    {
+      my $array = [(int)1, 2, Fn->INT_MIN()];
+      my $array_out = Array->copy_int($array);
+      
+      unless ($array isa int[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->INT_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19];
+      my $range = Array->copy_int($array, 0, 7);
+      unless (Array->equals_int($range, [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19];
+      my $range = Array->copy_int($array, 1, 3);
+      unless (Array->equals_int($range, [(int)-7, 9, Fn->INT_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_int([(int)5, -7, 9], 1, -1);
+      unless (Array->equals_int($range, [(int)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_int([(int)5, -7, 9], 1);
+      unless (Array->equals_int($range, [(int)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_int(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_int([(int)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_int([(int)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_long : int () {
+    # Copy array
+    {
+      my $array = [(long)1, 2, Fn->LONG_MIN()];
+      my $array_out = Array->copy_long($array);
+      
+      unless ($array isa long[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->LONG_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19];
+      my $range = Array->copy_long($array, 0, 7);
+      unless (Array->equals_long($range, [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19];
+      my $range = Array->copy_long($array, 1, 3);
+      unless (Array->equals_long($range, [(long)-7, 9, Fn->LONG_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_long([(long)5, -7, 9], 1, -1);
+      unless (Array->equals_long($range, [(long)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_long([(long)5, -7, 9], 1);
+      unless (Array->equals_long($range, [(long)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_long(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_long([(long)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_long([(long)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_object : int () {
+    # Copy array
+    {
+      my $array = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT_MIN())];
+      my $array_out = Array->copy_object($array, method : object ($obj : object) {
+        my $int_obj = (Int)$obj;
+        my $new_int_obj = Int->new($int_obj->value);
+        return $new_int_obj;
+      });
+      
+      unless ($array isa object[]) {
+        return 0;
+      }
+      
+      if ($array->[0] == $array_out->[0]) {
+        return 0;
+      }
+      
+      if ($array->[1] == $array_out->[1]) {
+        return 0;
+      }
+      
+      if ($array->[2] == $array_out->[2]) {
+        return 0;
+      }
+      
+      unless ((int)$array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ((int)$array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ((int)$array_out->[2] == Fn->INT_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array != $array_out) {
+        return 0;
+      }
+    }
+    
+    # Copy address
+    {
+      my $value0 = Int->new(1);
+      my $array = [(object)$value0];
+      my $array_out = Array->copy_object($array, undef);
+      unless ($array_out->[0] == $value0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object($array, undef, 0, 4);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object($array, undef, 0, -1);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object($array, undef, 0);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object($array, undef, 1, 2);
+      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+
+
+    # Exception
+    {
+      {
+        eval { Array->copy_object(undef, undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_object([(object)5, -7, 9], undef, -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_object([(object)5, -7, 9], undef, 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_object_address : int () {
+    
+    # Copy address
+    {
+      my $value0 = Int->new(1);
+      my $array = [(object)$value0];
+      my $array_out = Array->copy_object_address($array);
+      unless (@$array_out == 1) {
+        return 0;
+      }
+      unless ($array_out->[0] == $value0) {
+        return 0;
+      }
+    }
+    
+
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object_address($array, 0, 4);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object_address($array, 0, -1);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object_address($array, 0);
+      unless (Array->equals_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $array = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])Array->copy_object_address($array, 1, 2);
+      unless (Array->equals_object($range, [$minimal2, $minimal3], EqualityChecker::Address->new)) {
+        return 0;
+      }
+    }
+
+    # Exception
+    {
+      {
+        eval { Array->copy_object_address(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_object_address([(object)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_object_address([(object)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_short : int () {
+    # Copy array
+    {
+      my $array = [(short)1, 2, Fn->SHORT_MIN()];
+      my $array_out = Array->copy_short($array);
+
+      unless ($array->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array->[2] == Fn->SHORT_MIN()) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19];
+      my $range = Array->copy_short($array, 0, 7);
+      unless (Array->equals_short($range, [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19];
+      my $range = Array->copy_short($array, 1, 3);
+      unless (Array->equals_short($range, [(short)-7, 9, Fn->SHORT_MIN()])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_short([(short)5, -7, 9], 1, -1);
+      unless (Array->equals_short($range, [(short)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $range = Array->copy_short([(short)5, -7, 9], 1);
+      unless (Array->equals_short($range, [(short)-7, 9])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_short(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_short([(short)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_short([(short)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_string : int () {
+    # Copy array
+    {
+      my $value0 = "abc";
+      my $array = [$value0, "def", "hij"];
+      my $array_out = Array->copy_string($array);
+      
+      unless ($value0 != $array_out->[0]) {
+        return 0;
+      }
+      unless ($array->[0] eq $array_out->[0]) {
+        return 0;
+      }
+      unless ($array->[1] eq $array_out->[1]) {
+        return 0;
+      }
+      unless ($array->[2] eq $array_out->[2]) {
+        return 0;
+      }
+      
+      unless ($array->[0] != $array_out->[0]) {
+        return 0;
+      }
+      
+      unless ($array->[1] != $array_out->[1]) {
+        return 0;
+      }
+      
+      unless ($array->[2] != $array_out->[2]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string($array, 0, 7);
+      unless ($value0 != $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string($array, 0, -1);
+      unless ($value0 != $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string($array, 0);
+      unless ($value0 != $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $array = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string($array, 1, 3);
+      unless (Array->equals_string($range, ["b", "c", "d"])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_string(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_string([(string)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_string([(string)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method copy_string_address : int () {
+    # Copy array
+    {
+      my $value0 = "abc";
+      my $array = [$value0, "def", "hij"];
+      my $array_out = Array->copy_string_address($array);
+      
+      unless ($value0 == $array_out->[0]) {
+        return 0;
+      }
+      unless ($array->[0] == $array_out->[0]) {
+        return 0;
+      }
+      unless ($array->[1] == $array_out->[1]) {
+        return 0;
+      }
+      unless ($array->[2] == $array_out->[2]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string_address($array, 0, 7);
+      unless ($value0 == $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string_address($array, 0, -1);
+      unless ($value0 == $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $value0 = "a";
+      my $array = [$value0, "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string_address($array, 0);
+      unless ($value0 == $range->[0]) {
+        return 0;
+      }
+      unless (Array->equals_string($range, [$value0, "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $array = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Array->copy_string_address($array, 1, 3);
+      unless (Array->equals_string($range, ["b", "c", "d"])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->copy_string_address(undef, 0, 7); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_string_address([(string)5, -7, 9], -1, 1); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->copy_string_address([(string)5, -7, 9], 2, 2); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+  
+  static method dump_unsigned_byte : int () {
+    # Dump array
+    {
+      my $array = [(byte)1, 2, -1, Fn->UBYTE_MAX];
+      
+      my $dump = Array->dump_unsigned_byte($array);
+      
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  255,\n  255\n] : byte[](")) {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Array->dump_unsigned_byte(undef);
+      
+      unless ($dump eq "undef") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method dump_unsigned_int : int () {
+    # Dump array
+    {
+      my $array = [(int)1, 2, -1, Fn->UINT_MAX];
+      
+      my $dump = Array->dump_unsigned_int($array);
+      
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  4294967295,\n  4294967295\n] : int[](")) {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Array->dump_unsigned_int(undef);
+      
+      unless ($dump eq "undef") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method dump_unsigned_long : long () {
+    # Dump array
+    {
+      my $array = [(long)1, 2, -1, Fn->ULONG_MAX];
+      
+      my $dump = Array->dump_unsigned_long($array);
+      
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n] : long[](")) {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Array->dump_unsigned_long(undef);
+      
+      unless ($dump eq "undef") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method dump_unsigned_short : int () {
+    # Dump array
+    {
+      my $array = [(short)1, 2, -1, Fn->USHORT_MAX];
+      
+      my $dump = Array->dump_unsigned_short($array);
+      
+      unless (Fn->contains($dump, "[\n  1,\n  2,\n  65535,\n  65535\n] : short[](")) {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Array->dump_unsigned_short(undef);
+      
+      unless ($dump eq "undef") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_byte : int () {
+    my $array1 = [(byte)0, 1, Fn->BYTE_MIN()];
+    my $array2 = [(byte)0, 1, Fn->BYTE_MIN()];
+    my $array3 = [(byte)0, 1];
+    my $array4 = [(byte)0, 1, 2];
+    {
+      my $is_equals = Array->equals_byte($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_byte($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_byte($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_byte(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_byte($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_byte(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_double : int () {
+    my $array1 = [0.0, 1.5, Fn->DOUBLE_MIN()];
+    my $array2 = [0.0, 1.5, Fn->DOUBLE_MIN()];
+    my $array3 = [0.0, 1.5];
+    my $array4 = [(double)0.0, 1.5, 0.5];
+
+    {
+      my $is_equals = Array->equals_double($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_double($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_double($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_double(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_double($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_double(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_float : int () {
+    my $array1 = [0.0f, 1.5f, Fn->FLOAT_MIN()];
+    my $array2 = [0.0f, 1.5f, Fn->FLOAT_MIN()];
+    my $array3 = [0.0f, 1.5f];
+    my $array4 = [(float)0.0f, 1.5f, 0.5f];
+
+    {
+      my $is_equals = Array->equals_float($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_float($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_float($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_float(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_float($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_float(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_int : int () {
+    my $array1 = [(int)0, 1, Fn->INT_MIN()];
+    my $array2 = [(int)0, 1, Fn->INT_MIN()];
+    my $array3 = [(int)0, 1];
+    my $array4 = [(int)0, 1, 2];
+
+    {
+      my $is_equals = Array->equals_int($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_int($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_int($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_int(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_int($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_int(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_long : int () {
+    my $array1 = [(long)0, 1, Fn->LONG_MIN()];
+    my $array2 = [(long)0, 1, Fn->LONG_MIN()];
+    my $array3 = [(long)0, 1];
+    my $array4 = [(long)0, 1, 2];
+
+    {
+      my $is_equals = Array->equals_long($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_long($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_long($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_long(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_long($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_long(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_object : int () {
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      my $equality_checker = method : int ($object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+
+        if ($minimal1 == $minimal2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      };
+
+      {
+        my $is_equals = Array->equals_object($array1, $array2, $equality_checker);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, $equality_checker);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, $equality_checker);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, $equality_checker);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    # Equality checker is undef
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      {
+        my $is_equals = Array->equals_object($array1, $array2, undef);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, undef);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, undef);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, undef);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    # Equality checker is EqualityChecker::Address
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      {
+        my $is_equals = Array->equals_object($array1, $array2, EqualityChecker::Address->new);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array3, EqualityChecker::Address->new);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array4, EqualityChecker::Address->new);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object($array1, $array5, EqualityChecker::Address->new);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method equals_object_address : int () {
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+      my $array1 = [$minimal1, $minimal2, $minimal3];
+      my $array2 = [$minimal1, $minimal2, $minimal3];
+      my $array3 = [$minimal1, $minimal2];
+      my $array4 = [$minimal1, $minimal2, $minimal4];
+      my $array5 = [(object)$minimal1, $minimal2, $minimal3];
+
+      {
+        my $is_equals = Array->equals_object_address($array1, $array2);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array3);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array4);
+        if ($is_equals) {
+          return 0;
+        }
+      }
+      {
+        my $is_equals = Array->equals_object_address($array1, $array5);
+        unless ($is_equals) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
+  static method equals_short : int () {
+    my $array1 = [(short)0, 1, Fn->SHORT_MIN()];
+    my $array2 = [(short)0, 1, Fn->SHORT_MIN()];
+    my $array3 = [(short)0, 1];
+    my $array4 = [(short)0, 1, 2];
+
+    {
+      my $is_equals = Array->equals_short($array1, $array2);
+
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_short($array1, $array3);
+
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_short($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_short(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_short($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_short(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_string : int () {
+    my $array1 = ["abc", "def", "ghi"];
+    my $array2 = ["abc", "def", "ghi"];
+    my $array3 = ["abc", "def"];
+    my $array4 = ["abc", "def", "xxx"];
+
+    {
+      my $is_equals = Array->equals_string($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_string(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method equals_string_address : int () {
+    my $array1 = ["abc", "def", "ghi"];
+    my $array2 = [$array1->[0], $array1->[1], $array1->[2]];
+    my $array3 = [$array1->[0], $array1->[1]];
+    my $array4 = [$array1->[0], $array1->[1], "xxx"];
+    
+    {
+      my $is_equals = Array->equals_string_address($array1, $array2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string_address($array1, $array3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = Array->equals_string_address($array1, $array4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = Array->equals_string_address(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string_address($array1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = Array->equals_string_address(undef, $array1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method memcpy_byte : int () {
+    
+    # Copy
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memcpy_byte($dest, 0, $source, 0, 3);
+      unless (Array->equals_byte($dest, [(byte)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memcpy_byte($dest, 1, $source, 0, 3);
+      unless (Array->equals_byte($dest, [(byte)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5, 9];
+      Array->memcpy_byte($dest, 1, $source, 1, 2);
+      unless (Array->equals_byte($dest, [(byte)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memcpy_byte($dest, 0, $source, 0, 0);
+      unless (Array->equals_byte($dest, [(byte)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        eval { Array->memcpy_byte($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memcpy_byte($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memcpy_double : int () {
+    
+    # Copy
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memcpy_double($dest, 0, $source, 0, 3);
+      unless (Array->equals_double($dest, [(double)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memcpy_double($dest, 1, $source, 0, 3);
+      unless (Array->equals_double($dest, [(double)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5, 9];
+      Array->memcpy_double($dest, 1, $source, 1, 2);
+      unless (Array->equals_double($dest, [(double)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memcpy_double($dest, 0, $source, 0, 0);
+      unless (Array->equals_double($dest, [(double)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        eval { Array->memcpy_double($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memcpy_double($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  static method memcpy_float : int () {
+    
+    # Copy
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memcpy_float($dest, 0, $source, 0, 3);
+      unless (Array->equals_float($dest, [(float)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memcpy_float($dest, 1, $source, 0, 3);
+      unless (Array->equals_float($dest, [(float)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5, 9];
+      Array->memcpy_float($dest, 1, $source, 1, 2);
+      unless (Array->equals_float($dest, [(float)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memcpy_float($dest, 0, $source, 0, 0);
+      unless (Array->equals_float($dest, [(float)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        eval { Array->memcpy_float($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memcpy_float($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  static method memcpy_int : int () {
+    
+    # Copy
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memcpy_int($dest, 0, $source, 0, 3);
+      unless (Array->equals_int($dest, [(int)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memcpy_int($dest, 1, $source, 0, 3);
+      unless (Array->equals_int($dest, [(int)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5, 9];
+      Array->memcpy_int($dest, 1, $source, 1, 2);
+      unless (Array->equals_int($dest, [(int)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memcpy_int($dest, 0, $source, 0, 0);
+      unless (Array->equals_int($dest, [(int)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception
+    {
+      {
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        eval { Array->memcpy_int($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memcpy_int($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  static method memcpy_long : int () {
+    
+    # Copy
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memcpy_long($dest, 0, $source, 0, 3);
+      unless (Array->equals_long($dest, [(long)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memcpy_long($dest, 1, $source, 0, 3);
+      unless (Array->equals_long($dest, [(long)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5, 9];
+      Array->memcpy_long($dest, 1, $source, 1, 2);
+      unless (Array->equals_long($dest, [(long)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memcpy_long($dest, 0, $source, 0, 0);
+      unless (Array->equals_long($dest, [(long)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(long)1, 3, 5];
+      eval { Array->memcpy_long(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception
+    {
+      {
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        eval { Array->memcpy_long($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memcpy_long($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memcpy_object_address : int () {
+    
+    # Copy
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memcpy_object_address($dest, 0, $source, 0, 3);
+      unless ($dest->[0] == $point0) {
+        return 0;
+      }
+      unless ($dest->[1] == $point1) {
+        return 0;
+      }
+      unless ($dest->[2] == $point2) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memcpy_object_address($dest, 1, $source, 0, 3);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == $point0) {
+        return 0;
+      }
+      unless ($dest->[2] == $point1) {
+        return 0;
+      }
+      unless ($dest->[3] == $point2) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memcpy_object_address($dest, 1, $source, 1, 2);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == $point1) {
+        return 0;
+      }
+      unless ($dest->[2] == $point2) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memcpy_object_address($dest, 0, $source, 0, 0);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == undef) {
+        return 0;
+      }
+      unless ($dest->[2] == undef) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+  
+  static method memcpy_short : int () {
+    
+    # Copy
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memcpy_short($dest, 0, $source, 0, 3);
+      unless (Array->equals_short($dest, [(short)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memcpy_short($dest, 1, $source, 0, 3);
+      unless (Array->equals_short($dest, [(short)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5, 9];
+      Array->memcpy_short($dest, 1, $source, 1, 2);
+      unless (Array->equals_short($dest, [(short)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memcpy_short($dest, 0, $source, 0, 0);
+      unless (Array->equals_short($dest, [(short)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        eval { Array->memcpy_short($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memcpy_short($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memcpy_string_address : int () {
+    
+    # Copy
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memcpy_string_address($dest, 0, $source, 0, 3);
+      unless (Array->equals_string($dest, [(string)1, 3, 5, undef])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memcpy_string_address($dest, 1, $source, 0, 3);
+      unless (Array->equals_string($dest, [(string)undef, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5, 9];
+      Array->memcpy_string_address($dest, 1, $source, 1, 2);
+      unless (Array->equals_string($dest, [(string)undef, 3, 5, undef])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memcpy_string_address($dest, 0, $source, 0, 0);
+      unless (Array->equals_string($dest, [(string)undef, undef, undef, undef])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memmove_byte : int () {
+    
+    # Copy
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memmove_byte($dest, 0, $source, 0, 3);
+      unless (Array->equals_byte($dest, [(byte)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memmove_byte($dest, 1, $source, 0, 3);
+      unless (Array->equals_byte($dest, [(byte)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5, 9];
+      Array->memmove_byte($dest, 1, $source, 1, 2);
+      unless (Array->equals_byte($dest, [(byte)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      Array->memmove_byte($dest, 0, $source, 0, 0);
+      unless (Array->equals_byte($dest, [(byte)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(byte)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_byte($dest, 0, $dest, 1, 9);
+      unless (Array->equals_byte($dest, [(byte)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        eval { Array->memmove_byte($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new byte[4];
+        my $source = [(byte)1, 3, 5];
+        eval { Array->memmove_byte($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+  
+    return 1;
+  }
+  
+  static method memmove_double : int () {
+    
+    # Copy
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memmove_double($dest, 0, $source, 0, 3);
+      unless (Array->equals_double($dest, [(double)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memmove_double($dest, 1, $source, 0, 3);
+      unless (Array->equals_double($dest, [(double)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5, 9];
+      Array->memmove_double($dest, 1, $source, 1, 2);
+      unless (Array->equals_double($dest, [(double)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      Array->memmove_double($dest, 0, $source, 0, 0);
+      unless (Array->equals_double($dest, [(double)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(double)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_double($dest, 0, $dest, 1, 9);
+      unless (Array->equals_double($dest, [(double)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        eval { Array->memmove_double($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memmove_double($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memmove_float : int () {
+    
+    # Copy
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memmove_float($dest, 0, $source, 0, 3);
+      unless (Array->equals_float($dest, [(float)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memmove_float($dest, 1, $source, 0, 3);
+      unless (Array->equals_float($dest, [(float)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5, 9];
+      Array->memmove_float($dest, 1, $source, 1, 2);
+      unless (Array->equals_float($dest, [(float)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      Array->memmove_float($dest, 0, $source, 0, 0);
+      unless (Array->equals_float($dest, [(float)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(float)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_float($dest, 0, $dest, 1, 9);
+      unless (Array->equals_float($dest, [(float)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        eval { Array->memmove_float($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memmove_float($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memmove_int : int () {
+    
+    # Copy
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memmove_int($dest, 0, $source, 0, 3);
+      unless (Array->equals_int($dest, [(int)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memmove_int($dest, 1, $source, 0, 3);
+      unless (Array->equals_int($dest, [(int)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5, 9];
+      Array->memmove_int($dest, 1, $source, 1, 2);
+      unless (Array->equals_int($dest, [(int)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      Array->memmove_int($dest, 0, $source, 0, 0);
+      unless (Array->equals_int($dest, [(int)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(int)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_int($dest, 0, $dest, 1, 9);
+      unless (Array->equals_int($dest, [(int)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        eval { Array->memmove_int($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memmove_int($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memmove_long : int () {
+    
+    # Copy
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memmove_long($dest, 0, $source, 0, 3);
+      unless (Array->equals_long($dest, [(long)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memmove_long($dest, 1, $source, 0, 3);
+      unless (Array->equals_long($dest, [(long)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5, 9];
+      Array->memmove_long($dest, 1, $source, 1, 2);
+      unless (Array->equals_long($dest, [(long)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      Array->memmove_long($dest, 0, $source, 0, 0);
+      unless (Array->equals_long($dest, [(long)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(long)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_long($dest, 0, $dest, 1, 9);
+      unless (Array->equals_long($dest, [(long)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        eval { Array->memmove_long($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memmove_long($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  static method memmove_object_address : int () {
+    
+    # Copy
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memmove_object_address($dest, 0, $source, 0, 3);
+      unless ($dest->[0] == $point0) {
+        return 0;
+      }
+      unless ($dest->[1] == $point1) {
+        return 0;
+      }
+      unless ($dest->[2] == $point2) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memmove_object_address($dest, 1, $source, 0, 3);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == $point0) {
+        return 0;
+      }
+      unless ($dest->[2] == $point1) {
+        return 0;
+      }
+      unless ($dest->[3] == $point2) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memmove_object_address($dest, 1, $source, 1, 2);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == $point1) {
+        return 0;
+      }
+      unless ($dest->[2] == $point2) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new object[4];
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $source = [$point0, $point1, $point2];
+      Array->memmove_object_address($dest, 0, $source, 0, 0);
+      unless ($dest->[0] == undef) {
+        return 0;
+      }
+      unless ($dest->[1] == undef) {
+        return 0;
+      }
+      unless ($dest->[2] == undef) {
+        return 0;
+      }
+      unless ($dest->[3] == undef) {
+        return 0;
+      }
+    }
+
+    # Duplicate
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $point3 = Point->new(7, 7);
+      my $dest = [$point0, $point1, $point2, $point3];
+      Array->memmove_object_address($dest, 0, $dest, 1, 3);
+      unless ($dest->[0] == $point1) {
+        return 0;
+      }
+      unless ($dest->[1] == $point2) {
+        return 0;
+      }
+      unless ($dest->[2] == $point3) {
+        return 0;
+      }
+      unless ($dest->[3] == $point3) {
+        return 0;
+      }
+    }
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(3, 3);
+      my $point2 = Point->new(5, 5);
+      my $point3 = Point->new(7, 7);
+      my $dest = [$point0, $point1, $point2, $point3];
+      Array->memmove_object_address($dest, 1, $dest, 0, 3);
+      unless ($dest->[0] == $point0) {
+        return 0;
+      }
+      unless ($dest->[1] == $point0) {
+        return 0;
+      }
+      unless ($dest->[2] == $point1) {
+        return 0;
+      }
+      unless ($dest->[3] == $point2) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        eval { Array->memmove_object_address($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memmove_object_address($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method memmove_short : int () {
+    
+    # Copy
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memmove_short($dest, 0, $source, 0, 3);
+      unless (Array->equals_short($dest, [(short)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memmove_short($dest, 1, $source, 0, 3);
+      unless (Array->equals_short($dest, [(short)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5, 9];
+      Array->memmove_short($dest, 1, $source, 1, 2);
+      unless (Array->equals_short($dest, [(short)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      Array->memmove_short($dest, 0, $source, 0, 0);
+      unless (Array->equals_short($dest, [(short)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(short)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_short($dest, 0, $dest, 1, 9);
+      unless (Array->equals_short($dest, [(short)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        eval { Array->memmove_short($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memmove_short($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memmove_string_address : int () {
+    
+    # Copy
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memmove_string_address($dest, 0, $source, 0, 3);
+      unless (Array->equals_string($dest, [(string)1, 3, 5, undef])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memmove_string_address($dest, 1, $source, 0, 3);
+      unless (Array->equals_string($dest, [(string)undef, 1, 3, 5])) {
+        return 0;
+      }
+    }
+    
+    # Copy with offset and length
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5, 9];
+      Array->memmove_string_address($dest, 1, $source, 1, 2);
+      unless (Array->equals_string($dest, [(string)undef, 3, 5, undef])) {
+        return 0;
+      }
+    }
+    
+    # Copy with 0 length
+    {
+      my $dest = new string[4];
+      my $source = [(string)1, 3, 5];
+      Array->memmove_string_address($dest, 0, $source, 0, 0);
+      unless (Array->equals_string($dest, [(string)undef, undef, undef, undef])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(string)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      Array->memmove_string_address($dest, 0, $dest, 1, 9);
+      unless (Array->equals_string($dest, [(string)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
+        unless (Fn->contains($@, "The destination must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
+        unless (Fn->contains($@, "The source must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
+        unless (Fn->contains($@, "The offset of the destination must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
+        unless (Fn->contains($@, "The offset of the source must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
+        unless (Fn->contains($@, "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
+        unless (Fn->contains($@, "The offset of the source + the length specified by the argument must be less than or equal to the length of the source")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memset_byte : int () {
+    
+    # Basic
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element, $offset, $length);
+      unless (Array->equals_byte($array, [(byte)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element, $offset, $length);
+      unless (Array->equals_byte($array, [(byte)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element, $offset, $length);
+      unless (Array->equals_byte($array, [(byte)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element, $offset, $length);
+      unless (Array->equals_byte($array, [(byte)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element, $offset);
+      unless (Array->equals_byte($array, [(byte)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      my $new_element = (byte)5;
+      Array->memset_byte($array, $new_element);
+      unless (Array->equals_byte($array, [(byte)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    # Exception
+    {
+      {
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memset_double : double () {
+    
+    # Basic
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element, $offset, $length);
+      unless (Array->equals_double($array, [(double)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element, $offset, $length);
+      unless (Array->equals_double($array, [(double)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element, $offset, $length);
+      unless (Array->equals_double($array, [(double)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element, $offset, $length);
+      unless (Array->equals_double($array, [(double)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element);
+      unless (Array->equals_double($array, [(double)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(double)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (double)5;
+      Array->memset_double($array, $new_element, $offset);
+      unless (Array->equals_double($array, [(double)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(double)1, 3, 5];
+        eval { Array->memset_double(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memset_double($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new double[4];
+        my $source = [(double)1, 3, 5];
+        eval { Array->memset_double($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method memset_float : float () {
+    
+    # Basic
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element, $offset, $length);
+      unless (Array->equals_float($array, [(float)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element, $offset, $length);
+      unless (Array->equals_float($array, [(float)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element, $offset, $length);
+      unless (Array->equals_float($array, [(float)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element, $offset, $length);
+      unless (Array->equals_float($array, [(float)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element);
+      unless (Array->equals_float($array, [(float)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(float)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (float)5;
+      Array->memset_float($array, $new_element, $offset);
+      unless (Array->equals_float($array, [(float)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(float)1, 3, 5];
+        eval { Array->memset_float(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memset_float($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new float[4];
+        my $source = [(float)1, 3, 5];
+        eval { Array->memset_float($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method memset_int : int () {
+    
+    # Basic
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element, $offset, $length);
+      unless (Array->equals_int($array, [(int)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element, $offset, $length);
+      unless (Array->equals_int($array, [(int)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element, $offset, $length);
+      unless (Array->equals_int($array, [(int)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element, $offset, $length);
+      unless (Array->equals_int($array, [(int)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element);
+      unless (Array->equals_int($array, [(int)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(int)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (int)5;
+      Array->memset_int($array, $new_element, $offset);
+      unless (Array->equals_int($array, [(int)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(int)1, 3, 5];
+        eval { Array->memset_int(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memset_int($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new int[4];
+        my $source = [(int)1, 3, 5];
+        eval { Array->memset_int($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method memset_long : long () {
+    
+    # Basic
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element, $offset, $length);
+      unless (Array->equals_long($array, [(long)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element, $offset, $length);
+      unless (Array->equals_long($array, [(long)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element, $offset, $length);
+      unless (Array->equals_long($array, [(long)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element, $offset, $length);
+      unless (Array->equals_long($array, [(long)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element);
+      unless (Array->equals_long($array, [(long)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(long)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (long)5;
+      Array->memset_long($array, $new_element, $offset);
+      unless (Array->equals_long($array, [(long)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(long)1, 3, 5];
+        eval { Array->memset_long(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memset_long($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new long[4];
+        my $source = [(long)1, 3, 5];
+        eval { Array->memset_long($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memset_object : object () {
+    
+    # Basic
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element, $offset, $length);
+      unless ($array->[0] == $point0) {
+        return 0;
+      }
+      unless ($array->[1] == undef) {
+        return 0;
+      }
+      unless ($array->[2] == undef) {
+        return 0;
+      }
+      unless ($array->[3] == $point3) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element, $offset, $length);
+      unless ($array->[0] == $point0) {
+        return 0;
+      }
+      unless ($array->[1] == $point1) {
+        return 0;
+      }
+      unless ($array->[2] == $point2) {
+        return 0;
+      }
+      unless ($array->[3] == $point3) {
+        return 0;
+      }
+    }
+    
+    # All
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element, $offset, $length);
+      unless ($array->[0] == undef) {
+        return 0;
+      }
+      unless ($array->[1] == undef) {
+        return 0;
+      }
+      unless ($array->[2] == undef) {
+        return 0;
+      }
+      unless ($array->[3] == undef) {
+        return 0;
+      }
+    }
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element, $offset, $length);
+      unless ($array->[0] == undef) {
+        return 0;
+      }
+      unless ($array->[1] == undef) {
+        return 0;
+      }
+      unless ($array->[2] == undef) {
+        return 0;
+      }
+      unless ($array->[3] == undef) {
+        return 0;
+      }
+    }
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element);
+      unless ($array->[0] == undef) {
+        return 0;
+      }
+      unless ($array->[1] == undef) {
+        return 0;
+      }
+      unless ($array->[2] == undef) {
+        return 0;
+      }
+      unless ($array->[3] == undef) {
+        return 0;
+      }
+    }
+    {
+      my $point0 = Point->new(1, 1);
+      my $point1 = Point->new(2, 2);
+      my $point2 = Point->new(3, 3);
+      my $point3 = Point->new(4, 4);
+      my $array = [$point0, $point1, $point2, $point3];
+      my $offset = 0;
+      my $new_element = (object)undef;
+      Array->memset_object($array, $new_element, $offset);
+      unless ($array->[0] == undef) {
+        return 0;
+      }
+      unless ($array->[1] == undef) {
+        return 0;
+      }
+      unless ($array->[2] == undef) {
+        return 0;
+      }
+      unless ($array->[3] == undef) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method memset_short : int () {
+    
+    # Basic
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element, $offset, $length);
+      unless (Array->equals_short($array, [(short)1, 5, 5, 4])) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element, $offset, $length);
+      unless (Array->equals_short($array, [(short)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # All
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element, $offset, $length);
+      unless (Array->equals_short($array, [(short)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = -1;
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element, $offset, $length);
+      unless (Array->equals_short($array, [(short)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element);
+      unless (Array->equals_short($array, [(short)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(short)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (short)5;
+      Array->memset_short($array, $new_element, $offset);
+      unless (Array->equals_short($array, [(short)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new short[4];
+        my $source = [(short)1, 3, 5];
+        eval { Array->memset_short($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
+  static method memset_string : int () {
+    
+    # Basic
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 2;
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element, $offset, $length);
+      unless (Array->equals_string($array, [(string)1, 5, 5, 4])) {
+        return 0;
+      }
+      unless ($array->[1] == $new_element) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $offset = 1;
+      my $length = 0;
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element, $offset, $length);
+      unless (Array->equals_string($array, [(string)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    # All
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $offset = 0;
+      my $length = @$array;
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element, $offset, $length);
+      unless (Array->equals_string($array, [(string)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $offset = 0;
+      my $length =-1;
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element, $offset, $length);
+      unless (Array->equals_string($array, [(string)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element);
+      unless (Array->equals_string($array, [(string)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(string)1, 2, 3, 4];
+      my $offset = 0;
+      my $new_element = (string)5;
+      Array->memset_string($array, $new_element, $offset);
+      unless (Array->equals_string($array, [(string)5, 5, 5, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object(undef, 0, 0, 3); };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object($dest, 0, -1, 3); };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { Array->memset_object($dest, 0, 2, 3); };
+        unless (Fn->contains($@, "The offset + the length specified by the argument must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method new_proto : int () {
+    {
+      my $minimals = new TestCase::Minimal[1];
+      my $new_object = Array->new_proto($minimals, 2);
+      unless ($new_object isa TestCase::Minimal[]) {
+        return 0;
+      }
+      my $new_minimals = (TestCase::Minimal[])$new_object;
+      unless (@$new_minimals == 2) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $minimals = new TestCase::Minimal[0];
+      my $new_object = Array->new_proto($minimals, 0);
+      unless ($new_object isa TestCase::Minimal[]) {
+        return 0;
+      }
+      my $new_minimals = (TestCase::Minimal[])$new_object;
+      unless (@$new_minimals == 0) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $source = [(string)1, 3, 5];
+        eval { my $new_object = Array->new_proto(undef, 2); };
+        unless (Fn->contains($@, "The prototype array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $dest = new string[4];
+        my $source = [(string)1, 3, 5];
+        eval { my $new_object = Array->new_proto(new TestCase::Minimal[0], -1); };
+        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+}

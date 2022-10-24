@@ -1,0 +1,5 @@
+class TestCase::Point_3f : mulnum_t {
+  has x : float;
+  has y : float;
+  has z : float;
+}

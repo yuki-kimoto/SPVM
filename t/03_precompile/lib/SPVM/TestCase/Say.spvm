@@ -1,0 +1,32 @@
+class TestCase::Say : precompile {
+
+  static method test_say : int () {
+    say "Hello";
+    
+    return 1;
+  }
+
+  static method test_say_newline : int () {
+    say "\n";
+    
+    return 1;
+  }
+
+  static method test_say_long_lines : int () {
+    say "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
+    
+    return 1;
+  }
+
+  static method test_say_empty : int () {
+    say "";
+    
+    return 1;
+  }
+  static method test_say_undef : int () {
+    my $str : string = undef;
+    say $str;
+    
+    return 1;
+  }
+}

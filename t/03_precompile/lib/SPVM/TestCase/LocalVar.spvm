@@ -1,0 +1,94 @@
+class TestCase::LocalVar : precompile {
+  
+  our $VAR_PREC : int;
+  
+  INIT {
+    $VAR_PREC = 11;
+  }
+
+  static method local_var_name : int () {
+
+    my $name = 1;
+    my $my_name = 2;
+    my ${name_brace} = 3;
+    my $_name = 4;
+    my $NAME = 5;
+    
+    unless ($name == 1) {
+      return 0;
+    }
+
+    unless ($my_name == 2) {
+      return 0;
+    }
+
+    unless (${name_brace} == 3) {
+      return 0;
+    }
+
+    unless ($name_brace == 3) {
+      return 0;
+    }
+
+    unless ($_name == 4) {
+      return 0;
+    }
+
+    unless ($NAME == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method var_brace : int () {
+    
+    my ${var} = 5;
+    
+    unless (${var} == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method local_var_upper_case : int () {
+    
+    my $VAR1 = 1;
+    
+    unless ($VAR1 == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method local_var_high_precidence_than_class_var : int () {
+    
+    my $VAR_PREC = 3;
+    
+    unless ($VAR_PREC == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method local_var_high_precidence_than_capture_var : int () {
+    
+    my $var = 13;
+    my $cb = [$var : int] method : int () {
+      
+      my $var = 5;
+      
+      return $var;
+    };
+    
+    unless ($cb->() == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

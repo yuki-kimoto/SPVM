@@ -1,0 +1,11 @@
+class TestCase::Callback::ImplementCallback2 : precompile {
+  use TestCase::Minimal;
+
+  static method new : TestCase::Callback::ImplementCallback2 () {
+    return new TestCase::Callback::ImplementCallback2;
+  }
+  
+  method : int ($var1 : int, $var2 : long) {
+    return 2;
+  }
+}

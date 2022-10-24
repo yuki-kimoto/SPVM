@@ -1,0 +1,59 @@
+class TestCase::ClassId : precompile {
+  use Point;
+  static method basic : int () {
+    
+    {
+      my $class_id_byte = class_id Byte;
+      my $class_id_short = class_id Short;
+      my $class_id_int = class_id Int;
+      my $class_id_long = class_id Long;
+      
+      unless ($class_id_byte + 1 == $class_id_short) {
+        return 0;
+      }
+      unless ($class_id_short + 1 == $class_id_int) {
+        return 0;
+      }
+      unless ($class_id_int + 1 == $class_id_long) {
+        return 0;
+      }
+      
+      unless ($class_id_long < 10) {
+        return 0;
+      }
+    }
+    
+    {
+      my $class_id_point = class_id Point;
+      if ($class_id_point < 0) {
+        return 0;
+      }
+    }
+    
+    # Error
+    {
+      my $class_id_error = class_id Error;
+      unless ($class_id_error == 1) {
+        return 0;
+      }
+    }
+    
+    # Error::System
+    {
+      my $class_id_error_system = class_id Error::System;
+      unless ($class_id_error_system == 2) {
+        return 0;
+      }
+    }
+
+    # Error::NotSupported
+    {
+      my $class_id_error_not_supported = class_id Error::NotSupported;
+      unless ($class_id_error_not_supported == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

@@ -1,0 +1,61 @@
+class TestCase::NativeAPI2 : precompile {
+
+  use Hash;
+  use StringList;
+
+  has first : rw TestCase::NativeAPI2;
+  has last : rw TestCase::NativeAPI2;
+  has sibparent : rw TestCase::NativeAPI2;
+  has moresib : rw byte;
+  has tag : rw string;
+  has id : rw string;
+  has style : rw Hash;
+  has classes : rw string[];
+  has text : rw string;
+  has calcurated_style : rw Hash;
+  has color : rw int;
+  has background_color : rw int;
+  has draw_left : rw int;
+  has draw_top : rw int;
+  has draw_width : rw int;
+  has draw_height : rw int;
+  has execution_order_before_z_index_sort : rw int;
+  has z_index : rw int;
+  
+  static method new : TestCase::NativeAPI2 () {
+    return new TestCase::NativeAPI2;
+  }
+  
+  static method spvm_extension2 : int () {
+    my $total = TestCase::NativeAPI2->mul(5, 3);
+    
+    if ($total == 15) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native static method mul : int ($num1 : int, $num2 : int);
+
+  native static method src_foo : int ();
+
+  native static method src_bar : int ();
+  
+  static method get_string_field : int () {
+    my $na = new TestCase::NativeAPI2;
+
+    $na->set_text("Hello");
+
+    $na->set_draw_left(1);
+    $na->set_draw_top(2);
+    $na->set_draw_width(3);
+    $na->set_draw_height(4);
+    
+    my $ret = $na->get_string_field_native;
+    
+    return $ret;
+  }
+  
+  native method get_string_field_native : int ();
+}

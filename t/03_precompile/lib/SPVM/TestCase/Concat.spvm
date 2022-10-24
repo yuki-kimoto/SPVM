@@ -1,0 +1,124 @@
+class TestCase::Concat : precompile {
+  static method concat_empty_string : int () {
+    {
+      my $text = "abc" . "";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "abc";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text .= "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text . "";
+    }
+    return 1;
+  }
+  
+  static method concat_string : int () {
+    
+    {
+      my $string = "abc" . "def";
+      unless ($string isa string) {
+        return 0;
+      }
+      unless ($string eq "abcdef") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abc" . (byte[])"def";
+      unless ($string isa string) {
+        return 0;
+      }
+      unless ($string eq "abcdef") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = (byte[])"abc" . "def";
+      unless ($string isa string) {
+        return 0;
+      }
+      unless ($string eq "abcdef") {
+        return 0;
+      }
+    }
+
+    
+    return 1;
+  }
+
+  static method concat_left_is_number : int () {
+    
+    my $string = 13 . "abc";
+    
+    unless ($string eq "13abc") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method concat_right_is_number : int () {
+    
+    my $string = "abc" . 0.25;
+    
+    unless ($string eq "abc0.25") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method concat_left_is_undef : int () {
+    
+    eval {
+      my $string : string = undef;
+      $string . "abc";
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method concat_right_is_undef : int () {
+    
+    eval {
+      my $string : string = undef;
+      "abc" . $string;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+
+    $@ = undef;
+    
+    return 1;
+  }
+}

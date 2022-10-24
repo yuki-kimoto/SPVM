@@ -1,0 +1,17 @@
+class TestCase::InterfaceType : interface_t {
+  interface Stringable;
+
+  required method interface_shared1 : string ($num : int);
+  
+  method interface_shared2 : string ($num : int);
+  
+  method to_string : string ();
+  
+  method call_to_string : string () {
+    return "call_to_string " . $self->to_string;
+  }
+
+  precompile method call_to_string_precompile : string () {
+    return "call_to_string_precompile " . $self->to_string;
+  }
+}

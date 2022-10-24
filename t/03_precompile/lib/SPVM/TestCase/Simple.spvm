@@ -1,0 +1,74 @@
+class TestCase::Simple : public {
+  use TestCase::Minimal;
+  
+  interface Stringable;
+  interface Cloneable;
+  interface TestCase::InterfaceType;
+  
+  has x : rw public int;
+  has y : rw public int;
+  
+  has byte_value : rw public byte;
+  has short_value : rw public short;
+  has int_value : rw public int;
+  has long_value : rw public long;
+  has float_value : rw public float;
+  has double_value : rw public double;
+  has object_value : rw public TestCase::Minimal;
+  has string_value : rw public string;
+
+  has minimal : rw public TestCase::Minimal;
+  
+  our $FOO : public rw int;
+  our $VAR_PRIVATE : private int;
+
+  method get_x : int () {
+    return $self->{x};
+  }
+
+  static method new : TestCase::Simple () {
+    return new TestCase::Simple;
+  }
+
+  static method new_xy : TestCase::Simple ($x : int, $y : int) {
+    
+    my $simple = new TestCase::Simple;
+    $simple->{x} = $x;
+    $simple->{y} = $y;
+    
+    return $simple;
+  }
+
+  static method import_method1 : int () {
+    return 1;
+  }
+
+  static method import_method2 : int () {
+    return 2;
+  }
+  
+  method to_string : string () {
+    my $x = $self->x;
+    my $y = $self->y;
+    
+    my $string = "($x,$y):Simple";
+    
+    return $string;
+  }
+
+  method clone : TestCase::Simple () {
+    my $new_simple = TestCase::Simple->new;
+    
+    my $x = $self->x;
+    my $y = $self->y;
+    
+    $new_simple->set_x($x);
+    $new_simple->set_y($y);
+    
+    return $new_simple;
+  }
+
+  method interface_shared1 : string ($num : int) {
+    return "interface_shared1 $num";
+  }
+}

@@ -1,0 +1,40 @@
+class TestCase::Minimal : public {
+
+  interface Stringable;
+  interface Cloneable;
+
+  has x : rw public int;
+  has y : rw public int;
+
+  method get_x : int () {
+    return $self->{x};
+  }
+
+  static method new : TestCase::Minimal () {
+    return new TestCase::Minimal;
+  }
+  
+  static method new_xy : TestCase::Minimal ($x : int, $y : int) {
+    
+    my $minimal = new TestCase::Minimal;
+    $minimal->{x} = $x;
+    $minimal->{y} = $y;
+    
+    return $minimal;
+  }
+  
+  method to_string : string () {
+    my $str = "(" . $self->{x} . "," . $self->{y} . ")";
+    
+    return $str;
+  }
+
+  method clone : object () {
+    my $new_minimal = TestCase::Minimal->new;
+    
+    $new_minimal->set_x($self->x);
+    $new_minimal->set_y($self->y);
+    
+    return $new_minimal;
+  }
+}

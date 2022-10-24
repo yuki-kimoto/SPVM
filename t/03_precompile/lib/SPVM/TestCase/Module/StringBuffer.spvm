@@ -1,0 +1,327 @@
+class TestCase::Module::StringBuffer : precompile {
+  use StringBuffer;
+  use Fn;
+  use Array;
+  
+  # Fields
+  static method fields : int () {
+    # length
+    {
+      my $buffer = StringBuffer->new;
+      
+      $buffer->push("a");
+      $buffer->push("bc");
+      
+      # length
+      my $length = $buffer->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    # value
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = $buffer->value;
+      $value->[0] = 'd';
+      
+      unless ($buffer->to_string eq "dbc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method new : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 3) {
+        return 0;
+      }
+      
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq "abc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method new_len : int () {
+    
+    {
+      my $buffer = StringBuffer->new_len(0);
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 0) {
+        return 0;
+      }
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $buffer= StringBuffer->new_len(3);
+      
+      unless ($buffer->to_string eq "\0\0\0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new_len(5);
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      unless ($buffer->length == 5) {
+        return 0;
+      }
+      unless ($buffer->capacity == 5) {
+        return 0;
+      }
+    }
+    {
+      eval { StringBuffer->new_len(-1); };
+      unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method push  : int () {
+    my $buffer = StringBuffer->new;
+    $buffer->push ("abc");
+    unless ($buffer->to_string eq "abc") {
+      return 0;
+    }
+    $buffer->push ("de");
+    unless ($buffer->to_string eq "abcde") {
+      return 0;
+    }
+    $buffer->push ("f");
+    unless ($buffer->to_string eq "abcdef") {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method push_char  : int () {
+    my $buffer = StringBuffer->new;
+    $buffer->push_char('a');
+    unless ($buffer->to_string eq "a") {
+      return 0;
+    }
+    $buffer->push_char('b');
+    unless ($buffer->to_string eq "ab") {
+      return 0;
+    }
+    $buffer->push_char('c');
+    unless ($buffer->to_string eq "abc") {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method append_copy_on_write : int () {
+    return 0;
+  }
+  
+  static method to_string : int () {
+    {
+      my $minimal_buf = StringBuffer->new;
+      $minimal_buf->push ("a");
+      unless ($minimal_buf->to_string eq "a") {
+        return 0;
+      }
+    }
+    {
+      my $large_buf = StringBuffer->new;
+      $large_buf->push ("b");
+      unless ($large_buf->to_string eq "b") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  
+  static method replace : int () {
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      $target->replace(1, 2, undef);
+      unless ($target->to_string eq "ad") {
+        return 0;
+      }
+    }
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      $target->replace(1, 2, "xyz");
+      unless ($target->to_string eq "axyzd") {
+        return 0;
+      }
+    }
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      $target->replace(0, 2, "xyz");
+      unless ($target->to_string eq "xyzcd") {
+        return 0;
+      }
+    }
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      $target->replace(2, 2, "xyz");
+      unless ($target->to_string eq "abxyz") {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      eval { $target->replace(-1, 3, "xyz"); };
+      unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = StringBuffer->new;
+      $target->push("abcd");
+      eval { $target->replace(2, 3, "xyz"); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
+        return 0;
+      }
+    }
+    {
+      my $target = StringBuffer->new;
+      $target->push("a");
+      $target->replace(1, 0, "xy");
+      unless ($target->to_string eq "axy") {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = StringBuffer->new;
+      $target->push("a");
+      eval { $target->replace(2, 0, "xy"); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = StringBuffer->new;
+      $target->push("a");
+      eval { $target->replace(1, 2, "xy"); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
+        return 0;
+      }
+    }
+    
+    {
+      my $target = StringBuffer->new;
+      $target->push("a");
+      eval { $target->replace(2, 2, "xy"); };
+      unless (Fn->contains($@, "The offset + the removing lenght must be less than or equal to the length of the string buffer")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $buffer = StringBuffer->new("a");
+      $buffer->reserve(4);
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+      $buffer->reserve(0);
+      unless ($buffer->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("abc");
+      my $value = $buffer->value;
+      my $string = $buffer->to_string;
+      $buffer->reserve(5);
+      unless ($buffer->capacity == 5) {
+        return 0;
+      }
+      
+      if ($buffer->value == $value) {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq $string) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method extra : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = $buffer->value;
+      
+      my $length = $buffer->length;
+      
+      $value->[0] = 'f';
+      
+      my $substr = Fn->substr($value, 0, $length);
+      
+      unless ($substr eq "fbc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

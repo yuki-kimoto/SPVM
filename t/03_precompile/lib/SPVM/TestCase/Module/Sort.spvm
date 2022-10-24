@@ -1,0 +1,1402 @@
+class TestCase::Module::Sort : precompile {
+  use Sort;
+  use Fn;
+  use Array;
+  use TestCase::Minimal;
+  
+  static method new_minimal : TestCase::Minimal ($x : int, $y : int) {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x($x);
+    $minimal->set_y($y);
+    
+    return $minimal;
+  }
+  
+  static method sort_byte : int () {
+    # Sort array by asc order
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_byte($array, [(byte)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long
+    {
+      my $array = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_byte($array, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(byte)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_byte($array, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort byte array by desc order
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_byte($array, [(byte)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_byte($array, [(byte)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(byte)5, 2, 3, 1, -10];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      }, 1, 3);
+      
+      unless (Array->equals_byte($array, [(byte)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(byte)5, 2, 3, 1];
+      
+      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_byte($array, [(byte)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_byte(undef, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(byte)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_byte_asc : int () {
+    # Sort array by asc order
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      Sort->sort_byte_asc($array);
+      
+      unless (Array->equals_byte($array, [(byte)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_byte_desc : int () {
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      Sort->sort_byte_desc($array);
+      
+      unless (Array->equals_byte($array, [(byte)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_double : int () {
+    # Sort array by asc order
+    {
+      my $array = [(double)2, 3, 1];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_double($array, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+    # Sort array by asc order more long
+    {
+      my $array = [(double)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_double($array, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(double)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_double($array, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort double array by desc order
+    {
+      my $array = [(double)2, 3, 1];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_double($array, [(double)3, 2, 1])) {
+        return 0;
+      }
+    }
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(double)2, 3, 1];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_double($array, [(double)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(double)5, 2, 3, 1, -10];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      }, 1, 3);
+      
+      unless (Array->equals_double($array, [(double)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(double)5, 2, 3, 1];
+      
+      Sort->sort_double($array, method : int ($a : double, $b : double) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_double($array, [(double)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_double(undef, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($array, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(double)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_double($array, method : int ($a : double, $b : double) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_double_asc : int () {
+    # Sort array by asc order
+    {
+      my $array = [(double)2, 3, 1];
+      
+      Sort->sort_double_asc($array);
+      
+      unless (Array->equals_double($array, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_double_desc : int () {
+    # Sort array by asc order
+    {
+      my $array = [(double)2, 3, 1];
+      
+      Sort->sort_double_asc($array);
+      
+      unless (Array->equals_double($array, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_float : int () {
+    # Sort array by asc order
+    {
+      my $array = [(float)2, 3, 1];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_float($array, [(float)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long
+    {
+      my $array = [(float)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_float($array, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(float)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_float($array, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort float array by desc order
+    {
+      my $array = [(float)2, 3, 1];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_float($array, [(float)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(float)2, 3, 1];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_float($array, [(float)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(float)5, 2, 3, 1, -10];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      }, 1, 3);
+      
+      unless (Array->equals_float($array, [(float)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(float)5, 2, 3, 1];
+      
+      Sort->sort_float($array, method : int ($a : float, $b : float) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_float($array, [(float)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_float(undef, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($array, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(float)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_float($array, method : int ($a : float, $b : float) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_float_asc : int () {
+    {
+      my $array = [(float)2, 3, 1];
+      
+      Sort->sort_float_asc($array);
+      
+      unless (Array->equals_float($array, [(float)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_float_desc : int () {
+    {
+      my $array = [(float)2, 3, 1];
+      
+      Sort->sort_float_desc($array);
+      
+      unless (Array->equals_float($array, [(float)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_int : int () {
+    # Sort array by asc order
+    {
+      my $array = [(int)2, 3, 1];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_int($array, [(int)1, 2, 3])) {
+        return 0;
+      }
+    }
+    # Sort array by asc order more long
+    {
+      my $array = [(int)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_int($array, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(int)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_int($array, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort int array by desc order
+    {
+      my $array = [(int)2, 3, 1];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_int($array, [(int)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(int)2, 3, 1];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_int($array, [(int)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(int)5, 2, 3, 1, -10];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      }, 1, 3);
+      
+      unless (Array->equals_int($array, [(int)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(int)5, 2, 3, 1];
+      
+      Sort->sort_int($array, method : int ($a : int, $b : int) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_int($array, [(int)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_int(undef, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($array, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(int)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_int($array, method : int ($a : int, $b : int) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_int_asc : int () {
+    {
+      my $array = [(int)2, 3, 1];
+      
+      Sort->sort_int_asc($array);
+      
+      unless (Array->equals_int($array, [(int)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_int_desc : int () {
+    {
+      my $array = [(int)2, 3, 1];
+      
+      Sort->sort_int_desc($array);
+      
+      unless (Array->equals_int($array, [(int)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_long : int () {
+    # Sort array by asc order
+    {
+      my $array = [(long)2, 3, 1];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_long($array, [(long)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long
+    {
+      my $array = [(long)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_long($array, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(long)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_long($array, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort long array by desc order
+    {
+      my $array = [(long)2, 3, 1];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_long($array, [(long)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(long)2, 3, 1];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_long($array, [(long)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(long)5, 2, 3, 1];
+      
+      Sort->sort_long($array, method : int ($a : long, $b : long) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_long($array, [(long)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_long(undef, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($array, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(long)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_long($array, method : int ($a : long, $b : long) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_long_asc : int () {
+    {
+      my $array = [(long)2, 3, 1];
+      
+      Sort->sort_long_asc($array);
+      
+      unless (Array->equals_long($array, [(long)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_long_desc : int () {
+    {
+      my $array = [(long)2, 3, 1];
+      
+      Sort->sort_long_desc($array);
+      
+      unless (Array->equals_long($array, [(long)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_object : int () {
+    
+    # Sort array by asc order
+    {
+      my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      });
+      
+      my $is_equals = Array->equals_object($array, [&new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)], method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Sort array by multiple conditions
+    {
+      my $array = [&new_minimal(2, 1), &new_minimal(2, 2), &new_minimal(1, 3)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x || $a->(TestCase::Minimal)->y <=> $b->(TestCase::Minimal)->y;
+      });
+      
+      my $is_equals = Array->equals_object($array, [&new_minimal(1, 3), &new_minimal(2, 1), &new_minimal(2, 2)], method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x && ($a->(TestCase::Minimal)->y == $b->(TestCase::Minimal)->y);
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Sort array by desc order
+    {
+      my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $b->(TestCase::Minimal)->x <=> $a->(TestCase::Minimal)->x;
+      });
+      
+      my $is_equals = Array->equals_object($array, [&new_minimal(3, 0), &new_minimal(2, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      }, 0, 0);
+      
+      my $is_equals = Array->equals_object($array, [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)], method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+      });
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      }, 1, 3);
+      
+      my $is_equals = Array->equals_object(
+        $array,
+        [&new_minimal(5, 0), &new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(-10, 0)],
+        method : int ($a : object, $b : object) {
+          return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+        }
+      );
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $array = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Sort->sort_object($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      }, 1);
+      
+      my $is_equals = Array->equals_object(
+        $array,
+        [&new_minimal(5, 0), &new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)],
+        method : int ($a : object, $b : object) {
+          return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+        }
+      );
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      # Exception - Array must be not undef
+      {
+        my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+        
+        eval {
+          Sort->sort_object(undef, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          });
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      # Exception - Offset must be greater than or equal to 0
+      {
+        my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+        
+        eval {
+          Sort->sort_object($array, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      # Exception - Length must be greater than or equal to 0
+      {
+        my $array = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
+        
+        eval {
+          Sort->sort_object($array, undef, 1, 0);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      # Exception - Offset + Length must be in the array range
+      {
+        my $array = [&new_minimal(5, 0), &new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0), &new_minimal(-10, 0)];
+        
+        eval {
+          Sort->sort_object($array, method : int ($a : object, $b : object) {
+            return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  static method sort_short : int () {
+    # Sort array by asc order
+    {
+      my $array = [(short)2, 3, 1];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_short($array, [(short)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long
+    {
+      my $array = [(short)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_short($array, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(short)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Array->equals_short($array, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort short array by desc order
+    {
+      my $array = [(short)2, 3, 1];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $b <=> $a;
+      });
+      
+      unless (Array->equals_short($array, [(short)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(short)2, 3, 1];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      }, 0, 0);
+      
+      unless (Array->equals_short($array, [(short)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(short)5, 2, 3, 1, -10];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      }, 1, 3);
+      
+      unless (Array->equals_short($array, [(short)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(short)5, 2, 3, 1];
+      
+      Sort->sort_short($array, method : int ($a : short, $b : short) {
+        return $a <=> $b;
+      }, 1);
+      
+      unless (Array->equals_short($array, [(short)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_short(undef, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($array, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(short)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_short($array, method : int ($a : short, $b : short) {
+            return $a <=> $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_short_asc : int () {
+    {
+      my $array = [(short)2, 3, 1];
+      
+      Sort->sort_short_asc($array);
+      
+      unless (Array->equals_short($array, [(short)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_short_desc : int () {
+    {
+      my $array = [(short)2, 3, 1];
+      
+      Sort->sort_short_desc($array);
+      
+      unless (Array->equals_short($array, [(short)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_string : int () {
+    # Sort array by asc order
+    {
+      my $array = [(string)2, 3, 1];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Array->equals_string($array, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long
+    {
+      my $array = [(string)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Array->equals_string($array, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort array by asc order more long with same values
+    {
+      my $array = [(string)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Array->equals_string($array, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+    
+    # Sort string array by desc order
+    {
+      my $array = [(string)2, 3, 1];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $b cmp $a;
+      });
+      
+      unless (Array->equals_string($array, [(string)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    # If length is 0, There is nothing to do
+    {
+      my $array = [(string)2, 3, 1];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      }, 0, 0);
+      
+      unless (Array->equals_string($array, [(string)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $array = [(string)5, 2, 3, 1, -10];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      }, 1, 3);
+      
+      unless (Array->equals_string($array, [(string)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+    {
+      my $array = [(string)5, 2, 3, 1];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      }, 1);
+      
+      unless (Array->equals_string($array, [(string)5, 1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    # Sort length is differnt and contain empty string and undef
+    {
+      my $array = ["11", "1", "2", undef, ""];
+      
+      Sort->sort_string($array, method : int ($a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Array->equals_string($array, [(string)undef, "", "1", "11", "2"])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval {
+          Sort->sort_string(undef, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          }, 0, 3);
+        };
+        unless (Fn->contains($@, "The array must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($array, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          }, -1, 3);
+        };
+        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($array, undef, 0, 3);
+        };
+        unless (Fn->contains($@, "The comparator must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [(string)5, 2, 3, 1, -10];
+        
+        eval {
+          Sort->sort_string($array, method : int ($a : string, $b : string) {
+            return $a cmp $b;
+          }, 3, 3);
+        };
+        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method sort_string_asc : int () {
+    {
+      my $array = [(string)2, 3, 1];
+      
+      Sort->sort_string_asc($array);
+      
+      unless (Array->equals_string($array, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_string_desc : int () {
+    {
+      my $array = [(string)2, 3, 1];
+      
+      Sort->sort_string_desc($array);
+      
+      unless (Array->equals_string($array, [(string)3, 2, 1])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

@@ -1,0 +1,6 @@
+class TestCase::Enum::Data1 : precompile {
+  enum {
+    ONE,
+    TWO,
+  }
+}

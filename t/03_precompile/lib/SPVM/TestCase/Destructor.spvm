@@ -1,0 +1,18 @@
+class TestCase::Destructor : precompile {
+  use TestCase::Minimal;
+  
+  has y : public int;
+  has minimal : public TestCase::Minimal;
+  
+  static method new : TestCase::Destructor () {
+    return new TestCase::Destructor;
+  }
+  
+  method DESTROY : void () {
+    if ($self->{minimal}) {
+      $self->{minimal}->{x} = 3;
+    }
+    
+    $self->{y} = 5;
+  }
+}

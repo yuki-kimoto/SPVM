@@ -1,0 +1,33 @@
+class TestCase::Inline : precompile {
+  
+  # Inline expansion
+  static method constant_method_return_double : double () {
+    return 0.25;
+  }
+  
+  # Array store undef
+  static method constant_method : int () {
+    unless (TestCase::Inline->constant_method_return_double() == 0.25) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  # Inline expansion
+  static method new : TestCase::Inline () {
+    return new TestCase::Inline;
+  }
+  
+  # Array store undef
+  static method new_inline : int () {
+    my $self = TestCase::Inline->new;
+    
+    unless ($self isa TestCase::Inline) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

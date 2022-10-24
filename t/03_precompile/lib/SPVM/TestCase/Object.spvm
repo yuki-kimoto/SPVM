@@ -1,0 +1,56 @@
+class TestCase::Object : precompile {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  
+  use TestCase::Destructor;
+  use Fn;
+  use Array;
+  
+  has INT32_MAX : int;
+  has next : int;
+  
+  static method isa_basic : int () {
+    my $minimal = TestCase::Minimal->new;
+    if ($minimal isa TestCase::Minimal) {
+      if (!($minimal isa TestCase)) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  static method destructor : int () {
+    {
+      my $minimal = TestCase::Minimal->new();
+      my $ret = TestCase::Object->destructor_call($minimal);
+      
+      unless ($minimal->{x} == 3) {
+        return 0;
+      }
+      
+      # The destructor doesn't change the return value.
+      unless ($ret == 5) {
+        return 0;
+      }
+    }
+    
+    # Call DESTROY
+    {
+      my $object = TestCase::Destructor->new;
+      $object->DESTROY;
+      unless ($object->{y} == 5) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method destructor_call : int ($minimal: TestCase::Minimal) {
+    my $dest = TestCase::Destructor->new();
+    $dest->{minimal} = $minimal;
+    
+    return 5;
+  }
+}

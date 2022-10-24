@@ -1,0 +1,66 @@
+class TestCase::Module::Scope::Guard : precompile {
+  use Scope::Guard;
+  use Fn;
+  
+  static method basic : int () {
+  
+    # Executing the handler at the end of the scope
+    {
+      my $string = (mutable string)copy "abc";
+      {
+        my $handler = [$string : mutable string] method : void () {
+          $string->[0] = 'A';
+          $string->[1] = 'B';
+        };
+        my $guard = Scope::Guard->new($handler);
+
+        unless ($handler == $guard->handler) {
+          return 0;
+        }
+        
+        $string->[0] = 'P';
+      }
+      
+      unless ($string eq "ABc") {
+        return 0;
+      }
+    }
+
+    # dismiss
+    {
+      my $string = (mutable string)copy "abc";
+      {
+        my $guard = Scope::Guard->new([$string : mutable string] method : void () {
+          $string->[0] = 'A';
+          $string->[1] = 'B';
+        });
+
+        $guard->set_dismiss(1);
+
+        unless ($guard->dismiss == 1) {
+          return 0;
+        }
+        
+        $string->[0] = 'P';
+      }
+      
+      
+      unless ($string eq "Pbc") {
+        return 0;
+      }
+    }
+
+    # Exceptions
+    {
+      my $handler : Scope::Guard::Handler;
+      eval { Scope::Guard->new($handler); } ;
+      unless (Fn->contains($@, "The handler must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+}

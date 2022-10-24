@@ -1,0 +1,5 @@
+class MinimalMethod : precompile {
+  static method foo : void () {
+    
+  }
+}
