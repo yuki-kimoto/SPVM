@@ -329,13 +329,13 @@ solo/SPVM/TestCase/Simple.spvm
 solo/SPVM/TestCase/Weaken.spvm
 solo/SPVM/TestCase/Weaken2.spvm
 SPVM.xs
+t/builder/builder_cc.t
 t/builder/builder_util.t
 t/builder/cc.t
 t/builder/config.t
 t/builder/config_exe.t
 t/builder/link_info.pl
 t/builder/object_file_info.t
-t/builder_cc.t
 t/compile_error/dist.pl
 t/compile_error/extra_definition.t
 t/compile_error/extra_operator.t
