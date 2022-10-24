@@ -597,4 +597,36 @@ class TestCase::Assign {
     }
     return 0;
   }
+
+  static method evaluate_left_to_right : int () {
+    {
+      my $i = 2;
+      my $j = ($i = 3) * $i;
+      
+      unless ($j == 9) {
+        return 0;
+      }
+    }
+    
+    {
+      my $j = 10;
+      eval {
+        TestCase::Assign->evaluate_left_to_right_excpetion() / ($j = 3);
+      };
+      $@ = undef;
+      
+      unless ($j == 10) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method evaluate_left_to_right_excpetion : int () {
+    die "Error";
+    
+    return 6;
+  }
+
 }
