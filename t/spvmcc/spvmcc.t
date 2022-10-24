@@ -1,10 +1,12 @@
+use lib "t/testlib";
+use TestAuto;
+
 use Test::More;
 use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
-use FindBin;
 use Config;
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
@@ -12,34 +14,25 @@ use SPVM::Builder::Util;
 
 use SPVM::Builder;
 
-my $file = 't/' . basename $0;
+my $test_dir = $ENV{SPVM_TEST_DIR};
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-use FindBin;
-use lib "$FindBin::Bin/exe/lib";
-
-my $build_dir = 't/spvmcc/.spvm_build';
 my @build_dir_parts = split('/', $build_dir);
 my $exe_dir = "$build_dir/work/exe";
 
 rmtree "$build_dir/work";
 
-my $dev_null;
-if ($^O eq 'MSWin32') {
-  $dev_null = 'nul';
-}
-else {
-  $dev_null = '/dev/null';
-}
+my $dev_null = File::Spec->devnull;
 
 # -h, --help
 {
   {
-    my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc -h);
+    my $spvmdist_cmd = qq($^X -Mblib blib/scrip$test_dir -h);
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmcc [<options>] <class_name>/);
   }
   {
-    my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc --help);
+    my $spvmdist_cmd = qq($^X -Mblib blib/scrip$test_dir --help);
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmcc [<options>] <class_name>/);
   }
@@ -50,7 +43,7 @@ else {
 
   # --print-dependent-resources, -p
   for my $option ('--print-dependent-resources', '-p'){
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/spvmcc/lib/SPVM -I t/default/lib/SPVM $option MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir -I $test_dir/lib/SPVM -I t/default/lib/SPVM $option MyExe);
     my @lines = `$spvmcc_cmd`;
     is($lines[0], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib1::V1_0_0",resource_mode:"mode1",resource_args:["args1","args2"]}' . "\n");
     is($lines[1], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib2::V1_0_0",resource_mode:undefined,resource_args:[]}' . "\n");
@@ -58,7 +51,7 @@ else {
   
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I t/spvmcc/lib/SPVM -o $exe_dir/myexe -c t/spvmcc/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe -c $test_dir/myexe.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -80,14 +73,14 @@ else {
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I t/spvmcc/lib/SPVM -o $exe_dir/myexe -c t/spvmcc/myexe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe -c $test_dir/myexe.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     ok(length $spvmcc_output == 0);
   }
   
   # debug config -O0 -g
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/spvmcc/lib/SPVM -o $exe_dir/myexe --config t/spvmcc/myexe.debug.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --config $test_dir/myexe.debug.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     like($spvmcc_output, qr/\Q-O0 -g/);
     like($spvmcc_output, qr/-lm\b/);
@@ -111,7 +104,7 @@ else {
 
   # no_precompile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/spvmcc/lib/SPVM -o $exe_dir/myexe_no_precompile -c t/spvmcc/myexe.no_precompile.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_no_precompile -c $test_dir/myexe.no_precompile.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -126,14 +119,14 @@ else {
     is($output, $output_expect);
     
     # No precompile source
-    my $myexe_bootstarp_source_file = "$FindBin::Bin/.spvm_build/work/src/SPVM/MyExe.boot.c";
+    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe.boot.c";
     my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
 
   # no_precompile, no_compiler_api
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I t/spvmcc/lib/SPVM -o $exe_dir/myexe_no_precompile_no_compiler_api -c t/spvmcc/myexe.no_precompile_no_compiler_api.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/scrip$test_dir -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_no_precompile_no_compiler_api -c $test_dir/myexe.no_precompile_no_compiler_api.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -148,7 +141,7 @@ else {
     is($output, $output_expect);
     
     # No precompile source
-    my $myexe_bootstarp_source_file = "$FindBin::Bin/.spvm_build/work/src/SPVM/MyExe.boot.c";
+    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe.boot.c";
     my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
@@ -160,7 +153,7 @@ else {
   $ENV{SPVM_BUILD_DIR} = $build_dir;
   
   my $spvm_script = File::Spec->catfile(qw/t spvmcc myexe.pl/);
-  my $execute_cmd = qq($^X -Mblib -I t/spvmcc/lib -I t/default/lib $spvm_script);
+  my $execute_cmd = qq($^X -Mblib -I $test_dir/lib -I t/default/lib $spvm_script);
   my $execute_cmd_with_args = "$execute_cmd args1 args2";
   system($execute_cmd_with_args) == 0
     or die "Can't execute SPVM script: $execute_cmd_with_args:$!";

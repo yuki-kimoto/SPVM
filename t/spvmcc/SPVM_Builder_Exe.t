@@ -9,7 +9,6 @@ use Test::More;
 use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
-use FindBin;
 use Config;
 use File::Path 'mkpath';
 use File::Spec;
