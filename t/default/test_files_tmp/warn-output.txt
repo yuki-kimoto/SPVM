@@ -1,0 +1,1 @@
+Warning: something's wrong at t/default/lib/SPVM/TestCase/Warn.spvm line 27
