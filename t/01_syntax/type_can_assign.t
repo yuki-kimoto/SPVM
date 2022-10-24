@@ -554,6 +554,50 @@ use Test::More;
   }
 }
 
+# Dist type is any object type
+{
+  # Source type is object type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist : object = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist : object = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is numeric type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : byte; my $dist : object = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : double; my $dist : object = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $dist : object = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : int&; my $dist : object = $source; } }';
+      compile_not_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : object = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
