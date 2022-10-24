@@ -1,7 +1,8 @@
 0.9658 2022-10-21
   [New Features]
     * Added the say operator.
-
+  [Test Improvement]
+    * Added the test numbers to the test directories.
 0.9657 2022-10-21
   [Changes]
     * Changed a warning message when an exception is thrown in the DESTROY method.
