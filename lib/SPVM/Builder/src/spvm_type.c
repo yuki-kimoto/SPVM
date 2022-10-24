@@ -1088,7 +1088,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is multi numeric type
   else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_mulnum_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1102,7 +1102,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is referece type
   else if (SPVM_TYPE_is_ref_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_ref_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1187,7 +1187,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is interface
   else if (SPVM_TYPE_is_interface_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1223,13 +1223,14 @@ int32_t SPVM_TYPE_can_assign(
       assignability = 0;
     }
   }
+  // Dist type is undef type
   else if (SPVM_TYPE_is_undef_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     assignability = 0;
   }
   // Dist type is numeric array type
   else if (SPVM_TYPE_is_numeric_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_numeric_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1246,7 +1247,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is mulnum array type
   else if (SPVM_TYPE_is_mulnum_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_mulnum_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1278,7 +1279,7 @@ int32_t SPVM_TYPE_can_assign(
   else if (SPVM_TYPE_is_class_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is class
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
@@ -1299,7 +1300,7 @@ int32_t SPVM_TYPE_can_assign(
   // Dist type is interface array type
   else if (SPVM_TYPE_is_interface_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension) {
+      if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
       else {
@@ -1406,7 +1407,7 @@ int32_t SPVM_TYPE_can_cast(
   }
   // To multi numeric
   else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension && dist_type_flag == src_type_flag) {
+    if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
       castability = 1;
     }
     else {
@@ -1415,7 +1416,7 @@ int32_t SPVM_TYPE_can_cast(
   }
   // To referece
   else if (SPVM_TYPE_is_ref_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    if (dist_type_basic_type_id == src_type_basic_type_id && dist_type_dimension == src_type_dimension && dist_type_flag == src_type_flag) {
+    if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
       castability = 1;
     }
     else {
@@ -1525,6 +1526,7 @@ int32_t SPVM_TYPE_can_cast(
       castability = 0;
     }
   }
+  // Dist type is undef type
   else if (SPVM_TYPE_is_undef_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     assert(0);
   }
