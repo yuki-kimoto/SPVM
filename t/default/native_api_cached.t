@@ -8,36 +8,35 @@ use Config;
 use Test::More;
 use Time::HiRes 'sleep';
 
-use FindBin;
-
+my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 # Wait 2 seconds because the time in 1 secend is not detected.
 my $wait_time = 1.1;
 
-my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
+my $compile_native_api_prgoram = "$^X -Mblib $test_dir/compile_native_api.pl";
 
-my $module_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI.spvm";
+my $module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
 unless (-f $module_file) {
   die 'Unexpected error';
 }
 
-my $config_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI.config";
+my $config_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.config";
 unless (-f $config_file) {
   die 'Unexpected error';
 }
 
-my $native_module_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI2.c";
+my $native_module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
 unless (-f $native_module_file) {
   die 'Unexpected error';
 }
 
-my $native_header_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI2.native/include/baz/baz.h";
+my $native_header_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.native/include/baz/baz.h";
 unless (-f $native_header_file) {
   die 'Unexpected error';
 }
 
-my $native_src_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI2.native/src/baz/baz.c";
+my $native_src_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.native/src/baz/baz.c";
 unless (-f $native_src_file) {
   die 'Unexpected error';
 }
