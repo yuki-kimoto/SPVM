@@ -7,7 +7,8 @@
   [Internal Changes with No Effects]
     * Use SPVM_TYPE_equals more.
   [Bug Fix]
-    * Fixed the bug that a compilation error occured when (string[]) type cast of string[] type.
+    * Fixed the bug that a compilation error occured when (string[]) type cast from string[] type.
+    * Fixed the bug that the type cast from from string type to numeric type is allowed.
 0.9657 2022-10-21
   [Changes]
     * Changed a warning message when an exception is thrown in the DESTROY method.

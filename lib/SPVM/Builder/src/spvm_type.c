@@ -1442,10 +1442,6 @@ int32_t SPVM_TYPE_can_cast(
         castability = 0;
       }
     }
-    // Source type is string type
-    else if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      castability = 1;
-    }
     // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
