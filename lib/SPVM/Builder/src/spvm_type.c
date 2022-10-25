@@ -1288,7 +1288,7 @@ int32_t SPVM_TYPE_can_assign(
   }
   // Dist type is string array type
   else if (SPVM_TYPE_is_string_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is string
+    // Source type is string array type
     if (SPVM_TYPE_is_string_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       assignability = 1;
     }
@@ -1303,7 +1303,7 @@ int32_t SPVM_TYPE_can_assign(
   }
   // Dist type is class array type
   else if (SPVM_TYPE_is_class_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is class
+    // Source type is class array type
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;

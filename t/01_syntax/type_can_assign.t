@@ -665,6 +665,64 @@ use Test::More;
   }
 }
 
+# Dist type is string array type
+{
+  # Source type is string array type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : string[] = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist : string[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : byte[]; my $dist : string[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
+# Dist type is class array type
+{
+  # Source type is class array type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point[] = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point3D[]; my $dist : Point[] = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point3D[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $dist : Point[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist : Int[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
@@ -675,12 +733,6 @@ use Test::More;
       'class MyIn_addr : public;',
     ];
     compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the class method "main" in the class "MyClass" is not allowed|);
-  }
-  {
-    {
-      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : string[] = $source; } }';
-      compile_ok($source);
-    }
   }
 }
 
