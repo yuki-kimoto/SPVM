@@ -588,12 +588,12 @@ use Test::More;
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : int&; my $dist : object = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : int*; my $dist : object = $source; } }';
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
     {
       my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : object = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -604,7 +604,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; undef = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|mutable|);
     }
   }
 }
@@ -635,7 +635,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : short[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -660,7 +660,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2f[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -685,7 +685,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : byte[]; my $dist : string[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -704,7 +704,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point3D[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
   # Source type is undef type
@@ -718,7 +718,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist : Int[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -732,8 +732,8 @@ use Test::More;
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Pointable static method main : void () { my $source : Stringable[]; my $dist : Pointable[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Stringable; use Pointable; static method main : void () { my $source : Stringable[]; my $dist : Pointable[] = $source; } }';
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
     {
       my $source = [
@@ -752,7 +752,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Point::Interface; static method main : void () { my $source : Int[]; my $dist : Point::Interface[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
   
@@ -767,7 +767,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist : Stringable[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -796,11 +796,11 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : object; my $dist : object[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist : object[] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
@@ -823,7 +823,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point[][] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Stringable[][] = $source; } }';
@@ -842,7 +842,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Point3D[][] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
   # Source type is undef type
@@ -856,7 +856,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int; my $dist : int[][] = $source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, , qr|implicite type conversion|);
     }
   }
 }
