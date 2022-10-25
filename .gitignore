@@ -24,7 +24,7 @@ t/.spvm_build/*
 !t/.spvm_build/.gitkeep
 solo/work/*
 solo/Makefile
-t/precompile/*
+t/03_precompile/*
 spvmcc_build/*
 !spvmcc_build/.gitkeep
 t/test_files_tmp/*

@@ -25,7 +25,7 @@ SPVM-.*
 ^SPVM-
 ^solo/work
 ^solo/Makefile
-^t/precompile
+^t/03_precompile
 ^spvmcc_build/[^\.]
 .idea/.*
 ^t/test_files_tmp
