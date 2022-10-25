@@ -111,7 +111,7 @@ use Test::More;
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d*; my $dist : Complex_2d* = $source; } }';
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d*; my $dist = (Complex_2d*)$source; } }';
       compile_ok($source);
     }
     {
@@ -370,76 +370,99 @@ use Test::More;
 
 # Dist type is interface type
 {
+  # Source type is class type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; static method main : void () { my $source : Point; my $dist = (Stringable)$source; } }';
+      compile_ok($source);
+    }
+  }
+  
   # Source type is interface type
   {
     {
-      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist : Stringable = $source; } }';
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist = (Stringable)$source; } }';
       compile_ok($source);
     }
     {
       my $source = [
-        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
+        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist = (Stringable)$source; } }',
         'class MyInterface : interface_t { interface Stringable; required method to_string : string (); }',
       ];
       compile_ok($source);
     }
-    {
-      my $source = [
-        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
-        'class MyInterface : interface_t { required method to_string : string (); }',
-      ];
-      compile_ok($source);
-    }
-    {
-      my $source = [
-        'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
-        'class MyInterface : interface_t { required method foo : string (); }',
-      ];
-      compile_not_ok($source, q|The implicite type conversion from "MyInterface" to "Stringable" in the assignment operator is not allowed|);
-    }
   }
-}
-
-# Dist type is any object type
-{
-  # Source type is object type
+  # Source type is any object type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist : object = $source; } }';
-      compile_ok($source);
-    }
-    {
-      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist : object = $source; } }';
-      compile_ok($source);
-    }
-  }
-  # Source type is numeric type
-  {
-    {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : byte; my $dist : object = $source; } }';
-      compile_ok($source);
-    }
-    {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : double; my $dist : object = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; static method main : void () { my $source : object; my $dist = (Stringable)$source; } }';
       compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $dist : object = undef; } }';
+      my $source = 'class MyClass { use Stringable; use Point; static method main : void () { my $dist = (Stringable)undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : int&; my $dist : object = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Fn; use Stringable; static method main : void () { my $source : Fn; my $dist = (Stringable)$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
     {
-      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : object = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable[]; my $dist = (Stringable)$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
+  }
+}
+
+# Dist type is any object type
+{
+  # Source type is numeric type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : byte; my $dist = (object)$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : double; my $dist = (object)$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is object type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist = (object)$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable; my $dist = (object)$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : object; my $dist = (object)$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $dist = (object)undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : int*; my $dist = (object)$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist = (object)$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
@@ -449,22 +472,32 @@ use Test::More;
   # Source type is object type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; undef = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist = (undef)$source; } }';
+      compile_not_ok($source, qr|Unexpected token|);
     }
   }
 }
 
-# Dist type is numeric array type
+# Dist type is byte array type
 {
-  # Source type is numeric array type
+  # Source type is string type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : byte[] = $source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (byte[])$source; } }';
       compile_ok($source);
     }
+  }
+  # Source type is byte array type
+  {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : double[]; my $dist : double[] = $source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist = (byte[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : object; my $dist = (byte[])$source; } }';
       compile_ok($source);
     }
   }
@@ -472,16 +505,54 @@ use Test::More;
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $dist : double[] = undef; } }';
+      my $source = 'class MyClass { static method main : void () { my $dist = (byte[])undef; } }';
       compile_ok($source);
     }
   }
   
-  # 
+  # Source type is other type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : short[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { static method main : void () { my $source : double[]; my $dist = (byte[])$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
+  }
+}
+
+# Dist type is numeric array type(except for byte array)
+{
+  # Source type is numeric array type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : short[]; my $dist = (short[])$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : double[]; my $dist = (double[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : object; my $dist = (short[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist = (double[])undef; } }';
+      compile_ok($source);
+    }
+  }
+  
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist = (short[])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
@@ -491,22 +562,30 @@ use Test::More;
   # Source type is multi-numeric array type
   {
     {
-      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2d[] = $source; } }';
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d[]; my $dist = (Complex_2d[])$source; } }';
+      compile_ok($source);
+    }
+  }
+
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : object; my $dist = (Complex_2d[])$source; } }';
       compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $dist : Complex_2d[] = undef; } }';
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $dist = (Complex_2d[])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2f[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d[]; my $dist = (Complex_2f[])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
@@ -516,22 +595,36 @@ use Test::More;
   # Source type is string array type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : string[] = $source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist = (string[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : object; my $dist = (string[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : object[]; my $dist = (string[])$source; } }';
       compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $dist : string[] = undef; } }';
+      my $source = 'class MyClass { static method main : void () { my $dist = (string[])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : byte[]; my $dist : string[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : byte[]; my $dist = (string[])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
@@ -541,29 +634,43 @@ use Test::More;
   # Source type is class array type
   {
     {
-      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point[] = $source; } }';
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist = (Point[])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point3D[]; my $dist : Point[] = $source; } }';
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point3D[]; my $dist = (Point[])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point3D[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist = (Point3D[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : object; my $dist = (Point[])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object array type
+  {
+    {
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : object[]; my $dist = (Point[])$source; } }';
+      compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $dist : Point[] = undef; } }';
+      my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $dist = (Point[])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist : Int[] = $source; } }';
+      my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist = (Int[])$source; } }';
       compile_not_ok($source);
     }
   }
