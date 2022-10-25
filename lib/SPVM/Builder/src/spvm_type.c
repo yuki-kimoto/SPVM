@@ -989,7 +989,7 @@ int32_t SPVM_TYPE_can_assign(
     // Soruce type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       // Dist type is same as source type
-      if (dist_type_basic_type_id == src_type_basic_type_id) {
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
         assignability = 1;
       }
       // Dist type is more wide than source type
@@ -1179,7 +1179,7 @@ int32_t SPVM_TYPE_can_assign(
   else if (SPVM_TYPE_is_class_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is class type
     if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id) {
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
         assignability = 1;
       }
       else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
@@ -1368,7 +1368,7 @@ int32_t SPVM_TYPE_can_assign(
     // Source type is muldim array type
     if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_dimension == src_type_dimension) {
-        if (dist_type_basic_type_id == src_type_basic_type_id) {
+        if (src_type_basic_type_id == dist_type_basic_type_id) {
           assignability = 1;
         }
         else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
@@ -1417,10 +1417,14 @@ int32_t SPVM_TYPE_can_cast(
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag)
 {
   int32_t castability;
+  
+  // Dist type is numeric type
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is numeric object type
     else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT == src_type_basic_type_id) {
         castability = 1;
@@ -1429,57 +1433,71 @@ int32_t SPVM_TYPE_can_cast(
         castability = 0;
       }
     }
+    // Source type is string type
     else if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
-  // To multi numeric
+  // Dist type is multi-numeric type
   else if (SPVM_TYPE_is_mulnum_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type equals dist type
     if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
-  // To referece
+  // Dist type is reference type
   else if (SPVM_TYPE_is_ref_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type equals dist type
     if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is string type
   else if (SPVM_TYPE_is_string_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is string type
     if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is numeric type
     else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is byte array type
     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
-  // Dist type is numeric_object type
+  // Dist type is numeric object type
   else if (SPVM_TYPE_is_numeric_object_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
         castability = 1;
@@ -1488,20 +1506,24 @@ int32_t SPVM_TYPE_can_cast(
         castability = 0;
       }
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is class type
   else if (SPVM_TYPE_is_class_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class type
     if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id) {
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
         castability = 1;
       }
       else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
@@ -1514,48 +1536,61 @@ int32_t SPVM_TYPE_can_cast(
         castability = 0;
       }
     }
+    // Source type is interface type
     else if (SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, dist_type_basic_type_id, src_type_basic_type_id);;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is interface type
   else if (SPVM_TYPE_is_interface_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class type
     if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
+    // Source type is interface type
     else if (SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is any object type
   else if (SPVM_TYPE_is_any_object_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is object type
     else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
@@ -1566,25 +1601,31 @@ int32_t SPVM_TYPE_can_cast(
   }
   // Dist type is byte array type
   else if (SPVM_TYPE_is_byte_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is string type
     if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type isbyte array type
     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
-  // Dist type is numeric array type except for byte array
+  // Dist type is numeric array type(except for byte array)
   else if (SPVM_TYPE_is_numeric_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    if (dist_type_basic_type_id == src_type_basic_type_id) {
+    // Source type is string type
+    if (src_type_basic_type_id == dist_type_basic_type_id) {
       castability = 1;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1599,7 +1640,7 @@ int32_t SPVM_TYPE_can_cast(
   }
   // Dist type is multi-numeric array
   else if (SPVM_TYPE_is_mulnum_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    if (dist_type_basic_type_id == src_type_basic_type_id) {
+    if (src_type_basic_type_id == dist_type_basic_type_id) {
       castability = 1;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1633,7 +1674,7 @@ int32_t SPVM_TYPE_can_cast(
   // Dist type is class array type
   else if (SPVM_TYPE_is_class_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_basic_type_id == src_type_basic_type_id) {
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
         castability = 1;
       }
       else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
@@ -1702,7 +1743,7 @@ int32_t SPVM_TYPE_can_cast(
   else if (SPVM_TYPE_is_muldim_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_dimension == src_type_dimension) {
-        if (dist_type_basic_type_id == src_type_basic_type_id) {
+        if (src_type_basic_type_id == dist_type_basic_type_id) {
           castability = 1;
         }
         else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
