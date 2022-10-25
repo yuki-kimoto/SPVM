@@ -773,6 +773,10 @@ use Test::More;
       my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : object[] = $source; } }';
       compile_ok($source);
     }
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string[][]; my $dist : object[] = $source; } }';
+      compile_ok($source);
+    }
   }
   # Source type is undef type
   {
