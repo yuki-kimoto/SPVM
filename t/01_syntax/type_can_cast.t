@@ -783,6 +783,10 @@ use Test::More;
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist = (object[])$source; } }';
       compile_not_ok($source);
     }
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : Int; my $dist = (object[])$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
   }
 }
 
@@ -791,74 +795,87 @@ use Test::More;
   # Source type is multi-dimensional array type
   {
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : int[][]; my $dist : int[][] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : int[][]; my $dist = (int[][])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Point[][] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist = (Point[][])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable[][]; my $dist : Stringable[][] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable[][]; my $dist = (Stringable[][])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point[][] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist = (Point[][])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Stringable[][] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist = (Stringable[][])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point3D[][]; my $dist : Point[][] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point3D[][]; my $dist = (Point[][])$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist = (Point3D[][])$source; } }';
       compile_ok($source);
     }
     {
       my $source = [
-        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable2[][]; my $dist : Stringable[][] = $source; } }',
+        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable2[][]; my $dist = (Stringable[][])$source; } }',
         'class Stringable2 : interface_t { interface Stringable; required method to_string : string (); }',
       ];
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Point3D[][] = $source; } }';
-      compile_not_ok($source);
+      my $source = [
+        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable[][]; my $dist = (Stringable2[][])$source; } }',
+        'class Stringable2 : interface_t { interface Stringable; required method to_string : string (); }',
+      ];
+      compile_ok($source);
+    }
+  }
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : object; my $dist = (int[][])$source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is any object array type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : object[]; my $dist = (int[][])$source; } }';
+      compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { use Point; static method main : void () { my $dist : Point[][] = undef; } }';
+      my $source = 'class MyClass { use Point; static method main : void () { my $dist = (Point[][])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int; my $dist : int[][] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int; my $dist = (int[][])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
-  }
-}
-
-
-# Extra
-{
-  
-  {
-    my $source = [
-      'class MyClass { use MyIn_addr;use MySockaddrIn; static method main : void ($in_addr : MyIn_addr) { my $sin_addr = new MySockaddrIn; my $status = &main($sin_addr); } }',
-      'class MySockaddrIn extends MySockaddr : public;',
-      'class MySockaddr : public;',
-      'class MyIn_addr : public;',
-    ];
-    compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the class method "main" in the class "MyClass" is not allowed|);
-  }
-
-  {
-    my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist = (string)(byte)$source; } }';
-    compile_ok($source, q|type cast|);
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist = (int[][])$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : Int; my $dist = (Int[][])$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : Int[]; my $dist = (Int[][])$source; } }';
+      compile_not_ok($source, q|type cast|);
+    }
   }
 }
 
