@@ -609,6 +609,62 @@ use Test::More;
   }
 }
 
+# Dist type is numeric array type
+{
+  # Source type is numeric array type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : byte[] = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : double[]; my $dist : double[] = $source; } }';
+      compile_ok($source);
+    }
+  }
+  
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist : double[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  
+  # 
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : short[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
+# Dist type is multi-numeric array type
+{
+  # Source type is multi-numeric array type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2d[] = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; static method main : void () { my $dist : Complex_2d[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2f[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
