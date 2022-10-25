@@ -1348,7 +1348,7 @@ int32_t SPVM_TYPE_can_assign(
       assignability = 0;
     }
   }
-  // Dist type is any object array(object[])
+  // Dist type is any object array
   else if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is object array type
     if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1363,34 +1363,43 @@ int32_t SPVM_TYPE_can_assign(
       assignability = 0;
     }
   }
-  // Dist type is muldim array type
+  // Dist type is multi-dimensional array type
   else if (SPVM_TYPE_is_muldim_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is muldim array type
+    // Source type is multi-dimensional array type
     if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_dimension == src_type_dimension) {
+      // Source type dimension equals dist type dimension
+      if (src_type_dimension == dist_type_dimension) {
+        // Source base type equals dist basic type
         if (src_type_basic_type_id == dist_type_basic_type_id) {
           assignability = 1;
         }
+        // Source basic type is a sub class of dist type
         else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
           assignability = 1;
         }
         else {
+          // Dist basic type is class type
           if (SPVM_BASIC_TYPE_is_interface_type(compiler, dist_type_basic_type_id)) {
+            // Source basic type is interface type
             if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
               assignability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
+            // Source basic type is class type
             else if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
               assignability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
+            // Source basic type is other type
             else {
               assignability = 0;
             }
           }
+          // Dist basic type is other type
           else {
             assignability = 0;
           }
         }
       }
+      // Source type dimension doesn't equal dist type dimension
       else {
         assignability = 0;
       }
@@ -1685,6 +1694,7 @@ int32_t SPVM_TYPE_can_cast(
   }
   // Dist type is class array type
   else if (SPVM_TYPE_is_class_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class array type
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (src_type_basic_type_id == dist_type_basic_type_id) {
         castability = 1;
@@ -1699,109 +1709,142 @@ int32_t SPVM_TYPE_can_cast(
         castability = 0;
       }
     }
+    // Source type is interface array type
     else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, dist_type_basic_type_id, src_type_basic_type_id);;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object array type
     else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is interface array type
   else if (SPVM_TYPE_is_interface_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is class array type
     if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
+    // Source type is interface array type
     else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object array type
     else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is any object array type
   else if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is any object array type
     if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is object_array type
     else if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
-  // Dist type is multi-dimensional
+  // Dist type is multi-dimensional array type
   else if (SPVM_TYPE_is_muldim_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type is multi-dimensional array type
     if (SPVM_TYPE_is_muldim_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-      if (dist_type_dimension == src_type_dimension) {
+      // Source type dimension equals dist type dimension
+      if (src_type_dimension == dist_type_dimension) {
+        // Source base type equals dist basic type
         if (src_type_basic_type_id == dist_type_basic_type_id) {
           castability = 1;
         }
+        // Source basic type is a sub class of dist type
         else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
           castability = 1;
         }
+        // Source basic type is a super class of dist type
         else if (SPVM_BASIC_TYPE_is_super_class(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
           castability = 1;
         }
         else {
+          // Dist basic type is class type
           if (SPVM_BASIC_TYPE_is_class_type(compiler, dist_type_basic_type_id)) {
+            // Source basic type is interface type
             if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
               castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
+            // Source basic type is other type
             else {
               castability = 0;
             }
           }
+          // Dist basic type is interface type
           else if (SPVM_BASIC_TYPE_is_interface_type(compiler, dist_type_basic_type_id)) {
+            // Source basic type is class type
             if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
               castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
+            // Source basic type is interface type
             else if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
               castability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
             }
+            // Source basic type is other type
             else {
               castability = 0;
             }
           }
+          // Dist basic type is other type
           else {
             castability = 0;
           }
         }
       }
+      // Source type dimension doesn't equal dist type dimension
       else {
         castability = 0;
       }
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object array type
     else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
