@@ -1,9 +1,10 @@
-0.9658 2022-10-24
+0.9658 2022-10-26
   [New Features]
     * Added the say operator.
   [Test Improvement]
     * Added the test numbers to the test directories.
     * Added the test of the type assignability.
+    * Added the test of the type castability.
   [Internal Changes with No Effects]
     * Use SPVM_TYPE_equals more.
   [Bug Fix]
