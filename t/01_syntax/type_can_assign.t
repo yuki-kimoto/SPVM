@@ -723,6 +723,48 @@ use Test::More;
   }
 }
 
+# Dist type is interface array type
+{
+  # Source type is interface array type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable[]; my $dist : Stringable[] = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Pointable static method main : void () { my $source : Stringable[]; my $dist : Pointable[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+
+  # Source type is class array type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Stringable[] = $source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Point::Interface; static method main : void () { my $source : Int[]; my $dist : Point::Interface[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+  
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $dist : Stringable[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist : Stringable[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
