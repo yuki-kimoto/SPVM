@@ -1624,49 +1624,61 @@ int32_t SPVM_TYPE_can_cast(
   }
   // Dist type is numeric array type(except for byte array)
   else if (SPVM_TYPE_is_numeric_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is string type
+    // Source type equals dist type
     if (src_type_basic_type_id == dist_type_basic_type_id) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is multi-numeric array
   else if (SPVM_TYPE_is_mulnum_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Source type equals dist type
     if (src_type_basic_type_id == dist_type_basic_type_id) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }
   }
   // Dist type is string array
   else if (SPVM_TYPE_is_string_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    // Source type is string type
+    if (SPVM_TYPE_is_string_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is any object array type
     else if (SPVM_TYPE_is_any_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
+    // Source type is other type
     else {
       castability = 0;
     }

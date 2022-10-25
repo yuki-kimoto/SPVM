@@ -676,6 +676,12 @@ use Test::More;
     ];
     compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the class method "main" in the class "MyClass" is not allowed|);
   }
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : string[] = $source; } }';
+      compile_ok($source);
+    }
+  }
 }
 
 done_testing;
