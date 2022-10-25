@@ -1378,7 +1378,7 @@ int32_t SPVM_TYPE_can_assign(
           assignability = 1;
         }
         else {
-          // Dist basic type is class type
+          // Dist basic type is interface type
           if (SPVM_BASIC_TYPE_is_interface_type(compiler, dist_type_basic_type_id)) {
             // Source basic type is interface type
             if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
