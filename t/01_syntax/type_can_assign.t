@@ -765,6 +765,35 @@ use Test::More;
   }
 }
 
+# Dist type is any object array
+{
+  # Source type is object array type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : object[] = $source; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist : object[] = undef; } }';
+      compile_ok($source);
+    }
+  }
+  # Source type is other type
+  {
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : object; my $dist : object[] = $source; } }';
+      compile_not_ok($source);
+    }
+    {
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist : object[] = $source; } }';
+      compile_not_ok($source);
+    }
+  }
+}
+
 # Extra
 {
   {
