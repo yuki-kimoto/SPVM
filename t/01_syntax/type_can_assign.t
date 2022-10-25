@@ -732,7 +732,7 @@ use Test::More;
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Stringable; use Pointable; static method main : void () { my $source : Stringable[]; my $dist : Pointable[] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point::Interface; static method main : void () { my $source : Stringable[]; my $dist : Point::Interface[] = $source; } }';
       compile_not_ok($source, , qr|implicite type conversion|);
     }
     {
