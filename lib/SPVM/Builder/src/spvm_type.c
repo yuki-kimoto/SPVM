@@ -1755,11 +1755,11 @@ int32_t SPVM_TYPE_can_cast(
   }
   // Dist type is any object array type
   else if (SPVM_TYPE_is_any_object_array_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
-    // Source type is any object array type
+    // Source type is any object type
     if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }
-    // Source type is object_array type
+    // Source type is object array type
     else if (SPVM_TYPE_is_object_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       castability = 1;
     }

@@ -671,88 +671,116 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist = (Int[])$source; } }';
-      compile_not_ok($source);
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
 
 # Dist type is interface array type
 {
-  # Source type is interface array type
+  # Source type is class array type
   {
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable[]; my $dist : Stringable[] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist = (Stringable[])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Pointable static method main : void () { my $source : Stringable[]; my $dist : Pointable[] = $source; } }';
+      my $source = 'class MyClass { use Point::Interface; static method main : void () { my $source : Int[]; my $dist = (Point::Interface[])$source; } }';
+      compile_not_ok($source);
+    }
+  }
+  
+  # Source type is interface array type
+  {
+    {
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable[]; my $dist = (Stringable[])$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { use Stringable; use Point::Interface; static method main : void () { my $source : Stringable[]; my $dist = (Point::Interface[])$source; } }';
       compile_not_ok($source);
     }
     {
       my $source = [
-        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable2[]; my $dist : Stringable[] = $source; } }',
+        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable2[]; my $dist = (Stringable[])$source; } }',
+        'class Stringable2 : interface_t { interface Stringable; required method to_string : string (); }',
+      ];
+      compile_ok($source);
+    }
+    {
+      my $source = [
+        'class MyClass { use Stringable; use Stringable2; use Point; use Point3D; static method main : void () { my $source : Stringable[]; my $dist = (Stringable2[])$source; } }',
         'class Stringable2 : interface_t { interface Stringable; required method to_string : string (); }',
       ];
       compile_ok($source);
     }
   }
-
-  # Source type is class array type
+  # Source type is any object type
   {
     {
-      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Stringable[] = $source; } }';
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : object; my $dist = (Stringable[])$source; } }';
       compile_ok($source);
     }
+  }
+  # Source type is any object array type
+  {
     {
-      my $source = 'class MyClass { use Point::Interface; static method main : void () { my $source : Int[]; my $dist : Point::Interface[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : object[]; my $dist = (Stringable[])$source; } }';
+      compile_ok($source);
     }
   }
   
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { use Stringable; static method main : void () { my $dist : Stringable[] = undef; } }';
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $dist = (Stringable[])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist : Stringable[] = $source; } }';
-      compile_not_ok($source);
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist = (Stringable[])$source; } }';
+      compile_not_ok($source, q|type cast|);
     }
   }
 }
 
 # Dist type is any object array
 {
+  # Source type is any object type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : object; my $dist = (object[])$source; } }';
+      compile_ok($source);
+    }
+  }
   # Source type is object array type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist : object[] = $source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : object[]; my $dist = (object[])$source; } }';
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { static method main : void () { my $source : string[][]; my $dist : object[] = $source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : string[]; my $dist = (object[])$source; } }';
+      compile_ok($source);
+    }
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string[][]; my $dist = (object[])$source; } }';
       compile_ok($source);
     }
   }
   # Source type is undef type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $dist : object[] = undef; } }';
+      my $source = 'class MyClass { static method main : void () { my $dist = (object[])undef; } }';
       compile_ok($source);
     }
   }
   # Source type is other type
   {
     {
-      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : object; my $dist : object[] = $source; } }';
-      compile_not_ok($source);
-    }
-    {
-      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist : object[] = $source; } }';
+      my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist = (object[])$source; } }';
       compile_not_ok($source);
     }
   }
