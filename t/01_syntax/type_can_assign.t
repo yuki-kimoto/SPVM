@@ -604,7 +604,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; undef = $source; } }';
-      compile_not_ok($source, , qr|mutable|);
+      compile_not_ok($source, qr|mutable|);
     }
   }
 }
