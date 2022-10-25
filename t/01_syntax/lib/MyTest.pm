@@ -174,5 +174,9 @@ sub compile_ok_file {
   
   if ($status_code == 0) {
     warn "  at $file line $line\n";
+    
+    my $error_messages = $builder->get_error_messages;
+    my $first_error_message = $error_messages->[0];
+    warn "[Compile Error]$first_error_message";
   }
 }
