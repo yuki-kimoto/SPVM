@@ -171,4 +171,8 @@ sub compile_ok_file {
   
   my $status_code = $builder->compile_spvm($class_name, $file, $line);
   ok($status_code != 0);
+  
+  if ($status_code == 0) {
+    warn "  at $file line $line\n";
+  }
 }
