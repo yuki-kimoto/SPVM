@@ -499,12 +499,13 @@ t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
 t/02_vm/03_definition/type_comment.t
 t/02_vm/04_statement/begin.t
-t/02_vm/04_statement/conditional_branch.t
 t/02_vm/04_statement/exception.t
 t/02_vm/04_statement/for.t
+t/02_vm/04_statement/if.t
 t/02_vm/04_statement/require.t
 t/02_vm/04_statement/return.t
 t/02_vm/04_statement/switch.t
+t/02_vm/04_statement/unless.t
 t/02_vm/04_statement/while.t
 t/02_vm/05_op/__CLASS__.t
 t/02_vm/05_op/__FILE__.t
