@@ -498,10 +498,10 @@ t/02_vm/03_definition/local_var.t
 t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
 t/02_vm/03_definition/type_comment.t
-t/02_vm/04_statement/begin.t
 t/02_vm/04_statement/exception.t
 t/02_vm/04_statement/for.t
 t/02_vm/04_statement/if.t
+t/02_vm/04_statement/init.t
 t/02_vm/04_statement/require.t
 t/02_vm/04_statement/return.t
 t/02_vm/04_statement/switch.t
@@ -600,7 +600,6 @@ t/02_vm/lib/SPVM/TestCase/Array.spvm
 t/02_vm/lib/SPVM/TestCase/ArrayBigSize.spvm
 t/02_vm/lib/SPVM/TestCase/ArrayMiddleSize.spvm
 t/02_vm/lib/SPVM/TestCase/Assign.spvm
-t/02_vm/lib/SPVM/TestCase/Begin.spvm
 t/02_vm/lib/SPVM/TestCase/BitOperator.spvm
 t/02_vm/lib/SPVM/TestCase/Callback.spvm
 t/02_vm/lib/SPVM/TestCase/Callback/Callback.spvm
@@ -636,6 +635,7 @@ t/02_vm/lib/SPVM/TestCase/For.spvm
 t/02_vm/lib/SPVM/TestCase/IfRequire.spvm
 t/02_vm/lib/SPVM/TestCase/Increment.spvm
 t/02_vm/lib/SPVM/TestCase/Init.spvm
+t/02_vm/lib/SPVM/TestCase/InitStatement.spvm
 t/02_vm/lib/SPVM/TestCase/Inline.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceType.spvm

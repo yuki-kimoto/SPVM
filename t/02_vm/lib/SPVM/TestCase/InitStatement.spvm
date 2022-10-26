@@ -1,4 +1,4 @@
-class TestCase::Begin : precompile {
+class TestCase::InitStatement {
   
   our $FOO : int;
   
