@@ -1,0 +1,187 @@
+class TestCase::Init {
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  
+  static method init_byte : int () {
+    
+    my $value : byte;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_short : int () {
+    
+    my $value : short;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_int : int () {
+    
+    my $value : int;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_long : int () {
+    
+    my $value : long;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_float : int () {
+    
+    my $value : float;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_double : int () {
+    
+    my $value : double;
+    
+    unless ($value == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_object : int () {
+    
+    my $value : object;
+    
+    unless ($value == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_byte : int () {
+    
+    my $value : TestCase::Point_3b;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_short : int () {
+    
+    my $value : TestCase::Point_3s;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_int : int () {
+    
+    my $value : TestCase::Point_3i;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_long : int () {
+    
+    my $value : TestCase::Point_3l;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_float : int () {
+    
+    my $value : TestCase::Point_3f;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method init_mulnum_double : int () {
+    
+    my $value : TestCase::Point_3d;
+    
+    unless ($value->{x} == 0) {
+      return 0;
+    }
+    unless ($value->{y} == 0) {
+      return 0;
+    }
+    unless ($value->{z} == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

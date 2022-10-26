@@ -522,6 +522,7 @@ t/02_vm/05_op/divide.t
 t/02_vm/05_op/dump.t
 t/02_vm/05_op/error_code.t
 t/02_vm/05_op/increment.t
+t/02_vm/05_op/init.t
 t/02_vm/05_op/is_type.t
 t/02_vm/05_op/isa.t
 t/02_vm/05_op/logical_operator.t
@@ -633,6 +634,7 @@ t/02_vm/lib/SPVM/TestCase/FILE.spvm
 t/02_vm/lib/SPVM/TestCase/For.spvm
 t/02_vm/lib/SPVM/TestCase/IfRequire.spvm
 t/02_vm/lib/SPVM/TestCase/Increment.spvm
+t/02_vm/lib/SPVM/TestCase/Init.spvm
 t/02_vm/lib/SPVM/TestCase/Inline.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceType.spvm
