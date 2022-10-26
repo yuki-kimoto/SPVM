@@ -527,6 +527,7 @@ t/02_vm/05_op/is_type.t
 t/02_vm/05_op/isa.t
 t/02_vm/05_op/logical_operator.t
 t/02_vm/05_op/method_call.t
+t/02_vm/05_op/move.t
 t/02_vm/05_op/multiply.t
 t/02_vm/05_op/new.t
 t/02_vm/05_op/numeric_operator.t
@@ -686,6 +687,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Time.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass/FloatMatrix.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiPackage.spvm
+t/02_vm/lib/SPVM/TestCase/Move.spvm
 t/02_vm/lib/SPVM/TestCase/Mulnum.spvm
 t/02_vm/lib/SPVM/TestCase/MulnumArray.spvm
 t/02_vm/lib/SPVM/TestCase/Multiply.spvm

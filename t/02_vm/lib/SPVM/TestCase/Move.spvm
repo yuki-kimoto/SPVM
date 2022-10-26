@@ -1,0 +1,63 @@
+class TestCase::Move {
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  
+  static method move_constant_byte : int () {
+    
+    my $value : byte = 'a';
+    
+    unless ($value == 'a') {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_constant_int : int () {
+    
+    my $value : int = -2147483648;
+    
+    unless ($value == -2147483648) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_constant_long : int () {
+    
+    my $value : long = -9223372036854775808L;
+    
+    unless ($value == -9223372036854775808L) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_constant_float : int () {
+    
+    my $value : float = 1.5f;
+    
+    unless ($value == 1.5f) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_constant_double : int () {
+    
+    my $value : double = 2147483648.5;
+    
+    unless ($value == 2147483648.5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
