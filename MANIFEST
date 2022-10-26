@@ -511,8 +511,7 @@ t/02_vm/05_op/__FILE__.t
 t/02_vm/05_op/__LINE__.t
 t/02_vm/05_op/add.t
 t/02_vm/05_op/assign.t
-t/02_vm/05_op/bit_not.t
-t/02_vm/05_op/bit_operator.t
+t/02_vm/05_op/bit_logical.t
 t/02_vm/05_op/class_id.t
 t/02_vm/05_op/comparison_operator.t
 t/02_vm/05_op/concat.t
@@ -538,6 +537,7 @@ t/02_vm/05_op/refop.t
 t/02_vm/05_op/remainder.t
 t/02_vm/05_op/say.t
 t/02_vm/05_op/seqop.t
+t/02_vm/05_op/shift.t
 t/02_vm/05_op/special_assign.t
 t/02_vm/05_op/string.t
 t/02_vm/05_op/subtract.t
@@ -600,7 +600,6 @@ t/02_vm/lib/SPVM/TestCase/ArrayBigSize.spvm
 t/02_vm/lib/SPVM/TestCase/ArrayMiddleSize.spvm
 t/02_vm/lib/SPVM/TestCase/Assign.spvm
 t/02_vm/lib/SPVM/TestCase/Begin.spvm
-t/02_vm/lib/SPVM/TestCase/BitNot.spvm
 t/02_vm/lib/SPVM/TestCase/BitOperator.spvm
 t/02_vm/lib/SPVM/TestCase/Callback.spvm
 t/02_vm/lib/SPVM/TestCase/Callback/Callback.spvm

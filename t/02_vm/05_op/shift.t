@@ -8,8 +8,6 @@ use Test::More;
 
 use SPVM 'TestCase::BitOperator';
 
-
-
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
@@ -38,21 +36,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(SPVM::TestCase::BitOperator->bit_shift_right_int());
   ok(SPVM::TestCase::BitOperator->bit_shift_right_long());
-}
-
-# Bit and
-{
-  ok(SPVM::TestCase::BitOperator->bit_and());
-}
-
-# Bit or
-{
-  ok(SPVM::TestCase::BitOperator->bit_or());
-}
-
-# Bit xor
-{
-  ok(SPVM::TestCase::BitOperator->bit_xor());
 }
 
 # All object is freed
