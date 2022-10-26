@@ -2813,8 +2813,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE opcode = {0};
                             if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                               
-                              // MOVE_UNDEF
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_UNDEF);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_OBJECT);
                               
                               int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                               opcode.operand0 = mem_id_out;

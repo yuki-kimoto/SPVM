@@ -133,7 +133,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "MOVE_OBJECT",
     "MOVE_OBJECT_CHECK_ASSIGN",
     "MOVE_OBJECT_CHECK_READ_ONLY",
-    "MOVE_UNDEF",
     "MOVE_REF",
     "ADD_INT",
     "ADD_LONG",

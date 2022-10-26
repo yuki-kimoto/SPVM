@@ -497,10 +497,6 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
-        break;
-      }
       case SPVM_OPCODE_C_ID_MOVE_REF: {
         *(void**)&ref_vars[opcode->operand0] = *(void**)&ref_vars[opcode->operand1];
         break;

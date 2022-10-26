@@ -1,3 +1,10 @@
+0.9659 2022-10-27
+  [Test Improvement]
+    * Added the tests of opcodes.
+  [Internal Changes without Effects]
+    * Renamed SPVM_OPCODE_C_ID_INIT_UNDEF to SPVM_OPCODE_C_ID_INIT_OBJECT
+    * Removed SPVM_OPCODE_C_ID_MOVE_UNDEF because it is the same as SPVM_OPCODE_C_ID_INIT_OBJECT.
+    
 0.9658 2022-10-26
   [New Features]
     * Added the say operator.
