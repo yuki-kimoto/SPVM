@@ -483,6 +483,8 @@ t/02_vm/01_toke/literal_undef.t
 t/02_vm/01_toke/symbol_name.t
 t/02_vm/02_parser/inline.t
 t/02_vm/02_parser/precedence.t
+t/02_vm/03_definition/alias.t
+t/02_vm/03_definition/allow.t
 t/02_vm/03_definition/any_object_array.t
 t/02_vm/03_definition/array.t
 t/02_vm/03_definition/array_big.t
@@ -496,8 +498,6 @@ t/02_vm/03_definition/local_var.t
 t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
 t/02_vm/03_definition/type_comment.t
-t/02_vm/04_statement/alias.t
-t/02_vm/04_statement/allow.t
 t/02_vm/04_statement/begin.t
 t/02_vm/04_statement/conditional_branch.t
 t/02_vm/04_statement/exception.t
