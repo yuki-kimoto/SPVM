@@ -347,15 +347,18 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_BYTE:
+      case SPVM_OPCODE_C_ID_INIT_BYTE: {
         byte_vars[opcode->operand0] = 0;
         break;
-      case SPVM_OPCODE_C_ID_INIT_SHORT:
+      }
+      case SPVM_OPCODE_C_ID_INIT_SHORT: {
         short_vars[opcode->operand0] = 0;
         break;
-      case SPVM_OPCODE_C_ID_INIT_INT:
+      }
+      case SPVM_OPCODE_C_ID_INIT_INT: {
         int_vars[opcode->operand0] = 0;
         break;
+      }
       case SPVM_OPCODE_C_ID_INIT_LONG: {
         long_vars[opcode->operand0] = 0;
         break;
@@ -368,9 +371,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         double_vars[opcode->operand0] = 0;
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_UNDEF:
+      case SPVM_OPCODE_C_ID_INIT_UNDEF: {
         SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
         break;
+      }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -413,12 +417,14 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE:
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE: {
         byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         break;
-      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT: {
         int_vars[opcode->operand0] = (int32_t)opcode->operand1;
         break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         long_vars[opcode->operand0] = *(int64_t*)&opcode->operand1;
         break;
