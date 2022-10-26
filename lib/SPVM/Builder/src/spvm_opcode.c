@@ -112,7 +112,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "INIT_LONG",
     "INIT_FLOAT",
     "INIT_DOUBLE",
-    "INIT_UNDEF",
+    "INIT_OBJECT",
     "INIT_MULNUM_BYTE",
     "INIT_MULNUM_SHORT",
     "INIT_MULNUM_INT",

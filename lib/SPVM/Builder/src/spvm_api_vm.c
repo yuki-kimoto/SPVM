@@ -371,7 +371,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         double_vars[opcode->operand0] = 0;
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_UNDEF: {
+      case SPVM_OPCODE_C_ID_INIT_OBJECT: {
         SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
         break;
       }

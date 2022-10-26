@@ -492,7 +492,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_UNDEF: {
+      case SPVM_OPCODE_C_ID_INIT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", NULL);\n");

@@ -704,7 +704,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_OPCODE opcode = {0};
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_UNDEF);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_OBJECT);
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_cur);
 
                           opcode.operand0 = mem_id_out;
@@ -972,7 +972,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             SPVM_OPCODE opcode = {0};
                             
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_UNDEF);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_OBJECT);
                             
                             int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_var_tmp);
                             opcode.operand0 = mem_id_out;
@@ -1096,7 +1096,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE opcode = {0};
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_UNDEF);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_OBJECT);
                           
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           opcode.operand0 = mem_id_out;
