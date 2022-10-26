@@ -60,4 +60,76 @@ class TestCase::Move {
     
     return 1;
   }
+
+  static method move_byte : int () {
+    
+    my $value : byte = 'a';
+    my $value2 = $value;
+    
+    unless ($value2 == 'a') {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_short : int () {
+    
+    my $value : short = -32768;
+    my $value2 = $value;
+    
+    unless ($value2 == -32768) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_int : int () {
+    
+    my $value : int = -2147483648;
+    my $value2 = $value;
+    
+    unless ($value2 == -2147483648) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_long : int () {
+    
+    my $value : long = -9223372036854775808L;
+    my $value2 = $value;
+    
+    unless ($value2 == -9223372036854775808L) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_float : int () {
+    
+    my $value : float = 1.5f;
+    my $value2 = $value;
+    
+    unless ($value2 == 1.5f) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_double : int () {
+    
+    my $value : double = 2147483648.5;
+    my $value2 = $value;
+    
+    unless ($value2 == 2147483648.5) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }

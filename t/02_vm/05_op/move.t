@@ -19,6 +19,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::Move->move_constant_long);
     ok(SPVM::TestCase::Move->move_constant_float);
     ok(SPVM::TestCase::Move->move_constant_double);
+    ok(SPVM::TestCase::Move->move_byte);
+    ok(SPVM::TestCase::Move->move_short);
+    ok(SPVM::TestCase::Move->move_int);
+    ok(SPVM::TestCase::Move->move_long);
+    ok(SPVM::TestCase::Move->move_float);
+    ok(SPVM::TestCase::Move->move_double);
   }
 }
 
