@@ -25,6 +25,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::Move->move_long);
     ok(SPVM::TestCase::Move->move_float);
     ok(SPVM::TestCase::Move->move_double);
+    ok(SPVM::TestCase::Move->move_object);
+    ok(SPVM::TestCase::Move->move_ref);
   }
 }
 

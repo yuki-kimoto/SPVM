@@ -5,6 +5,8 @@ class TestCase::Move {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use Point;
+  use Point3D;
   
   static method move_constant_byte : int () {
     
@@ -127,6 +129,92 @@ class TestCase::Move {
     my $value2 = $value;
     
     unless ($value2 == 2147483648.5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method move_object : int () {
+    
+    {
+      my $value : object = Int->new(1);
+      my $value2 = $value;
+      
+      unless ($value2 == $value) {
+        return 0;
+      }
+    }
+
+    {
+      my $value : object = undef;
+      unless ($value == undef) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value : object = Int->new(1);
+      $value = undef;
+      
+      unless ($value == undef) {
+        return 0;
+      }
+    }
+
+    {
+      my $value = Point3D->new;
+      my $value2 = (Point)$value;
+      my $value3 = (Point3D)$value;
+      
+      unless ($value3 == $value) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value = Point->new;
+      my $value2 = (object)$value;
+      
+      my $value3 : object;
+      eval { $value3 = (Point3D)$value; };
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value = copy "abc";
+      
+      my $value2 = (mutable string)$value;
+      
+      unless ($value2 == $value) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value = "abc";
+      my $value2 : mutable string;
+      eval { $value2 = (mutable string)$value; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method move_ref : int () {
+    
+    my $value : double = 2147483648.5;
+    my $value_ref = \$value;
+    my $value_ref2 = $value_ref;
+    
+    unless ($$value_ref2 == 2147483648.5) {
       return 0;
     }
     
