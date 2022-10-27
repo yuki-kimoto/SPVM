@@ -5,6 +5,8 @@ class TestCase::Object : precompile {
   use TestCase::Destructor;
   use Fn;
   use Array;
+  use Point;
+  use Complex_2d;
   
   has INT32_MAX : int;
   has next : int;
@@ -53,4 +55,363 @@ class TestCase::Object : precompile {
     
     return 5;
   }
+  
+  static method new : int () {
+    # New object
+    {
+      my $object = Point->new;
+      unless ($object) {
+        return 0;
+      }
+    }
+    
+    # New array array
+    {
+      {
+        my $array = new Point[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new Point[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new Point[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New multi-dimensional array
+    {
+      {
+        my $array = new Point[][0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new Point[][3];
+        
+        my $element = new Point[3];
+        $array->[0] = $element;
+        
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] == $element) {
+          return 0;
+        }
+        
+        unless ($array->[0] isa Point[]) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new Point[][-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New multi-numeric array
+    {
+      {
+        my $array = new Complex_2d[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new Complex_2d[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        
+        unless ($array->[0]{re} == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new Complex_2d[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New byte array
+    {
+      {
+        my $array = new byte[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new byte[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa byte) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new byte[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New short array
+    {
+      {
+        my $array = new short[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new short[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa short) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new short[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New int array
+    {
+      {
+        my $array = new int[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new int[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa int) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new int[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New long array
+    {
+      {
+        my $array = new long[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new long[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa long) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new long[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New float array
+    {
+      {
+        my $array = new float[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new float[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa float) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new float[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New double array
+    {
+      {
+        my $array = new double[0];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new double[3];
+        unless ($array) {
+          return 0;
+        }
+        unless (@$array == 3) {
+          return 0;
+        }
+        unless ($array->[0] isa double) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new double[-1]; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+
+    # New string 
+    {
+      my $string = "abc";
+      unless ($string eq "abc") {
+        return 0;
+      }
+    }
+
+    # new_string_len
+    {
+      {
+        my $string = new_string_len 0;
+        unless ($string) {
+          return 0;
+        }
+        unless (length $string == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = new_string_len 3;
+        unless ($string) {
+          return 0;
+        }
+        unless (length $string == 3) {
+          return 0;
+        }
+        unless ($string isa string) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { new_string_len -1; };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
 }

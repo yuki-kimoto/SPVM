@@ -35,6 +35,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# new operator
+{
+  ok(SPVM::TestCase::Object->new());
+}
+
 # Destructor
 {
   ok(SPVM::TestCase::Object->destructor());
