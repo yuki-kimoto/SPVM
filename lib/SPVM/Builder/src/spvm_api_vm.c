@@ -3566,31 +3566,31 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_INT: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {
         int_vars[0] = int_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_LONG: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_LONG: {
         int_vars[0] = !!long_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_FLOAT: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_FLOAT: {
         int_vars[0] = !!float_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_DOUBLE: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_DOUBLE: {
         int_vars[0] = !!double_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_OBJECT: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_OBJECT: {
         int_vars[0] = !!*(void**)&object_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_REF: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_REF: {
         int_vars[0] = !!*(void**)&ref_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_BOOL_OBJECT: {
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
         int_vars[0] = !!env->get_bool_object_value(env, stack, *(void**)&object_vars[opcode->operand1]);
         break;
       }
