@@ -225,7 +225,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "STRING_CMP",
     "NEW_OBJECT",
     "NEW_OBJECT_ARRAY",
-    "NEW_MULTI_ARRAY",
+    "NEW_MULDIM_ARRAY",
     "NEW_MULNUM_ARRAY",
     "NEW_BYTE_ARRAY",
     "NEW_SHORT_ARRAY",

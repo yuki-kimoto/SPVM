@@ -1323,7 +1323,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
+      case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);

@@ -1121,7 +1121,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
+      case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         int32_t element_dimension = opcode->operand3;
         int32_t length = int_vars[opcode->operand2];
