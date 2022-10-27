@@ -4,8 +4,6 @@
   [Internal Changes without Effects]
     * Renamed SPVM_OPCODE_C_ID_INIT_UNDEF to SPVM_OPCODE_C_ID_INIT_OBJECT
     * Removed SPVM_OPCODE_C_ID_MOVE_UNDEF because it is the same as SPVM_OPCODE_C_ID_INIT_OBJECT.
-    * Renamed SPVM_OPCODE_C_ID_EQ_OBJECT to SPVM_OPCODE_C_ID_EQ_ADDRESS.
-    * Renamed SPVM_OPCODE_C_ID_NE_OBJECT to SPVM_OPCODE_C_ID_NE_ADDRESS.
     
 0.9658 2022-10-26
   [New Features]

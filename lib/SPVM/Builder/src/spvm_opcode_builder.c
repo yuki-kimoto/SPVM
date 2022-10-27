@@ -3771,7 +3771,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                             }
                             else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_ADDRESS);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_OBJECT);
                               mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
                             }
@@ -3846,7 +3846,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               }
                             }
                             else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_ADDRESS);
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_OBJECT);
                               mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
                             }

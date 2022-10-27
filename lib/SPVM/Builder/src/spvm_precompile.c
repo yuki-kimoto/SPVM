@@ -911,7 +911,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_numeric_eq(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1, opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_ADDRESS: {
+      case SPVM_OPCODE_C_ID_EQ_OBJECT: {
         SPVM_PRECOMPILE_add_numeric_eq(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1, opcode->operand2);
         break;
       }
@@ -931,7 +931,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_numeric_ne(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1, opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_ADDRESS: {
+      case SPVM_OPCODE_C_ID_NE_OBJECT: {
         SPVM_PRECOMPILE_add_numeric_ne(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1, opcode->operand2);
         break;
       }

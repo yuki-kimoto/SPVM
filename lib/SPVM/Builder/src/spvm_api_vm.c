@@ -772,7 +772,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int_vars[0] = double_vars[opcode->operand1] == double_vars[opcode->operand2];
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_ADDRESS: {
+      case SPVM_OPCODE_C_ID_EQ_OBJECT: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] == *(void**)&object_vars[opcode->operand2];
         break;
       }
@@ -792,7 +792,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int_vars[0] = double_vars[opcode->operand1] != double_vars[opcode->operand2];
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_ADDRESS: {
+      case SPVM_OPCODE_C_ID_NE_OBJECT: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] != *(void**)&object_vars[opcode->operand2];
         break;
       }
