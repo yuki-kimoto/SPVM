@@ -513,6 +513,7 @@ t/02_vm/05_op/__LINE__.t
 t/02_vm/05_op/add.t
 t/02_vm/05_op/assign.t
 t/02_vm/05_op/bit_logical.t
+t/02_vm/05_op/bool_conversion.t
 t/02_vm/05_op/class_id.t
 t/02_vm/05_op/comparison_operator.t
 t/02_vm/05_op/concat.t
