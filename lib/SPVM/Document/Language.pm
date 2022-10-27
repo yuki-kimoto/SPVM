@@ -6041,7 +6041,7 @@ The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the
 
 The bool conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the operand of the bool conversion must be one of a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
+The type of the operand of the bool conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
 
 The bool conversion returns the following value corresponding to the type of the condional operand.
 
@@ -6102,6 +6102,13 @@ B<Examples:>
   $object = undef;
   if ($object) {
     # not ok
+  }
+  
+  my $value = 1;
+  my $ref = \$value;
+  
+  if ($ref) {
+    # ok
   }
   
   if (undef) {
@@ -7302,7 +7309,6 @@ Comparison operators are the L<numeric comparison operators|/"Numeric Comparison
 =head2 Numeric Comparison Operator
 
 The numeric comparison operator is a L<comparison operator|/"Comparison Operator"> that is placed between The left operand and the right operand to compare the size of number or check the equqlity of objects.
-
   LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
 
 The list of numeric comparison operators.
@@ -7320,7 +7326,7 @@ The list of numeric comparison operators.
       LEFT_OPERAND == RIGHT_OPERAND
     </td>
     <td>
-      The left operand and the right operand are numeric types, The left operand and the right operand are Object Type (including Undefined Value)
+      The left operand and the right operand are numeric types or object types or reference types. If the one side is an object type or an reference type, L<undef|/"Undefined Value"> is allowed at the other side.
     </td>
     <td>
       The left operand and the right operand are equal
@@ -7331,7 +7337,7 @@ The list of numeric comparison operators.
       LEFT_OPERAND != RIGHT_OPERAND
     </td>
     <td>
-      The left operand and the right operand are numeric types, The left operand and the right operand are Object Type (including Undefined Value)
+      The left operand and the right operand are numeric types or object types or reference types. If the one side is an object type or an reference type, L<undef|/"Undefined Value"> is allowed at the other side.
     </td>
     <td>
       The left operand and the right operand are not equal

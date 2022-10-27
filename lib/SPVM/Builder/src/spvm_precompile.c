@@ -915,6 +915,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_numeric_eq(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1, opcode->operand2);
         break;
       }
+      case SPVM_OPCODE_C_ID_EQ_REF: {
+        SPVM_PRECOMPILE_add_numeric_eq(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1, opcode->operand2);
+        break;
+      }
       case SPVM_OPCODE_C_ID_NE_INT: {
         SPVM_PRECOMPILE_add_numeric_ne(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1, opcode->operand2);
         break;
@@ -933,6 +937,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       }
       case SPVM_OPCODE_C_ID_NE_OBJECT: {
         SPVM_PRECOMPILE_add_numeric_ne(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1, opcode->operand2);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_NE_REF: {
+        SPVM_PRECOMPILE_add_numeric_ne(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1, opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_GT_INT: {
@@ -3766,6 +3774,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_OBJECT: {
         SPVM_PRECOMPILE_add_bool(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_REF: {
+        SPVM_PRECOMPILE_add_bool(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_BOOL_OBJECT: {

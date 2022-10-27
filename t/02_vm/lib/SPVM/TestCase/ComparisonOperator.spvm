@@ -1,5 +1,6 @@
 class TestCase::ComparisonOperator {
   use TestCase::Minimal;
+  use Point;
   
   static method string_eq : int () {
     my $string = "abc";
@@ -506,6 +507,17 @@ class TestCase::ComparisonOperator {
     return 0;
   }
 
+  static method bool_true_ref : int () {
+    my $value = 1;
+    my $vaelu_ref = \$value;
+    if ($vaelu_ref) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+
   static method bool_false_byte : int () {
     if ((int)(byte)0) {
       return 0;
@@ -555,13 +567,14 @@ class TestCase::ComparisonOperator {
   }
   
   static method bool_false_object : int () {
-    if (undef) {
+    my $object : Point;
+    if ($object) {
       return 0;
     }
     
     return 1;
   }
-  
+
   static method bool_else : int () {
     if (0) {
       return 0;
@@ -784,6 +797,30 @@ class TestCase::ComparisonOperator {
     }
   }
 
+  static method numeric_eq_ref_same  : int () {
+    
+    my $ref1 = TestCase::Minimal->new;
+    
+    if ($ref1 == $ref1) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  static method numeric_eq_ref_different  : int () {
+    my $ref1 = TestCase::Minimal->new;
+    my $ref2 = TestCase::Minimal->new;
+    
+    if ($ref1 == $ref2) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
   # If a != b
   static method numeric_ne_undef  : int () {
     my $test_case : TestCase::Minimal = TestCase::Minimal->new;
@@ -938,6 +975,33 @@ class TestCase::ComparisonOperator {
     my $object2 = TestCase::Minimal->new;
     
     if ($object1 != $object2) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  static method numeric_ne_ref_same  : int () {
+    
+    my $value = 1;
+    my $ref1 : int* = \$value;
+    
+    if ($ref1 != $ref1) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+  static method numeric_ne_ref_different  : int () {
+    my $value1 = 1;
+    my $ref1 = \$value1;
+    my $value2 = 2;
+    my $ref2 = \$value2;
+    
+    if ($ref1 != $ref2) {
       return 1;
     }
     else {

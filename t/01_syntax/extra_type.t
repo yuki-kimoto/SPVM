@@ -38,7 +38,7 @@ use Test::More;
 
 # Bool
 {
-  compile_not_ok_file('CompileError::Bool::NotNumericObject');
+  compile_ok_file('CompileError::Bool::NotNumericObject');
 }
 {
   compile_not_ok_file('CompileError::InvalidType');

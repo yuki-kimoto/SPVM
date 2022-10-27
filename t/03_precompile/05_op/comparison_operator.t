@@ -25,6 +25,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::ComparisonOperator->bool_true_float);
     ok(SPVM::TestCase::ComparisonOperator->bool_true_double);
     ok(SPVM::TestCase::ComparisonOperator->bool_true_object);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_ref);
 
     ok(SPVM::TestCase::ComparisonOperator->bool_false_byte);
     ok(SPVM::TestCase::ComparisonOperator->bool_false_short);
@@ -145,6 +146,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::ComparisonOperator->numeric_eq_object_same);
     ok(SPVM::TestCase::ComparisonOperator->numeric_eq_object_different);
     ok(SPVM::TestCase::ComparisonOperator->numeric_eq_undef);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_ref_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_ref_different);
   }
 
   # a != b
@@ -164,6 +167,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::ComparisonOperator->numeric_ne_object_same);
     ok(SPVM::TestCase::ComparisonOperator->numeric_ne_object_different);
     ok(SPVM::TestCase::ComparisonOperator->numeric_ne_undef);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_ref_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_ref_different);
   }
 
   # a <=> b

@@ -776,6 +776,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int_vars[0] = *(void**)&object_vars[opcode->operand1] == *(void**)&object_vars[opcode->operand2];
         break;
       }
+      case SPVM_OPCODE_C_ID_EQ_REF: {
+        int_vars[0] = *(void**)&ref_vars[opcode->operand1] == *(void**)&ref_vars[opcode->operand2];
+        break;
+      }
       case SPVM_OPCODE_C_ID_NE_INT: {
         int_vars[0] = int_vars[opcode->operand1] != int_vars[opcode->operand2];
         break;
@@ -794,6 +798,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_NE_OBJECT: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] != *(void**)&object_vars[opcode->operand2];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_NE_REF: {
+        int_vars[0] = *(void**)&ref_vars[opcode->operand1] != *(void**)&ref_vars[opcode->operand2];
         break;
       }
       case SPVM_OPCODE_C_ID_GT_INT: {
@@ -3576,6 +3584,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_OBJECT: {
         int_vars[0] = !!*(void**)&object_vars[opcode->operand1];
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_REF: {
+        int_vars[0] = !!*(void**)&ref_vars[opcode->operand1];
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_BOOL_OBJECT: {

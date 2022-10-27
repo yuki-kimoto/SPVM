@@ -145,8 +145,12 @@ use Test::More;
 # bool type conversion
 {
   {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $var : Complex_2d; !$var; } }';
+    compile_not_ok($source, qr'The operand of the bool type conversion must be a numeric type or an object type or the reference type or the undef type');
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $var = 0; my $var_ref = \$var; !$var_ref; } }';
-    compile_not_ok($source, qr'The operand of the bool type conversion must be one of a numeric type, an object type or the undef type');
+    compile_ok($source);
   }
 }
 
@@ -162,7 +166,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 == Int->new(1); } }';
-    compile_not_ok($source, qr'The left and right operands of == operator must be numeric types or object types');
+    compile_not_ok($source, qr'The left and right operands of the == operator must be numeric types or object types or reference types');
   }
 }
 
@@ -178,7 +182,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 != Int->new(1); } }';
-    compile_not_ok($source, qr'The left and right operands of != operator must be numeric types or object types');
+    compile_not_ok($source, qr'The left and right operands of the != operator must be numeric types or object types or reference types');
   }
 }
 

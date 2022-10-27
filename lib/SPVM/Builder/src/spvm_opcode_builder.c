@@ -3775,6 +3775,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
                             }
+                            else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_REF);
+                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            }
                             else {
                               assert(0);
                             }
@@ -3847,6 +3852,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_OBJECT);
+                              mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                              mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
+                            }
+                            else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_REF);
                               mem_id_in1 = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               mem_id_in2 = SPVM_OP_get_mem_id(compiler, op_assign_src->last);
                             }
@@ -4158,6 +4168,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_OBJECT);
+                              mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
+                            }
+                            else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_CONDITINAL_REF);
                               mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                             }
                             else {
