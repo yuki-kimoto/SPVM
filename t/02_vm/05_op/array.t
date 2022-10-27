@@ -73,6 +73,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($total, 6);
 }
 
+# any object array
+{
+  ok(SPVM::TestCase::Array->any_object_array);
+}
+
 # Clear exception
 SPVM::set_exception(undef);
 
