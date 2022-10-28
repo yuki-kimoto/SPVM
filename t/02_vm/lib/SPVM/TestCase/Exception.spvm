@@ -13,54 +13,55 @@ class TestCase::Exception {
     eval {
       $test_case->{x_byte};
     };
-    if ($@) {
+    unless ($@) {
       return 1;
+    }
       
-      eval {
-        $test_case->{x_short};
-      };
-      
-      if ($@) {
-        return 1;
+    eval {
+      $test_case->{x_short};
+    };
+    
+    unless ($@) {
+      return 0;
+    }
 
-        eval {
-          $test_case->{x_int};
-        };
-        
-        if ($@) {
-          eval {
-            $test_case->{x_long};
-          };
-          
-          if ($@) {
-            eval {
-              $test_case->{x_float};
-            };
-            
-            if ($@) {
-              eval {
-                $test_case->{x_double};
-              };
-              
-              if ($@) {
-                eval {
-                  $test_case->{x_test_case};
-                };
-                
-                if ($@) {
-
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-
-      }
-      
+    eval {
+      $test_case->{x_int};
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_long};
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_float};
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_double};
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_test_case};
+    };
+    
+    unless ($@) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   static method exception_set_field_object_undef : int () {
@@ -70,53 +71,55 @@ class TestCase::Exception {
     eval {
       $test_case->{x_byte} = (byte)1;
     };
-    if ($@) {
-      return 1;
-      
-      eval {
-        $test_case->{x_short} = (short)1;
-      };
-      
-      if ($@) {
-        return 1;
-
-        eval {
-          $test_case->{x_int} = 1;
-        };
-        
-        if ($@) {
-          eval {
-            $test_case->{x_long} = 1L;
-          };
-          
-          if ($@) {
-            eval {
-              $test_case->{x_float} = 1f;
-            };
-            
-            if ($@) {
-              eval {
-                $test_case->{x_double} = 1d;
-              };
-              
-              if ($@) {
-                eval {
-                  $test_case->{x_test_case} = undef;
-                };
-                
-                if ($@) {
-
-                  return 1;
-                }
-              }
-            }
-          }
-        }
-      }
-      
+    unless ($@) {
+      return 0;
     }
     
-    return 0;
+    eval {
+      $test_case->{x_short} = (short)1;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    eval {
+      $test_case->{x_int} = 1;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_long} = 1L;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_float} = 1f;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_double} = 1d;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    eval {
+      $test_case->{x_test_case} = undef;
+    };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
   }
   static method exception_eval_call_spvm_method : int () {
     eval {
