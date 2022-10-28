@@ -82,7 +82,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
       is($output, "\x0A");
     }
     

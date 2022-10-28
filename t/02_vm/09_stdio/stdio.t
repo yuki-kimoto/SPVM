@@ -8,7 +8,7 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestFile;
-use SPVM 'TestCase::Print';
+use SPVM 'TestCase::Stdio';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -30,7 +30,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use SPVM 'TestCase::Print';
+use SPVM 'TestCase::Stdio';
 
 
 
@@ -63,49 +63,27 @@ sub slurp_binmode {
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  # print
+  # stdout
   {
-    # test_print
+    # print "\n" to stdout
     {
-      my $func_call = 'SPVM::TestCase::Print->test_print';
-      write_script_file($script_file, $func_call);
-      system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'Hello');
-    }
-
-    # test_print_newline
-    {
-      my $func_call = 'SPVM::TestCase::Print->test_print_newline';
+      my $func_call = 'SPVM::TestCase::Stdio->print_line_feed_to_stdout';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "\x0A");
     }
-    
-    # test_print_long_lines
+  }
+
+  # stderr
+  {
+    # print "\n" to stderr
     {
-      my $func_call = 'SPVM::TestCase::Print->test_print_long_lines';
+      my $func_call = 'SPVM::TestCase::Stdio->print_line_feed_to_stderr';
       write_script_file($script_file, $func_call);
-      system("$^X -Mblib $script_file > $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
-    }
-    # test_print_empty
-    {
-      my $func_call = 'SPVM::TestCase::Print->test_print_empty';
-      write_script_file($script_file, $func_call);
-      system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, "");
-    }
-    # test_print_undef
-    {
-      my $func_call = 'SPVM::TestCase::Print->test_print_undef';
-      write_script_file($script_file, $func_call);
-      system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, "");
+      is($output, "\x0A");
     }
   }
 }

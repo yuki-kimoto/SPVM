@@ -1,0 +1,9 @@
+class TestCase::Stdio {
+
+  static method print_line_feed_to_stdout : void () {
+    print "\n";
+  }
+  static method print_line_feed_to_stderr : void () {
+    warn "\n";
+  }
+}
