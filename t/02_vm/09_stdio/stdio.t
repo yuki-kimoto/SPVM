@@ -9,6 +9,7 @@ use Test::More;
 
 use TestFile;
 use SPVM 'TestCase::Stdio';
+use SPVM 'TestCase::NativeAPI';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -86,6 +87,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is($output, "\x0A");
     }
   }
+  
+  # stdin, stdout, stderr is binary mode
+  ok(SPVM::TestCase::NativeAPI->check_stdin_stdout_stderr_binary_mode);
 }
 
 # All object is freed

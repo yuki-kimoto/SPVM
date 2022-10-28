@@ -2,6 +2,7 @@
 #include <string.h>
 #include <float.h>
 #include <assert.h>
+#include <fcntl.h>
 
 #include <spvm_native.h>
 
@@ -3141,3 +3142,34 @@ int32_t SPVM__TestCase__NativeAPI__get_pointer_length(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__check_stdin_stdout_stderr_binary_mode(SPVM_ENV* env, SPVM_VALUE* stack) {
+#ifdef _WIN32  
+  int32_t stdin_old_mode = _setmode(0, _O_BINARY);
+  
+  if (!(stdin_old_mode == _O_BINARY)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  int32_t stdout_old_mode = _setmode(1, _O_BINARY);
+  if (!(stdout_old_mode == _O_BINARY)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  int32_t stderr_old_mode = _setmode(2, _O_BINARY);
+  if (!(stderr_old_mode == _O_BINARY)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+
+#else
+  stack[0].ival = 1;
+  
+  return 0;
+#endif
+}
