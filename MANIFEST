@@ -583,6 +583,7 @@ t/02_vm/08_module/Sort.t
 t/02_vm/08_module/StringBuffer.t
 t/02_vm/08_module/StringList.t
 t/02_vm/08_module/Time.t
+t/02_vm/09_stdio/stdio.t
 t/02_vm/99_extra/examples.t
 t/02_vm/lib/SPVM/4foo.spvm
 t/02_vm/lib/SPVM/EmptyClass.spvm
@@ -751,6 +752,7 @@ t/02_vm/lib/SPVM/TestCase/Say.spvm
 t/02_vm/lib/SPVM/TestCase/Seqop.spvm
 t/02_vm/lib/SPVM/TestCase/Simple.spvm
 t/02_vm/lib/SPVM/TestCase/SpecialAssign.spvm
+t/02_vm/lib/SPVM/TestCase/Stdio.spvm
 t/02_vm/lib/SPVM/TestCase/String.spvm
 t/02_vm/lib/SPVM/TestCase/Subtract.spvm
 t/02_vm/lib/SPVM/TestCase/Switch.spvm
