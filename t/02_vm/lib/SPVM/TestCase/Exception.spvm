@@ -126,11 +126,11 @@ class TestCase::Exception {
       TestCase::Exception->exception_die_return_int();
     };
     
-    if ($@) {
-      return 1;
+    unless ($@) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   static method exception_call_stack : int () {
@@ -175,11 +175,11 @@ class TestCase::Exception {
     };
     
     
-    if ($@) {
-      return 1;
+    unless ($@) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   # Exception
   static method exception_zero_divide_int : int () {
