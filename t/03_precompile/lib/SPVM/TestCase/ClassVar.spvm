@@ -21,23 +21,27 @@ class TestCase::ClassVar : precompile {
   our $ACCESSOR : rw int;
 
   static method class_var : int () {
-    if ($TestCase::ClassVar::CLASS_VAR_INT == 0) {
-      $TestCase::ClassVar::CLASS_VAR_INT = Fn->INT32_MAX();
-      if ($TestCase::ClassVar::CLASS_VAR_INT == Fn->INT32_MAX()) {
-        $TestCase::ClassVar::CLASS_VAR_LONG = Fn->INT64_MAX();
-        if ($TestCase::ClassVar::CLASS_VAR_LONG == Fn->INT64_MAX()) {
-          $TestCase::ClassVar::CLASS_VAR_MINIMAL = TestCase::Minimal->new();
-          
-          $TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4);
-          
-          if ($TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4)) {
-            $TestCase::ClassVar::CLASS_VAR_MINIMAL = undef;
-            return 1;
-          }
-        }
-      }
+    unless ($TestCase::ClassVar::CLASS_VAR_INT == 0) {
+      return 0;
     }
-    return 0;
+    $TestCase::ClassVar::CLASS_VAR_INT = Fn->INT32_MAX();
+    unless ($TestCase::ClassVar::CLASS_VAR_INT == Fn->INT32_MAX()) {
+      return 0;
+    }
+    $TestCase::ClassVar::CLASS_VAR_LONG = Fn->INT64_MAX();
+    unless ($TestCase::ClassVar::CLASS_VAR_LONG == Fn->INT64_MAX()) {
+      return 0;
+    }
+    $TestCase::ClassVar::CLASS_VAR_MINIMAL = TestCase::Minimal->new();
+    
+    $TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4);
+    
+    unless ($TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4)) {
+      return 0;
+    }
+    $TestCase::ClassVar::CLASS_VAR_MINIMAL = undef;
+    
+    return 1;
   }
 
   static method class_var_name : int () {
