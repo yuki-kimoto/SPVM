@@ -17,6 +17,16 @@
         _setmode(stderr, _O_BINARY);
         _setmode(stdin, _O_BINARY);
       #endif
+      
+      The document is added to SPVM::Document::Language.
+      
+      =head1 Standard IO
+
+      C<stdin>, C<stdout>, C<stderr> in C<C language> is set to the binary mode on all systems.
+
+      This means the escape character of the string literal C<"\n"> is not coverted to C<"\r\n"> when it is got from C<stdin> and it is printed to C<stdout> and C<stderr>.
+
+      C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native module|SPVM::Document::NativeModule>, but don't do that.
     
 0.9658 2022-10-26
   [New Features]
