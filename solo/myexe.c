@@ -4,6 +4,9 @@
 #include <inttypes.h>
 #include <assert.h>
 
+// Only used for _setmode function and _O_BINARY
+#include <fcntl.h>
+
 #include "spvm_native.h"
 
 int32_t main(int32_t command_args_length, const char *command_args[]) {

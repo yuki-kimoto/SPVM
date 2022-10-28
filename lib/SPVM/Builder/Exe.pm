@@ -486,6 +486,9 @@ sub create_bootstrap_header_source {
 #include <inttypes.h>
 #include <assert.h>
 
+// Only used for _setmode function and _O_BINARY
+#include <fcntl.h>
+
 #include "spvm_native.h"
 
 EOS
