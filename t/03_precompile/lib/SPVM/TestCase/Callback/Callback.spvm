@@ -1,3 +1,0 @@
-class TestCase::Callback::Callback : interface_t {
-  required method : int ($var1 : int, $var2 : long);
-}

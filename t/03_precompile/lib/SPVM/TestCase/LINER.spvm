@@ -1,1 +1,0 @@
-class TestCase::LINER : precompile {  static method line : int () {    my $line : int = __LINE__;        unless ($line == 3) {      return 0;    }    return 1;  }}

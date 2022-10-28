@@ -1,8 +1,0 @@
-class TestCase::Examples : precompile {
-  use TestCase::OnlyField;
-  
-  static method new_only_field_object : TestCase::OnlyField () {
-    my $object = new TestCase::OnlyField;
-    return $object;
-  }
-}

@@ -1,5 +1,0 @@
-class TestCase::NativeAPICpp : precompile {
-  
-  native static method call_cpp_func : int ($value : int);
-  native static method call_native_func : int ($value : int);
-}

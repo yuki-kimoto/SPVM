@@ -1,1 +1,0 @@
-class TestCase::PointerChild extends TestCase::Pointer : pointer_t;
