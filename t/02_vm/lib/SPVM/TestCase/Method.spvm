@@ -11,6 +11,7 @@ class TestCase::Method {
   use Complex_2d;
   use Fn;
   use Array;
+  use Point;
 
   # Use keyword name as method name
   static method int : int () {
@@ -1356,6 +1357,19 @@ class TestCase::Method {
     return 1;
   }
 
+  static method test_arg_object : int () {
+    
+    my $value = Point->new;
+    
+    my $result = &arg_object($value);
+    
+    unless ($result == $value) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   static method arg_byte : byte ($value : byte) {
     return $value;
   }
@@ -1373,6 +1387,26 @@ class TestCase::Method {
   }
   static method arg_double : double ($value : double) {
     return $value;
+  }
+  static method arg_object : object ($value : object) {
+    return $value;
+  }
+  
+  static method arg_ref : byte ($value : byte*) {
+    return $$value;
+  }
+  
+  static method test_arg_ref : int () {
+    
+    my $value = Fn->BYTE_MIN;
+    
+    my $result = &arg_ref(\$value);
+    
+    unless ($result == $value) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method test_arg_mulnum_byte : int () {
@@ -1502,4 +1536,27 @@ class TestCase::Method {
   static method arg_mulnum_double : TestCase::Point_3d ($value : TestCase::Point_3d) {
     return $value;
   }
+
+  static method test_arg_mulnum_ref : int () {
+    
+    my $value : TestCase::Point_3b;
+    $value->{x} = Fn->BYTE_MIN;
+    $value->{y} = 2;
+    
+    my $result = &arg_mulnum_ref(\$value);
+    
+    unless ($result->{x} == $value->{x}) {
+      return 0;
+    }
+    
+    unless ($result->{y} == $value->{y}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  static method arg_mulnum_ref : TestCase::Point_3b ($value : TestCase::Point_3b*) {
+    return $$value;
+  }
+
 }
