@@ -16,7 +16,7 @@ class TestCase::MulnumArray {
   use Fn;
   use Array;
   
-  static method value_array_max_fields_byte : int () {
+  static method mulnum_array_max_fields_byte : int () {
     my $mat = new TestCase::Matrix4_16b[3];
     
     $mat->[0]{x11} = Fn->INT8_MIN();
@@ -131,7 +131,7 @@ class TestCase::MulnumArray {
     return 1;
   }
 
-  static method value_array_max_fields_short : int () {
+  static method mulnum_array_max_fields_short : int () {
     my $mat = new TestCase::Matrix4_16s[3];
     
     $mat->[0]{x11} = Fn->INT16_MIN();
@@ -247,7 +247,7 @@ class TestCase::MulnumArray {
     return 1;
   }
 
-  static method value_array_max_fields_int : int () {
+  static method mulnum_array_max_fields_int : int () {
     my $mat = new TestCase::Matrix4_16i[3];
     
     $mat->[0]{x11} = Fn->INT32_MIN();
@@ -363,7 +363,7 @@ class TestCase::MulnumArray {
     return 1;
   }
 
-  static method value_array_max_fields_long : int () {
+  static method mulnum_array_max_fields_long : int () {
     my $mat = new TestCase::Matrix4_16l[3];
     
     $mat->[0]{x11} = Fn->INT64_MIN();
@@ -479,7 +479,7 @@ class TestCase::MulnumArray {
     return 1;
   }
 
-  static method value_array_max_fields_float : int () {
+  static method mulnum_array_max_fields_float : int () {
     my $mat = new TestCase::Matrix4_16f[3];
     
     $mat->[0]{x11} = Fn->FLT_MIN();
@@ -595,7 +595,7 @@ class TestCase::MulnumArray {
     return 1;
   }
 
-  static method value_array_max_fields_double : int () {
+  static method mulnum_array_max_fields_double : int () {
     my $mat = new TestCase::Matrix4_16d[3];
     
     $mat->[0]{x11} = Fn->DBL_MIN();

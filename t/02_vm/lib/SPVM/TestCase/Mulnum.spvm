@@ -8,7 +8,7 @@ class TestCase::Mulnum {
   use Fn;
   use Array;
 
-  static method value_max_fields_byte : int () {
+  static method mulnum_max_fields_byte : int () {
     my $mat1 : TestCase::Matrix4_16b;
     my $mat2 : TestCase::Matrix4_16b;
     my $mat3 : TestCase::Matrix4_16b;
@@ -125,7 +125,7 @@ class TestCase::Mulnum {
     return 1;
   }
 
-  static method value_max_fields_short : int () {
+  static method mulnum_max_fields_short : int () {
     my $mat1 : TestCase::Matrix4_16s;
     my $mat2 : TestCase::Matrix4_16s;
     my $mat3 : TestCase::Matrix4_16s;
@@ -242,7 +242,7 @@ class TestCase::Mulnum {
     return 1;
   }
 
-  static method value_max_fields_int : int () {
+  static method mulnum_max_fields_int : int () {
     my $mat1 : TestCase::Matrix4_16i;
     my $mat2 : TestCase::Matrix4_16i;
     my $mat3 : TestCase::Matrix4_16i;
@@ -359,7 +359,7 @@ class TestCase::Mulnum {
     return 1;
   }
 
-  static method value_max_fields_long : int () {
+  static method mulnum_max_fields_long : int () {
     my $mat1 : TestCase::Matrix4_16l;
     my $mat2 : TestCase::Matrix4_16l;
     my $mat3 : TestCase::Matrix4_16l;
@@ -476,7 +476,7 @@ class TestCase::Mulnum {
     return 1;
   }
 
-  static method value_max_fields_float : int () {
+  static method mulnum_max_fields_float : int () {
     my $mat1 : TestCase::Matrix4_16f;
     my $mat2 : TestCase::Matrix4_16f;
     my $mat3 : TestCase::Matrix4_16f;
@@ -593,7 +593,7 @@ class TestCase::Mulnum {
     return 1;
   }
   
-  static method value_max_fields_double : int () {
+  static method mulnum_max_fields_double : int () {
     my $mat1 : TestCase::Matrix4_16d;
     my $mat2 : TestCase::Matrix4_16d;
     my $mat3 : TestCase::Matrix4_16d;
