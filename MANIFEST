@@ -542,7 +542,6 @@ t/02_vm/05_op/shift.t
 t/02_vm/05_op/special_assign.t
 t/02_vm/05_op/string.t
 t/02_vm/05_op/subtract.t
-t/02_vm/05_op/type_cast.t
 t/02_vm/05_op/type_conversion.t
 t/02_vm/05_op/unary_minus.t
 t/02_vm/05_op/unary_plus.t
