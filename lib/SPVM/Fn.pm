@@ -41,11 +41,11 @@ C<Fn> module provides SPVM Starndard Functions. C<Fn> contains number, string an
 
 =head2 GET_CODE_POINT_ERROR_OVER_STRING_RANGE
 
-Return C<-1>. The return type is the C<int> type.
+Returns C<-1>. The return type is the C<int> type.
 
 =head2 GET_CODE_POINT_ERROR_INVALID_UTF8
 
-Return C<-2>. The return type is the C<int> type.
+Returns C<-2>. The return type is the C<int> type.
 
 =head1 Class Methods
 
@@ -65,13 +65,13 @@ The same as L</"INT8_MIN">.
 
   static method DBL_MAX : double ()
 
-Return the value of C<DBL_MAX> macro defined in C<float.h> header of C<C language>.
+Returns the value of C<DBL_MAX> macro defined in C<float.h> header of C<C language>.
 
 =head2 DBL_MIN
 
   static method DBL_MIN : double ()
 
-Return the value of C<DBL_MIN> macro defined in C<float.h> header of C<C language>.
+Returns the value of C<DBL_MIN> macro defined in C<float.h> header of C<C language>.
 
 =head2 DOUBLE_MAX
 
@@ -101,61 +101,61 @@ The same as L</"FLT_MIN">.
 
   static method FLT_MAX : float ()
 
-Return the value of C<FLT_MAX> macro defined in C<float.h> header of C<C language>.
+Returns the value of C<FLT_MAX> macro defined in C<float.h> header of C<C language>.
 
 =head2 FLT_MIN
 
   static method FLT_MIN : float ()
 
-Return the value of C<FLT_MIN> macro defined in C<float.h> header of C<C language>.
+Returns the value of C<FLT_MIN> macro defined in C<float.h> header of C<C language>.
 
 =head2 INT16_MAX
 
   static method INT16_MAX : short ()
 
-Return C<32767>. The maximum value of the signed 16bit integer.
+Returns C<32767>. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
   static method INT16_MIN : short ()
 
-Return C<-32768>. The minimal value of the signed 16bit integer. 
+Returns C<-32768>. The minimal value of the signed 16bit integer. 
 
 =head2 INT32_MAX
 
   static method INT32_MAX : int ()
 
-Return C<2147483647>. The maximum value of the signed 32bit integer.
+Returns C<2147483647>. The maximum value of the signed 32bit integer.
 
 =head2 INT32_MIN
 
   static method INT32_MIN : int ()
 
-Return C<-2147483648>. The minimal value of the signed 32bit integer.
+Returns C<-2147483648>. The minimal value of the signed 32bit integer.
 
 =head2 INT64_MAX
 
   static method INT64_MAX : long ()
 
-Return C<9223372036854775807>. The maximum value of the signed 64bit integer. 
+Returns C<9223372036854775807>. The maximum value of the signed 64bit integer. 
 
 =head2 INT64_MIN
 
   static method INT64_MIN : long ()
 
-Return C<-9223372036854775808>. The minimal value of the signed 64bit integer.
+Returns C<-9223372036854775808>. The minimal value of the signed 64bit integer.
 
 =head2 INT8_MAX
 
   static method INT8_MAX : byte ()
 
-Return C<127>. The maximum value of the signed 8bit integer.
+Returns C<127>. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
   static method INT8_MIN : byte ()
 
-Return C<-128>. The minimal value of the signed 8bit integer.
+Returns C<-128>. The minimal value of the signed 8bit integer.
 
 =head2 INT_MAX
 
@@ -185,7 +185,7 @@ The same as L</"INT64_MIN">.
 
   static method RAND_MAX : int ()
 
-Return C<2147483647>.
+Returns C<2147483647>.
 
 =head2 SHORT_MAX
 
@@ -209,25 +209,25 @@ The same as L</"UINT8_MAX">.
 
   static method UINT16_MAX : short ()
 
-Return C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
+Returns C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
 
 =head2 UINT32_MAX
 
   static method UINT32_MAX : int ()
 
-Return C<-1>. This represents C<0xFFFFFFFF> in the unsigned 32bit integer in 2's complement.
+Returns C<-1>. This represents C<0xFFFFFFFF> in the unsigned 32bit integer in 2's complement.
 
 =head2 UINT64_MAX
 
   static method UINT64_MAX : long ()
 
-Return C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer in 2's complement.
+Returns C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer in 2's complement.
 
 =head2 UINT8_MAX
 
   static method UINT8_MAX : byte ()
 
-Return C<-1>. This represents C<0xFF> in the unsigned 8bit integer in 2's complement.
+Returns C<-1>. This represents C<0xFF> in the unsigned 8bit integer in 2's complement.
 
 =head2 UINT_MAX
 
@@ -251,21 +251,21 @@ The same as L</"UINT16_MAX">.
 
   static method abs : int ($value : int)
 
-Return the absolute value of the input value.
+Returns the absolute value of the input value.
 
 =head2 chomp
 
   static method chomp : void ($string : mutable string)
 
-Remove C<\n> of the end of the string. Otherwise an exception will occur.
+Removes C<\r\n> or C<\n> at the end of the string.
 
-The string must be defined
+The string must be defined. Otherwise an exception will occur.
 
 =head2 chompr
 
   static method chompr : string ($string : string)
 
-Copy the string and remove C<\n> of the end of the copied string and return it.
+Copies the string and removes C<\r\n> or C<\n> at the end of the copied string and returns it.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -273,7 +273,7 @@ The string must be defined. Otherwise an exception will occur.
 
   static method chr : string ($code_point : int)
 
-Convert the Unicode code point to the C<UTF-8> character and return it.
+Converts the Unicode code point to the C<UTF-8> character and return it.
 
 If the Unicode code point is not a Unicode scalar value, return C<undef>.
 
@@ -314,7 +314,7 @@ B<Examples:>
 
   static method get_code_point : int ($string : string, $offset_ref : int*)
 
-Parse the C<UTF-8> character at the offset of the string and return its Unicode code point.
+Parses the C<UTF-8> character at the offset of the string and return its Unicode code point.
 
 The offset is updated to the position of the next C<UTF-8> character.
 
@@ -330,7 +330,7 @@ The offset must be greater than or equal to C<0>. Otherwise an exception will oc
 
   static method hex : int ($hex_string : string)
 
-Convert the hex string to the C<int> value and return it.
+Converts the hex string to the C<int> value and return it.
 
 The hex string must be defined. Otherwise an exception will occur.
 
@@ -342,7 +342,7 @@ The hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an excep
 
   static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
 
-Search for the substring in the range of the string from the offset to the position proceeded by the length.
+Searches for the substring in the range of the string from the offset to the position proceeded by the length.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -502,7 +502,7 @@ If the Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1
 
   static method join : string ($sep : string, $strings : string[])
 
-Concatenate the strings with the separater and return it.
+Concatenates the strings with the separater and return it.
 
 The strings must be defined. Otherwise an exception will occur.
 
@@ -512,13 +512,13 @@ The separator must be defined. Otherwise an exception will occur.
 
   static method labs : long ($value : long)
 
-Return the absolute value of the input value.
+Returns the absolute value of the input value.
 
 =head2 lc
 
   static method lc : string ($string : string)
 
-Convert the ASCII uppercase characters C<A-Z> in the string to the corresponding ASCII lowercase characters C<a-z>. And return it.
+Converts the ASCII uppercase characters C<A-Z> in the string to the corresponding ASCII lowercase characters C<a-z>. And return it.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -540,7 +540,7 @@ The same as L</"get_code_point">, but the offset is not updated.
 
   static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
-Copy the range of the source to the the range of the destination.
+Copies the range of the source to the the range of the destination.
 
 The range of the destination is from the offset to the position proceeded by the length of the destination.
 
@@ -585,7 +585,7 @@ The alias for the following code using L</"get_code_point">.
 
   static method powi : int ($base : int, $exponant : int)
 
-Calculate the exponentiation from the base number and the exponant number.
+Calculates the exponentiation from the base number and the exponant number.
 
 The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -595,7 +595,7 @@ If the base number is C<0>, the exponant number can't be C<0>. Otherwise an exce
 
   static method powl : long ($base : long, $exponant : long)
 
-Calculate the exponentiation from the base number and the exponant number.
+Calculates the exponentiation from the base number and the exponant number.
 
 The exponant number must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -605,7 +605,7 @@ If the base number is C<0>, the exponant number can't be C<0>. Otherwise an exce
 
   static method rand : double ($seed : int*)
 
-Get a 64bit floating point random number that is greater than or equal to C<0> and less than C<1> using the seed.
+Gets a 64bit floating point random number that is greater than or equal to C<0> and less than C<1> using the seed.
 
 The seed is updated.
 
@@ -622,7 +622,7 @@ B<Examples:>
 
   static method repeat : double ($string : string, $count : int)
 
-Concatenate the string the number of times specified in the count and return it.
+Concatenates the string the number of times specified in the count and return it.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -645,7 +645,7 @@ The string must be defined. Otherwise an exception will occur.
 
   static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int)
 
-Search for the substring in the range of the string from the offset to the position proceeded by the length in the direction from back to front.
+Searches for the substring in the range of the string from the offset to the position proceeded by the length in the direction from back to front.
 
 If the substring is found, return the found offset. Otherwise return C<-1>.
 
@@ -663,7 +663,7 @@ The offset + the length specified by the argument must be less than or equal to 
 
     static method shorten : void ($string : mutable string, $length : int32_t)
 
-Shorten the string to the length specified by the argument using L<SPVM::Document::NativeAPI/"shorten">.
+Shortens the string to the length specified by the argument using L<SPVM::Document::NativeAPI/"shorten">.
 
 If the length specified by the argument is greater than or equal to the length of the string, nothing is performed.
 
@@ -675,7 +675,7 @@ The length must be greater than or equal to C<0>. Otherwise an exception will oc
 
   static method shorten_null_char : void ($string : mutable string)
 
-Shorten the string just before the first null character C<\0>.
+Shortens the string just before the first null character C<\0>.
 
 If null characters is not found, do nothing.
 
@@ -706,7 +706,7 @@ The limit can't be C<0>. Otherwise an exception will occur.
 
   static method substr : string ($string : string, $offset : int, $length = -1 : int)
 
-Get the substring from the string. The extracting range of the string is from the offset to the position proceeded by the length.
+Gets the substring from the string. The extracting range of the string is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
 
@@ -714,7 +714,7 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
   static method to_double : double ($string : string);
 
-Convert the string to the C<double> value using C<strtod> in C<C language>.
+Converts the string to the C<double> value using C<strtod> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -731,7 +731,7 @@ B<Examples:>
 
   static method to_float : float ($string : string);
 
-Convert the string to the C<double> value using C<strtof> in C<C language>.
+Converts the string to the C<double> value using C<strtof> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -754,7 +754,7 @@ The alias for the following code using L</"to_int_with_base">.
 
 =head2 to_int_with_base
 
-Convert the string to the C<int> value using C<strtol> in C<C language>.
+Converts the string to the C<int> value using C<strtol> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -779,7 +779,7 @@ The alias for the following code using L</"to_long_with_base">.
 
   static method to_long_with_base : long ($string : string, $digit : int);
 
-Convert the string to the C<long> value using C<strtoll> in C<C language>.
+Converts the string to the C<long> value using C<strtoll> in C<C language>.
 
 The string must be defined. Otherwise an exception will occur.
 
@@ -814,7 +814,7 @@ If the code point is not an ASCII lowercase character, return the code point spe
 
   static method trim : string ($string : string)
 
-Remove the right and left spaces of the string and return it.
+Removes the right and left spaces of the string and return it.
 
 The removed spaces is the same as the spaces L</"is_space"> method returns C<1>.
 
@@ -824,7 +824,7 @@ The string must be defined. Otherwise an exception will occur.
 
   static method uc : string ($string : string)
 
-Convert the ASCII lowercase characters C<a-z> in the string to the corresponding ASCII uppercase characters C<A-Z>. And return it.
+Converts the ASCII lowercase characters C<a-z> in the string to the corresponding ASCII uppercase characters C<A-Z>. And return it.
 
 The string must be defined. Otherwise an exception will occur.
 

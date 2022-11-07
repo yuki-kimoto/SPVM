@@ -411,6 +411,51 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
+
+    {
+      my $line = copy "abc\r\n";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = copy "a";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "a") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = copy "ab";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "ab") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = copy "\n";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "") {
+        return 0;
+      }
+    }
+
+    {
+      my $line = copy "\r\n";
+      Fn->chomp((mutable string)$line);
+      
+      unless ($line eq "") {
+        return 0;
+      }
+    }
     
     # Non basic cases
     {
@@ -452,6 +497,14 @@ class TestCase::Module::Fn {
   static method chompr : int () {
     {
       my $string = "abc\n";
+      my $ret = Fn->chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abc\r\n";
       my $ret = Fn->chompr($string);
       unless ($ret eq "abc") {
         return 0;

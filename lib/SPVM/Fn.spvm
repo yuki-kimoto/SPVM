@@ -60,10 +60,11 @@ class Fn {
     }
     
     my $length = length $string;
-    if ($length > 0) {
-      if ($string->[$length - 1] == '\n') {
-        &shorten($string, $length - 1);
-      }
+    if ($length >= 2 && $string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
+      &shorten($string, $length - 2);
+    }
+    elsif ($length >= 1 && $string->[$length - 1] == '\n') {
+      &shorten($string, $length - 1);
     }
   }
   
@@ -72,19 +73,9 @@ class Fn {
       die "The string must be defined";
     }
     
-    my $new_string : string;
-    my $length = length $string;
-    if ($length == 0) {
-      $new_string = copy $string;
-    }
-    else {
-      if ($string->[$length - 1] == '\n') {
-        $new_string = &substr($string, 0, $length - 1);
-      }
-      else {
-        $new_string = copy $string;
-      }
-    }
+    my $new_string = (mutable string)copy $string;
+    
+    &chomp($new_string);
     
     return $new_string;
   }

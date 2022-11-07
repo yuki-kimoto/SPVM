@@ -1,3 +1,6 @@
+0.9660 2022-11-08
+  [Incompatible Changes]
+    * The chomp and chompr method in the Fn class removes "\r\n", not only "\n".
 0.9659 2022-10-28
   [Test Improvement]
     * Added the tests of opcodes.
