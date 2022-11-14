@@ -699,7 +699,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   }
 }
 
-const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line) {
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
 
   int32_t id = env->get_field_id(env, class_name, field_name);
@@ -708,7 +708,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
     env->die(env, stack, "The field %s->%s is not defined", class_name, field_name, file, line);
     return NULL;
   };
-  SPVM_OBJECT* value = env->get_field_object(env, stack, obj, id);
+  SPVM_OBJECT* value = env->get_field_object(env, stack, object, id);
   if (value == NULL) {
     return NULL;
   }
