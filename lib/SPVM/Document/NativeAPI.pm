@@ -393,13 +393,13 @@ B<Examples:>
 
 =head2 get_field_id
 
-  int32_t (*get_field_id)(SPVM_ENV* env, const char* class_name, const char* field_name);
+  int32_t (*get_field_id)(SPVM_ENV* env, void* object, const char* field_name);
 
-Get the ID of the field given the class name, field name. If the field does not exist, a value less than 0 is returned.
+Gets the ID of the field given an object and field name. If the field does not exist, a value less than 0 is returned.
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
 
 =head2 get_field_offset
 
@@ -786,7 +786,7 @@ If an object and field ID are specified, the byte field value will be returned a
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int8_t field_value = env->get_field_byte(env, stack, object, field_id);
 
 =head2 get_field_short
@@ -797,7 +797,7 @@ If you specify the object and field ID, the value of the short type field will b
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int16_t field_value = env->get_field_short(env, stack, object, field_id);
 
 =head2 get_field_int
@@ -808,7 +808,7 @@ If an object and a field ID are specified, the value of the int type field will 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int32_t field_value = env->get_field_int(env, stack, object, field_id);
 
 =head2 get_field_long
@@ -819,7 +819,7 @@ If you specify the object and field ID, the value of the long type field will be
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int64_t field_value = env->get_field_long(env, stack, object, field_id);
 
 =head2 get_field_float
@@ -830,7 +830,7 @@ If you specify the object and field ID, the value of the float type field will b
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   float field_value = env->get_field_float(env, stack, object, field_id);
 
 =head2 get_field_double
@@ -841,7 +841,7 @@ If you specify the object and field ID, the value of the double type field will 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   double field_value = env->get_field_double(env, stack, object, field_id);
 
 =head2 get_field_object
@@ -850,7 +850,7 @@ B<Examples:>
 
 If you specify the object and field ID, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   void* field_value = env->get_field_object(env, stack, object, field_id);
 
 =head2 set_field_byte
@@ -861,7 +861,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int8_t field_value = 5;
   env->set_field_byte(env, stack, object, field_id, field_value);
 
@@ -873,7 +873,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int16_t field_value = 5;
   env->set_field_short(env, stack, object, field_id, field_value);
 
@@ -885,7 +885,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int32_t field_value = 5;
   env->set_field_int(env, stack, object, field_id, field_value);
 
@@ -897,7 +897,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int64_t field_value = 5;
   env->set_field_long(env, stack, object, field_id, field_value);
 
@@ -909,7 +909,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   float field_value = 1.5f;
   env->set_field_float(env, stack, object, field_id, field_value);
 
@@ -921,7 +921,7 @@ If you specify the object and field ID and the value of the field, the value is 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   double field_value = 1.55;
   env->set_field_double(env, stack, object, field_id, field_value);
 
@@ -933,7 +933,7 @@ Object and field Specify the ID and the value of the field and set the value to 
 
 B<Examples:>
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x");
+  int32_t field_id = env->get_field_id(env, object, "x");
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object = env->new_object(env, stack, basic_type_id);
   env->set_field_object(env, stack, object, field_id, object);
@@ -1362,226 +1362,226 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 =head2 set_field_byte_by_name
 
-  void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, int8_t value,
+  void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int8_t value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_byte> function, but you can specify class name and field name directly.
+This is same as C<set_field_byte> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_byte_by_name(env, stack, object, "TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_short_by_name
 
-  void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, int16_t value,
+  void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int16_t value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_short> function, but you can specify class name and field name directly.
+This is same as C<set_field_short> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_short_by_name(env, stack, object, "TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_short_by_name(env, stack, object, "short_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_int_by_name
 
-  void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, int32_t value,
+  void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int32_t value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_int> function, but you can specify class name and field name directly.
+This is same as C<set_field_int> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_int_by_name(env, stack, object, "TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_int_by_name(env, stack, object, "int_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_long_by_name
 
-  void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, int64_t value,
+  void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int64_t value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_long> function, but you can specify class name and field name directly.
+This is same as C<set_field_long> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_long_by_name(env, stack, object, "TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_long_by_name(env, stack, object, "long_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_float_by_name
 
-  void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, float value,
+  void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, float value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_float> function, but you can specify class name and field name directly.
+This is same as C<set_field_float> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_float_by_name(env, stack, object, "TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_float_by_name(env, stack, object, "float_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_double_by_name
 
-  void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, double value,
+  void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, double value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_double> function, but you can specify class name and field name directly.
+This is same as C<set_field_double> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_double_by_name(env, stack, object, "TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_double_by_name(env, stack, object, "double_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_object_by_name
 
-  void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name, void* value,
+  void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, void* value,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<set_field_object> function, but you can specify class name and field name directly.
+This is same as C<set_field_object> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
 B<Examples:>
 
   int32_t e;
-  env->set_field_object_by_name(env, stack, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_byte_by_name
 
-  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_byte> function, but you can specify class name and field name directly.
+This is same as C<get_field_byte> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
+  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_short_by_name
 
-  int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_short> function, but you can specify class name and field name directly.
+This is same as C<get_field_short> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
+  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_int_by_name
 
-  int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_int> function, but you can specify class name and field name directly.
+This is same as C<get_field_int> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
+  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_long_by_name
 
-  int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_long> function, but you can specify class name and field name directly.
+This is same as C<get_field_long> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
+  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_float_by_name
 
-  float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_float> function, but you can specify class name and field name directly.
+This is same as C<get_field_float> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
+  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_double_by_name
 
-  double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_double> function, but you can specify class name and field name directly.
+This is same as C<get_field_double> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
+  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_object_by_name
 
-  void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-This is same as C<get_field_object> function, but you can specify class name and field name directly.
+This is same as C<get_field_object> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
 B<Examples:>
 
   int32_t e;
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_byte_by_name
@@ -1837,8 +1837,8 @@ B<Examples:>
 
 =head2 get_field_string_chars_by_name
 
-  const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object,
-    const char* class_name, const char* field_name,
+  const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
 B<Examples:>

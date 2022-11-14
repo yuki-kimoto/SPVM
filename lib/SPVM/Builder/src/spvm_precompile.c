@@ -1883,18 +1883,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
 
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
@@ -1902,9 +1901,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    if (!error) {\n"
                                               "      int32_t access_field_offset"
                                               " = env->get_field_offset(env, access_field_id);\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
                                               "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]));\n"
                                               "        error = 1;\n"
@@ -1961,17 +1957,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
@@ -1981,9 +1976,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               " = env->get_field_offset(env, "
                                               "access_field_id"
                                               ");\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
                                               "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]));\n"
                                               "        error = 1;\n"
@@ -2012,17 +2004,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
@@ -2032,9 +2023,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               " = env->get_field_offset(env, "
                                               "access_field_id"
                                               ");\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";"
                                               "      if (__builtin_expect(object == NULL, 0)) {\n"
                                               "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]));\n"
                                               "        error = 1;\n"
@@ -3175,25 +3163,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
                                               "    if (!error) {\n"
                                               "      int32_t access_field_offset = env->get_field_offset(env, access_field_id);\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
                                               "        void* exception = env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
                                               "        env->set_exception(env, stack, exception);\n"
@@ -3222,16 +3206,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
@@ -3241,9 +3224,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               " = env->get_field_offset(env, "
                                               "access_field_id"
                                               ");\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
                                               "        void* exception = env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
                                               "        env->set_exception(env, stack, exception);\n"
@@ -3267,25 +3247,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    int32_t access_field_id = env->get_field_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+                                              "    void* object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "    int32_t access_field_id = env->get_field_id(env, object, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "    if (access_field_id < 0) {\n"
                                               "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n"
                                               "    if (!error) {\n"
                                               "      int32_t access_field_offset = env->get_field_offset(env, access_field_id);\n"
-                                              "      void* object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "      if (object == NULL) {\n"
                                               "        void* exception = env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
                                               "        env->set_exception(env, stack, exception);\n"
@@ -5855,10 +5831,11 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
   const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* object = ");
+  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, object, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                         "    if ("
@@ -5866,8 +5843,6 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                         "      env->set_exception(env, stack, exception);\n"
                                         "      error = 1;\n"
@@ -5877,9 +5852,6 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         " = env->get_field_offset(env, "
                                         "access_field_id"
                                         ");\n"
-                                        "      void* object = ");
-  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "      if (__builtin_expect(object == NULL, 0)) {\n"
                                         "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]));\n"
                                         "        error = 1;\n"
@@ -5906,10 +5878,11 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
   const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, \"");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
+                                        "    void* object = ");
+  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
+  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    int32_t access_field_id = env->get_field_id(env, object, \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                         "    if ("
@@ -5917,8 +5890,6 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         " < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class\\\"");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)field_class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                         "      env->set_exception(env, stack, exception);\n"
                                         "      error = 1;\n"
@@ -5928,9 +5899,6 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
                                         " = env->get_field_offset(env, "
                                         "access_field_id"
                                         ");\n"
-                                        "      void* object = ");
-  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                         "      if (__builtin_expect(object == NULL, 0)) {\n"
                                         "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]));\n"
                                         "        error = 1;\n"
