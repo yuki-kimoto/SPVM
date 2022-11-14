@@ -3005,7 +3005,12 @@ int32_t SPVM_API_get_field_id_invocant(SPVM_ENV* env, SPVM_OBJECT* object, const
   
   // Basic type
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object->basic_type_id);
-  
+
+  // Type dimension
+  if (object->type_dimension != 0) {
+    return -1;
+  }
+
   // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
   
