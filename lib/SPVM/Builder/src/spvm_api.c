@@ -2990,6 +2990,50 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char*
   return field_id;
 }
 
+int32_t SPVM_API_get_field_id_invocant(SPVM_ENV* env, SPVM_OBJECT* object, const char* field_name) {
+  (void)env;
+  
+  // Method ID
+  int32_t field_id = -1;
+  
+  // Compiler
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (!object) {
+    return -1;
+  }
+  
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object->basic_type_id);
+  
+  // Class
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
+  
+  SPVM_RUNTIME_CLASS* parent_class = class;
+  
+  while (1) {
+    if (!parent_class) {
+      break;
+    }
+    
+    // Method
+    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_class_id_and_field_name(runtime, parent_class->id, field_name);
+    if (field) {
+      field_id = field->id;
+      break;
+    }
+    
+    if (parent_class->parent_class_id != -1) {
+      parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class->parent_class_id);
+    }
+    else {
+      parent_class = NULL;
+    }
+  }
+  
+  return field_id;
+}
+
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name) {
   (void)env;
   
