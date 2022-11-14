@@ -1469,7 +1469,7 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 B<Examples:>
 
   int32_t e;
-  env->set_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_byte_by_name
