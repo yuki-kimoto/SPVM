@@ -2072,7 +2072,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
         // Getter
         if (class_var->has_getter) {
-          // static method FOO : int () {
+          // static method FOO : TYPE () {
           //   return $FOO;
           // }
 
@@ -2109,9 +2109,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Setter
         if (class_var->has_setter) {
           
-          // method SET_FOO : void ($foo : int) {
+          // method SET_FOO : void ($foo : TYPE) {
           //   $FOO = $foo;
           // }
+          
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name_tmp, "SET_", 4);
@@ -2169,7 +2170,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // Getter
         if (field->has_getter) {
-          // method foo : int () {
+          // method foo : TYPE () {
           //   return $self->{foo};
           // }
           
@@ -2204,7 +2205,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
         // Setter
         if (field->has_setter) {
-          // method set_foo : void ($foo : int) {
+          // method set_foo : void ($foo : TYPE) {
           //   $self->{foo} = $foo;
           // }
 
