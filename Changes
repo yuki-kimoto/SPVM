@@ -1,6 +1,9 @@
 0.9660 2022-11-08
   [Incompatible Changes]
     * The chomp and chompr method in the Fn class removes "\r\n", not only "\n".
+    * Removed the following undocumented native APIs.
+      void* (*get_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line);
+      void (*set_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, void* value, int32_t* error, const char* file, int32_t line);    
 0.9659 2022-10-28
   [Test Improvement]
     * Added the tests of opcodes.
