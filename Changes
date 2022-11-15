@@ -8,6 +8,10 @@
       This is because public API is good to return the int type regardless of the internal class variable type byte/short.
     * The writer of the byte and short class variable return the int type.
       This is because public API is good to return the int type regardless of the internal class variable type byte/short.
+  [Document Changes]
+    * Renamed the conceptual name "Accessor Method" to "Accessor".
+    * Renamed the conceptual name "Getting Method" to "Reader".
+    * Renamed the conceptual name "Setting Method" to "Writer".
     
 0.9661 2022-11-14
   [Incompatible Changes]
