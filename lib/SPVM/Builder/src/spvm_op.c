@@ -183,7 +183,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "call_method",
     "field_access",
     "var",
-    "convert",
+    "type_cast",
     "undef",
     "array_length",
     "die",
@@ -1369,11 +1369,11 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
         if (element_index == 0) {
           // Convert to any object type
           SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_element);
-          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand_element->file, op_operand_element->line);
+          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand_element->file, op_operand_element->line);
           SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_operand_element->file, op_operand_element->line);
-          SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_operand_element, NULL);
-          SPVM_OP_replace_op(compiler, op_stab, op_convert);
-          op_operand_element = op_convert;
+          SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand_element, NULL);
+          SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+          op_operand_element = op_type_cast;
         }
         element_index++;
       }
@@ -1848,15 +1848,15 @@ SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak,
   return op_assign;
 }
 
-SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPVM_OP* op_type, SPVM_OP* op_operand, SPVM_OP* op_attributes) {
+SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast, SPVM_OP* op_type, SPVM_OP* op_operand, SPVM_OP* op_attributes) {
   
-  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_operand);
-  SPVM_OP_insert_child(compiler, op_convert, op_convert->last, op_type);
+  SPVM_OP_insert_child(compiler, op_type_cast, op_type_cast->last, op_operand);
+  SPVM_OP_insert_child(compiler, op_type_cast, op_type_cast->last, op_type);
   
-  op_convert->file = op_type->file;
-  op_convert->line = op_type->line;
+  op_type_cast->file = op_type->file;
+  op_type_cast->line = op_type->line;
 
-  return op_convert;
+  return op_type_cast;
 }
 
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
@@ -2169,7 +2169,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
           SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, class_var_type, op_decl->file, op_decl->line);
-          SPVM_OP_build_convert(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
+          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
 
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
           SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_type_cast);
@@ -2297,7 +2297,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
           SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, field_type, op_decl->file, op_decl->line);
-          SPVM_OP_build_convert(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
+          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
 
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
           SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_type_cast);

@@ -3939,7 +3939,7 @@ yyreduce:
 #line 1098 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
-      (yyval.opval) = SPVM_OP_build_convert(compiler, op_convert, (yyvsp[-2].opval), (yyvsp[0].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_type_cast(compiler, op_convert, (yyvsp[-2].opval), (yyvsp[0].opval), NULL);
     }
 #line 3945 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3948,7 +3948,7 @@ yyreduce:
 #line 1103 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
-      (yyval.opval) = SPVM_OP_build_convert(compiler, op_convert, (yyvsp[-1].opval), (yyvsp[-4].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_type_cast(compiler, op_convert, (yyvsp[-1].opval), (yyvsp[-4].opval), NULL);
     }
 #line 3954 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

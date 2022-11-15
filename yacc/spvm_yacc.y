@@ -1097,12 +1097,12 @@ convert
   : '(' qualified_type ')' operator %prec CONVERT
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $2->file, $2->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $2, $4, NULL);
+      $$ = SPVM_OP_build_type_cast(compiler, op_convert, $2, $4, NULL);
     }
   | operator ARROW '(' qualified_type ')' %prec CONVERT
     {
       SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $4->file, $4->line);
-      $$ = SPVM_OP_build_convert(compiler, op_convert, $4, $1, NULL);
+      $$ = SPVM_OP_build_type_cast(compiler, op_convert, $4, $1, NULL);
     }
 
 array_access

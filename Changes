@@ -12,6 +12,8 @@
     * Renamed the conceptual name "Accessor Method" to "Accessor".
     * Renamed the conceptual name "Getting Method" to "Reader".
     * Renamed the conceptual name "Setting Method" to "Writer".
+  [Internal Changes]
+    * Renamed SPVM_OP_build_convert to SPVM_OP_build_type_cast.
     
 0.9661 2022-11-14
   [Incompatible Changes]
