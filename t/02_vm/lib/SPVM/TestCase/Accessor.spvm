@@ -1,0 +1,104 @@
+class TestCase::Accessor {
+  our $VALUE_BYTE : rw byte;
+  our $VALUE_SHORT : rw short;
+  our $VALUE_INT : rw int;
+  our $VALUE_LONG : rw long;
+  our $VALUE_FLOAT : rw float;
+  our $VALUE_DOUBLE : rw double;
+  our $VALUE_OBJECT : rw object;
+  
+  has value_byte : rw byte;
+  has value_short : rw short;
+  has value_int : rw int;
+  has value_long : rw long;
+  has value_float : rw float;
+  has value_double : rw double;
+  has value_object : rw object;
+  
+  static method field_accessor : int () {
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_byte};
+      unless ($value_field isa byte) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_byte;
+      unless ($value_reader isa int) {
+        return 0;
+      }
+    }
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_short};
+      unless ($value_field isa short) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_short;
+      unless ($value_reader isa int) {
+        return 0;
+      }
+    }
+
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_int};
+      unless ($value_field isa int) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_int;
+      unless ($value_reader isa int) {
+        return 0;
+      }
+    }
+
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_long};
+      unless ($value_field isa long) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_long;
+      unless ($value_reader isa long) {
+        return 0;
+      }
+    }
+
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_float};
+      unless ($value_field isa float) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_float;
+      unless ($value_reader isa float) {
+        return 0;
+      }
+    }
+
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $value_field = $object->{value_double};
+      unless ($value_field isa double) {
+        return 0;
+      }
+      
+      my $value_reader = $object->value_double;
+      unless ($value_reader isa double) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

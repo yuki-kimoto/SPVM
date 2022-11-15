@@ -1,4 +1,10 @@
+0.9662 2022-11-15
+  [Incompatible Changes]
+    * The reader of the byte and short field returns the int type.
+      This is because public API is good to receive the int type regardless of the internal field type.
+    
 0.9661 2022-11-14
+  [Incompatible Changes]
     * Removed the following undocumented native APIs.
       void* (*get_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, int32_t* error, const char* file, int32_t line);
       void (*set_field_object_by_name_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* class_name, const char* field_name, void* value, int32_t* error, const char* file, int32_t line);
