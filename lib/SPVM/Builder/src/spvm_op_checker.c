@@ -2827,30 +2827,44 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Class->FOO
                   // [After]
                   // $Class::FOO
-                  
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                  
-                  const char* class_name = call_method->method->class->name;
-                  const char* class_var_base_name = call_method->method->field_method_original_name;
-                  char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
-                  memcpy(class_var_name_tmp, "$", 1);
-                  memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
-                  memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
-                  memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
-                  
-                  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
-                  const char* class_var_name = class_var_name_string->value;
-                  
-                  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
-                  op_class_var_access->uv.class_var_access->inline_expansion = 1;
-                  
-                  SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
-                  
-                  SPVM_OP_CHECKER_check_tree(compiler, op_class_var_access, check_ast_info);
 
-                  op_cur = op_class_var_access;
+                  // TODO: Inline exapnsion of type cast from byte/short to int is difficut for me.
+                  SPVM_TYPE* field_type = call_method->method->field_method_original_type;
+                  int32_t perform_inline_expansion;
+                  if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+                    || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
+                  {
+                    perform_inline_expansion = 0;
+                  }
+                  else {
+                    perform_inline_expansion = 1;
+                  }
+                  
+                  if (perform_inline_expansion) {
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
+                    const char* class_name = call_method->method->class->name;
+                    const char* class_var_base_name = call_method->method->field_method_original_name;
+                    char* class_var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
+                    memcpy(class_var_name_tmp, "$", 1);
+                    memcpy(class_var_name_tmp + 1, class_name, strlen(class_name));
+                    memcpy(class_var_name_tmp + 1 + strlen(class_name), "::", 2);
+                    memcpy(class_var_name_tmp + 1 + strlen(class_name) + 2, class_var_base_name + 1, strlen(class_var_base_name) - 1);
+                    
+                    SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var_name_tmp, strlen(class_var_name_tmp));
+                    const char* class_var_name = class_var_name_string->value;
+                    
+                    SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op_cur->file, op_cur->line);
+                    SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
+                    op_class_var_access->uv.class_var_access->inline_expansion = 1;
+                    
+                    SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
+                    
+                    SPVM_OP_CHECKER_check_tree(compiler, op_class_var_access, check_ast_info);
 
+                    op_cur = op_class_var_access;
+                  }
                 }
                 // Class var setter is replaced to class var access
                 else if (call_method->method->is_class_var_setter) {

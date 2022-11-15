@@ -196,4 +196,78 @@ class TestCase::Accessor {
 
     return 1;
   }
+
+  static method class_var_accessor : int () {
+    
+    {
+      unless ($VALUE_BYTE isa byte) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_BYTE isa int) {
+        return 0;
+      }
+    }
+    {
+      unless ($VALUE_SHORT isa short) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_SHORT isa int) {
+        return 0;
+      }
+    }
+    {
+      unless ($VALUE_INT isa int) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_INT isa int) {
+        return 0;
+      }
+    }
+    {
+      unless ($VALUE_LONG isa long) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_LONG isa long) {
+        return 0;
+      }
+    }
+    {
+      unless ($VALUE_FLOAT isa float) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_FLOAT isa float) {
+        return 0;
+      }
+    }
+    {
+      unless ($VALUE_DOUBLE isa double) {
+        return 0;
+      }
+      
+      unless (TestCase::Accessor->VALUE_DOUBLE isa double) {
+        return 0;
+      }
+    }
+    {
+      $VALUE_OBJECT = Point->new;
+      
+      unless ($VALUE_OBJECT isa Point) {
+        return 0;
+      }
+      
+      
+      unless (TestCase::Accessor->VALUE_OBJECT isa Point) {
+        return 0;
+      }
+      $VALUE_OBJECT = undef;
+    }
+    
+    return 1;
+  }
+
 }

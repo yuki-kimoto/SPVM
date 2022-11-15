@@ -2683,15 +2683,17 @@ Only one of class variable attributes C<private>, C<protected> or C<public> can 
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error will occur
 
-=head2 Class Variable Method
+=head2 Class Variable Accessor Method
 
 A class variable method is a L<method|/"Method"> that gets and sets a class variable.
 
-=head3 Class Variable reader method
+=head3 Class Variable Reader Method
 
 A class variable reader method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
 
-It has no arguments and the return type is the same as the type of the class variable.
+It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
+
+If the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the L<int type|/"int Type">.
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -2710,7 +2712,7 @@ B<Examples:>
     }
   }
 
-=head3 Class Variable writer method
+=head3 Class Variable Writer Method
 
 A class variable writer method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 

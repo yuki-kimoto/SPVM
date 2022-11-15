@@ -2080,7 +2080,20 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
           const char* method_name = method_name_string->value;
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
-          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, class_var->type, op_decl->file, op_decl->line);
+
+          // If the type of the class_var is byte or short, the return type becomes int
+          SPVM_TYPE* class_var_type = class_var->type;
+          SPVM_TYPE* return_type;
+          if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
+          {
+            return_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            return_type = class_var->type;
+          }
+          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -2102,7 +2115,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           op_method->uv.method->is_class_var_getter = 1;
           op_method->uv.method->field_method_original_name = class_var->name;
-          
+           op_method->uv.method->field_method_original_type = class_var->type;
+         
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
 
