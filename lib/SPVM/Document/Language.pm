@@ -2693,7 +2693,7 @@ A class variable reader method is a L<method|/"Method"> to perform the L<getting
 
 It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
 
-If the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the L<int type|/"int Type">.
+If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the L<int type|/"int Type">.
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -2716,7 +2716,11 @@ B<Examples:>
 
 A class variable writer method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
-It has an argument that type is the same as the type of the class variable. The return type is the L<void type|/"void Type">.
+The return type is the L<void type|/"void Type">.
+
+It has an argument that type is the same as the type of the class variableexcept that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
+
+If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the argument type is the L<int type|/"int Type">.
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 

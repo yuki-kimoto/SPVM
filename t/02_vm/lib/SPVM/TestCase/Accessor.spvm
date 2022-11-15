@@ -200,68 +200,131 @@ class TestCase::Accessor {
   static method class_var_accessor : int () {
     
     {
+      $VALUE_BYTE = 1;
+      
       unless ($VALUE_BYTE isa byte) {
         return 0;
       }
+      unless ($VALUE_BYTE == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_BYTE(2);
       unless (TestCase::Accessor->VALUE_BYTE isa int) {
         return 0;
       }
+      unless (TestCase::Accessor->VALUE_BYTE == 2) {
+        return 0;
+      }
     }
     {
+      $VALUE_SHORT = 1;
+      
       unless ($VALUE_SHORT isa short) {
         return 0;
       }
+      unless ($VALUE_SHORT == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_SHORT(2);
       unless (TestCase::Accessor->VALUE_SHORT isa int) {
         return 0;
       }
+      unless (TestCase::Accessor->VALUE_SHORT == 2) {
+        return 0;
+      }
     }
+    
     {
+      $VALUE_INT = 1;
+      
       unless ($VALUE_INT isa int) {
         return 0;
       }
+      unless ($VALUE_INT == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_INT(2);
       unless (TestCase::Accessor->VALUE_INT isa int) {
         return 0;
       }
+      unless (TestCase::Accessor->VALUE_INT == 2) {
+        return 0;
+      }
     }
     {
+      $VALUE_LONG = 1;
+      
       unless ($VALUE_LONG isa long) {
         return 0;
       }
+      unless ($VALUE_LONG == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_LONG(2);
       unless (TestCase::Accessor->VALUE_LONG isa long) {
         return 0;
       }
+      unless (TestCase::Accessor->VALUE_LONG == 2) {
+        return 0;
+      }
     }
     {
+      $VALUE_FLOAT = 1;
+      
       unless ($VALUE_FLOAT isa float) {
         return 0;
       }
+      unless ($VALUE_FLOAT == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_FLOAT(2);
       unless (TestCase::Accessor->VALUE_FLOAT isa float) {
         return 0;
       }
+      unless (TestCase::Accessor->VALUE_FLOAT == 2) {
+        return 0;
+      }
     }
     {
+      $VALUE_DOUBLE = 1;
+      
       unless ($VALUE_DOUBLE isa double) {
         return 0;
       }
+      unless ($VALUE_DOUBLE == 1) {
+        return 0;
+      }
       
+      TestCase::Accessor->SET_VALUE_DOUBLE(2);
       unless (TestCase::Accessor->VALUE_DOUBLE isa double) {
+        return 0;
+      }
+      unless (TestCase::Accessor->VALUE_DOUBLE == 2) {
         return 0;
       }
     }
     {
-      $VALUE_OBJECT = Point->new;
+      my $value_object = Point->new;
+      $VALUE_OBJECT = $value_object;
       
       unless ($VALUE_OBJECT isa Point) {
         return 0;
       }
+      unless ($VALUE_OBJECT == $value_object) {
+        return 0;
+      }
       
-      
+      my $value_object2 = Point->new;
+      TestCase::Accessor->SET_VALUE_OBJECT($value_object2);
       unless (TestCase::Accessor->VALUE_OBJECT isa Point) {
+        return 0;
+      }
+      unless (TestCase::Accessor->VALUE_OBJECT == $value_object2) {
         return 0;
       }
       $VALUE_OBJECT = undef;
