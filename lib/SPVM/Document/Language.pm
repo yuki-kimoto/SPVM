@@ -2200,7 +2200,7 @@ The list of class attributes.
       <b>precompile</b>
     </td>
     <td>
-      Perform <a href="#Precompiled-Method">precompile</a> to all methods in this class, except for getting methods, setting methods, and enumurations. 
+      Perform <a href="#Precompiled-Method">precompile</a> to all methods in this class, except for reader methods, writer methods, and enumurations. 
     </td>
   </tr>
 </table>
@@ -2656,7 +2656,7 @@ The list of class variable attributes.
       <b>ro</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Getting-Method">getting method</a>.
+      The class variable has its <a href="#Class-Variable-Reader-Method">reader method</a>.
     </td>
   </tr>
   <tr>
@@ -2664,7 +2664,7 @@ The list of class variable attributes.
       <b>wo</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Setting-Method">setting method</a>.
+      The class variable has its <a href="#Class-Variable-Writer-Method">writer method</a>.
     </td>
   </tr>
   <tr>
@@ -2672,7 +2672,7 @@ The list of class variable attributes.
       <b>rw</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Getting-Method">getting method</a> and <a href="#Class-Variable-Setting-Method">setting method</a>.
+      The class variable has its <a href="#Class-Variable-Reader-Method">reader method</a> and <a href="#Class-Variable-Writer-Method">writer method</a>.
     </td>
   </tr>
 </table>
@@ -2687,21 +2687,21 @@ If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error w
 
 A class variable method is a L<method|/"Method"> that gets and sets a class variable.
 
-=head3 Class Variable Getting Method
+=head3 Class Variable reader method
 
-A class variable getting method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
+A class variable reader method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
 
 It has no arguments and the return type is the same as the type of the class variable.
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its getting method name is C<FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its reader method name is C<FOO>.
 
-Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable getting method.
+Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable reader method.
 
 B<Examples:>
 
-  # Class variable getting method
+  # Class variable reader method
   class Foo {
     our $NUM : ro int;
     
@@ -2710,21 +2710,21 @@ B<Examples:>
     }
   }
 
-=head3 Class Variable Setting Method
+=head3 Class Variable writer method
 
-A class variable setting method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
+A class variable writer method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
 It has an argument that type is the same as the type of the class variable. The return type is the L<void type|/"void Type">.
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its setting method name is C<SET_FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its writer method name is C<SET_FOO>.
 
-Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable setting method.
+Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable writer method.
 
 B<Examples:>
 
-  # Class variable setting method
+  # Class variable writer method
   class Foo {
     our $NUM : wo int;
     
@@ -2828,7 +2828,7 @@ The list of field attributes.
       <b>ro</b>
     </td>
     <td>
-      This field has its getting method. The getting method name is the same as the field name. For example, If the field names is <code>foo</code>, The getting method name is C<foo>.
+      This field has its reader method. The reader method name is the same as the field name. For example, If the field names is <code>foo</code>, The reader method name is C<foo>.
     </td>
   </tr>
   <tr>
@@ -2836,7 +2836,7 @@ The list of field attributes.
       <b>wo</b>
     </td>
     <td>
-      This field has its setting method. The setting method name is the same as field names adding <code>set_</code> to top. For example, If the field names is <code>foo</code>, The setting method name is <code>set_foo</code>.
+      This field has its writer method. The writer method name is the same as field names adding <code>set_</code> to top. For example, If the field names is <code>foo</code>, The writer method name is <code>set_foo</code>.
     </td>
   </tr>
   <tr>
@@ -2844,7 +2844,7 @@ The list of field attributes.
       <b>rw</b>
     </td>
     <td>
-      This field has its getting method and its setting method.
+      This field has its reader method and its writer method.
     </td>
   </tr>
 </table>
@@ -2855,11 +2855,13 @@ Only one of field attributes C<private>, C<protected> or C<public> can be specif
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error will occur
 
-A field getting method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field getting method is the same as its field type.
+A field reader method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field reader method is the same as its field type, except for the C<byte> and C<short> type.
 
-A field setting method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
+If the type of the field is the C<byte> or C<short> type, The return type of a field reader method is the C<int> type.
 
-Inline expansion to the field access is performed on field getting and setting methods. The performance penalty using field methods is nothing.
+A field writer method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
+
+Inline expansion to the field access is performed on field getting and writer methods. The performance penalty using field methods is nothing.
 
 B<Examples:>
 
