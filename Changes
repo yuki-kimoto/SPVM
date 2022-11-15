@@ -1,7 +1,9 @@
 0.9662 2022-11-15
   [Incompatible Changes]
-    * The reader of the byte and short field returns the int type.
-      This is because public API is good to receive the int type regardless of the internal field type.
+    * The reader of the byte and short field return the int type.
+      This is because public API is good to return the int type regardless of the internal field type byte/short.
+    * The writer of the byte and short field recieve the int type.
+      This is because public API is good to receive the int type regardless of the internal field type byte/short.
     
 0.9661 2022-11-14
   [Incompatible Changes]

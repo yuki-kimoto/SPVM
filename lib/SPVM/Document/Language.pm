@@ -2861,6 +2861,8 @@ If the type of the field is the C<byte> or C<short> type, The return type of a f
 
 A field writer method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
 
+If the type of the field is the C<byte> or C<short> type, The argument type of a field writer method is the C<int> type.
+
 Inline expansion to the field access is performed on field getting and writer methods. The performance penalty using field methods is nothing.
 
 B<Examples:>

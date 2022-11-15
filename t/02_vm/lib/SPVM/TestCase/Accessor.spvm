@@ -1,11 +1,13 @@
 class TestCase::Accessor {
+  use Point;
+  
   our $VALUE_BYTE : rw byte;
   our $VALUE_SHORT : rw short;
   our $VALUE_INT : rw int;
   our $VALUE_LONG : rw long;
   our $VALUE_FLOAT : rw float;
   our $VALUE_DOUBLE : rw double;
-  our $VALUE_OBJECT : rw object;
+  our $VALUE_OBJECT : rw Point;
   
   has value_byte : rw byte;
   has value_short : rw short;
@@ -13,74 +15,130 @@ class TestCase::Accessor {
   has value_long : rw long;
   has value_float : rw float;
   has value_double : rw double;
-  has value_object : rw object;
+  has value_object : rw Point;
   
   static method field_accessor : int () {
     {
       my $object = new TestCase::Accessor;
       
+      $object->{value_byte} = 1;
+      
       my $value_field = $object->{value_byte};
       unless ($value_field isa byte) {
         return 0;
       }
+      unless ($value_field == 1) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_byte($value_var);
       
       my $value_reader = $object->value_byte;
       unless ($value_reader isa int) {
         return 0;
       }
+      unless ($value_reader == 2) {
+        return 0;
+      }
     }
+    
     {
       my $object = new TestCase::Accessor;
+      
+      $object->{value_short} = 1;
       
       my $value_field = $object->{value_short};
       unless ($value_field isa short) {
         return 0;
       }
+      unless ($value_field == 1) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_short($value_var);
       
       my $value_reader = $object->value_short;
       unless ($value_reader isa int) {
         return 0;
       }
+      unless ($value_reader == 2) {
+        return 0;
+      }
     }
 
     {
       my $object = new TestCase::Accessor;
+      
+      $object->{value_int} = 1;
       
       my $value_field = $object->{value_int};
       unless ($value_field isa int) {
         return 0;
       }
+      unless ($value_field == 1) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_int($value_var);
       
       my $value_reader = $object->value_int;
       unless ($value_reader isa int) {
         return 0;
       }
+      unless ($value_reader == 2) {
+        return 0;
+      }
     }
 
     {
       my $object = new TestCase::Accessor;
+      
+      $object->{value_long} = 1;
       
       my $value_field = $object->{value_long};
       unless ($value_field isa long) {
         return 0;
       }
+      unless ($value_field == 1) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_long($value_var);
       
       my $value_reader = $object->value_long;
       unless ($value_reader isa long) {
         return 0;
       }
+      unless ($value_reader == 2) {
+        return 0;
+      }
     }
 
     {
       my $object = new TestCase::Accessor;
+      
+      $object->{value_float} = 1f;
       
       my $value_field = $object->{value_float};
       unless ($value_field isa float) {
         return 0;
       }
+      unless ($value_field == 1f) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_float($value_var);
       
       my $value_reader = $object->value_float;
       unless ($value_reader isa float) {
+        return 0;
+      }
+      unless ($value_reader == 2f) {
         return 0;
       }
     }
@@ -88,17 +146,54 @@ class TestCase::Accessor {
     {
       my $object = new TestCase::Accessor;
       
+      $object->{value_double} = 1;
+      
       my $value_field = $object->{value_double};
       unless ($value_field isa double) {
         return 0;
       }
+      unless ($value_field == 1) {
+        return 0;
+      }
+      
+      my $value_var = 2;
+      $object->set_value_double($value_var);
       
       my $value_reader = $object->value_double;
       unless ($value_reader isa double) {
         return 0;
       }
+      unless ($value_reader == 2) {
+        return 0;
+      }
     }
-    
+
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $point = Point->new;
+      $object->{value_object} = $point;
+      
+      my $value_field = $object->{value_object};
+      unless ($value_field isa Point) {
+        return 0;
+      }
+      unless ($value_field == $point) {
+        return 0;
+      }
+      
+      my $value_var = Point->new;
+      $object->set_value_object($value_var);
+      
+      my $value_reader = $object->value_object;
+      unless ($value_reader isa Point) {
+        return 0;
+      }
+      unless ($value_reader == $value_var) {
+        return 0;
+      }
+    }
+
     return 1;
   }
 }

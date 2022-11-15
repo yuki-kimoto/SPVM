@@ -2233,7 +2233,19 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, field->type, op_decl->file, op_decl->line);
+          // If the type of the field is byte or short, the arg type becomes int
+          SPVM_TYPE* field_type = field->type;
+          SPVM_TYPE* arg_type;
+          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
+          {
+            arg_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            arg_type = field->type;
+          }
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
+
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
@@ -2252,8 +2264,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
           
+          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, field_type, op_decl->file, op_decl->line);
+          SPVM_OP_build_convert(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
+
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_var_assign_value);
+          SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_type_cast);
           
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
@@ -2262,6 +2278,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           op_method->uv.method->is_field_setter = 1;
           op_method->uv.method->field_method_original_name = field->name;
+          op_method->uv.method->field_method_original_type = field->type;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }

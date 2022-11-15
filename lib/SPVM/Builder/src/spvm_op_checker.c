@@ -2731,12 +2731,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 // Field getter is replaced to field access
                 else if (call_method->method->is_field_getter) {
+                  
                   // [Before]
                   // $object->foo
                   // [After]
                   // $object->{foo}
                   
-                  // TODO: Inline exapnsion of type cast is difficut for now.
+                  // TODO: Inline exapnsion of type cast from byte/short to int is difficut for me.
                   SPVM_TYPE* field_type = call_method->method->field_method_original_type;
                   int32_t perform_inline_expansion;
                   if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
@@ -2777,34 +2778,48 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // [After]
                   // $object->{foo} = $value
 
-                  SPVM_OP* op_list_args = op_cur->first;
-                  SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
-                  assert(op_invocant);
-                  SPVM_OP_cut_op(compiler, op_invocant);
+                  // TODO: Inline exapnsion of type cast from byte/short to int is difficut for me.
+                  SPVM_TYPE* field_type = call_method->method->field_method_original_type;
+                  int32_t perform_inline_expansion;
+                  if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+                    || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
+                  {
+                    perform_inline_expansion = 0;
+                  }
+                  else {
+                    perform_inline_expansion = 1;
+                  }
 
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                  
-                  SPVM_OP* op_args = op_cur->last;
-                  SPVM_OP* op_operand_value = op_args->last;
-                  
-                  SPVM_OP_cut_op(compiler, op_operand_value);
+                  if (perform_inline_expansion) {
+                    SPVM_OP* op_list_args = op_cur->first;
+                    SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
+                    assert(op_invocant);
+                    SPVM_OP_cut_op(compiler, op_invocant);
 
-                  op_operand_value->no_need_check = 1;
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                    
+                    SPVM_OP* op_args = op_cur->last;
+                    SPVM_OP* op_operand_value = op_args->last;
+                    
+                    SPVM_OP_cut_op(compiler, op_operand_value);
 
-                  const char* field_name = call_method->method->field_method_original_name;
-                  SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-                  SPVM_OP_build_field_access(compiler, op_field_access, op_invocant, op_name_field_access);
-                  op_field_access->uv.field_access->inline_expansion = 1;
-                  
-                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                  SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_operand_value);
-                  
-                  SPVM_OP_replace_op(compiler, op_stab, op_assign);
-                  
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                  
-                  op_cur = op_assign;
+                    op_operand_value->no_need_check = 1;
+
+                    const char* field_name = call_method->method->field_method_original_name;
+                    SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
+                    SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+                    SPVM_OP_build_field_access(compiler, op_field_access, op_invocant, op_name_field_access);
+                    op_field_access->uv.field_access->inline_expansion = 1;
+                    
+                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                    SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_operand_value);
+                    
+                    SPVM_OP_replace_op(compiler, op_stab, op_assign);
+                    
+                    SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                    
+                    op_cur = op_assign;
+                  }
                 }
                 // Class var getter is replaced to class var access
                 else if (call_method->method->is_class_var_getter) {
