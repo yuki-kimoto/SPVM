@@ -12,13 +12,13 @@ SPVM::Sort - Sorting Functions
 
   # Sort a byte array in-place by asc order
   my $array = [(byte)2, 3, 1];
-  Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+  Sort->sort_byte($array, method : int ($a : int, $b : int) {
     return $a <=> $b;
   });
 
   # Sort short array in-place by asc order
   my $array = [(short)2, 3, 1];
-  Sort->sort_short($array, method : int ($a : short, $b : short) {
+  Sort->sort_short($array, method : int ($a : int, $b : int) {
     return $a <=> $b;
   });
 
@@ -78,7 +78,7 @@ C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort
 
 =head2 sort_byte
 
-  static method sort_byte : void ($array : byte[], $comparator : Comparator::Byte, $offset = 0 : int, $length = -1 : int)
+  static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
 
 Sort the range of the elements of C<byte> array in-place.
 
@@ -86,7 +86,7 @@ The sorted range is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
+The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each element.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -102,7 +102,7 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 The alias for the following code using L</"sort_byte">
 
-  Sort->sort_byte($array, method : int ($a : byte, $b : byte) { return $a <=> $b; }, $offset, $length);
+  Sort->sort_byte($array, method : int ($a : int, $b : int) { return $a <=> $b; }, $offset, $length);
 
 =head2 sort_byte_desc
 
@@ -110,7 +110,7 @@ The alias for the following code using L</"sort_byte">
 
 The alias for the following code using L</"sort_byte">
 
-  Sort->sort_byte($array, method : int ($a : byte, $b : byte) { return $b <=> $a; }, $offset, $length);
+  Sort->sort_byte($array, method : int ($a : int, $b : int) { return $b <=> $a; }, $offset, $length);
 
 =head2 sort_double
 
@@ -312,7 +312,7 @@ The offset + length must be less than or equal to the length of the elements. Ot
 
 =head2 sort_short
 
-  static method sort_short : void ($array : short[], $comparator : Comparator::Short, $offset = 0 : int, $length = -1 : int)
+  static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
 
 Sort the range of the elements of C<short> array in-place.
 
@@ -320,7 +320,7 @@ The sorted range is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
+The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each element.
 
 The array must be defined. Otherwise an exception will be thrown.
 
@@ -344,7 +344,7 @@ The alias for the following code using L</"sort_short">
 
 The alias for the following code using L</"sort_short">
 
-  Sort->sort_short($array, method : int ($a : short, $b : short) { return $b <=> $a; }, $offset, $length);
+  Sort->sort_short($array, method : int ($a : int, $b : int) { return $b <=> $a; }, $offset, $length);
 
 =head2 sort_string
 
@@ -356,7 +356,7 @@ The sorted range is from the offset to the position proceeded by the length.
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The L<Comparator::Byte|SPVM::Comparator::Byte> comparator is used to compare each element.
+The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each element.
 
 The array must be defined. Otherwise an exception will be thrown.
 

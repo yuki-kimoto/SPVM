@@ -661,7 +661,7 @@ The same as the following code using L</"memmove_object_address">.
 
 =head2 memset_byte
 
-  static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int)
+  static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int)
 
 Set the range of the elements of the C<byte> array to the element specified by the argument.
 
@@ -757,7 +757,7 @@ The offset of the array + the length specified by the argument must be less than
 
 =head2 memset_short
 
-  static method memset_short : void ($array : short[], $element : short, $offset = 0 : int, $length = -1 : int)
+  static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int)
 
 Set the range of the elements of the C<short> array to the element specified by the argument.
 

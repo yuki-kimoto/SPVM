@@ -65,13 +65,13 @@ class StringBuffer {
     $self->{length} += $string_length;
   }
   
-  method push_char : void ($char : byte) {
+  method push_char : void ($char : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{value}[$self->{length}++] = $char;
+    $self->{value}[$self->{length}++] = (byte)$char;
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : string) {

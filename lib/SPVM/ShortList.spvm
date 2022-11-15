@@ -54,7 +54,7 @@ class ShortList {
   }
   
   # Instance methods
-  method get : short ($index : int) {
+  method get : int ($index : int) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -70,7 +70,7 @@ class ShortList {
     return $value;
   }
   
-  method insert : void ($index : int, $value : short) {
+  method insert : void ($index : int, $value : int) {
     my $length = $self->{length};
     
     unless ($index >= 0) {
@@ -90,12 +90,12 @@ class ShortList {
       my $move_length = $length - $index;
       Array->memmove_short($values, $dist_index, $values, $index, $move_length);
     }
-    $values->[$index] = $value;
+    $values->[$index] = (short)$value;
     
     $self->{length} = $new_length;
   }
   
-  method pop : short () {
+  method pop : int () {
     my $length = $self->length;
     
     unless ($length > 0) {
@@ -111,18 +111,18 @@ class ShortList {
     return $value;
   }
   
-  method push : void ($value : short) {
+  method push : void ($value : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{values}[$length] = $value;
+    $self->{values}[$length] = (short)$value;
     
     $self->{length} = $new_length;
   }
   
-  method remove : short ($index : int) {
+  method remove : int ($index : int) {
     my $length = $self->{length};
     
     unless ($index >= 0) {
@@ -210,7 +210,7 @@ class ShortList {
     $self->{length} = $new_length;
   }
   
-  method set : void ($index : int, $value : short) {
+  method set : void ($index : int, $value : int) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -221,7 +221,7 @@ class ShortList {
       die "The index must be less than the length of the list";
     }
     
-    $self->{values}[$index] = $value;
+    $self->{values}[$index] = (short)$value;
   }
   
   method set_array : void ($array : short[]) {
@@ -272,7 +272,7 @@ class ShortList {
     return $array;
   }
   
-  method unshift : void ($value : short) {
+  method unshift : void ($value : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
@@ -283,7 +283,7 @@ class ShortList {
     
     Array->memmove_short($values, 1, $values, 0, $length);
     
-    $values->[0] = $value;
+    $values->[0] = (short)$value;
     $self->{length} = $new_length;
   }
   

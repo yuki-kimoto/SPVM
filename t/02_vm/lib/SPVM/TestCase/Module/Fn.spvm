@@ -31,7 +31,7 @@ class TestCase::Module::Fn {
   
   static method BYTE_MAX : int () {
     
-    unless (Fn->BYTE_MAX isa byte) {
+    unless (Fn->BYTE_MAX isa int) {
       return 0;
     }
     unless (Fn->BYTE_MAX == Fn->INT8_MAX) {
@@ -41,7 +41,7 @@ class TestCase::Module::Fn {
   }
   
   static method BYTE_MIN : int () {
-    unless (Fn->BYTE_MIN isa byte) {
+    unless (Fn->BYTE_MIN isa int) {
       return 0;
     }
     unless (Fn->BYTE_MIN == Fn->INT8_MIN) {
@@ -119,7 +119,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT16_MAX : int () {
-    unless (Fn->INT16_MAX  isa short) {
+    unless (Fn->INT16_MAX  isa int) {
       return 0;
     }
     unless (Fn->INT16_MAX == 32767) {
@@ -130,7 +130,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT16_MIN : int () {
-    unless (Fn->INT16_MIN  isa short) {
+    unless (Fn->INT16_MIN  isa int) {
       return 0;
     }
     unless (Fn->INT16_MIN == -32768) {
@@ -185,7 +185,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT8_MIN : int () {
-    unless (Fn->INT8_MIN  isa byte) {
+    unless (Fn->INT8_MIN  isa int) {
       return 0;
     }
     unless (Fn->INT8_MIN == -128) {
@@ -196,7 +196,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT8_MAX : int () {
-    unless (Fn->INT8_MAX  isa byte) {
+    unless (Fn->INT8_MAX  isa int) {
       return 0;
     }
     
@@ -257,7 +257,7 @@ class TestCase::Module::Fn {
   }
   
   static method SHORT_MAX : int () {
-    unless (Fn->SHORT_MAX isa short) {
+    unless (Fn->SHORT_MAX isa int) {
       return 0;
     }
     unless (Fn->SHORT_MAX == Fn->INT16_MAX) {
@@ -267,7 +267,7 @@ class TestCase::Module::Fn {
   }
   
   static method SHORT_MIN : int () {
-    unless (Fn->SHORT_MIN isa short) {
+    unless (Fn->SHORT_MIN isa int) {
       return 0;
     }
     unless (Fn->SHORT_MIN == Fn->INT16_MIN) {
@@ -277,7 +277,7 @@ class TestCase::Module::Fn {
   }
   
   static method UINT16_MAX : int () {
-    unless (Fn->UINT16_MAX isa short) {
+    unless (Fn->UINT16_MAX isa int) {
       return 0;
     }
     
@@ -313,7 +313,7 @@ class TestCase::Module::Fn {
   }
   
   static method UINT8_MAX : int () {
-    unless (Fn->UINT8_MAX isa byte) {
+    unless (Fn->UINT8_MAX isa int) {
       return 0;
     }
     
@@ -325,7 +325,7 @@ class TestCase::Module::Fn {
   }
   
   static method UBYTE_MAX : int () {
-    unless (Fn->UBYTE_MAX isa byte) {
+    unless (Fn->UBYTE_MAX isa int) {
       return 0;
     }
     unless (Fn->UBYTE_MAX == Fn->UINT8_MAX) {
@@ -355,7 +355,7 @@ class TestCase::Module::Fn {
   }
   
   static method USHORT_MAX : int () {
-    unless (Fn->USHORT_MAX isa short) {
+    unless (Fn->USHORT_MAX isa int) {
       return 0;
     }
     unless (Fn->USHORT_MAX == Fn->UINT16_MAX) {

@@ -679,7 +679,7 @@ class Array {
     }
   }
   
-  precompile static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The array must be defined";
     }
@@ -698,7 +698,7 @@ class Array {
     }
     
     for (my $i = 0; $i < $length; $i++) {
-      $array->[$offset + $i] = $element;
+      $array->[$offset + $i] = (byte)$element;
     }
   }
   precompile static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int) {
@@ -812,7 +812,7 @@ class Array {
     }
   }
   
-  precompile static method memset_short : void ($array : short[], $element : short, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The array must be defined";
     }
@@ -831,7 +831,7 @@ class Array {
     }
     
     for (my $i = 0; $i < $length; $i++) {
-      $array->[$offset + $i] = $element;
+      $array->[$offset + $i] = (short)$element;
     }
   }
   

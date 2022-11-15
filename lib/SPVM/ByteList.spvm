@@ -54,7 +54,7 @@ class ByteList {
   }
   
   # Instance methods
-  method get : byte ($index : int) {
+  method get : int ($index : int) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -70,7 +70,7 @@ class ByteList {
     return $value;
   }
   
-  method insert : void ($index : int, $value : byte) {
+  method insert : void ($index : int, $value : int) {
     my $length = $self->{length};
     
     unless ($index >= 0) {
@@ -90,12 +90,12 @@ class ByteList {
       my $move_length = $length - $index;
       Array->memmove_byte($values, $dist_index, $values, $index, $move_length);
     }
-    $values->[$index] = $value;
+    $values->[$index] = (byte)$value;
     
     $self->{length} = $new_length;
   }
   
-  method pop : byte () {
+  method pop : int () {
     my $length = $self->length;
     
     unless ($length > 0) {
@@ -111,18 +111,18 @@ class ByteList {
     return $value;
   }
   
-  method push : void ($value : byte) {
+  method push : void ($value : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{values}[$length] = $value;
+    $self->{values}[$length] = (byte)$value;
     
     $self->{length} = $new_length;
   }
   
-  method remove : byte ($index : int) {
+  method remove : int ($index : int) {
     my $length = $self->{length};
     
     unless ($index >= 0) {
@@ -210,7 +210,7 @@ class ByteList {
     $self->{length} = $new_length;
   }
   
-  method set : void ($index : int, $value : byte) {
+  method set : void ($index : int, $value : int) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -221,7 +221,7 @@ class ByteList {
       die "The index must be less than the length of the list";
     }
     
-    $self->{values}[$index] = $value;
+    $self->{values}[$index] = (byte)$value;
   }
   
   method set_array : void ($array : byte[]) {
@@ -240,7 +240,7 @@ class ByteList {
     Array->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
   }
   
-  method shift : byte () {
+  method shift : int () {
     my $length = $self->{length};
     
     unless ($length > 0) {
@@ -272,7 +272,7 @@ class ByteList {
     return $array;
   }
   
-  method unshift : void ($value : byte) {
+  method unshift : void ($value : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
@@ -283,7 +283,7 @@ class ByteList {
     
     Array->memmove_byte($values, 1, $values, 0, $length);
     
-    $values->[0] = $value;
+    $values->[0] = (byte)$value;
     $self->{length} = $new_length;
   }
   

@@ -91,7 +91,7 @@ Add a string after the end of the string in the string buffer.
 
 =head2 push_char
 
-  method push_char : void ($char : byte)
+  method push_char : void ($char : int)
 
 Add a character after the end of the string in the string buffer.
 

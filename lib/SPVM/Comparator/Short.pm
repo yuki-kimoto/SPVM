@@ -10,7 +10,7 @@ SPVM::Comparator::Short - Interface Type for short Comparation Callback
   
   use Comparator::Short;
   
-  my $comparator = (Comparator::Short)method : int ($a : short, $b : short); {
+  my $comparator = (Comparator::Short)method : int ($a : int, $b : int); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Short|SPVM::Comparator::Short> is the interface type for the short
 
 =head1 Interface Methods
 
-  required method : int ($a : short, $b : short);
+  required method : int ($a : int, $b : int);
 
 This method must receive two values that types are C<short> and return the following value.
 

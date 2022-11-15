@@ -8,6 +8,106 @@
       This is because public API is good to return the int type regardless of the internal class variable type byte/short.
     * The writer of the byte and short class variable return the int type.
       This is because public API is good to return the int type regardless of the internal class variable type byte/short.
+    * The definitions of the following method in the Fn class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  static method BYTE_MAX : byte ()
+      +  static method BYTE_MAX : int ()
+      -  static method BYTE_MIN : byte ()
+      +  static method BYTE_MIN : int ()
+      -  static method INT16_MAX : short ()
+      +  static method INT16_MAX : int ()
+      -  static method INT16_MIN : short ()
+      +  static method INT16_MIN : int ()
+      -  static method INT8_MAX : byte ()
+      +  static method INT8_MAX : int ()
+      -  static method INT8_MIN : byte ()
+      +  static method INT8_MIN : int ()
+      -  static method SHORT_MAX : short ()
+      +  static method SHORT_MAX : int ()
+      -  static method SHORT_MIN : short ()
+      +  static method SHORT_MIN : int ()
+      -  static method UBYTE_MAX : byte ()
+      +  static method UBYTE_MAX : int ()
+      -  static method UINT16_MAX : short ()
+      +  static method UINT16_MAX : int ()
+      -  static method UINT8_MAX : byte ()
+      +  static method UINT8_MAX : int ()
+      -  static method USHORT_MAX : short ()
+      +  static method USHORT_MAX : int ()
+      -  static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte)
+      +  static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int)
+      -  precompile static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte) {
+      +  precompile static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int) {
+    * The definitions of the following method in the Array class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int)
+      +  static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int)
+      -  static method memset_short : void ($array : short[], $element : short, $offset = 0 : int, $length = -1 : int)
+      +  static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int)      
+      -  precompile static method memset_byte : void ($array : byte[], $element : byte, $offset = 0 : int, $length = -1 : int) {
+      +  precompile static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int) {      [After]
+      -  precompile static method memset_short : void ($array : short[], $element : short, $offset = 0 : int, $length = -1 : int) {
+      +  precompile static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int) {
+    * The definitions of the following method in the Byte class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  static method new : Byte ($value : byte)
+      +  static method new : Byte ($value : int)      
+    * The definition of the following method in the Short class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  static method new : Short ($value : short);
+      +  static method new : Short ($value : int);        
+    * The definitions of the following method in the ByteList class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  method get : byte ($index : int)
+      +  method get : int ($index : int)      
+      -  method insert : void ($index : int, $value : byte)
+      +  method insert : void ($index : int, $value : int)      
+      -  method pop : byte ()
+      +  method pop : int ()
+      -  method push : void ($value : byte)
+      +  method push : void ($value : int)
+      -  method remove : byte ($index : int)
+      +  method remove : int ($index : int)
+      -  method set : void ($index : int, $value : byte)
+      +  method set : void ($index : int, $value : int)
+      -  method shift : byte ()
+      +  method shift : int ()
+      -  method unshift : void ($value : byte)
+      +  method unshift : void ($value : int)
+    * The definitions of the following method in the ShortList class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  method get : byte ($index : int)
+      +  method get : int ($index : int)      
+      -  method insert : void ($index : int, $value : byte)
+      +  method insert : void ($index : int, $value : int)      
+      -  method pop : byte ()
+      +  method pop : int ()
+      -  method push : void ($value : byte)
+      +  method push : void ($value : int)
+      -  method remove : byte ($index : int)
+      +  method remove : int ($index : int)
+      -  method set : void ($index : int, $value : byte)
+      +  method set : void ($index : int, $value : int)
+      -  method shift : byte ()
+      +  method shift : int ()
+      -  method unshift : void ($value : byte)
+      +  method unshift : void ($value : int)
+    * The definitions of the following method in the Sort class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  static method sort_byte : void ($array : byte[], $comparator : Comparator::Byte, $offset = 0 : int, $length = -1 : int)
+      +  static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+      -  Sort->sort_byte($array, method : int ($a : byte, $b : byte) { return $a <=> $b; }, $offset, $length);
+      +  Sort->sort_byte($array, method : int ($a : int, $b : int) { return $a <=> $b; }, $offset, $length);
+      -  static method sort_short : void ($array : short[], $comparator : Comparator::Short, $offset = 0 : int, $length = -1 : int)
+      +  static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+      -  Sort->sort_short($array, method : int ($a : short, $b : short) { return $b <=> $a; }, $offset, $length);
+      +  Sort->sort_short($array, method : int ($a : int, $b : int) { return $b <=> $a; }, $offset, $length);
+      [After]
+    * The definitions of the following method in the Hash class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  get_byte : byte ($name : string)
+      +  get_byte : int ($name : string)
+      -  get_short : short ($name : string)
+      +  get_short : int ($name : string)
+      -  set_byte : void ($name : string, $value : byte)
+      +  set_byte : void ($name : string, $value : int)
+      -  set_short : void ($name : string, $value : short)
+      +  set_short : void ($name : string, $value : int)
+    * The definitions of the following method in the StringBuffer class is changed. This is because all of the argument and return type is from byte/short to int.
+      -  method push_char : void ($char : byte)
+      +  method push_char : void ($char : int)
   [Document Changes]
     * Renamed the conceptual name "Accessor Method" to "Accessor".
     * Renamed the conceptual name "Getting Method" to "Reader".

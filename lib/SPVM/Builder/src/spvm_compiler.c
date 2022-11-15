@@ -96,11 +96,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_HASH_set(compiler->module_source_symtable, "Error::NotSupported", strlen("Error::NotSupported"), (void*)spvm_error_not_supported_module_source);
 
   // Add Byte source
-  const char* spvm_byte_module_source = "class Byte {\n  has value : rw byte;\n  static method new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_byte_module_source = "class Byte {\n  has value : rw byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->module_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_module_source);
   
   // Add Short source
-  const char* spvm_short_module_source = "class Short {\n  has value : rw short;\n  static method new : Short ($value : short) {\n    my $self = new Short;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_short_module_source = "class Short {\n  has value : rw short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->module_source_symtable, "Short", strlen("Short"), (void*)spvm_short_module_source);
   
   // Add Int source

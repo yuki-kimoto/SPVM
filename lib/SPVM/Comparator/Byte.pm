@@ -10,7 +10,7 @@ SPVM::Comparator::Byte - Interface Type for byte Comparation Callback
   
   use Comparator::Byte;
   
-  my $comparator = (Comparator::Byte)method : int ($a : byte, $b : byte); {
+  my $comparator = (Comparator::Byte)method : int ($a : int, $b : int); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Byte|SPVM::Comparator::Byte> is the interface type for the byte co
 
 =head1 Interface Methods
 
-  required method : int ($a : byte, $b : byte);
+  required method : int ($a : int, $b : int);
 
 This method must receive two values that types are C<byte> and return the following value.
 

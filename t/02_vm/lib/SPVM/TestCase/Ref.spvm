@@ -9,15 +9,15 @@ class TestCase::Ref {
   use Array;
 
   static method numeric_ref_deref_byte : int () {
-    my $num1 = (byte)Fn->INT8_MIN();
+    my $num1 = (byte)Fn->INT8_MIN;
     
     my $num1_ref = \$num1;
     
     my $num2 = $$num1_ref;
     
-    $$num1_ref = (byte)(Fn->INT8_MIN() + 1);
+    $$num1_ref = (byte)(Fn->INT8_MIN + 1);
     
-    if ($num2 == Fn->INT8_MIN() && $num1 == Fn->INT8_MIN() + 1) {
+    if ($num2 == Fn->INT8_MIN && $num1 == Fn->INT8_MIN + 1) {
       return 1;
     }
     
@@ -25,15 +25,15 @@ class TestCase::Ref {
   }
 
   static method numeric_ref_deref_short : int () {
-    my $num1 = (short)Fn->INT16_MIN();
+    my $num1 = (short)Fn->INT16_MIN;
     
     my $num1_ref = \$num1;
     
     my $num2 = $$num1_ref;
     
-    $$num1_ref = (short)(Fn->INT16_MIN() + 1);
+    $$num1_ref = (short)(Fn->INT16_MIN + 1);
     
-    if ($num2 == Fn->INT16_MIN() && $num1 == Fn->INT16_MIN() + 1) {
+    if ($num2 == Fn->INT16_MIN && $num1 == Fn->INT16_MIN + 1) {
       return 1;
     }
     
@@ -57,15 +57,15 @@ class TestCase::Ref {
   }
 
   static method numeric_ref_deref_long : int () {
-    my $num1 = (long)Fn->INT64_MIN();
+    my $num1 = (long)Fn->INT64_MIN;
     
     my $num1_ref = \$num1;
     
     my $num2 = $$num1_ref;
     
-    $$num1_ref = (long)(Fn->INT64_MIN() + 1);
+    $$num1_ref = (long)(Fn->INT64_MIN + 1);
     
-    if ($num2 == Fn->INT64_MIN() && $num1 == Fn->INT64_MIN() + 1) {
+    if ($num2 == Fn->INT64_MIN && $num1 == Fn->INT64_MIN + 1) {
       return 1;
     }
     
@@ -73,15 +73,15 @@ class TestCase::Ref {
   }
 
   static method numeric_ref_deref_float : int () {
-    my $num1 = (float)Fn->FLT_MIN();
+    my $num1 = (float)Fn->FLT_MIN;
     
     my $num1_ref = \$num1;
     
     my $num2 = $$num1_ref;
     
-    $$num1_ref = (float)(Fn->FLT_MIN() + 1);
+    $$num1_ref = (float)(Fn->FLT_MIN + 1);
     
-    if ($num2 == Fn->FLT_MIN() && $num1 == Fn->FLT_MIN() + 1) {
+    if ($num2 == Fn->FLT_MIN && $num1 == Fn->FLT_MIN + 1) {
       return 1;
     }
     
@@ -89,15 +89,15 @@ class TestCase::Ref {
   }
 
   static method numeric_ref_deref_double : int () {
-    my $num1 = (double)Fn->DBL_MIN();
+    my $num1 = (double)Fn->DBL_MIN;
     
     my $num1_ref = \$num1;
     
     my $num2 = $$num1_ref;
     
-    $$num1_ref = (double)(Fn->DBL_MIN() + 1);
+    $$num1_ref = (double)(Fn->DBL_MIN + 1);
     
-    if ($num2 == Fn->DBL_MIN() && $num1 == Fn->DBL_MIN() + 1) {
+    if ($num2 == Fn->DBL_MIN && $num1 == Fn->DBL_MIN + 1) {
       return 1;
     }
     
@@ -107,7 +107,7 @@ class TestCase::Ref {
   static method value_ref_deref_byte : int () {
     my $point1 : TestCase::Point_3b;
     
-    $point1->{x} = Fn->INT8_MIN();
+    $point1->{x} = (byte)Fn->INT8_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -115,7 +115,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->INT8_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+    if ($point2->{x} == Fn->INT8_MIN && $point2->{y} == 1 && $point2->{z} == 2) {
       return 1;
     }
     return 0;
@@ -124,7 +124,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_byte : int () {
     my $point : TestCase::Point_3b;
     
-    $point->{x} = Fn->INT8_MIN();
+    $point->{x} = (byte)Fn->INT8_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -134,7 +134,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->INT8_MIN() && $point_y == 1 && $point_z == 2) {
+    if ($point_x == Fn->INT8_MIN && $point_y == 1 && $point_z == 2) {
       return 1;
     }
     return 0;
@@ -145,11 +145,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = Fn->INT8_MIN();
+    $point->{x} = (byte)Fn->INT8_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
-    if ($point->{x} == Fn->INT8_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+    if ($point->{x} == Fn->INT8_MIN && $point->{y} == 1 && $point->{z} == 2) {
       return 1;
     }
     return 0;
@@ -159,7 +159,7 @@ class TestCase::Ref {
     my $point_out : TestCase::Point_3b;
     
     my $point1 : TestCase::Point_3b;
-    $point1->{x} = Fn->INT8_MIN();
+    $point1->{x} = (byte)Fn->INT8_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 
@@ -170,7 +170,7 @@ class TestCase::Ref {
     
     TestCase::Ref->pass_value_ref_byte($point1, $point2, \$point_out);
     
-    if ($point_out->{x} == Fn->INT8_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+    if ($point_out->{x} == Fn->INT8_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
     }
     return 0;
@@ -185,7 +185,7 @@ class TestCase::Ref {
   static method value_ref_deref_short : int () {
     my $point1 : TestCase::Point_3s;
     
-    $point1->{x} = Fn->INT16_MIN();
+    $point1->{x} = (short)Fn->INT16_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -193,7 +193,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->INT16_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+    if ($point2->{x} == Fn->INT16_MIN && $point2->{y} == 1 && $point2->{z} == 2) {
       return 1;
     }
     return 0;
@@ -202,7 +202,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_short : int () {
     my $point : TestCase::Point_3s;
     
-    $point->{x} = Fn->INT16_MIN();
+    $point->{x} = (short)Fn->INT16_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -212,7 +212,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->INT16_MIN() && $point_y == 1 && $point_z == 2) {
+    if ($point_x == Fn->INT16_MIN && $point_y == 1 && $point_z == 2) {
       return 1;
     }
     return 0;
@@ -223,11 +223,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = Fn->INT16_MIN();
+    $point->{x} = (short)Fn->INT16_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
-    if ($point->{x} == Fn->INT16_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+    if ($point->{x} == Fn->INT16_MIN && $point->{y} == 1 && $point->{z} == 2) {
       return 1;
     }
     return 0;
@@ -237,7 +237,7 @@ class TestCase::Ref {
     my $point_out : TestCase::Point_3s;
     
     my $point1 : TestCase::Point_3s;
-    $point1->{x} = Fn->INT16_MIN();
+    $point1->{x} = (short)Fn->INT16_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 
@@ -248,7 +248,7 @@ class TestCase::Ref {
     
     TestCase::Ref->pass_value_ref_short($point1, $point2, \$point_out);
     
-    if ($point_out->{x} == Fn->INT16_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+    if ($point_out->{x} == Fn->INT16_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
     }
     return 0;
@@ -263,7 +263,7 @@ class TestCase::Ref {
   static method value_ref_deref_double : int () {
     my $point1 : TestCase::Point_3d;
     
-    $point1->{x} = Fn->DBL_MIN();
+    $point1->{x} = Fn->DBL_MIN;
     $point1->{y} = 0.5;
     $point1->{z} = 0.125;
     
@@ -271,7 +271,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->DBL_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+    if ($point2->{x} == Fn->DBL_MIN && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
       return 1;
     }
     return 0;
@@ -280,7 +280,7 @@ class TestCase::Ref {
   static method value_ref_deref_int : int () {
     my $point1 : TestCase::Point_3i;
     
-    $point1->{x} = Fn->INT32_MIN();
+    $point1->{x} = Fn->INT32_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -288,7 +288,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->INT32_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+    if ($point2->{x} == Fn->INT32_MIN && $point2->{y} == 1 && $point2->{z} == 2) {
       return 1;
     }
     return 0;
@@ -297,7 +297,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_int : int () {
     my $point : TestCase::Point_3i;
     
-    $point->{x} = Fn->INT32_MIN();
+    $point->{x} = Fn->INT32_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -307,7 +307,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->INT32_MIN() && $point_y == 1 && $point_z == 2) {
+    if ($point_x == Fn->INT32_MIN && $point_y == 1 && $point_z == 2) {
       return 1;
     }
     return 0;
@@ -318,11 +318,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = Fn->INT32_MIN();
+    $point->{x} = Fn->INT32_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
-    if ($point->{x} == Fn->INT32_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+    if ($point->{x} == Fn->INT32_MIN && $point->{y} == 1 && $point->{z} == 2) {
       return 1;
     }
     return 0;
@@ -332,7 +332,7 @@ class TestCase::Ref {
     my $point_out : TestCase::Point_3i;
     
     my $point1 : TestCase::Point_3i;
-    $point1->{x} = Fn->INT32_MIN();
+    $point1->{x} = Fn->INT32_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 
@@ -343,7 +343,7 @@ class TestCase::Ref {
     
     TestCase::Ref->pass_value_ref_int($point1, $point2, \$point_out);
     
-    if ($point_out->{x} == Fn->INT32_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+    if ($point_out->{x} == Fn->INT32_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
     }
     return 0;
@@ -358,7 +358,7 @@ class TestCase::Ref {
   static method value_ref_deref_long : int () {
     my $point1 : TestCase::Point_3l;
     
-    $point1->{x} = Fn->INT64_MIN();
+    $point1->{x} = Fn->INT64_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -366,7 +366,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->INT64_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+    if ($point2->{x} == Fn->INT64_MIN && $point2->{y} == 1 && $point2->{z} == 2) {
       return 1;
     }
     return 0;
@@ -375,7 +375,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_long : int () {
     my $point : TestCase::Point_3l;
     
-    $point->{x} = Fn->INT64_MIN();
+    $point->{x} = Fn->INT64_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -385,7 +385,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->INT64_MIN() && $point_y == 1 && $point_z == 2) {
+    if ($point_x == Fn->INT64_MIN && $point_y == 1 && $point_z == 2) {
       return 1;
     }
     return 0;
@@ -396,11 +396,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = Fn->INT64_MIN();
+    $point->{x} = Fn->INT64_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
-    if ($point->{x} == Fn->INT64_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+    if ($point->{x} == Fn->INT64_MIN && $point->{y} == 1 && $point->{z} == 2) {
       return 1;
     }
     return 0;
@@ -410,7 +410,7 @@ class TestCase::Ref {
     my $point_out : TestCase::Point_3l;
     
     my $point1 : TestCase::Point_3l;
-    $point1->{x} = Fn->INT64_MIN();
+    $point1->{x} = Fn->INT64_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 
@@ -421,7 +421,7 @@ class TestCase::Ref {
     
     TestCase::Ref->pass_value_ref_long($point1, $point2, \$point_out);
     
-    if ($point_out->{x} == Fn->INT64_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+    if ($point_out->{x} == Fn->INT64_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
     }
     return 0;
@@ -436,7 +436,7 @@ class TestCase::Ref {
   static method value_ref_deref_float : int () {
     my $point1 : TestCase::Point_3f;
     
-    $point1->{x} = Fn->FLT_MIN();
+    $point1->{x} = Fn->FLT_MIN;
     $point1->{y} = 0.5f;
     $point1->{z} = 0.125f;
     
@@ -444,7 +444,7 @@ class TestCase::Ref {
     
     my $point2 = $$point1_ref;
     
-    if ($point2->{x} == Fn->FLT_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+    if ($point2->{x} == Fn->FLT_MIN && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
       return 1;
     }
     return 0;
@@ -453,7 +453,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_float : int () {
     my $point : TestCase::Point_3f;
     
-    $point->{x} = Fn->FLT_MIN();
+    $point->{x} = Fn->FLT_MIN;
     $point->{y} = 0.5f;
     $point->{z} = 0.125f;
     
@@ -463,7 +463,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->FLT_MIN() && $point_y == 0.5 && $point_z == 0.125) {
+    if ($point_x == Fn->FLT_MIN && $point_y == 0.5 && $point_z == 0.125) {
       return 1;
     }
     return 0;
@@ -474,11 +474,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point_ref->{x} = Fn->FLT_MIN();
+    $point_ref->{x} = Fn->FLT_MIN;
     $point_ref->{y} = 0.5f;
     $point_ref->{z} = 0.125f;
     
-    if ($point->{x} == Fn->FLT_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
+    if ($point->{x} == Fn->FLT_MIN && $point->{y} == 0.5 && $point->{z} == 0.125) {
       return 1;
     }
     return 0;
@@ -514,7 +514,7 @@ class TestCase::Ref {
   static method value_ref_deref_get_field_double : int () {
     my $point : TestCase::Point_3d;
     
-    $point->{x} = Fn->DBL_MIN();
+    $point->{x} = Fn->DBL_MIN;
     $point->{y} = 0.5;
     $point->{z} = 0.125;
     
@@ -524,7 +524,7 @@ class TestCase::Ref {
     my $point_y = $point_ref->{y};
     my $point_z = $point_ref->{z};
     
-    if ($point_x == Fn->DBL_MIN() && $point_y == 0.5 && $point_z == 0.125) {
+    if ($point_x == Fn->DBL_MIN && $point_y == 0.5 && $point_z == 0.125) {
       return 1;
     }
     return 0;
@@ -535,11 +535,11 @@ class TestCase::Ref {
 
     my $point_ref = \$point;
     
-    $point_ref->{x} = Fn->DBL_MIN();
+    $point_ref->{x} = Fn->DBL_MIN;
     $point_ref->{y} = 0.5;
     $point_ref->{z} = 0.125;
     
-    if ($point->{x} == Fn->DBL_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
+    if ($point->{x} == Fn->DBL_MIN && $point->{y} == 0.5 && $point->{z} == 0.125) {
       return 1;
     }
     return 0;

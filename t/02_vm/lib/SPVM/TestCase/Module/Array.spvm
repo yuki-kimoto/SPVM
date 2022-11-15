@@ -8,7 +8,7 @@ class TestCase::Module::Array {
   static method copy_byte : int () {
     # Copy array
     {
-      my $array = [(byte)1, 2, Fn->BYTE_MIN()];
+      my $array = [(byte)1, 2, (byte)Fn->BYTE_MIN];
       my $array_out = Array->copy_byte($array);
       
       unless ($array isa byte[]) {
@@ -22,7 +22,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->BYTE_MIN()) {
+      unless ($array->[2] == Fn->BYTE_MIN) {
         return 0;
       }
       
@@ -32,17 +32,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19];
+      my $array = [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19];
       my $range = Array->copy_byte($array, 0, 7);
-      unless (Array->equals_byte($range, [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19])) {
+      unless (Array->equals_byte($range, [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN(), 127, 15, 19];
+      my $array = [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19];
       my $range = Array->copy_byte($array, 1, 3);
-      unless (Array->equals_byte($range, [(byte)-7, 9, Fn->BYTE_MIN()])) {
+      unless (Array->equals_byte($range, [(byte)-7, 9, (byte)Fn->BYTE_MIN])) {
         return 0;
       }
     }
@@ -91,7 +91,7 @@ class TestCase::Module::Array {
   static method copy_double : int () {
     # Copy array
     {
-      my $array = [(double)0.5, 0.25, Fn->DOUBLE_MIN()];
+      my $array = [(double)0.5, 0.25, Fn->DOUBLE_MIN];
       my $array_out = Array->copy_double($array);
       
       unless ($array isa double[]) {
@@ -106,7 +106,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->DOUBLE_MIN()) {
+      unless ($array->[2] == Fn->DOUBLE_MIN) {
         return 0;
       }
       
@@ -116,17 +116,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19];
+      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN, 127, 15, 19];
       my $range = Array->copy_double($array, 0, 7);
-      unless (Array->equals_double($range, [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19])) {
+      unless (Array->equals_double($range, [(double)5, -7, 9, Fn->DOUBLE_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN(), 127, 15, 19];
+      my $array = [(double)5, -7, 9, Fn->DOUBLE_MIN, 127, 15, 19];
       my $range = Array->copy_double($array, 1, 3);
-      unless (Array->equals_double($range, [(double)-7, 9, Fn->DOUBLE_MIN()])) {
+      unless (Array->equals_double($range, [(double)-7, 9, Fn->DOUBLE_MIN])) {
         return 0;
       }
     }
@@ -175,7 +175,7 @@ class TestCase::Module::Array {
   static method copy_float : int () {
     # Copy array
     {
-      my $array = [(float)0.5f, 0.25f, Fn->FLOAT_MIN()];
+      my $array = [(float)0.5f, 0.25f, Fn->FLOAT_MIN];
       my $array_out = Array->copy_float($array);
       
       unless ($array isa float[]) {
@@ -190,7 +190,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->FLOAT_MIN()) {
+      unless ($array->[2] == Fn->FLOAT_MIN) {
         return 0;
       }
       
@@ -200,17 +200,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19];
+      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN, 127, 15, 19];
       my $range = Array->copy_float($array, 0, 7);
-      unless (Array->equals_float($range, [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19])) {
+      unless (Array->equals_float($range, [(float)5, -7, 9, Fn->FLOAT_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN(), 127, 15, 19];
+      my $array = [(float)5, -7, 9, Fn->FLOAT_MIN, 127, 15, 19];
       my $range = Array->copy_float($array, 1, 3);
-      unless (Array->equals_float($range, [(float)-7, 9, Fn->FLOAT_MIN()])) {
+      unless (Array->equals_float($range, [(float)-7, 9, Fn->FLOAT_MIN])) {
         return 0;
       }
     }
@@ -259,7 +259,7 @@ class TestCase::Module::Array {
   static method copy_int : int () {
     # Copy array
     {
-      my $array = [(int)1, 2, Fn->INT_MIN()];
+      my $array = [(int)1, 2, Fn->INT_MIN];
       my $array_out = Array->copy_int($array);
       
       unless ($array isa int[]) {
@@ -274,7 +274,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->INT_MIN()) {
+      unless ($array->[2] == Fn->INT_MIN) {
         return 0;
       }
       
@@ -284,17 +284,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19];
+      my $array = [(int)5, -7, 9, Fn->INT_MIN, 127, 15, 19];
       my $range = Array->copy_int($array, 0, 7);
-      unless (Array->equals_int($range, [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19])) {
+      unless (Array->equals_int($range, [(int)5, -7, 9, Fn->INT_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(int)5, -7, 9, Fn->INT_MIN(), 127, 15, 19];
+      my $array = [(int)5, -7, 9, Fn->INT_MIN, 127, 15, 19];
       my $range = Array->copy_int($array, 1, 3);
-      unless (Array->equals_int($range, [(int)-7, 9, Fn->INT_MIN()])) {
+      unless (Array->equals_int($range, [(int)-7, 9, Fn->INT_MIN])) {
         return 0;
       }
     }
@@ -343,7 +343,7 @@ class TestCase::Module::Array {
   static method copy_long : int () {
     # Copy array
     {
-      my $array = [(long)1, 2, Fn->LONG_MIN()];
+      my $array = [(long)1, 2, Fn->LONG_MIN];
       my $array_out = Array->copy_long($array);
       
       unless ($array isa long[]) {
@@ -358,7 +358,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->LONG_MIN()) {
+      unless ($array->[2] == Fn->LONG_MIN) {
         return 0;
       }
       
@@ -368,17 +368,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19];
+      my $array = [(long)5, -7, 9, Fn->LONG_MIN, 127, 15, 19];
       my $range = Array->copy_long($array, 0, 7);
-      unless (Array->equals_long($range, [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19])) {
+      unless (Array->equals_long($range, [(long)5, -7, 9, Fn->LONG_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(long)5, -7, 9, Fn->LONG_MIN(), 127, 15, 19];
+      my $array = [(long)5, -7, 9, Fn->LONG_MIN, 127, 15, 19];
       my $range = Array->copy_long($array, 1, 3);
-      unless (Array->equals_long($range, [(long)-7, 9, Fn->LONG_MIN()])) {
+      unless (Array->equals_long($range, [(long)-7, 9, Fn->LONG_MIN])) {
         return 0;
       }
     }
@@ -427,7 +427,7 @@ class TestCase::Module::Array {
   static method copy_object : int () {
     # Copy array
     {
-      my $array = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT_MIN())];
+      my $array = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT_MIN)];
       my $array_out = Array->copy_object($array, method : object ($obj : object) {
         my $int_obj = (Int)$obj;
         my $new_int_obj = Int->new($int_obj->value);
@@ -458,7 +458,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ((int)$array_out->[2] == Fn->INT_MIN()) {
+      unless ((int)$array_out->[2] == Fn->INT_MIN) {
         return 0;
       }
       
@@ -653,7 +653,7 @@ class TestCase::Module::Array {
   static method copy_short : int () {
     # Copy array
     {
-      my $array = [(short)1, 2, Fn->SHORT_MIN()];
+      my $array = [(short)1, 2, (short)Fn->SHORT_MIN];
       my $array_out = Array->copy_short($array);
 
       unless ($array->[0] == 1) {
@@ -664,7 +664,7 @@ class TestCase::Module::Array {
         return 0;
       }
       
-      unless ($array->[2] == Fn->SHORT_MIN()) {
+      unless ($array->[2] == Fn->SHORT_MIN) {
         return 0;
       }
       
@@ -674,17 +674,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19];
+      my $array = [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19];
       my $range = Array->copy_short($array, 0, 7);
-      unless (Array->equals_short($range, [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19])) {
+      unless (Array->equals_short($range, [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(short)5, -7, 9, Fn->SHORT_MIN(), 127, 15, 19];
+      my $array = [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19];
       my $range = Array->copy_short($array, 1, 3);
-      unless (Array->equals_short($range, [(short)-7, 9, Fn->SHORT_MIN()])) {
+      unless (Array->equals_short($range, [(short)-7, 9, (short)Fn->SHORT_MIN])) {
         return 0;
       }
     }
@@ -930,7 +930,7 @@ class TestCase::Module::Array {
   static method dump_unsigned_byte : int () {
     # Dump array
     {
-      my $array = [(byte)1, 2, -1, Fn->UBYTE_MAX];
+      my $array = [(byte)1, 2, -1, (byte)Fn->UBYTE_MAX];
       
       my $dump = Array->dump_unsigned_byte($array);
       
@@ -1002,7 +1002,7 @@ class TestCase::Module::Array {
   static method dump_unsigned_short : int () {
     # Dump array
     {
-      my $array = [(short)1, 2, -1, Fn->USHORT_MAX];
+      my $array = [(short)1, 2, -1, (short)Fn->USHORT_MAX];
       
       my $dump = Array->dump_unsigned_short($array);
       
@@ -1024,8 +1024,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_byte : int () {
-    my $array1 = [(byte)0, 1, Fn->BYTE_MIN()];
-    my $array2 = [(byte)0, 1, Fn->BYTE_MIN()];
+    my $array1 = [(byte)0, 1, (byte)Fn->BYTE_MIN];
+    my $array2 = [(byte)0, 1, (byte)Fn->BYTE_MIN];
     my $array3 = [(byte)0, 1];
     my $array4 = [(byte)0, 1, 2];
     {
@@ -1072,8 +1072,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_double : int () {
-    my $array1 = [0.0, 1.5, Fn->DOUBLE_MIN()];
-    my $array2 = [0.0, 1.5, Fn->DOUBLE_MIN()];
+    my $array1 = [0.0, 1.5, Fn->DOUBLE_MIN];
+    my $array2 = [0.0, 1.5, Fn->DOUBLE_MIN];
     my $array3 = [0.0, 1.5];
     my $array4 = [(double)0.0, 1.5, 0.5];
 
@@ -1121,8 +1121,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_float : int () {
-    my $array1 = [0.0f, 1.5f, Fn->FLOAT_MIN()];
-    my $array2 = [0.0f, 1.5f, Fn->FLOAT_MIN()];
+    my $array1 = [0.0f, 1.5f, Fn->FLOAT_MIN];
+    my $array2 = [0.0f, 1.5f, Fn->FLOAT_MIN];
     my $array3 = [0.0f, 1.5f];
     my $array4 = [(float)0.0f, 1.5f, 0.5f];
 
@@ -1170,8 +1170,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_int : int () {
-    my $array1 = [(int)0, 1, Fn->INT_MIN()];
-    my $array2 = [(int)0, 1, Fn->INT_MIN()];
+    my $array1 = [(int)0, 1, Fn->INT_MIN];
+    my $array2 = [(int)0, 1, Fn->INT_MIN];
     my $array3 = [(int)0, 1];
     my $array4 = [(int)0, 1, 2];
 
@@ -1219,8 +1219,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_long : int () {
-    my $array1 = [(long)0, 1, Fn->LONG_MIN()];
-    my $array2 = [(long)0, 1, Fn->LONG_MIN()];
+    my $array1 = [(long)0, 1, Fn->LONG_MIN];
+    my $array2 = [(long)0, 1, Fn->LONG_MIN];
     my $array3 = [(long)0, 1];
     my $array4 = [(long)0, 1, 2];
 
@@ -1438,8 +1438,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_short : int () {
-    my $array1 = [(short)0, 1, Fn->SHORT_MIN()];
-    my $array2 = [(short)0, 1, Fn->SHORT_MIN()];
+    my $array1 = [(short)0, 1, (short)Fn->SHORT_MIN];
+    my $array2 = [(short)0, 1, (short)Fn->SHORT_MIN];
     my $array3 = [(short)0, 1];
     my $array4 = [(short)0, 1, 2];
 

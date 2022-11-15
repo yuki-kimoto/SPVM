@@ -13,7 +13,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16b;
     my $mat3 : TestCase::Matrix4_16b;
     
-    $mat1->{x11} = Fn->INT8_MIN();
+    $mat1->{x11} = (byte)Fn->INT8_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -73,7 +73,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = (byte)($mat1->{x34} + $mat2->{x34});
     $mat3->{x44} = (byte)($mat1->{x44} + $mat2->{x44});
 
-    unless ($mat3->{x11} == Fn->INT8_MIN() + 21) {
+    unless ($mat3->{x11} == Fn->INT8_MIN + 21) {
       return 0;
     }
     unless ($mat3->{x21} == 52) {
@@ -130,7 +130,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16s;
     my $mat3 : TestCase::Matrix4_16s;
     
-    $mat1->{x11} = Fn->INT16_MIN();
+    $mat1->{x11} = (short)Fn->INT16_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -190,7 +190,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = (short)($mat1->{x34} + $mat2->{x34});
     $mat3->{x44} = (short)($mat1->{x44} + $mat2->{x44});
     
-    unless ($mat3->{x11} == Fn->INT16_MIN() + 111) {
+    unless ($mat3->{x11} == Fn->INT16_MIN + 111) {
       return 0;
     }
     unless ($mat3->{x21} == 142) {
@@ -247,7 +247,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16i;
     my $mat3 : TestCase::Matrix4_16i;
     
-    $mat1->{x11} = Fn->INT32_MIN();
+    $mat1->{x11} = Fn->INT32_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -307,7 +307,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = $mat1->{x34} + $mat2->{x34};
     $mat3->{x44} = $mat1->{x44} + $mat2->{x44};
     
-    unless ($mat3->{x11} == Fn->INT32_MIN() + 111) {
+    unless ($mat3->{x11} == Fn->INT32_MIN + 111) {
       return 0;
     }
     unless ($mat3->{x21} == 142) {
@@ -364,7 +364,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16l;
     my $mat3 : TestCase::Matrix4_16l;
     
-    $mat1->{x11} = Fn->INT64_MIN();
+    $mat1->{x11} = Fn->INT64_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -424,7 +424,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = $mat1->{x34} + $mat2->{x34};
     $mat3->{x44} = $mat1->{x44} + $mat2->{x44};
     
-    unless ($mat3->{x11} == Fn->INT64_MIN() + 111) {
+    unless ($mat3->{x11} == Fn->INT64_MIN + 111) {
       return 0;
     }
     unless ($mat3->{x21} == 142) {
@@ -481,7 +481,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16f;
     my $mat3 : TestCase::Matrix4_16f;
     
-    $mat1->{x11} = Fn->FLT_MIN();
+    $mat1->{x11} = Fn->FLT_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -541,7 +541,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = $mat1->{x34} + $mat2->{x34};
     $mat3->{x44} = $mat1->{x44} + $mat2->{x44};
     
-    unless ($mat3->{x11} == Fn->FLT_MIN() + 111) {
+    unless ($mat3->{x11} == Fn->FLT_MIN + 111) {
       return 0;
     }
     unless ($mat3->{x21} == 142) {
@@ -598,7 +598,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16d;
     my $mat3 : TestCase::Matrix4_16d;
     
-    $mat1->{x11} = Fn->DBL_MIN();
+    $mat1->{x11} = Fn->DBL_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -658,7 +658,7 @@ class TestCase::Mulnum {
     $mat3->{x34} = $mat1->{x34} + $mat2->{x34};
     $mat3->{x44} = $mat1->{x44} + $mat2->{x44};
     
-    unless ($mat3->{x11} == Fn->DBL_MIN() + 111) {
+    unless ($mat3->{x11} == Fn->DBL_MIN + 111) {
       return 0;
     }
     unless ($mat3->{x21} == 142) {

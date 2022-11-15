@@ -129,7 +129,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3b;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->INT8_MIN();
+    $point->{z} = (byte)Fn->INT8_MIN;
     
     return $point;
   }
@@ -138,7 +138,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3s;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->INT16_MIN();
+    $point->{z} = (short)Fn->INT16_MIN;
     
     return $point;
   }
@@ -147,7 +147,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3i;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->INT32_MIN();
+    $point->{z} = Fn->INT32_MIN;
     
     return $point;
   }
@@ -156,7 +156,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3l;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->INT64_MIN();
+    $point->{z} = Fn->INT64_MIN;
     
     return $point;
   }
@@ -165,7 +165,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3f;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->FLT_MIN();
+    $point->{z} = Fn->FLT_MIN;
     
     return $point;
   }
@@ -174,39 +174,39 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3d;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = Fn->DBL_MIN();
+    $point->{z} = Fn->DBL_MIN;
     
     return $point;
   }
 
   static method return_byte : byte () {
     
-    return Fn->INT8_MIN();
+    return (byte)Fn->INT8_MIN;
   }
   
   static method return_short : short () {
     
-    return Fn->INT16_MIN();
+    return (short)Fn->INT16_MIN;
   }
 
   static method return_int : int () {
     
-    return Fn->INT32_MIN();
+    return Fn->INT32_MIN;
   }
 
   static method return_long : long () {
     
-    return Fn->INT64_MIN();
+    return Fn->INT64_MIN;
   }
 
   static method return_float : float () {
     
-    return Fn->FLT_MIN();
+    return Fn->FLT_MIN;
   }
 
   static method return_double : double () {
     
-    return Fn->DBL_MIN();
+    return Fn->DBL_MIN;
   }
 
   static method set_exception : int () {
@@ -532,7 +532,7 @@ class TestCase::ExchangeAPI {
   
   static method argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
+    unless (Array->equals_byte($values, [(byte)1, (byte)Fn->INT8_MAX, (byte)Fn->INT8_MIN])) {
       return 0;
     }
     
@@ -545,7 +545,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
+    unless (Array->equals_short($values, [(short)1, (short)Fn->INT16_MAX, (short)Fn->INT16_MIN])) {
       return 0;
     }
     
@@ -558,7 +558,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
+    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX, Fn->INT32_MIN])) {
       return 0;
     }
     
@@ -571,7 +571,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
+    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX, Fn->INT64_MIN])) {
       return 0;
     }
     
@@ -584,7 +584,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
+    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX, Fn->FLT_MIN])) {
       return 0;
     }
     
@@ -597,7 +597,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
+    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX, Fn->DBL_MIN])) {
       return 0;
     }
     
@@ -610,7 +610,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX(), Fn->INT8_MIN()])) {
+    unless (Array->equals_byte($values, [(byte)1, (byte)Fn->INT8_MAX, (byte)Fn->INT8_MIN])) {
       return 0;
     }
     
@@ -623,7 +623,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX(), Fn->INT16_MIN()])) {
+    unless (Array->equals_short($values, [(short)1, (short)Fn->INT16_MAX, (short)Fn->INT16_MIN])) {
       return 0;
     }
     
@@ -636,7 +636,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX(), Fn->INT32_MIN()])) {
+    unless (Array->equals_int($values, [(int)1, Fn->INT32_MAX, Fn->INT32_MIN])) {
       return 0;
     }
     
@@ -649,7 +649,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX(), Fn->INT64_MIN()])) {
+    unless (Array->equals_long($values, [(long)1, Fn->INT64_MAX, Fn->INT64_MIN])) {
       return 0;
     }
     
@@ -662,7 +662,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX(), Fn->FLT_MIN()])) {
+    unless (Array->equals_float($values, [(float)0.5, Fn->FLT_MAX, Fn->FLT_MIN])) {
       return 0;
     }
     
@@ -675,7 +675,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX(), Fn->DBL_MIN()])) {
+    unless (Array->equals_double($values, [(double)0.5, Fn->DBL_MAX, Fn->DBL_MIN])) {
       return 0;
     }
     
@@ -728,7 +728,7 @@ class TestCase::ExchangeAPI {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
-        if ($values->[2] == Fn->INT8_MAX()) {
+        if ($values->[2] == Fn->INT8_MAX) {
            if (@$values == 3) {
              return 1;
            }
@@ -743,7 +743,7 @@ class TestCase::ExchangeAPI {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
-        if ((int)$values->[2] == (int)(short)Fn->INT16_MAX()) {
+        if ((int)$values->[2] == (int)(short)Fn->INT16_MAX) {
            if (@$values == 3) {
              return 1;
            }
@@ -758,7 +758,7 @@ class TestCase::ExchangeAPI {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
-        if ($values->[2] == (int)Fn->INT32_MAX()) {
+        if ($values->[2] == (int)Fn->INT32_MAX) {
            if (@$values == 3) {
              return 1;
            }
@@ -773,7 +773,7 @@ class TestCase::ExchangeAPI {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
-        if ($values->[2] == (long)Fn->INT64_MAX()) {
+        if ($values->[2] == (long)Fn->INT64_MAX) {
            if (@$values == 3) {
              return 1;
            }
@@ -938,7 +938,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_byte : int ($nums : byte[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Fn->INT8_MAX()) {
+      if ($nums->[1] == Fn->INT8_MAX) {
         return 1;
       }
     }
@@ -948,7 +948,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_short : int ($nums : short[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Fn->INT16_MAX()) {
+      if ($nums->[1] == Fn->INT16_MAX) {
         return 1;
       }
     }
@@ -958,7 +958,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_int : int ($nums : int[]) {
     
     if ($nums->[0] == 0) {
-      if ($nums->[1] == Fn->INT32_MAX()) {
+      if ($nums->[1] == Fn->INT32_MAX) {
         return 1;
       }
     }
@@ -968,7 +968,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_long : int ($nums : long[]) {
     
     if ($nums->[0] == 0L) {
-      if ($nums->[1] == Fn->INT64_MAX()) {
+      if ($nums->[1] == Fn->INT64_MAX) {
         return 1;
       }
     }
@@ -998,7 +998,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_set_and_get_mulnum_t_int : int ($points : TestCase::Point_3i[]) {
     
-    if ($points->[1]{x} == Fn->INT32_MIN()) {
+    if ($points->[1]{x} == Fn->INT32_MIN) {
       if ($points->[1]{y} == 1) {
         if ($points->[1]{z} == 2) {
           return 1;
@@ -1011,7 +1011,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_byte : int ($points : TestCase::Point_3b[]) {
     
-    if ($points->[0]{x} == Fn->INT8_MIN()) {
+    if ($points->[0]{x} == Fn->INT8_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1038,7 +1038,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_short : int ($points : TestCase::Point_3s[]) {
     
-    if ($points->[0]{x} == Fn->INT16_MIN()) {
+    if ($points->[0]{x} == Fn->INT16_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1065,7 +1065,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_int : int ($points : TestCase::Point_3i[]) {
     
-    if ($points->[0]{x} == Fn->INT32_MIN()) {
+    if ($points->[0]{x} == Fn->INT32_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1092,7 +1092,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_long : int ($points : TestCase::Point_3l[]) {
     
-    if ($points->[0]{x} == Fn->INT64_MIN()) {
+    if ($points->[0]{x} == Fn->INT64_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1119,7 +1119,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_float : int ($points : TestCase::Point_3f[]) {
     
-    if ($points->[0]{x} == Fn->FLT_MIN()) {
+    if ($points->[0]{x} == Fn->FLT_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1146,7 +1146,7 @@ class TestCase::ExchangeAPI {
 
   static method spvm_new_mulnum_array_double : int ($points : TestCase::Point_3d[]) {
     
-    if ($points->[0]{x} == Fn->DBL_MIN()) {
+    if ($points->[0]{x} == Fn->DBL_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1172,7 +1172,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_byte : int ($points : TestCase::Point_3b[]) {
-    if ($points->[0]{x} == Fn->INT8_MIN()) {
+    if ($points->[0]{x} == Fn->INT8_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1198,7 +1198,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_short : int ($points : TestCase::Point_3s[]) {
-    if ($points->[0]{x} == Fn->INT16_MIN()) {
+    if ($points->[0]{x} == Fn->INT16_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1224,7 +1224,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_int : int ($points : TestCase::Point_3i[]) {
-    if ($points->[0]{x} == Fn->INT32_MIN()) {
+    if ($points->[0]{x} == Fn->INT32_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1250,7 +1250,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_long : int ($points : TestCase::Point_3l[]) {
-    if ($points->[0]{x} == Fn->INT64_MIN()) {
+    if ($points->[0]{x} == Fn->INT64_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1276,7 +1276,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_float : int ($points : TestCase::Point_3f[]) {
-    if ($points->[0]{x} == Fn->FLT_MIN()) {
+    if ($points->[0]{x} == Fn->FLT_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {
@@ -1302,7 +1302,7 @@ class TestCase::ExchangeAPI {
   }
 
   static method spvm_new_mulnum_array_binary_double : int ($points : TestCase::Point_3d[]) {
-    if ($points->[0]{x} == Fn->DBL_MIN()) {
+    if ($points->[0]{x} == Fn->DBL_MIN) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
           if ($points->[1]{x} == 3) {

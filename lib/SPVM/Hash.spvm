@@ -172,10 +172,10 @@ class Hash {
 
   private native static method _siphash13 : long ($string : string, $seed : string);
 
-  method set_byte : void ($name : string, $value : byte) {
+  method set_byte : void ($name : string, $value : int) {
     $self->set($name => Byte->new($value));
   }
-  method set_short : void ($name : string, $value : short) {
+  method set_short : void ($name : string, $value : int) {
     $self->set($name => Short->new($value));
   }
   method set_int : void ($name : string, $value : int) {
@@ -194,10 +194,10 @@ class Hash {
     $self->set($name => Double->new($value));
   }
 
-  method get_byte : byte ($name : string) {
+  method get_byte : int ($name : string) {
     return (byte)$self->get($name);
   }
-  method get_short : short ($name : string) {
+  method get_short : int ($name : string) {
     return (short)$self->get($name);
   }
   method get_int : int ($name : string) {

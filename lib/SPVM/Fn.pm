@@ -51,13 +51,13 @@ Returns C<-2>. The return type is the C<int> type.
 
 =head2 BYTE_MAX
 
-  static method BYTE_MAX : byte ()
+  static method BYTE_MAX : int ()
 
 The same as L</"INT8_MAX">.
 
 =head2 BYTE_MIN
 
-  static method BYTE_MIN : byte ()
+  static method BYTE_MIN : int ()
 
 The same as L</"INT8_MIN">.
 
@@ -111,13 +111,13 @@ Returns the value of C<FLT_MIN> macro defined in C<float.h> header of C<C langua
 
 =head2 INT16_MAX
 
-  static method INT16_MAX : short ()
+  static method INT16_MAX : int ()
 
 Returns C<32767>. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
-  static method INT16_MIN : short ()
+  static method INT16_MIN : int ()
 
 Returns C<-32768>. The minimal value of the signed 16bit integer. 
 
@@ -147,13 +147,13 @@ Returns C<-9223372036854775808>. The minimal value of the signed 64bit integer.
 
 =head2 INT8_MAX
 
-  static method INT8_MAX : byte ()
+  static method INT8_MAX : int ()
 
 Returns C<127>. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
-  static method INT8_MIN : byte ()
+  static method INT8_MIN : int ()
 
 Returns C<-128>. The minimal value of the signed 8bit integer.
 
@@ -189,25 +189,25 @@ Returns C<2147483647>.
 
 =head2 SHORT_MAX
 
-  static method SHORT_MAX : short ()
+  static method SHORT_MAX : int ()
 
 The same as L</"INT16_MAX">.
 
 =head2 SHORT_MIN
   
-  static method SHORT_MIN : short ()
+  static method SHORT_MIN : int ()
 
 The same as L</"INT16_MIN">.
 
 =head2 UBYTE_MAX
 
-  static method UBYTE_MAX : byte ()
+  static method UBYTE_MAX : int ()
 
 The same as L</"UINT8_MAX">.
 
 =head2 UINT16_MAX
 
-  static method UINT16_MAX : short ()
+  static method UINT16_MAX : int ()
 
 Returns C<-1>. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
 
@@ -225,7 +225,7 @@ Returns C<-1>. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integ
 
 =head2 UINT8_MAX
 
-  static method UINT8_MAX : byte ()
+  static method UINT8_MAX : int ()
 
 Returns C<-1>. This represents C<0xFF> in the unsigned 8bit integer in 2's complement.
 
@@ -243,7 +243,7 @@ The same as L</"UINT64_MAX">.
 
 =head2 USHORT_MAX
 
-  static method USHORT_MAX : short ()
+  static method USHORT_MAX : int ()
 
 The same as L</"UINT16_MAX">.
 
@@ -635,7 +635,7 @@ B<Examples:>
 
 =head2 replace_chars
 
-  static method replace_chars : void ($string : mutable string, $from_ch : byte, $to_ch : byte)
+  static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int)
 
 Replaces all characters specified by the second argument in the string with the characters specified by the third argument.
 

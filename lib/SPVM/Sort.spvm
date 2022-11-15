@@ -1,6 +1,4 @@
 class Sort {
-  use Comparator::Byte;
-  use Comparator::Short;
   use Comparator::Int;
   use Comparator::Long;
   use Comparator::Float;
@@ -10,7 +8,7 @@ class Sort {
   use Fn;
   use Array;
   
-  static method sort_byte : void ($array : byte[], $comparator : Comparator::Byte, $offset = 0 : int, $length = -1 : int) {
+  static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The array must be defined";
     }
@@ -41,10 +39,10 @@ class Sort {
   }
   
   static method sort_byte_asc : void ($array : byte[], $offset = 0 : int, $length = -1 : int) {
-    &sort_byte($array, method : int ($a : byte, $b : byte) { return $a <=> $b; }, $offset, $length);
+    &sort_byte($array, method : int ($a : int, $b : int) { return $a <=> $b; }, $offset, $length);
   }
   static method sort_byte_desc : void ($array : byte[], $offset = 0 : int, $length = -1 : int) {
-    &sort_byte($array, method : int ($a : byte, $b : byte) { return $b <=> $a; }, $offset, $length);
+    &sort_byte($array, method : int ($a : int, $b : int) { return $b <=> $a; }, $offset, $length);
   }
   static method sort_double : void ($array : double[], $comparator : Comparator::Double, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
@@ -221,7 +219,7 @@ class Sort {
     Sort->_sort_object_merge_sort($array, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
-  static method sort_short : void ($array : short[], $comparator : Comparator::Short, $offset = 0 : int, $length = -1 : int) {
+  static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The array must be defined";
     }
@@ -252,10 +250,10 @@ class Sort {
   }
   
   static method sort_short_asc : void ($array : short[], $offset = 0 : int, $length = -1 : int) {
-    &sort_short($array, method : int ($a : short, $b : short) { return $a <=> $b; }, $offset, $length);
+    &sort_short($array, method : int ($a : int, $b : int) { return $a <=> $b; }, $offset, $length);
   }
   static method sort_short_desc : void ($array : short[], $offset = 0 : int, $length = -1 : int) {
-    &sort_short($array, method : int ($a : short, $b : short) { return $b <=> $a; }, $offset, $length);
+    &sort_short($array, method : int ($a : int, $b : int) { return $b <=> $a; }, $offset, $length);
   }
   static method sort_string : void ($array : string[], $comparator : Comparator::String, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
@@ -293,7 +291,7 @@ class Sort {
     &sort_string($array, method : int ($a : string, $b : string) { return $b cmp $a; }, $offset, $length);
   }
 
-  precompile private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Byte) {
+  precompile private static method _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Int) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -329,7 +327,7 @@ class Sort {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private static method _sort_byte_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : Comparator::Byte){
+  private static method _sort_byte_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : Comparator::Int){
     if ($left >= $right) {
       return;
     }
@@ -582,7 +580,7 @@ class Sort {
     Sort->_sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  precompile private static method _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Short) {
+  precompile private static method _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Int) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -618,7 +616,7 @@ class Sort {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private static method _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : Comparator::Short){
+  private static method _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : Comparator::Int){
     if ($left >= $right) {
       return;
     }

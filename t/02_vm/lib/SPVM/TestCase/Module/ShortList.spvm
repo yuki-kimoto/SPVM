@@ -41,7 +41,7 @@ class TestCase::Module::ShortList {
   static method new : int () {
     # new with array
     {
-      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX()]);
+      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -51,7 +51,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      unless ($list->get(2) == Fn->SHORT_MAX()) {
+      unless ($list->get(2) == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -68,7 +68,7 @@ class TestCase::Module::ShortList {
     
     # capcity
     {
-      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX()], 10);
+      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX], 10);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -78,7 +78,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      unless ($list->get(2) == Fn->SHORT_MAX()) {
+      unless ($list->get(2) == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -134,7 +134,7 @@ class TestCase::Module::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->SHORT_MAX());
+      $list->unshift(Fn->SHORT_MAX);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -203,13 +203,13 @@ class TestCase::Module::ShortList {
   # Instance methods
   static method get : int () {
     {
-      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX()]);
+      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
       }
       
-      unless ($list->get(0) isa short) {
+      unless ($list->get(0) isa int) {
         return 0;
       }
       
@@ -217,7 +217,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      unless ($list->get(2) == Fn->SHORT_MAX()) {
+      unless ($list->get(2) == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -305,13 +305,13 @@ class TestCase::Module::ShortList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->SHORT_MAX());
+      $list->push(Fn->SHORT_MAX);
       
       my $pop0 = $list->pop;
-      unless ($pop0 == Fn->SHORT_MAX()) {
+      unless ($pop0 == Fn->SHORT_MAX) {
         return 0;
       }
-      unless ($pop0 isa short) {
+      unless ($pop0 isa int) {
         return 0;
       }
       
@@ -348,14 +348,14 @@ class TestCase::Module::ShortList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(Fn->SHORT_MAX());
+      $list->push(Fn->SHORT_MAX);
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->SHORT_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->SHORT_MAX) {
         return 0;
       }
     }
@@ -666,7 +666,7 @@ class TestCase::Module::ShortList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => Fn->SHORT_MAX());
+      $list->set(2 => Fn->SHORT_MAX);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -676,7 +676,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
 
-      unless ($list->get(2) == Fn->SHORT_MAX()) {
+      unless ($list->get(2) == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -741,9 +741,9 @@ class TestCase::Module::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->SHORT_MAX());
+      $list->unshift(Fn->SHORT_MAX);
       
-      unless ($list->shift == Fn->SHORT_MAX()) {
+      unless ($list->shift == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -772,7 +772,7 @@ class TestCase::Module::ShortList {
   
   static method to_array : int () {
     {
-      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX()]);
+      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
       
       my $array = $list->to_array;
       
@@ -788,7 +788,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
 
-      unless ($array->[2] == Fn->SHORT_MAX()) {
+      unless ($array->[2] == Fn->SHORT_MAX) {
         return 0;
       }
       
@@ -808,14 +808,14 @@ class TestCase::Module::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(Fn->SHORT_MAX());
+      $list->unshift(Fn->SHORT_MAX);
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == Fn->SHORT_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->SHORT_MAX && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }

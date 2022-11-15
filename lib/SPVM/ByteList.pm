@@ -21,19 +21,19 @@ SPVM::ByteList - Dynamic byte Array
   my $length = $list->length;
   
   # Push value
-  $list->push((byte)3);
+  $list->push(3);
   
   # Pop value.
   my $value = $list->pop;
   
   # Unshift value.
-  $list->unshift((byte)3);
+  $list->unshift(3);
   
   # Shift value.
   my $value = $list->shift;
   
   # Set value.
-  $list->set(2, (byte)3);
+  $list->set(2, 3);
   
   # Get value.
   my $value = $list->get(2);
@@ -117,7 +117,7 @@ The length must be greater than or equal to C<0>. Otherwise an excpetion will be
 
 =head2 get
 
-  method get : byte ($index : int)
+  method get : int ($index : int)
 
 Get the element of the position of the index.
 
@@ -127,7 +127,7 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 =head2 insert
 
-  method insert : void ($index : int, $value : byte)
+  method insert : void ($index : int, $value : int)
 
 Insert an element to the position of the index.
 
@@ -137,7 +137,7 @@ The index must be less than or equal to the length of the list. Otherwise an exc
 
 =head2 pop
 
-  method pop : byte ()
+  method pop : int ()
 
 Remove the last element and return it.
 
@@ -145,13 +145,13 @@ The length of the list must be greater than C<0>. Otherwise an excpetion will be
 
 =head2 push
   
-  method push : void ($value : byte)
+  method push : void ($value : int)
 
 Add an element after the end of the list.
 
 =head2 remove
 
-  method remove : byte ($index : int)
+  method remove : int ($index : int)
 
 Remove the element at the position of the index and return it.
 
@@ -193,7 +193,7 @@ The new length must be greater than or equal to C<0>. Otherwise an excpetion wil
 
 =head2 set
 
-  method set : void ($index : int, $value : byte)
+  method set : void ($index : int, $value : int)
 
 Set the element at the position of the index.
 
@@ -213,7 +213,7 @@ The length of the array must be the same as the length of the list. Otherwise an
 
 =head2 shift
 
-  method shift : byte ()
+  method shift : int ()
 
 Remove the first element and return it.
 
@@ -227,6 +227,6 @@ Convert the list to an array.
 
 =head2 unshift
 
-  method unshift : void ($value : byte)
+  method unshift : void ($value : int)
 
 Insert an element at the beginning of the list.

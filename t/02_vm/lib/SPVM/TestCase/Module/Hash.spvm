@@ -138,39 +138,39 @@ class TestCase::Module::Hash {
 
     # set_byte, get_byte
     {
-      $hash->set_byte(foo => Fn->INT8_MAX());
+      $hash->set_byte(foo => Fn->INT8_MAX);
       unless ($hash->get("foo") isa Byte) {
         return 0;
       }
       my $value = $hash->get_byte("foo");
 
-      unless ($value == Fn->INT8_MAX()) {
+      unless ($value == Fn->INT8_MAX) {
         return 0;
       }
     }
 
     # set_short, get_short
     {
-      $hash->set_short(foo => Fn->INT16_MAX());
+      $hash->set_short(foo => Fn->INT16_MAX);
       unless ($hash->get("foo") isa Short) {
         return 0;
       }
       my $value = $hash->get_short("foo");
 
-      unless ($value == Fn->INT16_MAX()) {
+      unless ($value == Fn->INT16_MAX) {
         return 0;
       }
     }
 
     # set_int, get_int
     {
-      $hash->set_int(foo => Fn->INT32_MAX());
+      $hash->set_int(foo => Fn->INT32_MAX);
       unless ($hash->get("foo") isa Int) {
         return 0;
       }
       my $value = $hash->get_int("foo");
 
-      unless ($value == Fn->INT32_MAX()) {
+      unless ($value == Fn->INT32_MAX) {
         return 0;
       }
     }
@@ -191,39 +191,39 @@ class TestCase::Module::Hash {
 
     # set_long, get_long
     {
-      $hash->set_long(foo => Fn->INT64_MAX());
+      $hash->set_long(foo => Fn->INT64_MAX);
       unless ($hash->get("foo") isa Long) {
         return 0;
       }
       my $value = $hash->get_long("foo");
 
-      unless ($value == Fn->INT64_MAX()) {
+      unless ($value == Fn->INT64_MAX) {
         return 0;
       }
     }
 
     # set_float, get_float
     {
-      $hash->set_float(foo => Fn->FLT_MIN());
+      $hash->set_float(foo => Fn->FLT_MIN);
       unless ($hash->get("foo") isa Float) {
         return 0;
       }
       my $value = $hash->get_float("foo");
 
-      unless ($value == Fn->FLT_MIN()) {
+      unless ($value == Fn->FLT_MIN) {
         return 0;
       }
     }
 
     # set_double, get_double
     {
-      $hash->set_double(foo => Fn->DBL_MIN());
+      $hash->set_double(foo => Fn->DBL_MIN);
       unless ($hash->get("foo") isa Double) {
         return 0;
       }
       my $value = $hash->get_double("foo");
 
-      unless ($value == Fn->DBL_MIN()) {
+      unless ($value == Fn->DBL_MIN) {
         return 0;
       }
     }

@@ -89,39 +89,39 @@ Get a value.
 
 =head2 get_byte
 
-  get_byte : byte ($name : string)
+  get_byte : int ($name : string)
 
-Get value with a key. the value is converted to byte type.
+Get the value with a key from a L<Byte|SPVM::Byte> object.
 
 =head2 get_short
 
-  get_short : short ($name : string)
+  get_short : int ($name : string)
 
-Get value with a key. the value is converted to short type.
+Get the value with a key from a L<Short|SPVM::Short> object.
   
 =head2 get_int
 
   get_int : int ($name : string)
 
-Get value with a key. the value is converted to int type.
+Get the value with a key from a L<Int|SPVM::Int> object.
   
 =head2 get_long
 
   get_long : long ($name : string)
 
-Get value with a key. the value is converted to long type.
+Get the value with a key from a L<Long|SPVM::Long> object.
 
 =head2 get_float
 
   get_float : float ($name : string)
 
-Get value with a key. the value is converted to float type.
+Get the value with a key from a L<Float|SPVM::Float> object.
   
 =head2 get_double
 
   get_double : double ($name : string)
 
-Get value with a key. the value is converted to double type.
+Get the value with a key from a L<Double|SPVM::Double> object.
 
 =head2 set
   
@@ -131,13 +131,13 @@ Set key value pair.
 
 =head2 set_byte
 
-  set_byte : void ($name : string, $value : byte)
+  set_byte : void ($name : string, $value : int)
 
 Set key and value pair. byte value is converted to L<Byte|SPVM::Byte> object.
 
 =head2 set_short
 
-  set_short : void ($name : string, $value : short)
+  set_short : void ($name : string, $value : int)
 
 Set key and value pair. short value is converted to L<Short|SPVM::Short> object.
 

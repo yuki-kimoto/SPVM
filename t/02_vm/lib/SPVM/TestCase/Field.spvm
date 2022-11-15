@@ -90,26 +90,26 @@ class TestCase::Field {
   static method object_field_set_and_get : int () {
     my $test_case =TestCase->new;
     
-    $test_case->{x_byte} = Fn->INT8_MAX();
-    $test_case->{x_short} = Fn->INT16_MAX();
-    $test_case->{x_int} = Fn->INT32_MAX();
-    $test_case->{x_long} = Fn->INT64_MAX();
+    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
+    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_int} = Fn->INT32_MAX;
+    $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = TestCase->FLOAT_PRECICE();
     $test_case->{x_double} = TestCase->DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
     
-    unless ((int)$test_case->{x_byte} == (int)Fn->INT8_MAX()) {
+    unless ($test_case->{x_byte} == Fn->INT8_MAX) {
       return 0;
     }
-    unless ((int)$test_case->{x_short} == (int)Fn->INT16_MAX()) {
+    unless ($test_case->{x_short} == Fn->INT16_MAX) {
       return 0;
     }
-    unless ($test_case->{x_int} == Fn->INT32_MAX()) {
+    unless ($test_case->{x_int} == Fn->INT32_MAX) {
       return 0;
     }
-    unless ($test_case->{x_long} == Fn->INT64_MAX()) {
+    unless ($test_case->{x_long} == Fn->INT64_MAX) {
       return 0;
     }
     unless ($test_case->{x_float} == TestCase->FLOAT_PRECICE()) {
@@ -128,34 +128,34 @@ class TestCase::Field {
   static method object_field_set_and_get_again : int () {
     my $test_case =TestCase->new;
     
-    $test_case->{x_byte} = Fn->INT8_MAX();
-    $test_case->{x_short} = Fn->INT16_MAX();
-    $test_case->{x_int} = Fn->INT32_MAX();
-    $test_case->{x_long} = Fn->INT64_MAX();
+    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
+    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_int} = Fn->INT32_MAX;
+    $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = TestCase::Field->FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::Field->DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
-    $test_case->{x_byte} = Fn->INT8_MAX();
-    $test_case->{x_short} = Fn->INT16_MAX();
-    $test_case->{x_int} = Fn->INT32_MAX();
-    $test_case->{x_long} = Fn->INT64_MAX();
+    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
+    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_int} = Fn->INT32_MAX;
+    $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = TestCase::Field->FLOAT_PRECICE();
     $test_case->{x_double} = TestCase::Field->DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
-    unless ((int)$test_case->{x_byte} == (int)Fn->INT8_MAX()) {
+    unless ($test_case->{x_byte} == Fn->INT8_MAX) {
       return 0;
     }
-    unless ((int)$test_case->{x_short} == (int)Fn->INT16_MAX()) {
+    unless ($test_case->{x_short} == Fn->INT16_MAX) {
       return 0;
     }
-    unless ($test_case->{x_int} == Fn->INT32_MAX()) {
+    unless ($test_case->{x_int} == Fn->INT32_MAX) {
       return 0;
     }
-    unless ($test_case->{x_long} == Fn->INT64_MAX()) {
+    unless ($test_case->{x_long} == Fn->INT64_MAX) {
       return 0;
     }
     unless ($test_case->{x_float} == TestCase::Field->FLOAT_PRECICE()) {

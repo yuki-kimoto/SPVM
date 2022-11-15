@@ -37,11 +37,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_byte_by_name : int () {
 
-    $BYTE_VALUE = Fn->INT8_MIN();
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_byte_by_name_test();
     
-    unless ($value == Fn->INT8_MIN()) {
+    unless ($value == Fn->INT8_MIN) {
       return 0;
     }
     
@@ -63,11 +63,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_short_by_name : int () {
 
-    $SHORT_VALUE = Fn->INT16_MIN();
+    $SHORT_VALUE = (short)Fn->INT16_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_short_by_name_test();
     
-    unless ($value == Fn->INT16_MIN()) {
+    unless ($value == Fn->INT16_MIN) {
       return 0;
     }
     
@@ -89,11 +89,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_int_by_name : int () {
 
-    $INT_VALUE = Fn->INT32_MIN();
+    $INT_VALUE = Fn->INT32_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_int_by_name_test();
     
-    unless ($value == Fn->INT32_MIN()) {
+    unless ($value == Fn->INT32_MIN) {
       return 0;
     }
     
@@ -115,11 +115,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_long_by_name : long () {
 
-    $LONG_VALUE = Fn->INT64_MIN();
+    $LONG_VALUE = Fn->INT64_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_long_by_name_test();
     
-    unless ($value == Fn->INT64_MIN()) {
+    unless ($value == Fn->INT64_MIN) {
       return 0;
     }
     
@@ -141,11 +141,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_float_by_name : int () {
 
-    $FLOAT_VALUE = Fn->FLT_MIN();
+    $FLOAT_VALUE = Fn->FLT_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_float_by_name_test();
     
-    unless ($value == Fn->FLT_MIN()) {
+    unless ($value == Fn->FLT_MIN) {
       return 0;
     }
     
@@ -167,11 +167,11 @@ class TestCase::NativeAPI {
 
   static method get_class_var_double_by_name : int () {
 
-    $DOUBLE_VALUE = Fn->DBL_MIN();
+    $DOUBLE_VALUE = Fn->DBL_MIN;
     
     my $value = TestCase::NativeAPI->get_class_var_double_by_name_test();
     
-    unless ($value == Fn->DBL_MIN()) {
+    unless ($value == Fn->DBL_MIN) {
       return 0;
     }
     
@@ -224,7 +224,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_byte_by_name_test();
     
-    if ($BYTE_VALUE == Fn->INT8_MIN()) {
+    if ($BYTE_VALUE == Fn->INT8_MIN) {
       return 1;
     }
     
@@ -248,7 +248,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_short_by_name_test();
     
-    if ($SHORT_VALUE == Fn->INT16_MIN()) {
+    if ($SHORT_VALUE == Fn->INT16_MIN) {
       return 1;
     }
     
@@ -272,7 +272,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_int_by_name_test();
     
-    if ($INT_VALUE == Fn->INT32_MIN()) {
+    if ($INT_VALUE == Fn->INT32_MIN) {
       return 1;
     }
     
@@ -296,7 +296,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_long_by_name_test();
     
-    if ($LONG_VALUE == Fn->INT64_MIN()) {
+    if ($LONG_VALUE == Fn->INT64_MIN) {
       return 1;
     }
     
@@ -319,7 +319,7 @@ class TestCase::NativeAPI {
   static method set_class_var_float_by_name : int () {
     TestCase::NativeAPI->set_class_var_float_by_name_test();
     
-    if ($FLOAT_VALUE == Fn->FLT_MIN()) {
+    if ($FLOAT_VALUE == Fn->FLT_MIN) {
       return 1;
     }
     
@@ -342,7 +342,7 @@ class TestCase::NativeAPI {
   static method set_class_var_double_by_name : int () {
     TestCase::NativeAPI->set_class_var_double_by_name_test();
     
-    if ($DOUBLE_VALUE == Fn->DBL_MIN()) {
+    if ($DOUBLE_VALUE == Fn->DBL_MIN) {
       return 1;
     }
     
@@ -434,9 +434,9 @@ class TestCase::NativeAPI {
     my $out : byte;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_byte_sum(1, Fn->INT8_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_byte_sum(1, (byte)Fn->INT8_MIN, $out_ref);
     
-    if ($$out_ref == Fn->INT8_MIN() + 1) {
+    if ($$out_ref == Fn->INT8_MIN + 1) {
       return 1;
     }
     
@@ -448,9 +448,9 @@ class TestCase::NativeAPI {
     my $out : short;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_short_sum(1, Fn->INT16_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_short_sum(1, (short)Fn->INT16_MIN, $out_ref);
     
-    if ($$out_ref == Fn->INT16_MIN() + 1) {
+    if ($$out_ref == Fn->INT16_MIN + 1) {
       return 1;
     }
     
@@ -462,9 +462,9 @@ class TestCase::NativeAPI {
     my $out : int;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_int_sum(1, Fn->INT32_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_int_sum(1, Fn->INT32_MIN, $out_ref);
     
-    if ($$out_ref == Fn->INT32_MIN() + 1) {
+    if ($$out_ref == Fn->INT32_MIN + 1) {
       return 1;
     }
     
@@ -476,9 +476,9 @@ class TestCase::NativeAPI {
     my $out : long;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_long_sum(1, Fn->INT64_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_long_sum(1, Fn->INT64_MIN, $out_ref);
     
-    if ($$out_ref == Fn->INT64_MIN() + 1) {
+    if ($$out_ref == Fn->INT64_MIN + 1) {
       return 1;
     }
     
@@ -490,9 +490,9 @@ class TestCase::NativeAPI {
     my $out : float;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_float_sum(0.25f, Fn->FLT_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_float_sum(0.25f, Fn->FLT_MIN, $out_ref);
     
-    if ($$out_ref == Fn->FLT_MIN() + 0.25f) {
+    if ($$out_ref == Fn->FLT_MIN + 0.25f) {
       return 1;
     }
     
@@ -504,9 +504,9 @@ class TestCase::NativeAPI {
     my $out : double;
     my $out_ref = \$out;
     
-    TestCase::NativeAPI->ref_double_sum(0.25, Fn->DBL_MIN(), $out_ref);
+    TestCase::NativeAPI->ref_double_sum(0.25, Fn->DBL_MIN, $out_ref);
     
-    if ($$out_ref == Fn->DBL_MIN() + 0.25) {
+    if ($$out_ref == Fn->DBL_MIN + 0.25) {
       return 1;
     }
     
@@ -518,7 +518,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_byte_by_name($simple);
     
-    unless ($simple->{byte_value} == Fn->INT8_MIN()) {
+    unless ($simple->{byte_value} == Fn->INT8_MIN) {
       return 0;
     }
     
@@ -546,7 +546,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_short_by_name($simple);
     
-    if ($simple->{short_value} == Fn->INT16_MIN()) {
+    if ($simple->{short_value} == Fn->INT16_MIN) {
       return 1;
     }
     
@@ -573,7 +573,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_int_by_name($simple);
     
-    unless ($simple->{int_value} == Fn->INT32_MIN()) {
+    unless ($simple->{int_value} == Fn->INT32_MIN) {
       return 0;
     }
     
@@ -600,7 +600,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_long_by_name($simple);
     
-    if ($simple->{long_value} == Fn->INT64_MIN()) {
+    if ($simple->{long_value} == Fn->INT64_MIN) {
       return 1;
     }
     
@@ -627,7 +627,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_float_by_name($simple);
     
-    unless ($simple->{float_value} == Fn->FLT_MIN()) {
+    unless ($simple->{float_value} == Fn->FLT_MIN) {
       return 0;
     }
     
@@ -655,7 +655,7 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_double_by_name($simple);
     
-    unless ($simple->{double_value} == Fn->DBL_MIN()) {
+    unless ($simple->{double_value} == Fn->DBL_MIN) {
       return 0;
     }
     
@@ -705,7 +705,7 @@ class TestCase::NativeAPI {
 
   static method get_field_byte_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{byte_value} = Fn->INT8_MIN();
+    $simple->{byte_value} = (byte)Fn->INT8_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_byte_by_name($simple);
     
@@ -715,7 +715,7 @@ class TestCase::NativeAPI {
 
   static method get_field_byte_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{byte_value} = Fn->INT8_MIN();
+    $simple->{byte_value} = (byte)Fn->INT8_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_byte_by_name_exception($simple); };
     unless ($@) {
@@ -729,7 +729,7 @@ class TestCase::NativeAPI {
 
   static method get_field_short_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{short_value} = Fn->INT16_MIN();
+    $simple->{short_value} = (short)Fn->INT16_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_short_by_name($simple);
     
@@ -739,7 +739,7 @@ class TestCase::NativeAPI {
 
   static method get_field_short_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{short_value} = Fn->INT16_MIN();
+    $simple->{short_value} = (short)Fn->INT16_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_short_by_name_exception($simple); };
     unless ($@) {
@@ -753,7 +753,7 @@ class TestCase::NativeAPI {
 
   static method get_field_int_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{int_value} = Fn->INT32_MIN();
+    $simple->{int_value} = Fn->INT32_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_int_by_name($simple);
     
@@ -763,7 +763,7 @@ class TestCase::NativeAPI {
 
   static method get_field_int_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{int_value} = Fn->INT32_MIN();
+    $simple->{int_value} = Fn->INT32_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_int_by_name_exception($simple); };
     unless ($@) {
@@ -777,7 +777,7 @@ class TestCase::NativeAPI {
 
   static method get_field_long_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{long_value} = Fn->INT64_MIN();
+    $simple->{long_value} = Fn->INT64_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_long_by_name($simple);
     
@@ -787,7 +787,7 @@ class TestCase::NativeAPI {
 
   static method get_field_long_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{long_value} = Fn->INT64_MIN();
+    $simple->{long_value} = Fn->INT64_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_long_by_name_exception($simple) ; };
     unless ($@) {
@@ -801,7 +801,7 @@ class TestCase::NativeAPI {
 
   static method get_field_float_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{float_value} = Fn->FLT_MIN();
+    $simple->{float_value} = Fn->FLT_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_float_by_name($simple);
     
@@ -811,7 +811,7 @@ class TestCase::NativeAPI {
 
   static method get_field_float_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{float_value} = Fn->FLT_MIN();
+    $simple->{float_value} = Fn->FLT_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_float_by_name_exception($simple); };
     unless ($@) {
@@ -825,7 +825,7 @@ class TestCase::NativeAPI {
 
   static method get_field_double_by_name : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{double_value} = Fn->DBL_MIN();
+    $simple->{double_value} = Fn->DBL_MIN;
     
     my $success = TestCase::NativeAPI->native_get_field_double_by_name($simple);
     
@@ -835,7 +835,7 @@ class TestCase::NativeAPI {
 
   static method get_field_double_by_name_exception : int () {
     my $simple = TestCase::Simple->new;
-    $simple->{double_value} = Fn->DBL_MIN();
+    $simple->{double_value} = Fn->DBL_MIN;
     
     eval { TestCase::NativeAPI->native_get_field_double_by_name_exception($simple); };
     unless ($@) {
