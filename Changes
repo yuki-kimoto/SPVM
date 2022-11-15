@@ -108,6 +108,8 @@
     * The definitions of the following method in the StringBuffer class is changed. This is because all of the argument and return type is from byte/short to int.
       -  method push_char : void ($char : byte)
       +  method push_char : void ($char : int)
+    * Removed the Comparator::Byte class. Use Comparator::Int instead.
+    * Removed the Comparator::Short class. Use Comparator::Int instead.
   [Document Changes]
     * Renamed the conceptual name "Accessor Method" to "Accessor".
     * Renamed the conceptual name "Getting Method" to "Reader".

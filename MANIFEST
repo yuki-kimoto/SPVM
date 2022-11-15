@@ -181,8 +181,6 @@ lib/SPVM/Cloner.spvm
 lib/SPVM/CommandInfo.pm
 lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
-lib/SPVM/Comparator/Byte.pm
-lib/SPVM/Comparator/Byte.spvm
 lib/SPVM/Comparator/Double.pm
 lib/SPVM/Comparator/Double.spvm
 lib/SPVM/Comparator/Float.pm
@@ -191,8 +189,6 @@ lib/SPVM/Comparator/Int.pm
 lib/SPVM/Comparator/Int.spvm
 lib/SPVM/Comparator/Long.pm
 lib/SPVM/Comparator/Long.spvm
-lib/SPVM/Comparator/Short.pm
-lib/SPVM/Comparator/Short.spvm
 lib/SPVM/Comparator/String.pm
 lib/SPVM/Comparator/String.spvm
 lib/SPVM/Complex_2d.pm
@@ -483,6 +479,7 @@ t/02_vm/01_toke/literal_undef.t
 t/02_vm/01_toke/symbol_name.t
 t/02_vm/02_parser/inline.t
 t/02_vm/02_parser/precedence.t
+t/02_vm/03_definition/accessor.t
 t/02_vm/03_definition/alias.t
 t/02_vm/03_definition/allow.t
 t/02_vm/03_definition/enum.t
@@ -591,6 +588,7 @@ t/02_vm/lib/SPVM/foo.spvm
 t/02_vm/lib/SPVM/MinimalMethod.spvm
 t/02_vm/lib/SPVM/MyMath.spvm
 t/02_vm/lib/SPVM/TestCase.spvm
+t/02_vm/lib/SPVM/TestCase/Accessor.spvm
 t/02_vm/lib/SPVM/TestCase/Add.spvm
 t/02_vm/lib/SPVM/TestCase/Alias.spvm
 t/02_vm/lib/SPVM/TestCase/Allow.spvm
