@@ -1,3 +1,6 @@
+0.9663 2022-11-23
+  [Internal Non-Affecting Changes]
+    * Fixed the bug that MyTest::compile_ok and MyTest::compile_not_ok can't create the multi-level directory.
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.

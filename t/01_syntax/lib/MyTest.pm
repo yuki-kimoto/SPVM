@@ -3,6 +3,9 @@ use warnings;
 use Exporter;
 use File::Temp();
 use Test::More;
+use Carp 'confess';
+use File::Path 'mkpath';
+use File::Basename 'dirname';
 
 our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
 
@@ -43,10 +46,12 @@ sub compile_not_ok {
     my $module_file = "$tmp_module_dir/$class_name.spvm";
     $module_file =~ s|::|/|g;
     
-    if (open my $module_fh, '>', $module_file) {
-      print $module_fh $source;
-      close $module_fh;
-    }
+    mkpath dirname $module_file;
+    open my $module_fh, '>', $module_file
+      or confess "Can't open file \"$module_file\":$!";
+    
+    print $module_fh $source;
+    close $module_fh;
   }
   
   compile_not_ok_file($first_class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
@@ -128,10 +133,12 @@ sub compile_ok {
     my $module_file = "$tmp_module_dir/$class_name.spvm";
     $module_file =~ s|::|/|g;
     
-    if (open my $module_fh, '>', $module_file) {
-      print $module_fh $source;
-      close $module_fh;
-    }
+    mkpath dirname $module_file;
+    open my $module_fh, '>', $module_file
+      or confess "Can't open file \"$module_file\":$!";
+    
+    print $module_fh $source;
+    close $module_fh;
   }
   
   compile_ok_file($first_class_name, {module_dir => "$tmp_module_dir", file => $file, line => $line});
