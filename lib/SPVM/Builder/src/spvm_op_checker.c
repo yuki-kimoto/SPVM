@@ -58,6 +58,32 @@ SPVM_METHOD* SPVM_OP_CHECKER_search_method_in_current_and_super_classes(SPVM_COM
   return found_method;
 }
 
+
+SPVM_FIELD* SPVM_OP_CHECKER_search_field_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
+  SPVM_FIELD* found_field = NULL;
+  
+  if (class) {
+    SPVM_CLASS* parent_class = class;
+    while (1) {
+      found_field = SPVM_HASH_get(
+        parent_class->field_symtable,
+        field_name,
+        strlen(field_name)
+      );
+      if (found_field) {
+        break;
+      }
+      parent_class = parent_class->parent_class;
+      
+      if (!parent_class) {
+        break;
+      }
+    }
+  }
+  
+  return found_field;
+}
+
 int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
   
   int32_t can_access = 0;
@@ -5119,6 +5145,14 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       int32_t fields_length = fields->length;
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+
+        SPVM_FIELD* found_field_in_suer_class = SPVM_OP_CHECKER_search_field_in_current_and_super_classes(compiler, class->parent_class, field->name);
+        if (found_field_in_suer_class) {
+          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined at %s line %d", class->name, field->name, field->op_field->file, field->op_field->line);
+          compile_error = 1;
+          break;
+        }
+        
         SPVM_FIELD* new_field;
         if (strcmp(field->class->name, cur_class->name) == 0) {
           new_field = field;
@@ -5137,6 +5171,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         SPVM_LIST_push(merged_fields, new_field);
         merged_fields_index++;
+      }
+      if (compile_error) {
+        break;
       }
       
       // All interfaces

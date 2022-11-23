@@ -18,6 +18,9 @@
       https://github.com/yuki-kimoto/SPVM/issues/246
   [New Features]
     * The method can have the more optional arguments than the arguments of the interface method.
+  [Imcompatible Changes]
+    * The field in the "foo" class with the same name as the "MyClass\" field in the parent class cannot be defined.
+    
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.

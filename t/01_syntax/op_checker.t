@@ -1191,7 +1191,7 @@ use Test::More;
       'class MyClass extends MyClass2 { has x : int; }',
       'class MyClass2 { has x : int; }',
     ];
-    compile_ok($source);
+    compile_not_ok($source, qr|The field in the "MyClass" class with the same name as the "x" field in the parent class cannot be defined|);
   }
   {
     my $source = [
@@ -1199,7 +1199,7 @@ use Test::More;
       'class MyClass2 extends MyClass3 {  }',
       'class MyClass3 { has x : int; }',
     ];
-    compile_ok($source);
+    compile_not_ok($source, qr|The field in the "MyClass" class with the same name as the "x" field in the parent class cannot be defined|);
   }
 }
 
