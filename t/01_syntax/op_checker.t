@@ -1085,7 +1085,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "MyClass" class or its super class must be equal to the length of the arguments of the "to_string" method in the "Stringable" interface|);
+    compile_not_ok($source, q|The length of the required arguments of the "to_string" method in the "MyClass" class or its super class must be equal to the length of the required arguments of the "to_string" method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
