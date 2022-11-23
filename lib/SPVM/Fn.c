@@ -511,7 +511,7 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   double num = strtod(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "The $string must be the $string that can be parsed as a double number", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The $string must be the string that can be parsed as a double number", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
     return env->die(env, stack, "The $string must be a double number in the $correct range", FILE_NAME, __LINE__);
@@ -536,7 +536,7 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   float num = strtof(string, &end);
   if (*end != '\0') {
-    return env->die(env, stack, "The $string must be the $string that can be parsed as a float number", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The $string must be the string that can be parsed as a float number", FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
     return env->die(env, stack, "The $string must be a float number in the $correct range", FILE_NAME, __LINE__);
@@ -566,7 +566,7 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   int64_t num = strtol(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "The $string must be the $string that can be parsed as a %d-digit 32-bit integer", digit, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The $string must be the string that can be parsed as a %d-digit 32-bit integer", digit, FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
     return env->die(env, stack, "The $string must be a 32-bit integer in the $correct range", FILE_NAME, __LINE__);
@@ -596,7 +596,7 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   int64_t num = strtoll(string, &end, digit);
   if (*end != '\0') {
-    return env->die(env, stack, "The $string must be the $string that can be parsed as a %d-digit 64-bit integer", digit, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The $string must be the string that can be parsed as a %d-digit 64-bit integer", digit, FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
     return env->die(env, stack, "The $string must be a 64-bit integer in the $correct range", FILE_NAME, __LINE__);

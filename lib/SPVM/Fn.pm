@@ -251,13 +251,13 @@ The same as L</"UINT16_MAX">.
 
   static method abs : int ($value : int)
 
-Returns the absolute value of the input value.
+Returns the absolute value of the $value.
 
 =head2 chomp
 
   static method chomp : void ($string : mutable string)
 
-Removes C<\r\n> or C<\n> at the end of the string.
+Removes C<\r\n> or C<\n> at the end of the $string.
 
 The $string must be defined. Otherwise an exception will occur.
 
@@ -265,7 +265,7 @@ The $string must be defined. Otherwise an exception will occur.
 
   static method chompr : string ($string : string)
 
-Copies the string and removes C<\r\n> or C<\n> at the end of the copied string and returns it.
+Copies the $string and removes C<\r\n> or C<\n> at the end of the copied string and returns it.
 
 The $string must be defined. Otherwise an exception will occur.
 
@@ -273,9 +273,9 @@ The $string must be defined. Otherwise an exception will occur.
 
   static method chr : string ($code_point : int)
 
-Converts the Unicode code point to the C<UTF-8> character and return it.
+Converts the $code_point to the C<UTF-8> character and return it.
 
-If the Unicode code point is not a Unicode scalar value, return C<undef>.
+If the $code_point is not a Unicode scalar value, return C<undef>.
 
 =head2 contains
 
@@ -372,7 +372,7 @@ If the $Unicode code point is an ASCII alphabetic C<A-Za-z>, return C<1>. Otherw
 
   static method is_array : int ($object : object)
 
-If the $object is defined and the $type of the $object is the $L<array type|SPVM::Document::Language/"Array Type">, return C<1>. Otherwise return C<0>.
+If the $object is defined and the type of the $object is the L<array type|SPVM::Document::Language/"Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -386,7 +386,7 @@ If the $Unicode code point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>
 
   static method is_class : int ($object : object)
 
-If the $object is defined and the $type of the $object is the $L<class type|SPVM::Document::Language/"Class Type">, return C<1>. Otherwise return C<0>.
+If the $object is defined and the type of the $object is the L<class type|SPVM::Document::Language/"Class Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
@@ -424,7 +424,7 @@ If the $Unicode code point is an ASCII lowercase character C<a-z>, return C<1>. 
 
   static method is_mulnum_array : int ($object : object)
 
-If the $object is defined and the $type of the $object is the $L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the $object is defined and the type of the $object is the L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
@@ -432,7 +432,7 @@ L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
   static method is_numeric_array : int ($object : object)
 
-If the $object is defined and the $type of the $object is the $L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
+If the $object is defined and the type of the $object is the L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
@@ -440,7 +440,7 @@ L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
   static method is_object_array : int ($object : object)
 
-If the $object is defined and the $type of the $object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return C<1>. Otherwise return C<0>.
+If the $object is defined and the type of the $object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return C<1>. Otherwise return C<0>.
 
 L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
@@ -490,13 +490,13 @@ If the $Unicode code point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0A(L
 
   static method is_upper : int ($code_point : int)
 
-If the $Unicode code point is an ASCII uppercase character C<A-Z>, return C<1>. Otherwise return C<0>.
+If the $code_point is an ASCII uppercase character C<A-Z>, return C<1>. Otherwise return C<0>.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int)
 
-If the $Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1>. Otherwise return C<0>.
+If the $code_point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1>. Otherwise return C<0>.
 
 =head2 join
 
@@ -552,17 +552,17 @@ If the range of the source and the range of the destination overlap, the result 
 
 dest must be defined. Otherwise an exception will occur.
 
-The $type of dest must be the $string type, the $numeric arrya type, or the $multi numeric array type. Otherwise an exception will occur.
+The type of the $dest must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception will occur.
 
 The $source must be defined. Otherwise an exception will occur.
 
-The $type of the $source must be the $string type, the $numeric arrya type, or the $multi numeric array type. Otherwise an exception will occur.
+The type of the $source must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception will occur.
 
-dest must not be a read-only string. Otherwise an exception will occur.
+The $dest must not be a read-only string. Otherwise an exception will occur.
 
 The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $dest_offset + the $length must be less than or equal to the length of the $dest. Otherwise an exception will occur.
 
 The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
@@ -718,7 +718,7 @@ Converts the string to the C<double> value using C<strtod> in C<C language>.
 
 The $string must be defined. Otherwise an exception will occur.
 
-The $string must be the $string that can be parsed as a double number. Otherwise an exception will occur.
+The $string must be the string that can be parsed as a double number. Otherwise an exception will occur.
 
 The $string must be a double number in the $correct range. Otherwise an exception will occur.
 
@@ -735,7 +735,7 @@ Converts the string to the C<double> value using C<strtof> in C<C language>.
 
 The $string must be defined. Otherwise an exception will occur.
 
-The $string must be the $string that can be parsed as a float number. Otherwise an exception will occur.
+The $string must be the string that can be parsed as a float number. Otherwise an exception will occur.
 
 The $string must be a float number in the $correct range. Otherwise an exception will occur.
 
@@ -758,7 +758,7 @@ Converts the string to the C<int> value using C<strtol> in C<C language>.
 
 The $string must be defined. Otherwise an exception will occur.
 
-The $string must be the $string that can be parsed as an int number. Otherwise an exception will occur.
+The $string must be the string that can be parsed as an int number. Otherwise an exception will occur.
 
 The $string must be an int number in the $correct range. Otherwise an exception will occur.
 
@@ -785,7 +785,7 @@ The $string must be defined. Otherwise an exception will occur.
 
 The digit must be one of C<2>, C<8>, C<10>, or C<16>.
 
-The $string must be the $string that can be parsed as a long number. Otherwise an exception will occur.
+The $string must be the string that can be parsed as a long number. Otherwise an exception will occur.
 
 The $string must be a long number in the $correct range. Otherwise an exception will occur.
 
