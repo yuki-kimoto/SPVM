@@ -4451,7 +4451,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       }
     }
     
-    // Instance method call from class
+    // Instance method call of class type
     if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       // Search the method of the super class
       SPVM_METHOD* found_method = NULL;
@@ -4496,7 +4496,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         return;
       }
     }
-    // Instance method call from class from interface
+    // Instance method call of interface type
     else {
       if (call_parent_method) {
         SPVM_COMPILER_error(compiler, "The method of the super class can't be called from the interface type", method_name, class->name, op_call_method->file, op_call_method->line);
