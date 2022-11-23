@@ -9,6 +9,9 @@
       The \"%s\" class method.
       The \"%s\" field.
       The \"%s\" class variable.
+  [Exception Error Message Improvement]
+    * The notation of the arguments in the exception messages is unified.
+      The $foo
       
 0.9662 2022-11-15
   [Incompatible Changes]

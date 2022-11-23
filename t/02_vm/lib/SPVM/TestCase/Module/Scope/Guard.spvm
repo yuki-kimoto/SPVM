@@ -54,7 +54,7 @@ class TestCase::Module::Scope::Guard {
     {
       my $handler : Scope::Guard::Handler;
       eval { Scope::Guard->new($handler); } ;
-      unless (Fn->contains($@, "The handler must be defined")) {
+      unless (Fn->contains($@, "The \$handler must be defined")) {
         return 0;
       }
     }

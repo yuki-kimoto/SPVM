@@ -111,7 +111,7 @@ If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAU
 
 If the length is greater than the capacity, the capacity is set to the length.
 
-The length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -121,9 +121,9 @@ The length must be greater than or equal to C<0>. Otherwise an excpetion will be
 
 Get the element of the position of the index.
 
-The index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
+The $index must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 
-The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+The $index must be less than the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 insert
 
@@ -131,9 +131,9 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 Insert an element to the position of the index.
 
-The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The index must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
+The $index must be less than or equal to the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 pop
 
@@ -141,7 +141,7 @@ The index must be less than or equal to the length of the list. Otherwise an exc
 
 Remove the last element and return it.
 
-The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
+The length of the $list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 push
   
@@ -155,9 +155,9 @@ Add an element after the end of the list.
 
 Remove the element at the position of the index and return it.
 
-The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+The $index must be less than the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 replace
 
@@ -165,11 +165,11 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 Replace the elements of the range specified by the offset and the lenght with the replacement array.
 
-The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The remove_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $remove_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
+The $offset + the $removing lenght must be less than or equal to the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 reserve
 
@@ -181,7 +181,7 @@ If the new capacity is greater than the capacity of the list, the capacity of th
 
 Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
 
-The new_capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $new_capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 resize
 
@@ -189,7 +189,7 @@ The new_capacity must be greater than or equal to C<0>. Otherwise an excpetion w
 
 Resize the list.
 
-The new_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $new_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 set
 
@@ -197,9 +197,9 @@ The new_length must be greater than or equal to C<0>. Otherwise an excpetion wil
 
 Set the element at the position of the index.
 
-The index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The $index must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The index must be less than the length of the list. Otherwise an excpetion will be thrown.
+The $index must be less than the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 set_array
 
@@ -207,9 +207,9 @@ The index must be less than the length of the list. Otherwise an excpetion will 
 
 Set an array. Each element of the array is copied to the element of the list.
 
-The array must be defined. Otherwise an excpetion will be thrown.
+The $array must be defined. Otherwise an excpetion will be thrown.
 
-The length of the array must be the same as the length of the list. Otherwise an excpetion will be thrown.
+The length of the $array must be the $same as the length of the $list. Otherwise an excpetion will be thrown.
 
 =head2 shift
 
@@ -217,7 +217,7 @@ The length of the array must be the same as the length of the list. Otherwise an
 
 Remove the first element and return it.
 
-The length of the list must be greater than C<0>. Otherwise an excpetion will be thrown.
+The length of the $list must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_array
 

@@ -125,11 +125,11 @@ Create a new C<byte> array with the length sepcified by the argument, and copy t
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_double
 
@@ -139,11 +139,11 @@ Create a new C<double> array with the length sepcified by the argument, and copy
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 If the array is not defined, return C<undef>.
 
@@ -155,11 +155,11 @@ Create a new C<float> array with the length sepcified by the argument, and copy 
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_int
 
@@ -169,11 +169,11 @@ Create a new C<int> array with the length sepcified by the argument, and copy th
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
   
 =head2 copy_long
 
@@ -183,11 +183,11 @@ Create a new C<long> array with the length sepcified by the argument, and copy t
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_object
 
@@ -201,11 +201,11 @@ If the cloner is not defined, the address of each element is copied.
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_object_address
 
@@ -223,11 +223,11 @@ Create a new C<short> array with the length sepcified by the argument, and copy 
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_string
 
@@ -237,11 +237,11 @@ Create a new C<string> array with the length sepcified by the argument, and copy
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 copy_string_address
 
@@ -251,11 +251,11 @@ Create a new C<string> array with the length sepcified by the argument, and copy
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will be thrown.
+The $array must be defined. Otherwise an exception will be thrown.
 
-The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The $offset + the $length must be less than or equal to the length of the $array. Otherwise an exception will be thrown.
 
 =head2 dump_unsigned_byte
 
@@ -433,17 +433,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_double
   
@@ -459,17 +459,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_float
   
@@ -485,17 +485,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_int
   
@@ -511,17 +511,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_long
   
@@ -537,17 +537,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_object_address
 
@@ -565,17 +565,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_short
 
@@ -591,17 +591,17 @@ If the range of the elements of the source array and the range of the elements o
 
 dest must be defined. Otherwise an exception will occur.
 
-The source must be defined. Otherwise an exception will occur.
+The $source must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
+The $offset of dest + the $length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception will occur.
 
 =head2 memcpy_string_address
 
@@ -669,11 +669,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_double
 
@@ -685,11 +685,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_float
 
@@ -701,11 +701,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_int
 
@@ -717,11 +717,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_long
 
@@ -733,11 +733,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_object
 
@@ -749,11 +749,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_short
 
@@ -765,11 +765,11 @@ The range of the elements of the array is from the offset to the position procee
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the array and the offset.
 
-The array must be defined. Otherwise an exception will occur.
+The $array must be defined. Otherwise an exception will occur.
 
-The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
+The $offset of the $array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
+The $offset of the $array + the $length must be less than or equal to the length of the $array. Otherwise an exception will occur.
 
 =head2 memset_string
 
@@ -785,6 +785,6 @@ The alias for the following code using L</"memset_object">.
 
 Create a new object array as the same type as the prototype array with the length.
 
-The prototype array must be defined. Otherwise an exception will occur.
+The $prototype array must be defined. Otherwise an exception will occur.
 
-The length must be greater than or equal to 0. Otherwise an exception will occur.
+The $length must be greater than or equal to 0. Otherwise an exception will occur.

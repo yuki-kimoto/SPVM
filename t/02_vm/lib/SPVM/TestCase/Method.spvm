@@ -1271,7 +1271,7 @@ class TestCase::Method {
   
   static method deep_recursion : int () {
     eval { &recursion; };
-    unless (Fn->contains($@, "Deep recursion occurs. The depth of a method call must be less than 10000")) {
+    unless (Fn->contains($@, "Deep recursion occurs. The \$depth of a method call must be less than 10000")) {
       return 0;
     }
     

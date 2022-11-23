@@ -39,7 +39,7 @@ class List {
     }
     
     unless ($length >= 0) {
-      die "The length must be greater than or equal to 0";
+      die "The \$length must be greater than or equal to 0";
     }
     
     if ($capacity < 0) {
@@ -62,11 +62,11 @@ class List {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "The index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0";
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length of the list";
+      die "The \$index must be less than the length of the \$list";
     }
     
     my $value = $self->{values}[$index];
@@ -79,11 +79,11 @@ class List {
     my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
-      die "The index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0";
     }
     
     unless ($index <= $length) {
-      die "The index must be less than or equal to the length of the list";
+      die "The \$index must be less than or equal to the length of the \$list";
     }
     
     my $new_length = $length + 1;
@@ -102,7 +102,7 @@ class List {
     my $length = $self->length;
     
     unless ($length > 0) {
-      die "The length of the list must be greater than 0";
+      die "The length of the \$list must be greater than 0";
     }
     
     my $index = $self->{length};
@@ -132,11 +132,11 @@ class List {
     my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
-      die "The index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0";
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length of the list";
+      die "The \$index must be less than the length of the \$list";
     }
     
     my $values = $self->{values};
@@ -153,14 +153,14 @@ class List {
   
   method replace : void ($offset : int, $remove_length : int, $replace : object[]) {
     unless ($offset >= 0) {
-      die("The offset must be greater than or equal to 0");
+      die("The \$offset must be greater than or equal to 0");
     }
     
     unless ($remove_length >= 0) {
-      die("The remove_length must be greater than or equal to 0");
+      die("The \$remove_length must be greater than or equal to 0");
     }
     unless ($offset + $remove_length <= $self->{length}) {
-      die("The offset + the removing lenght must be less than or equal to the length of the list");
+      die("The \$offset + the \$removing lenght must be less than or equal to the length of the \$list");
     }
     
     my $replace_length = 0;
@@ -183,7 +183,7 @@ class List {
   
   method reserve : void ($new_capacity : int) {
     unless ($new_capacity >= 0) {
-      die "The new_capacity must be greater than or equal to 0";
+      die "The \$new_capacity must be greater than or equal to 0";
     }
     
     my $capacity = $self->{capacity};
@@ -199,7 +199,7 @@ class List {
   
   method resize : void ($new_length : int) {
     unless ($new_length >= 0) {
-      die "The new_length must be greater than or equal to 0";
+      die "The \$new_length must be greater than or equal to 0";
     }
     
     my $length = $self->{length};
@@ -218,11 +218,11 @@ class List {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "The index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0";
     }
     
     unless ($index < $length) {
-      die "The index must be less than the length of the list";
+      die "The \$index must be less than the length of the \$list";
     }
     
     $self->{values}[$index] = $value;
@@ -230,7 +230,7 @@ class List {
   
   method set_array : void ($array : object[]) {
     unless ($array) {
-      die "The array must be defined";
+      die "The \$array must be defined";
     }
     
     my $cur_length = $self->length;
@@ -238,7 +238,7 @@ class List {
     my $set_length = @$array;
     
     unless ($set_length == $cur_length) {
-      die "The length of the array must be the same as the length of the list";
+      die "The length of the \$array must be the \$same as the length of the \$list";
     }
     
     my $values = $self->{values};
@@ -250,7 +250,7 @@ class List {
     my $capacity = $self->{capacity};
     
     unless ($length > 0) {
-      die "The length of the list must be greater than 0";
+      die "The length of the \$list must be greater than 0";
     }
     
     my $values = $self->{values};

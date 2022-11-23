@@ -8,7 +8,7 @@ class Scope::Guard {
   static method new : Scope::Guard ($handler : Scope::Guard::Handler) {
     
     unless ($handler) {
-      die "The handler must be defined";
+      die "The \$handler must be defined";
     }
 
     my $self = new Scope::Guard;

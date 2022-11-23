@@ -65,21 +65,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_byte(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_byte([(byte)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_byte([(byte)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -149,21 +149,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_double(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_double([(double)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_double([(double)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -233,21 +233,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_float(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_float([(float)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_float([(float)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -317,21 +317,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_int(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_int([(int)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_int([(int)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -401,21 +401,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_long(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_long([(long)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_long([(long)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -535,21 +535,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_object(undef, undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_object([(object)5, -7, 9], undef, -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_object([(object)5, -7, 9], undef, 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -627,21 +627,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_object_address(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_object_address([(object)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_object_address([(object)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -707,21 +707,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_short(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_short([(short)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_short([(short)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -812,21 +812,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_string(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_string([(string)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_string([(string)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -905,21 +905,21 @@ class TestCase::Module::Array {
     {
       {
         eval { Array->copy_string_address(undef, 0, 7); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_string_address([(string)5, -7, 9], -1, 1); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
       
       {
         eval { Array->copy_string_address([(string)5, -7, 9], 2, 2); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -1633,7 +1633,7 @@ class TestCase::Module::Array {
       {
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -1641,7 +1641,7 @@ class TestCase::Module::Array {
       {
         my $dest = new byte[4];
         eval { Array->memcpy_byte($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -1650,7 +1650,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1659,7 +1659,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1668,7 +1668,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1677,7 +1677,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -1686,7 +1686,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memcpy_byte($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -1744,7 +1744,7 @@ class TestCase::Module::Array {
       {
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -1752,7 +1752,7 @@ class TestCase::Module::Array {
       {
         my $dest = new double[4];
         eval { Array->memcpy_double($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -1761,7 +1761,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1770,7 +1770,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1779,7 +1779,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1788,7 +1788,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -1797,7 +1797,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memcpy_double($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -1855,7 +1855,7 @@ class TestCase::Module::Array {
       {
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -1863,7 +1863,7 @@ class TestCase::Module::Array {
       {
         my $dest = new float[4];
         eval { Array->memcpy_float($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -1872,7 +1872,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1881,7 +1881,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1890,7 +1890,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1899,7 +1899,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -1908,7 +1908,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memcpy_float($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -1966,7 +1966,7 @@ class TestCase::Module::Array {
       {
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -1974,7 +1974,7 @@ class TestCase::Module::Array {
       {
         my $dest = new int[4];
         eval { Array->memcpy_int($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -1983,7 +1983,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -1992,7 +1992,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2001,7 +2001,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2010,7 +2010,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2019,7 +2019,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memcpy_int($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2086,7 +2086,7 @@ class TestCase::Module::Array {
       {
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2094,7 +2094,7 @@ class TestCase::Module::Array {
       {
         my $dest = new long[4];
         eval { Array->memcpy_long($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2103,7 +2103,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2112,7 +2112,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2121,7 +2121,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2130,7 +2130,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2139,7 +2139,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memcpy_long($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2245,7 +2245,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2253,7 +2253,7 @@ class TestCase::Module::Array {
       {
         my $dest = new string[4];
         eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2262,7 +2262,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2271,7 +2271,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2280,7 +2280,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2289,7 +2289,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2298,7 +2298,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2353,7 +2353,7 @@ class TestCase::Module::Array {
       {
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2361,7 +2361,7 @@ class TestCase::Module::Array {
       {
         my $dest = new short[4];
         eval { Array->memcpy_short($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2370,7 +2370,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2379,7 +2379,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2388,7 +2388,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2397,7 +2397,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2406,7 +2406,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memcpy_short($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2464,7 +2464,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2472,7 +2472,7 @@ class TestCase::Module::Array {
       {
         my $dest = new string[4];
         eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2481,7 +2481,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2490,7 +2490,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2499,7 +2499,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2508,7 +2508,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2517,7 +2517,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2584,7 +2584,7 @@ class TestCase::Module::Array {
       {
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2592,7 +2592,7 @@ class TestCase::Module::Array {
       {
         my $dest = new byte[4];
         eval { Array->memmove_byte($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2601,7 +2601,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2610,7 +2610,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2619,7 +2619,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2628,7 +2628,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2637,7 +2637,7 @@ class TestCase::Module::Array {
         my $dest = new byte[4];
         my $source = [(byte)1, 3, 5];
         eval { Array->memmove_byte($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2704,7 +2704,7 @@ class TestCase::Module::Array {
       {
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2712,7 +2712,7 @@ class TestCase::Module::Array {
       {
         my $dest = new double[4];
         eval { Array->memmove_double($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2721,7 +2721,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2730,7 +2730,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2739,7 +2739,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2748,7 +2748,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2757,7 +2757,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memmove_double($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2824,7 +2824,7 @@ class TestCase::Module::Array {
       {
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2832,7 +2832,7 @@ class TestCase::Module::Array {
       {
         my $dest = new float[4];
         eval { Array->memmove_float($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2841,7 +2841,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2850,7 +2850,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2859,7 +2859,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2868,7 +2868,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2877,7 +2877,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memmove_float($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -2944,7 +2944,7 @@ class TestCase::Module::Array {
       {
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -2952,7 +2952,7 @@ class TestCase::Module::Array {
       {
         my $dest = new int[4];
         eval { Array->memmove_int($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -2961,7 +2961,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2970,7 +2970,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2979,7 +2979,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2988,7 +2988,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -2997,7 +2997,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memmove_int($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -3064,7 +3064,7 @@ class TestCase::Module::Array {
       {
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -3072,7 +3072,7 @@ class TestCase::Module::Array {
       {
         my $dest = new long[4];
         eval { Array->memmove_long($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -3081,7 +3081,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3090,7 +3090,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3099,7 +3099,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3108,7 +3108,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -3117,7 +3117,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memmove_long($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -3265,7 +3265,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -3273,7 +3273,7 @@ class TestCase::Module::Array {
       {
         my $dest = new string[4];
         eval { Array->memmove_object_address($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -3282,7 +3282,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3291,7 +3291,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3300,7 +3300,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3309,7 +3309,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -3318,7 +3318,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memmove_object_address($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -3383,7 +3383,7 @@ class TestCase::Module::Array {
       {
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -3391,7 +3391,7 @@ class TestCase::Module::Array {
       {
         my $dest = new short[4];
         eval { Array->memmove_short($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -3400,7 +3400,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3409,7 +3409,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3418,7 +3418,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3427,7 +3427,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -3436,7 +3436,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memmove_short($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -3503,7 +3503,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address(undef, 0, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest must be defined")) {
+        unless (Fn->contains($@, "The \$dest must be defined")) {
           return 0;
         }
       }
@@ -3511,7 +3511,7 @@ class TestCase::Module::Array {
       {
         my $dest = new string[4];
         eval { Array->memcpy_object_address($dest, 0, undef, 0, 3); };
-        unless (Fn->contains($@, "The source must be defined")) {
+        unless (Fn->contains($@, "The \$source must be defined")) {
           return 0;
         }
       }
@@ -3520,7 +3520,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 0, -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3529,7 +3529,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, -1, $source, 0, 0); };
-        unless (Fn->contains($@, "The dest_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$dest_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3538,7 +3538,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, -1, 0); };
-        unless (Fn->contains($@, "The source_offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$source_offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3547,7 +3547,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 2, $source, 0, 3); };
-        unless (Fn->contains($@, "The dest_offset + the length must be less than or equal to the length of the dest")) {
+        unless (Fn->contains($@, "The \$dest_offset + the \$length must be less than or equal to the length of the \$dest")) {
           return 0;
         }
       }
@@ -3556,7 +3556,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memcpy_object_address($dest, 0, $source, 1, 3); };
-        unless (Fn->contains($@, "The source_offset + the length must be less than or equal to the length of the source")) {
+        unless (Fn->contains($@, "The \$source_offset + the \$length must be less than or equal to the length of the \$source")) {
           return 0;
         }
       }
@@ -3636,7 +3636,7 @@ class TestCase::Module::Array {
       {
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -3645,7 +3645,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3654,7 +3654,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -3735,7 +3735,7 @@ class TestCase::Module::Array {
       {
         my $source = [(double)1, 3, 5];
         eval { Array->memset_double(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -3744,7 +3744,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memset_double($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3753,7 +3753,7 @@ class TestCase::Module::Array {
         my $dest = new double[4];
         my $source = [(double)1, 3, 5];
         eval { Array->memset_double($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -3834,7 +3834,7 @@ class TestCase::Module::Array {
       {
         my $source = [(float)1, 3, 5];
         eval { Array->memset_float(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -3843,7 +3843,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memset_float($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3852,7 +3852,7 @@ class TestCase::Module::Array {
         my $dest = new float[4];
         my $source = [(float)1, 3, 5];
         eval { Array->memset_float($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -3933,7 +3933,7 @@ class TestCase::Module::Array {
       {
         my $source = [(int)1, 3, 5];
         eval { Array->memset_int(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -3942,7 +3942,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memset_int($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -3951,7 +3951,7 @@ class TestCase::Module::Array {
         my $dest = new int[4];
         my $source = [(int)1, 3, 5];
         eval { Array->memset_int($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -4032,7 +4032,7 @@ class TestCase::Module::Array {
       {
         my $source = [(long)1, 3, 5];
         eval { Array->memset_long(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -4041,7 +4041,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memset_long($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -4050,7 +4050,7 @@ class TestCase::Module::Array {
         my $dest = new long[4];
         my $source = [(long)1, 3, 5];
         eval { Array->memset_long($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -4209,7 +4209,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -4218,7 +4218,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -4227,7 +4227,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -4308,7 +4308,7 @@ class TestCase::Module::Array {
       {
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -4317,7 +4317,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -4326,7 +4326,7 @@ class TestCase::Module::Array {
         my $dest = new short[4];
         my $source = [(short)1, 3, 5];
         eval { Array->memset_short($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -4408,7 +4408,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object(undef, 0, 0, 3); };
-        unless (Fn->contains($@, "The array must be defined")) {
+        unless (Fn->contains($@, "The \$array must be defined")) {
           return 0;
         }
       }
@@ -4417,7 +4417,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object($dest, 0, -1, 3); };
-        unless (Fn->contains($@, "The offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -4426,7 +4426,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { Array->memset_object($dest, 0, 2, 3); };
-        unless (Fn->contains($@, "The offset + the length must be less than or equal to the length of the array")) {
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$array")) {
           return 0;
         }
       }
@@ -4468,7 +4468,7 @@ class TestCase::Module::Array {
       {
         my $source = [(string)1, 3, 5];
         eval { my $new_object = Array->new_proto(undef, 2); };
-        unless (Fn->contains($@, "The prototype array must be defined")) {
+        unless (Fn->contains($@, "The \$prototype array must be defined")) {
           return 0;
         }
       }
@@ -4477,7 +4477,7 @@ class TestCase::Module::Array {
         my $dest = new string[4];
         my $source = [(string)1, 3, 5];
         eval { my $new_object = Array->new_proto(new TestCase::Minimal[0], -1); };
-        unless (Fn->contains($@, "The length must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
           return 0;
         }
       }
