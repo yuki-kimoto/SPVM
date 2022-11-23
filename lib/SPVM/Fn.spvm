@@ -383,8 +383,8 @@ class Fn {
     }
   }
   
-  precompile static method join : string ($sep : string, $strings : string[]) {
-    unless ($sep) {
+  precompile static method join : string ($separator : string, $strings : string[]) {
+    unless ($separator) {
       die "The separator must be defined";
     }
     
@@ -403,7 +403,7 @@ class Fn {
         $join_buffer->push("");
       }
       if ($i != @$strings - 1) {
-        $join_buffer->push($sep);
+        $join_buffer->push($separator);
       }
     }
     
@@ -627,8 +627,8 @@ class Fn {
     }
   }
   
-  precompile static method split : string[] ($sep : string, $string : string, $limit = -1 : int) {
-    unless ($sep) {
+  precompile static method split : string[] ($separator : string, $string : string, $limit = -1 : int) {
+    unless ($separator) {
       die "The separator must be defined";
     }
     
@@ -637,9 +637,9 @@ class Fn {
     }
     
     my $string_length = length $string;
-    my $sep_length = length $sep;
+    my $separator_length = length $separator;
     
-    unless ($sep_length > 0) {
+    unless ($separator_length > 0) {
       die "The length of the separator must be greater than 0";
     }
     
@@ -657,19 +657,19 @@ class Fn {
         last;
       }
       
-      if ($string->[$i] == $sep->[0]) {
+      if ($string->[$i] == $separator->[0]) {
         $match_start = 1;
       }
       
       if ($match_start) {
         my $match = 1;
-        for (my $sep_index = 0; $sep_index < $sep_length; $sep_index++) {
-          if ($i + $sep_index > $string_length - 1) {
+        for (my $separator_index = 0; $separator_index < $separator_length; $separator_index++) {
+          if ($i + $separator_index > $string_length - 1) {
             $match = 0;
             last;
           }
           else {
-            unless ($string->[$i + $sep_index] == $sep->[$sep_index]) {
+            unless ($string->[$i + $separator_index] == $separator->[$separator_index]) {
               $match = 0;
               last;
             }
@@ -680,8 +680,8 @@ class Fn {
           
           my $separated_string = &substr($string, $string_base, $i - $string_base);
           $separated_strings_list->push($separated_string);
-          $string_base = $i + $sep_length;
-          $i += $sep_length - 1;
+          $string_base = $i + $separator_length;
+          $i += $separator_length - 1;
         }
       }
     }

@@ -500,7 +500,7 @@ If the Unicode code point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return C<1
 
 =head2 join
 
-  static method join : string ($sep : string, $strings : string[])
+  static method join : string ($separator : string, $strings : string[])
 
 Concatenates the strings with the separater and return it.
 
@@ -690,7 +690,7 @@ B<Example:>
   
 =head2 split
 
-  static method split : string[] ($sep : string, $string : string, $limit = -1 : int)
+  static method split : string[] ($separator : string, $string : string, $limit = -1 : int)
 
 If the limit is less than C<0>, split a string by the specific separator and convert them to an string array and return it.
 
