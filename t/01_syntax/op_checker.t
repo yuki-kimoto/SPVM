@@ -1081,22 +1081,22 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; }';
-    compile_not_ok($source, q|The "MyClass" class must have the "to_string" method defined as a required method in the interface "Stringable"|);
+    compile_not_ok($source, q|The "MyClass" class must have the "to_string" method that is defined as a required method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "MyClass" class must be equal to the length of the arguments of the "to_string" method in the interface "Stringable|);
+    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "MyClass" class must be equal to the length of the arguments of the "to_string" method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must an instance method because the "to_string" method is defined as an instance method in the interface "Stringable"|);
+    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must an instance method because the "to_string" method is defined as an instance method in the "Stringable" interface|);
   }
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
       'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
     ];
-    compile_not_ok($source, q|The type of the 2th argument of the "foo" method in the "MyClass" class must be equal to the type of the 2th argument of the "foo" method in the interface "MyInterface"|);
+    compile_not_ok($source, q|The type of the 2th argument of the "foo" method in the "MyClass" class must be equal to the type of the 2th argument of the "foo" method in the "MyInterface" interface|);
   }
   {
     my $source = [
@@ -1110,7 +1110,7 @@ use Test::More;
       'class MyClass { interface MyInterface; method foo : object () {} }',
       'class MyInterface : interface_t { required method foo : MyClass  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
   }
   {
     my $source = [
@@ -1124,7 +1124,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
       'class MyInterface : interface_t { required method foo : Point3D  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
   }
 
   {
@@ -1132,7 +1132,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the "MyInterface" interface|);
   }
 }
 
