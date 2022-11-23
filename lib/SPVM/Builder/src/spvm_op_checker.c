@@ -5175,16 +5175,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       SPVM_METHOD* interface_required_method = interface->required_method;
       
-      int32_t require_method_found = 0;
-      for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
-        if (strcmp(method->name, interface_required_method->name) == 0) {
-          require_method_found = 1;
-        }
-      }
+      SPVM_METHOD* found_required_method = SPVM_OP_CHECKER_search_method_in_current_and_super_classes(compiler, class, interface_required_method->name);
       
-      if (!require_method_found) {
-        SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
+      if (!found_required_method) {
+        SPVM_COMPILER_error(compiler, "The \"%s\" class or its super class must have the \"%s\" method that is defined as a required method in the \"%s\" interface at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
         return;
       }
       

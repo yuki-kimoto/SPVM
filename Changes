@@ -14,6 +14,9 @@
       The $foo
   [Bug Fix]
     * Fixed the bug that the interface of the parent class is not recognized.
+    * Fiexd the bug that The checking of the required method doesn't see the super class
+      https://github.com/yuki-kimoto/SPVM/issues/246
+      
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.
