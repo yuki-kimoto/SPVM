@@ -12,7 +12,8 @@
   [Exception Error Message Improvement]
     * The notation of the arguments in the exception messages is unified.
       The $foo
-      
+  [Bug Fix]
+    * Fixed the bug that the interface of the parent class is not recognized.
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.

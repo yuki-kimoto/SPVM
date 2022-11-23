@@ -194,6 +194,28 @@ use Test::More;
       compile_not_ok($source);
     }
   }
+
+  # Inherit the interface of the parent class
+  {
+    {
+      {
+        my $source = [
+          'class MyClass extends MyClass::Parent { method has_interfaces : int () { return 1; }  }',
+          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
+          'class MyClass::Interface : interface_t { required method has_interfaces : int (); }',
+        ];
+        compile_ok($source);
+      }
+      {
+        my $source = [
+          'class MyClass extends MyClass::Parent {}',
+          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
+          'class MyClass::Interface : interface_t { required method has_interfaces : int (); }',
+        ];
+        compile_not_ok($source);
+      }
+    }
+  }
 }
 
 done_testing;
