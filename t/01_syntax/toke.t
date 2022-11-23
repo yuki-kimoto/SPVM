@@ -39,11 +39,11 @@ use Test::More;
   }
   {
     my $source = 'class Myclass::foo;';
-    compile_not_ok($source, qr|The part names of the class "Myclass::foo" must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the "Myclass::foo" class must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::Foo::bar;';
-    compile_not_ok($source, qr|The part names of the class "Myclass::Foo::bar" must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the "Myclass::Foo::bar" class must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass__Foo;';
@@ -71,7 +71,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use NotFoundClass; }';
-    compile_not_ok($source, qr|\QFailed to load the class "NotFoundClass". The module file "NotFoundClass.spvm" is not found|);
+    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" class. The module file "NotFoundClass.spvm" is not found|);
   }
 }
 

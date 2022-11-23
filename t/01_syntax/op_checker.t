@@ -106,7 +106,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { class_id NotExists; } }';
-    compile_not_ok($source, qr'The operand of the class_id operator must be an existing class type. The class "NotExists" is not found');
+    compile_not_ok($source, qr'The operand of the class_id operator must be an existing class type. The "NotExists" class is not found');
   }
 }
 
@@ -349,7 +349,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private class "Int" can't be created from the current class "MyClass"|);
+    compile_not_ok($source, q|The object of the private "Int" class can't be created from the current class "MyClass"|);
   }
 }
 
@@ -757,19 +757,19 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
     ];
-    compile_not_ok($source, q|The private method "foo" of the class "MyClass2" can't be called from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "foo" method of the "MyClass2" class can't be called from the current class "MyClass"|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the class method "foo" in the class "MyClass" must be at least 1|);
+    compile_not_ok($source, q|The length of the arguments passed to the class "foo" method in the "MyClass" class must be at least 1|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the instance method "foo" in the class "MyClass" must be at least 1|);
+    compile_not_ok($source, q|The length of the arguments passed to the instance "foo" method in the "MyClass" class must be at least 1|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the instance method "foo" in the class "MyClass" must be less than or equal to 2|);
+    compile_not_ok($source, q|The length of the arguments passed to the instance "foo" method in the "MyClass" class must be less than or equal to 2|);
   }
 }
 
@@ -780,7 +780,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private class variable "$FOO" of the class "MyClass2" can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "$FOO" class variable of the "MyClass2" class can't be accessed from the current class "MyClass"|);
   }
 }
 
@@ -808,33 +808,33 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The field "foo" is not defined in the class "MyClass" or its super classes|);
+    compile_not_ok($source, q|The "foo" field is not defined in the "MyClass" class or its super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
-    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the weaken operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the weaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; unweaken $object->{x}; } }';
-    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the unweaken operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the unweaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; isweak $object->{x}; } }';
-    compile_not_ok($source, q|The field "x" in the class "MyClass" operated by the isweak operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the isweak operator must be an object type|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : private int; }'
     ];
-    compile_not_ok($source, q|The private field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "x" field in the "MyClass2" class can't be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : protected int; }'
     ];
-    compile_not_ok($source, q|The protected field "x" in the class "MyClass2" can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The protected "x" field in the "MyClass2" class can't be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
@@ -860,7 +860,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; has_impl $point->not_defined; } }';
-    compile_not_ok($source, q|The method "not_defined" in the class "Point" checked by the has_impl operator must be defined|);
+    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by the has_impl operator must be defined|);
   }
   
 }
@@ -889,11 +889,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the class method "foo" in the class "MyClass"|);
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the class "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the instance method "foo" in the class "MyClass"|);
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the instance "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
@@ -905,7 +905,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { new NotFound; } }';
-    compile_not_ok($source, q|The class "NotFound" is not yet loaded|);
+    compile_not_ok($source, q|The "NotFound" class is not yet loaded|);
   }
   {
     my $source = 'class MyClass { static method main : void ($arg : Int*) {} }';
@@ -925,38 +925,38 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
-    compile_not_ok($source, q|The class method "not_defined" in the class "MyClass" is not defined|);
+    compile_not_ok($source, q|The "not_defined" class method in the "MyClass" class is not defined|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
+    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
-    compile_not_ok($source, q|The invocant of the method "new" must be a class type or an interface type|);
+    compile_not_ok($source, q|The invocant of the "new" method must be a class type or an interface type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $point = Point->new; } }';
-    compile_not_ok($source, q|The class "Point" is not yet loaded|);
+    compile_not_ok($source, q|The "Point" class is not yet loaded|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';
-    compile_not_ok($source, q|The class method "not_defined" in the class "Point" is not defined|);
+    compile_not_ok($source, q|The "not_defined" class method in the "Point" class is not defined|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
-    compile_not_ok($source, q|The instance method "not_found" is not defined in the class "Point" or its super classes|);
+    compile_not_ok($source, q|The "not_found" instance method is not defined in the "Point" class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
-    compile_not_ok($source, q|The method "new" is defined in the class "Int", but this method is not an instance method|);
+    compile_not_ok($source, q|The "new" method is defined in the "Int" class, but this method is not an instance method|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->foo; } }',
       'class MyClass2 extends MyClass : public { static method foo : void () {} }',
     ];
-    compile_not_ok($source, q|The method "foo" is defined in the class "MyClass2", but this method is not an instance method|);
+    compile_not_ok($source, q|The "foo" method is defined in the "MyClass2" class, but this method is not an instance method|);
   }
   {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }';
@@ -964,11 +964,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
+    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The instance method "not_defined" is not defined in the class "Int" or its super classes|);
+    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
   }
   {
     my $source = [
@@ -976,7 +976,7 @@ use Test::More;
       'class MySockaddrIn extends MySockaddr : public;',
       'class MySockaddr : public;',
     ];
-    compile_not_ok($source, q|The instance method "port" is not defined in the class "MySockaddrIn" or its super classes|);
+    compile_not_ok($source, q|The "port" instance method is not defined in the "MySockaddrIn" class or its super classes|);
   }
 }
 # Multi-Numeric Type
@@ -1081,22 +1081,22 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; }';
-    compile_not_ok($source, q|The class "MyClass" must have the method "to_string" defined as a required method in the interface "Stringable"|);
+    compile_not_ok($source, q|The "MyClass" class must have the "to_string" method defined as a required method in the interface "Stringable"|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the arguments of the method "to_string" in the class "MyClass" must be equal to the length of the arguments of the method "to_string" in the interface "Stringable|);
+    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "MyClass" class must be equal to the length of the arguments of the "to_string" method in the interface "Stringable|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The method "to_string" in the class "MyClass" must an instance method because the method "to_string" is defined as an instance method in the interface "Stringable"|);
+    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must an instance method because the "to_string" method is defined as an instance method in the interface "Stringable"|);
   }
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
       'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
     ];
-    compile_not_ok($source, q|The type of the 2th argument of the method "foo" in the class "MyClass" must be equal to the type of the 2th argument of the method "foo" in the interface "MyInterface"|);
+    compile_not_ok($source, q|The type of the 2th argument of the "foo" method in the "MyClass" class must be equal to the type of the 2th argument of the "foo" method in the interface "MyInterface"|);
   }
   {
     my $source = [
@@ -1110,7 +1110,7 @@ use Test::More;
       'class MyClass { interface MyInterface; method foo : object () {} }',
       'class MyInterface : interface_t { required method foo : MyClass  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned to the return type of the method "foo" in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the interface "MyInterface"|);
   }
   {
     my $source = [
@@ -1124,7 +1124,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
       'class MyInterface : interface_t { required method foo : Point3D  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned to the return type of the method "foo" in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the interface "MyInterface"|);
   }
 
   {
@@ -1132,7 +1132,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" in the class "MyClass" must be able to be assigned without an implicite type conversion to the return type of the method "foo" in the interface "MyInterface"|);
+    compile_not_ok($source, q|The return type of the "foo" in the "MyClass" class must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the interface "MyInterface"|);
   }
 }
 

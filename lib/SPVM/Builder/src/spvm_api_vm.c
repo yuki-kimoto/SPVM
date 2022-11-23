@@ -89,7 +89,7 @@ static const char* string_literals[] = {
   "The error code must be greater than or equal to 1",
   " at %s%s%s line %d\n",
   "Warning: something's wrong at %s%s%s line %d\n",
-  "The implementation of the instance method \"%s\" defined in \"%s\" is not found",
+  "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
 };
 
 int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {

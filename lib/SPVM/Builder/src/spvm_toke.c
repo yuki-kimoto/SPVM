@@ -212,7 +212,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (i > 1) {
                 if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
                   if (islower(class_name[i])) {
-                    SPVM_COMPILER_error(compiler, "The part names of the class \"%s\" must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
+                    SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
                     return 0;
                   }
                 }
@@ -335,7 +335,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Failed to load the class \"%s\". The module file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, moduler_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The module file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, moduler_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }

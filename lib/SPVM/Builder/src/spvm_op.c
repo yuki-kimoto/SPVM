@@ -2385,7 +2385,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the field \"%s\" in the class \"%s\" at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
       }
       else {
         SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
@@ -2403,7 +2403,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
       
       if (found_class_var) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the class \"%s\" at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
       }
       else {
         SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
@@ -2482,13 +2482,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
       
       if (found_method) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" in the class \"%s\" at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
       }
       // Unknown method
       else {
         const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
         if (found_method_name) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of the method \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method at %s line %d", method_name, method->op_method->file, method->op_method->line);
         }
         else {
           // Bind standard functions

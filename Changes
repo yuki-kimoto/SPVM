@@ -1,6 +1,15 @@
 0.9663 2022-11-23
   [Internal Non-Affecting Changes]
     * Fixed the bug that MyTest::compile_ok and MyTest::compile_not_ok can't create the multi-level directory.
+  [Compilation And Runtime Error Message Improvement]
+    * Notation of class names, method names, field names, and class variable names in compilation and runtime error messages has been unified.
+      The \"%s\" class.
+      The \"%s\" method.
+      The \"%s\" instance method.
+      The \"%s\" class method.
+      The \"%s\" field.
+      The \"%s\" class variable.
+      
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.

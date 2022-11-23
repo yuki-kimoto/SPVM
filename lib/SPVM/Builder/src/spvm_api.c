@@ -763,7 +763,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   
   int32_t id = env->get_basic_type_id(env, class_name);
   if (id < 0) {
-    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
     *error = 1;
     return NULL;
   };
@@ -779,7 +779,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_by_name(SPVM_ENV* env, SPVM_VALUE*
   int32_t id = env->get_basic_type_id(env, class_name);
   if (id < 0) {
     *error = 1;
-    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* object = SPVM_API_new_pointer_with_fields(env, stack, id, pointer, fields_length);
@@ -792,7 +792,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
   int32_t id = env->get_basic_type_id(env, class_name);
   if (id < 0) {
     *error = 1;
-    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* object = env->new_pointer(env, stack, id, pointer);
@@ -3755,7 +3755,7 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
   int32_t class_id = env->get_class_id(env, class_name);
   if (class_id < 0) {
     *error = 1;
-    env->die(env, stack, "The class \"%s\" is not loaded", class_name, file, line);
+    env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
   };
   return class_id;
 }
