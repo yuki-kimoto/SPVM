@@ -161,7 +161,7 @@ class Fn {
     }
     
     unless ($offset + $length <= $string_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the string";
+      die "The offset + the length must be less than or equal to the length of the string";
     }
     
     my $substring_length = length $substring;
@@ -582,7 +582,7 @@ class Fn {
     }
     
     unless ($offset + $length <= $string_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the string";
+      die "The offset + the length must be less than or equal to the length of the string";
     }
     
     my $substring_length = length $substring;

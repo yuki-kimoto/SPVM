@@ -369,11 +369,11 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
@@ -385,7 +385,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The destination can't be be a read-only string", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest can't be be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
@@ -402,7 +402,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t dest_byte_length = dest_elem_byte_size * dest_length;
   
   if (!(obj_dest_offset + length <= dest_byte_length)) {
-    return env->die(env, stack, "The offset of the obj_destination + the length specified by the argument must be less than or equal to the length of the obj_destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the obj_dest + the length must be less than or equal to the length of the obj_dest", FILE_NAME, __LINE__);
   }
   
   const char* source = env->get_chars(env, stack, obj_source);
@@ -411,7 +411,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_length;
   
   if (!(obj_source_offset + length <= source_byte_length)) {
-    return env->die(env, stack, "The offset of the obj_source + the length specified by the argument must be less than or equal to the length of the obj_source", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the obj_source + the length must be less than or equal to the length of the obj_source", FILE_NAME, __LINE__);
   }
   
   memcpy((char*)(dest + obj_dest_offset), (char*)(source + obj_source_offset), length);
@@ -428,11 +428,11 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!obj_dest) {
-    return env->die(env, stack, "The destination must be defined", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest must be defined", FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest must be the string type, the numeric arrya type, or the multi numeric array type", FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
@@ -444,7 +444,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The destination must not be a read-only string", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest must not be a read-only string", FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
@@ -461,7 +461,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t dest_byte_length = dest_elem_byte_size * dest_length;
   
   if (!(obj_dest_offset + length <= dest_byte_length)) {
-    return env->die(env, stack, "The offset of the obj_destination + the length specified by the argument must be less than or equal to the length of the obj_destination", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the obj_dest + the length must be less than or equal to the length of the obj_dest", FILE_NAME, __LINE__);
   }
   
   const char* source = env->get_chars(env, stack, obj_source);
@@ -470,7 +470,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_byte_size * source_length;
   
   if (!(obj_source_offset + length <= source_byte_length)) {
-    return env->die(env, stack, "The offset of the obj_source + the length specified by the argument must be less than or equal to the length of the obj_source", FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset of the obj_source + the length must be less than or equal to the length of the obj_source", FILE_NAME, __LINE__);
   }
   
   memmove((char*)(dest + obj_dest_offset), (char*)(source + obj_source_offset), length);

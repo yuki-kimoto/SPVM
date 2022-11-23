@@ -183,7 +183,7 @@ If the new capacity is greater than the capacity of the list, the capacity of th
 
 Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
 
-The new capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The new_capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 resize
 
@@ -191,7 +191,7 @@ The new capacity must be greater than or equal to C<0>. Otherwise an excpetion w
 
 Resize the list.
 
-The new length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The new_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 replace
 
@@ -201,7 +201,7 @@ Replace the elements of the range specified by the offset and the lenght with th
 
 The offset must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
-The removing length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The remove_length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 The offset + the removing lenght must be less than or equal to the length of the list. Otherwise an excpetion will be thrown.
 

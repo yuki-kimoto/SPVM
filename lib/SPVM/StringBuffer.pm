@@ -115,7 +115,7 @@ If the new capacity is greater than the capacity of the string buffer, the capac
 
 Note that L</"value"> is replaced with the new value and the value of the original string buffer are copied to the new value in the above case.
 
-The new capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The new_capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_string
 

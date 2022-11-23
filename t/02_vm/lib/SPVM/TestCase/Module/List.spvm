@@ -614,7 +614,7 @@ class TestCase::Module::List {
       $list->push($b);
       $list->push($c);
       eval { $list->resize(-1); };
-      unless (Fn->contains($@, "The new length must be greater than or equal to 0")) {
+      unless (Fn->contains($@, "The new_length must be greater than or equal to 0")) {
         return 0;
       }
     }

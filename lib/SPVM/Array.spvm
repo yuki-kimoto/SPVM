@@ -20,7 +20,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new byte[$length];
@@ -46,7 +46,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new double[$length];
@@ -72,7 +72,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new float[$length];
@@ -98,7 +98,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new int[$length];
@@ -124,7 +124,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new long[$length];
@@ -150,7 +150,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = &new_proto($array, $length);
@@ -187,7 +187,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new short[$length];
@@ -212,7 +212,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new string[$length];
@@ -239,7 +239,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     my $new_array = new string[$length];
@@ -589,7 +589,7 @@ class Array {
   }
   precompile static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
-      die "The destination must be defined";
+      die "The dest must be defined";
     }
     unless ($source) {
       die "The source must be defined";
@@ -599,22 +599,22 @@ class Array {
     }
     
     unless ($dest_offset >= 0) {
-      die "The offset of the destination must be greater than or equal to 0";
+      die "The dest_offset must be greater than or equal to 0";
     }
     
     unless ($source_offset >= 0) {
-      die "The offset of the source must be greater than or equal to 0";
+      die "The source_offset must be greater than or equal to 0";
     }
     
     my $dest_length = @$dest;
     my $source_length = @$source;
     
     unless ($dest_offset + $length <= $dest_length) {
-      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
+      die "The dest_offset + the length must be less than or equal to the length of the dest";
     }
     
     unless ($source_offset + $length <= $source_length) {
-      die "The offset of the source + the length specified by the argument must be less than or equal to the length of the source";
+      die "The source_offset + the length must be less than or equal to the length of the source";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -635,7 +635,7 @@ class Array {
   }
   static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
-      die "The destination must be defined";
+      die "The dest must be defined";
     }
     unless ($source) {
       die "The source must be defined";
@@ -645,22 +645,22 @@ class Array {
     }
     
     unless ($dest_offset >= 0) {
-      die "The offset of the destination must be greater than or equal to 0";
+      die "The dest_offset must be greater than or equal to 0";
     }
     
     unless ($source_offset >= 0) {
-      die "The offset of the source must be greater than or equal to 0";
+      die "The source_offset must be greater than or equal to 0";
     }
     
     my $dest_length = @$dest;
     my $source_length = @$source;
     
     unless ($dest_offset + $length <= $dest_length) {
-      die "The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination";
+      die "The dest_offset + the length must be less than or equal to the length of the dest";
     }
     
     unless ($source_offset + $length <= $source_length) {
-      die "The offset of the source + the length specified by the argument must be less than or equal to the length of the source";
+      die "The source_offset + the length must be less than or equal to the length of the source";
     }
     
     if ($dest_offset < $source_offset) {
@@ -694,7 +694,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -716,7 +716,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -738,7 +738,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -760,7 +760,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -782,7 +782,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -804,7 +804,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {
@@ -827,7 +827,7 @@ class Array {
     }
     
     unless ($offset + $length <= $array_length) {
-      die "The offset + the length specified by the argument must be less than or equal to the length of the array";
+      die "The offset + the length must be less than or equal to the length of the array";
     }
     
     for (my $i = 0; $i < $length; $i++) {

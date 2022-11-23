@@ -129,7 +129,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_double
 
@@ -143,7 +143,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 If the array is not defined, return C<undef>.
 
@@ -159,7 +159,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_int
 
@@ -173,7 +173,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
   
 =head2 copy_long
 
@@ -187,7 +187,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_object
 
@@ -205,7 +205,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_object_address
 
@@ -227,7 +227,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_string
 
@@ -241,7 +241,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 copy_string_address
 
@@ -255,7 +255,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-The offset + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will be thrown.
+The offset + the length must be less than or equal to the length of the array. Otherwise an exception will be thrown.
 
 =head2 dump_unsigned_byte
 
@@ -431,19 +431,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_double
   
@@ -457,19 +457,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_float
   
@@ -483,19 +483,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_int
   
@@ -509,19 +509,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_long
   
@@ -535,19 +535,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_object_address
 
@@ -563,19 +563,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_short
 
@@ -589,19 +589,19 @@ The range of the elements of the destination array is from the offset of the des
 
 If the range of the elements of the source array and the range of the elements of the destination array overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination must be greater than or equal to C<0>. Otherwise an exception will occur.
+The offset of dest must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the source must be greater than or equal to C<0>. Otherwise an exception will occur.
+The source_offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memcpy_string_address
 
@@ -673,7 +673,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_double
 
@@ -689,7 +689,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_float
 
@@ -705,7 +705,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_int
 
@@ -721,7 +721,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_long
 
@@ -737,7 +737,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_object
 
@@ -753,7 +753,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_short
 
@@ -769,7 +769,7 @@ The array must be defined. Otherwise an exception will occur.
 
 The offset of the array must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the array + the length specified by the argument must be less than or equal to the length of the array. Otherwise an exception will occur.
+The offset of the array + the length must be less than or equal to the length of the array. Otherwise an exception will occur.
 
 =head2 memset_string
 

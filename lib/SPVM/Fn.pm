@@ -354,7 +354,7 @@ The substring must be defined. Otherwise an exception will occur.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
+The offset + the length must be less than or equal to the length of the string. Otherwise an exception will occur.
 
 =head2 is_alnum
 
@@ -550,21 +550,21 @@ The unit of the offset and the length is C<byte> size.
 
 If the range of the source and the range of the destination overlap, the result is B<not> guaranteed.
 
-The destination must be defined. Otherwise an exception will occur.
+dest must be defined. Otherwise an exception will occur.
 
-The type of the destination must be the string type, the numeric arrya type, or the multi numeric array type. Otherwise an exception will occur.
+The type of dest must be the string type, the numeric arrya type, or the multi numeric array type. Otherwise an exception will occur.
 
 The source must be defined. Otherwise an exception will occur.
 
 The type of the source must be the string type, the numeric arrya type, or the multi numeric array type. Otherwise an exception will occur.
 
-The destination must not be a read-only string. Otherwise an exception will occur.
+dest must not be a read-only string. Otherwise an exception will occur.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset of the destination + the length specified by the argument must be less than or equal to the length of the destination. Otherwise an exception will occur.
+The offset of dest + the length must be less than or equal to the length of dest. Otherwise an exception will occur.
 
-The offset of the source + the length specified by the argument must be less than or equal to the length of the source. Otherwise an exception will occur.
+The source_offset + the length must be less than or equal to the length of the source. Otherwise an exception will occur.
 
 =head2 memmove
 
@@ -657,7 +657,7 @@ The substring must be defined. Otherwise an exception will occur.
 
 The offset must be greater than or equal to C<0>. Otherwise an exception will occur.
 
-The offset + the length specified by the argument must be less than or equal to the length of the string. Otherwise an exception will occur.
+The offset + the length must be less than or equal to the length of the string. Otherwise an exception will occur.
 
 =head2 shorten
 
