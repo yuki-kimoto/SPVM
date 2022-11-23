@@ -544,7 +544,7 @@ Next is the definition on the C language side.
   int32_t SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     // Alloc strcut tm
-    void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
+    void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
 
     // Create strcut tm instance
     void* tm_obj = env->new_pointer(env, stack, "MyTimeInfo", tm_ptr);
@@ -574,10 +574,10 @@ Next is the definition on the C language side.
     return 0;
   }
 
-In the constructor new, the memory of "struct tm" is first allocated by the alloc_memory_block_zero function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
+In the constructor new, the memory of "struct tm" is first allocated by the new_memory_stack function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
 
   // Alloc strcut tm
-  void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
+  void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
 
 Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
 
@@ -611,7 +611,7 @@ The last is the destructor. Be sure to define a destructor, as the allocated mem
     return 0;
   }
 
-Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by alloc_memory_block_zero with the free_memory_block function. Releases the memory and decrements the memory block count by one.
+Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by new_memory_stack with the free_memory_block function. Releases the memory and decrements the memory block count by one.
 
 =head1 Calling Native API
 

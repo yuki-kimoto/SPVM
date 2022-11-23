@@ -208,49 +208,6 @@ use Test::More;
       }
     }
   }
-  # Inherit the interface of the parent class
-  {
-    {
-      {
-        my $source = [
-          'class MyClass extends MyClass::Parent { method foo : long ($num : int) { return 0; } }',
-          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-          'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
-        ];
-        compile_ok($source);
-      }
-    }
-    {
-      {
-        my $source = [
-          'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 : int) { return 0; } }',
-          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-          'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
-        ];
-        compile_not_ok($source, qr|The length of the required arguments of the "foo" method in the "MyClass" class or its super class must be equal to the length of the required arguments of the "foo" method in the "MyClass::Interface" interface|);
-      }
-    }
-    {
-      {
-        my $source = [
-          'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 = 0 : int) { return 0; } }',
-          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-          'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
-        ];
-        compile_ok($source);
-      }
-    }
-    {
-      {
-        my $source = [
-          'class MyClass extends MyClass::Parent { method foo : long ($num : int) { return 0; } }',
-          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-          'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 = 0 : int); }',
-        ];
-        compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class or its super class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
-      }
-    }
-  }
 }
 
 done_testing;

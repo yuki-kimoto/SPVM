@@ -20,7 +20,7 @@ int32_t SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   time_t time = (time_t)stack[0].lval;
-  struct tm* st_tm = env->alloc_memory_block_zero(env, sizeof(struct tm));
+  struct tm* st_tm = env->new_memory_stack(env, stack, sizeof(struct tm));
   
 #ifdef _WIN32
   localtime_s(st_tm, &time);
@@ -41,7 +41,7 @@ int32_t SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   time_t time = (time_t)stack[0].lval;
-  struct tm* st_tm = env->alloc_memory_block_zero(env, sizeof(struct tm));
+  struct tm* st_tm = env->new_memory_stack(env, stack, sizeof(struct tm));
   
 #ifdef _WIN32
   gmtime_s(st_tm, &time);
