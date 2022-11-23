@@ -35,7 +35,7 @@ class Hash {
     }
     
     if ($length % 2 != 0) {
-      die "Odd number array is invalid";
+      die "The length of the elements in the \$key_values must be an even number";
     }
     
     if ($key_values) {
@@ -43,7 +43,7 @@ class Hash {
         my $key = (string)$key_values->[$i];
         my $value = $key_values->[$i + 1];
         unless ($key isa string) {
-          die "Key must be string";
+          die "The key in the \$key_values must be string";
         }
 
         $self->set($key => $value);
@@ -57,7 +57,7 @@ class Hash {
 
   method set : void ($key : string, $val : object) {
     unless ($key) {
-      die "key must be defined";
+      die "The \$key must be defined";
     }
     # Rehash
     if (((double)$self->{count} / $self->{bucket_count}) > Hash->_MAX_LOAD_FACTOR()) {
