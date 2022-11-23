@@ -35,6 +35,29 @@
 #include "spvm_constant_string.h"
 #include "spvm_attribute.h"
 
+SPVM_METHOD* SPVM_OP_CHECKER_search_method_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
+  SPVM_METHOD* found_method = NULL;
+  
+  SPVM_CLASS* parent_class = class;
+  while (1) {
+    found_method = SPVM_HASH_get(
+      parent_class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
+    if (found_method) {
+      break;
+    }
+    parent_class = parent_class->parent_class;
+    
+    if (!parent_class) {
+      break;
+    }
+  }
+  
+  return found_method;
+}
+
 int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
   
   int32_t can_access = 0;
@@ -4453,8 +4476,6 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     
     // Instance method call of class type
     if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      // Search the method of the super class
-      SPVM_METHOD* found_method = NULL;
       SPVM_CLASS* parent_class = NULL;
       if (call_parent_method) {
         parent_class = class->parent_class;
@@ -4466,21 +4487,8 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         parent_class = class;
       }
       
-      while (1) {
-        found_method = SPVM_HASH_get(
-          parent_class->method_symtable,
-          method_name,
-          strlen(method_name)
-        );
-        if (found_method) {
-          break;
-        }
-        parent_class = parent_class->parent_class;
-        
-        if (!parent_class) {
-          break;
-        }
-      }
+      // Search the method of the super class
+      SPVM_METHOD* found_method = SPVM_OP_CHECKER_search_method_in_current_and_super_classes(compiler, parent_class, method_name);
       
       if (found_method && found_method->is_class_method) {
         SPVM_COMPILER_error(compiler, "The \"%s\" method is defined in the \"%s\" class, but this method is not an instance method at %s line %d", method_name, parent_class->name, op_call_method->file, op_call_method->line);
