@@ -4582,7 +4582,7 @@ void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_f
     if (found_field) {
       break;
     }
-    parent_class = class->parent_class;
+    parent_class = parent_class->parent_class;
     if (!parent_class) {
       break;
     }

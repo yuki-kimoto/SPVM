@@ -16,6 +16,8 @@
     * Fixed the bug that the interface of the parent class is not recognized.
     * Fiexd the bug that The checking of the required method doesn't see the super class
       https://github.com/yuki-kimoto/SPVM/issues/246
+    * Fixed the bug that when searching field doesn't found in the super class, eternal loop occur.
+      https://github.com/yuki-kimoto/SPVM/issues/249
   [New Features]
     * The method can have the more optional arguments than the arguments of the interface method.
   [Imcompatible Changes]

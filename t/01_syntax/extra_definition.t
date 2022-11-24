@@ -208,6 +208,19 @@ use Test::More;
       }
     }
   }
+
+  # Search the non-existant parent field
+  {
+    {
+      {
+        my $source = [
+          'class MyClass extends MyClass::Parent { static method main : int () { my $self = new MyClass; $self->{foo}; }}',
+          'class MyClass::Parent { }',
+        ];
+        compile_not_ok($source, qr|The "foo" field is not defined in the "MyClass" class or its super classes|);
+      }
+    }
+  }
 }
 
 done_testing;
