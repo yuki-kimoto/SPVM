@@ -221,6 +221,28 @@ use Test::More;
       }
     }
   }
+
+  # Search the non-existant parent method
+  {
+    {
+      {
+        my $source = [
+          'class MyClass::Socket::INET extends MyClass::Socket {static method new : MyClass::Socket::INET ($optMyClassns = undef : object[]) { my $self = new MyClass::Socket::INET; $self->blocking; }}',
+          'class MyClass::Socket extends MyClass::Handle {}',
+          'class MyClass::Handle { has blocking : ro int;}',
+        ];
+        compile_ok($source);
+      }
+      {
+        my $source = [
+          'class MyClass::Socket::INET extends MyClass::Socket {static method new : MyClass::Socket::INET ($optMyClassns = undef : object[]) { my $self = new MyClass::Socket::INET; $self->blocking; }}',
+          'class MyClass::Socket extends MyClass::Handle {}',
+          'class MyClass::Handle { }',
+        ];
+        compile_not_ok($source, qr|The "blocking" instance method is not defined in the "MyClass::Socket::INET" class or its super classes|);
+      }
+    }
+  }
 }
 
 done_testing;
