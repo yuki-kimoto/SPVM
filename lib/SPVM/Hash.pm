@@ -20,7 +20,7 @@ SPVM::Hash - Hash Data Structure
   $book->set_double(price => 3000.0);
   
   my $id = (int)$book->get_int("id");
-  my $name = (string)$book->get_string("name");
+  my $key = (string)$book->get_string("name");
   my $price = (double)$book->get_double("price");
   
 =head1 Description
@@ -47,13 +47,13 @@ Create a new L<Hash|SPVM::Hash> object with key value pairs.
 
   count : int ()
 
-Count keys.
+Counts keys in the hash.
 
 =head2 copy
 
   copy : Hash ()
 
-Copy hash.
+Copies hash.
 
 This is not deep copy. Address of keys and values is copied into new hash.
 
@@ -61,7 +61,7 @@ This is not deep copy. Address of keys and values is copied into new hash.
 
   delete : object ($key : string)
 
-Delete a key value pair. Deleted value is returned.
+Deletes a key value pair. Deleted value is returned.
 
 =head2 exists
 
@@ -73,101 +73,100 @@ Specify the key and check if the value exists. If exists, return 1, otherwise 0.
 
   keys : string[] ()
 
-Get keys. This method do not copy the strings.
+Gets keys. This method do not copy the strings.
 
 =head2 values
 
   values : object[] ()
 
-Get values.
+Gets values.
 
 =head2 get
 
   get : object ($key : string)
 
-Get a value.
+Gets a value.
 
 =head2 get_byte
 
-  get_byte : int ($name : string)
+  get_byte : int ($key : string)
 
-Get the value with a key from a L<Byte|SPVM::Byte> object.
+Gets the value with a C<$key> from a L<Byte|SPVM::Byte> object.
 
 =head2 get_short
 
-  get_short : int ($name : string)
+  get_short : int ($key : string)
 
-Get the value with a key from a L<Short|SPVM::Short> object.
+Gets the value with a C<$key> from a L<Short|SPVM::Short> object.
   
 =head2 get_int
 
-  get_int : int ($name : string)
+  get_int : int ($key : string)
 
-Get the value with a key from a L<Int|SPVM::Int> object.
+Gets the value with a C<$key> from a L<Int|SPVM::Int> object.
   
 =head2 get_long
 
-  get_long : long ($name : string)
+  get_long : long ($key : string)
 
-Get the value with a key from a L<Long|SPVM::Long> object.
+Gets the value with a C<$key> from a L<Long|SPVM::Long> object.
 
 =head2 get_float
 
-  get_float : float ($name : string)
+  get_float : float ($key : string)
 
-Get the value with a key from a L<Float|SPVM::Float> object.
+Gets the value with a C<$key> from a L<Float|SPVM::Float> object.
   
 =head2 get_double
 
-  get_double : double ($name : string)
+  get_double : double ($key : string)
 
-Get the value with a key from a L<Double|SPVM::Double> object.
+Gets the value with a C<$key> from a L<Double|SPVM::Double> object.
 
 =head2 set
   
   set : void ($key : string, $val : object)
 
-Set key value pair.
+Sets the object C<$value> with the C<$key>.
 
 =head2 set_byte
 
-  set_byte : void ($name : string, $value : int)
+  set_byte : void ($key : string, $value : int)
 
-Set key and value pair. byte value is converted to L<Byte|SPVM::Byte> object.
+Sets the C<byte> C<$value> with the C<$key>. the C<$value> is converted to L<Byte|SPVM::Byte> object.
 
 =head2 set_short
 
-  set_short : void ($name : string, $value : int)
+  set_short : void ($key : string, $value : int)
 
-Set key and value pair. short value is converted to L<Short|SPVM::Short> object.
+Sets the C<short> C<$value> with the C<$key>. the C<$value> is converted to L<Short|SPVM::Short> object.
 
 =head2 set_int
 
-  set_int : void ($name : string, $value : int)
+  set_int : void ($key : string, $value : int)
 
-Set key and value pair. int value is converted to L<Int|SPVM::Int> object.
+Sets the C<int> C<$value> with the C<$key>. the C<$value> is converted to L<Int|SPVM::Int> object.
 
 =head2 set_long
 
-  set_long : void ($name : string, $value : long)
+  set_long : void ($key : string, $value : long)
 
-Set key and value pair. long value is converted to L<Long|SPVM::Long> object.
+Sets the C<long> C<$value> with the C<$key>. the C<$value> is converted to L<Long|SPVM::Long> object.
 
 =head2 set_float
 
-  set_float : void ($name : string, $value : float)
+  set_float : void ($key : string, $value : float)
 
-Set key and value pair. float value is converted to L<Float|SPVM::Float> object.
+Sets the C<float> C<$value> with the C<$key>. the C<$value> is converted to L<Float|SPVM::Float> object.
 
 =head2 set_double
 
-  set_double : void ($name : string, $value : double)
+  set_double : void ($key : string, $value : double)
 
-Set key and value pair. double value is converted to L<Double|SPVM::Double> object.
+Sets the C<double> C<$value> with the C<$key>. the C<$value> is converted to L<Double|SPVM::Double> object.
 
 =head2 set_string
 
-  set_string : void ($name : string, $value : string)
+  set_string : void ($key : string, $value : string)
 
-Set key and value pair with string value.
-
+Sets the string C<$value> with the C<$key>.

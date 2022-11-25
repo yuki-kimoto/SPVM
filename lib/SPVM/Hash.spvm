@@ -172,48 +172,48 @@ class Hash {
 
   private native static method _siphash13 : long ($string : string, $seed : string);
 
-  method set_byte : void ($name : string, $value : int) {
-    $self->set($name => Byte->new($value));
+  method set_byte : void ($key : string, $value : int) {
+    $self->set($key => Byte->new($value));
   }
-  method set_short : void ($name : string, $value : int) {
-    $self->set($name => Short->new($value));
+  method set_short : void ($key : string, $value : int) {
+    $self->set($key => Short->new($value));
   }
-  method set_int : void ($name : string, $value : int) {
-    $self->set($name => Int->new($value));
+  method set_int : void ($key : string, $value : int) {
+    $self->set($key => Int->new($value));
   }
-  method set_string : void ($name : string, $value : string) {
-    $self->set($name => $value);
+  method set_string : void ($key : string, $value : string) {
+    $self->set($key => $value);
   }
-  method set_long : void ($name : string, $value : long) {
-    $self->set($name => Long->new($value));
+  method set_long : void ($key : string, $value : long) {
+    $self->set($key => Long->new($value));
   }
-  method set_float : void ($name : string, $value : float) {
-    $self->set($name => Float->new($value));
+  method set_float : void ($key : string, $value : float) {
+    $self->set($key => Float->new($value));
   }
-  method set_double : void ($name : string, $value : double) {
-    $self->set($name => Double->new($value));
+  method set_double : void ($key : string, $value : double) {
+    $self->set($key => Double->new($value));
   }
 
-  method get_byte : int ($name : string) {
-    return (byte)$self->get($name);
+  method get_byte : int ($key : string) {
+    return (byte)$self->get($key);
   }
-  method get_short : int ($name : string) {
-    return (short)$self->get($name);
+  method get_short : int ($key : string) {
+    return (short)$self->get($key);
   }
-  method get_int : int ($name : string) {
-    return (int)$self->get($name);
+  method get_int : int ($key : string) {
+    return (int)$self->get($key);
   }
-  method get_string : string ($name : string) {
-    return (string)$self->get($name);
+  method get_string : string ($key : string) {
+    return (string)$self->get($key);
   }
-  method get_long : long ($name : string) {
-    return (long)$self->get($name);
+  method get_long : long ($key : string) {
+    return (long)$self->get($key);
   }
-  method get_float : float ($name : string) {
-    return (float)$self->get($name);
+  method get_float : float ($key : string) {
+    return (float)$self->get($key);
   }
-  method get_double : double ($name : string) {
-    return (double)$self->get($name);
+  method get_double : double ($key : string) {
+    return (double)$self->get($key);
   }
 
   method _bucket_count : int () {

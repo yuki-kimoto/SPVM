@@ -70,7 +70,7 @@ C<Format> is a formatting utilities for C<sprintf> method.
 
   static method sprintf : string ($format : string, $args : object[]...);
 
-Create a formatted string form the format and the values.
+Creates a formatted string form the C<$format> and the C<$args>.
 
 =head3 Specifiers
 
