@@ -2819,7 +2819,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           if (error) {
             void* exception = env->get_exception(env, stack);
             const char* exception_chars = env->get_chars(env, stack, exception);
-            fprintf(stderr, "(An exception thrown in the DESTROY method is converted to a warning)%s\n", exception_chars);
+            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
           }
           
           stack[0] = save_stack0;
