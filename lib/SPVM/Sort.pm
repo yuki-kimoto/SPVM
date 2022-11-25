@@ -90,13 +90,13 @@ The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each 
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_byte_asc
 
@@ -128,13 +128,13 @@ The L<Comparator::Double|SPVM::Comparator::Double> comparator is used to compare
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_double_asc
 
@@ -166,13 +166,13 @@ The L<Comparator::Float|SPVM::Comparator::Float> comparator is used to compare e
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_float_asc
 
@@ -204,13 +204,13 @@ The L<Comparator::Float|SPVM::Comparator::Float> comparator is used to compare e
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_float_asc
 
@@ -242,13 +242,13 @@ The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each 
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_int_asc
 
@@ -280,13 +280,13 @@ The L<Comparator::Long|SPVM::Comparator::Long> comparator is used to compare eac
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_long_asc
 
@@ -318,11 +318,11 @@ The L<Comparator|SPVM::Comparator> comparator is used to compare each element.
 
 Exceptions:
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_short
 
@@ -338,13 +338,13 @@ The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each 
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_short_asc
 
@@ -376,13 +376,13 @@ The L<Comparator::Int|SPVM::Comparator::Int> comparator is used to compare each 
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $comparator must be defined.
+The C<$comparator> must be defined.
 
-The $offset + length must be less than or equal to the length of the $elements.
+The C<$offset> + length must be less than or equal to the length of the C<$elements>.
 
 =head2 sort_string_asc
 

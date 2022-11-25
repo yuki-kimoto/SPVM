@@ -79,7 +79,7 @@ If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAU
 
 If the length is greater than the capacity, the capacity is set to the length.
 
-The $length must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The C<$length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head1 Instance Methods
 
@@ -103,9 +103,9 @@ Replace the characters of the range specified by the offset and the lenght with 
 
 Exceptions:
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $removing lenght must be less than or equal to the length of the $string buffer.
+The C<$offset> + the C<$removing> lenght must be less than or equal to the length of the C<$string> buffer.
 
 =head2 reserve
 
@@ -117,7 +117,7 @@ If the new capacity is greater than the capacity of the string buffer, the capac
 
 Note that L</"value"> is replaced with the new value and the value of the original string buffer are copied to the new value in the above case.
 
-The $new_capacity must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+The C<$new_capacity> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 to_string
 

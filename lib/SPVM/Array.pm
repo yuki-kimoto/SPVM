@@ -127,11 +127,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_double
 
@@ -143,11 +143,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 If the array is not defined, return C<undef>.
 
@@ -161,11 +161,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_int
 
@@ -177,11 +177,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
   
 =head2 copy_long
 
@@ -193,11 +193,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_object
 
@@ -213,11 +213,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_object_address
 
@@ -237,11 +237,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_string
 
@@ -253,11 +253,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 copy_string_address
 
@@ -269,11 +269,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 dump_unsigned_byte
 
@@ -311,13 +311,13 @@ Same as the following code using the L<dump operator|SPVM::Document::Language/"d
 
   static method equals_byte : int ($array1 : byte[], $array2 : byte[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -325,13 +325,13 @@ Otherwise return C<0>.
 
   static method equals_double : int ($array1 : double[], $array2 : double[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -339,13 +339,13 @@ Otherwise return C<0>.
 
   static method equals_float : int ($array1 : float[], $array2 : float[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -353,13 +353,13 @@ Otherwise return C<0>.
 
   static method equals_int : int ($array1 : int[], $array2 : int[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -367,13 +367,13 @@ Otherwise return C<0>.
 
   static method equals_long : int ($array1 : long[], $array2 : long[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -381,13 +381,13 @@ Otherwise return C<0>.
 
   static method static method equals_object : int ($array1 : object[], $array2 : object[], $equality_checker : EqualityChecker);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2 using the equality checker, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2 using the equality checker, return C<1>.
 
 The equality checker is not defined, the address is used to check the equality.
 
@@ -405,13 +405,13 @@ The alias for the following code using L</"equals_object">.
 
   static method equals_short : int ($array1 : short[], $array2 : short[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2, return C<1>.
 
 Otherwise return C<0>.
 
@@ -419,13 +419,13 @@ Otherwise return C<0>.
 
   static method equals_string : int ($array1 : string[], $array2 : string[]);
 
-If the $array1 is not defined and the $array2 is not defined, return C<1>.
+If the C<$array1> is not defined and the C<$array2> is not defined, return C<1>.
 
-If the $array1 is defined and the $array2 is not defined, return C<0>.
+If the C<$array1> is defined and the C<$array2> is not defined, return C<0>.
 
-If the $array1 is not defined, the $array2 is defined, return C<0>.
+If the C<$array1> is not defined, the C<$array2> is defined, return C<0>.
 
-If the $array1 is defined and the $array2 is defined and the all elements of array1 are equal to all elements of array2 using the C<eq> operator, return C<1>.
+If the C<$array1> is defined and the C<$array2> is defined and the all elements of array1 are equal to all elements of array2 using the C<eq> operator, return C<1>.
 
 Otherwise return C<0>.
 
@@ -451,19 +451,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_double
   
@@ -479,19 +479,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_float
   
@@ -507,19 +507,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_int
   
@@ -535,19 +535,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_long
   
@@ -563,19 +563,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_object_address
 
@@ -593,19 +593,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_short
 
@@ -621,19 +621,19 @@ If the range of the elements of the source array and the range of the elements o
 
 Exceptions:
 
-The $dest must be defined.
+The C<$dest> must be defined.
 
-The $source must be defined.
+The C<$source> must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
 
-The $dest_offset must be greater than or equal to C<0>.
+The C<$dest_offset> must be greater than or equal to C<0>.
 
-The $source_offset must be greater than or equal to C<0>.
+The C<$source_offset> must be greater than or equal to C<0>.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The C<$dest_offset> + the C<$length> must be less than or equal to the length of the C<$dest>.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The C<$source_offset> + the C<$length> must be less than or equal to the length of the C<$source>.
 
 =head2 memcpy_string_address
 
@@ -703,11 +703,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_double
 
@@ -721,11 +721,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_float
 
@@ -739,11 +739,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_int
 
@@ -757,11 +757,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_long
 
@@ -775,11 +775,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_object
 
@@ -793,11 +793,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_short
 
@@ -811,11 +811,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $array must be defined.
+The C<$array> must be defined.
 
-The $offset must be greater than or equal to C<0>.
+The C<$offset> must be greater than or equal to C<0>.
 
-The $offset + the $length must be less than or equal to the length of the $array.
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$array>.
 
 =head2 memset_string
 
@@ -833,6 +833,6 @@ Create a new object array as the same type as the prototype array with the lengt
 
 Exceptions:
 
-The $prototype array must be defined.
+The C<$prototype> array must be defined.
 
-The $length must be greater than or equal to C<0>.
+The C<$length> must be greater than or equal to C<0>.
