@@ -615,6 +615,7 @@ t/02_vm/lib/SPVM/TestCase/Constant.spvm
 t/02_vm/lib/SPVM/TestCase/Copy.spvm
 t/02_vm/lib/SPVM/TestCase/Data/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/Destructor.spvm
+t/02_vm/lib/SPVM/TestCase/Destructor/ExceptionNotOverride.spvm
 t/02_vm/lib/SPVM/TestCase/Divide.spvm
 t/02_vm/lib/SPVM/TestCase/Dump.spvm
 t/02_vm/lib/SPVM/TestCase/DumpTest1.spvm
