@@ -1,6 +1,7 @@
 class TestCase::Module::Format {
   use Format;
   use TestCase::Minimal;
+  use Point;
   
   static method sprintf_X : int () {
     
@@ -488,6 +489,34 @@ class TestCase::Module::Format {
       $@ = undef;
     }
     
+    return 1;
+  }
+
+  static method sprintf_p : int () {
+    
+    {
+      my $point = Point->new;
+      my $formatted = Format->sprintf("%p", $point);
+      
+      unless ($formatted->[0] == '0') {
+        return 0;
+      }
+      unless ($formatted->[1] == 'x') {
+        return 0;
+      }
+      unless (Fn->is_hex_digit($formatted->[2])) {
+        return 0;
+      }
+      unless (Fn->is_hex_digit($formatted->[3])) {
+        return 0;
+      }
+      unless (Fn->is_hex_digit($formatted->[4])) {
+        return 0;
+      }
+      unless (Fn->is_hex_digit($formatted->[5])) {
+        return 0;
+      }
+    }
     return 1;
   }
 }
