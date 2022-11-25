@@ -30,6 +30,6 @@ The value.
 
 =head2 new
 
-  static method new : Short ($value : int)
+  static method new : Short ($value : int);
 
 Create a new L<Short|SPVM::Short> object with a C<short> value.

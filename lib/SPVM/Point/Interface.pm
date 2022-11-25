@@ -32,6 +32,6 @@ This class has some interfaces.
 
 =head2 clear
 
-  method clear : void ()
+  method clear : void ();
 
 Clear the coordinates.

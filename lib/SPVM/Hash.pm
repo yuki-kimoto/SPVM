@@ -33,7 +33,7 @@ The hash function is C<siphash-1-3>.
 
 =head2 new
 
-  static method new : Hash ($key_values = undef : object[])
+  static method new : Hash ($key_values = undef : object[]);
 
 Create a new L<Hash|SPVM::Hash> object with key value pairs.
 

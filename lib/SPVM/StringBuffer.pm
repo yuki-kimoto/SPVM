@@ -61,7 +61,7 @@ The value. This is the internally used string, but it can be manipulated directl
 
 =head2 new
 
-  static method new : StringBuffer ($string = undef : string, $capacity = -1 : int)
+  static method new : StringBuffer ($string = undef : string, $capacity = -1 : int);
 
 Create a new C<StringBuffer> object using L</"new_len">.
 
@@ -71,7 +71,7 @@ The string is copied to the value of the the created string buffer.
 
 =head2 new_len
 
-  static method new_len : StringBuffer ($length : int, $capacity = -1 : int)
+  static method new_len : StringBuffer ($length : int, $capacity = -1 : int);
 
 Create a new C<StringBuffer> object with the length and the capacity.
 
@@ -85,19 +85,19 @@ The $length must be greater than or equal to C<0>. Otherwise an excpetion will b
 
 =head2 push
 
-  method push  : void ($string : string)
+  method push  : void ($string : string);
 
 Add a string after the end of the string in the string buffer.
 
 =head2 push_char
 
-  method push_char : void ($char : int)
+  method push_char : void ($char : int);
 
 Add a character after the end of the string in the string buffer.
 
 =head2 replace
 
-  method replace : void ($offset : int, $length : int, $replace : string)
+  method replace : void ($offset : int, $length : int, $replace : string);
 
 Replace the characters of the range specified by the offset and the lenght with the replacement string.
 
@@ -107,7 +107,7 @@ The $offset + the $removing lenght must be less than or equal to the length of t
 
 =head2 reserve
 
-  method reserve : void ($new_capacity : int)
+  method reserve : void ($new_capacity : int);
 
 Reserve the characters with the new capacity.
 
@@ -119,6 +119,6 @@ The $new_capacity must be greater than or equal to C<0>. Otherwise an excpetion 
 
 =head2 to_string
 
-  method to_string : string ()
+  method to_string : string ();
 
 Convert the string buffer to a string.

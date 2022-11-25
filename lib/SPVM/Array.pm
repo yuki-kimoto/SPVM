@@ -119,7 +119,7 @@ C<Array> provides array utilities.
 
 =head2 copy_byte
 
-  static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int)
+  static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<byte> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -133,7 +133,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 copy_double
 
-  static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int)
+  static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<double> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -149,7 +149,7 @@ If the array is not defined, return C<undef>.
 
 =head2 copy_float
 
-  static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int)
+  static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<float> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -163,7 +163,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 copy_int
 
-  static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int)
+  static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<int> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -177,7 +177,7 @@ The $offset + the $length must be less than or equal to the length of the $array
   
 =head2 copy_long
 
-  static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int)
+  static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<long> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -191,7 +191,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 copy_object
 
-  static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $legnth = -1 : int)
+  static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $legnth = -1 : int);
 
 Create a new object array with the length sepcified by the argument, and clone the elements of the object array from the offset to the position proceeded by the length to the created array.
 
@@ -217,7 +217,7 @@ The alias for the following code using L</"copy_object">.
 
 =head2 copy_short
 
-  static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int)
+  static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<short> array with the length sepcified by the argument, and copy the elements from the offset to the position proceeded by the length to the created array.
 
@@ -231,7 +231,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 copy_string
 
-  static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
+  static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<string> array with the length sepcified by the argument, and copy the elements of the C<string> array using C<copy> operator from the offset to the position proceeded by the length to the created array.
 
@@ -245,7 +245,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 copy_string_address
 
-  static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int)
+  static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int);
 
 Create a new C<string> array with the length sepcified by the argument, and copy the addresses of the elements of the C<string> array from the offset to the position proceeded by the length to the created array.
 
@@ -259,7 +259,7 @@ The $offset + the $length must be less than or equal to the length of the $array
 
 =head2 dump_unsigned_byte
 
-  static method dump_unsigned_byte : string ($array : byte[])
+  static method dump_unsigned_byte : string ($array : byte[]);
 
 Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 8-bit integer.
 
@@ -267,7 +267,7 @@ Same as the following code using the L<dump operator|SPVM::Document::Language/"d
 
 =head2 dump_unsigned_int
 
-  static method dump_unsigned_int : string ($array : int[])
+  static method dump_unsigned_int : string ($array : int[]);
 
 Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 32-bit integer.
 
@@ -275,7 +275,7 @@ Same as the following code using the L<dump operator|SPVM::Document::Language/"d
 
 =head2 dump_unsigned_long
 
-  static method dump_unsigned_long : string ($array : long[])
+  static method dump_unsigned_long : string ($array : long[]);
 
 Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 64-bit integer.
 
@@ -283,7 +283,7 @@ Same as the following code using the L<dump operator|SPVM::Document::Language/"d
 
 =head2 dump_unsigned_short
 
-  static method dump_unsigned_short : string ($array : short[])
+  static method dump_unsigned_short : string ($array : short[]);
 
 Same as the following code using the L<dump operator|SPVM::Document::Language/"dump Operator"> operator, but the elements are displayed as unsigned 16-bit integer.
 
@@ -291,7 +291,7 @@ Same as the following code using the L<dump operator|SPVM::Document::Language/"d
 
 =head2 equals_byte
 
-  static method equals_byte : int ($array1 : byte[], $array2 : byte[])
+  static method equals_byte : int ($array1 : byte[], $array2 : byte[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -305,7 +305,7 @@ Otherwise return C<0>.
 
 =head2 equals_double
 
-  static method equals_double : int ($array1 : double[], $array2 : double[])
+  static method equals_double : int ($array1 : double[], $array2 : double[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -319,7 +319,7 @@ Otherwise return C<0>.
 
 =head2 equals_float
 
-  static method equals_float : int ($array1 : float[], $array2 : float[])
+  static method equals_float : int ($array1 : float[], $array2 : float[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -333,7 +333,7 @@ Otherwise return C<0>.
 
 =head2 equals_int
 
-  static method equals_int : int ($array1 : int[], $array2 : int[])
+  static method equals_int : int ($array1 : int[], $array2 : int[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -347,7 +347,7 @@ Otherwise return C<0>.
 
 =head2 equals_long
 
-  static method equals_long : int ($array1 : long[], $array2 : long[])
+  static method equals_long : int ($array1 : long[], $array2 : long[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -361,7 +361,7 @@ Otherwise return C<0>.
 
 =head2 equals_object
 
-  static method static method equals_object : int ($objs1 : object[], $objs2 : object[], $equality_checker : EqualityChecker)
+  static method static method equals_object : int ($objs1 : object[], $objs2 : object[], $equality_checker : EqualityChecker);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -377,7 +377,7 @@ Otherwise return C<0>.
 
 =head2 equals_object_address
 
-  static method equals_object_address : int ($array1 : object[], $array2 : object[])
+  static method equals_object_address : int ($array1 : object[], $array2 : object[]);
 
 The alias for the following code using L</"equals_object">.
 
@@ -385,7 +385,7 @@ The alias for the following code using L</"equals_object">.
 
 =head2 equals_short
 
-  static method equals_short : int ($array1 : short[], $array2 : short[])
+  static method equals_short : int ($array1 : short[], $array2 : short[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -399,7 +399,7 @@ Otherwise return C<0>.
 
 =head2 equals_string
 
-  static method equals_string : int ($array1 : string[], $array2 : string[])
+  static method equals_string : int ($array1 : string[], $array2 : string[]);
 
 If the array 1 is not defined and the array 2 is not defined, return C<1>.
 
@@ -413,7 +413,7 @@ Otherwise return C<0>.
 
 =head2 equals_string_address
 
-  static method equals_string_address : int ($array1 : string[], $array2 : string[])
+  static method equals_string_address : int ($array1 : string[], $array2 : string[]);
 
 The alias for the following code using L</"equals_object_address">.
 
@@ -421,7 +421,7 @@ The alias for the following code using L</"equals_object_address">.
 
 =head2 memcpy_byte
 
-  static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
+  static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<byte> array to the range of the elements of the destination C<byte> array.
 
@@ -447,7 +447,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_double
   
-  static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
+  static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<double> array to the range of the elements of the destination C<double> array.
 
@@ -473,7 +473,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_float
   
-  static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
+  static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<float> array to the range of the elements of the destination C<float> array.
 
@@ -499,7 +499,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_int
   
-  static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
+  static method memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<int> array to the range of the elements of the destination C<int> array.
 
@@ -525,7 +525,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_long
   
-  static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
+  static method memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<long> array to the range of the elements of the destination C<long> array.
 
@@ -551,7 +551,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_object_address
 
-  static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+  static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source object array to the range of the elements of the destination object array.
 
@@ -579,7 +579,7 @@ The $source_offset + the $length must be less than or equal to the length of the
 
 =head2 memcpy_short
 
-  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
+  static method memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
 
 Copy the range of the elements of the source C<short> array to the range of the elements of the destination C<short> array.
 
@@ -611,43 +611,43 @@ The alias for L</"memcpy_object_address">.
 
 =head2 memmove_byte
 
-  static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
+  static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_byte">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_double
   
-  static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
+  static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_double">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_float
   
-  static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
+  static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_float">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_int
   
-  static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
+  static method memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_int">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_long
   
-  static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
+  static method memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_long">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_object_address
 
-  static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int)
+  static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_object_address">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
 =head2 memmove_short
 
-  static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
+  static method memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int);
 
 The same as L</"memcpy_short">, but even if the range of the source and the range of the destination overlap, the result is guaranteed.
 
@@ -661,7 +661,7 @@ The same as the following code using L</"memmove_object_address">.
 
 =head2 memset_byte
 
-  static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int)
+  static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<byte> array to the element specified by the argument.
 
@@ -677,7 +677,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_double
 
-  static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int)
+  static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<double> array to the element specified by the argument.
 
@@ -693,7 +693,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_float
 
-  static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int)
+  static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<float> array to the element specified by the argument.
 
@@ -709,7 +709,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_int
 
-  static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int)
+  static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<int> array to the element specified by the argument.
 
@@ -725,7 +725,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_long
 
-  static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int)
+  static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<long> array to the element specified by the argument.
 
@@ -741,7 +741,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_object
 
-  static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int)
+  static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the object array to the element specified by the argument.
 
@@ -757,7 +757,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_short
 
-  static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int)
+  static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int);
 
 Set the range of the elements of the C<short> array to the element specified by the argument.
 
@@ -773,7 +773,7 @@ The $offset of the $array + the $length must be less than or equal to the length
 
 =head2 memset_string
 
-  static method memset_string : void ($array : string[], $element : string, $offset = 0 : int, $length = -1 : int)
+  static method memset_string : void ($array : string[], $element : string, $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"memset_object">.
 
@@ -781,7 +781,7 @@ The alias for the following code using L</"memset_object">.
 
 =head2 new_proto
 
-  static method new_proto : object[] ($proto_array : object[], $length : int)
+  static method new_proto : object[] ($proto_array : object[], $length : int);
 
 Create a new object array as the same type as the prototype array with the length.
 

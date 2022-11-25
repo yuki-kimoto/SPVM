@@ -94,7 +94,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : List ($array = undef : object[], $capacity = -1 : int)
+  static method new : List ($array = undef : object[], $capacity = -1 : int);
 
 Create a new C<List> object using L</"new_len">.
 
@@ -110,7 +110,7 @@ The element's addresses of the object array are copied to the values of the the 
 
 =head2 new_len
 
-  static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int)
+  static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int);
 
 Create a new C<StringList> object with the prototype array, the length and the capacity.
 
@@ -131,7 +131,7 @@ B<Examples:>
 
 =head2 get
 
-  method get : object ($index : int)
+  method get : object ($index : int);
 
 Get the element of the position of the index.
 
@@ -141,7 +141,7 @@ The $index must be less than the length of the $list. Otherwise an excpetion wil
 
 =head2 insert
 
-  method insert : void ($index : int, $value : object)
+  method insert : void ($index : int, $value : object);
 
 Insert an element to the position of the index.
 
@@ -151,7 +151,7 @@ The $index must be less than or equal to the length of the $list. Otherwise an e
 
 =head2 pop
 
-  method pop : object ()
+  method pop : object ();
 
 Remove the last element and return it.
 
@@ -159,13 +159,13 @@ The length of the $list must be greater than C<0>. Otherwise an excpetion will b
             
 =head2 push
   
-  method push : void ($value : object)
+  method push : void ($value : object);
 
 Add an element after the end of the list.
 
 =head2 remove
 
-  method remove : object ($index : int)
+  method remove : object ($index : int);
 
 Remove the element at the position of the index and return it.
 
@@ -175,7 +175,7 @@ The $index must be less than the length of the $list. Otherwise an excpetion wil
 
 =head2 reserve
 
-  method reserve : void ($new_capacity : int)
+  method reserve : void ($new_capacity : int);
 
 Reserve the elements with the new capacity.
 
@@ -187,7 +187,7 @@ The $new_capacity must be greater than or equal to C<0>. Otherwise an excpetion 
 
 =head2 resize
 
-  method resize : void ($new_length : int)
+  method resize : void ($new_length : int);
 
 Resize the list.
 
@@ -195,7 +195,7 @@ The $new_length must be greater than or equal to C<0>. Otherwise an excpetion wi
 
 =head2 replace
 
-  method replace : void ($offset : int, $remove_length : int, $replace : object[])
+  method replace : void ($offset : int, $remove_length : int, $replace : object[]);
 
 Replace the elements of the range specified by the offset and the lenght with the replacement array.
 
@@ -207,7 +207,7 @@ The $offset + the $removing lenght must be less than or equal to the length of t
 
 =head2 set
 
-  method set : void ($index : int, $value : object)
+  method set : void ($index : int, $value : object);
 
 Set the element at the position of the index.
 
@@ -217,7 +217,7 @@ The $index must be less than the length of the $list. Otherwise an excpetion wil
 
 =head2 set_array
 
-  method set_array : void ($array : object[])
+  method set_array : void ($array : object[]);
 
 Set an array. Each element of the array is copied to the element of the list.
 
@@ -227,7 +227,7 @@ The length of the $array must be the $same as the length of the $list. Otherwise
 
 =head2 shift
 
-  method shift : object ()
+  method shift : object ();
 
 Remove the first element and return it.
 
@@ -235,12 +235,12 @@ The length of the $list must be greater than C<0>. Otherwise an excpetion will b
 
 =head2 to_array
 
-  method to_array : object[] ()
+  method to_array : object[] ();
 
 Convert the list to an array.
 
 =head2 unshift
 
-  method unshift : void ($value : object)
+  method unshift : void ($value : object);
 
 Insert an element at the beginning of the list.

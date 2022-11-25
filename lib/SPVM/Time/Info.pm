@@ -49,7 +49,7 @@ See L<ctime(3) - Linux man page|https://linux.die.net/man/3/ctime> about C<struc
 
 =head2 new
 
-  static method new : Time::Info ()
+  static method new : Time::Info ();
 
 Creates a new L<Time::Info|SPVM::Time::Info> object.
 
@@ -59,7 +59,7 @@ Creates a new L<Time::Info|SPVM::Time::Info> object.
 
 =head2 tm_sec
 
-  method tm_sec : int ()
+  method tm_sec : int ();
 
 Gets C<tm_sec>.
 
@@ -67,7 +67,7 @@ Gets C<tm_sec>.
 
 =head2 set_tm_sec
 
-  method set_tm_sec : void ($tm_sec : int)
+  method set_tm_sec : void ($tm_sec : int);
 
 Sets C<tm_sec>.
 
@@ -75,7 +75,7 @@ Sets C<tm_sec>.
 
 =head2 tm_min
   
-  method tm_min : int ()
+  method tm_min : int ();
 
 Gets C<tm_min>.
 
@@ -83,7 +83,7 @@ Gets C<tm_min>.
 
 =head2 set_tm_min
 
-  method set_tm_min : void ($tm_min : int)
+  method set_tm_min : void ($tm_min : int);
 
 Sets C<tm_min>.
 
@@ -91,7 +91,7 @@ Sets C<tm_min>.
 
 =head2 tm_hour
 
-  method tm_hour : int ()
+  method tm_hour : int ();
 
 Gets C<tm_hour>.
 
@@ -99,7 +99,7 @@ Gets C<tm_hour>.
 
 =head2 set_tm_hour
 
-  method set_tm_hour : void ($tm_hour : int)
+  method set_tm_hour : void ($tm_hour : int);
 
 Sets C<tm_hour>.
 
@@ -107,7 +107,7 @@ Sets C<tm_hour>.
 
 =head2 tm_mday
 
-  method tm_mday : int ()
+  method tm_mday : int ();
 
 Gets C<tm_mday>.
 
@@ -115,7 +115,7 @@ Gets C<tm_mday>.
 
 =head2 set_tm_mday
 
-  method set_tm_mday : void ($tm_mday : int)
+  method set_tm_mday : void ($tm_mday : int);
 
 Sets C<tm_mday>.
 
@@ -123,7 +123,7 @@ Sets C<tm_mday>.
 
 =head2 tm_mon
 
-  method tm_mon : int ()
+  method tm_mon : int ();
 
 Gets C<tm_mon>.
 
@@ -131,7 +131,7 @@ Gets C<tm_mon>.
 
 =head2 set_tm_mon
 
-  method set_tm_mon : void ($tm_mon : int)
+  method set_tm_mon : void ($tm_mon : int);
 
 Sets C<tm_mon>.
 
@@ -139,7 +139,7 @@ Sets C<tm_mon>.
 
 =head2 tm_year
 
-  method tm_year : int ()
+  method tm_year : int ();
 
 Gets C<tm_year>.
 
@@ -147,7 +147,7 @@ Gets C<tm_year>.
 
 =head2 set_tm_year
 
-  method set_tm_year : void ($tm_year : int)
+  method set_tm_year : void ($tm_year : int);
 
 Sets C<tm_year>.
 
@@ -155,7 +155,7 @@ Sets C<tm_year>.
 
 =head2 tm_wday
 
-  method tm_wday : int ()
+  method tm_wday : int ();
 
 Gets C<tm_wday>.
 
@@ -163,7 +163,7 @@ Gets C<tm_wday>.
 
 =head2 set_tm_wday
 
-  method set_tm_wday : void ($tm_wday : int)
+  method set_tm_wday : void ($tm_wday : int);
 
 Sets C<tm_wday>.
 
@@ -171,7 +171,7 @@ Sets C<tm_wday>.
 
 =head2 tm_yday
 
-  method tm_yday : int ()
+  method tm_yday : int ();
 
 Gets C<tm_yday>.
 
@@ -179,7 +179,7 @@ Gets C<tm_yday>.
 
 =head2 set_tm_yday
 
-  method set_tm_yday : void ($tm_yday : int)
+  method set_tm_yday : void ($tm_yday : int);
 
 Sets C<tm_yday>.
 
@@ -187,7 +187,7 @@ Sets C<tm_yday>.
 
 =head2 tm_isdst
 
-  method tm_isdst : int ()
+  method tm_isdst : int ();
 
 Gets C<tm_isdst>.
 
@@ -195,7 +195,7 @@ Gets C<tm_isdst>.
 
 =head2 set_tm_isdst
 
-  method set_tm_isdst : void ($tm_isdst : int)
+  method set_tm_isdst : void ($tm_isdst : int);
 
 Sets C<tm_isdst>.
 

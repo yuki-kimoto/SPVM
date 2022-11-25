@@ -57,7 +57,7 @@ C<y>.
 
 =head2 new
 
-  static method new : Point ($x = 0 : int, $y = 0 : int)
+  static method new : Point ($x = 0 : int, $y = 0 : int);
 
 Create a new C<Point> object with L</"x"> and L</"y">.
 
@@ -77,13 +77,13 @@ Return C<1>.
 
 =head2 clear
 
-  method clear : void ()
+  method clear : void ();
 
 Set L</"x"> and L</"y"> to C<0>.
 
 =head2 clone
 
-  method clone : Point ()
+  method clone : Point ();
 
 Create a new C<Point> object that clones myself.
 

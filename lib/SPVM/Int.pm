@@ -30,6 +30,6 @@ The value.
 
 =head2 new
 
-  static method new : Int ($value : int)
+  static method new : Int ($value : int);
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.

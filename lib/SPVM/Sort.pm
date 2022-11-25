@@ -78,7 +78,7 @@ C<Sort> provides sorting functions. The sorting algorithm is a stable merge sort
 
 =head2 sort_byte
 
-  static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+  static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<byte> array in-place.
 
@@ -98,7 +98,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_byte_asc
 
-  method sort_byte_asc : void ($array : byte[], $offset = 0 : int, $length = -1 : int)
+  method sort_byte_asc : void ($array : byte[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_byte">
 
@@ -106,7 +106,7 @@ The alias for the following code using L</"sort_byte">
 
 =head2 sort_byte_desc
 
-  static method sort_byte_desc : void ($array : byte[], $offset = 0 : int, $length = -1 : int)
+  static method sort_byte_desc : void ($array : byte[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_byte">
 
@@ -114,7 +114,7 @@ The alias for the following code using L</"sort_byte">
 
 =head2 sort_double
 
-  static method sort_double : void ($array : double[], $comparator : Comparator::Double, $offset = 0 : int, $length = -1 : int)
+  static method sort_double : void ($array : double[], $comparator : Comparator::Double, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<double> array in-place.
 
@@ -134,7 +134,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_double_asc
 
- static method sort_double_asc : void ($array : double[], $offset = 0 : int, $length = -1 : int)
+ static method sort_double_asc : void ($array : double[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_double">
 
@@ -142,7 +142,7 @@ The alias for the following code using L</"sort_double">
 
 =head2 sort_double_desc
 
-  static method sort_double_desc : void ($array : double[], $offset = 0 : int, $length = -1 : int)
+  static method sort_double_desc : void ($array : double[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_double">
 
@@ -150,7 +150,7 @@ The alias for the following code using L</"sort_double">
 
 =head2 sort_float
 
-  static method sort_float : void ($array : float[], $comparator : Comparator::Float, $offset = 0 : int, $length = -1 : int)
+  static method sort_float : void ($array : float[], $comparator : Comparator::Float, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<float> array in-place.
 
@@ -170,7 +170,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_float_asc
 
-  static method sort_float_asc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+  static method sort_float_asc : void ($array : float[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_float">
 
@@ -178,7 +178,7 @@ The alias for the following code using L</"sort_float">
 
 =head2 sort_float_desc
 
-  static method sort_float_desc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+  static method sort_float_desc : void ($array : float[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_float">
 
@@ -186,7 +186,7 @@ The alias for the following code using L</"sort_float">
 
 =head2 sort_float
 
-  static method sort_float : void ($array : float[], $comparator : Comparator::Float, $offset = 0 : int, $length = -1 : int)
+  static method sort_float : void ($array : float[], $comparator : Comparator::Float, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<float> array in-place.
 
@@ -206,7 +206,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_float_asc
 
-  static method sort_float_asc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+  static method sort_float_asc : void ($array : float[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_float">
 
@@ -214,7 +214,7 @@ The alias for the following code using L</"sort_float">
 
 =head2 sort_float_desc
 
-  static method sort_float_desc : void ($array : float[], $offset = 0 : int, $length = -1 : int)
+  static method sort_float_desc : void ($array : float[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_float">
 
@@ -222,7 +222,7 @@ The alias for the following code using L</"sort_float">
 
 =head2 sort_int
 
-  static method sort_int : void ($array : int[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+  static method sort_int : void ($array : int[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<int> array in-place.
 
@@ -242,7 +242,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_int_asc
 
-  static method sort_int_asc : void ($array : int[], $offset = 0 : int, $length = -1 : int)
+  static method sort_int_asc : void ($array : int[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_int">
 
@@ -250,7 +250,7 @@ The alias for the following code using L</"sort_int">
 
 =head2 sort_int_desc
 
-  static method sort_int_desc : void ($array : int[], $offset = 0 : int, $length = -1 : int)
+  static method sort_int_desc : void ($array : int[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_int">
 
@@ -258,7 +258,7 @@ The alias for the following code using L</"sort_int">
 
 =head2 sort_long
 
-  static method sort_long : void ($array : long[], $comparator : Comparator::Long, $offset = 0 : int, $length = -1 : int)
+  static method sort_long : void ($array : long[], $comparator : Comparator::Long, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<long> array in-place.
 
@@ -278,7 +278,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_long_asc
 
-  method sort_long_asc : void ($array : long[], $offset = 0 : int, $length = -1 : int)
+  method sort_long_asc : void ($array : long[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_long">
 
@@ -286,7 +286,7 @@ The alias for the following code using L</"sort_long">
 
 =head2 sort_long_desc
 
-  static method sort_long_desc : void ($array : long[], $offset = 0 : int, $length = -1 : int)
+  static method sort_long_desc : void ($array : long[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_long">
 
@@ -294,7 +294,7 @@ The alias for the following code using L</"sort_long">
 
 =head2 sort_object
 
-  static method sort_object : void ($array : object[], $comparator : Comparator, $offset = 0 : int, $length = -1 : int)
+  static method sort_object : void ($array : object[], $comparator : Comparator, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of object array in-place.
 
@@ -312,7 +312,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_short
 
-  static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int)
+  static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<short> array in-place.
 
@@ -332,7 +332,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_short_asc
 
-   static method sort_short_asc : void ($array : short[], $offset = 0 : int, $length = -1 : int)
+   static method sort_short_asc : void ($array : short[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_short">
 
@@ -340,7 +340,7 @@ The alias for the following code using L</"sort_short">
 
 =head2 sort_short_desc
 
-  static method sort_short_desc : void ($array : short[], $offset = 0 : int, $length = -1 : int)
+  static method sort_short_desc : void ($array : short[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_short">
 
@@ -348,7 +348,7 @@ The alias for the following code using L</"sort_short">
 
 =head2 sort_string
 
-  static method sort_string : void ($array : string[], $comparator : Comparator::String, $offset = 0 : int, $length = -1 : int)
+  static method sort_string : void ($array : string[], $comparator : Comparator::String, $offset = 0 : int, $length = -1 : int);
 
 Sort the range of the elements of C<string> array in-place.
 
@@ -368,7 +368,7 @@ The $offset + length must be less than or equal to the length of the $elements. 
 
 =head2 sort_string_asc
 
-  static method sort_string_asc : void ($array : string[], $offset = 0 : int, $length = -1 : int)
+  static method sort_string_asc : void ($array : string[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_string">
 
@@ -376,7 +376,7 @@ The alias for the following code using L</"sort_string">
 
 =head2 sort_string_desc
 
-  static method sort_string_desc : void ($array : string[], $offset = 0 : int, $length = -1 : int)
+  static method sort_string_desc : void ($array : string[], $offset = 0 : int, $length = -1 : int);
 
 The alias for the following code using L</"sort_string">
 
