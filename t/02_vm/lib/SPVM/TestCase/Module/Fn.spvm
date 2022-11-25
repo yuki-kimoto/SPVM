@@ -909,7 +909,7 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-  
+
   static method index : int () {
     
     {
@@ -1048,7 +1048,71 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-  
+
+  static method init_string : int () {
+    {
+      my $string = (mutable string)copy "abc";
+      Fn->init_string($string);
+      
+      unless ($string eq "\0\0\0") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = (mutable string)copy "abc";
+      my $ascii_code = 'd';
+      Fn->init_string($string, $ascii_code);
+      
+      unless ($string eq "ddd") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (mutable string)copy "abc";
+      my $ascii_code = 0;
+      my $offset = 1;
+      Fn->init_string($string, $ascii_code, $offset);
+      
+      unless ($string eq "a\0\0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (mutable string)copy "abc";
+      my $ascii_code = 0;
+      my $offset = 1;
+      my $length = 1;
+      Fn->init_string($string, $ascii_code, $offset, $length);
+      
+      unless ($string eq "a\0c") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->init_string(undef); };
+        
+        unless (Fn->contains($@, "The \$string must be defined")) {
+          return 0;
+        }
+      }
+      {
+        my $string = (mutable string)copy "abc";
+        eval { Fn->init_string($string, '\0', 1, 3); };
+        
+        unless (Fn->contains($@, "The \$offset + the \$length must be less than or equal to the length of the \$string")) {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+
   static method is_alnum : int () {
 
     my $ok = 1;

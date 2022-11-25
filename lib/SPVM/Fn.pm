@@ -356,6 +356,20 @@ The $offset must be greater than or equal to C<0>. Otherwise an exception will o
 
 The $offset + the $length must be less than or equal to the length of the $string. Otherwise an exception will occur.
 
+=head2 init_string
+
+  static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 int, $length = -1);
+
+Sets the characters in the C<$string> from the C<$offset> to the position proceeded by the C<$length> to the C<$ascii_code>.
+
+If the C<$length> is less than C<0>, the C<$length> is set to the length of the C<$string> - the C<$offset>.
+
+EXCEPTIONS
+
+The C<$string> must be defined.
+
+The C<$offset> + the C<$length> must be less than or equal to the length of the C<$string>.
+
 =head2 is_alnum
 
   static method is_alnum : int ($code_point : int);
