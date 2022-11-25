@@ -30,25 +30,25 @@ SPVM::List - Dynamic Object Array
   $list->push(Int->new(3));
 
   # Pop object value.
-  my $value = $list->pop;
+  my $element = $list->pop;
 
   # Unshift object value.
   $list->unshift(Int->new(3));
   
   # Shift object value.
-  my $value = $list->shift;
+  my $element = $list->shift;
   
   # Set object value.
   $list->set(2, Int->new(3));
   
   # Get object value.
-  my $value = $list->get(2);
+  my $element = $list->get(2);
 
   # Insert object value
   $list->insert(1, Int->new(3));
 
   # Remove object value
-  my $value = $list->remove(1);
+  my $element = $list->remove(1);
 
   # Convert List to object array.
   my $int_array = $list->to_array;
@@ -88,7 +88,7 @@ The length of the list.
 
   has values : ro object[];
 
-The values. This is the internally used array, but it can be manipulated directly.
+The values. This is the elements in the internally used array, but it can be manipulated directly.
 
 =head1 Class Methods
 
@@ -96,9 +96,9 @@ The values. This is the internally used array, but it can be manipulated directl
 
   static method new : List ($array = undef : object[], $capacity = -1 : int);
 
-Create a new C<List> object using L</"new_len">.
+Creates a new C<List> object using L</"new_len">.
 
-The passed length to L</"new_len"> is the length of the array. If the array is C<undef>, the length is C<0>.
+The passed length to L</"new_len"> is the length of the C<$array>. If the array is C<undef>, the length is C<0>.
 
 The element's addresses of the object array are copied to the values of the the created array.
   
@@ -112,7 +112,7 @@ The element's addresses of the object array are copied to the values of the the 
 
   static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int);
 
-Create a new C<StringList> object with the prototype array, the length and the capacity.
+Creates a new C<StringList> object with the C<$protot_array>, the C<$length> and the C<$capacity>.
 
 If the prototype array is undefined, the prototype array is set to an C<object[]> object.
 
@@ -133,7 +133,7 @@ B<Examples:>
 
   method get : object ($index : int);
 
-Get the element of the position of the index.
+Gets the element of the position of the C<$index>.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -141,9 +141,9 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
 =head2 insert
 
-  method insert : void ($index : int, $value : object);
+  method insert : void ($index : int, $element : object);
 
-Insert an element to the position of the index.
+Inserts an C<$element> to the position of the C<$index>.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -153,21 +153,21 @@ The C<$index> must be less than or equal to the length of the C<$list>. Otherwis
 
   method pop : object ();
 
-Remove the last element and return it.
+Removes the last element and return it.
 
 The length of the C<$list> must be greater than C<0>. Otherwise an excpetion will be thrown.
             
 =head2 push
   
-  method push : void ($value : object);
+  method push : void ($element : object);
 
-Add an element after the end of the list.
+Adds an C<$element> after the end of the list.
 
 =head2 remove
 
   method remove : object ($index : int);
 
-Remove the element at the position of the index and return it.
+Removes the element at the position of the C<$index> and return it.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -177,7 +177,7 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
   method reserve : void ($new_capacity : int);
 
-Reserve the elements with the new capacity.
+Reserves the elements with the C<$new_capacity>.
 
 If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
 
@@ -189,7 +189,7 @@ The C<$new_capacity> must be greater than or equal to C<0>. Otherwise an excpeti
 
   method resize : void ($new_length : int);
 
-Resize the list.
+Resizes the list with the C<$new_length>.
 
 The C<$new_length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -197,7 +197,7 @@ The C<$new_length> must be greater than or equal to C<0>. Otherwise an excpetion
 
   method replace : void ($offset : int, $remove_length : int, $replace : object[]);
 
-Replace the elements of the range specified by the offset and the lenght with the replacement array.
+Replaces the elements of the range specified by the C<$offset> and the C<$remove_length> with the replacement array.
 
 The C<$offset> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -207,9 +207,9 @@ The C<$offset> + the C<$removing> lenght must be less than or equal to the lengt
 
 =head2 set
 
-  method set : void ($index : int, $value : object);
+  method set : void ($index : int, $element : object);
 
-Set the element at the position of the index.
+Sets the C<$element> at the position of the C<$index>.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -219,7 +219,7 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
   method set_array : void ($array : object[]);
 
-Set an array. Each element of the array is copied to the element of the list.
+Sets an C<$array>. Each element of the array is copied to the element of the list.
 
 The C<$array> must be defined. Otherwise an excpetion will be thrown.
 
@@ -229,7 +229,7 @@ The length of the C<$array> must be the C<$same> as the length of the C<$list>. 
 
   method shift : object ();
 
-Remove the first element and return it.
+Removes the first element and return it.
 
 The length of the C<$list> must be greater than C<0>. Otherwise an excpetion will be thrown.
 
@@ -241,6 +241,6 @@ Convert the list to an array.
 
 =head2 unshift
 
-  method unshift : void ($value : object);
+  method unshift : void ($element : object);
 
-Insert an element at the beginning of the list.
+Inserts an C<$element> at the beginning of the list.

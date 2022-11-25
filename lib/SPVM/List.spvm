@@ -69,12 +69,12 @@ class List {
       die "The \$index must be less than the length of the \$list";
     }
     
-    my $value = $self->{values}[$index];
+    my $element = $self->{values}[$index];
     
-    return $value;
+    return $element;
   }
   
-  method insert : void ($index : int, $value : object) {
+  method insert : void ($index : int, $element : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -89,11 +89,11 @@ class List {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     if ($index != $length) {
-      Array->memmove_object_address($values, $index + 1, $values, $index, $length - $index);
+      Array->memmove_object_address($elements, $index + 1, $elements, $index, $length - $index);
     }
-    $values->[$index] = $value;
+    $elements->[$index] = $element;
     
     $self->{length}++;
   }
@@ -116,14 +116,14 @@ class List {
     return $ret;
   }
   
-  method push : void ($value : object) {
+  method push : void ($element : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     my $index = $self->{length};
-    $self->{values}[$index] = $value;
+    $self->{values}[$index] = $element;
     ++$self->{length};
   }
   
@@ -139,12 +139,12 @@ class List {
       die "The \$index must be less than the length of the \$list";
     }
     
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
+    my $elements = $self->{values};
+    my $remove_value = $elements->[$index];
     
     my $move_length = $length - $index - 1;
-    Array->memmove_object_address($values, $index, $values, $index + 1, $move_length);
-    $values->[$length - 1] = undef;
+    Array->memmove_object_address($elements, $index, $elements, $index + 1, $move_length);
+    $elements->[$length - 1] = undef;
     
     $self->{length}--;
     
@@ -214,7 +214,7 @@ class List {
     $self->{length} = $new_length;
   }
   
-  method set : void ($index : int, $value : object) {
+  method set : void ($index : int, $element : object) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -225,7 +225,7 @@ class List {
       die "The \$index must be less than the length of the \$list";
     }
     
-    $self->{values}[$index] = $value;
+    $self->{values}[$index] = $element;
   }
   
   method set_array : void ($array : object[]) {
@@ -241,8 +241,8 @@ class List {
       die "The length of the \$array must be the \$same as the length of the \$list";
     }
     
-    my $values = $self->{values};
-    Array->memcpy_object_address($values, 0, $array, 0, $cur_length);
+    my $elements = $self->{values};
+    Array->memcpy_object_address($elements, 0, $array, 0, $cur_length);
   }
   
   method shift : object () {
@@ -253,16 +253,16 @@ class List {
       die "The length of the \$list must be greater than 0";
     }
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     
-    my $value = $values->[0];
+    my $element = $elements->[0];
     
-    Array->memmove_object_address($values, 0, $values, 1, $length - 1);
-    $values->[$length - 1] = undef;
+    Array->memmove_object_address($elements, 0, $elements, 1, $length - 1);
+    $elements->[$length - 1] = undef;
     
     $self->{length}--;
     
-    return $value;
+    return $element;
   }
   
   method to_array : object[] () {
@@ -272,18 +272,18 @@ class List {
     return $array;
   }
   
-  method unshift : void ($value : object) {
+  method unshift : void ($element : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     
-    Array->memmove_object_address($values, 1, $values, 0, $length);
+    Array->memmove_object_address($elements, 1, $elements, 0, $length);
     
-    $values->[0] = $value;
+    $elements->[0] = $element;
     $self->{length}++;
   }
   
@@ -302,8 +302,8 @@ class List {
     my $new_values = Array->new_proto($self->{values}, $new_capacity);
     
     my $length = $self->{length};
-    my $values = $self->{values};
-    Array->memcpy_object_address($new_values, 0, $values, 0, $length);
+    my $elements = $self->{values};
+    Array->memcpy_object_address($new_values, 0, $elements, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
