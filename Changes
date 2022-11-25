@@ -22,7 +22,13 @@
     * The method can have the more optional arguments than the arguments of the interface method.
   [Imcompatible Changes]
     * The field in the "foo" class with the same name as the "MyClass\" field in the parent class cannot be defined.
-    
+  [Exception Message Improvement]
+    Improve the following message.
+    [Before]
+      (An exception thrown in the DESTROY method is converted to a warning)%s\n
+    [After]
+      [The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n
+
 0.9662 2022-11-15
   [Incompatible Changes]
     * The reader of the byte and short field return the int type.
