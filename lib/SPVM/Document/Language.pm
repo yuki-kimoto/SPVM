@@ -72,7 +72,7 @@ A class name must be the name that the relative L<module|/"Module"> file path's 
 
 If class names are invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   # Class names
   Foo
@@ -96,7 +96,7 @@ A method name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
 If method names are invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # Valid method names
   FOO
@@ -123,7 +123,7 @@ A field name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
 If field names are invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # Field names
   FOO
@@ -149,7 +149,7 @@ A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Nam
 
 The L<symbol name|/"Symbol Name"> can be wrapped by C<{> and C<}>. If a opening C<{> exists and the closing C<}> doesn't exists, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # Variable names
   $name
@@ -172,7 +172,7 @@ A class variable name is a L<variable name|/"Variable Name">.
 
 If class variable names are invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # Class variable names
   $NAME
@@ -195,7 +195,7 @@ B<Examples:>
 
 A local variable name is a L<variable name|/"Variable Name"> that doesn't contain C<::>.
 
-B<Examples:>
+Examples:
 
   # Local variable names
   $name
@@ -217,7 +217,7 @@ B<Examples:>
 
 C<&> before method name means the current class. C<&> is replaced with C<CURRENT_CLASS_NAME-E<gt>>.
 
-B<Examples:>
+Examples:
 
   class Foo {
     
@@ -426,7 +426,7 @@ The lator line of the end of POD must need a L<line terminator|/"Line Terminator
   =cut
   
 
-B<Examples:>
+Examples:
 
   
   =pod
@@ -478,7 +478,7 @@ If the return type is the L<int type|/"int Type"> and the value is greater than 
 
 If the return type is the L<long type|/"long Type"> and the value is greater than the max value of L<long type|/"long Type"> or less than the minimal value of L<long type|/"long Type">, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   123
   -123
@@ -525,7 +525,7 @@ And if C<-> exists, the following conversion is performed.
 
 For example, C<0xFFFFFFFFFFFFFFFFL> is the same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is the same as C<1L>.
 
-B<Examples:>
+Examples:
 
   0x3b4f
   0X3b4f
@@ -573,7 +573,7 @@ And if C<-> exists, the following conversion is performed.
 
 For example, C<01777777777777777777777L> is the same as C<-1L>, C<-01777777777777777777777L> is the same as C<1L>.
 
-B<Examples:>
+Examples:
 
   0755
   -0644
@@ -618,7 +618,7 @@ And if C<-> exists, the following conversion is performed.
 
 For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<1L>.
 
-B<Examples:>
+Examples:
 
   0b0101
   -0b1010
@@ -655,7 +655,7 @@ If the return type is the L<float type|/"float Type">, the floating point litera
 
 If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of C<C language>. If the parsing fails, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   1.32
   -1.32
@@ -695,7 +695,7 @@ If the return type is the L<float type|/"float Type">, the floating point litera
 
 If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of C<C language>. If the parsing fails, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   0x3d3d.edp0
   0x3d3d.edp3
@@ -822,7 +822,7 @@ The list of character literal escape characters.
 
 =end html
 
-B<Examples:>
+Examples:
 
   # Charater literals
   'a'
@@ -860,7 +860,7 @@ And ends with C<">.
 
 If the format of the string literal is invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # String literals
   "abc";
@@ -1013,7 +1013,7 @@ And ends with C<}>.
 
 If the Unicode code point is not a Unicode scalar value, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   # あいう
   "\N{U+3042}\N{U+3044}\N{U+3046}"
@@ -1084,7 +1084,7 @@ C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bo
 
   true
 
-B<Examples:>
+Examples:
 
   # true
   my $is_valid = true;
@@ -1095,7 +1095,7 @@ C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Boo
 
   false
 
-B<Examples:>
+Examples:
 
   # false
   my $is_valid = false;
@@ -2078,7 +2078,7 @@ The C<class> keyword defines a class. A class has a L<class block|/"Class Block"
 
 The class name must follow the naming rule of the L<class name|/"Class Name">.
 
-B<Examples:>
+Examples:
 
   # Class definition
   class Point {
@@ -2095,7 +2095,7 @@ L<Class attributes|/"Class Attribute"> can be written after C<:>.
   
   }
 
-B<Examples:>
+Examples:
 
   # Class attributes
   class Point : public {
@@ -2245,7 +2245,7 @@ If the definition of the destructor is invalid, a compilation error will occur.
 
 If an L<exception|/"Exception"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
 
-B<Examples:>
+Examples:
   
   # Destructor
   class Foo {
@@ -2270,7 +2270,7 @@ The C<allow> syntax must be defined directory under the L<class definition|/"Cla
   
 The module that is the operand of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
 
-B<Examples:>
+Examples:
 
   # Allowing private access
   class Foo {
@@ -2291,7 +2291,7 @@ If a method defined in the interface is defined, the method must have the same t
 
 The current class B<is expected to> have all methods defined in the interface.
 
-B<Examples:>
+Examples:
 
   # Interface guarantee
   class Foo {
@@ -2358,7 +2358,7 @@ The copied order is from the beginning of the super class at the top level to th
 
 The class can call instance methods of the super classes. The searching order is from the current class to the super class at the top level.
 
-B<Examples:>
+Examples:
 
   class Point3D extends Point {
     
@@ -2608,7 +2608,7 @@ L<Class variable attributes|/"Class Variable Attribute"> can be specified.
   our CLASS_VARIABLE_NAME : ATTRIBUTE TYPE;
   our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTE3 TYPE;
 
-B<Examples:>
+Examples:
 
   class Foo {
     our $NUM1 : byte;
@@ -2713,7 +2713,7 @@ It is a L<method|/"Method"> that name is the same as the class variable name rem
 
 Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable reader.
 
-B<Examples:>
+Examples:
 
   # Class variable reader
   class Foo {
@@ -2740,7 +2740,7 @@ It is a L<method|/"Method"> that name is the same as the class variable name rem
 
 Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable writer.
 
-B<Examples:>
+Examples:
 
   # Class variable writer
   class Foo {
@@ -2883,7 +2883,7 @@ If the type of the field is the C<byte> or C<short> type, The argument type of a
 
 Inline expansion to the field access except that the field type is the C<byte> or C<short> is performed on field reader and writer.
 
-B<Examples:>
+Examples:
 
   class Foo {
     has num1 : byte;
@@ -3025,7 +3025,7 @@ The optional argument is the syntax to specify optional arguments.
   
   }
 
-B<Examples:>
+Examples:
 
   static method substr ($string : string, $offset : int, $length = -1 : int) {
     # ...
@@ -3146,7 +3146,7 @@ C<required> can be only used in a method of a L<interface|/"Interface">.
 
 If the specifed attribute is not found or the way to specify is invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   # private method
   private method : int sum ($num1 : int, $num2 : int) {
@@ -3250,7 +3250,7 @@ In the above example, C<FLAG1> is C<0>, C<FALG2> is C<4>, and C<FLAG3> is C<5>.
 
 If an enumeration definition is invalid, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   class Foo {
     enum {
@@ -3444,7 +3444,7 @@ A block is the part that is enclosed by C<{> and C<}>.
 
 Blocks are the L<class block|/"Class Block">, the L<enumeration block|/"Enumeration Block">, and the L<scope blocks|/"Scope Block">.
 
-B<Examples:>
+Examples:
 
   # Blocks
   {
@@ -3627,7 +3627,7 @@ Each class can have its C<INIT> block.
 
 The execution order of C<INIT> blocks is not guaranteed.
 
-B<Examples:>
+Examples:
 
   class Foo {
     use Point;
@@ -3698,7 +3698,7 @@ An undefined value can be compared by the C<==> operator and the C<!=> operator.
 
 The type of C<undef> is L<undefined type|/"Undefined Type">
 
-B<Examples:>
+Examples:
   
   # Undefine values
   my $string : string = undef;
@@ -4369,7 +4369,7 @@ The C<byte[]> type is an L<array type|/"Array Type"> that the element type is C<
 
 Object array types are the L<array type|/"Array Type"> that the type of the element is an L<object type|/"Object Type">.
 
-B<Examples:>
+Examples:
 
   # Object array types
   my $points : Point[];
@@ -4382,7 +4382,7 @@ B<Examples:>
 
 String array types are the L<array type|/"Array Type"> that the type of the element is the L<string type|/"string Type">.
 
-B<Examples:>
+Examples:
 
   # String array types
   my $strings : string[];
@@ -4391,7 +4391,7 @@ B<Examples:>
 
 Class array types are the L<array type|/"Array Type"> that the type of the element is the L<class type|/"Class Type">.
 
-B<Examples:>
+Examples:
 
   # Class array types
   my $points : Point[];
@@ -4400,7 +4400,7 @@ B<Examples:>
 
 Interface array types are the L<array type|/"Array Type"> that the type of the element is the L<interface type|/"Interface Type">.
 
-B<Examples:>
+Examples:
 
   # Interface array types
   my $stringables : Stringable[];
@@ -4409,7 +4409,7 @@ B<Examples:>
 
 The multi-dimensional array type is the L<array type|/"Array Type"> that the type of the element is an L<array type|/"Array Type">.
 
-B<Examples:>
+Examples:
 
   # Multi-dimensional array types
   my $nums_2dim : Int[][];
@@ -4479,7 +4479,7 @@ C<string> type can be qualified by L</"mutable Type Qualifier">.
 
   mutable string
 
-B<Examples:>
+Examples:
   
   # string type
   my $message : string = "Hello";
@@ -4564,7 +4564,7 @@ The C<mutable> type qualifier is used to allow to set the character of the strin
 
   my $string : mutable string;
 
-B<Examples:>
+Examples:
   
   # Mutable string
   my $message = (mutable string)"abc";
@@ -4628,7 +4628,7 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater
 
 =end html
 
-B<Examples:>
+Examples:
   
   # int to int
   my $num : int = 3;
@@ -4671,7 +4671,7 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 
 =end html
 
-B<Examples:>
+Examples:
   
   # int to byte
   my $num : byte = 127;
@@ -4694,7 +4694,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Type"> correspondi
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $int : int = Int->new(3);
 
@@ -4715,7 +4715,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $int : int = (object)Int->new(3);
 
@@ -4741,7 +4741,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
@@ -4762,7 +4762,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $num : int = 5;
   my $num_ref : int* = \num;
@@ -4795,7 +4795,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<num
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $string : string = "abc";
   my $num_string : string = 3;
@@ -4821,7 +4821,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<box
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $num_object : Int = Int->new(3);
   my $num_object : Int = 3;
@@ -4847,7 +4847,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $point : Point = Point->new;
   my $point : Point = undef;
@@ -4872,7 +4872,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
   
   # Point has Stringable interface
   my $stringable : Stringable = Point->new(1, 2);
@@ -4898,7 +4898,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<box
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $object : object = Point->new;
   my $num_object : object = 3;
@@ -4917,7 +4917,7 @@ If the type of the left operand is the L<undefined type|/"Undefined Type">, the 
 
 =end html
 
-B<Examples:>
+Examples:
 
   # The assignability is false
   undef = Point->new;
@@ -4944,7 +4944,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
@@ -4966,7 +4966,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
@@ -4988,7 +4988,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $strings : string[] = ["abc", "def"];
   my $strings : string[] = undef;
@@ -5013,7 +5013,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $points : Point[] = new Point[3];
   my $points : Point[] = undef;
@@ -5038,7 +5038,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $stringables : Stringable[] = new Stringable[3];
 
@@ -5063,7 +5063,7 @@ Otherwise, the assignability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $any_objects0 : object[];
   my $any_objects : object[] = $any_objects0;
@@ -5107,7 +5107,7 @@ Otherwise, the assignability is false.
 
 (C<[]...[]> means two or more C<[]>)
 
-B<Examples:>
+Examples:
 
   my $points_2dim : Point[][];
   my $muldim_array : Point[][] = $points_2dim;
@@ -5189,7 +5189,7 @@ If the L<nemric type order|/"Numeric Type Order"> of the left operand is equal t
 
 =end html
 
-B<Examples:>
+Examples:
   
   # int to int
   my $num = (int)3;
@@ -5228,7 +5228,7 @@ If the type of the left operand is a L<numeric type|/"Numeric Type"> correspondi
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $int = (int)Int->new(3);
 
@@ -5249,7 +5249,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 =end html
 
-B<Examples:>
+Examples:
   
   my $object : object = Int->new(3);
   my $int = (int)$object;
@@ -5277,7 +5277,7 @@ Otherwise, the castability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $z1 : Complex_2d;
   my $z2 = (Complex_2d)$z1;
@@ -5298,7 +5298,7 @@ Otherwise, the castability is false.
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $num : int = 5;
   my $num_ref = (int*)\num;
@@ -5334,7 +5334,7 @@ If the type of the left operand is the L<string type|/"string Type"> and the typ
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $string = (string)"abc";
   my $num_string = (string)3;
@@ -5365,7 +5365,7 @@ If the type of the left operand is the type of the right operand is the L<any ob
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $num_object = (Int)Int->new(3);
   my $num_object = (Int)3;
@@ -5403,7 +5403,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $point : Point = Point->new;
   
@@ -5441,7 +5441,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
   
   my $stringable1 : Stringable;
   my $stringable2 = (Stringable)$stringable1;
@@ -5478,7 +5478,7 @@ If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<box
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $object : object = Point->new;
   my $num_object : object = 3;
@@ -5511,7 +5511,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
   
   my $bytes = (byte[])"abc";
   
@@ -5544,7 +5544,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $nums = (Complex_2d[])new Complex_2d[3];
 
@@ -5576,7 +5576,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $strings = (string[])["abc", "def"];
 
@@ -5617,7 +5617,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $points = (Point[])new Point[3];
 
@@ -5662,7 +5662,7 @@ If the type of the right operand is the L<any object type|/"Any Object Type"> C<
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $stringables = (Stringable[])new Stringable[3];
 
@@ -5694,7 +5694,7 @@ If the type of the right operand is an L<any object type|/"Any Object Type">, th
 
 =end html
 
-B<Examples:>
+Examples:
 
   my $any_object : object;
   my $any_objects = (object[])$any_object;
@@ -5750,7 +5750,7 @@ Otherwise, the castability is false.
 
 (C<[]...[]> means two or more C<[]>)
 
-B<Examples:>
+Examples:
 
   my $points_2dim : Point[][];
   my $muldim_array : Point[][] = $points_2dim;
@@ -5776,7 +5776,7 @@ Type conversion is explained.
 
 The explicite type conversion is the L<type conversion|/"Type Conversion"> performed by a L<type cast|/"Type Cast"> expicitely.
 
-B<Examples:>
+Examples:
   
   # The explicte type conversion from long to int 
   my $num = (int)123L;
@@ -5793,7 +5793,7 @@ The implicite type conversion is the L<type conversion|/"Type Conversion"> perfo
 
 See L<"Assignability"> if you know when implicite type conversion is performed.
 
-B<Examples:>
+Examples:
   
   # The implicite type conversion from int to double 
   my $num : double = 5;
@@ -6077,7 +6077,7 @@ And the following operation in C<C language> is performed on the operand .
 
   !!OPERAND
 
-B<Examples:>
+Examples:
 
   if (1) {
     # ok
@@ -6289,7 +6289,7 @@ This is parsed as the following code.
     }
   }
 
-B<Examples:>
+Examples:
 
   # if statement.
   my $flag = 1;
@@ -6351,7 +6351,7 @@ This is parsed as the following code.
     }
   }
 
-B<Examples:>
+Examples:
 
   # elsif statement.
   my $flag = 2;
@@ -6390,7 +6390,7 @@ The C<elsif> statements with the L<else statement|/"else Statement"> are allowed
   
   }
 
-B<Examples:>
+Examples:
 
   # else statement.
   my $flag = 3;
@@ -6431,7 +6431,7 @@ The C<unless> statements with the L<elsif statement|/"elsif Statement"> and the 
     
   }
 
-B<Examples:>
+Examples:
 
   # unless statement.
   my $flag = 1;
@@ -6519,7 +6519,7 @@ Multiple C<case> statements before a L<case block|/"case Block"> can be specifie
     }
   }
 
-B<Examples:>
+Examples:
 
   # switch statement
   my $code = 2;
@@ -6622,7 +6622,7 @@ Next, If the condition is C<0>, the program jumps to the end of the L<while bloc
 
 When the program reaches the end of the L<while block|/"while Block">, it jumps back to the while statement and evaluates the condition again.
 
-B<Examples:>
+Examples:
 
   # The while statement
   my $i = 0;
@@ -6776,7 +6776,7 @@ A operation statement is composed of an L<operator|/"Operator"> and C<;>.
   # The operator statemenet
   OPERATOR;
 
-B<Examples:>
+Examples:
 
   1;
   $var;
@@ -6792,7 +6792,7 @@ The statement is composed of L<void returning operator|/"void Returning Operator
 
   VOID_RETURN_OPERATOR;
 
-B<Examples:>
+Examples:
 
   die "Error";
   warn "Warning";
@@ -6803,21 +6803,30 @@ An operator performs an operation that process something and returns a value.
 
 =head2 Unary Plus Operator
 
-The unary plus operator C<+> is an L<operator|/"Operator"> to return the value of the operand.
-
   +OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
+The unary plus operator C<+> returns the value of the C<OPERAND>.
 
-If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+Compilation Errors:
 
-The unary plus operator C<+> returns the copied value of the operand.
+The C<OPERAND> must be a L<numeric type|/"Numeric Type">.
 
-The return type is the type of the operand or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
+Type Conversion:
 
-B<Examples:>
+If the C<OPERAND> is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
+
+Return Type and Operand Types:
   
-  # A unary plus operator
+  int (OPERAND : byte)
+  int (OPERAND : short)
+  int (OPERAND : int)
+  long (OPERAND : long)
+  float (OPERAND : float)
+  double (OPERAND : double)
+
+Examples:
+  
+  # The unary plus operator
   my $num = +10;
 
 =head2 Unary Minus Operator
@@ -6836,7 +6845,7 @@ The unary minus operator C<-> performs the following operation of C<C language>.
 
 The return type is the type of the operand or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
 
-B<Examples:>
+Examples:
 
   # A unary minus operator
   my $num = -10;
@@ -7010,7 +7019,7 @@ For example, if the type of the operand is the L<byte type|/"byte Type">, the fo
 
   ($num = (byte)($num + 1))
 
-B<Examples:>
+Examples:
   
   # Pre-increment of a local variable
   ++$num;
@@ -7044,7 +7053,7 @@ For example, if the type of the operand is the L<byte type|/"byte Type">, the fo
 
   (my $tmp = $num, $num = (byte)($num + 1), $tmp)
 
-B<Examples:>
+Examples:
   
   # Post-increment of a local variable
   $num++;
@@ -7082,7 +7091,7 @@ For example, if the type of the operand is the L<byte type|/"byte Type">, the fo
 
   ($num = (byte)($num - 1))
 
-B<Examples:>
+Examples:
   
   # Pre-decrement of a local variable
   --$num;
@@ -7116,7 +7125,7 @@ For example, if the type of the operand is the L<byte type|/"byte Type">, the fo
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 
-B<Examples:>
+Examples:
   
   # Post-decrement of a local variable
   $num--;
@@ -7155,7 +7164,7 @@ The return value is the same as the follwoing operation of C<C language>.
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
-B<Examples:>
+Examples:
   
   # The bit AND operator
   my $num1 = 0xff;
@@ -7178,7 +7187,7 @@ The return value is the same as the follwoing operation of C<C language>.
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
-B<Examples:>
+Examples:
   
   # The bit OR operator
   my $num1 = 0xff;
@@ -7201,7 +7210,7 @@ The return value is the same as the follwoing operation of C<C language>.
 
 The return type is the type that the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
-B<Examples:>
+Examples:
   
   # The bit NOT operator
   my $num = ~0xFF0A;
@@ -7494,7 +7503,7 @@ If the assignability is true, it is replaced with C<1>. Otherwise it is replaced
 
 If the right type is other type, it checks the L<runtime assignability|/"Runtime Assignability"> at runtime. If the runtime assignability is true, it returns C<1>. Otherwise return C<0>.
 
-B<Examples:>
+Examples:
 
   if ($object isa Point) {
     
@@ -7532,7 +7541,7 @@ The right type of the is_type operator can't be the any object array type. If so
 
 The right type of the is_type operator can't be an interface type. If so, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   if ($object is_type Point) {
     
@@ -7558,7 +7567,7 @@ The return type is the L<string type|/"string Type">.
 
 If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   # "Point"
   my $poitn = Point->new;
@@ -7638,7 +7647,7 @@ If both the left operand and the right operand are a L<string literal|/"String L
 
 If the left operand or the right operand is L<undef|/"Undefined Value">, an exception occurs.
 
-B<Examples:>
+Examples:
 
   my $str = "abc" . "def";
   my $str = "def" . 34;
@@ -7739,7 +7748,7 @@ The following operators are used as the operators of the special assignment oper
 
 =end html
 
-B<Examples:>
+Examples:
 
   # Special assignment operators
   $x += 1;
@@ -7767,7 +7776,7 @@ The array length operator returns the L<int type|/"int Type"> value that is the 
 
 Array Length Operator returns the L<operator|/"Operator">
 
-B<Examples:>
+Examples:
   
   # Getting the length of the array.
   my $nums = new byte[10];
@@ -7797,7 +7806,7 @@ The return type is the L<string type|/"string Type">.
 
 The length specified by the operand must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-B<Examples:>
+Examples:
   
   # New a string with the length
   my $message = new_string_len 5;
@@ -7819,7 +7828,7 @@ The return type is the same as the type of operand.
 
 Read-only flag of the string is dropped.
 
-B<Examples:>
+Examples:
   
   # New a string with the length
   my $message = copy "abc";
@@ -7836,7 +7845,7 @@ If the string is read-only, the C<is_read_only> operator returns C<1>, otherwise
 
 The return type is an L<int type|/"int Type">.
 
-B<Examples:>
+Examples:
   
   # New a string with the length
   my $message = "Hello";
@@ -7854,7 +7863,7 @@ The type of the operand must be the L<string type|/"string Type">. Otherwise a c
 
 The return type is the L<int type|/"int Type">.
 
-B<Examples:>
+Examples:
   
   # Getting the string length. The length is 5.
   my $message = "Hello";
@@ -7872,7 +7881,7 @@ The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of t
 
 The operand must be an L</"The array Length Operator">. Otherwise a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   # Getting the array length 
   my $nums = new int[3];
@@ -7902,7 +7911,7 @@ The return type of the C<isweak> operator is the L<int type|/"int Type">.
 
 See L</"Weak Reference"> to know the behavior of the C<isweak> operator.
 
-B<Examples:>
+Examples:
 
   # isweak
   my $isweak = isweak $object->{point};
@@ -7927,7 +7936,7 @@ The return type is L<int type|/"int Type">.
 
 If the class or the interface has the method implementation, returns C<1>, otherwise returns C<0>.
 
-B<Examples:>
+Examples:
 
   my $stringable = (Stringable)Point->new(1, 2);
   
@@ -7975,7 +7984,7 @@ If the class variable does not found, a compilation error will occur.
 
 If the class variable is C<private> and it is accessed outside of the class, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   class Foo {
     our $VAR : int;
@@ -8010,7 +8019,7 @@ If the type of the assigned value is an L<object type|/"Object Type">, the refer
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by C<1>.
 
-B<Examples:>
+Examples:
 
   class Foo {
     our $VAR : int;
@@ -8031,7 +8040,7 @@ The return value is the value of L<exception variable|/"Exception Variable">.
 
 The return type is the L<string type|/"string Type">.
 
-B<Examples:>
+Examples:
   
   # Getting the exception variable
   my $message = $@;
@@ -8052,7 +8061,7 @@ The reference count of the assigned value is incremented by C<1>.
 
 If an string has already been assigned to the exception variable before the assignment, the reference count of the string is decremented by C<1>.
 
-B<Examples:>
+Examples:
 
   $@ = "Error";
 
@@ -8066,7 +8075,7 @@ The type of invocant is a L<class type|/"Class Type">.
 
 The retrun type is the L<type|/"Type"> of the field.
 
-B<Examples:>
+Examples:
 
   my $point = Point->new;
   my $x = $point->{x};
@@ -8089,7 +8098,7 @@ If the type of assigned value is a L<basic object type|/"Object Type">, the refe
 
 If an object has already been assigned to the field before the assignment, the reference count of that object is decremented by C<1>.
 
-B<Examples:>
+Examples:
 
   my $point = Point->new;
   $point->{x} = 1;
@@ -8108,7 +8117,7 @@ Getting Multi-Numeric Field operator returns the field value in the multi-numeri
 
 The retrun type is the L<type|/"Type"> of the field.
 
-B<Examples:>
+Examples:
 
   my $z : Complex_2d;
   my $re = $z->{re};
@@ -8129,7 +8138,7 @@ The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
 
-B<Examples:>
+Examples:
 
   my $z : Complex_2d;
   $z->{re} = 2.5;
@@ -8154,7 +8163,7 @@ The array must be defined. Otherwise an exception will be thrown.
 
 The index must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
-B<Examples:>
+Examples:
 
   my $nums = new int[3];
   my $num = $nums->[1];
@@ -8189,7 +8198,7 @@ If the right operand is an L<object type|/"Object Type">, the reference count of
 
 If an object has already been assigned to the field before the assignment, the reference count of the object is decremented by C<1>.
 
-B<Examples:>
+Examples:
 
   my $nums = new int[3];
   $nums->[1] = 3;
@@ -8216,7 +8225,7 @@ The fields of the created object are initialized by the L<initial value|/"Initia
 
 The reference count of the created object is C<0>. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by C<1>.
 
-B<Examples:>
+Examples:
 
   my $object = new Foo;
 
@@ -8238,7 +8247,7 @@ All elements of the array are initialized by the L<initial value|/"Initial Value
 
 The type of the created array is the L<array type|/"Array Type">.
 
-B<Examples:>
+Examples:
 
   my $nums = new int[3];
   my $objects = new Foo[3];
@@ -8254,7 +8263,7 @@ Multi dimensional arrays can be created using the L<new operator|/"new Operator"
 
 (C<[]...[]> means two or more C<[]>)
 
-B<Examples:>
+Examples:
 
   # 2 dimentional int array
   my $nums = new int[][3];
@@ -8281,7 +8290,7 @@ The type of the created array is the type that C<1> dimension is added to the ty
 
 If no element is specified, the type of the create array becomes L<any object type|/"Any Object Type">.
 
-B<Examples:>
+Examples:
 
   # int array
   my $nums = [1, 2, 3];
@@ -8309,7 +8318,7 @@ This is the same as above array init syntax, but the type of the created array i
 
 And if the length of the elements is odd number, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   # Key values empty
   my $key_values = {};
@@ -8327,7 +8336,7 @@ The operand must be a L<local variable|/"Local Variable"> that type is a L<numer
 
 The return type is the L<reference type|/"Reference Type"> of the operand.
 
-B<Examples:>
+Examples:
   
   # Create the reference of a numeric type
   my $num : int;
@@ -8351,7 +8360,7 @@ The variable Type must be Reference Type. Otherwise a compilation error will occ
 
 The value obtained by Dereference returns the L<operator|/"Operator">.
 
-B<Examples:>
+Examples:
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -8373,7 +8382,7 @@ The type of operator must match the type of the variable when dereferenced. Othe
 
 Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
 
-B<Examples:>
+Examples:
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -8400,7 +8409,7 @@ The getting multi-numeric field via dereference operator returns the field value
 
 The retrun type is the L<type|/"Type"> of the field.
 
-B<Examples:>
+Examples:
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -8422,7 +8431,7 @@ The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
 
-B<Examples:>
+Examples:
 
   my $z : Complex_2d;
   my $z_ref = \$z;
@@ -8434,7 +8443,7 @@ The getting current class name C<__CLASS__> is an L<operator|/"Operator"> to get
 
   __CLASS__
 
-B<Examples:>
+Examples:
 
   class Foo::Bar {
     static method baz : void () {
@@ -8451,7 +8460,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
 The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
-B<Examples:>
+Examples:
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -8473,7 +8482,7 @@ The getting current line number C<__LINE__> is an L<operator|/"Operator"> to get
 
   __LINE__
 
-B<Examples:>
+Examples:
 
   class Foo::Bar {
     static method baz : void () {
@@ -8495,7 +8504,7 @@ It creates an object object from the anon class by the L<new|/"Creating Object">
 
 The way to define the method is the same as the L<method definition|/"Method Definition">.
 
-B<Examples:>
+Examples:
   
   # Anon method
   class Foo::Bar {
@@ -8539,7 +8548,7 @@ The capture is a syntax to use externally defined L<local variables|/"Local Vari
   
   };
 
-B<Examples:>
+Examples:
 
   class Foo::Bar {
     method some_method : void () {
@@ -8637,7 +8646,7 @@ A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or
 
 The behaviors of type casts are explained in L</"Castability">.
 
-B<Examples:>
+Examples:
   
   # The explicte type conversion from long to int 
   my $num = (int)123L;
@@ -8719,7 +8728,7 @@ The stack traces constain the class names, the method names, the file names and 
 
 The exception can be catched using an L<eval block|/"Exception Catching">.
 
-B<Examples:>
+Examples:
   
   # Catch the exception
   eval {
@@ -8785,7 +8794,7 @@ The type of the field targetted by the C<weaken> statement is not an L<object ty
 
 See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
 
-B<Examples:>
+Examples:
 
   # weaken
   weaken $object->{point};
@@ -8804,7 +8813,7 @@ The type of the field targetted by the C<unweaken> statement is not an L<object 
 
 See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
 
-B<Examples:>
+Examples:
 
   # unweaken
   unweaken $object->{point};
@@ -8823,7 +8832,7 @@ If the number of arguments does not correct, a compilation error will occur.
 
 If the types of arguments have no type compatible, a compilation error will occur.
 
-B<Examples:>
+Examples:
 
   my $ret = Foo->bar(1, 2, 3);
 
@@ -8837,7 +8846,7 @@ If the number of arguments does not correct, a compilation error will occur.
 
 If the types of arguments have no type compatible, a compilation error will occur.
 
-B<Examples:>
+Examples:
   
   $object->bar(5, 3. 6);
 
@@ -8859,7 +8868,7 @@ You can throw an exception using the L<die statement|/"die Operator">.
 
   die OPERAND;
 
-B<Examples:>
+Examples:
 
   # Throw an exception
   die "Error";
@@ -8876,7 +8885,7 @@ The L<undef|/"Undefined Value"> is set to the L<exception variable|/"Exception V
 
 The error message is set to the L<exception variable|/"Exception Variable"> C<$@> when the exception is thrown.
 
-B<Examples:>
+Examples:
   
   # Catch the exception
   eval {
