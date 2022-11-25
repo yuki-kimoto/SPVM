@@ -101,9 +101,11 @@ Add a character after the end of the string in the string buffer.
 
 Replace the characters of the range specified by the offset and the lenght with the replacement string.
 
-The $offset must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+Exceptions:
 
-The $offset + the $removing lenght must be less than or equal to the length of the $string buffer. Otherwise an exception will be thrown.
+The $offset must be greater than or equal to C<0>.
+
+The $offset + the $removing lenght must be less than or equal to the length of the $string buffer.
 
 =head2 reserve
 
