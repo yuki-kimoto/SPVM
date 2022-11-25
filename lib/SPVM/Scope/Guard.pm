@@ -59,7 +59,9 @@ The C<$handler> is set to the L</"handler"> field.
 
 The C<$handler> is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
 
-The $C<$handler> must be defined. Otherwise an exception will be thrown.
+Exceptions:
+
+The C<$handler> must be defined.
 
 =head1 Instance Methods
 
