@@ -51,7 +51,7 @@ C<z>.
 
   static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int);
 
-Create a new C<Point3D> object with L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z">.
+Creates a new C<Point3D> object with C<$x>, C<$y>, C<$z>.
 
 =head1 Instance Methods
 
@@ -61,25 +61,25 @@ C<Point3D> inherits the instance methods of L<Point|SPVM::Point/"Instance Method
 
   protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
 
-Initialize L</"x">, L</"y">, and L</"z">.
+Initializes L</"x">, L</"y">, and L</"z">.
 
 =head2 clear
 
   method clear : void ();
 
-Set L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to C<0>.
+Sets L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to C<0>.
 
 =head2 clone
 
   method clone : Point3D ();
 
-Create a new C<Point3D> object that clones myself.
+Creates a new C<Point3D> object that clones myself.
 
 =head2 to_string
 
   method to_string : string ();
 
-Stringify the C<Point3D> object as the following format.
+Stringifies the C<Point3D> object as the following format.
 
   (1,2,3)
 

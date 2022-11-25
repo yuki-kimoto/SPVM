@@ -69,7 +69,7 @@ The C<$handler> must be defined.
 
   method DESTROY : void ();
 
-Execute the L</"handler">.
+Executes the L</"handler">.
 
 If L</"dismiss"> is true, the handler is not executed.
 

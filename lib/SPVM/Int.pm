@@ -32,4 +32,4 @@ The value.
 
   static method new : Int ($value : int);
 
-Create a new L<Int|SPVM::Int> object with a C<int> value.
+Creates a new L<Int|SPVM::Int> object with a C<int> C<$value>.

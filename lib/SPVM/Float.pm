@@ -32,4 +32,4 @@ The value.
 
   static method new : Float ($value : float);
 
-Create a new L<Float|SPVM::Float> object with a C<float> value.
+Creates a new L<Float|SPVM::Float> object with a C<float> C<$value>.

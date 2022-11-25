@@ -59,7 +59,7 @@ C<y>.
 
   static method new : Point ($x = 0 : int, $y = 0 : int);
 
-Create a new C<Point> object with L</"x"> and L</"y">.
+Create a new C<Point> object with C<$x> and C<$y>.
 
 =head1 Instance Methods
 
@@ -67,30 +67,30 @@ Create a new C<Point> object with L</"x"> and L</"y">.
 
   protected method init : Point ($x = 0 : int, $y = 0 : int)
 
-Initialize L</"x"> and L</"y">.
+Initializes L</"x"> and L</"y">.
 
 =head2 has_interfaces
 
   method has_interfaces : int ();
 
-Return C<1>.
+Returns C<1>.
 
 =head2 clear
 
   method clear : void ();
 
-Set L</"x"> and L</"y"> to C<0>.
+Sets L</"x"> and L</"y"> to C<0>.
 
 =head2 clone
 
   method clone : Point ();
 
-Create a new C<Point> object that clones myself.
+Creates a new C<Point> object that clones myself.
 
 =head2 to_string
 
   method to_string : string ();
 
-Stringify the C<Point> object as the following format.
+Stringifies the C<Point> object as the following format.
 
   (1,2)

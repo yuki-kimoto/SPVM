@@ -32,4 +32,4 @@ The value.
 
   static method new : Short ($value : int);
 
-Create a new L<Short|SPVM::Short> object with a C<short> value.
+Creates a new L<Short|SPVM::Short> object with a C<short> C<$value>.
