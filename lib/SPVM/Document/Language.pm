@@ -2164,7 +2164,7 @@ The list of class attributes.
       <b>public</b>
     </td>
     <td>
-      This class is public. In other classes, this class can be used as the operand of <a href="#Creating-Object">new operator</a>.
+      This class is public. In other classes, this class can be used as the C<OPERAND> of <a href="#Creating-Object">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -2172,7 +2172,7 @@ The list of class attributes.
       <b>private</b>
     </td>
     <td>
-      This class is private. In other classes, this class cannot be used as the operand of <a href="#Creating-Object">new operator</a>. This is default.
+      This class is private. In other classes, this class cannot be used as the C<OPERAND> of <a href="#Creating-Object">new operator</a>. This is default.
     </td>
   </tr>
   <tr>
@@ -2180,7 +2180,7 @@ The list of class attributes.
       <b>protected</b>
     </td>
     <td>
-      This class is protected. In other classes except for the child classes, this class cannot be used as the operand of <a href="#Creating-Object">new operator</a>.
+      This class is protected. In other classes except for the child classes, this class cannot be used as the C<OPERAND> of <a href="#Creating-Object">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -2260,7 +2260,7 @@ The child class inherits the destructor of the parent class if the destructor of
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
-A private class cannot be the operand of the L<new operator|/"Creating Object"> except from the current class.
+A private class cannot be the C<OPERAND> of the L<new operator|/"Creating Object"> except from the current class.
 
 The C<allow> syntax allows the private access from the other classes.
 
@@ -2268,7 +2268,7 @@ The C<allow> syntax allows the private access from the other classes.
 
 The C<allow> syntax must be defined directory under the L<class definition|/"Class Definition">.
   
-The module that is the operand of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
+The module that is the C<OPERAND> of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
 
 Examples:
 
@@ -3321,7 +3321,7 @@ The value of the enumeration can be got using the L<class method call|/"Class Me
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-As special cases, the value of the enumeration can be used as the operand of the L<case statement|/"case Statement">.
+As special cases, the value of the enumeration can be used as the C<OPERAND> of the L<case statement|/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
@@ -5891,7 +5891,7 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the operand of the L<unary plus operator|/"Unary Plus Operator">, the operand of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the C<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, the C<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
 =head2 Numeric Narrowing Conversion
 
@@ -5986,11 +5986,11 @@ The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgr
 
 The following rules apply in order.
 
-1. If the left operand or the right operand is the L<double type|/"double Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+1. If the left operand or the right operand is the L<double type|/"double Type">, the C<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-2. If the left operand or the right operand is the L<float type|/"float Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+2. If the left operand or the right operand is the L<float type|/"float Type">, the C<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-3. If the left operand or the right operand is the L<long type|/"long Type">, the operand of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+3. If the left operand or the right operand is the L<long type|/"long Type">, the C<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 4, Otherwise, both the left operand and the right operand are converted to the L<int type|/"int Type"> using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
@@ -6059,7 +6059,7 @@ The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the
 
 The bool conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the operand of the bool conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> of the bool conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error will occur.
 
 The bool conversion returns the following value corresponding to the type of the condional operand.
 
@@ -6071,9 +6071,9 @@ If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE
 
 If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, return C<0>.
 
-If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
 
-And the following operation in C<C language> is performed on the operand .
+And the following operation in C<C language> is performed on the C<OPERAND> .
 
   !!OPERAND
 
@@ -6754,11 +6754,11 @@ The C<return> statement is a L<statement|/"Statement"> to return a value.
   // non-void
   return OPERAND;
 
-If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the operand can't exist. If so, a compilation error will occur.
+If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the C<OPERAND> can't exist. If so, a compilation error will occur.
 
-If the return type of the current L<method|/"Method Definition"> is the non-void type, the operand must exist. Otherwise a compilation error will occur.
+If the return type of the current L<method|/"Method Definition"> is the non-void type, the C<OPERAND> must exist. Otherwise a compilation error will occur.
 
-The type of the operand must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error will occur.
 
 =head2 Empty Statement
 
@@ -6831,19 +6831,19 @@ Examples:
 
 =head2 Unary Minus Operator
 
-The unary minus operator C<-> is an L<operator|/"Operator"> to return the negative value of the operand.
-
   -OPERAND
+
+The unary minus operator C<-> returns the negative value of the C<OPERAND>.
 
 The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-If the operand is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+If the C<OPERAND> is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
 
 The unary minus operator C<-> performs the following operation of C<C language>.
 
   -x
 
-The return type is the type of the operand or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
+The return type is the type of the C<OPERAND> or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
 
 Examples:
 
@@ -7004,18 +7004,18 @@ Increment operators are the L<pre-increment operator|/"Pre-Increment Operator"> 
 
 =head3 Pre-Increment Operator
 
-The pre-increment operator adds C<1> to the value of the operand and returns the value after the incrementation.
+The pre-increment operator adds C<1> to the value of the C<OPERAND> and returns the value after the incrementation.
   
   # Pre-increment operator
   ++OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The pre-increment operator performs the same operation as the following.
 
   (OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1))
 
-For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of the C<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num + 1))
 
@@ -7038,18 +7038,18 @@ Examples:
 
 =head3 Post-Increment Operator
 
-The post-increment operator adds C<1> to the value of the operand and returns the value before the incrementation.
+The post-increment operator adds C<1> to the value of the C<OPERAND> and returns the value before the incrementation.
   
   # Post-increment operator
   OPERAND++
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The post-increment operator performs the same operation as the following.
 
   (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1), TMP_VARIABLE)
 
-For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of the C<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   (my $tmp = $num, $num = (byte)($num + 1), $tmp)
 
@@ -7076,18 +7076,18 @@ Decrement operators are the L<pre-decrement operator|/"Pre-Decrement Operator"> 
 
 =head3 Pre-Decrement Operator
 
-The pre-decrement operator subtracts C<1> to the value of the operand and returns the value after the decrementation.
+The pre-decrement operator subtracts C<1> to the value of the C<OPERAND> and returns the value after the decrementation.
   
   # Pre-decrement operator
   --OPERAND
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The pre-decrement operator performs the same operation as the following.
 
   (OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1))
 
-For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of the C<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num - 1))
 
@@ -7110,18 +7110,18 @@ Examples:
 
 =head3 Post-Decrement Operator
 
-The post-decrement operator subtracts C<1> to the value of the operand and returns the value before the decrementation.
+The post-decrement operator subtracts C<1> to the value of the C<OPERAND> and returns the value before the decrementation.
   
   # Post-decrement operator
   OPERAND--
 
-The type of the operand must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error will occur.
 
 The post-decrement operator performs the same operation as the following.
 
   (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1), TMP_VARIABLE)
 
-For example, if the type of the operand is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of the C<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
 
@@ -7200,7 +7200,7 @@ The bit NOT operator C<~> is an L<operator|/"Operator"> to perform the bit NOT o
 
   ~OPERAND
 
-The type of the operand must is an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must is an L<integer type|/"Integer Type">. Otherwise a compilation error will occur.
 
 The L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
@@ -7561,11 +7561,11 @@ The C<ref> operator is an L<operator|/"Operator"> to get the type name of the ob
 
   ref OPERAND
 
-If the operand is defined, it returns the type name of the object. If not, return L<undef|/"Undefined Value">.
+If the C<OPERAND> is defined, it returns the type name of the object. If not, return L<undef|/"Undefined Value">.
 
 The return type is the L<string type|/"string Type">.
 
-If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
+If the C<OPERAND> is not an L<object type|/"Object Type">, a compilation error will occur.
 
 Examples:
   
@@ -7583,7 +7583,7 @@ It returns the string representation of the object.
 
 The return type is the L<string type|/"string Type">.
 
-If the operand is not an L<object type|/"Object Type">, a compilation error will occur.
+If the C<OPERAND> is not an L<object type|/"Object Type">, a compilation error will occur.
 
 The string representation may be changed from SPVM version to version. Please don't use C<dump> operator for the purpose of the data serialization.
 
@@ -7627,7 +7627,7 @@ The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical NOT operator is the L<int type|/"int Type">.
 
-Thg logical NOT operator performs the L<bool conversion|/"Bool Conversion"> to the operand. If the evaluated value is C<0>, returns C<1>. Otherwise return C<0>.
+Thg logical NOT operator performs the L<bool conversion|/"Bool Conversion"> to the C<OPERAND>. If the evaluated value is C<0>, returns C<1>. Otherwise return C<0>.
 
 =head2 String Concatenation Operator
 
@@ -7637,7 +7637,7 @@ String concatenation operator C<.> is an L<operator|/"Operator"> to concat two s
 
 The left operand and the right operand must be a L<string type|/"string Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
 
-If the type of the operand is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of the C<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 The return type is a L<string type|/"string Type">.
 
@@ -7794,17 +7794,17 @@ The C<new_string_len> operator is an L<operator|/"Operator"> to create a L<strin
 
   new_string_len OPERAND
 
-The type of the operand must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error will occur.
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
 
-The C<new_string_len> operator returns a new string that length is the length specified by the operand and all characters are C<\0>.
+The C<new_string_len> operator returns a new string that length is the length specified by the C<OPERAND> and all characters are C<\0>.
 
 The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as C<C language> string ending with C<\0>.
 
 The return type is the L<string type|/"string Type">.
 
-The length specified by the operand must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The length specified by the C<OPERAND> must be greater than or equal to C<0>. Otherwise an exception will be thrown.
 
 Examples:
   
@@ -7859,7 +7859,7 @@ The string length operator C<length> is an L<operator|/"Operator"> to get the le
 
 The returned length is the byte size. Note that the length is not the count of C<UTF-8> characters.
 
-The type of the operand must be the L<string type|/"string Type">. Otherwise a compilation error will occur.
+The type of the C<OPERAND> must be the L<string type|/"string Type">. Otherwise a compilation error will occur.
 
 The return type is the L<int type|/"int Type">.
 
@@ -7875,7 +7875,7 @@ Examples:
 
 =head2 scalar Operator
 
-The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of the operand.
+The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of the C<OPERAND>.
 
   scalar OPERAND
 
@@ -8334,7 +8334,7 @@ The reference operator C<\> is the L<operator|/"Operator"> to create a L<referen
 
 The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error will occur.
 
-The return type is the L<reference type|/"Reference Type"> of the operand.
+The return type is the L<reference type|/"Reference Type"> of the C<OPERAND>.
 
 Examples:
   
@@ -8618,7 +8618,7 @@ The C<set_error_code> operator is an L<operator|/"Operator"> to set the value of
 
   set_error_code OPERAND
 
-The type of the operand must be the L<int type|/"int Type">.
+The type of the C<OPERAND> must be the L<int type|/"int Type">.
 
 =head2 error Operator
 
@@ -8699,7 +8699,7 @@ If the end character of the string is C<\n>, C<warn> statement prints the string
 
 If not, the current file name and current line number are added to the end of the string.
 
-If the value of the operand is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
+If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
 
 The buffer of the standard error is flushed after the printing.
 
@@ -8711,7 +8711,7 @@ The C<die> operator is a L<void retruning operator|/"void Returning Operator"> t
 
 The operand must be the L<string type|/"string Type">. If not a compilation error will occur.
 
-You can specify the error message to the operand.
+You can specify the error message to the C<OPERAND>.
 
   # Throw an exception
   die "Error";
@@ -8749,7 +8749,7 @@ The C<print> operator is a L<void retruning operator|/"void Returning Operator">
 
 The oeprand must be a L<string type|/"string Type">.
 
-If the value of the operand is an L<undef|/"Undefined Value">, print nothing.
+If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
 
 =head2 say Operator
 
@@ -8759,7 +8759,7 @@ The C<say> operator is a L<void retruning operator|/"void Returning Operator"> t
 
 The oeprand must be a L<string type|/"string Type">.
 
-If the value of the operand is an L<undef|/"Undefined Value">, print C<\n>.
+If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
 
 =head2 make_read_only Operator
 
