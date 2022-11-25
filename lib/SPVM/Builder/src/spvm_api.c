@@ -2812,6 +2812,11 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
           int32_t args_stack_length = 1;
           SPVM_VALUE save_stack0 = stack[0];
+          void* save_exception = env->get_exception(env, stack);
+          if (save_exception) {
+            env->inc_ref_count(env, stack, save_exception);
+          }
+          
           stack[0].oval = object;
           int32_t error = SPVM_API_call_spvm_method(env, stack, class->destructor_method_id, args_stack_length);
           
@@ -2822,7 +2827,12 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
           }
           
+          // Restore stack and excetpion
           stack[0] = save_stack0;
+          env->set_exception(env, stack, save_exception);
+          if (save_exception) {
+            env->dec_ref_count(env, stack, save_exception);
+          }
           
           assert(object->ref_count > 0);
         }

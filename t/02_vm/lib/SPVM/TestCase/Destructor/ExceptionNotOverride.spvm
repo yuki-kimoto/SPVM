@@ -1,0 +1,14 @@
+class TestCase::Destructor::ExceptionNotOverride {
+  
+  static method new : TestCase::Destructor::ExceptionNotOverride () {
+    return new TestCase::Destructor::ExceptionNotOverride;
+  }
+  
+  method throw_exception : void () {
+    die "Excetpion in instance method";
+  }
+  
+  method DESTROY : void () {
+    die "Exception in DESTROY";
+  }
+}

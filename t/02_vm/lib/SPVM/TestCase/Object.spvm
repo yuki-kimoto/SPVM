@@ -1,6 +1,7 @@
 class TestCase::Object {
   use TestCase::Minimal;
   use TestCase::Simple;
+  use TestCase::Destructor::ExceptionNotOverride;
   
   use TestCase::Destructor;
   use Fn;
@@ -414,4 +415,17 @@ class TestCase::Object {
     return 1;
   }
 
+  static method destructor_exception_no_override : int () {
+    my $enp = TestCase::Destructor::ExceptionNotOverride->new;
+    
+    eval { $enp->throw_exception; };
+    
+    unless (Fn->contains($@, "Excetpion in instance method")) {
+      return 0;
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

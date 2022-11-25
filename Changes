@@ -18,6 +18,8 @@
       https://github.com/yuki-kimoto/SPVM/issues/246
     * Fixed the bug that when searching field doesn't found in the super class, eternal loop occur.
       https://github.com/yuki-kimoto/SPVM/issues/249
+    * The bug that original exception is overwriten by destructor exception
+      https://github.com/yuki-kimoto/SPVM/issues/253
   [New Features]
     * The method can have the more optional arguments than the arguments of the interface method.
   [Imcompatible Changes]

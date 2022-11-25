@@ -43,6 +43,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Destructor
 {
   ok(SPVM::TestCase::Object->destructor());
+  ok(SPVM::TestCase::Object->destructor_exception_no_override());
 }
 
 # All object is freed
