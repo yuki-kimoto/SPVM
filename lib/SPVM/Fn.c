@@ -478,6 +478,22 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__sizeof_native_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t sizeof_native_int = sizeof(int);
+  
+  stack[0].ival = sizeof_native_int;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__sizeof_native_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t sizeof_native_pointer = sizeof(void*);
+  
+  stack[0].ival = sizeof_native_pointer;
+  
+  return 0;
+}
+
 int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   

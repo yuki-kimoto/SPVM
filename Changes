@@ -22,6 +22,11 @@
       https://github.com/yuki-kimoto/SPVM/issues/253
   [New Features]
     * The method can have the more optional arguments than the arguments of the interface method.
+    * Added the following methods to the Fn class.
+
+      static method sizeof_native_int : int ();
+      static method sizeof_native_pointer : int ();
+    
   [Imcompatible Changes]
     * The field in the "foo" class with the same name as the "MyClass\" field in the parent class cannot be defined.
   [Exception Message Improvement]

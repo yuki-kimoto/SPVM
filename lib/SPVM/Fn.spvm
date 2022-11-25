@@ -604,7 +604,11 @@ class Fn {
     
     return -1;
   }
+
+  native static method sizeof_native_int : int ();
   
+  native static method sizeof_native_pointer : int ();
+
   native static method shorten : void ($string : mutable string, $length : int);
 
   precompile static method shorten_null_char : void ($string : mutable string) {

@@ -659,6 +659,18 @@ The $offset must be greater than or equal to C<0>. Otherwise an exception will o
 
 The $offset + the $length must be less than or equal to the length of the $string. Otherwise an exception will occur.
 
+=head2 sizeof_native_int
+
+  static method sizeof_native_int : int ();
+
+Returns the native C<int> size. This is the same value as C<sizeof(int)> in C<C language>.
+
+=head2 sizeof_native_pointer
+
+  static method sizeof_native_pointer : int ();
+
+Returns the native pointer size. This is the same value as C<sizeof(void*)> in C<C language>.
+
 =head2 shorten
 
     static method shorten : void ($string : mutable string, $length : int32_t)

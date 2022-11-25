@@ -2628,6 +2628,17 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method sizeof_native_int : int () {
+    
+    my $value = Fn->sizeof_native_int;
+    
+    unless ($value == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method shorten : int () {
     
     # Basic
