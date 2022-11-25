@@ -24,25 +24,25 @@ SPVM::IntList - Dynamic int Array
   $list->push((int)3);
   
   # Pop value.
-  my $value = $list->pop;
+  my $element = $list->pop;
   
   # Unshift value.
   $list->unshift((int)3);
   
   # Shift value.
-  my $value = $list->shift;
+  my $element = $list->shift;
   
   # Set value.
   $list->set(2, (int)3);
   
   # Get value.
-  my $value = $list->get(2);
+  my $element = $list->get(2);
   
   # Insert value
   $list->insert(1, 3);
   
   # Remove value
-  my $value = $list->remove(1);
+  my $element = $list->remove(1);
   
   # Convert list to array.
   my $array = $list->to_array;
@@ -79,9 +79,9 @@ The length of the list.
 
   has values : ro int[];
 
-The values of the list. This is the internally used array, but it can be manipulated directly.
+The elements of the list. This is the internally used array, but it can be manipulated directly.
 
-  my $values = $list->values;
+  my $elements = $list->values;
   $valeus->[0] = 5;
 
 =head1 Class Methods
@@ -94,7 +94,7 @@ Create a new C<IntList> object using L</"new_len">.
 
 The passed length to L</"new_len"> is the length of the array. If the array is C<undef>, the length is C<0>.
 
-The values of the array are copied to the values of the the created array.
+The elements of the array are copied to the values of the the created array.
 
 B<Examples:>
 
@@ -105,11 +105,11 @@ B<Examples:>
 
   static method new_len : IntList ($length : int, $capacity = -1 : int);
 
-Create a new C<IntList> object with the length and the capacity.
+Creates a new C<IntList> object with the C<$length> and the C<$capacity>.
 
-If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If the C<$capacity> is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
 
-If the length is greater than the capacity, the capacity is set to the length.
+If the C<$length> is greater than the C<$capacity>, the C<$capacity> is set to the C<$length>.
 
 The C<$length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -119,7 +119,7 @@ The C<$length> must be greater than or equal to C<0>. Otherwise an excpetion wil
 
   method get : int ($index : int);
 
-Get the element of the position of the index.
+Gets the element of the position of the C<$index>.
 
 The C<$index> must be greater than or equal to 0. Otherwise an excpetion will be thrown.
 
@@ -127,9 +127,9 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
 =head2 insert
 
-  method insert : void ($index : int, $value : int);
+  method insert : void ($index : int, $element : int);
 
-Insert an element to the position of the index.
+Inserts an C<$element> to the position of the C<$index>.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -139,21 +139,21 @@ The C<$index> must be less than or equal to the length of the C<$list>. Otherwis
 
   method pop : int ();
 
-Remove the last element and return it.
+Removes the last element and return it.
 
 The length of the C<$list> must be greater than C<0>. Otherwise an excpetion will be thrown.
 
 =head2 push
   
-  method push : void ($value : int);
+  method push : void ($element : int);
 
-Add an element after the end of the list.
+Adds an C<$element> after the end of the list.
 
 =head2 remove
 
   method remove : int ($index : int);
 
-Remove the element at the position of the index and return it.
+Removes the element at the position of the C<$index> and return it.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -163,7 +163,7 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
   method replace : void ($offset : int, $remove_length : int, $replace : int[]);
 
-Replace the elements of the range specified by the offset and the lenght with the replacement array.
+Replaces the elements of the range specified by the C<$offset> and the C<$lenght> with the C<$replace> array.
 
 The C<$offset> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -175,9 +175,9 @@ The C<$offset> + the C<$removing> lenght must be less than or equal to the lengt
 
   method reserve : void ($new_capacity : int);
 
-Reserve the elements with the new capacity.
+Reserves the elements with the C<$new_capacity>.
 
-If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
+If the C<$new_capacity> is greater than the capacity of the list, the capacity of the list is extended to the C<$new_capacity>.
 
 Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
 
@@ -187,15 +187,15 @@ The C<$new_capacity> must be greater than or equal to C<0>. Otherwise an excpeti
 
   method resize : void ($new_length : int);
 
-Resize the list.
+Resize the list with the C<$new_length>.
 
 The C<$new_length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
 =head2 set
 
-  method set : void ($index : int, $value : int);
+  method set : void ($index : int, $element : int);
 
-Set the element at the position of the index.
+Sets the C<$element> at the position of the C<$index>.
 
 The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -205,7 +205,7 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
   method set_array : void ($array : int[]);
 
-Set an array. Each element of the array is copied to the element of the list.
+Sets an C<$array>. Each element of the C<$array> is copied to the element of the list.
 
 The C<$array> must be defined. Otherwise an excpetion will be thrown.
 
@@ -215,7 +215,7 @@ The length of the C<$array> must be the C<$same> as the length of the C<$list>. 
 
   method shift : int ();
 
-Remove the first element and return it.
+Removes the first element and return it.
 
 The length of the C<$list> must be greater than C<0>. Otherwise an excpetion will be thrown.
 
@@ -223,10 +223,10 @@ The length of the C<$list> must be greater than C<0>. Otherwise an excpetion wil
 
   method to_array : int[] ();
 
-Convert the list to an array.
+Converts the list to an array.
 
 =head2 unshift
 
-  method unshift : void ($value : int);
+  method unshift : void ($element : int);
 
-Insert an element at the beginning of the list.
+Inserts an C<$element> at the beginning of the list.

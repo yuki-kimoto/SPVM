@@ -65,12 +65,12 @@ class LongList {
       die "The \$index must be less than the length of the \$list";
     }
     
-    my $value = $self->{values}[$index];
+    my $element = $self->{values}[$index];
     
-    return $value;
+    return $element;
   }
   
-  method insert : void ($index : int, $value : long) {
+  method insert : void ($index : int, $element : long) {
     my $length = $self->{length};
     
     unless ($index >= 0) {
@@ -84,13 +84,13 @@ class LongList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      Array->memmove_long($values, $dist_index, $values, $index, $move_length);
+      Array->memmove_long($elements, $dist_index, $elements, $index, $move_length);
     }
-    $values->[$index] = $value;
+    $elements->[$index] = $element;
     
     $self->{length} = $new_length;
   }
@@ -102,22 +102,22 @@ class LongList {
       die "The length of the \$list must be greater than 0";
     }
     
-    my $value = $self->{values}[$length - 1];
+    my $element = $self->{values}[$length - 1];
     
     $self->{values}[$length - 1] = 0;
     
     $self->{length}--;
     
-    return $value;
+    return $element;
   }
   
-  method push : void ($value : long) {
+  method push : void ($element : long) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{values}[$length] = $value;
+    $self->{values}[$length] = $element;
     
     $self->{length} = $new_length;
   }
@@ -133,13 +133,13 @@ class LongList {
       die "The \$index must be less than the length of the \$list";
     }
     
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
+    my $elements = $self->{values};
+    my $remove_value = $elements->[$index];
     
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    Array->memmove_long($values, $dist_index, $values, $src_index, $move_length);
+    Array->memmove_long($elements, $dist_index, $elements, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -210,7 +210,7 @@ class LongList {
     $self->{length} = $new_length;
   }
   
-  method set : void ($index : int, $value : long) {
+  method set : void ($index : int, $element : long) {
     my $length = $self->length;
     
     unless ($index >= 0) {
@@ -221,7 +221,7 @@ class LongList {
       die "The \$index must be less than the length of the \$list";
     }
     
-    $self->{values}[$index] = $value;
+    $self->{values}[$index] = $element;
   }
   
   method set_array : void ($array : long[]) {
@@ -247,17 +247,17 @@ class LongList {
       die "The length of the \$list must be greater than 0";
     }
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     
-    my $value = $values->[0];
+    my $element = $elements->[0];
     
-    Array->memmove_long($values, 0, $values, 1, $length - 1);
+    Array->memmove_long($elements, 0, $elements, 1, $length - 1);
     
-    $values->[$length - 1] = 0;
+    $elements->[$length - 1] = 0;
     
     $self->{length}--;
     
-    return $value;
+    return $element;
   }
   
   method to_array : long[] () {
@@ -265,25 +265,25 @@ class LongList {
     
     my $array = new long[$length];
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     
-    Array->memcpy_long($array, 0, $values, 0, $length);
+    Array->memcpy_long($array, 0, $elements, 0, $length);
     
     return $array;
   }
   
-  method unshift : void ($value : long) {
+  method unshift : void ($element : long) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
 
     $self->_maybe_extend($new_length);
     
-    my $values = $self->{values};
+    my $elements = $self->{values};
     
-    Array->memmove_long($values, 1, $values, 0, $length);
+    Array->memmove_long($elements, 1, $elements, 0, $length);
     
-    $values->[0] = $value;
+    $elements->[0] = $element;
     $self->{length} = $new_length;
   }
   
@@ -302,8 +302,8 @@ class LongList {
     my $new_values = new long[$new_capacity];
     
     my $length = $self->{length};
-    my $values = $self->{values};
-    Array->memcpy_long($new_values, 0, $values, 0, $length);
+    my $elements = $self->{values};
+    Array->memcpy_long($new_values, 0, $elements, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;

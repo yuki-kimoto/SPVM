@@ -114,11 +114,11 @@ The element's addresses of the object array are copied to the values of the the 
 
 Creates a new C<StringList> object with the C<$protot_array>, the C<$length> and the C<$capacity>.
 
-If the prototype array is undefined, the prototype array is set to an C<object[]> object.
+If the C<$protot_array> is undefined, the C<$protot_array> is set to an C<object[]> object.
 
-If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If the C<$capacity> is less than C<0>, the C<$capacity> is set to the value of L</"DEFAULT_CAPACITY">.
 
-If the length is greater than the capacity, the capacity is set to the length.
+If the C<$length> is greater than the C<$capacity>, the C<$capacity> is set to the length.
 
 The C<$length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -173,13 +173,25 @@ The C<$index> must be greater than or equal to C<0>. Otherwise an excpetion will
 
 The C<$index> must be less than the length of the C<$list>. Otherwise an excpetion will be thrown.
 
+=head2 replace
+
+  method replace : void ($offset : int, $remove_length : int, $replace : string[]);
+
+Replaces the elements of the range specified by the C<$offset> and the C<$lenght> with the C<$replace> array.
+
+The C<$offset> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The C<$remove_length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+
+The C<$offset> + the C<$removing> lenght must be less than or equal to the length of the C<$list>. Otherwise an excpetion will be thrown.
+
 =head2 reserve
 
   method reserve : void ($new_capacity : int);
 
 Reserves the elements with the C<$new_capacity>.
 
-If the new capacity is greater than the capacity of the list, the capacity of the list is extended to the new capacity.
+If the C<$new_capacity> is greater than the capacity of the list, the capacity of the list is extended to the C<$new_capacity>.
 
 Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
 
@@ -189,7 +201,7 @@ The C<$new_capacity> must be greater than or equal to C<0>. Otherwise an excpeti
 
   method resize : void ($new_length : int);
 
-Resizes the list with the C<$new_length>.
+Resize the list with the C<$new_length>.
 
 The C<$new_length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
 
@@ -219,7 +231,7 @@ The C<$index> must be less than the length of the C<$list>. Otherwise an excpeti
 
   method set_array : void ($array : object[]);
 
-Sets an C<$array>. Each element of the array is copied to the element of the list.
+Sets an C<$array>. Each element of the C<$array> is copied to the element of the list.
 
 The C<$array> must be defined. Otherwise an excpetion will be thrown.
 
@@ -237,7 +249,7 @@ The length of the C<$list> must be greater than C<0>. Otherwise an excpetion wil
 
   method to_array : object[] ();
 
-Convert the list to an array.
+Converts the list to an array.
 
 =head2 unshift
 
