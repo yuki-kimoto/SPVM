@@ -2019,6 +2019,18 @@ The list of syntax parsing tokens:
 
 =end html
 
+=head2 Unary Operator
+
+The unary operator is the L<operator|/"Operator"> that has an operand.
+
+  UNARY_OPERATOR OPERAND
+
+=head2 Binary Operator
+
+The binary operator is the L<operator|/"Operator"> that has the left operand and the right operand.
+
+  LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
+
 =head2 Operator Precidence
 
 The definition of the precidence of operators. This is written by yacc/bison syntax.
@@ -4090,8 +4102,6 @@ Integral types are the following four types.
 
 =end html
 
-See also L<arithmetic operators|/"Arithmetic Operator"> to calculate integer values.
-
 Note that SPVM has only B<singed> integer types, and doesn't have B<unsigned> integer types.
 
 =head2 Integer Type Within int
@@ -4159,8 +4169,6 @@ B<Floating Point Type> are the following two.
 </table>
 
 =end html
-
-See also L<arithmetic operators|/"Arithmetic Operator"> to calculate floating-point values.
 
 =head2 float Type
 
@@ -6791,53 +6799,11 @@ B<Examples:>
 
 =head1 Operator
 
-The operator performs an operation that returns the value.
-
-Operators are L<unary operators/"Unary Operator">, L<binary operators|/"Binary Operator">, L<increment operators|/"Increment Operator">, L<decrement operators|/"Decrement Operator">, L<comparison operators|/"Comparison Operator">, L<logical operators|/"Logical Operator"> the L<method call|/"Method Call">, and L<assignment operators|/"Assignment Operator">.
-
-=head2 Unary Operator
-
-The unary operator is the operator that has an operand.
-
-  UNARY_OPERATOR OPERAND
-
-Unary operators are the L<unary plus operator|/"Unary Plus Operator">, the L<unary minus operator|/"Unary Minus Operator">, the L<bit NOT operator|/"Bit NOT Operator">, the L<array length operator|/"The array Length Operator">, the L<string creating operator|/"String Creating Operator">, and the L<string length operator|/"String Length Operator">.
-
-=head2 Binary Operator
-
-The binary operator is the L<operator|/"Operator"> that has the left operand and the right operand.
-
-  LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
-
-Binary operators are the L<addition operator/"Addition Operator">, the L<subtraction operator|/"Subtraction Operator">, the L<multiplication operator|/"Multiplication Operator">, the L<division operator|/"Division Operator">, the L<remainder operator|/"Remainder Operator">, the L<bit AND operator|/"Bit AND Operator">, the L<bit OR operator|/"Bit OR Operator">, the L<shift operators/"Shift Operator">, and the L<string concatenation operator|/"String Concatenation Operator">.
-
-=head2 Sequential Operator
-
-The sequential operator C<,> is an L<operator|/"Operator"> like the following.
-
-  (OPERAND1, OPERAND2, ..., OPERNADN)
-
-The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
-
-B<Exampless:>
-
-  # 3 is assigned to $foo
-  my $foo = (1, 2, 3);
-  
-  # $x is 3, $ret is 5
-  my $x = 1;
-  my $y = 2;
-  my $ret = ($x += 2, $x + $y);
-
-=head2 Arithmetic Operator
-
-Arithmetic operators are the L<operators/"Operator"> to perform arithmetic operations.
-
-Arithmetic operators are the L<additional operator|/"Addition Operator">, the L<subtraction operator|/"Subtraction Operator">, the L<multiplication operator|/"Multiplication Operator">, the L<division|/"Division Operator">, the L<division unsigned int operator|/"Division Unsigned Int Operator">, the L<division unsigned long operator|/"Division Unsigned Long Operator">, the L<reminder operator|/"Remainder Operator">, the L<remainder unsigned int operator|/"Remainder Unsigned Int Operator">, the L<remainder unsigned long operator|/"Remainder Unsigned Long Operator">, the L<unary plus operator/"Unary Plus Operator">, the L<umary minus operator|/"Unary Minus Operator">, the L<increment operators|/"Increment Operator">, and the L<decrement operators|/"Decrement Operator">.
+An operator performs an operation that process something and returns a value.
 
 =head2 Unary Plus Operator
 
-The unary plus operator C<+> is an L<unary operator|/"Unary Operator"> to return the value of the operand.
+The unary plus operator C<+> is an L<operator|/"Operator"> to return the value of the operand.
 
   +OPERAND
 
@@ -6856,7 +6822,7 @@ B<Examples:>
 
 =head2 Unary Minus Operator
 
-The unary minus operator C<-> is an L<unary operator|/"Unary Operator"> to return the negative value of the operand.
+The unary minus operator C<-> is an L<operator|/"Operator"> to return the negative value of the operand.
 
   -OPERAND
 
@@ -6877,7 +6843,7 @@ B<Examples:>
 
 =head2 Addition Operator
 
-The addition operator C<+> is a L<binary operator|/"Binary Operator"> to calculate the result of the addition of two numbers.
+The addition operator C<+> is an L<operator|/"Operator"> to calculate the result of the addition of two numbers.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
@@ -6893,7 +6859,7 @@ The return type of the addition operator is the type that the L<binary numeric c
 
 =head2 Subtraction Operator
 
-The subtraction operator C<-> is a L<binary operator|/"Binary Operator"> to calculate the result of the subtraction of two numbers.
+The subtraction operator C<-> is an L<operator|/"Operator"> to calculate the result of the subtraction of two numbers.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
@@ -6909,7 +6875,7 @@ The return type of the subtraction operator is the type that the L<binary numeri
 
 =head2 Multiplication Operator
 
-The multiplication operator is a L<binary operator|/"Binary Operator"> to calculate the result of multiplication of two numbers.
+The multiplication operator is an L<operator|/"Operator"> to calculate the result of multiplication of two numbers.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
@@ -6925,7 +6891,7 @@ The return type of the multiplication operator is the type after the L<binary nu
 
 =head2 Division Operator
 
-The division operator C</> is a L<binary operator|/"Binary Operator"> to culcurate the division of two numbers.
+The division operator C</> is an L<operator|/"Operator"> to culcurate the division of two numbers.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
@@ -6943,7 +6909,7 @@ If the two operands are L<integer types|/"Integer Type"> and the value of the ri
 
 =head2 Division Unsigned Int Operator
 
-The division unsigned int operator C<divui> is a L<binary operator|/"Binary Operator"> to culcurate the unsigned int division of two numbers.
+The division unsigned int operator C<divui> is an L<operator|/"Operator"> to culcurate the unsigned int division of two numbers.
 
   LEFT_OPERAND divui RIGHT_OPERAND
 
@@ -6959,7 +6925,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Division Unsigned Long Operator
 
-The division unsigned long operator C<divul> is a L<binary operator|/"Binary Operator"> to culcurate the unsigned long division of two numbers.
+The division unsigned long operator C<divul> is an L<operator|/"Operator"> to culcurate the unsigned long division of two numbers.
 
   LEFT_OPERAND divul RIGHT_OPERAND
 
@@ -6975,7 +6941,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Remainder Operator
 
-The remainder operator C<%> is a L<binary operator|/"Binary Operator"> to calculate a remainder of two numbers.
+The remainder operator C<%> is an L<operator|/"Operator"> to calculate a remainder of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
@@ -6993,7 +6959,7 @@ If the right operand is C<0>, the remainder operator throw an L<exception|/"Exce
 
 =head2 Remainder Unsigned Int Operator
 
-The remainder unsigned int operator C<remui> is a L<binary operator|/"Binary Operator"> to calculate a unsigned int remainder of two numbers.
+The remainder unsigned int operator C<remui> is an L<operator|/"Operator"> to calculate a unsigned int remainder of two numbers.
 
   LEFT_OPERAND remui RIGHT_OPERAND
 
@@ -7009,7 +6975,7 @@ If the value of the right operand is C<0>, an L<exception|/"Exception"> is throw
 
 =head2 Remainder Unsigned Long Operator
 
-The remainder unsigned long operator C<remul> is a L<binary operator|/"Binary Operator"> to calculate a unsigned long remainder of two numbers.
+The remainder unsigned long operator C<remul> is an L<operator|/"Operator"> to calculate a unsigned long remainder of two numbers.
 
   LEFT_OPERAND remul RIGHT_OPERAND
 
@@ -7221,7 +7187,7 @@ B<Examples:>
 
 =head2 Bit NOT Operator
 
-The bit NOT operator C<~> is an L<unary operator|/"Unary Operator"> to perform the bit NOT operation.
+The bit NOT operator C<~> is an L<operator|/"Operator"> to perform the bit NOT operation.
 
   ~OPERAND
 
@@ -7246,7 +7212,7 @@ Shift operators are operators that performs bit shift operations. These are L</"
 
 =head2 Left Shift Operator
 
-The left shift operator C<E<lt>E<lt>> is a L<binary operator|/"Binary Operator"> to perform the left bit shift.
+The left shift operator C<E<lt>E<lt>> is an L<operator|/"Operator"> to perform the left bit shift.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
@@ -7266,7 +7232,7 @@ The calculation result of the left shift operator is the same as the following c
 
 =head2 Arithmetic Right Shift Operator
 
-The arithmetic right shift operator C<E<gt>E<gt>> is a L<binary operator|/"Binary Operator"> to perform the arithmetic right bit shift.
+The arithmetic right shift operator C<E<gt>E<gt>> is an L<operator|/"Operator"> to perform the arithmetic right bit shift.
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
@@ -7286,7 +7252,7 @@ The operation result of the arithmetic right shift Operator is the operation tha
 
 =head2 Logical Right Shift Operator
 
-The logical right shift operator C<E<gt>E<gt>E<gt>>is a L<binary operator|/"Binary Operator"> to perform the logical right bit shift.
+The logical right shift operator C<E<gt>E<gt>E<gt>>is an L<operator|/"Operator"> to perform the logical right bit shift.
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
@@ -7656,7 +7622,7 @@ Thg logical NOT operator performs the L<bool conversion|/"Bool Conversion"> to t
 
 =head2 String Concatenation Operator
 
-String concatenation operator C<.> is a L<binary operator|/"Binary Operator"> to concat two strings.
+String concatenation operator C<.> is an L<operator|/"Operator"> to concat two strings.
 
   LEFT_OPERAND . RIGHT_OPERAND
 
@@ -7680,7 +7646,7 @@ B<Examples:>
 
 =head2 Assignment Operator
 
-The assignment operator C<=> is a L<binary operator|/"Binary Operator"> to assign a value.
+The assignment operator C<=> is an L<operator|/"Operator"> to assign a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
@@ -7791,7 +7757,7 @@ B<Examples:>
 
 =head2 Array Length Operator
 
-The array length operator is an L<unary operator|/"Unary Operator"> to get the length of the array.
+The array length operator is an L<operator|/"Operator"> to get the length of the array.
 
   @OPERAND
 
@@ -7815,7 +7781,7 @@ Note that SPVM does not have the context different from Perl, and array length o
 
 =head2 new_string_len Operator
 
-The C<new_string_len> operator is an L<unary operator|/"Unary Operator"> to create a L<string|/"String"> with the length.
+The C<new_string_len> operator is an L<operator|/"Operator"> to create a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
@@ -7838,7 +7804,7 @@ B<Examples:>
 
 =head2 copy Operator
 
-The C<copy> operator is an L<unary operator|/"Unary Operator"> to copy the object.
+The C<copy> operator is an L<operator|/"Operator"> to copy the object.
 
   copy OPERAND
 
@@ -7860,7 +7826,7 @@ B<Examples:>
 
 =head2 is_read_only Operator
 
-The C<is_read_only> is an L<unary operator|/"Unary Operator"> to check if the L<string|/"String"> is read-only.
+The C<is_read_only> is an L<operator|/"Operator"> to check if the L<string|/"String"> is read-only.
 
   is_read_only OPERAND
 
@@ -7878,7 +7844,7 @@ B<Examples:>
 
 =head2 String Length Operator
 
-The string length operator C<length> is an L<unary operator|/"Unary Operator"> to get the length of the string.
+The string length operator C<length> is an L<operator|/"Operator"> to get the length of the string.
 
   length OPERAND
 
@@ -8685,6 +8651,24 @@ B<Examples:>
   # Postfix type cast
   my $point = Point->new;
   my $stringable = $point->(Stringable);
+
+=head2 Sequential Operator
+
+The sequential operator C<,> is an L<operator|/"Operator"> like the following.
+
+  (OPERAND1, OPERAND2, ..., OPERNADN)
+
+The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
+
+B<Exampless:>
+
+  # 3 is assigned to $foo
+  my $foo = (1, 2, 3);
+  
+  # $x is 3, $ret is 5
+  my $x = 1;
+  my $y = 2;
+  my $ret = ($x += 2, $x + $y);
 
 =head1 void Returning Operator
 
