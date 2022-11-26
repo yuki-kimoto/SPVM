@@ -6835,15 +6835,22 @@ Examples:
 
 The unary minus operator C<-> returns the negative value of the C<OPERAND>.
 
-The operand must be an L<operator|/"Operator"> that type is a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
+Compilation Errors:
+
+The C<OPERAND> must be a L<numeric type|/"Numeric Type">.
+
+Type Conversion:
 
 If the C<OPERAND> is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
 
-The unary minus operator C<-> performs the following operation of C<C language>.
-
-  -x
-
-The return type is the type of the C<OPERAND> or the type that the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on.
+Return Type and Operand Types:
+  
+  int (OPERAND : byte)
+  int (OPERAND : short)
+  int (OPERAND : int)
+  long (OPERAND : long)
+  float (OPERAND : float)
+  double (OPERAND : double)
 
 Examples:
 
@@ -6852,19 +6859,23 @@ Examples:
 
 =head2 Addition Operator
 
-The addition operator C<+> is an L<operator|/"Operator"> to calculate the result of the addition of two numbers.
-
   LEFT_OPERAND + RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error will occur.
+The addition operator C<+> calculates the addition of the C<LEFT_OPERAND> and the C<RIGHT_OPERAND>.
 
-the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+Compilation Errors:
 
-The addition operator performs the operation that exactly same as the following operation in C<C language>.
+The C<LEFT_OPERAND> and the C<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">.
 
-  x + y;
+Type Conversion:
 
-The return type of the addition operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on C<LEFT_OPERAND> and C<RIGHT_OPERAND>.
+
+Return Type and Operand Types:
+
+  RETURN_TYPE (OPERAND_LEFT : byte|short|int|long|float|double, OPERAND_RIGHT : byte|short|int|long|float|double)
+
+The C<RETURN_TYPE> is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 =head2 Subtraction Operator
 
