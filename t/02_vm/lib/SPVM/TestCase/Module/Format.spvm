@@ -493,10 +493,11 @@ class TestCase::Module::Format {
   }
 
   static method sprintf_p : int () {
-    
     {
       my $point = Point->new;
       my $formatted = Format->sprintf("%p", $point);
+      
+      warn "[Test Output]$formatted";
       
       unless ($formatted->[0] == '0') {
         return 0;

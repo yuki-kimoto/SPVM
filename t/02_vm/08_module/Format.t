@@ -27,11 +27,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Format->sprintf_lu);
   ok(SPVM::TestCase::Module::Format->sprintf_lX);
   ok(SPVM::TestCase::Module::Format->sprintf_lx);
-  like(SPVM::TestCase::Module::Format->sprintf_p_value, qr/^(0(x|X))?[0-9a-fA-F]+$/);
   ok(SPVM::TestCase::Module::Format->sprintf_s);
   ok(SPVM::TestCase::Module::Format->sprintf_u);
   ok(SPVM::TestCase::Module::Format->sprintf_x);
   ok(SPVM::TestCase::Module::Format->sprintf_p);
+  like(SPVM::TestCase::Module::Format->sprintf_p_value, qr/^0x?[0-9a-fA-F]+$/);
   
   # Extra
   {

@@ -21,6 +21,8 @@
     * The bug that original exception is overwriten by destructor exception
       https://github.com/yuki-kimoto/SPVM/issues/253
     * Fixed the bug that Windows I/O binary mode in spvmcc command.
+  [Incompatible Bug Fix]
+    * Fixed the bug that Format->sprintf "%p" output differs Linux and Windows.  "0x" is added to the output on Windows.
   [New Features]
     * The method can have the more optional arguments than the arguments of the interface method.
     * Added the following methods to the Fn class.

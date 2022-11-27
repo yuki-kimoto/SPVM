@@ -132,7 +132,7 @@ int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
-  int32_t length = snprintf(formatted_string, max_length + 1, "%p", value);
+  int32_t length = snprintf(formatted_string, max_length + 1, "0x%"PRIxPTR, (uintptr_t)value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
