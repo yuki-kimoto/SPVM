@@ -41,19 +41,6 @@ use SPVM::Builder::LinkInfo;
   
   $object_file->config("test");
   is($object_file->config(), "test");
-  
-  # TODO: 下のテストをPASSさせるように
-  # $object_file->new("test");
-  # is($object_file->new(), "test");
-  #
-  # $object_file->create_merged_ldflags("test");
-  # is($object_file->create_merged_ldflags(), "test");
-  # 
-  # $object_file->create_link_command("test");
-  # is($object_file->create_link_command(), "test");
-  # 
-  # $object_file->to_string("test");
-  # is($object_file->to_string(), "test");
 }
 
 done_testing;
