@@ -598,7 +598,7 @@ class TestCase::Module::Hash {
 
     {
       $hash->set_short(foo => Fn->INT16_MAX);
-      my $value = $hash->delete_or_default_short("foo", 1);
+      my $value = $hash->delete_or_default_short("foo", Fn->INT16_MIN);
       unless ($value == Fn->INT16_MAX) {
         return 0;
       }
@@ -609,7 +609,7 @@ class TestCase::Module::Hash {
 
     {
       $hash->set_int(foo => Fn->INT32_MAX);
-      my $value = $hash->delete_or_default_int("foo", 1);
+      my $value = $hash->delete_or_default_int("foo", Fn->INT32_MIN);
 
       unless ($value == Fn->INT32_MAX) {
         return 0;
@@ -621,7 +621,7 @@ class TestCase::Module::Hash {
 
     {
       $hash->set_long(foo => Fn->INT64_MAX);
-      my $value = $hash->delete_or_default_long("foo");
+      my $value = $hash->delete_or_default_long("foo", Fn->INT64_MIN);
 
       unless ($value == Fn->INT64_MAX) {
         return 0;
@@ -633,7 +633,7 @@ class TestCase::Module::Hash {
 
     {
       $hash->set_float(foo => Fn->FLT_MIN);
-      my $value = $hash->delete_or_default_float("foo");
+      my $value = $hash->delete_or_default_float("foo", Fn->FLT_MIN);
 
       unless ($value == Fn->FLT_MIN) {
         return 0;
@@ -645,7 +645,7 @@ class TestCase::Module::Hash {
 
     {
       $hash->set_double(foo => Fn->DBL_MIN);
-      my $value = $hash->delete_or_default_double("foo");
+      my $value = $hash->delete_or_default_double("foo", Fn->DBL_MIN);
 
       unless ($value == Fn->DBL_MIN) {
         return 0;
@@ -689,7 +689,7 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
     return 1;
   }
 }

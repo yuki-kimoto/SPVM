@@ -389,9 +389,9 @@ class Hash {
       die "The \$key must be defined";
     }
     
-    my $value = 0;
+    my $value = 0L;
     if ($self->exists($key)) {
-      $value = $self->get_long($key);
+      $value = (long)$self->get_long($key);
       $self->delete($key);
     }
     else {
@@ -407,7 +407,7 @@ class Hash {
       die "The \$key must be defined";
     }
     
-    my $value = 0;
+    my $value = 0f;
     if ($self->exists($key)) {
       $value = $self->get_float($key);
       $self->delete($key);
@@ -425,7 +425,7 @@ class Hash {
       die "The \$key must be defined";
     }
     
-    my $value = 0;
+    my $value = 0.0;
     if ($self->exists($key)) {
       $value = $self->get_double($key);
       $self->delete($key);
@@ -461,7 +461,7 @@ class Hash {
       die "The \$key must be defined";
     }
     
-    my $value = 0;
+    my $value = (object)undef;
     if ($self->exists($key)) {
       $value = $self->get($key);
       $self->delete($key);
