@@ -123,19 +123,71 @@ class TestCase::Module::StringBuffer {
   }
   
   static method push  : int () {
-    my $buffer = StringBuffer->new;
-    $buffer->push ("abc");
-    unless ($buffer->to_string eq "abc") {
-      return 0;
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push ("abc");
+      unless ($buffer->to_string eq "abc") {
+        return 0;
+      }
+      $buffer->push ("de");
+      unless ($buffer->to_string eq "abcde") {
+        return 0;
+      }
+      $buffer->push ("f");
+      unless ($buffer->to_string eq "abcdef") {
+        return 0;
+      }
     }
-    $buffer->push ("de");
-    unless ($buffer->to_string eq "abcde") {
-      return 0;
+
+    {
+      my $buffer = StringBuffer->new;
+      my $offset = 1;
+      my $length = 2;
+      $buffer->push ("abcd", $offset, $length);
+      unless ($buffer->to_string eq "bc") {
+        return 0;
+      }
     }
-    $buffer->push ("f");
-    unless ($buffer->to_string eq "abcdef") {
-      return 0;
+    
+    # Exceptions
+    {
+      {
+        my $buffer = StringBuffer->new;
+        my $string = (string)undef;
+        my $offset = 1;
+        my $length = 2;
+        eval { $buffer->push ($string, $offset, $length); };
+        
+        unless (Fn->contains($@, "The \$string must be defined")) {
+          return 0;
+        }
+      }
+      {
+        my $buffer = StringBuffer->new;
+        my $string = "abcd";
+        my $offset = -1;
+        my $length = 2;
+        eval { $buffer->push ($string, $offset, $length); };
+        
+        unless (Fn->contains($@, "The \$offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      {
+        my $buffer = StringBuffer->new;
+        my $string = "abcd";
+        my $offset = 1;
+        my $length = 4;
+        eval { $buffer->push ($string, $offset, $length); };
+        
+        unless (Fn->contains($@, "The \$offset + \$length must be less than or equal to the length of the \$string")) {
+          return 0;
+        }
+      }
     }
+    
+    $@ = undef;
+    
     return 1;
   }
   

@@ -54,15 +54,32 @@ class StringBuffer {
   }
   
   # Instance methods
-  method push : void ($string : string) {
-    my $length = $self->{length};
+  method push : void ($string : string, $offset = 0 : int, $length = -1 : int) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
     my $string_length = length $string;
     
-    my $new_length = $length + $string_length;
+    unless ($offset >= 0) {
+      die "The \$offset must be greater than or equal to 0";
+    }
+    
+    if ($length == -1) {
+      $length = length $string - $offset;
+    }
+    
+    unless ($offset + $length <= $string_length) {
+      die "The \$offset + \$length must be less than or equal to the length of the \$string";
+    }
+    
+    my $buffer_length = $self->{length};
+    my $new_length = $buffer_length + $length;
     $self->_maybe_extend($new_length);
     
-    Fn->memcpy($self->{value}, $length, $string, 0, $string_length);
-    $self->{length} += $string_length;
+    Fn->memcpy($self->{value}, $buffer_length, $string, $offset, $length);
+    
+    $self->{length} += $length;
   }
   
   method push_char : void ($char : int) {

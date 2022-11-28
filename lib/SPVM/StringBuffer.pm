@@ -63,61 +63,73 @@ The value. This is the internally used string, but it can be manipulated directl
 
   static method new : StringBuffer ($string = undef : string, $capacity = -1 : int);
 
-Create a new C<StringBuffer> object using L</"new_len">.
+Creates a new C<StringBuffer> object using L</"new_len">.
 
-The passed length to L</"new_len"> is the length of the string. If the string is C<undef>, the length is C<0>.
+The passed C<$length> to L</"new_len"> is the length of the C<$string>. If the string is C<undef>, it is C<0>.
 
-The string is copied to the value of the the created string buffer.
+The C<$string> is copied to the value of the the created string buffer.
 
 =head2 new_len
 
   static method new_len : StringBuffer ($length : int, $capacity = -1 : int);
 
-Create a new C<StringBuffer> object with the length and the capacity.
+Creates a new C<StringBuffer> object with the C<$length> and the C<$capacity>.
 
-If the capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If the C<$capacity> is less than C<0>, the C<$capacity> is set to the value of L</"DEFAULT_CAPACITY">.
 
-If the length is greater than the capacity, the capacity is set to the length.
+If the C<$length> is greater than the C<$capacity>, the C<$capacity> is set to the C<$length>.
 
-The C<$length> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+Exceptions:
+
+The C<$length> must be greater than or equal to C<0>.
 
 =head1 Instance Methods
 
 =head2 push
 
-  method push  : void ($string : string);
+  method push : void ($string : string, $offset = 0 : int, $length = -1 : int);
 
-Add a string after the end of the string in the string buffer.
+Adds a C<$string> from the C<$offset> to the position proceeded by the C<$length> after the end of the string in the string buffer.
+
+Exceptions:
+
+The C<$string> must be defined.
+
+The C<$offset> must be greater than or equal to 0.
+
+The C<$offset> + C<$length> must be less than or equal to the length of the C<$string>.
 
 =head2 push_char
 
   method push_char : void ($char : int);
 
-Add a character after the end of the string in the string buffer.
+Adds Ascii C<$char> after the end of the string in the string buffer.
 
 =head2 replace
 
   method replace : void ($offset : int, $length : int, $replace : string);
 
-Replace the characters of the range specified by the offset and the lenght with the replacement string.
+Replace the characters of the range specified by the C<$offset> and the C<$length> in the buffer with the C<$replace> string.
 
 Exceptions:
 
 The C<$offset> must be greater than or equal to C<0>.
 
-The C<$offset> + the C<$removing> lenght must be less than or equal to the length of the C<$string> buffer.
+The C<$offset> + the C<$length> must be less than or equal to the length of the string buffer.
 
 =head2 reserve
 
   method reserve : void ($new_capacity : int);
 
-Reserve the characters with the new capacity.
+Reserves the characters that size is the C<$new_capacity>.
 
-If the new capacity is greater than the capacity of the string buffer, the capacity of the string buffer is extended to the new capacity.
+If the C<$new_capacity> is greater than the capacity of the string buffer, the capacity of the string buffer is extended to the C<$new_capacity>.
 
 Note that L</"value"> is replaced with the new value and the value of the original string buffer are copied to the new value in the above case.
 
-The C<$new_capacity> must be greater than or equal to C<0>. Otherwise an excpetion will be thrown.
+Exceptions:
+
+The C<$new_capacity> must be greater than or equal to C<0>.
 
 =head2 to_string
 

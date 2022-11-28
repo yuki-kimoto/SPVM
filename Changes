@@ -1,4 +1,25 @@
 0.9663 2022-11-28
+  [New Features]
+    * Added the follwoing opitonal arguments to the push method in the StringBuffer class.
+      
+      [Before]
+      method push : void ($string : string);
+      
+      [After]
+      method push : void ($string : string, $offset = 0 : int, $length = -1 : int);
+      
+      And added the some exceptions. See the doc.
+
+        Adds a C<$string> from the C<$offset> to the position proceeded by the C<$length> after the end of the string in the string buffer.
+
+        Exceptions:
+
+        The C<$string> must be defined.
+
+        The C<$offset> must be greater than or equal to 0.
+
+        The C<$offset> + C<$length> must be less than or equal to the length of the C<$string>.
+      
   [Imcompatible New Features]
     * The octal escape character \000 and \o{} is added.
       \000 got to be interpreted \o{00} instead of "\0" . "00"
