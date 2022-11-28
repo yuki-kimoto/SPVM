@@ -562,6 +562,8 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =item * L<Ryunosuke Murakami|https://github.com/ryun0suke22>
 
+=item * L<Yoshiyuki Itoh|https://github.com/YoshiyukiItoh>
+
 =back
 
 =head1 Copyright & LICENSE
