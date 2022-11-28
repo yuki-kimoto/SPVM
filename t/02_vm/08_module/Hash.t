@@ -25,6 +25,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Hash->keys);
   ok(SPVM::TestCase::Module::Hash->values);
   ok(SPVM::TestCase::Module::Hash->copy);
+  ok(SPVM::TestCase::Module::Hash->clone);
   ok(SPVM::TestCase::Module::Hash->new);
 }
 

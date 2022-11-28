@@ -29,6 +29,14 @@ C<Hash> is Hash Data Structure. This is generally called associative array.
 
 The hash function is C<siphash-1-3>.
 
+=head1 Interfaces
+
+=over 2
+
+=item * L<Cloneable|SPVM::Cloneable>
+
+=back
+
 =head1 Class Methods
 
 =head2 new
@@ -56,6 +64,12 @@ Counts keys in the hash.
 Copies hash.
 
 This is not deep copy. Address of keys and values is copied into new hash.
+
+=head2 clone
+
+   method clone : Hash ();
+
+The alias for the L</"copy">.
 
 =head2 delete
 

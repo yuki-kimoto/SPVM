@@ -1,4 +1,6 @@
 class Hash {
+  interface Cloneable;
+  
   use Hash::Entry;
   use Fn;
   use Array;
@@ -166,6 +168,10 @@ class Hash {
       $ret->set($keys->[$i], $self->get($keys->[$i]));
     }
     return $ret;
+  }
+
+  method clone : Hash () {
+    return $self->copy;
   }
 
   native static method _murmur_hash : long ($string : string, $seed : int);

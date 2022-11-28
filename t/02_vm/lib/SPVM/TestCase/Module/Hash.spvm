@@ -499,4 +499,25 @@ class TestCase::Module::Hash {
     }
     return 1;
   }
+
+  static method clone : int () {
+    my $hash = Hash->new({});
+    for (my $i = 0; $i < 3; ++$i) {
+      $hash->set("key$i", $i);
+    }
+    my $clone = (Hash)$hash->(Cloneable)->clone;
+    for (my $i = 0; $i < 3; ++$i) {
+      unless (((Int)$clone->get("key$i"))->value == $i) {
+        return 0;
+      }
+    }
+    $clone->set("extra_key", 123);
+    if ($hash->exists("extra_keys")) {
+      return 0;
+    }
+    unless ($clone->exists("extra_key")) {
+      return 0;
+    }
+    return 1;
+  }
 }
