@@ -16,6 +16,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Character literal
 {
   ok(SPVM::TestCase::Literal::Character->character_literal);
+  ok(SPVM::TestCase::Literal::Character->character_literal_hex);
 }
 
 # All object is freed

@@ -59,6 +59,10 @@ class TestCase::Literal::Character {
       }
     }
     
+    return 1;
+  }
+  
+  static method character_literal_hex : int () {
     # Hexadecimal escape character
     {
       # All hexadecimal numbers
