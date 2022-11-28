@@ -21,6 +21,8 @@
         The C<$offset> + C<$length> must be less than or equal to the length of the C<$string>.
     * Added the follwoing method to the Hash class.
       method clone : Hash ();
+      method to_array : object[] ($sort = 0 : int);
+
     * Added the Cloneable interface to tha Hash class.
       
   [Imcompatible New Features]

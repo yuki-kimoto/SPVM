@@ -184,3 +184,11 @@ Sets the C<double> C<$value> with the C<$key>. the C<$value> is converted to L<D
   set_string : void ($key : string, $value : string)
 
 Sets the string C<$value> with the C<$key>.
+
+=head2 to_array
+
+  method to_array : object[] ($sort = 0 : int);
+
+Converts the hash to an array.
+
+If C<$sort> is a true value, the keys are sorted by the asc order.

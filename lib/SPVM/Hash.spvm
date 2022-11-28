@@ -5,6 +5,7 @@ class Hash {
   use Fn;
   use Array;
   use Time;
+  use Sort;
 
   has bucket_count : int;
   has count : ro int;
@@ -168,6 +169,25 @@ class Hash {
       $ret->set($keys->[$i], $self->get($keys->[$i]));
     }
     return $ret;
+  }
+
+  precompile method to_array : object[] ($sort = 0 : int) {
+    my $keys = $self->keys;
+    my $keys_length = @$keys;
+    
+    if ($sort) {
+      Sort->sort_string_asc($keys);
+    }
+    
+    my $array = new object[$keys_length * 2];
+    for (my $i = 0; $i < $keys_length; $i++) {
+      my $key = $keys->[$i];
+      $array->[$i * 2] = $key;
+      my $value = $self->get($key);
+      $array->[$i * 2 + 1] = $value;
+    }
+    
+    return $array;
   }
 
   method clone : Hash () {

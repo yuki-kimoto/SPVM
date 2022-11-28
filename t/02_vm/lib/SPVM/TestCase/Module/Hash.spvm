@@ -520,4 +520,63 @@ class TestCase::Module::Hash {
     }
     return 1;
   }
+
+  static method to_array : int () {
+    {
+      my $hash = Hash->new;
+      for (my $i = 0; $i < 3; ++$i) {
+        $hash->set("key$i", $i);
+      }
+      
+      my $array = $hash->to_array;
+      
+      my $new_hash = Hash->new($array);
+      my $keys_new_hash = $new_hash->keys;
+      unless (@$keys_new_hash == 3) {
+        return 0;
+      }
+      
+      unless ($new_hash->get_int("key0") == 0) {
+        return 0;
+      }
+      unless ($new_hash->get_int("key1") == 1) {
+        return 0;
+      }
+      unless ($new_hash->get_int("key2") == 2) {
+        return 0;
+      }
+    }
+    {
+      my $hash = Hash->new;
+      for (my $i = 0; $i < 3; ++$i) {
+        $hash->set("key$i", $i);
+      }
+      
+      my $sort = 1;
+      my $array = $hash->to_array($sort);
+      
+      unless ($array->[0]->(string) eq "key0") {
+        return 0;
+      }
+      unless ($array->[1]->(int) == 0) {
+        return 0;
+      }
+      unless ($array->[2]->(string) eq "key1") {
+        return 0;
+      }
+      unless ($array->[3]->(int) == 1) {
+        return 0;
+      }
+      unless ($array->[4]->(string) eq "key2") {
+        return 0;
+      }
+      unless ($array->[5]->(int) == 2) {
+        return 0;
+      }
+      
+    }
+    
+    
+    return 1;
+  }
 }
