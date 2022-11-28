@@ -936,19 +936,21 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // Octal escape character
             else if (*compiler->bufptr == '0' || *compiler->bufptr == 'o') {
+              char* char_ptr = compiler->bufptr;
+
               int32_t is_o_escape_character = 0;
-              if (*compiler->bufptr == 'o') {
+              if (*char_ptr == 'o') {
                 is_o_escape_character = 1;
               }
               
-              compiler->bufptr++;
+              char_ptr++;
 
               // {
               int32_t has_brace = 0;
               if (is_o_escape_character) {
-                if (*compiler->bufptr == '{') {
+                if (*char_ptr == '{') {
                   has_brace = 1;
-                  compiler->bufptr++;
+                  char_ptr++;
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace at %s line %d", compiler->cur_file, compiler->cur_line);
@@ -957,12 +959,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               char hex_escape_char[3] = {0};
               int32_t hex_escape_char_index = 0;
-              while (SPVM_TOKE_is_octal_number(compiler, *compiler->bufptr)) {
+              while (SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
                 if (hex_escape_char_index >= 2) {
                   break;
                 }
-                hex_escape_char[hex_escape_char_index] = *compiler->bufptr;
-                compiler->bufptr++;
+                hex_escape_char[hex_escape_char_index] = *char_ptr;
+                char_ptr++;
                 hex_escape_char_index++;
               }
               
@@ -981,33 +983,37 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               if (has_brace) {
-                if (*compiler->bufptr == '}') {
-                  compiler->bufptr++;
+                if (*char_ptr == '}') {
+                  char_ptr++;
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                 }
               }
+              
+              compiler->bufptr = char_ptr;
             }
             // Hex escape character
             else if (*compiler->bufptr == 'x') {
-              compiler->bufptr++;
+              char* char_ptr = compiler->bufptr;
+              
+              char_ptr++;
 
               // {
               int32_t has_brace = 0;
-              if (*compiler->bufptr == '{') {
+              if (*char_ptr == '{') {
                 has_brace = 1;
-                compiler->bufptr++;
+                char_ptr++;
               }
               
               char hex_escape_char[3] = {0};
               int32_t hex_escape_char_index = 0;
-              while (SPVM_TOKE_is_hex_number(compiler, *compiler->bufptr)) {
+              while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
                 if (hex_escape_char_index >= 2) {
                   break;
                 }
-                hex_escape_char[hex_escape_char_index] = *compiler->bufptr;
-                compiler->bufptr++;
+                hex_escape_char[hex_escape_char_index] = *char_ptr;
+                char_ptr++;
                 hex_escape_char_index++;
               }
               
@@ -1020,13 +1026,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               if (has_brace) {
-                if (*compiler->bufptr == '}') {
-                  compiler->bufptr++;
+                if (*char_ptr == '}') {
+                  char_ptr++;
                 }
                 else {
                   SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                 }
               }
+              compiler->bufptr = char_ptr;
             }
             else {
               SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
