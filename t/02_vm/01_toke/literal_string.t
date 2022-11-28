@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(SPVM::TestCase::Literal::String->characters);
   ok(SPVM::TestCase::Literal::String->escape_character);
+  ok(SPVM::TestCase::Literal::String->octal_escape_character);
   ok(SPVM::TestCase::Literal::String->hexadecimal_escape_character);
   ok(SPVM::TestCase::Literal::String->unicode_escape_character);
   ok(SPVM::TestCase::Literal::String->raw_escape_character);

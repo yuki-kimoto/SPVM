@@ -207,4 +207,154 @@ class TestCase::Literal::Character {
 
     return 1;
   }
+
+  static method character_literal_octal : int () {
+    # Octal escape character \000
+    {
+      unless ('\0' == 0) {
+        return 0;
+      }
+      
+      unless ('\00' == 0) {
+        return 0;
+      }
+      
+      unless ('\01' == 1) {
+        return 0;
+      }
+      
+      unless ('\02' == 2) {
+        return 0;
+      }
+
+      unless ('\03' == 3) {
+        return 0;
+      }
+
+      unless ('\04' == 4) {
+        return 0;
+      }
+      
+      unless ('\05' == 5) {
+        return 0;
+      }
+      
+      unless ('\06' == 6) {
+        return 0;
+      }
+
+      unless ('\07' == 7) {
+        return 0;
+      }
+
+      unless ('\000' == 0) {
+        return 0;
+      }
+      
+      unless ('\001' == 1) {
+        return 0;
+      }
+      
+      unless ('\002' == 2) {
+        return 0;
+      }
+
+      unless ('\003' == 3) {
+        return 0;
+      }
+
+      unless ('\004' == 4) {
+        return 0;
+      }
+      
+      unless ('\005' == 5) {
+        return 0;
+      }
+      
+      unless ('\006' == 6) {
+        return 0;
+      }
+
+      unless ('\007' == 7) {
+        return 0;
+      }
+
+      unless ('\077' == 63) {
+        return 0;
+      }
+    }
+
+    # Octal escape character \000
+    {
+      unless ('\o{0}' == 0) {
+        return 0;
+      }
+      
+      unless ('\o{1}' == 1) {
+        return 0;
+      }
+      
+      unless ('\o{2}' == 2) {
+        return 0;
+      }
+
+      unless ('\o{3}' == 3) {
+        return 0;
+      }
+
+      unless ('\o{4}' == 4) {
+        return 0;
+      }
+      
+      unless ('\o{5}' == 5) {
+        return 0;
+      }
+      
+      unless ('\o{6}' == 6) {
+        return 0;
+      }
+
+      unless ('\o{7}' == 7) {
+        return 0;
+      }
+
+      unless ('\o{00}' == 0) {
+        return 0;
+      }
+      
+      unless ('\o{01}' == 1) {
+        return 0;
+      }
+      
+      unless ('\o{02}' == 2) {
+        return 0;
+      }
+
+      unless ('\o{03}' == 3) {
+        return 0;
+      }
+
+      unless ('\o{04}' == 4) {
+        return 0;
+      }
+      
+      unless ('\o{05}' == 5) {
+        return 0;
+      }
+      
+      unless ('\o{06}' == 6) {
+        return 0;
+      }
+
+      unless ('\o{07}' == 7) {
+        return 0;
+      }
+
+      unless ('\o{77}' == 63) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
 }

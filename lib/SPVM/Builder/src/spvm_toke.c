@@ -57,7 +57,7 @@ int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
 int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch) {
   (void)compiler;
   // SP, CR, LF, HT, FF
-  if (ch >= '0' && ch <= '8') {
+  if (ch >= '0' && ch <= '7') {
     return 1;
   }
   else {
