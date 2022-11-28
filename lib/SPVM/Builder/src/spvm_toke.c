@@ -1340,9 +1340,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  string_literal_tmp[string_literal_length] = ch;
-                  string_literal_length++;
-                  
                   if (has_brace) {
                     if (*char_ptr == '}') {
                       char_ptr++;
@@ -1351,6 +1348,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
                   }
+                  
+                  string_literal_tmp[string_literal_length] = ch;
+                  string_literal_length++;
                 }
                 // A hexadecimal escape character
                 else if (*char_ptr == 'x') {
@@ -1377,8 +1377,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   if (strlen(hex_escape_char) > 0) {
                     char* end;
                     ch = (char)strtol(hex_escape_char, &end, 16);
-                    string_literal_tmp[string_literal_length] = ch;
-                    string_literal_length++;
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be follow by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
@@ -1392,6 +1390,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
                   }
+                  
+                  string_literal_tmp[string_literal_length] = ch;
+                  string_literal_length++;
                 }
                 // Unicode escape character
                 // Note: "\N" is raw escape character, "\N{" is Unicode escape character
