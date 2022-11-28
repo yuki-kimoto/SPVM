@@ -1,4 +1,7 @@
 0.9663 2022-11-23
+  [Imcompatible New Features]
+    * The octal escape character \000 and \o{} is added.
+      \000 got to be interpreted \o{00} instead of "\0" . "00"
   [Internal Non-Affecting Changes]
     * Fixed the bug that MyTest::compile_ok and MyTest::compile_not_ok can't create the multi-level directory.
   [Compilation And Runtime Error Message Improvement]
