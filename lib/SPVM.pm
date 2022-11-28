@@ -560,6 +560,8 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =item * Suman Khanal
 
+=item * L<Ryunosuke Murakami|https://github.com/ryun0suke22>
+
 =back
 
 =head1 Copyright & LICENSE
