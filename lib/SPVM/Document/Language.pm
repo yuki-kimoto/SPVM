@@ -812,7 +812,15 @@ The list of character literal escape characters.
   </tr>
   <tr>
     <td>
-      <a href="#Hexadecimal-Escape-Character">Hexadecimal escape character</a>
+      <a href="#Octal-Escape-Character">Octal Escape Character</a>
+    </td>
+    <td>
+      An ASCII character
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="#Hexadecimal-Escape-Character">Hexadecimal Escape Character</a>
     </td>
     <td>
       An ASCII character
@@ -973,7 +981,15 @@ Examples:
   </tr>
   <tr>
     <td>
-      <a href="#Hexadecimal-Escape-Character">Hexadecimal escape character</a>
+      <a href="#Octal-Escape-Character">Octal Escape Character</a>
+    </td>
+    <td>
+      An ASCII character
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="#Hexadecimal-Escape-Character">Hexadecimal Escape Character</a>
     </td>
     <td>
       An ASCII character
@@ -1041,6 +1057,54 @@ The list of raw escape characters.
   \[ \] \^ \_ \`
   \b \d \g \h \k \p \s \v \w \z
   \{ \| \} \~
+
+=head2 Octal Escape Character
+
+The octal escape character is the way to write an ASCII code using octal numbers C<0-7>.
+
+The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+
+The octal escape character begins with C<\0> or C<\o{>.
+
+It must be followed by one or two C<0-7> except for C<\0>.
+
+The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
+
+  # Octal escape ch1racters in ch1racter literals
+  '\0'
+  '\012'
+  '\003'
+  '\001'
+  '\03'
+  '\01'
+  '\077'
+
+  # Octal escape ch1racters in ch1racter literals
+  '\o{0}'
+  '\o{12}'
+  '\o{03}'
+  '\o{01}'
+  '\o{3}'
+  '\o{1}'
+  '\o{77}'
+
+  # Octal escape ch1racters in string literals
+  "Foo \0 Bar"
+  "Foo \012 Bar"
+  "Foo \003 Bar"
+  "Foo \001 Bar"
+  "Foo \03  Bar"
+  "Foo \01  Bar"
+  "Foo \077 Bar"
+
+  # Octal escape ch1racters in string literals
+  "Foo \o{12} Bar"
+  "Foo \o{12} Bar"
+  "Foo \o{03} Bar"
+  "Foo \o{01} Bar"
+  "Foo \o{3}  Bar"
+  "Foo \o{1}  Bar"
+  "Foo \o{77} Bar"
 
 =head2 Hexadecimal Escape Character
 
