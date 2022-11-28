@@ -320,39 +320,4 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
 int32_t SPVM_API_get_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 void SPVM_API_set_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t flag);
 
-//  "& ~(intptr_t)1" means dropping weaken flag
-#define SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
-#define SPVM_API_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
-#define SPVM_API_INC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);\
-  }\
-} while (0)\
-
-#define SPVM_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
-#define SPVM_API_DEC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    if (SPVM_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, object); }\
-    else { env->dec_ref_count(env, stack, object); }\
-  }\
-} while (0)\
-
-#define SPVM_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
-#define SPVM_API_OBJECT_ASSIGN(env, stack, dist_address, src_object) \
-do {\
-  void* tmp_object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);\
-  if (tmp_object != NULL) {\
-    SPVM_API_INC_REF_COUNT_ONLY(env, stack, tmp_object);\
-  }\
-  if (*(void**)(dist_address) != NULL) {\
-    if (__builtin_expect(SPVM_API_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }\
-    if (SPVM_API_GET_REF_COUNT(env, stack, *(void**)(dist_address)) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)(dist_address)); }\
-    else { env->dec_ref_count(env, stack, *(void**)(dist_address)); }\
-  }\
-  *(void**)(dist_address) = tmp_object;\
-} while (0)\
-
 #endif

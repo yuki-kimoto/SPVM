@@ -34,63 +34,9 @@
 #include "spvm_api_allocator.h"
 #include "spvm_api_runtime.h"
 
+#include "spvm_inline_api.h"
+
 static const char* FILE_NAME = "spvm_vm.c";
-
-enum {
-  SPVM_API_C_STRING_CALL_STACK_ALLOCATION_FAILED,
-  SPVM_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
-  SPVM_API_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,
-  SPVM_API_C_STRING_DIVIDE_ZERO,
-  SPVM_API_C_STRING_CONCAT_LEFT_UNDEFINED,
-  SPVM_API_C_STRING_CONCAT_RIGHT_UNDEFINED,
-  SPVM_API_C_STRING_NEW_OBJECT_FAILED,
-  SPVM_API_C_STRING_NEW_ARRAY_FAILED,
-  SPVM_API_C_STRING_ARRRAY_LENGTH_SMALL,
-  SPVM_API_C_STRING_NEW_STRING_FAILED,
-  SPVM_API_C_STRING_STRING_LENGTH_SMALL,
-  SPVM_API_C_STRING_ARRAY_UNDEFINED,
-  SPVM_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE,
-  SPVM_API_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE,
-  SPVM_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED,
-  SPVM_API_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF,
-  SPVM_API_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE,
-  SPVM_API_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED,
-  SPVM_API_C_STRING_COPY_OPERAND_INVALID,
-  SPVM_API_C_STRING_ERROR_CODE_TOO_SMALL,
-  SPVM_API_C_STRING_WARN_AT,
-  SPVM_API_C_STRING_WARN_UNDEF,
-  SPVM_API_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,
-};
-
-
-
-
-
-static const char* string_literals[] = {
-  "The memory allocation for the call stack failed",
-  "The value can't be cast to the non-assignable type",
-  "The read-only string can't be cast to the mutable string type",
-  "Integral type values can't be divided by 0",
-  "The left operand of the \".\" operator must be defined",
-  "The right operand of the \".\" operator must be defined",
-  "The object creating failed",
-  "The array creating failed",
-  "The length of the array must be greater than or equal to 0",
-  "The string creating failed",
-  "The length of the string must be greater than or equal to 0",
-  "The array must be defined",
-  "The index of the array access must be greater than or equal to 0 and less than the length of the array",
-  "The element can't be assigned to the non-assignable type",
-  "The invocant of the field access must be defined",
-  "The unboxing conversion can't be performed on the undefined value",
-  "The source of the unboxing conversion must be the corresponding numeric object type",
-  "The memory allocation for the weaken back reference failed",
-  "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type",
-  "The error code must be greater than or equal to 1",
-  " at %s%s%s line %d\n",
-  "Warning: something's wrong at %s%s%s line %d\n",
-  "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
-};
 
 int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   (void)env;
@@ -336,7 +282,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           void** object_address = (void**)&object_vars[var_index];
           
           if (*(void**)&object_vars[var_index] != NULL) {
-            if (SPVM_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }
+            if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }
             else { env->dec_ref_count(env, stack, *object_address); }
           }
           
@@ -372,7 +318,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_OBJECT: {
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_BYTE: {
@@ -464,7 +410,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
@@ -475,7 +421,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         
         int32_t isa = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);
         if (isa) {
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         }
         else {
           void* exception = env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
@@ -493,7 +439,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           error = 1;
         }
         else {
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         }
         break;
       }
@@ -751,7 +697,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           void* string3 = env->concat_raw(env, stack, string1, string2);
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string3);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string3);
         }
         
         break;
@@ -1094,7 +1040,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           // Push object
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         }
         
         break;
@@ -1111,7 +1057,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1134,7 +1080,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1157,7 +1103,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1177,7 +1123,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1201,7 +1147,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             // Set array
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1225,7 +1171,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             // Set array
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1247,7 +1193,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1268,7 +1214,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1289,7 +1235,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         else {
@@ -1311,7 +1257,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           env->make_read_only(env, stack, string);
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0] , string);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0] , string);
         }
         break;
       }
@@ -1325,7 +1271,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             error = 1;
           }
           else {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
           }
         }
         else {
@@ -1483,7 +1429,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             void* object = ((void**)((intptr_t)array + object_header_byte_size))[index];
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
           }
         }
         break;
@@ -1625,7 +1571,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
-            SPVM_API_OBJECT_ASSIGN(env, stack, element_address, *(void**)&object_vars[opcode->operand2]);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, element_address, *(void**)&object_vars[opcode->operand2]);
           }
         }
         break;
@@ -1650,7 +1596,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             void* object = *(void**)&object_vars[opcode->operand2];
             int32_t elem_isa = env->elem_isa(env, stack, array, object);
             if (elem_isa) {
-              SPVM_API_OBJECT_ASSIGN(env, stack, element_address, object);
+              SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, element_address, object);
             }
             else {
               void* exception = env->new_string_nolen_raw(env, stack, string_literals[SPVM_API_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE]);
@@ -1678,7 +1624,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             void* object_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
-            SPVM_API_OBJECT_ASSIGN(env, stack, object_address, NULL);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, object_address, NULL);
           }
         }
         break;
@@ -1810,7 +1756,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           void* get_field_object = *(void**)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], get_field_object);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], get_field_object);
         }
         break;
       }
@@ -1923,7 +1869,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_API_OBJECT_ASSIGN(env, stack, get_field_object_address, *(void**)&object_vars[opcode->operand2]);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, *(void**)&object_vars[opcode->operand2]);
         }
         break;
       }
@@ -1940,7 +1886,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_API_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
         }
         break;
       }
@@ -1990,7 +1936,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand1;
         
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]);
         
         break;
       }
@@ -2039,19 +1985,19 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand0;
         
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], *(void**)&object_vars[opcode->operand1]);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], *(void**)&object_vars[opcode->operand1]);
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_id = opcode->operand0;
         
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL);
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], env->get_exception(env, stack));
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], env->get_exception(env, stack));
         
         break;
       }
@@ -2267,14 +2213,14 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         }
         else {
           void* type_name = env->get_type_name_raw(env, stack, object);
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], type_name);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], type_name);
         }
         break;
       }
       case SPVM_OPCODE_C_ID_DUMP: {
         void* object = object_vars[opcode->operand1];
         void* dump = env->dump_raw(env, stack, object);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], dump);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], dump);
         break;
       }
       case SPVM_OPCODE_C_ID_COPY: {
@@ -2288,11 +2234,11 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
           else {
             void* new_object_raw = env->copy_raw(env, stack, object);
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], new_object_raw);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], new_object_raw);
           }
         }
         else {
-          SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
+          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], NULL);
         }
         break;
       }
@@ -3338,42 +3284,42 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         sprintf(tmp_buffer, "%" PRId8, byte_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING: {
         sprintf(tmp_buffer, "%" PRId16, short_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_STRING: {
         sprintf(tmp_buffer, "%" PRId32, int_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_STRING: {
         sprintf(tmp_buffer, "%" PRId64, long_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_STRING: {
         sprintf(tmp_buffer, "%g", float_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_STRING: {
         sprintf(tmp_buffer, "%g", double_vars[opcode->operand1]);
         int32_t string_length = strlen(tmp_buffer);
         void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
@@ -3384,7 +3330,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
         memcpy(byte_array_data, src_string_data, src_string_length);
         
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], byte_array);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], byte_array);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING: {
@@ -3392,7 +3338,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t src_byte_array_length = env->length(env, stack, src_byte_array);
         int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);
         void* string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
@@ -3402,7 +3348,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int8_t*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3412,7 +3358,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int16_t*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3422,7 +3368,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int32_t*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3432,7 +3378,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(int64_t*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3442,7 +3388,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(float*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3452,7 +3398,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         void* object = env->new_object_raw(env, stack, basic_type_id);
         SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
         *(double*)&fields[0] = value;
-        SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
         
         break;
       }
@@ -3744,7 +3690,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
               {
-                SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+                SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -3811,7 +3757,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
             }
           }
           else if (call_spvm_method_return_type_dimension > 0) {
-            SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
           }
           else {
             assert(0);
@@ -3888,7 +3834,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                 {
-                  SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+                  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -3955,7 +3901,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
               }
             }
             else if (call_spvm_method_return_type_dimension > 0) {
-              SPVM_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+              SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
             }
             else {
               assert(0);
@@ -3992,7 +3938,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         object_vars[opcode->operand0] = *(void**)&stack[opcode->operand3 & 0xFF];
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object != NULL) {
-          SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);
+          SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);
         }
         break;
       }
@@ -4121,7 +4067,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           object_vars[opcode->operand0] = *(void**)&stack[args_index];
           void* object = *(void**)&object_vars[opcode->operand0];
           if (object != NULL) {
-            SPVM_API_INC_REF_COUNT_ONLY(env, stack, object);
+            SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);
           }
         }
         break;
@@ -4176,7 +4122,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         *(void**)&stack[0] = *(void**)&object_vars[opcode->operand0];
         // Increment ref count of return value not to release by leave scope
         if (*(void**)&stack[0] != NULL) {
-          SPVM_API_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+          SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
         }
         opcode_rel_index = opcode->operand1;
         continue;
@@ -4251,7 +4197,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
-          SPVM_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+          SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
         }
       }
     }
