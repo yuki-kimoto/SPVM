@@ -385,6 +385,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $perl_module_file = "$tmp_dir/mylib/SPVM/Foo.pm";
   ok(-f $perl_module_file);
+  ok(!SPVM::Builder::Util::file_contains($perl_module_file, '$VERSION'));
   
   my $spvm_module_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);

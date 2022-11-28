@@ -83,8 +83,8 @@ spvmdist - Generating SPVM Distribution
     --precompile                   Add precompile setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
-    --resource                     Output files for resource distribution
-    --genlib                       Shorcut for --only-lib-files --no-pm-file
+    --resource                     Output files for a resource distribution
+    --genlib                       Shortcut for --only-lib-files --no-pm-file
     --user-name=<name>             User name
     --user-email=<email>           User email
 

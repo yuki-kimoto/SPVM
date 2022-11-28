@@ -273,12 +273,19 @@ sub generate_perl_module_file {
   unless (defined $user_email) {
     $user_email = '[--user-email]'
   }
+
+  my $version = "our \$VERSION = '0.01';";
+  
+  my $only_lib_files = $self->only_lib_files;
+  if ($only_lib_files) {
+    $version = '';
+  }
   
   # Content
   my $perl_module_content = <<"EOS";
 package SPVM::$class_name;
 
-our \$VERSION = '0.01';
+$version
 
 1;
 
@@ -832,8 +839,8 @@ sub generate_dist {
     $self->generate_gitkeep_file_for_native_module_src_dir;
   }
   
-  my $only_lib_file = $self->only_lib_files;
-  unless ($only_lib_file) {
+  my $only_lib_files = $self->only_lib_files;
+  unless ($only_lib_files) {
     # Generate .gitignore file
     $self->generate_gitignore_file;
     
