@@ -122,7 +122,19 @@ use Test::More;
       compile_not_ok_file('CompileError::Literal::Character::InvalidHexAscii2');
     }
   }
-
+  
+  # Octal Caharater literal
+  {
+    {
+      my $source = q|class MyClass { static method main : void () { '\o{}'; } }|;
+      compile_not_ok($source, qr|At least one octal number must be follow by "\\o" of the octal escape character|);
+    }
+    {
+      my $source = q|class MyClass { static method main : void () { '\o{111}'; } }|;
+      compile_not_ok($source, qr|The octal escape character is not closed by "}"|);
+    }
+  }
+  
   # String literal
   {
     {
