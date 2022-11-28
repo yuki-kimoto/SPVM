@@ -579,4 +579,117 @@ class TestCase::Module::Hash {
     
     return 1;
   }
+
+  static method delete_or_default : int () {
+
+    my $hash = Hash->new;
+
+    {
+      $hash->set_byte(foo => Fn->INT8_MAX);
+      my $value = $hash->delete_or_default_byte("foo", Fn->INT8_MIN);
+
+      unless ($value == Fn->INT8_MAX) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_byte("foo", Fn->INT8_MIN) == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      $hash->set_short(foo => Fn->INT16_MAX);
+      my $value = $hash->delete_or_default_short("foo", 1);
+      unless ($value == Fn->INT16_MAX) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_short("foo", Fn->INT16_MIN) == Fn->INT16_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      $hash->set_int(foo => Fn->INT32_MAX);
+      my $value = $hash->delete_or_default_int("foo", 1);
+
+      unless ($value == Fn->INT32_MAX) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_int("foo", Fn->INT32_MIN) == Fn->INT32_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      $hash->set_long(foo => Fn->INT64_MAX);
+      my $value = $hash->delete_or_default_long("foo");
+
+      unless ($value == Fn->INT64_MAX) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_long("foo", Fn->INT64_MIN) == Fn->INT64_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      $hash->set_float(foo => Fn->FLT_MIN);
+      my $value = $hash->delete_or_default_float("foo");
+
+      unless ($value == Fn->FLT_MIN) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_float("foo", Fn->FLT_MIN) == Fn->FLT_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      $hash->set_double(foo => Fn->DBL_MIN);
+      my $value = $hash->delete_or_default_double("foo");
+
+      unless ($value == Fn->DBL_MIN) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_double("foo", Fn->DBL_MIN) == Fn->DBL_MIN) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "bar";
+      $hash->set_string(foo => $str);
+
+      my $default = "abc";
+
+      my $value = $hash->delete_or_default_string("foo", $default);
+
+      unless ($value == $str) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_string("foo", $default) == $default) {
+        return 0;
+      }
+      unless ($hash->delete_or_default_string("foo", $default) eq $default) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "bar";
+      $hash->set_string(foo => $str);
+      
+      my $default = "abc";
+      
+      my $value = $hash->delete_or_default("foo", $default);
+      
+      unless ($value == $str) {
+        return 0;
+      }
+      unless ($hash->delete_or_default("foo", $default) == $default) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
 }

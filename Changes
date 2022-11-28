@@ -22,6 +22,15 @@
     * Added the follwoing method to the Hash class.
       method clone : Hash ();
       method to_array : object[] ($sort = 0 : int);
+      method delete_or_default_byte : int ($key : string, $default : int);
+      method delete_or_default_short : int ($key : string, $default : int);
+      method delete_or_default_int : int ($key : string, $default : int);
+      method delete_or_default_long : long ($key : string, $default : long);
+      method delete_or_default_float : float ($key : string, $default : float);
+      method delete_or_default_double : double ($key : string, $default : double);
+      method delete_or_default_string : string ($key : string, $default : string);
+      method delete_or_default : object ($key : string, $default : object);
+
 
     * Added the Cloneable interface to tha Hash class.
       

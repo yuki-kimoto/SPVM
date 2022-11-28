@@ -192,3 +192,68 @@ Sets the string C<$value> with the C<$key>.
 Converts the hash to an array.
 
 If C<$sort> is a true value, the keys are sorted by the asc order.
+
+=head2 delete_or_default_byte
+
+  method delete_or_default_byte : int ($key : string, $default : int) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<byte> type.
+
+If not, the C<$default> value with the type cast to C<byte> type is returned.
+
+=head2 delete_or_default_short
+
+  method delete_or_default_short : int ($key : string, $default : int) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<short> type.
+
+If not, the C<$default> value with the type cast to C<short> type is returned.
+
+=head2 delete_or_default_int
+
+  method delete_or_default_int : int ($key : string, $default : int) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<int> type.
+
+If not, the C<$default> value is returned.
+
+=head2 delete_or_default_long
+
+  method delete_or_default_long : long ($key : string, $default : long) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<long> type.
+
+If not, the C<$default> value is returned.
+
+=head2 delete_or_default_float
+
+  method delete_or_default_float : float ($key : string, $default : float) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<float> type.
+
+If not, the C<$default> value is returned.
+
+=head2 delete_or_default_double
+
+  method delete_or_default_double : double ($key : string, $default : double) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<double> type.
+
+If not, the C<$default> value is returned.
+
+=head2 delete_or_default_string
+
+  method delete_or_default_string : string ($key : string, $default : string) {
+
+If the C<$key> exists, the value is deleted and returned with the type cast to C<string> type.
+
+If not, the C<$default> value is returned.
+
+=head2 delete_or_default
+
+  method delete_or_default : object ($key : string, $default : object) {
+
+If the C<$key> exists, the value is deleted and returned.
+
+If not, the C<$default> value is returned.
+

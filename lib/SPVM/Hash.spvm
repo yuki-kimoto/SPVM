@@ -328,4 +328,148 @@ class Hash {
     $self->{bucket_count} = $new_bucket_count;
     $self->{entries} = $new_entries;
   }
+
+  method delete_or_default_byte : int ($key : string, $default : int) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = (byte)$self->get_byte($key);
+      $self->delete($key);
+    }
+    else {
+      $value = (byte)$default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_short : int ($key : string, $default : int) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = (short)$self->get_short($key);
+      $self->delete($key);
+    }
+    else {
+      $value = (short)$default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_int : int ($key : string, $default : int) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_int($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_long : long ($key : string, $default : long) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_long($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_float : float ($key : string, $default : float) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_float($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_double : double ($key : string, $default : double) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_double($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default_string : string ($key : string, $default : string) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = (string)undef;
+    if ($self->exists($key)) {
+      $value = $self->get_string($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+
+  method delete_or_default : object ($key : string, $default : object) {
+    
+    unless ($key) {
+      die "The \$key must be defined";
+    }
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get($key);
+      $self->delete($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
 }
