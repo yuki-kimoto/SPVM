@@ -3897,7 +3897,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "      env->set_exception(env, stack, exception);"
+                                              "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n");
 
