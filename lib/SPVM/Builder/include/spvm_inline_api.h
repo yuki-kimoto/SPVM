@@ -1,41 +1,6 @@
 #ifndef SPVM_INLINE_API_H
 #define SPVM_INLINE_API_H
 
-//  "& ~(intptr_t)1" means dropping weaken flag
-#define SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
-#define SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
-#define SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
-#define SPVM_INLINE_API_INC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);\
-  }\
-} while (0)\
-
-#define SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
-#define SPVM_INLINE_API_DEC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object); }\
-    else { env->dec_ref_count(env, stack, object); }\
-  }\
-} while (0)\
-
-#define SPVM_INLINE_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
-#define SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, dist_address, src_object) \
-do {\
-  void* tmp_object = SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);\
-  if (tmp_object != NULL) {\
-    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, tmp_object);\
-  }\
-  if (*(void**)(dist_address) != NULL) {\
-    if (__builtin_expect(SPVM_INLINE_API_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }\
-    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *(void**)(dist_address)) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)(dist_address)); }\
-    else { env->dec_ref_count(env, stack, *(void**)(dist_address)); }\
-  }\
-  *(void**)(dist_address) = tmp_object;\
-} while (0)\
-
 enum {
   SPVM_INLINE_API_C_STRING_CALL_STACK_ALLOCATION_FAILED,
   SPVM_INLINE_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
@@ -62,10 +27,6 @@ enum {
   SPVM_INLINE_API_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,
 };
 
-
-
-
-
 static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   "The memory allocation for the call stack failed",
   "The value can't be cast to the non-assignable type",
@@ -91,6 +52,41 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   "Warning: something's wrong at %s%s%s line %d\n",
   "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
 };
+
+//  "& ~(intptr_t)1" means dropping weaken flag
+#define SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
+#define SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
+#define SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
+#define SPVM_INLINE_API_INC_REF_COUNT(env, stack, object)\
+do {\
+  if (object != NULL) {\
+    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);\
+  }\
+} while (0)\
+
+#define SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
+#define SPVM_INLINE_API_DEC_REF_COUNT(env, stack, object)\
+do {\
+  if (object != NULL) {\
+    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object); }\
+    else { env->dec_ref_count(env, stack, object); }\
+  }\
+} while (0)\
+
+#define SPVM_INLINE_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
+
+static inline void SPVM_INLINE_API_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object) {
+  void* tmp_object = SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);
+  if (tmp_object != NULL) {
+    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, tmp_object);
+  }
+  if (*(void**)(dist_address) != NULL) {
+    if (__builtin_expect(SPVM_INLINE_API_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
+    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *(void**)(dist_address)) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)(dist_address)); }
+    else { env->dec_ref_count(env, stack, *(void**)(dist_address)); }\
+  }
+  *(void**)(dist_address) = tmp_object;
+}
 
 static inline void SPVM_INLINE_API_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {

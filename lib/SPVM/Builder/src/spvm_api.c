@@ -2130,7 +2130,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
     SPVM_API_dec_ref_count(env, stack, *cur_excetpion_ptr);
   }
   
-  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, cur_excetpion_ptr, exception);
+  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)cur_excetpion_ptr, exception);
   
   if (*cur_excetpion_ptr != NULL) {
     (*cur_excetpion_ptr)->ref_count++;
