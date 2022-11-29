@@ -38,9 +38,7 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "#ifndef SPVM_PRECOMPILE_H\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_PRECOMPILE_H\n");
+  
   SPVM_STRING_BUFFER_add(string_buffer, "// ");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
@@ -104,7 +102,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
     }
   }
 
-  SPVM_STRING_BUFFER_add(string_buffer, "#endif");
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
 }
 
