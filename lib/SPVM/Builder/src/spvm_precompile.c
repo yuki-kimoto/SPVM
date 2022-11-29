@@ -3929,11 +3929,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "    if (call_method_id < 0) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, \"The method \\\"");
+                                              "      exception = env->new_string_nolen_raw(env, stack, \"The \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" method in the \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\\\" class is not found\");\n"
                                               "      env->set_exception(env, stack, exception);\n"
                                               "      error = 1;\n"
                                               "    }\n");
