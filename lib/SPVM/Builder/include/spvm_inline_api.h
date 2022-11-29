@@ -92,4 +92,17 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
 };
 
+static inline void SPVM_INLINE_API_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+    int32_t var_index = mortal_stack[mortal_stack_index];
+    void** object_address = (void**)&object_vars[var_index];
+    if (*object_address != NULL) {
+      if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }
+      else { env->dec_ref_count(env, stack, *object_address); }
+      *object_address = NULL;
+    }
+  }
+  *mortal_stack_top_ptr = original_mortal_stack_top;
+}
+
 #endif

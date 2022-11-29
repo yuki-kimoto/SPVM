@@ -358,16 +358,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                                 "    int32_t original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                                "    for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {\n"
-                                                "      int32_t var_index = mortal_stack[mortal_stack_index];\n"
-                                                "      void** object_address = (void**)&object_vars[var_index];\n"
-                                                "      if (*object_address != NULL) {\n"
-                                                "        if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }\n"
-                                                "        else { env->dec_ref_count(env, stack, *object_address); }\n"
-                                                "        *object_address = NULL;\n"
-                                                "      }\n"
-                                                "    }\n"
-                                                "    mortal_stack_top = original_mortal_stack_top;\n"
+                                                "    SPVM_INLINE_API_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top);\n"
                                                 "  }\n");
         }
         break;
