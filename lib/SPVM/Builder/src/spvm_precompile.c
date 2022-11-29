@@ -300,6 +300,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_type_dimension_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t runtime_assignability = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE tmp_constant;\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
@@ -523,30 +524,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_VALUE value;
         value.ival = (int32_t)opcode->operand1;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    SPVM_VALUE tmp_constant;\n"
-                                              "    ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.ival = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, value.ival);
-        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.fval);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.fval);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         double double_value = *(double*)&opcode->operand1;
-
         SPVM_VALUE value;
         value.dval = double_value;
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                              "    SPVM_VALUE tmp_constant;\n"
-                                              "    ");
+        
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.lval = ");
         SPVM_STRING_BUFFER_add_long(string_buffer, value.lval);
-        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.dval);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.dval);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE: {
