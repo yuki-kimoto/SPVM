@@ -77,50 +77,47 @@ int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
 }
 
 char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
-  char ch;
+  char ch = -1;
   char* char_ptr = *char_ptr_ptr;
   
   int32_t is_o_escape_character = 0;
+  int32_t has_brace = 0;
   if (*char_ptr == 'o') {
     is_o_escape_character = 1;
-  }
-  
-  char_ptr++;
-
-  // {
-  int32_t has_brace = 0;
-  if (is_o_escape_character) {
+    char_ptr++;
     if (*char_ptr == '{') {
       has_brace = 1;
       char_ptr++;
+      if (!SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
+        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+        return ch;
+      }
     }
     else {
       SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace at %s line %d", compiler->cur_file, compiler->cur_line);
+      return ch;
     }
   }
   
-  char hex_escape_char[3] = {0};
-  int32_t hex_escape_char_index = 0;
+  char octal_escape_char[4] = {0};
+  int32_t octal_escape_char_index = 0;
   while (SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
-    if (hex_escape_char_index >= 2) {
+    if (octal_escape_char_index >= 3) {
       break;
     }
-    hex_escape_char[hex_escape_char_index] = *char_ptr;
+    octal_escape_char[octal_escape_char_index] = *char_ptr;
     char_ptr++;
-    hex_escape_char_index++;
+    octal_escape_char_index++;
   }
   
-  if (strlen(hex_escape_char) > 0) {
+  if (strlen(octal_escape_char) > 0) {
     char* end;
-    ch = (char)strtol(hex_escape_char, &end, 8);
-  }
-  else {
-    if (is_o_escape_character) {
-      SPVM_COMPILER_error(compiler, "At least one octal number must be follow by \"\\o\" of the octal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+    int32_t number = strtol(octal_escape_char, &end, 8);
+    if (number > 255) {
+      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377 at %s line %d", compiler->cur_file, compiler->cur_line);
+      return ch;
     }
-    else {
-      ch = 0;
-    }
+    ch = (char)number;
   }
   
   if (has_brace) {
@@ -150,7 +147,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
     char_ptr++;
   }
   
-  char hex_escape_char[3] = {0};
+  char hex_escape_char[9] = {0};
   int32_t hex_escape_char_index = 0;
   while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
     if (hex_escape_char_index >= 2) {
@@ -166,7 +163,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
     ch = (char)strtol(hex_escape_char, &end, 16);
   }
   else {
-    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be follow by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
   }
   
   if (has_brace) {
@@ -1042,7 +1039,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr++;
             }
             // Octal escape character
-            else if (*compiler->bufptr == '0' || *compiler->bufptr == 'o') {
+            else if (SPVM_TOKE_is_octal_number(compiler, *compiler->bufptr) || *compiler->bufptr == 'o') {
               char* char_ptr = compiler->bufptr;
 
               ch = SPVM_TOKE_parse_octal_escape(compiler, &char_ptr);
@@ -1325,7 +1322,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   char_ptr++;
                 }
                 // Octal escape character
-                else if (*char_ptr == '0' || *char_ptr == 'o') {
+                else if (SPVM_TOKE_is_octal_number(compiler, *char_ptr) || *char_ptr == 'o') {
                   ch = SPVM_TOKE_parse_octal_escape(compiler, &char_ptr);
                   
                   string_literal_tmp[string_literal_length] = ch;

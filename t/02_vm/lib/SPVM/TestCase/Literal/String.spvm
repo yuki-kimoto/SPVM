@@ -201,6 +201,10 @@ ef"
         return 0;
       }
       
+      unless ("\377"->[0] == -1) {
+        return 0;
+      }
+      
       {
         my $string = "\003\004";
         unless ($string->[0] == 3) {
@@ -288,6 +292,9 @@ ef"
       }
 
       unless ("\o{77}"->[0] == 63) {
+        return 0;
+      }
+      unless ("\o{377}"->[0] == -1) {
         return 0;
       }
     }
@@ -467,7 +474,7 @@ ef"
     
     # Raw escape - Character and number
     {
-      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N\1\2\3\4\5\6\7\8\9";
+      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N";
       
       unless ($string->[0] == '\\') { return 0; }
       unless ($string->[1] == 'w') { return 0; }
@@ -517,24 +524,6 @@ ef"
       unless ($string->[45] == 'G') { return 0; }
       unless ($string->[46] == '\\') { return 0; }
       unless ($string->[47] == 'N') { return 0; }
-      unless ($string->[48] == '\\') { return 0; }
-      unless ($string->[49] == '1') { return 0; }
-      unless ($string->[50] == '\\') { return 0; }
-      unless ($string->[51] == '2') { return 0; }
-      unless ($string->[52] == '\\') { return 0; }
-      unless ($string->[53] == '3') { return 0; }
-      unless ($string->[54] == '\\') { return 0; }
-      unless ($string->[55] == '4') { return 0; }
-      unless ($string->[56] == '\\') { return 0; }
-      unless ($string->[57] == '5') { return 0; }
-      unless ($string->[58] == '\\') { return 0; }
-      unless ($string->[59] == '6') { return 0; }
-      unless ($string->[60] == '\\') { return 0; }
-      unless ($string->[61] == '7') { return 0; }
-      unless ($string->[62] == '\\') { return 0; }
-      unless ($string->[63] == '8') { return 0; }
-      unless ($string->[64] == '\\') { return 0; }
-      unless ($string->[65] == '9') { return 0; }
     }
 
     # Raw escape - punct characters

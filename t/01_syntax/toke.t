@@ -85,11 +85,11 @@ use Test::More;
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xG'; } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xg'; } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\x{a'; } }|;
@@ -127,10 +127,14 @@ use Test::More;
   {
     {
       my $source = q|class MyClass { static method main : void () { '\o{}'; } }|;
-      compile_not_ok($source, qr|At least one octal number must be follow by "\\o" of the octal escape character|);
+      compile_not_ok($source, qr|At least one octal number must be followed by "\\o\{" of the octal escape character|);
     }
     {
-      my $source = q|class MyClass { static method main : void () { '\o{111}'; } }|;
+      my $source = q|class MyClass { static method main : void () { '\o{400}'; } }|;
+      compile_not_ok($source, qr|The maxmum number of the octal escape charcater is 377|);
+    }
+    {
+      my $source = q|class MyClass { static method main : void () { '\o{1111}'; } }|;
       compile_not_ok($source, qr|The octal escape character is not closed by "}"|);
     }
   }
@@ -139,7 +143,7 @@ use Test::More;
   {
     {
       my $source = q|class Tmp { static method main : void () { "Foo \xg Bar" } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be follow by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;

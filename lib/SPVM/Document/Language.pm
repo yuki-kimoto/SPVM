@@ -1051,7 +1051,6 @@ The list of raw escape characters.
   
   # Raw excape literals
   \! \# \% \& \( \) \* \+ \, \- \. \/
-  \1 \2 \3 \4 \5 \6 \7 \8 \9
   \: \; \< \= \> \? \@
   \A \B \D \G \H \K \N \P \R \S \V \W \X \Z
   \[ \] \^ \_ \`
@@ -1064,11 +1063,9 @@ The octal escape character is the way to write an ASCII code using octal numbers
 
 The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
 
-The octal escape character begins with C<\0> or C<\o{>.
+The octal escape character begins with C<\o{>, and it must be followed by one to three C<0-7>, and ends with C<}>.
 
-It must be followed by one or two C<0-7> except for C<\0>.
-
-The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
+Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two C<0-7>.
 
   # Octal escape ch1racters in ch1racter literals
   '\0'
@@ -1078,6 +1075,7 @@ The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
   '\03'
   '\01'
   '\077'
+  '\777'
 
   # Octal escape ch1racters in ch1racter literals
   '\o{0}'
@@ -1087,6 +1085,7 @@ The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
   '\o{3}'
   '\o{1}'
   '\o{77}'
+  '\o{777}'
 
   # Octal escape ch1racters in string literals
   "Foo \0 Bar"
@@ -1096,6 +1095,7 @@ The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
   "Foo \03  Bar"
   "Foo \01  Bar"
   "Foo \077 Bar"
+  "Foo \777 Bar"
 
   # Octal escape ch1racters in string literals
   "Foo \o{12} Bar"
@@ -1105,6 +1105,7 @@ The octal numbers can be sorrounded by C<{> and C<}> if it starts with C<\o{>.
   "Foo \o{3}  Bar"
   "Foo \o{1}  Bar"
   "Foo \o{77} Bar"
+  "Foo \o{777} Bar"
 
 =head2 Hexadecimal Escape Character
 
