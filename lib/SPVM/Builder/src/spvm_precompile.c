@@ -263,9 +263,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
 
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t original_mortal_stack_top = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t line = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "int32_t method_id = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t original_mortal_stack_top = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t line = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t method_id = 0;\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
