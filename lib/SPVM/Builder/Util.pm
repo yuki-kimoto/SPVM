@@ -465,7 +465,9 @@ sub get_spvm_core_header_file_names {
     spvm_api_precompile.h
     spvm_api_runtime.h
     spvm_api_string_buffer.h
+    spvm_api_vm.h
     spvm_array_field_access.h
+    spvm_attribute.h
     spvm_basic_type.h
     spvm_block.h
     spvm_call_method.h
@@ -477,7 +479,6 @@ sub get_spvm_core_header_file_names {
     spvm_compiler.h
     spvm_constant.h
     spvm_constant_string.h
-    spvm_attribute.h
     spvm_dumper.h
     spvm_field_access.h
     spvm_field.h
@@ -515,7 +516,6 @@ sub get_spvm_core_header_file_names {
     spvm_weaken_backref.h
     spvm_yacc.h
     spvm_yacc_util.h
-    spvm_api_vm.h
   );
   
   return \@spvm_core_header_file_names;
