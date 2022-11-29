@@ -68,13 +68,12 @@ static inline void SPVM_INLINE_API_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
 
-#define SPVM_INLINE_API_DEC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object); }\
-    else { env->dec_ref_count(env, stack, object); }\
-  }\
-} while (0)\
+static inline void SPVM_INLINE_API_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
+  if (object != NULL) {
+    if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object); }
+    else { env->dec_ref_count(env, stack, object); }
+  }
+}
 
 #define SPVM_INLINE_API_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
 
