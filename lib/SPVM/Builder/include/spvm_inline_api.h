@@ -55,16 +55,19 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
 
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
+
 #define SPVM_INLINE_API_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
+
 #define SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
-#define SPVM_INLINE_API_INC_REF_COUNT(env, stack, object)\
-do {\
-  if (object != NULL) {\
-    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);\
-  }\
-} while (0)\
+
+static inline void SPVM_INLINE_API_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
+  if (object != NULL) {
+    SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, object);
+  }
+}
 
 #define SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
+
 #define SPVM_INLINE_API_DEC_REF_COUNT(env, stack, object)\
 do {\
   if (object != NULL) {\
