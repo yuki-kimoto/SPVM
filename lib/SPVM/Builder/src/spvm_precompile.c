@@ -262,7 +262,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
-  
+
+  SPVM_STRING_BUFFER_add(string_buffer, "int32_t original_mortal_stack_top = 0;\n");
+
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
   int32_t opcodes_length = SPVM_API_RUNTIME_get_method_opcodes_length(runtime, method_id);
@@ -354,12 +356,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
         if (method_mortal_stack_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  {\n"
-                                                "    int32_t original_mortal_stack_top = ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                                "    SPVM_INLINE_API_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top);\n"
-                                                "  }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         }
         break;
       }
