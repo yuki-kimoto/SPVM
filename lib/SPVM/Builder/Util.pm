@@ -381,24 +381,18 @@ sub get_spvm_builder_module_file_names {
 
 sub get_spvm_core_source_file_names {
   
-  my $spvm_core_compiler_only_source_file_names = &get_spvm_core_compiler_only_source_file_names();
-  my $spvm_core_common_source_file_names = &get_spvm_core_common_source_file_names();
-  
-  my @spvm_core_source_file_names = (
-    @$spvm_core_compiler_only_source_file_names,
-    @$spvm_core_common_source_file_names
-  );
-  
-  return \@spvm_core_source_file_names;
-}
-
-sub get_spvm_core_compiler_only_source_file_names {
-  
   my @spvm_core_source_file_names = qw(
+    spvm_allocator.c
     spvm_allow.c
+    spvm_api_allocator.c
+    spvm_api.c
     spvm_api_compiler.c
     spvm_api_precompile.c
+    spvm_api_runtime.c
+    spvm_api_string_buffer.c
+    spvm_api_vm.c
     spvm_array_field_access.c
+    spvm_attribute.c
     spvm_basic_type.c
     spvm_block.c
     spvm_call_method.c
@@ -408,18 +402,24 @@ sub get_spvm_core_compiler_only_source_file_names {
     spvm_class_var.c
     spvm_compiler.c
     spvm_constant.c
-    spvm_attribute.c
+    spvm_constant_string.c
     spvm_dumper.c
     spvm_field_access.c
     spvm_field.c
+    spvm_hash.c
     spvm_interface.c
+    spvm_list.c
     spvm_method.c
+    spvm_native.c
     spvm_op.c
     spvm_op_checker.c
     spvm_opcode_array.c
     spvm_opcode_builder.c
+    spvm_opcode.c
     spvm_precompile.c
-    spvm_constant_string.c
+    spvm_runtime.c
+    spvm_strerror.c
+    spvm_string_buffer.c
     spvm_switch_info.c
     spvm_toke.c
     spvm_type.c
