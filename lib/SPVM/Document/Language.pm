@@ -1075,7 +1075,7 @@ Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\
   '\03'
   '\01'
   '\077'
-  '\777'
+  '\377'
 
   # Octal escape ch1racters in ch1racter literals
   '\o{0}'
@@ -1085,7 +1085,7 @@ Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\
   '\o{3}'
   '\o{1}'
   '\o{77}'
-  '\o{777}'
+  '\o{377}'
 
   # Octal escape ch1racters in string literals
   "Foo \0 Bar"
@@ -1095,7 +1095,7 @@ Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\
   "Foo \03  Bar"
   "Foo \01  Bar"
   "Foo \077 Bar"
-  "Foo \777 Bar"
+  "Foo \377 Bar"
 
   # Octal escape ch1racters in string literals
   "Foo \o{12} Bar"
@@ -1105,7 +1105,7 @@ Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\
   "Foo \o{3}  Bar"
   "Foo \o{1}  Bar"
   "Foo \o{77} Bar"
-  "Foo \o{777} Bar"
+  "Foo \o{377} Bar"
 
 =head2 Hexadecimal Escape Character
 
