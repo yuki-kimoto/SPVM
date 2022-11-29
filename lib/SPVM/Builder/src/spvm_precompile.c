@@ -4659,7 +4659,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
     SPVM_STRING_BUFFER_add(string_buffer, "      if (stack[0].oval != NULL) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n"
-  "  return return_value;\n"
+  "    return return_value;\n"
                                         "  }\n"
                                         "}\n"
                                         "\n");
