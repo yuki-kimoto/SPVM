@@ -87,6 +87,7 @@ lib/SPVM/Builder/include/spvm_dumper.h
 lib/SPVM/Builder/include/spvm_field.h
 lib/SPVM/Builder/include/spvm_field_access.h
 lib/SPVM/Builder/include/spvm_hash.h
+lib/SPVM/Builder/include/spvm_inline_api.h
 lib/SPVM/Builder/include/spvm_interface.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
