@@ -103,4 +103,5 @@ static inline void SPVM_INLINE_API_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack,
   *mortal_stack_top_ptr = original_mortal_stack_top;
 }
 
+
 #endif
