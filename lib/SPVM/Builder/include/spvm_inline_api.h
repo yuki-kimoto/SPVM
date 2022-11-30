@@ -229,4 +229,25 @@ static inline double SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPV
   return element;
 }
 
+static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  void* element = NULL;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((void**)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
 #endif
