@@ -250,4 +250,9 @@ static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM
   return element;
 }
 
+#define SPVM_INLINE_API_ADD_INT(out, in1, in2) (out = in1 + in2)
+#define SPVM_INLINE_API_ADD_LONG(out, in1, in2) (out = in1 + in2)
+#define SPVM_INLINE_API_ADD_FLOAT(out, in1, in2) (out = in1 + in2)
+#define SPVM_INLINE_API_ADD_DOUBLE(out, in1, in2) (out = in1 + in2)
+
 #endif
