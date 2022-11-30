@@ -262,7 +262,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t original_mortal_stack_top = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t line = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t method_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t arg_mem_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t stack_index = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* object = NULL;\n");
@@ -326,7 +325,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t tmp_error_code;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_stack_length = env->get_args_stack_length(env, stack);\n");
-  
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cur_method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n");
+
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
   int32_t opcodes_length = SPVM_API_RUNTIME_get_method_opcodes_length(runtime, method_id);
@@ -1157,7 +1157,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "        cmp = retval < 0 ? -1 : 1;\n"
                                               "      } else if (length1 == lenght2) {\n"
                                               "        cmp = 0;\n"
-                                              "      } else {\n"
+                                              "      }\n"
+                                              "      else {\n"
                                               "        cmp = length1 < lenght2 ? -1 : 1;\n"
                                               "      }\n"
                                               "      ");
@@ -2249,11 +2250,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
         int32_t line = opcode->operand2;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (error) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
                                               "    eval_error = error;\n"
                                               "    error = 0;\n"
-                                              "    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line = ");
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
                                               "    goto L");
@@ -2266,9 +2266,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         int32_t line = opcode->operand2;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (error) {\n"
-                                              "    method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
                                               "    goto L");
@@ -3900,7 +3899,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer,
                                               "    if (!error) {\n"
                                               "      error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);\n"
-                                              "\n}\n");
+                                              "    }\n");
         
         // Call method
         SPVM_STRING_BUFFER_add(string_buffer, "    if (error == 0) {\n");
@@ -4599,13 +4598,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (error) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    return_value = error;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  } else {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method_return_type_id);
   if (method_return_type_check_runtime_assignability_to_any_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
-  "    return return_value;\n"
+  "  return return_value;\n"
                                         "}\n"
                                         "\n");
 }
@@ -4938,7 +4938,8 @@ void SPVM_PRECOMPILE_add_divide_integral(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
                                         "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]));\n"
                                         "    error = 1;\n"
-                                        "  } else {\n"
+                                        "  }\n"
+                                        "  else {\n"
                                         "    ");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -4957,7 +4958,8 @@ void SPVM_PRECOMPILE_add_divide_unsigned_int(SPVM_PRECOMPILE* precompile, SPVM_S
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
                                         "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]));\n"
                                         "    error = 1;\n"
-                                        "  } else {\n"
+                                        "  }\n"
+                                        "  else {\n"
                                         "    ");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint32_t)");
@@ -4976,7 +4978,8 @@ void SPVM_PRECOMPILE_add_divide_unsigned_long(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, " == 0, 0)) { \n"
                                         "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]));\n"
                                         "    error = 1;\n"
-                                        "  } else {\n"
+                                        "  }\n"
+                                        "  else {\n"
                                         "    ");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = (uint64_t)");
