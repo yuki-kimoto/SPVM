@@ -1,4 +1,4 @@
-0.9664 2022-11-29
+0.9664 2022-12-01
   [Internal Compatible Changes]
     * Added spvm_inline_api.h and use it in spvm_api.c, spvm_api_vm.c, spvm_precompile.c
   [New Features]
