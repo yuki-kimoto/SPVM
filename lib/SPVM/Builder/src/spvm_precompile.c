@@ -226,7 +226,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   // Exception
   // volatile attribute is not needed, but the environment "FreeBSD 9.1" and "gcc 4.2.1" seems to performe wrong optimisation
-  // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Ref->test_pass_value_ref_byte".
+  // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Ref->test_pass_mulnum_ref_byte".
   SPVM_STRING_BUFFER_add(string_buffer, "  volatile int32_t error = 0;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_code = 1;\n");
@@ -5502,27 +5502,27 @@ void SPVM_PRECOMPILE_add_mulnum_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_B
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
     case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* value_ref = *(int8_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* mulnum_ref = *(int8_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* value_ref = *(int16_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* mulnum_ref = *(int16_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_INT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* value_ref = *(int32_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* mulnum_ref = *(int32_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_LONG: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* value_ref = *(int64_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* mulnum_ref = *(int64_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    float* value_ref = *(float**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    float* mulnum_ref = *(float**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    double* value_ref = *(double**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    double* mulnum_ref = *(double**)&ref_vars[");
       break;
     }
   }
@@ -5564,7 +5564,7 @@ void SPVM_PRECOMPILE_add_mulnum_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_B
     SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
     SPVM_STRING_BUFFER_add(string_buffer, "]  = *(");
     SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, element_ctype_id));
-    SPVM_STRING_BUFFER_add(string_buffer, "*)&value_ref[");
+    SPVM_STRING_BUFFER_add(string_buffer, "*)&mulnum_ref[");
     SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
@@ -5576,27 +5576,27 @@ void SPVM_PRECOMPILE_add_mulnum_deref_get_field(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
     case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* value_ref = *(int8_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* mulnum_ref = *(int8_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* value_ref = *(int16_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* mulnum_ref = *(int16_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_INT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* value_ref = *(int32_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* mulnum_ref = *(int32_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_LONG: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* value_ref = *(int64_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* mulnum_ref = *(int64_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    float* value_ref = *(float**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    float* mulnum_ref = *(float**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    double* value_ref = *(double**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    double* mulnum_ref = *(double**)&ref_vars[");
       break;
     }
   }
@@ -5635,7 +5635,7 @@ void SPVM_PRECOMPILE_add_mulnum_deref_get_field(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add_int(string_buffer, out_var_id);
   SPVM_STRING_BUFFER_add(string_buffer, "] = *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)&value_ref[");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&mulnum_ref[");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
   SPVM_STRING_BUFFER_add(string_buffer, "];\n"
                                         "  }\n");
@@ -5647,27 +5647,27 @@ void SPVM_PRECOMPILE_add_mulnum_deref_set_field(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
     case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* value_ref = *(int8_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* mulnum_ref = *(int8_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* value_ref = *(int16_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int16_t* mulnum_ref = *(int16_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_INT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* value_ref = *(int32_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int32_t* mulnum_ref = *(int32_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_LONG: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* value_ref = *(int64_t**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    int64_t* mulnum_ref = *(int64_t**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    float* value_ref = *(float**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    float* mulnum_ref = *(float**)&ref_vars[");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "    double* value_ref = *(double**)&ref_vars[");
+      SPVM_STRING_BUFFER_add(string_buffer, "    double* mulnum_ref = *(double**)&ref_vars[");
       break;
     }
   }
@@ -5675,7 +5675,7 @@ void SPVM_PRECOMPILE_add_mulnum_deref_set_field(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "];\n"
                                         "    *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, element_ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)&value_ref[");
+  SPVM_STRING_BUFFER_add(string_buffer, "*)&mulnum_ref[");
   SPVM_STRING_BUFFER_add_int(string_buffer, field_index);
   SPVM_STRING_BUFFER_add(string_buffer, "] = *(");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, element_ctype_id));
