@@ -260,4 +260,9 @@ static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM
 #define SPVM_INLINE_API_SUBTRACT_FLOAT(out, in1, in2) (out = in1 - in2)
 #define SPVM_INLINE_API_SUBTRACT_DOUBLE(out, in1, in2) (out = in1 - in2)
 
+#define SPVM_INLINE_API_MULTIPLY_INT(out, in1, in2) (out = in1 * in2)
+#define SPVM_INLINE_API_MULTIPLY_LONG(out, in1, in2) (out = in1 * in2)
+#define SPVM_INLINE_API_MULTIPLY_FLOAT(out, in1, in2) (out = in1 * in2)
+#define SPVM_INLINE_API_MULTIPLY_DOUBLE(out, in1, in2) (out = in1 * in2)
+
 #endif
