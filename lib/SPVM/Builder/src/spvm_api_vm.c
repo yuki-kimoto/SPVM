@@ -464,19 +464,19 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_SUBTRACT_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] - int_vars[opcode->operand2];
+        SPVM_INLINE_API_SUBTRACT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SUBTRACT_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] - long_vars[opcode->operand2];
+        SPVM_INLINE_API_SUBTRACT_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SUBTRACT_FLOAT: {
-        float_vars[opcode->operand0] = float_vars[opcode->operand1] - float_vars[opcode->operand2];
+        SPVM_INLINE_API_SUBTRACT_FLOAT(float_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE: {
-        double_vars[opcode->operand0] = double_vars[opcode->operand1] - double_vars[opcode->operand2];
+        SPVM_INLINE_API_SUBTRACT_DOUBLE(double_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_MULTIPLY_INT: {
