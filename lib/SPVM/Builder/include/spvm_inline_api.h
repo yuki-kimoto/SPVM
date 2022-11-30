@@ -251,18 +251,53 @@ static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM
 }
 
 #define SPVM_INLINE_API_ADD_INT(out, in1, in2) (out = in1 + in2)
+
 #define SPVM_INLINE_API_ADD_LONG(out, in1, in2) (out = in1 + in2)
+
 #define SPVM_INLINE_API_ADD_FLOAT(out, in1, in2) (out = in1 + in2)
+
 #define SPVM_INLINE_API_ADD_DOUBLE(out, in1, in2) (out = in1 + in2)
 
 #define SPVM_INLINE_API_SUBTRACT_INT(out, in1, in2) (out = in1 - in2)
+
 #define SPVM_INLINE_API_SUBTRACT_LONG(out, in1, in2) (out = in1 - in2)
+
 #define SPVM_INLINE_API_SUBTRACT_FLOAT(out, in1, in2) (out = in1 - in2)
+
 #define SPVM_INLINE_API_SUBTRACT_DOUBLE(out, in1, in2) (out = in1 - in2)
 
 #define SPVM_INLINE_API_MULTIPLY_INT(out, in1, in2) (out = in1 * in2)
+
 #define SPVM_INLINE_API_MULTIPLY_LONG(out, in1, in2) (out = in1 * in2)
+
 #define SPVM_INLINE_API_MULTIPLY_FLOAT(out, in1, in2) (out = in1 * in2)
+
 #define SPVM_INLINE_API_MULTIPLY_DOUBLE(out, in1, in2) (out = in1 * in2)
+
+static inline void SPVM_INLINE_API_DIVIDE_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error) {
+  if (__builtin_expect(in2 == 0, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *out = in1 / in2;
+  }
+}
+
+static inline void SPVM_INLINE_API_DIVIDE_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error) {
+  if (__builtin_expect(in2 == 0, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *out = in1 / in2;
+  }
+}
+
+#define SPVM_INLINE_API_DIVIDE_FLOAT(out, in1, in2) (out = in1 / in2)
+
+#define SPVM_INLINE_API_DIVIDE_DOUBLE(out, in1, in2) (out = in1 / in2)
 
 #endif

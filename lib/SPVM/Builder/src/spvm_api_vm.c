@@ -496,37 +496,19 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_INT: {
-        if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          int_vars[opcode->operand0]
-            = int_vars[opcode->operand1] / int_vars[opcode->operand2];
-        }
+        SPVM_INLINE_API_DIVIDE_INT(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_LONG: {
-        if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          long_vars[opcode->operand0]
-            = long_vars[opcode->operand1] / long_vars[opcode->operand2];
-        }
+        SPVM_INLINE_API_DIVIDE_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_FLOAT: {
-        float_vars[opcode->operand0]
-          = float_vars[opcode->operand1] / float_vars[opcode->operand2];
+        SPVM_INLINE_API_DIVIDE_FLOAT(float_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_DOUBLE: {
-        double_vars[opcode->operand0]
-          = double_vars[opcode->operand1] / double_vars[opcode->operand2];
+        SPVM_INLINE_API_DIVIDE_DOUBLE(double_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT: {
