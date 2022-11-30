@@ -124,4 +124,109 @@ static inline int8_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_
   return element;
 }
 
+static inline int16_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  int16_t element = 0;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((int16_t*)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
+static inline int32_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  int32_t element = 0;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((int32_t*)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
+static inline int64_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  int64_t element = 0;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((int64_t*)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
+static inline float SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  float element = 0;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((float*)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
+static inline double SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+  
+  double element = 0;
+  
+  if (__builtin_expect(array == NULL, 0)) { 
+    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));
+    *e = 1;
+  }
+  else { 
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { 
+      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));
+      *e = 1;
+    }
+    else { 
+      element = ((double*)((intptr_t)array + object_header_byte_size))[index];
+    }
+  }
+  
+  return element;
+}
+
 #endif
