@@ -441,5 +441,7 @@ static inline void SPVM_INLINE_API_INIT_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
 #define SPVM_INLINE_API_MOVE_LONG(out, in) (out = in)
 #define SPVM_INLINE_API_MOVE_FLOAT(out, in) (out = in)
 #define SPVM_INLINE_API_MOVE_DOUBLE(out, in) (out = in)
+#define SPVM_INLINE_API_MOVE_OBJECT(env, stack, out, in) (SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, in))
+#define SPVM_INLINE_API_MOVE_REF(out, in) (out = in)
 
 #endif
