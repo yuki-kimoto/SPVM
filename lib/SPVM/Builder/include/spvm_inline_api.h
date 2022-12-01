@@ -366,4 +366,13 @@ static inline void SPVM_INLINE_API_REMAINDER_UNSIGNED_LONG(SPVM_ENV* env, SPVM_V
   }
 }
 
+#define SPVM_INLINE_API_LEFT_SHIFT_INT(out, in1, in2) (out = in1 << in2)
+#define SPVM_INLINE_API_LEFT_SHIFT_LONG(out, in1, in2) (out = in1 << in2)
+
+#define SPVM_INLINE_API_RIGHT_ARITHMETIC_SHIFT_INT(out, in1, in2) (out = in1 >> in2)
+#define SPVM_INLINE_API_RIGHT_ARITHMETIC_SHIFT_LONG(out, in1, in2) (out = in1 >> in2)
+
+#define SPVM_INLINE_API_RIGHT_LOGICAL_SHIFT_INT(out, in1, in2) (out = (int32_t)((uint32_t)in1 >> in2))
+#define SPVM_INLINE_API_RIGHT_LOGICAL_SHIFT_LONG(out, in1, in2) (out = (int64_t)((uint64_t)in1 >> in2))
+
 #endif

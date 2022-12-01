@@ -536,27 +536,27 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] << int_vars[opcode->operand2];
+        SPVM_INLINE_API_LEFT_SHIFT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] << int_vars[opcode->operand2];
+        SPVM_INLINE_API_LEFT_SHIFT_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_RIGHT_ARITHMETIC_SHIFT_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] >> int_vars[opcode->operand2];
+        SPVM_INLINE_API_RIGHT_ARITHMETIC_SHIFT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_RIGHT_ARITHMETIC_SHIFT_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] >> int_vars[opcode->operand2];
+        SPVM_INLINE_API_RIGHT_ARITHMETIC_SHIFT_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_RIGHT_LOGICAL_SHIFT_INT: {
-        int_vars[opcode->operand0] = (int32_t)((uint32_t)int_vars[opcode->operand1] >> int_vars[opcode->operand2]);
+        SPVM_INLINE_API_RIGHT_LOGICAL_SHIFT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_RIGHT_LOGICAL_SHIFT_LONG: {
-        long_vars[opcode->operand0] = (int64_t)((uint64_t)long_vars[opcode->operand1] >> int_vars[opcode->operand2]);
+        SPVM_INLINE_API_RIGHT_LOGICAL_SHIFT_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_AND_INT: {
