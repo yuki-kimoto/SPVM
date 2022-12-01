@@ -356,7 +356,7 @@ SPVM - SPVM Language
 
 =head1 Caution
 
-C<SPVM> is not yet 1.0 release. C<SPVM> is quit often changed without warnings until I feel the implementation is enough good.>
+C<SPVM> is not yet 1.0 release. It is quite often changed without warnings until I feel that the implementation is good enough.
 
 =head1 Usage
 
@@ -392,7 +392,7 @@ Call the SPVM method from Perl:
 
 =head1 Description
 
-B<SPVM>(Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
+B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
 =head1 Document
 
