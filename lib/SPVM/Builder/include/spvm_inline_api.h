@@ -386,4 +386,11 @@ static inline void SPVM_INLINE_API_REMAINDER_UNSIGNED_LONG(SPVM_ENV* env, SPVM_V
 
 #define SPVM_INLINE_API_PUSH_MORTAL(mortal_stack, mortal_stack_top, object_vars_index) (mortal_stack[mortal_stack_top++] = object_vars_index)
 
+#define SPVM_INLINE_API_INIT_BYTE(out) (out = 0)
+#define SPVM_INLINE_API_INIT_SHORT(out) (out = 0)
+#define SPVM_INLINE_API_INIT_INT(out) (out = 0)
+#define SPVM_INLINE_API_INIT_LONG(out) (out = 0)
+#define SPVM_INLINE_API_INIT_FLOAT(out) (out = 0)
+#define SPVM_INLINE_API_INIT_DOUBLE(out) (out = 0)
+
 #endif

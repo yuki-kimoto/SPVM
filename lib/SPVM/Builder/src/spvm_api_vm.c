@@ -278,27 +278,27 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_BYTE: {
-        byte_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(byte_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_SHORT: {
-        short_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(short_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_INT: {
-        int_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(int_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_LONG: {
-        long_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(long_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_FLOAT: {
-        float_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(float_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_DOUBLE: {
-        double_vars[opcode->operand0] = 0;
+        SPVM_INLINE_API_INIT_BYTE(double_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_OBJECT: {
