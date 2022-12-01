@@ -429,4 +429,10 @@ static inline void SPVM_INLINE_API_INIT_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
   }
 }
 
+#define SPVM_INLINE_API_MOVE_CONSTANT_BYTE(out, in) (out = in)
+#define SPVM_INLINE_API_MOVE_CONSTANT_INT(out, in) (out = in)
+#define SPVM_INLINE_API_MOVE_CONSTANT_LONG(out, in) (out = in)
+#define SPVM_INLINE_API_MOVE_CONSTANT_FLOAT(out, in) (out = in)
+#define SPVM_INLINE_API_MOVE_CONSTANT_DOUBLE(out, in) (out = in)
+
 #endif

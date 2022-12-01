@@ -330,25 +330,25 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
+        SPVM_INLINE_API_MOVE_CONSTANT_BYTE(byte_vars[opcode->operand0], (int8_t)(uint8_t)opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT: {
-        int_vars[opcode->operand0] = (int32_t)opcode->operand1;
+        SPVM_INLINE_API_MOVE_CONSTANT_INT(int_vars[opcode->operand0], (int32_t)opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
-        long_vars[opcode->operand0] = *(int64_t*)&opcode->operand1;
+        SPVM_INLINE_API_MOVE_CONSTANT_LONG(long_vars[opcode->operand0], *(int64_t*)&opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
         SPVM_VALUE value;
         value.ival = (int32_t)opcode->operand1;
-        float_vars[opcode->operand0] = value.fval;
+        SPVM_INLINE_API_MOVE_CONSTANT_LONG(float_vars[opcode->operand0], value.fval);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
-        double_vars[opcode->operand0] = *(double*)&opcode->operand1;
+        SPVM_INLINE_API_MOVE_CONSTANT_DOUBLE(double_vars[opcode->operand0], *(double*)&opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE: {
