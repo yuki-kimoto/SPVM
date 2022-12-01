@@ -93,15 +93,6 @@ struct spvm_runtime {
 
   // Runtime class symbol table
   SPVM_HASH* class_symtable;
-  
-  // Method cache symbol table
-  SPVM_HASH* method_cache_symtable;
-  
-  // Field cache symbol table
-  SPVM_HASH* field_cache_symtable;
-
-  // Class variable cache symbol table
-  SPVM_HASH* class_var_cache_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
