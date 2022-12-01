@@ -456,6 +456,18 @@ static inline void SPVM_INLINE_API_MOVE_OBJECT_WITH_TYPE_CHECKING(SPVM_ENV* env,
   }
 }
 
+static inline void SPVM_INLINE_API_MOVE_OBJECT_CHECK_READ_ONLY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t* error) {
+  void* string = in;
+  if (env->is_read_only(env, stack, string)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, string);
+  }
+}
+
 #define SPVM_INLINE_API_MOVE_REF(out, in) (out = in)
 
 #endif

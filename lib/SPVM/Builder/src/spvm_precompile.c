@@ -661,23 +661,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ", cast_basic_type_id, cast_type_dimension, &error);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
-          SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                                "  if (env->is_read_only(env, stack, string)) {\n"
-                                                "    exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);\n"
-                                                "    env->set_exception(env, stack, exception);\n"
-                                                "    error = 1;\n"
-                                                "  }\n"
-                                                "  else {\n"
-                                                "  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-          SPVM_STRING_BUFFER_add(string_buffer, ", string);\n"
-                                                "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_MOVE_OBJECT_CHECK_READ_ONLY(env, stack, &");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_REF: {

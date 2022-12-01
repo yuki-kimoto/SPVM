@@ -387,15 +387,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
-        void* string = *(void**)&object_vars[opcode->operand1];
-        if (env->is_read_only(env, stack, string)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
-        }
+        SPVM_INLINE_API_MOVE_OBJECT_CHECK_READ_ONLY(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_REF: {
