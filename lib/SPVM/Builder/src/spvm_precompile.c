@@ -640,38 +640,27 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, cast_basic_type);
         const char* cast_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, cast_basic_type_name_id);
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  access_basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  cast_basic_type_id = env->get_basic_type_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
                                               "  if (access_basic_type_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "  env->set_exception(env, stack, exception);\n"
-                                              "  error = 1;\n"
+                                              "    env->set_exception(env, stack, exception);\n"
+                                              "    error = 1;\n"
                                               "  }\n"
                                               "  if (!error) {\n"
-                                              "    cast_basic_type_id = access_basic_type_id;\n"
                                               "    cast_type_dimension = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    runtime_assignability = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);\n"
-                                              "    if (runtime_assignability) {\n"
-                                              "      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", cast_basic_type_id, cast_type_dimension, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }

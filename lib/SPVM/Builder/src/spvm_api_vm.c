@@ -380,21 +380,10 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
-        void* object = *(void**)&object_vars[opcode->operand1];
-        
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        int32_t isa = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);
-        if (isa) {
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
-        }
-        else {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        
+        SPVM_INLINE_API_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, (void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], cast_basic_type_id, cast_type_dimension, &error);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {

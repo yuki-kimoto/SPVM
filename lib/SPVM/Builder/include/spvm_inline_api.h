@@ -442,6 +442,20 @@ static inline void SPVM_INLINE_API_INIT_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
 #define SPVM_INLINE_API_MOVE_FLOAT(out, in) (out = in)
 #define SPVM_INLINE_API_MOVE_DOUBLE(out, in) (out = in)
 #define SPVM_INLINE_API_MOVE_OBJECT(env, stack, out, in) (SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, in))
+
+static inline void SPVM_INLINE_API_MOVE_OBJECT_WITH_TYPE_CHECKING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t cast_basic_type_id, int32_t cast_type_dimension, int32_t* error) {
+  void* object = in;
+  int32_t isa = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);
+  if (isa) {
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, in);
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+}
+
 #define SPVM_INLINE_API_MOVE_REF(out, in) (out = in)
 
 #endif
