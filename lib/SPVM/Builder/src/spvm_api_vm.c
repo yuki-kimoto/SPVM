@@ -555,24 +555,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {
-        
-        void* string1 = *(void**)&object_vars[opcode->operand1];
-        void* string2 = *(void**)&object_vars[opcode->operand2];
-        if (string1 == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_LEFT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else if (string2 == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_RIGHT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          void* string3 = env->concat_raw(env, stack, string1, string2);
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string3);
-        }
-        
+        SPVM_INLINE_API_CONCAT(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {

@@ -1067,31 +1067,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CONCAT:
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  string1 = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  string2 = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (string1 == NULL) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_LEFT_UNDEFINED]);\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else if (string2 == NULL) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_RIGHT_UNDEFINED]);\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    string3 = env->concat_raw(env, stack, string1, string2);\n"
-                                              "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
+      case SPVM_OPCODE_C_ID_CONCAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_CONCAT(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", string3);\n"
-                                              "  }\n");
-        
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {

@@ -477,4 +477,23 @@ static inline void SPVM_INLINE_API_MOVE_OBJECT_CHECK_READ_ONLY(SPVM_ENV* env, SP
 #define SPVM_INLINE_API_NEGATE_FLOAT(out, in) (out = -in)
 #define SPVM_INLINE_API_NEGATE_DOUBLE(out, in) (out = -in)
 
+static inline void SPVM_INLINE_API_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in1, void* in2, int32_t* error) {
+  void* string1 = in1;
+  void* string2 = in2;
+  if (string1 == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_LEFT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else if (string2 == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_CONCAT_RIGHT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    void* string3 = env->concat_raw(env, stack, string1, string2);
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, string3);
+  }
+}
+
 #endif
