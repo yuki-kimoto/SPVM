@@ -76,7 +76,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
   int32_t stack_index = 0;
   
   // Mortal stack
-  uint16_t* mortal_stack = NULL;
+  int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
   
   // object variables
@@ -114,8 +114,8 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
     numeric_vars_byte_size += method->call_stack_double_vars_length * 8;
     numeric_vars_byte_size += method->call_stack_int_vars_length * 4;
     numeric_vars_byte_size += method->call_stack_float_vars_length * 4;
+    numeric_vars_byte_size += method->mortal_stack_length * 4;
     numeric_vars_byte_size += method->call_stack_short_vars_length * 2;
-    numeric_vars_byte_size += method->mortal_stack_length * 2;
     numeric_vars_byte_size += method->call_stack_byte_vars_length * 1;
     
     if (numeric_vars_byte_size % 8 != 0) {
@@ -156,14 +156,14 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
     int_vars = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += method->call_stack_int_vars_length * 4;
 
+    // Mortal stack
+    mortal_stack = (int32_t*)&call_stack[call_stack_offset];
+    call_stack_offset += method->mortal_stack_length * 4;
+    
     // Short variables
     short_vars = (int16_t*)&call_stack[call_stack_offset];
     call_stack_offset += method->call_stack_short_vars_length * 2;
 
-    // Mortal stack
-    mortal_stack = (uint16_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->mortal_stack_length * 2;
-    
     // Byte variables
     byte_vars = (int8_t*)&call_stack[call_stack_offset];
     call_stack_offset += method->call_stack_byte_vars_length * 1;
@@ -269,28 +269,12 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         continue;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        mortal_stack[mortal_stack_top] = opcode->operand0;
-        mortal_stack_top++;
-        
+        SPVM_INLINE_API_PUSH_MORTAL(mortal_stack, mortal_stack_top, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
-        int32_t mortal_stack_index;
-        for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < mortal_stack_top; mortal_stack_index++) {
-          int32_t var_index = mortal_stack[mortal_stack_index];
-          void** object_address = (void**)&object_vars[var_index];
-          
-          if (*(void**)&object_vars[var_index] != NULL) {
-            if (SPVM_INLINE_API_GET_REF_COUNT(env, stack, *object_address) > 1) { SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *object_address); }
-            else { env->dec_ref_count(env, stack, *object_address); }
-          }
-          
-          *object_address = NULL;
-        }
-        
-        mortal_stack_top = original_mortal_stack_top;
-        
+        SPVM_INLINE_API_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top);
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_BYTE: {
@@ -560,27 +544,27 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_AND_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] & int_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_AND_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_AND_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] & long_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_AND_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_OR_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] | int_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_OR_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_OR_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] | long_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_OR_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_XOR_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1] ^ int_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_XOR_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_XOR_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1] ^ long_vars[opcode->operand2];
+        SPVM_INLINE_API_BIT_XOR_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_BIT_NOT_INT: {
