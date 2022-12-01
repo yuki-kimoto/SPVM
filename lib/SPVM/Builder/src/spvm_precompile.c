@@ -836,11 +836,23 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_INT: {
-        SPVM_PRECOMPILE_add_divide_unsigned_int(precompile, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_DIVIDE_UNSIGNED_INT(env, stack, &");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_DIVIDE_UNSIGNED_LONG: {
-        SPVM_PRECOMPILE_add_divide_unsigned_long(precompile, string_buffer, opcode->operand0, opcode->operand1, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_DIVIDE_UNSIGNED_LONG(env, stack, &");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_REMAINDER_INT: {

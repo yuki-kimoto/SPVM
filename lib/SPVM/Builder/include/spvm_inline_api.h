@@ -300,4 +300,26 @@ static inline void SPVM_INLINE_API_DIVIDE_LONG(SPVM_ENV* env, SPVM_VALUE* stack,
 
 #define SPVM_INLINE_API_DIVIDE_DOUBLE(out, in1, in2) (out = in1 / in2)
 
+static inline void SPVM_INLINE_API_DIVIDE_UNSIGNED_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error) {
+  if (__builtin_expect(in2 == 0, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *out = (uint32_t)in1 / (uint32_t)in2;
+  }
+}
+
+static inline void SPVM_INLINE_API_DIVIDE_UNSIGNED_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error) {
+  if (__builtin_expect(in2 == 0, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_DIVIDE_ZERO]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *out = (uint64_t)in1 / (uint64_t)in2;
+  }
+}
+
 #endif
