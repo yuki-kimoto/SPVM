@@ -470,4 +470,11 @@ static inline void SPVM_INLINE_API_MOVE_OBJECT_CHECK_READ_ONLY(SPVM_ENV* env, SP
 
 #define SPVM_INLINE_API_MOVE_REF(out, in) (out = in)
 
+#define SPVM_INLINE_API_BIT_NOT_INT(out, in) (out = ~in)
+#define SPVM_INLINE_API_BIT_NOT_LONG(out, in) (out = ~in)
+#define SPVM_INLINE_API_NEGATE_INT(out, in) (out = -in)
+#define SPVM_INLINE_API_NEGATE_LONG(out, in) (out = -in)
+#define SPVM_INLINE_API_NEGATE_FLOAT(out, in) (out = -in)
+#define SPVM_INLINE_API_NEGATE_DOUBLE(out, in) (out = -in)
+
 #endif
