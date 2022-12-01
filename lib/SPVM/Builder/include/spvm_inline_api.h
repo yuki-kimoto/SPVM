@@ -496,4 +496,12 @@ static inline void SPVM_INLINE_API_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void
   }
 }
 
+#define SPVM_INLINE_API_BOOL_CONVERSION_INT(out, in) (out = in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_LONG(out, in) (out = !!in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_FLOAT(out, in) (out = !!in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_DOUBLE(out, in) (out = !!in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_OBJECT(out, in) (out = !!in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_REF(out, in) (out = !!in)
+#define SPVM_INLINE_API_BOOL_CONVERSION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, in))
+
 #endif

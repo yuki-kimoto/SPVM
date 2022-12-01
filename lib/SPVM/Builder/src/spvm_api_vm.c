@@ -559,27 +559,31 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {
-        int_vars[0] = int_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_INT(int_vars[0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_LONG: {
-        int_vars[0] = !!long_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_LONG(int_vars[0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_FLOAT: {
-        int_vars[0] = !!float_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_FLOAT(int_vars[0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_DOUBLE: {
-        int_vars[0] = !!double_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_DOUBLE(int_vars[0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_OBJECT: {
-        int_vars[0] = !!*(void**)&object_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_OBJECT(int_vars[0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_REF: {
-        int_vars[0] = !!*(void**)&ref_vars[opcode->operand1];
+        SPVM_INLINE_API_BOOL_CONVERSION_REF(int_vars[0], *(void**)&ref_vars[opcode->operand1]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
+        SPVM_INLINE_API_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_INT: {
@@ -3390,10 +3394,6 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
           }
         }
         
-        break;
-      }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
-        int_vars[0] = !!env->get_bool_object_value(env, stack, *(void**)&object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE: {
