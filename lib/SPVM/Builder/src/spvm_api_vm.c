@@ -344,7 +344,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
         SPVM_VALUE value;
         value.ival = (int32_t)opcode->operand1;
-        SPVM_INLINE_API_MOVE_CONSTANT_LONG(float_vars[opcode->operand0], value.fval);
+        SPVM_INLINE_API_MOVE_CONSTANT_FLOAT(float_vars[opcode->operand0], value.fval);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
@@ -352,27 +352,27 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE: {
-        byte_vars[opcode->operand0] = byte_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_BYTE(byte_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_SHORT: {
-        short_vars[opcode->operand0] = short_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_SHORT(short_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_INT: {
-        int_vars[opcode->operand0] = int_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_INT(int_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_LONG: {
-        long_vars[opcode->operand0] = long_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_LONG(long_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_FLOAT: {
-        float_vars[opcode->operand0] = float_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_FLOAT(float_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_DOUBLE: {
-        double_vars[opcode->operand0] = double_vars[opcode->operand1];
+        SPVM_INLINE_API_MOVE_DOUBLE(double_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
