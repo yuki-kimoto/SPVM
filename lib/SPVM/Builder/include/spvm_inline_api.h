@@ -393,4 +393,40 @@ static inline void SPVM_INLINE_API_REMAINDER_UNSIGNED_LONG(SPVM_ENV* env, SPVM_V
 #define SPVM_INLINE_API_INIT_FLOAT(out) (out = 0)
 #define SPVM_INLINE_API_INIT_DOUBLE(out) (out = 0)
 
+static inline void SPVM_INLINE_API_INIT_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
+static inline void SPVM_INLINE_API_INIT_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
+static inline void SPVM_INLINE_API_INIT_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
+static inline void SPVM_INLINE_API_INIT_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
+static inline void SPVM_INLINE_API_INIT_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
+static inline void SPVM_INLINE_API_INIT_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, int32_t fields_length) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(out + field_index) = 0;
+  }
+}
+
 #endif
