@@ -504,4 +504,43 @@ static inline void SPVM_INLINE_API_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void
 #define SPVM_INLINE_API_BOOL_CONVERSION_REF(out, in) (out = !!in)
 #define SPVM_INLINE_API_BOOL_CONVERSION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, in))
 
+#define SPVM_INLINE_API_EQ_INT(out, in1, in2) (out = (in1 == in2))
+#define SPVM_INLINE_API_EQ_LONG(out, in1, in2) (out = (in1 == in2))
+#define SPVM_INLINE_API_EQ_FLOAT(out, in1, in2) (out = (in1 == in2))
+#define SPVM_INLINE_API_EQ_DOUBLE(out, in1, in2) (out = (in1 == in2))
+#define SPVM_INLINE_API_EQ_OBJECT(out, in1, in2) (out = (in1 == in2))
+#define SPVM_INLINE_API_EQ_REF(out, in1, in2) (out = (in1 == in2))
+
+#define SPVM_INLINE_API_NE_INT(out, in1, in2) (out = (in1 != in2))
+#define SPVM_INLINE_API_NE_LONG(out, in1, in2) (out = (in1 != in2))
+#define SPVM_INLINE_API_NE_FLOAT(out, in1, in2) (out = (in1 != in2))
+#define SPVM_INLINE_API_NE_DOUBLE(out, in1, in2) (out = (in1 != in2))
+#define SPVM_INLINE_API_NE_OBJECT(out, in1, in2) (out = (in1 != in2))
+#define SPVM_INLINE_API_NE_REF(out, in1, in2) (out = (in1 != in2))
+
+#define SPVM_INLINE_API_GT_INT(out, in1, in2) (out = (in1 > in2))
+#define SPVM_INLINE_API_GT_LONG(out, in1, in2) (out = (in1 > in2))
+#define SPVM_INLINE_API_GT_FLOAT(out, in1, in2) (out = (in1 > in2))
+#define SPVM_INLINE_API_GT_DOUBLE(out, in1, in2) (out = (in1 > in2))
+
+#define SPVM_INLINE_API_GE_INT(out, in1, in2) (out = (in1 >= in2))
+#define SPVM_INLINE_API_GE_LONG(out, in1, in2) (out = (in1 >= in2))
+#define SPVM_INLINE_API_GE_FLOAT(out, in1, in2) (out = (in1 >= in2))
+#define SPVM_INLINE_API_GE_DOUBLE(out, in1, in2) (out = (in1 >= in2))
+
+#define SPVM_INLINE_API_LT_INT(out, in1, in2) (out = (in1 < in2))
+#define SPVM_INLINE_API_LT_LONG(out, in1, in2) (out = (in1 < in2))
+#define SPVM_INLINE_API_LT_FLOAT(out, in1, in2) (out = (in1 < in2))
+#define SPVM_INLINE_API_LT_DOUBLE(out, in1, in2) (out = (in1 < in2))
+
+#define SPVM_INLINE_API_LE_INT(out, in1, in2) (out = (in1 <= in2))
+#define SPVM_INLINE_API_LE_LONG(out, in1, in2) (out = (in1 <= in2))
+#define SPVM_INLINE_API_LE_FLOAT(out, in1, in2) (out = (in1 <= in2))
+#define SPVM_INLINE_API_LE_DOUBLE(out, in1, in2) (out = (in1 <= in2))
+
+#define SPVM_INLINE_API_CMP_INT(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
+#define SPVM_INLINE_API_CMP_LONG(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
+#define SPVM_INLINE_API_CMP_FLOAT(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
+#define SPVM_INLINE_API_CMP_DOUBLE(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
+
 #endif
