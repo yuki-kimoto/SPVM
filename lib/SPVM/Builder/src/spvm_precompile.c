@@ -639,17 +639,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t cast_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, cast_basic_type);
         const char* cast_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, cast_basic_type_name_id);
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    cast_type_dimension = ");
@@ -1545,17 +1539,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    object = env->new_object_raw(env, stack, basic_type_id);\n"
@@ -1600,17 +1588,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
         int32_t element_dimension = opcode->operand3;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    length = *(int32_t*)&");
@@ -1645,17 +1627,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    length = *(int32_t*)&");
@@ -2537,23 +2513,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       }
       case SPVM_OPCODE_C_ID_ISA:
       {
-        int32_t dist_basic_type = opcode->operand2;
+        int32_t dist_basic_type_id = opcode->operand2;
         int32_t dist_type_dimension = opcode->operand3;
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, dist_basic_type);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, dist_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
         int32_t dimension = dist_type_dimension;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    dist_type_dimension = ");
@@ -2578,23 +2548,17 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       }
       case SPVM_OPCODE_C_ID_IS_TYPE:
       {
-        int32_t dist_basic_type = opcode->operand2;
+        int32_t dist_basic_type_id = opcode->operand2;
         int32_t dist_type_dimension = opcode->operand3;
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, dist_basic_type);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, dist_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
         int32_t dimension = dist_type_dimension;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    dist_type_dimension = ");
