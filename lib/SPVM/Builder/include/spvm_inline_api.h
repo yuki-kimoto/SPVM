@@ -25,6 +25,7 @@ enum {
   SPVM_INLINE_API_C_STRING_WARN_AT,
   SPVM_INLINE_API_C_STRING_WARN_UNDEF,
   SPVM_INLINE_API_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,
+  SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND,
 };
 
 static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
@@ -51,6 +52,7 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   " at %s%s%s line %d\n",
   "Warning: something's wrong at %s%s%s line %d\n",
   "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
+  "The %s basic type is not found",
 };
 
 enum {

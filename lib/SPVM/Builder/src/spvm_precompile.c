@@ -261,6 +261,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   // Convert string
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char message[256];\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t original_mortal_stack_top = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t line = 0;\n");
@@ -340,6 +341,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_stack_length = env->get_args_stack_length(env, stack);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cur_method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
 
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
@@ -1576,29 +1578,27 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    access_basic_type_id = env->get_basic_type_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (");
-        SPVM_STRING_BUFFER_add(string_buffer, "access_basic_type_id");
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception = env->new_string_nolen_raw(env, stack, \"The basic type \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    if (!error) {\n"
-                                              "      basic_type_id = "
-                                              "access_basic_type_id"
-                                              ";\n"
-                                              "      length = *(int32_t*)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, basic_type_name);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
+                                              "    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);\n"
+                                              "    exception = env->new_string_nolen_raw(env, stack, message);\n"
+                                              "    env->set_exception(env, stack, exception);\n"
+                                              "    error = 1;\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
+                                              "    length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      SPVM_INLINE_API_NEW_OBJECT_ARRAY(env, stack, (void**)&");
+                                              "    SPVM_INLINE_API_NEW_OBJECT_ARRAY(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, length, &error);\n"
-                                              "    }\n");
+                                              "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
