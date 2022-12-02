@@ -1582,15 +1582,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->get_basic_type_id(env, basic_type_name);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (basic_type_id < 0) {\n"
-                                              "    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, message);\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
-                                              
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);

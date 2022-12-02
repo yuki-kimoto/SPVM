@@ -740,4 +740,18 @@ static inline void SPVM_INLINE_API_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* s
   }
 }
 
+static inline int32_t SPVM_INLINE_API_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error) {
+
+  int32_t basic_type_id = env->get_basic_type_id(env, basic_type_name);
+
+  if (basic_type_id < 0) {
+    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  
+  return basic_type_id;
+}
+
 #endif
