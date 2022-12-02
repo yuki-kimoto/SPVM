@@ -65,6 +65,20 @@ enum {
   SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP,
 };
 
+static inline int32_t SPVM_INLINE_API_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error) {
+
+  int32_t basic_type_id = env->get_basic_type_id(env, basic_type_name);
+
+  if (basic_type_id < 0) {
+    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  
+  return basic_type_id;
+}
+
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
@@ -720,6 +734,18 @@ static inline void SPVM_INLINE_API_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALU
 #define SPVM_INLINE_API_STRING_LE(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE, out, in1, in2))
 #define SPVM_INLINE_API_STRING_CMP(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP, out, in1, in2))
 
+static inline void SPVM_INLINE_API_NEW_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t* error) {
+  void* object = env->new_object_raw(env, stack, basic_type_id);
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_OBJECT_FAILED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    // Push object
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, object);
+  }
+}
 
 static inline void SPVM_INLINE_API_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t length, int32_t* error) {
   if (length >= 0) {
@@ -738,20 +764,6 @@ static inline void SPVM_INLINE_API_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* s
     env->set_exception(env, stack, exception);
     *error = 1;
   }
-}
-
-static inline int32_t SPVM_INLINE_API_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error) {
-
-  int32_t basic_type_id = env->get_basic_type_id(env, basic_type_name);
-
-  if (basic_type_id < 0) {
-    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
-    void* exception = env->new_string_nolen_raw(env, stack, message);
-    env->set_exception(env, stack, exception);
-    *error = 1;
-  }
-  
-  return basic_type_id;
 }
 
 static inline void SPVM_INLINE_API_NEW_MULDIM_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t element_dimension, int32_t length, int32_t* error) {

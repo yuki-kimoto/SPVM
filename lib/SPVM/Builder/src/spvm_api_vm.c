@@ -752,18 +752,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
-        
-        void* object = env->new_object_raw(env, stack, basic_type_id);
-        if (object == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_OBJECT_FAILED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          // Push object
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
-        }
-        
+        SPVM_INLINE_API_NEW_OBJECT(env, stack, (void**)&object_vars[opcode->operand0], basic_type_id, &error);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {

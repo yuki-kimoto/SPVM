@@ -1546,17 +1546,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_INLINE_API_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "    if (object == NULL) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRRAY_LENGTH_SMALL]);\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
+                                              "    SPVM_INLINE_API_NEW_OBJECT(env, stack, (void**)&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n"
-                                              "    }\n"
+        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, &error);\n"
                                               "  }\n");
         
         break;
