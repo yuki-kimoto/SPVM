@@ -754,4 +754,23 @@ static inline int32_t SPVM_INLINE_API_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALU
   return basic_type_id;
 }
 
+static inline void SPVM_INLINE_API_NEW_MULDIM_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t element_dimension, int32_t length, int32_t* error) {
+  if (length >= 0) {
+    void* object = env->new_muldim_array_raw(env, stack, basic_type_id, element_dimension, length);
+    if (object == NULL) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_ARRAY_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+    else {
+      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, object);
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRRAY_LENGTH_SMALL]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+}
+
 #endif
