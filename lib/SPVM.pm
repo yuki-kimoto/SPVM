@@ -564,6 +564,8 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =item * L<Yoshiyuki Itoh|https://github.com/YoshiyukiItoh>
 
+=itme * L<Tore Aursand|https://github.com/toreau>
+
 =back
 
 =head1 Copyright & LICENSE
