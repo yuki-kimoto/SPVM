@@ -53,6 +53,16 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
 };
 
+enum {
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE,
+  SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP,
+};
+
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
@@ -545,5 +555,167 @@ static inline void SPVM_INLINE_API_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void
 
 #define SPVM_INLINE_API_IS_UNDEF(out, in) (out = in == NULL)
 #define SPVM_INLINE_API_IS_NOT_UNDEF(out, in) (out = in != NULL)
+
+static inline void SPVM_INLINE_API_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, void* in1, void* in2) {
+  void* object1 = in1;
+  void* object2 = in2;
+  
+  int32_t flag = 0;
+  if (object1 == NULL && object2 == NULL) {
+   switch (comparison_op_id) {
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP: {
+        flag = 0;
+        break;
+      }
+    }
+  }
+  else if (object1 != NULL && object2 == NULL) {
+    switch (comparison_op_id) {
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP: {
+        flag = 1;
+        break;
+      }
+    }
+  }
+  else if (object1 == NULL && object2 != NULL) {
+    switch (comparison_op_id) {
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE: {
+        flag = 0;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE: {
+        flag = 1;
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP: {
+        flag = -1;
+        break;
+      }
+    }
+  }
+  else {
+    int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);
+    int32_t length2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);
+    
+    const char* bytes1 = env->get_chars(env, stack, object1);
+    const char* bytes2 = env->get_chars(env, stack, object2);
+    
+    int32_t short_string_length = length1 < length2 ? length1 : length2;
+    int32_t retval = memcmp(bytes1, bytes2, short_string_length);
+    int32_t cmp;
+    if (retval) {
+      cmp = retval < 0 ? -1 : 1;
+    } else if (length1 == length2) {
+      cmp = 0;
+    } else {
+      cmp = length1 < length2 ? -1 : 1;
+    }
+    
+    switch (comparison_op_id) {
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ: {
+        flag = (cmp == 0);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE: {
+        flag = (cmp != 0);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT: {
+        flag = (cmp == 1);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE: {
+        flag = (cmp >= 0);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT: {
+        flag = (cmp == -1);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE: {
+        flag = (cmp <= 0);
+        break;
+      }
+      case SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP: {
+        flag = cmp;
+        break;
+      }
+    }
+  }
+  
+  *out = flag;
+}
+
+#define SPVM_INLINE_API_STRING_EQ(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_EQ, out, in1, in2))
+#define SPVM_INLINE_API_STRING_NE(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_NE, out, in1, in2))
+#define SPVM_INLINE_API_STRING_GT(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_GT, out, in1, in2))
+#define SPVM_INLINE_API_STRING_GE(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_GE, out, in1, in2))
+#define SPVM_INLINE_API_STRING_LT(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_LT, out, in1, in2))
+#define SPVM_INLINE_API_STRING_LE(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE, out, in1, in2))
+#define SPVM_INLINE_API_STRING_CMP(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP, out, in1, in2))
 
 #endif

@@ -722,163 +722,32 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         SPVM_INLINE_API_IS_NOT_UNDEF(int_vars[0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_EQ:
-      case SPVM_OPCODE_C_ID_STRING_NE:
-      case SPVM_OPCODE_C_ID_STRING_GT:
-      case SPVM_OPCODE_C_ID_STRING_GE:
-      case SPVM_OPCODE_C_ID_STRING_LT:
-      case SPVM_OPCODE_C_ID_STRING_LE:
-      case SPVM_OPCODE_C_ID_STRING_CMP:
-      {
-        void* object1 = *(void**)&object_vars[opcode->operand1];
-        void* object2 = *(void**)&object_vars[opcode->operand2];
-        
-        if (object1 == NULL && object2 == NULL) {
-         switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_STRING_EQ: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_NE: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GT: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LT: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_CMP: {
-              int_vars[0] = 0;
-              break;
-            }
-          }
-        }
-        else if (object1 != NULL && object2 == NULL) {
-          switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_STRING_EQ: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_NE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GT: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LT: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LE: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_CMP: {
-              int_vars[0] = 1;
-              break;
-            }
-          }
-        }
-        else if (object1 == NULL && object2 != NULL) {
-          switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_STRING_EQ: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_NE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GT: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GE: {
-              int_vars[0] = 0;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LT: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LE: {
-              int_vars[0] = 1;
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_CMP: {
-              int_vars[0] = -1;
-              break;
-            }
-          }
-        }
-        else {
-          int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);
-          int32_t length2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);
-          
-          const char* bytes1 = env->get_chars(env, stack, object1);
-          const char* bytes2 = env->get_chars(env, stack, object2);
-          
-          int32_t short_string_length = length1 < length2 ? length1 : length2;
-          int32_t retval = memcmp(bytes1, bytes2, short_string_length);
-          int32_t cmp;
-          if (retval) {
-            cmp = retval < 0 ? -1 : 1;
-          } else if (length1 == length2) {
-            cmp = 0;
-          } else {
-            cmp = length1 < length2 ? -1 : 1;
-          }
-          
-          switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_STRING_EQ: {
-              int_vars[0] = (cmp == 0);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_NE: {
-              int_vars[0] = (cmp != 0);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GT: {
-              int_vars[0] = (cmp == 1);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_GE: {
-              int_vars[0] = (cmp >= 0);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LT: {
-              int_vars[0] = (cmp == -1);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_LE: {
-              int_vars[0] = (cmp <= 0);
-              break;
-            }
-            case SPVM_OPCODE_C_ID_STRING_CMP: {
-              int_vars[0] = cmp;
-              break;
-            }
-          }
-        }
-
+      case SPVM_OPCODE_C_ID_STRING_EQ: {
+        SPVM_INLINE_API_STRING_EQ(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_NE: {
+        SPVM_INLINE_API_STRING_NE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_GT: {
+        SPVM_INLINE_API_STRING_GT(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_GE: {
+        SPVM_INLINE_API_STRING_GE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_LT: {
+        SPVM_INLINE_API_STRING_LT(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_LE: {
+        SPVM_INLINE_API_STRING_LE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_STRING_CMP: {
+        SPVM_INLINE_API_STRING_CMP(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
