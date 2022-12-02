@@ -543,4 +543,7 @@ static inline void SPVM_INLINE_API_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void
 #define SPVM_INLINE_API_CMP_FLOAT(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 #define SPVM_INLINE_API_CMP_DOUBLE(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 
+#define SPVM_INLINE_API_IS_UNDEF(out, in) (out = in == NULL)
+#define SPVM_INLINE_API_IS_NOT_UNDEF(out, in) (out = in != NULL)
+
 #endif
