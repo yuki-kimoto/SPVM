@@ -776,22 +776,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         int32_t length = int_vars[opcode->operand1];
-        if (length >= 0) {
-          void* object = env->new_byte_array_raw(env, stack, length);
-          if (object == NULL) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_ARRAY_FAILED]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
-          }
-        }
-        else {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRRAY_LENGTH_SMALL]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
+        SPVM_INLINE_API_NEW_BYTE_ARRAY(env, stack, (void**)&object_vars[opcode->operand0], length, &error);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_SHORT_ARRAY: {
