@@ -718,4 +718,24 @@ static inline void SPVM_INLINE_API_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALU
 #define SPVM_INLINE_API_STRING_LE(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_LE, out, in1, in2))
 #define SPVM_INLINE_API_STRING_CMP(env, stack, out, in1, in2) (SPVM_INLINE_API_STRING_COMPARISON_OP(env, stack, SPVM_INLINE_API_C_COMPARISON_OP_STRING_CMP, out, in1, in2))
 
+
+static inline void SPVM_INLINE_API_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t length, int32_t* error) {
+  if (length >= 0) {
+    void* object = env->new_object_array_raw(env, stack, basic_type_id, length);
+    if (object == NULL) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_ARRAY_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+    else {
+      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, object);
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRRAY_LENGTH_SMALL]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+}
+
 #endif
