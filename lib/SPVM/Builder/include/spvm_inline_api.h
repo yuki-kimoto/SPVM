@@ -918,4 +918,17 @@ static inline void SPVM_INLINE_API_NEW_DOUBLE_ARRAY(SPVM_ENV* env, SPVM_VALUE* s
   }
 }
 
+static inline void SPVM_INLINE_API_NEW_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, const char* constant_string, int32_t constant_string_length, int32_t* error) {
+  void* string = env->new_string_raw(env, stack, constant_string, constant_string_length);
+  if (string == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_STRING_FAILED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    env->make_read_only(env, stack, string);
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out , string);
+  }
+}
+
 #endif

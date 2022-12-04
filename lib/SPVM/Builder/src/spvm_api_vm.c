@@ -808,16 +808,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         int32_t constant_string_id = opcode->operand1;
         int32_t constant_string_length;
         const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, &constant_string_length);
-        void* string = env->new_string_raw(env, stack, constant_string, constant_string_length);
-        if (string == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_STRING_FAILED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          env->make_read_only(env, stack, string);
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0] , string);
-        }
+        SPVM_INLINE_API_NEW_STRING(env, stack, (void**)&object_vars[opcode->operand0], constant_string, constant_string_length, &error);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING_LEN: {

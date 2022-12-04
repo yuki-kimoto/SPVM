@@ -340,6 +340,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_dimension;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
@@ -1685,34 +1687,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         int32_t constant_string_length;
         const char* constant_string_value = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, &constant_string_length);
-
         SPVM_STRING_BUFFER_add(string_buffer,
-          "  string = env->new_string_raw(env, stack, \""
+          "  constant_string = \""
         );
         for (int32_t i = 0; i < constant_string_length; i++) {
           SPVM_STRING_BUFFER_add_hex_char(string_buffer, constant_string_value[i]);
         }
-        SPVM_STRING_BUFFER_add(string_buffer,
-          "\", "
-        );
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  constant_string_length = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, constant_string_length);
-        SPVM_STRING_BUFFER_add(string_buffer,
-          ");\n"
-          "  if (string == NULL) {\n"
-          "    exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_STRING_FAILED]);\n"
-          "    env->set_exception(env, stack, exception);\n"
-          "    error = 1;\n"
-          "  }\n"
-          "  else {\n"
-          "    env->make_read_only(env, stack, string);\n"
-          "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &"
-        );
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_NEW_STRING(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer,
-          ", string);\n"
-          "  }\n"
-        );
-
+        SPVM_STRING_BUFFER_add(string_buffer, ", constant_string, constant_string_length, &error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING_LEN: {
