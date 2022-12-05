@@ -1221,4 +1221,82 @@ static inline void SPVM_INLINE_API_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* s
   }
 }
 
+static inline void SPVM_INLINE_API_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int8_t in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(int8_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
+static inline void SPVM_INLINE_API_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int16_t in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(int16_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
+static inline void SPVM_INLINE_API_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(int32_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
+static inline void SPVM_INLINE_API_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int64_t in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(int64_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
+static inline void SPVM_INLINE_API_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, float in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(float*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
+static inline void SPVM_INLINE_API_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, double in, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *(double*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+  }
+}
+
 #endif
