@@ -2155,9 +2155,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       {
         int32_t field_id = opcode->operand1;
         
-        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
-        int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
-        const char* field_class_name = SPVM_API_RUNTIME_get_name(runtime, field_class_name_id);
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
