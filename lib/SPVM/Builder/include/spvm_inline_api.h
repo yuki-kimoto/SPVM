@@ -950,4 +950,6 @@ static inline void SPVM_INLINE_API_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* sta
   }
 }
 
+#define SPVM_INLINE_API_IS_READ_ONLY(out, in) (out = env->is_read_only(env, stack, in))
+
 #endif
