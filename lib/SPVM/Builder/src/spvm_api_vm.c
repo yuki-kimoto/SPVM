@@ -869,21 +869,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            ((int8_t*)((intptr_t)array + object_header_byte_size))[index] = byte_vars[opcode->operand2];
-          }
-        }
+        SPVM_INLINE_API_SET_ARRAY_ELEMENT_BYTE(env, stack, array, index, byte_vars[opcode->operand2], (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_SHORT: {
