@@ -340,6 +340,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* class_var_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* class_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_dimension;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
@@ -2341,12 +2343,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           default:
             assert(0);
         }
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, class_name, class_var_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
@@ -2377,11 +2383,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, class_name, class_var_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
@@ -2440,11 +2450,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
             class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT;
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, class_name, class_var_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
@@ -2475,11 +2489,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, class_name, class_var_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
@@ -2510,11 +2528,15 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, class_name, class_var_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
