@@ -1067,4 +1067,32 @@ static inline void SPVM_INLINE_API_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_
   }
 }
 
+static inline void SPVM_INLINE_API_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* in, int32_t* error, int32_t object_header_byte_size) {
+  if (__builtin_expect(!array, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+    else {
+      void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
+      void* object = in;
+      int32_t elem_isa = env->elem_isa(env, stack, array, object);
+      if (elem_isa) {
+        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, element_address, object);
+      }
+      else {
+        void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE]);
+        env->set_exception(env, stack, exception);
+        *error = 1;
+      }
+    }
+  }
+}
+
 #endif

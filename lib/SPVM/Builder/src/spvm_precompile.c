@@ -1931,32 +1931,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (__builtin_expect(array == NULL, 0)) { \n"
-                                              "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else { \n"
-                                              "    if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "        env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));\n"
-                                              "        error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n"
-                                              "      object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(env, stack, array, index, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "      elem_isa = env->elem_isa(env, stack, array, object);\n"
-                                              "      if (elem_isa) {\n"
-                                              "        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, element_address, object);\n"
-                                              "      }\n"
-                                              "      else {\n"
-                                              "        exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE]);\n"
-                                              "        env->set_exception(env, stack, exception);\n"
-                                              "        error = 1;\n"
-                                              "      }\n"
-                                              "    }\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", (int32_t*)&error, object_header_byte_size);\n");
         
         break;
       }
