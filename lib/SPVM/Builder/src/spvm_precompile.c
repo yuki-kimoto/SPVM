@@ -339,6 +339,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cur_method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_dimension;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
@@ -2002,9 +2003,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -2075,9 +2078,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -2123,9 +2128,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -3223,9 +3230,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -3267,9 +3276,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -3309,9 +3320,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -5405,9 +5418,11 @@ void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
@@ -5451,9 +5466,11 @@ void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, object_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  field_id = env->get_field_id(env, object, field_name);\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  if (field_id < 0) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    exception = env->new_string_nolen_raw(env, stack, \"The field \\\"");
