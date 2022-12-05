@@ -53,7 +53,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   if (!class_is_anon) {
     // Head part - include and define
     SPVM_PRECOMPILE_build_head(precompile, string_buffer);
-    SPVM_STRING_BUFFER_add(string_buffer, "static const char* CURRENT_CLASS_NAME = \"");
+    SPVM_STRING_BUFFER_add(string_buffer, "static const char* current_class_name = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class_name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
@@ -160,13 +160,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
 
   if (class_is_anon) {
-    SPVM_STRING_BUFFER_add(string_buffer,"    const char* CURRENT_CLASS_NAME = \"");
+    SPVM_STRING_BUFFER_add(string_buffer,"    const char* current_class_name = \"");
     SPVM_STRING_BUFFER_add(string_buffer, class_name);
     SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   }
 
   // Current method name
-  SPVM_STRING_BUFFER_add(string_buffer, "  const char* CURRENT_METHOD_NAME = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, method_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
@@ -336,7 +336,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t retval;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cmp;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_stack_length = env->get_args_stack_length(env, stack);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cur_method_id = env->api->runtime->get_method_id_by_name(env->runtime, CURRENT_CLASS_NAME, CURRENT_METHOD_NAME);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cur_method_id = env->api->runtime->get_method_id_by_name(env->runtime, current_class_name, current_method_name);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
