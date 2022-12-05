@@ -821,8 +821,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
-        void* string = object_vars[opcode->operand0];
-        env->make_read_only(env, stack, string);
+        SPVM_INLINE_API_MAKE_READ_ONLY(env, stack, object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_BYTE: {
