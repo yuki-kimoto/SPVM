@@ -827,143 +827,43 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            byte_vars[opcode->operand0] = ((int8_t*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(env, stack, &byte_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            short_vars[opcode->operand0] = ((int16_t*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(env, stack, &short_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_INT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            int_vars[opcode->operand0] = ((int32_t*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(env, stack, &int_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_LONG: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            long_vars[opcode->operand0] = ((int64_t*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(env, stack, &long_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            float_vars[opcode->operand0] = ((float*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(env, stack, &float_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            double_vars[opcode->operand0] = ((double*)((intptr_t)array + object_header_byte_size))[index];
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(env, stack, &double_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_OBJECT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        
-        if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-          else {
-            void* object = ((void**)((intptr_t)array + object_header_byte_size))[index];
-            SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
-          }
-        }
+        SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(env, stack, &object_vars[opcode->operand0], array, index, (int32_t*)&error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_BYTE: {
