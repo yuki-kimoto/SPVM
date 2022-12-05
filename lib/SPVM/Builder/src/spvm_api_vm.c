@@ -817,7 +817,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_IS_READ_ONLY: {
-        SPVM_INLINE_API_IS_READ_ONLY(int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_INLINE_API_IS_READ_ONLY(env, stack, int_vars[0], *(void**)&object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
