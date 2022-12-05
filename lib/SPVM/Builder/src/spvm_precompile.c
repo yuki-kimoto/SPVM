@@ -1950,19 +1950,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " == NULL) {\n"
-                                              "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_ARRAY_LENGTH(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = *(int32_t*)((intptr_t)");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_length_offset);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", array, (int32_t*)&error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {

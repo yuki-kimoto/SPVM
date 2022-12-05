@@ -1114,4 +1114,15 @@ static inline void SPVM_INLINE_API_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_V
   }
 }
 
+static inline void SPVM_INLINE_API_ARRAY_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t* error) {
+  if (array == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    *out = *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset);
+  }
+}
+
 #endif

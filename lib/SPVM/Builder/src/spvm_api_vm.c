@@ -921,14 +921,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
-        if (*(void**)&object_vars[opcode->operand1] == NULL) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          int_vars[opcode->operand0] = *(int32_t*)((intptr_t)*(void**)&object_vars[opcode->operand1] + (intptr_t)env->object_length_offset);
-        }
+        SPVM_INLINE_API_ARRAY_LENGTH(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], (int32_t*)&error);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
