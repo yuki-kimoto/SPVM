@@ -321,7 +321,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* byte_array_data;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t string_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* src_string_data;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t access_class_id;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t tmp_error_code;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t empty_or_undef;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* bytes;\n");
@@ -2313,8 +2313,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_id = opcode->operand1;
         
         int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_var_class_name = SPVM_API_RUNTIME_get_name(runtime, class_var_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
@@ -2343,7 +2343,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -2352,7 +2352,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
@@ -2372,13 +2372,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_id = opcode->operand1;
         
         int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_var_class_name = SPVM_API_RUNTIME_get_name(runtime, class_var_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -2387,7 +2387,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
@@ -2411,8 +2411,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_id = opcode->operand0;
         
         int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_var_class_name = SPVM_API_RUNTIME_get_name(runtime, class_var_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
@@ -2441,7 +2441,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -2450,7 +2450,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
@@ -2470,24 +2470,22 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_id = opcode->operand0;
         
         int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_var_class_name = SPVM_API_RUNTIME_get_name(runtime, class_var_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if ("
-                                              "class_var_id"
-                                              " < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
@@ -2507,13 +2505,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_id = opcode->operand0;
         
         int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_var_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_var_class_name = SPVM_API_RUNTIME_get_name(runtime, class_var_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = env->get_class_var_id(env, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -2522,7 +2520,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
@@ -2804,20 +2802,22 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  access_class_id = env->get_class_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = env->get_class_id(env, \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if (access_class_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = access_class_id;\n"
+        SPVM_STRING_BUFFER_add(string_buffer, " = class_id;\n"
                                               "  }\n");
         
         break;
@@ -2829,8 +2829,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_REFOP: {
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (object == NULL) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (object == NULL) {\n"
                                               "    ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n"
@@ -2846,8 +2847,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_DUMP: {
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  dump = env->dump_raw(env, stack, object);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  dump = env->dump_raw(env, stack, object);\n"
                                               "  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", dump);\n");
@@ -2856,8 +2858,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_COPY: {
           SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
           SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                                "  if (object) {\n"
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (object) {\n"
                                                 "    if (!(env->is_string(env, stack, object) || env->is_numeric_array(env, stack, object) || env->is_mulnum_array(env, stack, object))) {\n"
                                                 "      exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_COPY_OPERAND_INVALID]);\n"
                                                 "      env->set_exception(env, stack, exception);\n"
@@ -3373,8 +3376,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand1;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
-        int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
-        const char* field_class_name = SPVM_API_RUNTIME_get_name(runtime, field_class_name_id);
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -3411,8 +3412,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand1;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
-        int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
-        const char* field_class_name = SPVM_API_RUNTIME_get_name(runtime, field_class_name_id);
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -3447,8 +3446,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand2;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
-        int32_t field_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
-        const char* field_class_name = SPVM_API_RUNTIME_get_name(runtime, field_class_name_id);
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -4101,8 +4098,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
         const char* decl_method_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_name_id);
         int32_t decl_method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, decl_method_id);
-        int32_t decl_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, decl_method_class_id);
-        const char* decl_method_class_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_class_name_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, decl_method_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t decl_method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, decl_method_id);
         int32_t decl_method_return_type_id = SPVM_API_RUNTIME_get_method_return_type_id(runtime, decl_method_id);
         int32_t decl_method_return_type_dimension = SPVM_API_RUNTIME_get_type_dimension(runtime, decl_method_return_type_id);
@@ -4110,7 +4107,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t decl_method_return_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, decl_method_return_basic_type_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "->");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n"
@@ -4124,7 +4121,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+            SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -4134,7 +4131,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+            SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
@@ -4158,7 +4155,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" method in the \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" class is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
