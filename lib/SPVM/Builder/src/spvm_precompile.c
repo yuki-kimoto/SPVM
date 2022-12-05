@@ -1946,32 +1946,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " == NULL, 0)) { \n"
-                                              "    env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_UNDEFINED]));\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else { \n"
-                                              "    if (__builtin_expect(");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, " < 0 || ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, "  >= *(int32_t*)((intptr_t)");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " + (intptr_t)env->object_length_offset), 0)) { \n"
-                                              "      env->set_exception(env, stack, env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ARRAY_ACCESS_INDEX_OUT_OF_RANGE]));\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      object_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n"
-                                              "      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, \n"
-                                              "        object_address,\n"
-                                              "        NULL"
-                                              "      );\n"
-                                              "    }\n"
-                                              "  }\n");
-        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_SET_ARRAY_ELEMENT_UNDEF(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
