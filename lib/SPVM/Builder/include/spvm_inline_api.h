@@ -931,4 +931,23 @@ static inline void SPVM_INLINE_API_NEW_STRING(SPVM_ENV* env, SPVM_VALUE* stack, 
   }
 }
 
+static inline void SPVM_INLINE_API_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t length, int32_t* error) {
+  if (length >= 0) {
+    void* string = env->new_string_raw(env, stack, NULL, length);
+    if (string == NULL) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_NEW_STRING_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+    else {
+      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, string);
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_STRING_LENGTH_SMALL]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+}
+
 #endif
