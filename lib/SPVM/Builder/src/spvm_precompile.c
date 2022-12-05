@@ -1760,9 +1760,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(env, stack, array, index, (int32_t*)&error, object_header_byte_size));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
         
         break;
       }
@@ -4881,33 +4881,41 @@ void SPVM_PRECOMPILE_add_array_get(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, index_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  ");
-  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  
   switch (element_ctype_id) {
     case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_INT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_LONG: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(env, stack, array, index, (int32_t*)&error, object_header_byte_size);\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(env, stack, &");
+      SPVM_PRECOMPILE_add_operand(precompile, string_buffer, element_ctype_id, out_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ", array, index, (int32_t*)&error, object_header_byte_size);\n");
       break;
     }
     default: {

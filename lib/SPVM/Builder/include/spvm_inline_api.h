@@ -129,7 +129,7 @@ static inline void SPVM_INLINE_API_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack,
   *mortal_stack_top_ptr = original_mortal_stack_top;
 }
 
-static inline int8_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   int8_t element = 0;
   
@@ -143,14 +143,12 @@ static inline int8_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_
       *e = 1;
     }
     else { 
-      element = ((int8_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int8_t*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline int16_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   int16_t element = 0;
   
@@ -164,14 +162,12 @@ static inline int16_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPV
       *e = 1;
     }
     else { 
-      element = ((int16_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int16_t*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline int32_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   int32_t element = 0;
   
@@ -185,14 +181,12 @@ static inline int32_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_
       *e = 1;
     }
     else { 
-      element = ((int32_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int32_t*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline int64_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   int64_t element = 0;
   
@@ -206,14 +200,12 @@ static inline int64_t SPVM_INLINE_API_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM
       *e = 1;
     }
     else { 
-      element = ((int64_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int64_t*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline float SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   float element = 0;
   
@@ -227,14 +219,12 @@ static inline float SPVM_INLINE_API_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_
       *e = 1;
     }
     else { 
-      element = ((float*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((float*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline double SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   double element = 0;
   
@@ -248,14 +238,12 @@ static inline double SPVM_INLINE_API_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPV
       *e = 1;
     }
     else { 
-      element = ((double*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((double*)((intptr_t)array + object_header_byte_size))[index];
     }
   }
-  
-  return element;
 }
 
-static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
+static inline void SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* array, int32_t index, int32_t* e, int32_t object_header_byte_size) {
   
   void* element = NULL;
   
@@ -269,11 +257,9 @@ static inline void* SPVM_INLINE_API_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM
       *e = 1;
     }
     else { 
-      element = ((void**)((intptr_t)array + object_header_byte_size))[index];
+      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, ((void**)((intptr_t)array + object_header_byte_size))[index]);
     }
   }
-  
-  return element;
 }
 
 #define SPVM_INLINE_API_ADD_INT(out, in1, in2) (out = in1 + in2)
