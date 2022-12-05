@@ -1011,18 +1011,7 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-        int32_t field_offset = field->offset;
-
-        if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
-        }
+        SPVM_INLINE_API_SET_FIELD_UNDEF(env, stack, object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {

@@ -1313,4 +1313,18 @@ static inline void SPVM_INLINE_API_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* s
   }
 }
 
+static inline void SPVM_INLINE_API_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  
+  if (__builtin_expect(object == NULL, 0)) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
+  }
+}
+
 #endif
