@@ -2346,8 +2346,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if (class_var_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
@@ -2355,8 +2356,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, class_var_access_ctype_id, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = *(");
@@ -2379,8 +2381,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if (class_var_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
@@ -2388,8 +2391,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "      SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]);\n"
@@ -2440,8 +2444,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if (class_var_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
@@ -2449,8 +2454,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    *(");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, class_var_access_ctype_id));
         SPVM_STRING_BUFFER_add(string_buffer, "*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = ");
@@ -2473,8 +2479,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if ("
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if ("
                                               "class_var_id"
                                               " < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
@@ -2484,8 +2491,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
                                               "class_var_id"
                                               "],\n");
@@ -2508,8 +2516,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "  if (class_var_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_var_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The class variable \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" in the class \\\"");
@@ -2517,8 +2526,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
-                                              "  }\n"
-                                              "  if (!error) {\n"
+                                              "  }\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
                                               "class_var_id"
                                               "], NULL);\n"
