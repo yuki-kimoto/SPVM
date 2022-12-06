@@ -2682,17 +2682,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = env->get_class_id(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (class_id < 0) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, \"The class \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" is not found\");\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = SPVM_IMPLEMENT_GET_CLASS_ID(env, stack, class_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    ");
