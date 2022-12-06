@@ -1376,4 +1376,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var_id, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var_id) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL))
 
+#define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack)))
+#define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
+#define SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack) (env->set_exception(env, stack, NULL))
+
 #endif

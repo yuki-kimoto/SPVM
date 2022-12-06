@@ -395,6 +395,35 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
+        int32_t line = opcode->operand2;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
+                                              "    eval_error = error;\n"
+                                              "    error = 0;\n"
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
+                                              "    goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
+        int32_t line = opcode->operand2;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
+                                              "    goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "  }\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         // Default branch
         int32_t default_opcode_rel_index = opcode->operand1;
@@ -2467,48 +2496,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", env->get_exception(env, stack));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  env->set_exception(env, stack, NULL);\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
-        int32_t line = opcode->operand2;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
-                                              "    eval_error = error;\n"
-                                              "    error = 0;\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
-                                              "    goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
-        int32_t line = opcode->operand2;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error, 0)) {\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), cur_method_id, line = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
-                                              "    goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_ISA:
