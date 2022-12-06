@@ -1380,4 +1380,22 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack) (env->set_exception(env, stack, NULL))
 
+static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
+  if (object) {
+    *out = env->isa(env, stack, object, dist_basic_type_id, dist_type_dimension);
+  }
+  else {
+    *out = 0;
+  }
+}
+
+static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
+  if (object) {
+    *out = env->is_type(env, stack, object, dist_basic_type_id, dist_type_dimension);
+  }
+  else {
+    *out = 0;
+  }
+}
+
 #endif

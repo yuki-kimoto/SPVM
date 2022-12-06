@@ -1125,30 +1125,16 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
       }
       case SPVM_OPCODE_C_ID_ISA: {
         void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t dist_basic_type_id = opcode->operand2;
-        int32_t dist_type_dimension = opcode->operand3;
-
-        if (object) {
-          int_vars[0] = env->isa(env, stack, object, dist_basic_type_id, dist_type_dimension);
-        }
-        else {
-          int_vars[0] = 0;
-        }
-        
+        int32_t basic_type_id = opcode->operand2;
+        int32_t type_dimension = opcode->operand3;
+        SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
         void* object = *(void**)&object_vars[opcode->operand1];
-        int32_t dist_basic_type_id = opcode->operand2;
-        int32_t dist_type_dimension = opcode->operand3;
-
-        if (object) {
-          int_vars[0] = env->is_type(env, stack, object, dist_basic_type_id, dist_type_dimension);
-        }
-        else {
-          int_vars[0] = 0;
-        }
-        
+        int32_t basic_type_id = opcode->operand2;
+        int32_t type_dimension = opcode->operand3;
+        SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_IMPL: {
