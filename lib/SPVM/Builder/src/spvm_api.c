@@ -5,7 +5,7 @@
 #include "spvm_native.h"
 
 #include "spvm_api.h"
-#include "spvm_api_vm.h"
+#include "spvm_vm.h"
 #include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
@@ -1378,7 +1378,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
       }
       // Call sub virtual machine
       else {
-        error = SPVM_API_VM_call_spvm_method_vm(env, stack, method_id, args_stack_length);
+        error = SPVM_API_call_spvm_method_vm(env, stack, method_id, args_stack_length);
       }
     }
   }
@@ -3970,4 +3970,8 @@ void SPVM_API_set_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   (void)env;
   
   object->length = length;
+}
+
+int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  return SPVM_VM_call_spvm_method(env, stack, method_id, args_stack_length);
 }

@@ -69,7 +69,6 @@ lib/SPVM/Builder/include/spvm_api_compiler.h
 lib/SPVM/Builder/include/spvm_api_precompile.h
 lib/SPVM/Builder/include/spvm_api_runtime.h
 lib/SPVM/Builder/include/spvm_api_string_buffer.h
-lib/SPVM/Builder/include/spvm_api_vm.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_attribute.h
 lib/SPVM/Builder/include/spvm_basic_type.h
@@ -117,6 +116,7 @@ lib/SPVM/Builder/include/spvm_typedecl.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_var_decl.h
+lib/SPVM/Builder/include/spvm_vm.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
@@ -132,7 +132,6 @@ lib/SPVM/Builder/src/spvm_api_compiler.c
 lib/SPVM/Builder/src/spvm_api_precompile.c
 lib/SPVM/Builder/src/spvm_api_runtime.c
 lib/SPVM/Builder/src/spvm_api_string_buffer.c
-lib/SPVM/Builder/src/spvm_api_vm.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_attribute.c
 lib/SPVM/Builder/src/spvm_basic_type.c
@@ -168,6 +167,7 @@ lib/SPVM/Builder/src/spvm_type.c
 lib/SPVM/Builder/src/spvm_use.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_var_decl.c
+lib/SPVM/Builder/src/spvm_vm.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
 lib/SPVM/Builder/Util.pm
