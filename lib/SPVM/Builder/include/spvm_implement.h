@@ -1490,4 +1490,50 @@ static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_GET_CLASS_ID(out, class_id) (out = class_id)
 
+static inline void SPVM_IMPLEMENT_REFOP(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
+  if (object == NULL) {
+    *out = NULL;
+  }
+  else {
+    void* type_name = env->get_type_name_raw(env, stack, object);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, type_name);
+  }
+}
+
+static inline void SPVM_IMPLEMENT_DUMP(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
+  void* dump = env->dump_raw(env, stack, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, dump);
+}
+
+static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t* error) {
+  if (object) {
+    if (!(env->is_string(env, stack, object) || env->is_numeric_array(env, stack, object) || env->is_mulnum_array(env, stack, object))) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_COPY_OPERAND_INVALID]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+    else {
+      void* new_object_raw = env->copy_raw(env, stack, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, new_object_raw);
+    }
+  }
+  else {
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL);
+  }
+}
+
+#define SPVM_IMPLEMENT_REF_BYTE(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_SHORT(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_INT(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_LONG(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = in)
+
+#define SPVM_IMPLEMENT_DEREF_BYTE(out, in) (out = in)
+#define SPVM_IMPLEMENT_DEREF_SHORT(out, in) (out = in)
+#define SPVM_IMPLEMENT_DEREF_INT(out, in) (out = in)
+#define SPVM_IMPLEMENT_DEREF_LONG(out, in) (out = in)
+#define SPVM_IMPLEMENT_DEREF_FLOAT(out, in) (out = in)
+#define SPVM_IMPLEMENT_DEREF_DOUBLE(out, in) (out = in)
+
 #endif
