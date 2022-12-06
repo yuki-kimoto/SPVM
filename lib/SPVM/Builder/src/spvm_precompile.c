@@ -2686,14 +2686,13 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = SPVM_IMPLEMENT_GET_CLASS_ID(env, stack, class_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = SPVM_IMPLEMENT_GET_CLASS_ID_RET(env, stack, class_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    ");
+                                              "    SPVM_IMPLEMENT_GET_CLASS_ID(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = class_id;\n"
+        SPVM_STRING_BUFFER_add(string_buffer, ", class_id);\n"
                                               "  }\n");
-        
         break;
       }
       case SPVM_OPCODE_C_ID_REFOP: {

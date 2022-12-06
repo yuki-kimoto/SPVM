@@ -85,7 +85,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALUE
   return basic_type_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_CLASS_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, char* message, int32_t* error) {
+static inline int32_t SPVM_IMPLEMENT_GET_CLASS_ID_RET(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, char* message, int32_t* error) {
 
   int32_t class_id = env->get_class_id(env, class_name);
 
@@ -1487,5 +1487,7 @@ static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stac
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR(out, eval_error) (out = eval_error)
 
 #define SPVM_IMPLEMENT_SET_ERROR(error, error_code) (error = error_code)
+
+#define SPVM_IMPLEMENT_GET_CLASS_ID(out, class_id) (out = class_id)
 
 #endif
