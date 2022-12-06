@@ -27,6 +27,7 @@ enum {
   SPVM_INLINE_API_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,
   SPVM_INLINE_API_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND,
   SPVM_INLINE_API_C_STRING_ERROR_FIELD_NOT_FOUND,
+  SPVM_INLINE_API_C_STRING_ERROR_CLASS_VAR_NOT_FOUND,
 };
 
 static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
@@ -55,6 +56,7 @@ static const char* SPVM_INLINE_API_STRING_LITERALS[] = {
   "The implementation of the \"%s\" instance method defined in \"%s\" is not found",
   "The %s basic type is not found",
   "The %s field is not found",
+  "The %s class variable in the %s class is not found",
 };
 
 enum {
@@ -93,6 +95,20 @@ static inline int32_t SPVM_INLINE_API_GET_FIELD_ID(SPVM_ENV* env, SPVM_VALUE* st
   }
   
   return field_id;
+}
+
+static inline int32_t SPVM_INLINE_API_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, char* message, int32_t* error) {
+  
+  int32_t class_var_id = env->get_class_var_id(env, class_name, class_var_name);
+  
+  if (class_var_id < 0) {
+    snprintf(message, 256, SPVM_INLINE_API_STRING_LITERALS[SPVM_INLINE_API_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  
+  return class_var_id;
 }
 
 //  "& ~(intptr_t)1" means dropping weaken flag
