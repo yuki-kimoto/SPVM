@@ -1359,12 +1359,21 @@ static inline void SPVM_INLINE_API_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
-#define SPVM_INLINE_API_GET_CLASS_VAR_BYTE(out, class_var_id) (out = *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
-#define SPVM_INLINE_API_GET_CLASS_VAR_SHORT(out, class_var_id) (out = *(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
-#define SPVM_INLINE_API_GET_CLASS_VAR_INT(out, class_var_id) (out = *(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
-#define SPVM_INLINE_API_GET_CLASS_VAR_LONG(out, class_var_id) (out = *(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
-#define SPVM_INLINE_API_GET_CLASS_VAR_FLOAT(out, class_var_id) (out = *(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
-#define SPVM_INLINE_API_GET_CLASS_VAR_DOUBLE(out, class_var_id) (out = *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_BYTE(env, stack, out, class_var_id) (out = *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_SHORT(env, stack, out, class_var_id) (out = *(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_INT(env, stack, out, class_var_id) (out = *(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_LONG(env, stack, out, class_var_id) (out = *(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_FLOAT(env, stack, out, class_var_id) (out = *(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
+#define SPVM_INLINE_API_GET_CLASS_VAR_DOUBLE(env, stack, out, class_var_id) (out = *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
 #define SPVM_INLINE_API_GET_CLASS_VAR_OBJECT(env, stack, out, class_var_id) (SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, out, *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]))
+
+#define SPVM_INLINE_API_SET_CLASS_VAR_BYTE(env, stack, class_var_id, in) (*(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_SHORT(env, stack, class_var_id, in) (*(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_INT(env, stack, class_var_id, in) (*(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_LONG(env, stack, class_var_id, in) (*(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_FLOAT(env, stack, class_var_id, in) (*(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_DOUBLE(env, stack, class_var_id, in) (*(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
+#define SPVM_INLINE_API_SET_CLASS_VAR_OBJECT(env, stack, class_var_id, in) (SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], in))
+#define SPVM_INLINE_API_SET_CLASS_VAR_UNDEF(env, stack, class_var_id) (SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL))
 
 #endif

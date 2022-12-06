@@ -1016,32 +1016,32 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_BYTE(byte_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_BYTE(env, stack, byte_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_SHORT(short_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_SHORT(env, stack, short_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_INT(int_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_INT(env, stack, int_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_LONG(long_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_LONG(env, stack, long_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_FLOAT(float_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_FLOAT(env, stack, float_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE: {
         int32_t class_var_id = opcode->operand1;
-        SPVM_INLINE_API_GET_CLASS_VAR_DOUBLE(double_vars[opcode->operand0], class_var_id);
+        SPVM_INLINE_API_GET_CLASS_VAR_DOUBLE(env, stack, double_vars[opcode->operand0], class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
@@ -1051,58 +1051,42 @@ int32_t SPVM_API_VM_call_spvm_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = byte_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_BYTE(env, stack, class_var_id, byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = short_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_SHORT(env, stack, class_var_id, short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = int_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_INT(env, stack, class_var_id, int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = long_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_LONG(env, stack, class_var_id, long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = float_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_FLOAT(env, stack, class_var_id, float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
         int32_t class_var_id = opcode->operand0;
-        
-        *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = double_vars[opcode->operand1];
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_DOUBLE(env, stack, class_var_id, double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_id = opcode->operand0;
-        
-        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], *(void**)&object_vars[opcode->operand1]);
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_OBJECT(env, stack, class_var_id, object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_id = opcode->operand0;
-        
-        SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL);
-        
+        SPVM_INLINE_API_SET_CLASS_VAR_UNDEF(env, stack, class_var_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
