@@ -2389,6 +2389,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG:
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT:
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF:
       {
         int32_t class_var_id = opcode->operand0;
         
@@ -2398,103 +2400,69 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
 
-        int32_t class_var_access_ctype_id;
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_INLINE_API_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n");
         switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_BYTE;
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_BYTE(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_SHORT;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_SHORT(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_INT;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_INT(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_LONG;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_LONG(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_FLOAT(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_DOUBLE(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
-          default:
-            class_var_access_ctype_id = SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_OBJECT(env, stack, class_var_id, ");
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+            SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_INLINE_API_SET_CLASS_VAR_UNDEF(env, stack, class_var_id);\n");
+            break;
+          }
+          default: {
+            assert(0);
+          }
         }
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_INLINE_API_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
-                                              
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    *(");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, class_var_access_ctype_id));
-        SPVM_STRING_BUFFER_add(string_buffer, "*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, class_var_access_ctype_id, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
-        int32_t class_var_id = opcode->operand0;
-        
-        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_INLINE_API_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
-                                              
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
-                                              "class_var_id"
-                                              "],\n");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ");"
-                                              "  }\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
-        int32_t class_var_id = opcode->operand0;
-        
-        int32_t class_var_class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_var_class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_INLINE_API_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)["
-                                              "class_var_id"
-                                              "], NULL);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         
         break;
       }
