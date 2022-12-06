@@ -347,6 +347,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
 
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir_sep;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_rel_file;\n");
+
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
   int32_t opcodes_length = SPVM_API_RUNTIME_get_method_opcodes_length(runtime, method_id);
@@ -2620,47 +2624,28 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           module_dir_sep = "";
           module_dir = "";
         }
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  empty_or_undef = 0;\n"
-                                              "  if (object) {\n"
-                                              "    bytes = (char*)env->get_chars(env, stack, object);\n"
-                                              "    string_length = env->length(env, stack, object);\n"
-                                              "    if (string_length > 0) {\n"
-                                              "      (void)fwrite(bytes, 1, string_length, stderr);\n"
-                                              "      if (bytes[string_length - 1] != '\\n') {\n"
-                                              "        fprintf(stderr, \" at %s%s%s line %d\\n\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_dir = \"");
         SPVM_STRING_BUFFER_add(string_buffer, module_dir);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_dir_sep = \"");
         SPVM_STRING_BUFFER_add(string_buffer, module_dir_sep);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_rel_file = \"");
         SPVM_STRING_BUFFER_add(string_buffer, module_rel_file);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
-                                              "      }\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      empty_or_undef = 1;\n"
-                                              "    }\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    empty_or_undef = 1;\n"
-                                              "  }\n"
-                                              "  if (empty_or_undef) {\n"
-                                              "    fprintf(stderr, \"Warning: something's wrong at %s%s%s line %d\\n\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, module_dir);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, module_dir_sep);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, module_rel_file);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  line = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ERROR_CODE: {

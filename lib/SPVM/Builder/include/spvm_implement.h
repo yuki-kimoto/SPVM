@@ -1423,4 +1423,33 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
   fprintf(stdout, "\n");
 }
 
+static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* module_dir, const char* module_dir_sep, const char* module_rel_file, int32_t line) {
+  int32_t empty_or_undef = 0;
+  if (string) {
+    const char* bytes = env->get_chars(env, stack, string);
+    int32_t string_length = env->length(env, stack, string);
+
+    if (string_length > 0) {
+      size_t ret = fwrite(bytes, 1, string_length, stderr);
+      // Add line and file information if last character is not '\n'
+      int32_t add_line_file;
+      if (bytes[string_length - 1] != '\n') {
+        fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], module_dir, module_dir_sep, module_rel_file, line);
+      }
+    }
+    else {
+      empty_or_undef = 1;
+    }
+  }
+  else {
+    empty_or_undef = 1;
+  }
+
+  if (empty_or_undef) {
+    fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], module_dir, module_dir_sep, module_rel_file, line);
+  }
+
+  fflush(stderr);
+}
+
 #endif
