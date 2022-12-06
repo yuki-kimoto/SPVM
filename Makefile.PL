@@ -160,15 +160,6 @@ sub MY::postamble {
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('List');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('ByteList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('ShortList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('IntList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('LongList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('FloatList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('DoubleList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringList');
-  $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('StringBuffer');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
   $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
   
