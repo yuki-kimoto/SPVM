@@ -38,7 +38,7 @@
 
 static const char* FILE_NAME = "spvm_vm.c";
 
-int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_method_id, int32_t args_stack_length) {
   (void)env;
 
   // Opcode relative index
@@ -47,15 +47,15 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Runtime method
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  // Runtime current_method
+  SPVM_RUNTIME_METHOD* current_method = SPVM_API_RUNTIME_get_method(runtime, current_method_id);
   
-  const char* method_name =  SPVM_API_RUNTIME_get_name(runtime, method->name_id);
+  const char* current_method_name =  SPVM_API_RUNTIME_get_name(runtime, current_method->name_id);
   
   // Runtime class
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
+  SPVM_RUNTIME_CLASS* current_class = SPVM_API_RUNTIME_get_class(runtime, current_method->class_id);
 
-  const char* class_name =  SPVM_API_RUNTIME_get_name(runtime, class->name_id);
+  const char* current_class_name =  SPVM_API_RUNTIME_get_name(runtime, current_class->name_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -70,9 +70,9 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
   int32_t error_code = 1;
   
   // Operation code base
-  int32_t method_opcodes_base_id = method->opcodes_base_id;
+  int32_t current_method_opcodes_base_id = current_method->opcodes_base_id;
 
-  // Call method argument stack top
+  // Call current_method argument stack top
   int32_t stack_index = 0;
   
   // Mortal stack
@@ -110,13 +110,13 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
   {
     // Numeric area byte size
     int32_t numeric_vars_byte_size = 0;
-    numeric_vars_byte_size += method->call_stack_long_vars_length * 8;
-    numeric_vars_byte_size += method->call_stack_double_vars_length * 8;
-    numeric_vars_byte_size += method->call_stack_int_vars_length * 4;
-    numeric_vars_byte_size += method->call_stack_float_vars_length * 4;
-    numeric_vars_byte_size += method->mortal_stack_length * 4;
-    numeric_vars_byte_size += method->call_stack_short_vars_length * 2;
-    numeric_vars_byte_size += method->call_stack_byte_vars_length * 1;
+    numeric_vars_byte_size += current_method->call_stack_long_vars_length * 8;
+    numeric_vars_byte_size += current_method->call_stack_double_vars_length * 8;
+    numeric_vars_byte_size += current_method->call_stack_int_vars_length * 4;
+    numeric_vars_byte_size += current_method->call_stack_float_vars_length * 4;
+    numeric_vars_byte_size += current_method->mortal_stack_length * 4;
+    numeric_vars_byte_size += current_method->call_stack_short_vars_length * 2;
+    numeric_vars_byte_size += current_method->call_stack_byte_vars_length * 1;
     
     if (numeric_vars_byte_size % 8 != 0) {
       numeric_vars_byte_size += (8 - (numeric_vars_byte_size % 8));
@@ -124,8 +124,8 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
     
     // Address area byte size
     int32_t address_vars_byte_size = 0;
-    address_vars_byte_size += method->call_stack_object_vars_length * sizeof(void*);
-    address_vars_byte_size += method->call_stack_ref_vars_length * sizeof(void*);
+    address_vars_byte_size += current_method->call_stack_object_vars_length * sizeof(void*);
+    address_vars_byte_size += current_method->call_stack_ref_vars_length * sizeof(void*);
     
     // Total area byte size
     int32_t total_vars_byte_size = numeric_vars_byte_size + address_vars_byte_size;
@@ -142,41 +142,41 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
     
     // Double variables
     double_vars = (double*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_double_vars_length * 8;
+    call_stack_offset += current_method->call_stack_double_vars_length * 8;
     
     // Long varialbes
     long_vars = (int64_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_long_vars_length * 8;
+    call_stack_offset += current_method->call_stack_long_vars_length * 8;
     
     // Float variables
     float_vars = (float*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_float_vars_length * 4;
+    call_stack_offset += current_method->call_stack_float_vars_length * 4;
     
     // Int variables
     int_vars = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_int_vars_length * 4;
+    call_stack_offset += current_method->call_stack_int_vars_length * 4;
 
     // Mortal stack
     mortal_stack = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->mortal_stack_length * 4;
+    call_stack_offset += current_method->mortal_stack_length * 4;
     
     // Short variables
     short_vars = (int16_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_short_vars_length * 2;
+    call_stack_offset += current_method->call_stack_short_vars_length * 2;
 
     // Byte variables
     byte_vars = (int8_t*)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_byte_vars_length * 1;
+    call_stack_offset += current_method->call_stack_byte_vars_length * 1;
     
     call_stack_offset = numeric_vars_byte_size;
 
     // Object variables
     object_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_object_vars_length * sizeof(void*);
+    call_stack_offset += current_method->call_stack_object_vars_length * sizeof(void*);
     
     // Refernce variables
     ref_vars = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += method->call_stack_ref_vars_length * sizeof(void*);
+    call_stack_offset += current_method->call_stack_ref_vars_length * sizeof(void*);
   }
 
   // Buffer for string convertion
@@ -188,7 +188,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
 
   // Execute operation codes
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_id + opcode_rel_index]);
+    SPVM_OPCODE* opcode = &(opcodes[current_method_opcodes_base_id + opcode_rel_index]);
     
     int32_t opcode_id = opcode->id;
     
@@ -247,11 +247,11 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
 
         if (case_infos_length > 0) {
           // min
-          SPVM_OPCODE* opcode_case_info_min = &(opcodes[method_opcodes_base_id + opcode_rel_index + 1 + 0]);
+          SPVM_OPCODE* opcode_case_info_min = &(opcodes[current_method_opcodes_base_id + opcode_rel_index + 1 + 0]);
           int32_t min = opcode_case_info_min->operand1;
           
           // max
-          SPVM_OPCODE* opcode_case_info_max = &(opcodes[method_opcodes_base_id + opcode_rel_index + 1 + case_infos_length - 1]);
+          SPVM_OPCODE* opcode_case_info_max = &(opcodes[current_method_opcodes_base_id + opcode_rel_index + 1 + case_infos_length - 1]);
           int32_t max = opcode_case_info_max->operand1;
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
@@ -265,7 +265,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[method_opcodes_base_id + opcode_rel_index + 1 + cur_half_pos]);
+              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[current_method_opcodes_base_id + opcode_rel_index + 1 + cur_half_pos]);
               int32_t cur_half = opcode_case_cur_half->operand1;
               
               if (int_vars[opcode->operand0] > cur_half) {
@@ -1161,16 +1161,16 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
         
         const char* module_dir = NULL;
         const char* module_dir_sep;
-        int32_t module_dir_id = class->module_dir_id;
+        int32_t module_dir_id = current_class->module_dir_id;
         if (module_dir_id >= 0) {
           module_dir_sep = "/";
-          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, class->module_dir_id, NULL);
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class->module_dir_id, NULL);
         }
         else {
           module_dir_sep = "";
           module_dir = "";
         }
-        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, class->module_rel_file_id, NULL);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class->module_rel_file_id, NULL);
 
         SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);
         
@@ -3195,7 +3195,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
       return_value = error;
     }
     else {
-      int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
+      int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, current_method->return_type_id);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
           SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
