@@ -2589,32 +2589,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (object) {\n"
-                                              "    bytes = (char*)env->get_chars(env, stack, object);\n"
-                                              "    string_length = env->length(env, stack, object);\n"
-                                              "    if (string_length > 0) {\n"
-                                              "      (void)fwrite(bytes, 1, string_length, stdout);\n"
-                                              "    }\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_PRINT(env, stack, string);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SAY: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (object) {\n"
-                                              "    bytes = (char*)env->get_chars(env, stack, object);\n"
-                                              "    string_length = env->length(env, stack, object);\n"
-                                              "    if (string_length > 0) {\n"
-                                              "      (void)fwrite(bytes, 1, string_length, stdout);\n"
-                                              "    }\n"
-                                              "  }\n"
-                                              "  fprintf(stdout, \"\\n\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_SAY(env, stack, string);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_WARN: {

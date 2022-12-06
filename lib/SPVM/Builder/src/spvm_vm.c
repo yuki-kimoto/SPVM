@@ -1146,30 +1146,13 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
-        void* object = object_vars[opcode->operand0];
-        if (object) {
-          const char* bytes = env->get_chars(env, stack, object);
-          int32_t string_length = env->length(env, stack, object);
-          
-          if (string_length > 0) {
-            size_t ret = fwrite(bytes, 1, string_length, stdout);
-          }
-        }
-        
+        void* string = object_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PRINT(env, stack, string);
         break;
       }
       case SPVM_OPCODE_C_ID_SAY: {
-        void* object = object_vars[opcode->operand0];
-        if (object) {
-          const char* bytes = env->get_chars(env, stack, object);
-          int32_t string_length = env->length(env, stack, object);
-          
-          if (string_length > 0) {
-            size_t ret = fwrite(bytes, 1, string_length, stdout);
-          }
-        }
-        fprintf(stdout, "\n");
-        
+        void* string = object_vars[opcode->operand0];
+        SPVM_IMPLEMENT_SAY(env, stack, string);
         break;
       }
       case SPVM_OPCODE_C_ID_WARN: {
