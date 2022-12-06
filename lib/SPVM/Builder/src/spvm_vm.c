@@ -1177,38 +1177,29 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ERROR_CODE: {
-        int_vars[opcode->operand0] = error_code;
+        SPVM_IMPLEMENT_GET_ERROR_CODE(int_vars[opcode->operand0], error_code);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
         int32_t tmp_error_code = int_vars[opcode->operand1];
-        if (tmp_error_code < 1) {
-          void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CODE_TOO_SMALL]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          error_code = tmp_error_code;
-          int_vars[opcode->operand0] = error_code;
-        }
+        SPVM_IMPLEMENT_SET_ERROR_CODE(env, stack, &int_vars[opcode->operand0], &error_code, int_vars[opcode->operand1], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
-        eval_error = 0;
+        SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
-        int_vars[opcode->operand0] = eval_error;
+        SPVM_IMPLEMENT_GET_EVAL_ERROR(int_vars[opcode->operand0], eval_error);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_ERROR: {
+        SPVM_IMPLEMENT_SET_ERROR(error, error_code);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
         int32_t class_id = opcode->operand1;
         int_vars[opcode->operand0] = class_id;
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_ERROR: {
-        error = error_code;
         break;
       }
       case SPVM_OPCODE_C_ID_REFOP: {

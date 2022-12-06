@@ -2649,38 +2649,32 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ERROR_CODE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_ERROR_CODE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = error_code;\n");
-        
+        SPVM_STRING_BUFFER_add(string_buffer, ", error_code);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  tmp_error_code = ");
-        SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (tmp_error_code < 1) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CODE_TOO_SMALL]);\n"
-                                              "    env->set_exception(env, stack, exception);\n"
-                                              "    error = 1;\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    error_code = tmp_error_code;");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_CODE(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = error_code;\n"
-                                              "  }\n");
-        
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error_code, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error);");
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  eval_error = 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_EVAL_ERROR(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = eval_error;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", eval_error);\n");
         
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_ERROR: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR(error, error_code);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
@@ -2706,10 +2700,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, " = class_id;\n"
                                               "  }\n");
         
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_ERROR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  error = error_code;\n");
         break;
       }
       case SPVM_OPCODE_C_ID_REFOP: {
