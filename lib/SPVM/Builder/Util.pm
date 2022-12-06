@@ -482,7 +482,7 @@ sub get_spvm_core_header_file_names {
     spvm_field_access.h
     spvm_field.h
     spvm_hash.h
-    spvm_inline_api.h
+    spvm_implement.h
     spvm_interface.h
     spvm_list.h
     spvm_method.h

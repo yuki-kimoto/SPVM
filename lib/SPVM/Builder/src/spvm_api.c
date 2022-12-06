@@ -26,7 +26,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_method.h"
 
-#include "spvm_inline_api.h"
+#include "spvm_implement.h"
 
 #ifndef SPVM_NO_COMPILER_API
 #  include "spvm_api_compiler.h"
@@ -1346,7 +1346,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
       if (!error) {
         if (method_return_type_is_object) {
           if (*(void**)&stack[0] != NULL) {
-            SPVM_INLINE_API_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+            SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
           }
         }
       }
@@ -1358,7 +1358,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
       if (!error) {
         if (method_return_type_is_object) {
           if (*(void**)&stack[0] != NULL) {
-            SPVM_INLINE_API_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+            SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
           }
         }
       }
@@ -2130,7 +2130,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
     SPVM_API_dec_ref_count(env, stack, *cur_excetpion_ptr);
   }
   
-  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, (void**)cur_excetpion_ptr, exception);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)cur_excetpion_ptr, exception);
   
   if (*cur_excetpion_ptr != NULL) {
     (*cur_excetpion_ptr)->ref_count++;
@@ -2739,7 +2739,7 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   (void)env;
   
   SPVM_OBJECT* object_maybe_weaken = ((SPVM_OBJECT**)((intptr_t)array + env->object_header_byte_size))[index];
-  SPVM_OBJECT* object = SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object_maybe_weaken);
+  SPVM_OBJECT* object = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object_maybe_weaken);
   
   return object;
 }
@@ -2749,7 +2749,7 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
   
   void* object_address = &((void**)((intptr_t)array + env->object_header_byte_size))[index];
   
-  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, object_address, oval);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, oval);
 }
 
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -3227,7 +3227,7 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   // Get field value
   SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size + field->offset);
-  SPVM_OBJECT* value = SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
+  SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
 }
@@ -3315,7 +3315,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + env->object_header_byte_size + field->offset);
 
-  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
 }
 
 void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t byte_size) {
@@ -3454,7 +3454,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int
 
   // Get field value
   SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
-  SPVM_OBJECT* value = SPVM_INLINE_API_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
+  SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
 }
@@ -3499,7 +3499,7 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t pac
 
   // Get field value
   void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
-  SPVM_INLINE_API_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
 }
 
 

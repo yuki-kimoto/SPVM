@@ -4,6 +4,7 @@
     * Renamed spvm_api_vm.c to spvm_vm.c.
     * Renamed SPVM_API_VM_call_spvm_method_vm to SPVM_VM_call_spvm_method.
     * Added SPVM_API_call_spvm_method_vm.
+    * Renamed spvm_inline_api.h to spvm_implement.h
     
 0.9664 2022-12-01
   [Internal Compatible Changes]
