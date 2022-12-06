@@ -1398,4 +1398,6 @@ static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int3
   }
 }
 
+#define SPVM_IMPLEMENT_HAS_IMPL(env, stack, out, object, method_name) (out = env->get_instance_method_id(env, object, method_name) >= 0)
+
 #endif

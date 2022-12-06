@@ -342,6 +342,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_var_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* method_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_dimension;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
@@ -2569,27 +2570,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_IMPL: {
-        int32_t implement_method_id = opcode->operand1;
-        int32_t implement_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, implement_method_id);
-        const char* implement_method_name = SPVM_API_RUNTIME_get_name(runtime, implement_method_name_id);
-
-        int32_t interface_basic_type_id = opcode->operand2;
-        int32_t interface_basic_type_class_id = SPVM_API_RUNTIME_get_basic_type_class_id(runtime, interface_basic_type_id);
-
-        int32_t interface_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, interface_basic_type_class_id);
-        const char* interface_name = SPVM_API_RUNTIME_get_name(runtime, interface_name_id);
-        
-        int32_t interface_method_id = SPVM_API_RUNTIME_get_method_id_by_name(runtime, interface_name, implement_method_name);
+        int32_t method_id = opcode->operand1;
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
+        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "    call_method_id = env->get_instance_method_id(env, object, \"");
-        SPVM_STRING_BUFFER_add(string_buffer, implement_method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\");\n"
-                                              "    ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_HAS_IMPL(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = call_method_id >= 0;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object, method_name);\n");
 
         break;
       }

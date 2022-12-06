@@ -1138,21 +1138,11 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_IMPL: {
-        int32_t implement_method_id = opcode->operand1;
-        SPVM_RUNTIME_METHOD* implement_method = SPVM_API_RUNTIME_get_method(runtime, implement_method_id);
-        const char* implement_method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, implement_method->name_id, NULL);
-        
-        int32_t interface_basic_type_id = opcode->operand2;
-        SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
-        SPVM_RUNTIME_CLASS* interface = SPVM_API_RUNTIME_get_class(runtime, interface_basic_type->class_id);
-        SPVM_RUNTIME_METHOD* interface_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, interface->id, implement_method_name);
-        
         void* object = *(void**)&object_vars[opcode->operand0];
-        
-        int32_t call_method_id = env->get_instance_method_id(env, object, implement_method_name);
-        
-        int_vars[0] = call_method_id >= 0;
-
+        int32_t method_id = opcode->operand1;
+        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+        SPVM_IMPLEMENT_HAS_IMPL(env, stack, int_vars[0], object, method_name);
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
