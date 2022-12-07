@@ -2474,4 +2474,11 @@ static inline void SPVM_IMPLEMENT_PUSH_ARG_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VAL
   *stack_index += fields_length;
 }
 
+#define SPVM_IMPLEMENT_GET_ARG_BYTE(out, stack, stack_index) (out = *(int8_t*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_SHORT(out, stack, stack_index) (out = *(int16_t*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_INT(out, stack, stack_index) (out = *(int32_t*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_LONG(out, stack, stack_index) (out = *(int64_t*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_FLOAT(out, stack, stack_index) (out = *(float*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index & 0xFF])
+
 #endif
