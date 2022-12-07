@@ -1562,10 +1562,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_BYTE: {
         int8_t* mulnum_ref = *(int8_t**)&ref_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
-        
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&byte_vars[opcode->operand0] + field_index) = mulnum_ref[field_index];
-        }
+        SPVM_IMPLEMENT_DEREF_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], mulnum_ref, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_SHORT: {
