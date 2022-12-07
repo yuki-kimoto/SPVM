@@ -1,6 +1,8 @@
 #ifndef SPVM_IMPLEMENT_H
 #define SPVM_IMPLEMENT_H
 
+#include <inttypes.h>
+
 enum {
   SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED,
   SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
@@ -2187,5 +2189,12 @@ static inline void SPVM_IMPLEMENT_REFCNT(SPVM_ENV* env, SPVM_VALUE* stack, int32
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_INT(out, in) (out = (int32_t)in)
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_LONG(out, in) (out = (int64_t)in)
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_FLOAT(out, in) (out = (float)in)
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%" PRId8, value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
 
 #endif

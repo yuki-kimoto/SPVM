@@ -1811,10 +1811,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING: {
-        sprintf(tmp_buffer, "%" PRId8, byte_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], byte_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING: {
