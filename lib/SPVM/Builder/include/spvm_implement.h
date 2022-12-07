@@ -2432,4 +2432,11 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
 #define SPVM_IMPLEMENT_PUSH_ARG_REF(stack, stack_index, in) (*(void**)&stack[stack_index++] = in)
 #define SPVM_IMPLEMENT_PUSH_ARG_UNDEF(stack, stack_index) (*(void**)&stack[stack_index++] = NULL)
 
+static inline void SPVM_IMPLEMENT_PUSH_ARG_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t fields_length, int8_t* in) {
+  for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+    *(int8_t*)&stack[*stack_index + field_index] = *(in + field_index);
+  }
+  *stack_index += fields_length;
+}
+
 #endif

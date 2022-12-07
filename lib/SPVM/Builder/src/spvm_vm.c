@@ -1943,10 +1943,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int8_t*)&stack[stack_index + field_index] = *(&byte_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_BYTE(env, stack, &stack_index, fields_length, &byte_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_SHORT: {
