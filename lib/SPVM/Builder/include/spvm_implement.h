@@ -2428,5 +2428,8 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
 #define SPVM_IMPLEMENT_PUSH_ARG_LONG(stack, stack_index, in) (*(int64_t*)&stack[stack_index++] = in)
 #define SPVM_IMPLEMENT_PUSH_ARG_FLOAT(stack, stack_index, in) (*(float*)&stack[stack_index++] = in)
 #define SPVM_IMPLEMENT_PUSH_ARG_DOUBLE(stack, stack_index, in) (*(double*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_OBJECT(stack, stack_index, in) (*(void**)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_REF(stack, stack_index, in) (*(void**)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_UNDEF(stack, stack_index) (*(void**)&stack[stack_index++] = NULL)
 
 #endif

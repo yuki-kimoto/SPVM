@@ -1930,15 +1930,15 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT: {
-        *(void**)&stack[stack_index++] = *(void**)&object_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_OBJECT(stack, stack_index, *(void**)&object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_REF: {
-        *(void**)&stack[stack_index++] = *(void**)&ref_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_REF(stack, stack_index, *(void**)&ref_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF: {
-        *(void**)&stack[stack_index++] = NULL;
+        SPVM_IMPLEMENT_PUSH_ARG_UNDEF(stack, stack_index);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_BYTE: {
