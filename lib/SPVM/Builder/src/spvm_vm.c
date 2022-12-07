@@ -1691,123 +1691,123 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
-        short_vars[opcode->operand0] = (int16_t)byte_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_SHORT(short_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_INT: {
-        int_vars[opcode->operand0] = (int32_t)byte_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_INT(int_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_LONG: {
-        long_vars[opcode->operand0] = (int64_t)byte_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_LONG(long_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_FLOAT: {
-        float_vars[opcode->operand0] = (float)byte_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_FLOAT(float_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_DOUBLE: {
-        double_vars[opcode->operand0] = (double)byte_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_DOUBLE(double_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)short_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_BYTE(byte_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_INT: {
-        int_vars[opcode->operand0] = (int32_t)short_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_INT(int_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_LONG: {
-        long_vars[opcode->operand0] = (int64_t)short_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_LONG(long_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_FLOAT: {
-        float_vars[opcode->operand0] = (float)short_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_FLOAT(float_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_DOUBLE: {
-        double_vars[opcode->operand0] = (double)short_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_DOUBLE(double_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)(int_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_BYTE(byte_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_SHORT: {
-        short_vars[opcode->operand0] = (int16_t)(int_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_SHORT(short_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_LONG: {
-        long_vars[opcode->operand0] = (int64_t)int_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_LONG(long_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_FLOAT: {
-        float_vars[opcode->operand0] = (float)int_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_FLOAT(float_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_DOUBLE: {
-        double_vars[opcode->operand0] = (double)int_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_DOUBLE(double_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)long_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_BYTE(byte_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_SHORT: {
-        short_vars[opcode->operand0] = (int16_t)long_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_SHORT(short_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_INT: {
-        int_vars[opcode->operand0] = (int32_t)long_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_INT(int_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_FLOAT: {
-        float_vars[opcode->operand0] = (float)long_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_FLOAT(float_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_DOUBLE: {
-        double_vars[opcode->operand0] = (double)long_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_DOUBLE(double_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)float_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_BYTE(byte_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_SHORT: {
-        short_vars[opcode->operand0] = (int16_t)float_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_SHORT(short_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_INT: {
-        int_vars[opcode->operand0] = (int32_t)float_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_INT(int_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_LONG: {
-        long_vars[opcode->operand0] = (int64_t)float_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_LONG(long_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_DOUBLE: {
-        double_vars[opcode->operand0] = (double)float_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_DOUBLE(double_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_BYTE: {
-        byte_vars[opcode->operand0] = (int8_t)double_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_BYTE(byte_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_SHORT: {
-        short_vars[opcode->operand0] = (int16_t)double_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_SHORT(short_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_INT: {
-        int_vars[opcode->operand0] = (int32_t)double_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_INT(int_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_LONG: {
-        long_vars[opcode->operand0] = (int64_t)double_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_LONG(long_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_FLOAT: {
-        float_vars[opcode->operand0] = (float)double_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_FLOAT(float_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING: {
