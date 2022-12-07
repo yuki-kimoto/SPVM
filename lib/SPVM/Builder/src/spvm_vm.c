@@ -2034,14 +2034,8 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
-        int32_t args_length = env->get_args_stack_length(env, stack);
         int32_t args_index = opcode->operand3 & 0xFF;
-        if (args_index >= args_length) {
-          byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
-        }
-        else {
-          byte_vars[opcode->operand0] = *(int8_t*)&stack[args_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_BYTE(env, &byte_vars[opcode->operand0], stack, args_index, (int8_t)(uint8_t)opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_SHORT: {
