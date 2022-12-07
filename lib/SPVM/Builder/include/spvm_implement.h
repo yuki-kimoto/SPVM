@@ -2488,4 +2488,6 @@ static inline void SPVM_IMPLEMENT_GET_ARG_OBJECT(SPVM_ENV* env, void** out, SPVM
   }
 }
 
+#define SPVM_IMPLEMENT_GET_ARG_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index & 0xFF])
+
 #endif
