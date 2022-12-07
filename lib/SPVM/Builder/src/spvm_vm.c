@@ -1351,44 +1351,32 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&byte_vars[opcode->operand0] + field_index) = *(&byte_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], &byte_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&short_vars[opcode->operand0] + field_index) = *(&short_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_SHORT(env, stack, &short_vars[opcode->operand0], &short_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_INT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&int_vars[opcode->operand0] + field_index) = *(&int_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_INT(env, stack, &int_vars[opcode->operand0], &int_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&long_vars[opcode->operand0] + field_index) = *(&long_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_LONG(env, stack, &long_vars[opcode->operand0], &long_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&float_vars[opcode->operand0] + field_index) = *(&float_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_FLOAT(env, stack, &float_vars[opcode->operand0], &float_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(&double_vars[opcode->operand0] + field_index) = *(&double_vars[opcode->operand1] + field_index);
-        }
+        SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE(env, stack, &double_vars[opcode->operand0], &double_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_BYTE: {
