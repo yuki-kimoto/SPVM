@@ -1948,42 +1948,27 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int16_t*)&stack[stack_index + field_index] = *(&short_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_SHORT(env, stack, &stack_index, fields_length, &short_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_INT: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int32_t*)&stack[stack_index + field_index] = *(&int_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_INT(env, stack, &stack_index, fields_length, &int_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_LONG: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int64_t*)&stack[stack_index + field_index] = *(&long_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_LONG(env, stack, &stack_index, fields_length, &long_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(float*)&stack[stack_index + field_index] = *(&float_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_FLOAT(env, stack, &stack_index, fields_length, &float_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand1;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(double*)&stack[stack_index + field_index] = *(&double_vars[opcode->operand0] + field_index);
-        }
-        stack_index += fields_length;
+        SPVM_IMPLEMENT_PUSH_ARG_MULNUM_DOUBLE(env, stack, &stack_index, fields_length, &double_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
