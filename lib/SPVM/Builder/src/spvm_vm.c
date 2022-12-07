@@ -1836,15 +1836,12 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
         void* src_string = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(env, stack, (void**)&object_vars[opcode->operand0], void* src_string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(env, stack, (void**)&object_vars[opcode->operand0], src_string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING: {
         void* src_byte_array = object_vars[opcode->operand1];
-        int32_t src_byte_array_length = env->length(env, stack, src_byte_array);
-        int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);
-        void* string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], src_byte_array);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {

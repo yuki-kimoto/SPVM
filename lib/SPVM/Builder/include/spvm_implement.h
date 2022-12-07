@@ -2241,4 +2241,11 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV*
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, byte_array);
 }
 
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_byte_array) {
+  int32_t src_byte_array_length = env->length(env, stack, src_byte_array);
+  int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);
+  void* string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
 #endif
