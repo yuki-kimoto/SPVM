@@ -2317,4 +2317,109 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
   }
 }
 
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS && object_type_dimension == 0) {
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      *out = *(int16_t*)&fields[0];
+    }
+    else {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS && object_type_dimension == 0) {
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      *out = *(int32_t*)&fields[0];
+    }
+    else {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS && object_type_dimension == 0) {
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      *out = *(int64_t*)&fields[0];
+    }
+    else {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS && object_type_dimension == 0) {
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      *out = *(float*)&fields[0];
+    }
+    else {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
+    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
+    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS && object_type_dimension == 0) {
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      *out = *(double*)&fields[0];
+    }
+    else {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
 #endif
