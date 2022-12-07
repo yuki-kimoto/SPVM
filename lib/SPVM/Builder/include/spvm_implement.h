@@ -2248,4 +2248,12 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV*
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
 }
 
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, int32_t object_header_byte_size) {
+  int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS;
+  void* object = env->new_object_raw(env, stack, basic_type_id);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  *(int8_t*)&fields[0] = value;
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+}
+
 #endif

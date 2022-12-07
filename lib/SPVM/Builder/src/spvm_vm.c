@@ -1846,13 +1846,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
         int8_t value = byte_vars[opcode->operand1];
-        int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS;
-
-        void* object = env->new_object_raw(env, stack, basic_type_id);
-        SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
-        *(int8_t*)&fields[0] = value;
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], object);
-        
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(env, stack, (void**)&object_vars[opcode->operand0], value, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT: {
