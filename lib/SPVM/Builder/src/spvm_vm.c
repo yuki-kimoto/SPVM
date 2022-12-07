@@ -1836,13 +1836,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
         void* src_string = object_vars[opcode->operand1];
-        int32_t src_string_length = env->length(env, stack, src_string);
-        const char* src_string_data = env->get_chars(env, stack, src_string);
-        void* byte_array = env->new_byte_array_raw(env, stack, src_string_length);
-        int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
-        memcpy(byte_array_data, src_string_data, src_string_length);
-        
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], byte_array);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(env, stack, (void**)&object_vars[opcode->operand0], void* src_string);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING: {

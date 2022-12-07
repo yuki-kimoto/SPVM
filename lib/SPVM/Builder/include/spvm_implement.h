@@ -2232,4 +2232,13 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
 }
 
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {
+  int32_t src_string_length = env->length(env, stack, src_string);
+  const char* src_string_data = env->get_chars(env, stack, src_string);
+  void* byte_array = env->new_byte_array_raw(env, stack, src_string_length);
+  int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
+  memcpy(byte_array_data, src_string_data, src_string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, byte_array);
+}
+
 #endif
