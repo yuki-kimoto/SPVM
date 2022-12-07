@@ -2474,20 +2474,26 @@ static inline void SPVM_IMPLEMENT_PUSH_ARG_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VAL
   *stack_index += fields_length;
 }
 
-#define SPVM_IMPLEMENT_GET_ARG_BYTE(out, stack, stack_index) (out = *(int8_t*)&stack[stack_index & 0xFF])
-#define SPVM_IMPLEMENT_GET_ARG_SHORT(out, stack, stack_index) (out = *(int16_t*)&stack[stack_index & 0xFF])
-#define SPVM_IMPLEMENT_GET_ARG_INT(out, stack, stack_index) (out = *(int32_t*)&stack[stack_index & 0xFF])
-#define SPVM_IMPLEMENT_GET_ARG_LONG(out, stack, stack_index) (out = *(int64_t*)&stack[stack_index & 0xFF])
-#define SPVM_IMPLEMENT_GET_ARG_FLOAT(out, stack, stack_index) (out = *(float*)&stack[stack_index & 0xFF])
-#define SPVM_IMPLEMENT_GET_ARG_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_BYTE(out, stack, stack_index) (out = *(int8_t*)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_ARG_SHORT(out, stack, stack_index) (out = *(int16_t*)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_ARG_INT(out, stack, stack_index) (out = *(int32_t*)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_ARG_LONG(out, stack, stack_index) (out = *(int64_t*)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_ARG_FLOAT(out, stack, stack_index) (out = *(float*)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_ARG_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index])
 
 static inline void SPVM_IMPLEMENT_GET_ARG_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
-  *out = *(void**)&stack[stack_index & 0xFF];
+  *out = *(void**)&stack[stack_index];
   if (*out != NULL) {
     SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *out);
   }
 }
 
-#define SPVM_IMPLEMENT_GET_ARG_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index & 0xFF])
+#define SPVM_IMPLEMENT_GET_ARG_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
+
+static inline void SPVM_IMPLEMENT_GET_ARG_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
+  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
+    *(out + field_index) = *(int8_t*)&stack[(stack_index) + field_index];
+  }
+}
 
 #endif
