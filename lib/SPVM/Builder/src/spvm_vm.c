@@ -2010,37 +2010,27 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-          *(&short_vars[opcode->operand0] + field_index) = *(int16_t*)&stack[(opcode->operand3 & 0xFF) + field_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-          *(&int_vars[opcode->operand0] + field_index) = *(int32_t*)&stack[(opcode->operand3 & 0xFF) + field_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-          *(&long_vars[opcode->operand0] + field_index) = *(int64_t*)&stack[(opcode->operand3 & 0xFF) + field_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-          *(&float_vars[opcode->operand0] + field_index) = *(float*)&stack[(opcode->operand3 & 0xFF) + field_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-          *(&double_vars[opcode->operand0] + field_index) = *(double*)&stack[(opcode->operand3 & 0xFF) + field_index];
-        }
+        SPVM_IMPLEMENT_GET_ARG_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
