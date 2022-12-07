@@ -1291,32 +1291,32 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_BYTE: {
         int32_t field_index = opcode->operand2;
-        byte_vars[opcode->operand0] = *(&byte_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_BYTE(byte_vars[opcode->operand0], &byte_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_SHORT: {
         int32_t field_index = opcode->operand2;
-        short_vars[opcode->operand0] = *(&short_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_SHORT(short_vars[opcode->operand0], &short_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_INT: {
         int32_t field_index = opcode->operand2;
-        int_vars[opcode->operand0] = *(&int_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_INT(int_vars[opcode->operand0], &int_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_LONG: {
         int32_t field_index = opcode->operand2;
-        long_vars[opcode->operand0] = *(&long_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_LONG(long_vars[opcode->operand0], &long_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_FLOAT: {
         int32_t field_index = opcode->operand2;
-        float_vars[opcode->operand0] = *(&float_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_FLOAT(float_vars[opcode->operand0], &float_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DOUBLE: {
         int32_t field_index = opcode->operand2;
-        double_vars[opcode->operand0] = *(&double_vars[opcode->operand1] + field_index);
+        SPVM_IMPLEMENT_MULNUM_FIELD_DOUBLE(double_vars[opcode->operand0], &double_vars[opcode->operand1], field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_BYTE: {

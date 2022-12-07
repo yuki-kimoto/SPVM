@@ -1536,4 +1536,11 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
 #define SPVM_IMPLEMENT_DEREF_FLOAT(out, in) (out = in)
 #define SPVM_IMPLEMENT_DEREF_DOUBLE(out, in) (out = in)
 
+#define SPVM_IMPLEMENT_MULNUM_FIELD_BYTE(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_MULNUM_FIELD_SHORT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_MULNUM_FIELD_INT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_MULNUM_FIELD_LONG(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_MULNUM_FIELD_FLOAT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_MULNUM_FIELD_DOUBLE(out, in, field_index) (out = *(in + field_index))
+
 #endif
