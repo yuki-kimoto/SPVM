@@ -1815,38 +1815,23 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING: {
-        sprintf(tmp_buffer, "%" PRId16, short_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], short_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_STRING: {
-        sprintf(tmp_buffer, "%" PRId32, int_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], int_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_STRING: {
-        sprintf(tmp_buffer, "%" PRId64, long_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], byte_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_STRING: {
-        sprintf(tmp_buffer, "%g", float_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], float_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_STRING: {
-        sprintf(tmp_buffer, "%g", double_vars[opcode->operand1]);
-        int32_t string_length = strlen(tmp_buffer);
-        void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], string);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(env, stack, (void**)&object_vars[opcode->operand0], double_vars[opcode->operand1], tmp_buffer);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {

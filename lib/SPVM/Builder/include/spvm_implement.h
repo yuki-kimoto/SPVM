@@ -2197,4 +2197,39 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, 
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
 }
 
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%" PRId16, value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%" PRId32, value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%" PRId64, value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%g", value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, char* tmp_buffer) {
+  sprintf(tmp_buffer, "%g", value);
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+}
+
 #endif
