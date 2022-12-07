@@ -1996,11 +1996,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
-        object_vars[opcode->operand0] = *(void**)&stack[opcode->operand3 & 0xFF];
-        void* object = *(void**)&object_vars[opcode->operand0];
-        if (object != NULL) {
-          SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object);
-        }
+        SPVM_IMPLEMENT_GET_ARG_OBJECT(env, &object_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARG_REF: {

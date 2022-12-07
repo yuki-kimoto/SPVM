@@ -2481,4 +2481,11 @@ static inline void SPVM_IMPLEMENT_PUSH_ARG_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VAL
 #define SPVM_IMPLEMENT_GET_ARG_FLOAT(out, stack, stack_index) (out = *(float*)&stack[stack_index & 0xFF])
 #define SPVM_IMPLEMENT_GET_ARG_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index & 0xFF])
 
+static inline void SPVM_IMPLEMENT_GET_ARG_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
+  *out = *(void**)&stack[stack_index & 0xFF];
+  if (*out != NULL) {
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *out);
+  }
+}
+
 #endif
