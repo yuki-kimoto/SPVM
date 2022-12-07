@@ -2422,4 +2422,11 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
   }
 }
 
+#define SPVM_IMPLEMENT_PUSH_ARG_BYTE(stack, stack_index, in) (*(int8_t*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_SHORT(stack, stack_index, in) (*(int16_t*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_INT(stack, stack_index, in) (*(int32_t*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_LONG(stack, stack_index, in) (*(int64_t*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_FLOAT(stack, stack_index, in) (*(float*)&stack[stack_index++] = in)
+#define SPVM_IMPLEMENT_PUSH_ARG_DOUBLE(stack, stack_index, in) (*(double*)&stack[stack_index++] = in)
+
 #endif

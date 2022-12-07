@@ -1906,27 +1906,27 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE: {
-        *(int8_t*)&stack[stack_index++] = byte_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_BYTE(stack, stack_index, byte_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT: {
-        *(int16_t*)&stack[stack_index++] = short_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_SHORT(stack, stack_index, short_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_INT: {
-        *(int32_t*)&stack[stack_index++] = int_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_INT(stack, stack_index, int_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_LONG: {
-        *(int64_t*)&stack[stack_index++] = long_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_LONG(stack, stack_index, long_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT: {
-        *(float*)&stack[stack_index++] = float_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_FLOAT(stack, stack_index, float_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE: {
-        *(double*)&stack[stack_index++] = double_vars[opcode->operand0];
+        SPVM_IMPLEMENT_PUSH_ARG_DOUBLE(stack, stack_index, double_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT: {
