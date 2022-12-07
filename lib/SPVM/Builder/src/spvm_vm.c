@@ -1669,65 +1669,25 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-        int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
-        if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          int32_t status = env->weaken(env, stack, get_field_object_address);
-          if (status != 0) {
-            void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
-            env->set_exception(env, stack, exception);
-            error = 1;
-          }
-        }
+        SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-        int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
-        if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          env->unweaken(env, stack, get_field_object_address);
-        }
+        SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-        int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
-        if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
-        else {
-          void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          int_vars[0] = env->isweak(env, stack, get_field_object_address);
-        }
+        SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_REFCNT: {
         void* object = object_vars[opcode->operand1];
-        if (object == NULL) {
-          int_vars[opcode->operand0] = 0;
-        }
-        else {
-          int_vars[opcode->operand0] = env->get_ref_count(env, stack, object);
-        }
+        SPVM_IMPLEMENT_REFCNT(env, stack, &int_vars[opcode->operand0], object);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {

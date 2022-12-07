@@ -2104,4 +2104,57 @@ static inline void SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT(mulnum_ref, field_index, in) (mulnum_ref[field_index] = in)
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(mulnum_ref, field_index, in) (mulnum_ref[field_index] = in)
 
+static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    int32_t status = env->weaken(env, stack, get_field_object_address);
+    if (status != 0) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error = 1;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    env->unweaken(env, stack, get_field_object_address);
+  }
+}
+
+static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+  int32_t field_offset = env->get_field_offset(env, field_id);
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  else {
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    *out = env->isweak(env, stack, get_field_object_address);
+  }
+}
+
+static inline void SPVM_IMPLEMENT_REFCNT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object) {
+  if (object == NULL) {
+    *out = 0;
+  }
+  else {
+    *out = env->get_ref_count(env, stack, object);
+  }
+}
+
 #endif
