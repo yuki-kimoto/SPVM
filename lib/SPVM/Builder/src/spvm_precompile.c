@@ -2696,21 +2696,14 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_REFOP: {
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (object == NULL) {\n"
-                                              "    ");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "SPVM_IMPLEMENT_REFOP(env, stack,");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    type_name = env->get_type_name_raw(env, stack, object);\n"
-                                              "    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", type_name);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " , object);");
         break;
       }
       case SPVM_OPCODE_C_ID_DUMP: {
