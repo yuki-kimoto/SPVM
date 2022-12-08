@@ -1538,12 +1538,12 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
 #define SPVM_IMPLEMENT_GET_DEREF_FLOAT(out, in) (out = *(float*)*(void**)in)
 #define SPVM_IMPLEMENT_GET_DEREF_DOUBLE(out, in) (out = *(double*)*(void**)in)
 
-#define SPVM_IMPLEMENT_SET_DEREF_BYTE(out, in) (out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_INT(out, in) (out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_LONG(out, in) (out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_FLOAT(out, in) (out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_DOUBLE(out, in) (out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_BYTE(out, in) (*(int8_t*)*(void**)out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (*(int16_t*)*(void**)out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_INT(out, in) (*(int32_t*)*(void**)out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_LONG(out, in) (*(int64_t*)*(void**)out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_FLOAT(out, in) (*(float*)*(void**)out = in)
+#define SPVM_IMPLEMENT_SET_DEREF_DOUBLE(out, in) (*(double*)*(void**)out = in)
 
 #define SPVM_IMPLEMENT_GET_MULNUM_FIELD_BYTE(out, in, field_index) (out = *(in + field_index))
 #define SPVM_IMPLEMENT_GET_MULNUM_FIELD_SHORT(out, in, field_index) (out = *(in + field_index))
