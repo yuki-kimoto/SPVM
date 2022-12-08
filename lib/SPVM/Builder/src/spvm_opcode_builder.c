@@ -1283,7 +1283,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           {
                             mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             opcode_return.operand0 = mem_id_out;
-                            opcode.operand3 = 0;
+                            opcode_return.operand3 = 0;
 
                             // Numeric type
                             if (SPVM_TYPE_is_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
@@ -1337,8 +1337,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               
                               int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                               assert(call_method_return_type_stack_length < 0xFFFF);
-                              opcode_return.operand1 = call_method_return_type_stack_length;
-                              opcode.operand3 = call_method_return_type_stack_length << 8 | 0;
+                              opcode_return.operand3 = call_method_return_type_stack_length << 8 | 0;
 
                               switch (field_type->basic_type->id) {
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
