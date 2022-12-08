@@ -3962,8 +3962,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       {
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
-        int32_t interface_flag = opcode->operand2 & 0xFF;
+        int32_t is_class_method_call = opcode->operand2 & 0xF;
+        int32_t is_static_instance_method_call = (opcode->operand2 >> 8) & 0xF;
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
+        int32_t is_interface = !is_class_method_call && !is_static_instance_method_call;
         
         int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
         const char* decl_method_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_name_id);

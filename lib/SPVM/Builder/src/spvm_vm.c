@@ -2163,12 +2163,15 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         void** out_object_vars = &object_vars[opcode->operand0];
         
         int32_t method_id = opcode->operand1;
-        int32_t interface_flag = opcode->operand2 & 0xFF;
-        int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         int32_t return_stack_length = opcode->operand3;
         
+        int32_t is_class_method_call = opcode->operand2 & 0xF;
+        int32_t is_static_instance_method_call = (opcode->operand2 >> 8) & 0xF;
+        int32_t call_method_args_stack_length = opcode->operand2 >> 16;
+        int32_t is_interface = !is_class_method_call && !is_static_instance_method_call;
+        
         int32_t call_method_id;
-        if (interface_flag) {
+        if (is_interface) {
           int32_t decl_method_id = method_id;
           SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, decl_method_id);
           void* object = stack[0].oval;
