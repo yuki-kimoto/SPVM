@@ -2150,9 +2150,9 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         opcode_rel_index = opcode->operand1;
         continue;
       }
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_INTERFACE:
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_INTERFACE:
       {
         int8_t* out_byte_vars = &byte_vars[opcode->operand0];
         int16_t* out_short_vars = &short_vars[opcode->operand0];
