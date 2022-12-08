@@ -1274,98 +1274,99 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode = {0};
 
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD);
+                          opcode.operand1 = call_method->method->id;
+                          opcode.operand2 = (call_method->args_length << 16) + (call_method->is_static_instance_method_call << 8) + call_method->is_class_method_call;
                           
                           // Return
                           SPVM_TYPE* call_method_return_type = call_method->method->return_type;
-                          // Numeric type
-                          if (SPVM_TYPE_is_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
-                            switch (call_method_return_type->basic_type->id) {
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
+                          {
+                            SPVM_OPCODE opcode = {0};
+                            // Numeric type
+                            if (SPVM_TYPE_is_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                              switch (call_method_return_type->basic_type->id) {
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                default:
+                                  assert(0);
                               }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              default:
-                                assert(0);
                             }
-                          }
-                          // void type
-                          else if (SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
-                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                          }
-                          // Object type
-                          else if (SPVM_TYPE_is_object_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
-                            mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                          }
-                          // Multi numeric type
-                          else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                            // void type
+                            else if (SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            }
+                            // Object type
+                            else if (SPVM_TYPE_is_object_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                              mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            }
+                            // Multi numeric type
+                            else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
 
-                            SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
-                            assert(class);
-                            
-                            SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
-                            assert(first_field);
-                            
-                            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-                            assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
-                            
-                            switch (field_type->basic_type->id) {
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
+                              SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
+                              assert(class);
+                              
+                              SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
+                              assert(first_field);
+                              
+                              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                              assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+                              
+                              switch (field_type->basic_type->id) {
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                  break;
+                                }
+                                default:
+                                  assert(0);
                               }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                break;
-                              }
-                              default:
-                                assert(0);
                             }
-                          }
-                          else {
-                            assert(0);
+                            else {
+                              assert(0);
+                            }
                           }
 
                           opcode.operand0 = mem_id_out;
-                          opcode.operand1 = call_method->method->id;
-                          
-                          opcode.operand2 = (call_method->args_length << 16) + (call_method->is_static_instance_method_call << 8) + call_method->is_class_method_call;
-                          
                           int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                           int32_t operand3 = call_method_return_type_stack_length;
                           assert(operand3 < 0xFFFF);
