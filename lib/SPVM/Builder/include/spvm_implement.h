@@ -1531,6 +1531,13 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
 #define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = in)
 #define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = in)
 
+#define SPVM_IMPLEMENT_GET_DEREF_BYTE(out, in) (out = *(int8_t*)*(void**)in)
+#define SPVM_IMPLEMENT_GET_DEREF_SHORT(out, in) (out = *(int16_t*)*(void**)in)
+#define SPVM_IMPLEMENT_GET_DEREF_INT(out, in) (out = *(int32_t*)*(void**)in)
+#define SPVM_IMPLEMENT_GET_DEREF_LONG(out, in) (out = *(int64_t*)*(void**)in)
+#define SPVM_IMPLEMENT_GET_DEREF_FLOAT(out, in) (out = *(float*)*(void**)in)
+#define SPVM_IMPLEMENT_GET_DEREF_DOUBLE(out, in) (out = *(double*)*(void**)in)
+
 #define SPVM_IMPLEMENT_SET_DEREF_BYTE(out, in) (out = in)
 #define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (out = in)
 #define SPVM_IMPLEMENT_SET_DEREF_INT(out, in) (out = in)

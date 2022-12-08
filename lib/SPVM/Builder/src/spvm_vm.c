@@ -1242,27 +1242,27 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
-        byte_vars[opcode->operand0] = *(int8_t*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_BYTE(byte_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
-        short_vars[opcode->operand0] = *(int16_t*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_SHORT(short_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_INT: {
-        int_vars[opcode->operand0] = *(int32_t*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_INT(int_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_LONG: {
-        long_vars[opcode->operand0] = *(int64_t*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_LONG(long_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_FLOAT: {
-        float_vars[opcode->operand0] = *(float*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_FLOAT(float_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE: {
-        double_vars[opcode->operand0] = *(double*)*(void**)&ref_vars[opcode->operand1];
+        SPVM_IMPLEMENT_GET_DEREF_DOUBLE(double_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
