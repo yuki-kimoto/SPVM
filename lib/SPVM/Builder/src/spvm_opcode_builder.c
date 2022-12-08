@@ -1278,30 +1278,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand2 = (call_method->args_length << 16) + (call_method->is_static_instance_method_call << 8) + call_method->is_class_method_call;
                           
                           // Return
+                          SPVM_OPCODE opcode_return = {0};
                           SPVM_TYPE* call_method_return_type = call_method->method->return_type;
                           {
-                            SPVM_OPCODE opcode = {0};
                             mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                            opcode_return.operand0 = mem_id_out;
 
                             // Numeric type
                             if (SPVM_TYPE_is_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
                               switch (call_method_return_type->basic_type->id) {
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_BYTE);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_SHORT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_INT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_LONG);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_FLOAT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_DOUBLE);
                                   break;
                                 }
                                 default:
@@ -1313,6 +1320,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             // Object type
                             else if (SPVM_TYPE_is_object_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_OBJECT);
                             }
                             // Multi numeric type
                             else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
@@ -1326,27 +1334,38 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                               assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                               
+                              int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
+                              assert(call_method_return_type_stack_length < 0xFFFF);
+                              opcode_return.operand1 = call_method_return_type_stack_length;
+
                               switch (field_type->basic_type->id) {
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT);
                                   break;
                                 }
                                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE);
                                   break;
                                 }
-                                default:
+                                default: {
                                   assert(0);
+                                }
                               }
                             }
                             else {
