@@ -3795,7 +3795,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_BYTE:
+      case SPVM_OPCODE_C_ID_SET_STACK_BYTE:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, stack_index);
@@ -3805,7 +3805,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_SHORT:
+      case SPVM_OPCODE_C_ID_SET_STACK_SHORT:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, stack_index);
@@ -3815,7 +3815,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_INT:
+      case SPVM_OPCODE_C_ID_SET_STACK_INT:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, stack_index);
@@ -3825,7 +3825,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_LONG:
+      case SPVM_OPCODE_C_ID_SET_STACK_LONG:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, stack_index);
@@ -3835,7 +3835,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_FLOAT:
+      case SPVM_OPCODE_C_ID_SET_STACK_FLOAT:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, stack_index);
@@ -3845,7 +3845,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_STACK_DOUBLE:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, stack_index);
@@ -3855,7 +3855,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_OBJECT:
+      case SPVM_OPCODE_C_ID_SET_STACK_OBJECT:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, stack_index);
@@ -3865,7 +3865,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_REF:
+      case SPVM_OPCODE_C_ID_SET_STACK_REF:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, stack_index);
@@ -3875,7 +3875,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index++;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_UNDEF:
+      case SPVM_OPCODE_C_ID_SET_STACK_UNDEF:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, stack_index);
@@ -3884,7 +3884,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_BYTE: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -3896,7 +3896,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_SHORT: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -3908,7 +3908,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_INT: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -3920,7 +3920,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_LONG: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -3932,7 +3932,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_FLOAT: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -3944,7 +3944,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_DOUBLE: {
+      case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
