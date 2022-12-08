@@ -2154,11 +2154,13 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
+        int32_t method_id = opcode->operand1;
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
+        int32_t return_stack_length = opcode->operand3;
         
         int32_t call_method_id;
         if (opcode_id == SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME) {
-          int32_t decl_method_id = opcode->operand1;
+          int32_t decl_method_id = method_id;
           SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, decl_method_id);
           void* object = stack[0].oval;
           const char* decl_method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method->name_id, NULL);
@@ -2174,7 +2176,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
           }
         }
         else {
-          call_method_id = opcode->operand1;
+          call_method_id = method_id;
         }
         
         if (!error) {
@@ -2243,44 +2245,38 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
                   
                   switch(method_return_mulnum_field_type_basic_type_id) {
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&byte_vars[opcode->operand0] + return_stack_index) = *(int8_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&short_vars[opcode->operand0] + return_stack_index) = *(int16_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&int_vars[opcode->operand0] + return_stack_index) = *(int32_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&long_vars[opcode->operand0] + return_stack_index) = *(int64_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&float_vars[opcode->operand0] + return_stack_index) = *(float*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                      int32_t fields_length = opcode->operand3;
-                      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-                        double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
+                      for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
+                        *(&double_vars[opcode->operand0] + return_stack_index) = *(double*)&stack[return_stack_index];
                       }
                       break;
                     }
