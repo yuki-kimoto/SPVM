@@ -2599,4 +2599,11 @@ static inline void SPVM_IMPLEMENT_GET_ARG_OPTIONAL_OBJECT(SPVM_ENV* env, void** 
   }
 }
 
+#define SPVM_IMPLEMENT_RETURN_BYTE(stack, in) (*(int8_t*)&stack[0] = in)
+#define SPVM_IMPLEMENT_RETURN_SHORT(stack, in) (*(int16_t*)&stack[0] = in)
+#define SPVM_IMPLEMENT_RETURN_INT(stack, in) (*(int32_t*)&stack[0] = in)
+#define SPVM_IMPLEMENT_RETURN_LONG(stack, in) (*(int64_t*)&stack[0] = in)
+#define SPVM_IMPLEMENT_RETURN_FLOAT(stack, in) (*(float*)&stack[0] = in)
+#define SPVM_IMPLEMENT_RETURN_DOUBLE(stack, in) (*(double*)&stack[0] = in)
+
 #endif
