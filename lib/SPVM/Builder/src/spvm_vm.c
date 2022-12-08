@@ -1971,103 +1971,103 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(env, stack, &stack_index, fields_length, &double_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_BYTE: {
-        SPVM_IMPLEMENT_GET_ARG_BYTE(byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_BYTE: {
+        SPVM_IMPLEMENT_GET_STACK_BYTE(byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_SHORT: {
-        SPVM_IMPLEMENT_GET_ARG_SHORT(short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_SHORT: {
+        SPVM_IMPLEMENT_GET_STACK_SHORT(short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_INT: {
-        SPVM_IMPLEMENT_GET_ARG_INT(int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_INT: {
+        SPVM_IMPLEMENT_GET_STACK_INT(int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_LONG: {
-        SPVM_IMPLEMENT_GET_ARG_LONG(long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_LONG: {
+        SPVM_IMPLEMENT_GET_STACK_LONG(long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_FLOAT: {
-       SPVM_IMPLEMENT_GET_ARG_FLOAT(float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_FLOAT: {
+       SPVM_IMPLEMENT_GET_STACK_FLOAT(float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_DOUBLE: {
-        SPVM_IMPLEMENT_GET_ARG_DOUBLE(double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_DOUBLE: {
+        SPVM_IMPLEMENT_GET_STACK_DOUBLE(double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OBJECT: {
-        SPVM_IMPLEMENT_GET_ARG_OBJECT(env, &object_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_OBJECT: {
+        SPVM_IMPLEMENT_GET_STACK_OBJECT(env, &object_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_REF: {
-        SPVM_IMPLEMENT_GET_ARG_REF(ref_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+      case SPVM_OPCODE_C_ID_GET_STACK_REF: {
+        SPVM_IMPLEMENT_GET_STACK_REF(ref_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_BYTE: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_SHORT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_INT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_INT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_LONG: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_LONG: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_FLOAT: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_MULNUM_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_DOUBLE: {
         int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_ARG_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_BYTE: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_BYTE(env, &byte_vars[opcode->operand0], stack, args_index, (int8_t)(uint8_t)opcode->operand1);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(env, &byte_vars[opcode->operand0], stack, args_index, (int8_t)(uint8_t)opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_SHORT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_SHORT(env, &short_vars[opcode->operand0], stack, args_index, (int16_t)(uint16_t)opcode->operand1);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(env, &short_vars[opcode->operand0], stack, args_index, (int16_t)(uint16_t)opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_INT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_INT(env, &int_vars[opcode->operand0], stack, args_index, (int32_t)opcode->operand1);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(env, &int_vars[opcode->operand0], stack, args_index, (int32_t)opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_LONG: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_LONG(env, &long_vars[opcode->operand0], stack, args_index, *(int64_t*)&opcode->operand1);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(env, &long_vars[opcode->operand0], stack, args_index, *(int64_t*)&opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_FLOAT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
         int32_t args_index = opcode->operand3 & 0xFF;
         SPVM_VALUE default_value;
         default_value.ival = (int32_t)opcode->operand1;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_FLOAT(env, &float_vars[opcode->operand0], stack, args_index, default_value.fval);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(env, &float_vars[opcode->operand0], stack, args_index, default_value.fval);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_DOUBLE: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_DOUBLE(env, &double_vars[opcode->operand0], stack, args_index, *(double*)&opcode->operand1);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(env, &double_vars[opcode->operand0], stack, args_index, *(double*)&opcode->operand1);
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ARG_OPTIONAL_OBJECT: {
+      case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
         int32_t args_index = opcode->operand3 & 0xFF;
-        SPVM_IMPLEMENT_GET_ARG_OPTIONAL_OBJECT(env, &object_vars[opcode->operand0], stack, args_index);
+        SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(env, &object_vars[opcode->operand0], stack, args_index);
         break;
       }
       case SPVM_OPCODE_C_ID_RETURN_VOID: {
