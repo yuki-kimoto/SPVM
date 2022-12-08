@@ -2586,4 +2586,17 @@ static inline void SPVM_IMPLEMENT_GET_ARG_OPTIONAL_DOUBLE(SPVM_ENV* env, double*
   }
 }
 
+static inline void SPVM_IMPLEMENT_GET_ARG_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t args_index) {
+  int32_t args_length = env->get_args_stack_length(env, stack);
+  if (args_index >= args_length) {
+    *out = NULL;
+  }
+  else {
+    *out = *(void**)&stack[args_index];
+    if (*out != NULL) {
+      SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *out);
+    }
+  }
+}
+
 #endif
