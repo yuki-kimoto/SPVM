@@ -2116,49 +2116,37 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int8_t*)&stack[field_index] = byte_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int16_t*)&stack[field_index] = short_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_SHORT(env, stack, &short_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_INT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int32_t*)&stack[field_index] = int_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_INT(env, stack, &int_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_LONG: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(int64_t*)&stack[field_index] = long_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_LONG(env, stack, &long_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(float*)&stack[field_index] = float_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_FLOAT(env, stack, &float_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          *(double*)&stack[field_index] = double_vars[opcode->operand0 + field_index];
-        }
+        SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(env, stack, &double_vars[opcode->operand0], fields_length);
         opcode_rel_index = opcode->operand1;
         continue;
       }
