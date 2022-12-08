@@ -2105,16 +2105,12 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT: {
-        *(void**)&stack[0] = *(void**)&object_vars[opcode->operand0];
-        // Increment ref count of return value not to release by leave scope
-        if (*(void**)&stack[0] != NULL) {
-          SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
-        }
+        SPVM_IMPLEMENT_RETURN_OBJECT(env, stack, *(void**)&object_vars[opcode->operand0]);
         opcode_rel_index = opcode->operand1;
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_UNDEF: {
-        *(void**)&stack[0] = NULL;
+        SPVM_IMPLEMENT_RETURN_UNDEF(stack);
         opcode_rel_index = opcode->operand1;
         continue;
       }

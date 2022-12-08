@@ -2606,4 +2606,13 @@ static inline void SPVM_IMPLEMENT_GET_ARG_OPTIONAL_OBJECT(SPVM_ENV* env, void** 
 #define SPVM_IMPLEMENT_RETURN_FLOAT(stack, in) (*(float*)&stack[0] = in)
 #define SPVM_IMPLEMENT_RETURN_DOUBLE(stack, in) (*(double*)&stack[0] = in)
 
+static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
+  *(void**)&stack[0] = in;
+  if (in != NULL) {
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in);
+  }
+}
+
+#define SPVM_IMPLEMENT_RETURN_UNDEF(stack) (*(void**)&stack[0] = NULL)
+
 #endif
