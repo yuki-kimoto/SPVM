@@ -2154,6 +2154,14 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
       {
+        int8_t* out_byte_vars = &byte_vars[opcode->operand0];
+        int16_t* out_short_vars = &short_vars[opcode->operand0];
+        int32_t* out_int_vars = &int_vars[opcode->operand0];
+        int64_t* out_long_vars = &long_vars[opcode->operand0];
+        float* out_float_vars = &float_vars[opcode->operand0];
+        double* out_double_vars = &double_vars[opcode->operand0];
+        void** out_object_vars = &object_vars[opcode->operand0];
+        
         int32_t method_id = opcode->operand1;
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         int32_t return_stack_length = opcode->operand3;
@@ -2197,27 +2205,27 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
                   switch (call_spvm_method_return_basic_type_id) {
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                      byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
+                      *out_byte_vars = *(int8_t*)&stack[0];
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                      short_vars[opcode->operand0] = *(int16_t*)&stack[0];
+                      *out_short_vars = *(int16_t*)&stack[0];
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                      int_vars[opcode->operand0] = *(int32_t*)&stack[0];
+                      *out_int_vars = *(int32_t*)&stack[0];
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                      long_vars[opcode->operand0] = *(int64_t*)&stack[0];
+                      *out_long_vars = *(int64_t*)&stack[0];
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                      float_vars[opcode->operand0] = *(float*)&stack[0];
+                      *out_float_vars = *(float*)&stack[0];
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                      double_vars[opcode->operand0] = *(double*)&stack[0];
+                      *out_double_vars = *(double*)&stack[0];
                       break;
                     }
                     default: {
@@ -2231,7 +2239,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
                 {
-                  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+                  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out_object_vars, stack[0].oval);
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -2246,37 +2254,37 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
                   switch(method_return_mulnum_field_type_basic_type_id) {
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&byte_vars[opcode->operand0] + return_stack_index) = *(int8_t*)&stack[return_stack_index];
+                        *(out_byte_vars + return_stack_index) = *(int8_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&short_vars[opcode->operand0] + return_stack_index) = *(int16_t*)&stack[return_stack_index];
+                        *(out_short_vars + return_stack_index) = *(int16_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&int_vars[opcode->operand0] + return_stack_index) = *(int32_t*)&stack[return_stack_index];
+                        *(out_int_vars + return_stack_index) = *(int32_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&long_vars[opcode->operand0] + return_stack_index) = *(int64_t*)&stack[return_stack_index];
+                        *(out_long_vars + return_stack_index) = *(int64_t*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&float_vars[opcode->operand0] + return_stack_index) = *(float*)&stack[return_stack_index];
+                        *(out_float_vars + return_stack_index) = *(float*)&stack[return_stack_index];
                       }
                       break;
                     }
                     case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                       for (int32_t return_stack_index = 0; return_stack_index < return_stack_length; return_stack_index++) {
-                        *(&double_vars[opcode->operand0] + return_stack_index) = *(double*)&stack[return_stack_index];
+                        *(out_double_vars + return_stack_index) = *(double*)&stack[return_stack_index];
                       }
                       break;
                     }
@@ -2292,7 +2300,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
               }
             }
             else if (call_spvm_method_return_type_dimension > 0) {
-              SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&object_vars[opcode->operand0], stack[0].oval);
+              SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out_object_vars, stack[0].oval);
             }
             else {
               assert(0);
