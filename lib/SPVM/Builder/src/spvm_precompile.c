@@ -3989,37 +3989,27 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               ";\n");
         
         // Call method
-        switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
-          {
-            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            
-            break;
-          }
-          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
-          {
+        if (is_class_method_call) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+        }
+        else {
+          if (is_static_instance_method_call) {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            
-            break;
           }
-          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_INTERFACE: {
+          // Interface
+          else {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            
-            break;
-          }
-          default: {
-            assert(0);
           }
         }
         
