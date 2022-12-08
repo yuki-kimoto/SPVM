@@ -3956,9 +3956,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         stack_index += fields_length;
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME:
+      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_INTERFACE:
       {
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
@@ -3988,7 +3988,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         // Call method
         switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD_BY_ID:
+          case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
@@ -3998,7 +3998,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
             
             break;
           }
-          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_ID:
+          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
           {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
@@ -4008,7 +4008,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
             
             break;
           }
-          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_BY_NAME: {
+          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_INTERFACE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
