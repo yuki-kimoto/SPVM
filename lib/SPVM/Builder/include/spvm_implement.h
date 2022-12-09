@@ -2099,12 +2099,12 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VA
   }
 }
 
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
-#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(out, mulnum_ref, field_index) (out = mulnum_ref[field_index])
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(out, mulnum_ref, field_index) (out = *((int8_t*)mulnum_ref +field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(out, mulnum_ref, field_index) (out = *((int16_t*)mulnum_ref +field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(out, mulnum_ref, field_index) (out = *((int32_t*)mulnum_ref +field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(out, mulnum_ref, field_index) (out = *((int64_t*)mulnum_ref +field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(out, mulnum_ref, field_index) (out = *((float*)mulnum_ref +field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(out, mulnum_ref, field_index) (out = *((double*)mulnum_ref +field_index))
 
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_BYTE(mulnum_ref, field_index, in) (mulnum_ref[field_index] = in)
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_SHORT(mulnum_ref, field_index, in) (mulnum_ref[field_index] = in)
