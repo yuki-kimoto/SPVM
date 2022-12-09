@@ -350,6 +350,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir_sep;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* module_rel_file;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, method_id);
@@ -2871,57 +2872,75 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_BYTE: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_BYTE(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_SHORT: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_SHORT(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_INT: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_INT(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_LONG: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_LONG(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_FLOAT: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_FLOAT(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DOUBLE: {
-        int32_t field_index = opcode->operand2;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_DOUBLE(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , field_index);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_BYTE: {
