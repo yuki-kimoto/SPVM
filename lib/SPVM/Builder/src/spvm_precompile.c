@@ -3438,39 +3438,135 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_BYTE: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_SHORT: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_INT: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_LONG: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_FLOAT: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_DOUBLE: {
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
-        int32_t field_index = opcode->operand3 >> 8;
-        SPVM_PRECOMPILE_add_mulnum_array_field_set(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "  array = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  index = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  fields_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, (opcode->operand3 & 0xFF) + 1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(env, stack, array, index, field_index, fields_length, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand2);
+        SPVM_STRING_BUFFER_add(string_buffer, "  , &error, object_header_byte_size);");
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_BYTE: {
