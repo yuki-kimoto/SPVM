@@ -4174,85 +4174,61 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_byte = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(int8_t*)&fields[0] = value_byte;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_byte, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_short = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(int16_t*)&fields[0] = value_short;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_short, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_INT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_int = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(int32_t*)&fields[0] = value_int;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_int, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_LONG_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_long = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(int64_t*)&fields[0] = value_long;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_long, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_float = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(float*)&fields[0] = value_float;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_float, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  value_double = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS;\n"
-                                              "  object = env->new_object_raw(env, stack, basic_type_id);\n"
-                                              "  fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);\n"
-                                              "  *(double*)&fields[0] = value_double;\n"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", value_double, object_header_byte_size);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE: {
