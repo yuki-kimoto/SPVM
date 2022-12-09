@@ -15,6 +15,15 @@
     * The compilation file size of the precompied codes become small.
   [Bug Fix]
     * Fixed the potential bug of the stack of the arguments and return value.
+  [Improve Excepion Messages]
+    * Improved exception messages.
+      [After]
+      "The %s basic type is not found",
+      "The %s field is not found",
+      "The %s class variable in the %s class is not found",
+      "The %s class is not found",
+      "The %s method in the %s class is not found",
+  
 0.9664 2022-12-01
   [Internal Compatible Changes]
     * Added spvm_inline_api.h and use it in spvm_api.c, spvm_api_vm.c, spvm_precompile.c
