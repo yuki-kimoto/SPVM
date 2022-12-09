@@ -1934,31 +1934,37 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(env, stack, &stack_index, fields_length, &byte_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(env, stack, &stack_index, fields_length, &short_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(env, stack, &stack_index, fields_length, &int_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(env, stack, &stack_index, fields_length, &long_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(env, stack, &stack_index, fields_length, &float_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(env, stack, &stack_index, fields_length, &double_vars[opcode->operand0]);
+        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_BYTE: {

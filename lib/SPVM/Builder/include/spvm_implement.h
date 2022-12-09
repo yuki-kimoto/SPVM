@@ -2443,42 +2443,36 @@ static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALU
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(int8_t*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, int16_t* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(int16_t*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, int32_t* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(int32_t*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, int64_t* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(int64_t*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, float* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(float*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, double* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
     *(double*)&stack[*stack_index + field_index] = *(in + field_index);
   }
-  *stack_index += stack_length;
 }
 
 #define SPVM_IMPLEMENT_GET_STACK_BYTE(out, stack, stack_index) (out = *(int8_t*)&stack[stack_index])
