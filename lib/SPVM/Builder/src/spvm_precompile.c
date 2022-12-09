@@ -4599,7 +4599,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4611,7 +4611,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4623,7 +4623,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4635,7 +4635,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4647,7 +4647,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4659,8 +4659,210 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(env, stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ", fields_length, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_VOID:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_BYTE: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_SHORT: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_INT: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_LONG: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_FLOAT: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_DOUBLE: {
+        int32_t var_id = opcode->operand0;
+        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_OBJECT:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
+                                              "  if (*(void**)&stack[0] != NULL) {\n"
+                                              "    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);\n"
+                                              "  }\n"
+                                              "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_UNDEF:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = NULL;\n"
+                                              "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_BYTE:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        
+        // Multi numeric type
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_SHORT:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_INT:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_LONG:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        
+        // Multi numeric type
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_FLOAT:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_RETURN_MULNUM_DOUBLE:
+      {
+        int32_t var_id = opcode->operand0;
+        int32_t method_return_type_stack_length = opcode->operand2;
+        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, " = ");
+          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id + field_index);
+          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_METHOD_ONLY: {
@@ -4972,208 +5174,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         }
 
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_VOID:
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_BYTE: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_SHORT: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_INT: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_LONG: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_FLOAT: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_DOUBLE: {
-        int32_t var_id = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
-        SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_OBJECT:
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  if (*(void**)&stack[0] != NULL) {\n"
-                                              "    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);\n"
-                                              "  }\n"
-                                              "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_UNDEF:
-      {
-        SPVM_STRING_BUFFER_add(string_buffer, "  *(void**)&stack[0] = NULL;\n"
-                                              "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_BYTE:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        
-        // Multi numeric type
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_SHORT:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_INT:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_LONG:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        
-        // Multi numeric type
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_FLOAT:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_RETURN_MULNUM_DOUBLE:
-      {
-        int32_t var_id = opcode->operand0;
-        int32_t method_return_type_stack_length = opcode->operand2;
-        for (int32_t field_index = 0; field_index < method_return_type_stack_length; field_index++) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, " = ");
-          SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, var_id + field_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "  goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
       default: {
