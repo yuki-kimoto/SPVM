@@ -1585,7 +1585,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_IMPLEMENT_NEW_OBJECT(env, stack, (void**)&");
+                                              "    SPVM_IMPLEMENT_NEW_OBJECT(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, &error);\n"
                                               "  }\n");
@@ -1608,7 +1608,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(env, stack, (void**)&");
+                                              "    SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, length, &error);\n"
                                               "  }\n");
@@ -1635,7 +1635,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, (void**)&");
+                                              "    SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, element_dimension, length, &error);\n"
                                               "  }\n");
@@ -1658,7 +1658,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, basic_type_name, message, &error);\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(env, stack, (void**)&");
+                                              "    SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, length, &error);\n"
                                               "  }\n");
@@ -1669,7 +1669,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_BYTE_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_BYTE_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
@@ -1678,7 +1678,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_SHORT_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_SHORT_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
@@ -1687,7 +1687,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_INT_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_INT_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
@@ -1696,7 +1696,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_LONG_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_LONG_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
@@ -1705,7 +1705,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_FLOAT_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_FLOAT_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
@@ -1714,7 +1714,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_var(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_DOUBLE_ARRAY(env, stack, (void**)&");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_NEW_DOUBLE_ARRAY(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", length, &error);\n");
         break;
