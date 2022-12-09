@@ -1,4 +1,4 @@
-0.9665 2022-12-06
+0.9665 2022-12-10
   [Internal Compatible Changes]
     * Renamed spvm_api_vm.h to spvm_vm.h.
     * Renamed spvm_api_vm.c to spvm_vm.c.
