@@ -5019,69 +5019,6 @@ void SPVM_PRECOMPILE_add_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* st
   }
 }
 
-void SPVM_PRECOMPILE_add_var_value(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index, int32_t field_index) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-
-  
-  switch (ctype_id) {
-    case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "byte_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "short_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    case SPVM_PRECOMPILE_C_CTYPE_ID_INT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "int_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    case SPVM_PRECOMPILE_C_CTYPE_ID_LONG: {
-      SPVM_STRING_BUFFER_add(string_buffer, "long_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT: {
-      SPVM_STRING_BUFFER_add(string_buffer, "float_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE: {
-      SPVM_STRING_BUFFER_add(string_buffer, "double_vars[");
-      SPVM_STRING_BUFFER_add_int(string_buffer, index + field_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "]");
-      break;
-    }
-    default:
-      assert(0);
-  }
-}
-
-void SPVM_PRECOMPILE_add_stack(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "*(");
-  SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_PRECOMPILE_get_ctype_name(precompile, ctype_id));
-  SPVM_STRING_BUFFER_add(string_buffer, "*)&");
-  SPVM_STRING_BUFFER_add(string_buffer, "stack[");
-  SPVM_STRING_BUFFER_add_int(string_buffer, var_index);
-  SPVM_STRING_BUFFER_add(string_buffer, "]");
-}
-
-void SPVM_PRECOMPILE_add_operand_value(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index, int32_t field_index) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-  
-  SPVM_PRECOMPILE_add_var_value(precompile, string_buffer, ctype_id, var_index, field_index);
-}
-
 void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
   SPVM_RUNTIME* runtime = precompile->runtime;
 
