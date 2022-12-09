@@ -1561,32 +1561,32 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_SHORT(env, stack, &short_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_SHORT(env, stack, &short_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_INT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_INT(env, stack, &int_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_INT(env, stack, &int_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_LONG: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_LONG(env, stack, &long_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_LONG(env, stack, &long_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_FLOAT(env, stack, &float_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_FLOAT(env, stack, &float_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_DEREF_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand3;
-        SPVM_IMPLEMENT_SET_DEREF_MULNUM_DOUBLE(env, stack, &double_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
+        SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(env, stack, &double_vars[opcode->operand0], ref_vars[opcode->operand1], fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_BYTE: {

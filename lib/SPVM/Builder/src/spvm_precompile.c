@@ -3574,7 +3574,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_BYTE(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_BYTE(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -3586,7 +3586,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_SHORT(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_SHORT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -3598,7 +3598,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_INT(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_INT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -3610,7 +3610,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_LONG(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_LONG(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -3622,7 +3622,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_FLOAT(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_FLOAT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -3634,7 +3634,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DEREF_MULNUM_DOUBLE(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
