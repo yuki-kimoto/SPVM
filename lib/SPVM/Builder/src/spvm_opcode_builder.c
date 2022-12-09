@@ -1118,13 +1118,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           SPVM_LIST* args = method_call_method->var_decls;
                           {
-                            int32_t arg_index;
-                            for (arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
+                            int32_t arg_stack_index = 0;
+                            for (int32_t arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
                               SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(args, arg_index);
                               
                               // Argument type
                               SPVM_TYPE* arg_type = arg_var_decl->type;
-
+                              int32_t arg_type_stack_length = SPVM_TYPE_get_stack_length(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                              
                               // Term argment type
                               op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
                               if (!op_term_arg) {
@@ -1135,6 +1136,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               
                               SPVM_OPCODE opcode = {0};
                               
+                              opcode.operand3 = arg_stack_index;
                               
                               if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_UNDEF);
@@ -1265,6 +1267,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   assert(0);
                                 }
                               }
+                              arg_stack_index += arg_type_stack_length;
                             }
                           }
 

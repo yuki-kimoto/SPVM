@@ -1887,47 +1887,47 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_BYTE: {
-        SPVM_IMPLEMENT_SET_STACK_BYTE(stack, stack_index, byte_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_BYTE(stack, opcode->operand3, byte_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_SHORT: {
-        SPVM_IMPLEMENT_SET_STACK_SHORT(stack, stack_index, short_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_SHORT(stack, opcode->operand3, short_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_INT: {
-        SPVM_IMPLEMENT_SET_STACK_INT(stack, stack_index, int_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_INT(stack, opcode->operand3, int_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_LONG: {
-        SPVM_IMPLEMENT_SET_STACK_LONG(stack, stack_index, long_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_LONG(stack, opcode->operand3, long_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_FLOAT: {
-        SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, stack_index, float_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, opcode->operand3, float_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_DOUBLE: {
-        SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, stack_index, double_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, opcode->operand3, double_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_OBJECT: {
-        SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, object_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, opcode->operand3, object_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_REF: {
-        SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, ref_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_REF(stack, opcode->operand3, ref_vars[opcode->operand0]);
         stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_UNDEF: {
-        SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index);
+        SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, opcode->operand3);
         stack_index++;
         break;
       }
