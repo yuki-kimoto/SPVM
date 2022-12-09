@@ -31,6 +31,7 @@ enum {
   SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_NOT_FOUND,
+  SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND,
 };
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
@@ -61,6 +62,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The %s field is not found",
   "The %s class variable in the %s class is not found",
   "The %s class is not found",
+  "The %s method in the %s class is not found",
 };
 
 enum {
