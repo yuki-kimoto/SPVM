@@ -4467,7 +4467,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(env, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", stack, stack_index, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, *(int64_t*)&opcode->operand1);
+        SPVM_STRING_BUFFER_add_long(string_buffer, *(int64_t*)&opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
@@ -4481,9 +4481,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(env, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", stack, stack_index, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, value.fval);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", stack, stack_index, (tmp_constant.ival = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, value.ival);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.fval));\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
@@ -4497,9 +4497,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(env, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", stack, stack_index, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, value.dval);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", stack, stack_index, (tmp_constant.lval = ");
+       SPVM_STRING_BUFFER_add_long(string_buffer, value.lval);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.dval));\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
