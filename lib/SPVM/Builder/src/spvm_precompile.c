@@ -4384,7 +4384,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4396,7 +4396,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4408,7 +4408,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4420,7 +4420,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4432,7 +4432,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -4444,7 +4444,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
-          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, stack_index + field_index);
+          SPVM_PRECOMPILE_add_stack(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand3 + field_index);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
           SPVM_PRECOMPILE_add_operand_value(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, field_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
