@@ -2483,10 +2483,7 @@ static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VA
 #define SPVM_IMPLEMENT_GET_STACK_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index])
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
-  *out = *(void**)&stack[stack_index];
-  if (*out != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *out);
-  }
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index]);
 }
 
 #define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
@@ -2527,76 +2524,73 @@ static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double*
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t args_index, int8_t default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_index, int8_t default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(int8_t*)&stack[args_index];
+    *out = *(int8_t*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t args_index, int16_t default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_index, int16_t default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(int16_t*)&stack[args_index];
+    *out = *(int16_t*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t args_index, int32_t default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(int32_t*)&stack[args_index];
+    *out = *(int32_t*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t args_index, int64_t default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_index, int64_t default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(int64_t*)&stack[args_index];
+    *out = *(int64_t*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t args_index, float default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_index, float default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(float*)&stack[args_index];
+    *out = *(float*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t args_index, double default_value) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_index, double default_value) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
+  if (stack_index >= args_length) {
     *out = default_value;
   }
   else {
-    *out = *(double*)&stack[args_index];
+    *out = *(double*)&stack[stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t args_index) {
+static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
   int32_t args_length = env->get_args_stack_length(env, stack);
-  if (args_index >= args_length) {
-    *out = NULL;
+  if (stack_index >= args_length) {
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL);
   }
   else {
-    *out = *(void**)&stack[args_index];
-    if (*out != NULL) {
-      SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *out);
-    }
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index]);
   }
 }
 
