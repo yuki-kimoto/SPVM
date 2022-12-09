@@ -104,7 +104,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_byte : int () {
+  static method mulnum_ref_deref_byte : int () {
     my $point1 : TestCase::Point_3b;
     
     $point1->{x} = (byte)Fn->INT8_MIN;
@@ -121,7 +121,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_get_field_byte : int () {
+  static method mulnum_ref_deref_get_field_byte : int () {
     my $point : TestCase::Point_3b;
     
     $point->{x} = (byte)Fn->INT8_MIN;
@@ -140,7 +140,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_byte : int () {
+  static method mulnum_ref_deref_set_field_byte : int () {
     my $point : TestCase::Point_3b;
 
     my $point_ref = \$point;
@@ -155,7 +155,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_byte : int () {
+  static method test_pass_mulnum_ref_byte : int () {
     my $point_out : TestCase::Point_3b;
     
     my $point1 : TestCase::Point_3b;
@@ -168,7 +168,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    TestCase::Ref->pass_value_ref_byte($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_byte($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT8_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -176,13 +176,13 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b*) {
+  static method pass_mulnum_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b*) {
     $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
   }
 
-  static method value_ref_deref_short : int () {
+  static method mulnum_ref_deref_short : int () {
     my $point1 : TestCase::Point_3s;
     
     $point1->{x} = (short)Fn->INT16_MIN;
@@ -199,7 +199,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_get_field_short : int () {
+  static method mulnum_ref_deref_get_field_short : int () {
     my $point : TestCase::Point_3s;
     
     $point->{x} = (short)Fn->INT16_MIN;
@@ -218,7 +218,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_short : int () {
+  static method mulnum_ref_deref_set_field_short : int () {
     my $point : TestCase::Point_3s;
 
     my $point_ref = \$point;
@@ -233,7 +233,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_short : int () {
+  static method test_pass_mulnum_ref_short : int () {
     my $point_out : TestCase::Point_3s;
     
     my $point1 : TestCase::Point_3s;
@@ -246,7 +246,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    TestCase::Ref->pass_value_ref_short($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_short($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT16_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -254,13 +254,13 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s*) {
+  static method pass_mulnum_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s*) {
     $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
   }
 
-  static method value_ref_deref_double : int () {
+  static method mulnum_ref_deref_double : int () {
     my $point1 : TestCase::Point_3d;
     
     $point1->{x} = Fn->DBL_MIN;
@@ -277,7 +277,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_int : int () {
+  static method mulnum_ref_deref_int : int () {
     my $point1 : TestCase::Point_3i;
     
     $point1->{x} = Fn->INT32_MIN;
@@ -294,7 +294,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_get_field_int : int () {
+  static method mulnum_ref_deref_get_field_int : int () {
     my $point : TestCase::Point_3i;
     
     $point->{x} = Fn->INT32_MIN;
@@ -313,7 +313,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_int : int () {
+  static method mulnum_ref_deref_set_field_int : int () {
     my $point : TestCase::Point_3i;
 
     my $point_ref = \$point;
@@ -328,7 +328,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_int : int () {
+  static method test_pass_mulnum_ref_int : int () {
     my $point_out : TestCase::Point_3i;
     
     my $point1 : TestCase::Point_3i;
@@ -341,7 +341,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    TestCase::Ref->pass_value_ref_int($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_int($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT32_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -349,13 +349,13 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i*) {
+  static method pass_mulnum_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i*) {
     $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
   }
 
-  static method value_ref_deref_long : int () {
+  static method mulnum_ref_deref_long : int () {
     my $point1 : TestCase::Point_3l;
     
     $point1->{x} = Fn->INT64_MIN;
@@ -372,7 +372,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_get_field_long : int () {
+  static method mulnum_ref_deref_get_field_long : int () {
     my $point : TestCase::Point_3l;
     
     $point->{x} = Fn->INT64_MIN;
@@ -391,7 +391,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_long : int () {
+  static method mulnum_ref_deref_set_field_long : int () {
     my $point : TestCase::Point_3l;
 
     my $point_ref = \$point;
@@ -406,7 +406,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_long : int () {
+  static method test_pass_mulnum_ref_long : int () {
     my $point_out : TestCase::Point_3l;
     
     my $point1 : TestCase::Point_3l;
@@ -419,7 +419,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    TestCase::Ref->pass_value_ref_long($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_long($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT64_MIN + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -427,13 +427,13 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l*) {
+  static method pass_mulnum_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l*) {
     $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
   }
 
-  static method value_ref_deref_float : int () {
+  static method mulnum_ref_deref_float : int () {
     my $point1 : TestCase::Point_3f;
     
     $point1->{x} = Fn->FLT_MIN;
@@ -450,7 +450,7 @@ class TestCase::Ref {
     return 0;
   }
 
-  static method value_ref_deref_get_field_float : int () {
+  static method mulnum_ref_deref_get_field_float : int () {
     my $point : TestCase::Point_3f;
     
     $point->{x} = Fn->FLT_MIN;
@@ -469,7 +469,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_float : int () {
+  static method mulnum_ref_deref_set_field_float : int () {
     my $point : TestCase::Point_3f;
 
     my $point_ref = \$point;
@@ -484,7 +484,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_float : int () {
+  static method test_pass_mulnum_ref_float : int () {
     my $point_out : TestCase::Point_3f;
     
     my $point1 : TestCase::Point_3f;
@@ -497,7 +497,7 @@ class TestCase::Ref {
     $point2->{y} = 0.5f;
     $point2->{z} = 0.125f;
     
-    TestCase::Ref->pass_value_ref_float($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_float($point1, $point2, \$point_out);
     
     if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
       return 1;
@@ -505,13 +505,13 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f*) {
+  static method pass_mulnum_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f*) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
   }
 
-  static method value_ref_deref_get_field_double : int () {
+  static method mulnum_ref_deref_get_field_double : int () {
     my $point : TestCase::Point_3d;
     
     $point->{x} = Fn->DBL_MIN;
@@ -530,7 +530,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method value_ref_deref_set_field_double : int () {
+  static method mulnum_ref_deref_set_field_double : int () {
     my $point : TestCase::Point_3d;
 
     my $point_ref = \$point;
@@ -545,7 +545,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method test_pass_value_ref_double : int () {
+  static method test_pass_mulnum_ref_double : int () {
     my $point_out : TestCase::Point_3d;
     
     my $point1 : TestCase::Point_3d;
@@ -558,7 +558,7 @@ class TestCase::Ref {
     $point2->{y} = 0.5;
     $point2->{z} = 0.125;
     
-    TestCase::Ref->pass_value_ref_double($point1, $point2, \$point_out);
+    TestCase::Ref->pass_mulnum_ref_double($point1, $point2, \$point_out);
     
     if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
       return 1;
@@ -566,7 +566,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d*) {
+  static method pass_mulnum_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d*) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};

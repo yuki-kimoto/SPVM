@@ -27,50 +27,50 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # byte
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_byte());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_byte());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_byte());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_byte());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_byte());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_byte());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_byte());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_byte());
   }
 
   # short
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_short());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_short());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_short());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_short());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_short());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_short());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_short());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_short());
   }
 
   # int
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_int());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_int());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_int());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_int());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_int());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_int());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_int());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_int());
   }
 
   # long
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_long());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_long());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_long());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_long());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_long());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_long());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_long());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_long());
   }
   
   # float
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_float());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_float());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_float());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_float());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_float());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_float());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_float());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_float());
   }
 
   # double
   {
-    ok(SPVM::TestCase::Ref->value_ref_deref_double());
-    ok(SPVM::TestCase::Ref->value_ref_deref_get_field_double());
-    ok(SPVM::TestCase::Ref->value_ref_deref_set_field_double());
-    ok(SPVM::TestCase::Ref->test_pass_value_ref_double());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_double());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_get_field_double());
+    ok(SPVM::TestCase::Ref->mulnum_ref_deref_set_field_double());
+    ok(SPVM::TestCase::Ref->test_pass_mulnum_ref_double());
   }
 }
 
