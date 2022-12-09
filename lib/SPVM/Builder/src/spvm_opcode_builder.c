@@ -1407,34 +1407,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                               // Numeric type
                               if (SPVM_TYPE_is_numeric_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
-                                switch (call_method_return_type->basic_type->id) {
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_BYTE);
-                                    break;
-                                  }
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_SHORT);
-                                    break;
-                                  }
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_INT);
-                                    break;
-                                  }
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_LONG);
-                                    break;
-                                  }
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_FLOAT);
-                                    break;
-                                  }
-                                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_return, SPVM_OPCODE_C_ID_GET_STACK_DOUBLE);
-                                    break;
-                                  }
-                                  default:
-                                    assert(0);
-                                }
+                                assert(0);
                               }
                               // void type
                               else if (SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
