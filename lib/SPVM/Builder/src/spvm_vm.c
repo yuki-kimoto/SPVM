@@ -72,9 +72,6 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
   // Operation code base
   int32_t current_method_opcodes_base_id = current_method->opcodes_base_id;
 
-  // Call current_method argument stack top
-  int32_t stack_index = 0;
-  
   // Mortal stack
   int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
@@ -1888,83 +1885,68 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_SET_STACK_BYTE: {
         SPVM_IMPLEMENT_SET_STACK_BYTE(stack, opcode->operand3, byte_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_SHORT: {
         SPVM_IMPLEMENT_SET_STACK_SHORT(stack, opcode->operand3, short_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_INT: {
         SPVM_IMPLEMENT_SET_STACK_INT(stack, opcode->operand3, int_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_LONG: {
         SPVM_IMPLEMENT_SET_STACK_LONG(stack, opcode->operand3, long_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_FLOAT: {
         SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, opcode->operand3, float_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_DOUBLE: {
         SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, opcode->operand3, double_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_OBJECT: {
         SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, opcode->operand3, object_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_REF: {
         SPVM_IMPLEMENT_SET_STACK_REF(stack, opcode->operand3, ref_vars[opcode->operand0]);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_UNDEF: {
         SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, opcode->operand3);
-        stack_index++;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(env, stack, opcode->operand3, fields_length, &byte_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(env, stack, opcode->operand3, fields_length, &short_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(env, stack, opcode->operand3, fields_length, &int_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(env, stack, opcode->operand3, fields_length, &long_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(env, stack, opcode->operand3, fields_length, &float_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE: {
         int32_t fields_length = opcode->operand1;
         SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(env, stack, opcode->operand3, fields_length, &double_vars[opcode->operand0]);
-        stack_index += fields_length;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_BYTE: {
@@ -2177,7 +2159,6 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         }
         
         if (!error) {
-          stack_index = 0;
           error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);
         }
         break;
@@ -2213,7 +2194,6 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         }
         
         if (!error) {
-          stack_index = 0;
           error = env->call_spvm_method(env, stack, call_method_id, call_method_args_stack_length);
         }
 
