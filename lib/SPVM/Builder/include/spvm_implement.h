@@ -2429,15 +2429,15 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
   }
 }
 
-#define SPVM_IMPLEMENT_SET_STACK_BYTE(stack, stack_index, in) (*(int8_t*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_SHORT(stack, stack_index, in) (*(int16_t*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_INT(stack, stack_index, in) (*(int32_t*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_LONG(stack, stack_index, in) (*(int64_t*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, stack_index, in) (*(float*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, stack_index, in) (*(double*)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, in) (*(void**)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index++] = in)
-#define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(void**)&stack[stack_index++] = NULL)
+#define SPVM_IMPLEMENT_SET_STACK_BYTE(stack, stack_index, in) (*(int8_t*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_SHORT(stack, stack_index, in) (*(int16_t*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_INT(stack, stack_index, in) (*(int32_t*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_LONG(stack, stack_index, in) (*(int64_t*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, stack_index, in) (*(float*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, stack_index, in) (*(double*)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(void**)&stack[stack_index] = NULL)
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* stack_index, int32_t stack_length, int8_t* in) {
   for (int32_t field_index = 0; field_index < stack_length; field_index++) {
