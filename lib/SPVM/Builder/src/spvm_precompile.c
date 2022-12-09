@@ -4154,27 +4154,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
         SPVM_STRING_BUFFER_add(string_buffer, "  src_string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  src_string_length = env->length(env, stack, src_string);"
-                                              "  src_string_data = (char*)env->get_chars(env, stack, src_string);"
-                                              "  byte_array = env->new_byte_array_raw(env, stack, src_string_length);"
-                                              "  byte_array_data = env->get_elems_byte(env, stack, byte_array);"
-                                              "  memcpy(byte_array_data, src_string_data, src_string_length);"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", byte_array);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  , src_string);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING: {
         SPVM_STRING_BUFFER_add(string_buffer, "  src_byte_array = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n"
-                                              "  src_byte_array_length = env->length(env, stack, src_byte_array);"
-                                              "  src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);"
-                                              "  string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);"
-                                              "  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  , src_byte_array);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT: {
