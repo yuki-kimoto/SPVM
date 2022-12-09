@@ -4339,7 +4339,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int( string_buffer, opcode->operand3 & 0xFF);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "  object_vars[arg_mem_id] = *(void**)&stack[stack_index];\n"
-                                              "  object = *(void**)&object_vars[arg_mem_id];\n"
+                                              "  object = object_vars[arg_mem_id];\n"
                                               "  if (object != NULL) {\n"
                                               "    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object);\n"
                                               "  }\n");
@@ -4570,7 +4570,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               "  }\n"
                                               "  else {\n"
                                               "    object_vars[arg_mem_id] = *(void**)&stack[args_stack_index];\n"
-                                              "    object = *(void**)&object_vars[arg_mem_id];\n"
+                                              "    object = object_vars[arg_mem_id];\n"
                                               "    if (object != NULL) {\n"
                                               "      SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object);\n"
                                               "    }\n"

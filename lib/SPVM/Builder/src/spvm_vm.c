@@ -398,18 +398,18 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
-        SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], cast_basic_type_id, cast_type_dimension, &error);
+        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], cast_basic_type_id, cast_type_dimension, &error);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
-        SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], &error);
+        SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_REF: {
@@ -577,7 +577,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_CONCAT: {
-        SPVM_IMPLEMENT_CONCAT(env, stack, &object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2], &error);
+        SPVM_IMPLEMENT_CONCAT(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {
@@ -597,7 +597,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(int_vars[0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_REF: {
@@ -605,7 +605,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_INT: {
@@ -625,7 +625,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_OBJECT: {
-        SPVM_IMPLEMENT_EQ_OBJECT(int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_OBJECT(int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_REF: {
@@ -649,7 +649,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_NE_OBJECT: {
-        SPVM_IMPLEMENT_NE_OBJECT(int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_OBJECT(int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_REF: {
@@ -737,39 +737,39 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_IS_UNDEF: {
-        SPVM_IMPLEMENT_IS_UNDEF(int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_UNDEF(int_vars[0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_NOT_UNDEF: {
-        SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_EQ: {
-        SPVM_IMPLEMENT_STRING_EQ(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_EQ(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_NE: {
-        SPVM_IMPLEMENT_STRING_NE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_NE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_GT: {
-        SPVM_IMPLEMENT_STRING_GT(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_GT(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_GE: {
-        SPVM_IMPLEMENT_STRING_GE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_GE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_LT: {
-        SPVM_IMPLEMENT_STRING_LT(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_LT(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_LE: {
-        SPVM_IMPLEMENT_STRING_LE(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_LE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_CMP: {
-        SPVM_IMPLEMENT_STRING_CMP(env, stack, &int_vars[0], *(void**)&object_vars[opcode->operand1], *(void**)&object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_CMP(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
@@ -839,7 +839,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_IS_READ_ONLY: {
-        SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, int_vars[0], *(void**)&object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, int_vars[0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
@@ -847,97 +847,97 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(env, stack, &byte_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(env, stack, &short_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_INT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(env, stack, &int_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(env, stack, &long_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(env, stack, &float_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(env, stack, &double_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_ARRAY_ELEMENT_OBJECT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(env, stack, &object_vars[opcode->operand0], array, index, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(env, stack, array, index, byte_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_SHORT(env, stack, array, index, short_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_INT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_INT(env, stack, array, index, int_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_LONG(env, stack, array, index, long_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_FLOAT(env, stack, array, index, float_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_DOUBLE(env, stack, array, index, double_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(env, stack, array, index, object_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(env, stack, array, index, object_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ARRAY_ELEMENT_UNDEF: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(env, stack, array, index, &error, object_header_byte_size);
         break;
@@ -947,91 +947,91 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, &byte_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_SHORT(env, stack, &short_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_INT(env, stack, &int_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_LONG(env, stack, &long_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_FLOAT(env, stack, &float_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_DOUBLE(env, stack, &double_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t field_id = opcode->operand2;
         SPVM_IMPLEMENT_GET_FIELD_OBJECT(env, stack, &object_vars[opcode->operand0], object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field_id, byte_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field_id, short_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field_id, int_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field_id, long_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field_id, float_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field_id, double_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field_id, object_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
         SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, field_id, &error, object_header_byte_size);
         break;
@@ -1116,7 +1116,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
-        SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, *(void**)&object_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF: {
@@ -1124,21 +1124,21 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_ISA: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_HAS_IMPL: {
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         int32_t method_id = opcode->operand1;
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
@@ -1213,7 +1213,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_COPY: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_COPY(env, stack, &object_vars[opcode->operand0], object, &error);
         break;
       }
@@ -1380,91 +1380,91 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(env, stack, &byte_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(env, stack, &short_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_INT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(env, stack, &int_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(env, stack, &long_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(env, stack, &float_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(env, stack, &double_vars[opcode->operand0], array, index, fields_length, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(env, stack, array, index, fields_length, &byte_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(env, stack, array, index, fields_length, &short_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_INT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(env, stack, array, index, fields_length, &int_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(env, stack, array, index, fields_length, &long_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(env, stack, array, index, fields_length, &float_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(env, stack, array, index, fields_length, &double_vars[opcode->operand2], &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1472,7 +1472,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1480,7 +1480,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_INT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1488,7 +1488,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1496,7 +1496,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1504,7 +1504,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand1];
+        void* array = object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1512,7 +1512,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_BYTE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1520,7 +1520,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_SHORT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1528,7 +1528,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_INT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1536,7 +1536,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_LONG: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1544,7 +1544,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_FLOAT: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1552,7 +1552,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_ARRAY_FIELD_DOUBLE: {
-        void* array = *(void**)&object_vars[opcode->operand0];
+        void* array = object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
@@ -1669,19 +1669,19 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        void* object = *(void**)&object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand0];
         SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_id, &error, object_header_byte_size);
         break;
       }
@@ -1876,32 +1876,32 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(env, stack, &byte_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(env, stack, &short_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(env, stack, &int_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(env, stack, &long_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(env, stack, &float_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE: {
-        void* object = *(void**)&object_vars[opcode->operand1];
+        void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(env, stack, &double_vars[opcode->operand0], object, &error, object_header_byte_size);
         break;
       }
@@ -1930,7 +1930,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_OBJECT: {
-        SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, *(void**)&object_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_REF: {
@@ -2105,7 +2105,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT: {
-        SPVM_IMPLEMENT_RETURN_OBJECT(env, stack, *(void**)&object_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_RETURN_OBJECT(env, stack, object_vars[opcode->operand0]);
         opcode_rel_index = opcode->operand1;
         continue;
       }
