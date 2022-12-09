@@ -3803,21 +3803,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    int32_t field_offset = env->get_field_offset(env, field_id);\n"
-                                              "    if (object == NULL) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);\n"
-                                              "      int32_t status = env->weaken(env, stack, get_field_object_address);\n"
-                                              "      if (status != 0) {\n"
-                                              "        exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);\n"
-                                              "        env->set_exception(env, stack, exception);\n"
-                                              "        error = 1;\n"
-                                              "      }\n"
-                                              "    }\n"
+                                              "    SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);\n"
                                               "  }\n");
         break;
       }
@@ -3839,19 +3825,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    int32_t field_offset"
-                                              " = env->get_field_offset(env, "
-                                              "field_id"
-                                              ");\n"
-                                              "    if (object == NULL) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);\n"
-                                              "      env->unweaken(env, stack, get_field_object_address);\n"
-                                              "    }\n"
+                                              "    SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_id, &error, object_header_byte_size);\n"
                                               "  }\n");
         break;
       }
@@ -3873,19 +3847,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    int32_t field_offset = env->get_field_offset(env, field_id);\n"
-                                              "    if (object == NULL) {\n"
-                                              "      exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);\n"
-                                              "      env->set_exception(env, stack, exception);\n"
-                                              "      error = 1;\n"
-                                              "    }\n"
-                                              "    else {\n"
-                                              "      get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + "
-                                              "field_offset"
-                                              ");\n");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = env->isweak(env, stack, get_field_object_address);\n"
-                                              "    }\n"
+                                              "    SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_id, &error, object_header_byte_size);\n"
                                               "  }\n");
         break;
       }
@@ -3893,16 +3855,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (object == NULL) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n"
-                                              "  }\n"
-                                              "  else {\n"
-                                              "    ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, "  = env->get_ref_count(env, stack, object);\n"
-                                              "  }\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REFCNT(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
