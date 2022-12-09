@@ -4840,8 +4840,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
         int32_t is_interface = !is_class_method_call && !is_static_instance_method_call;
         
-        int32_t decl_method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
-        const char* decl_method_name = SPVM_API_RUNTIME_get_name(runtime, decl_method_name_id);
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
+        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
         int32_t decl_method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, decl_method_id);
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, decl_method_class_id);
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
@@ -4854,7 +4854,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "->");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\n"
                                               "  call_method_args_stack_length = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_stack_length);
@@ -4866,7 +4866,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
         }
         else {
@@ -4874,21 +4874,21 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, \"");
             SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+            SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
           }
           // Interface
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+            SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
           }
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (call_method_id < 0) {\n"
                                               "    exception = env->new_string_nolen_raw(env, stack, \"The \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" method in the \\\"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\\\" class is not found\");\n"
