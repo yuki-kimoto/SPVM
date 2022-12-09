@@ -4850,48 +4850,39 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t decl_method_return_type_dimension = SPVM_API_RUNTIME_get_type_dimension(runtime, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_id = SPVM_API_RUNTIME_get_type_basic_type_id(runtime, decl_method_return_type_id);
         int32_t decl_method_return_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, decl_method_return_basic_type_id);
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  // ");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "->");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\n"
-                                              "  call_method_args_stack_length = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  call_method_args_stack_length = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, call_method_args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
         
         // Call method
         if (is_class_method_call) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, class_name, method_name);\n");
         }
         else {
           if (is_static_instance_method_call) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, class_name, method_name);\n");
           }
           // Interface
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, method_name);\n");
           }
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (call_method_id < 0) {\n"
-                                              "    exception = env->new_string_nolen_raw(env, stack, \"The \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" method in the \\\"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\\\" class is not found\");\n"
+                                              "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], class_name, method_name);\n"
+
+                                              "    exception = env->new_string_nolen_raw(env, stack, message);\n"
                                               "    env->set_exception(env, stack, exception);\n"
                                               "    error = 1;\n"
                                               "  }\n");
