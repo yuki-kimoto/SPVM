@@ -5,6 +5,14 @@
     * Renamed SPVM_API_VM_call_spvm_method_vm to SPVM_VM_call_spvm_method.
     * Added SPVM_API_call_spvm_method_vm.
     * Renamed spvm_inline_api.h to spvm_implement.h
+    * Shared opcodes in vm codes and precompiled codes.
+    * The CALL_METHOD opcode is separated to the logic of calling method and return the value.
+  [Runtime Performance Degration]
+    * For the reason that shared opcodes in vm codes and precompiled codes, the runtime performance maybe degraded a little.
+  [Compililation Performance Improvement]
+    * The compilation time of the precompied codes are improved.
+  [Compililation File Size Improvement]
+    * The compilation file size of the precompied codes become small.
   [Bug Fix]
     * Fixed the potential bug of the stack of the arguments and return value.
 0.9664 2022-12-01
