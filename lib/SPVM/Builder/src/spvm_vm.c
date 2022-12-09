@@ -2128,7 +2128,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         opcode_rel_index = opcode->operand1;
         continue;
       }
-      case SPVM_OPCODE_C_ID_CALL_METHOD_ONLY: {
+      case SPVM_OPCODE_C_ID_CALL_METHOD: {
         int32_t method_id = opcode->operand1;
         int32_t return_stack_length = opcode->operand3;
         
