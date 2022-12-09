@@ -4942,13 +4942,6 @@ void SPVM_PRECOMPILE_add_var_value(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   }
 }
 
-void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-
-  
-  SPVM_PRECOMPILE_add_var(precompile, string_buffer, ctype_id, var_index);
-}
-
 void SPVM_PRECOMPILE_add_operand_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
@@ -5440,16 +5433,6 @@ void SPVM_PRECOMPILE_add_mulnum_deref_set_field(SPVM_PRECOMPILE* precompile, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "];\n");
 }
 
-void SPVM_PRECOMPILE_add_get_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "  ");
-  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, out_index);
-  SPVM_STRING_BUFFER_add(string_buffer, " = ");
-  SPVM_PRECOMPILE_add_operand_deref(precompile, string_buffer, ctype_id, in_index);
-  SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-}
-
 void SPVM_PRECOMPILE_add_set_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in_index) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
@@ -5458,4 +5441,17 @@ void SPVM_PRECOMPILE_add_set_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, in_index);
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+}
+
+void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
+  SPVM_RUNTIME* runtime = precompile->runtime;
+
+  
+  SPVM_PRECOMPILE_add_var(precompile, string_buffer, ctype_id, var_index);
+}
+
+void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index) {
+  SPVM_RUNTIME* runtime = precompile->runtime;
+  SPVM_STRING_BUFFER_add(string_buffer, "&");
+  SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, var_index);
 }

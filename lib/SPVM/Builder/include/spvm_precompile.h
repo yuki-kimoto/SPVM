@@ -111,5 +111,6 @@ void SPVM_PRECOMPILE_add_set_deref(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
 void SPVM_PRECOMPILE_add_get_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t out_index, int32_t object_index, int32_t field_id);
 void SPVM_PRECOMPILE_add_set_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t field_ctype_id, int32_t object_index, int32_t field_id, int32_t in_index);
 
+void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
 
 #endif
