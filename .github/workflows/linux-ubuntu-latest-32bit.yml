@@ -14,6 +14,11 @@ jobs:
     container:
       image: i386/ubuntu:latest
     steps:
+      - name: install the Perl header, core modules, building tools
+        run: |
+          apt update
+          apt install -y libperl-dev build-essential
+      - uses: actions/checkout@v3
       - name: Perl version
         run: perl -V
       - name: Perl config
