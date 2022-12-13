@@ -1,0 +1,28 @@
+name: macos-latest
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Perl version
+        run: perl -V
+      - name: Perl config
+        run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+      - name: Set PERL5LIB
+        run: echo "PERL5LIB=$HOME/mylib/lib/perl5:$HOME/mylib/lib/perl5/"$(perl -MConfig -e 'print $Config{archname}') >> $GITHUB_ENV
+      - name: Download cpanm
+        run: perl -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(PeerAddr => qq(cpanmin.us), PeerPort => 80, Proto=> qq(tcp));print $socket qq(GET / HTTP/1.0\r\nHost:cpanmin.us\r\n\r\n);binmode STDOUT;print <$socket>;' | perl -p -0777 -e 'BEGIN { binmode STDOUT;binmode STDIN  } s/.*?\r\n\r\n//s' > cpanm
+      - name: cpanm installs dependent modules
+        run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--no-build-spvm-modules"
+      - run: perl Makefile.PL
+      - run: make
+      - run: make disttest
