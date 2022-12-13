@@ -46,6 +46,7 @@ GetOptions(
   "--DEFINE=s" => \@defines,
   "--OPTIMIZE=s" => \$optimize,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
+  'no-precompile-tests' => \my $no_precompile_tests,
 );
 
 
@@ -169,7 +170,7 @@ sub MY::postamble {
   }
   
   # Create precompile tests
-  {
+  unless ($no_precompile_tests) {
     my @test_files;
     find(
       sub {
