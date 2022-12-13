@@ -25,6 +25,6 @@ jobs:
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--no-build-spvm-modules"
       - name: Building and tests
         run: |
-        perl Makefile.PL
-        make
-        make disttest
+          perl Makefile.PL
+          make
+          make disttest
