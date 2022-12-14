@@ -575,7 +575,16 @@ use ExtUtils::MakeMaker;
 use strict;
 use warnings;
 use Config;
-use SPVM::Builder::Util::API;
+use Getopt::Long 'GetOptions';
+
+GetOptions(
+  'meta' => \\my \$meta,
+  'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
+);
+
+if (\$meta) {
+  \$no_build_spvm_modules = 1;
+}
 
 WriteMakefile(
   NAME              => 'SPVM::$class_name',
@@ -601,8 +610,7 @@ WriteMakefile(
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
-    # SPVM::Builder::Util::API is needed for Makefile.PL
-    'SPVM'              => '$SPVM::VERSION',
+    'SPVM' => '$SPVM::VERSION',
   },
   PREREQ_PM => {
     
@@ -616,8 +624,12 @@ sub MY::postamble {
 
   my \$make_rule = '';
   
-  $make_rule_native
-  $make_rule_precompile
+  unless (\$no_build_spvm_modules) {
+    require SPVM::Builder::Util::API;
+    
+    $make_rule_native
+    $make_rule_precompile
+  }
   
   return \$make_rule;
 }
