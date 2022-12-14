@@ -10,18 +10,17 @@ on:
 
 jobs:
   perl:
-
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@master
-      - name: perl -V
+      - uses: actions/checkout@v3
+      - name: Perl version
         run: perl -V
-      - name: perl %Config
+      - name: Perl config
         run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
-      - name: perl Makefile.PL
-        run: perl Makefile.PL
-      - name: gmake
-        run: gmake
-      - name: gmake disttest
-        run: gmake disttest
+      - name: Download cpanm
+        run: perl -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(PeerAddr => qq(cpanmin.us), PeerPort => 80, Proto=> qq(tcp));print $socket qq(GET / HTTP/1.0\r\nHost:cpanmin.us\r\n\r\n);binmode STDOUT;print <$socket>;' | perl -p -0777 -e 'BEGIN { binmode STDOUT;binmode STDIN  } s/.*?\r\n\r\n//s' > cpanm
+      - name: cpanm installs dependent modules
+        run: perl cpanm -v -n --installdeps . --configure-args="--no-build-spvm-modules"
+      - run: perl Makefile.PL
+      - run: gmake
+      - run: gmake disttest
