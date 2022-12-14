@@ -291,16 +291,16 @@ $version
 
 =head1 Name
 
-SPVM::$class_name - $class_name is a SPVM module
+SPVM::$class_name - foo
+
+=head1 Description
+
+C<SPVM::$class_name> is the L<SPVM>'s C<$class_name> class.
 
 =head1 Usage
 
   use $class_name;
   
-=head1 Description
-
-C<$class_name> is a L<SPVM> module.
-
 =head1 Fields
 
 
