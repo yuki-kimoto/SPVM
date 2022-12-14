@@ -43,8 +43,8 @@ my @defines;
 my $optimize;
 
 GetOptions(
-  "--DEFINE=s" => \@defines,
-  "--OPTIMIZE=s" => \$optimize,
+  "DEFINE=s" => \@defines,
+  "OPTIMIZE=s" => \$optimize,
   'meta' => \my $meta,
 );
 
