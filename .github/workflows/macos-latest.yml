@@ -20,7 +20,7 @@ jobs:
       - name: Set PERL5LIB
         run: echo "PERL5LIB=$HOME/mylib/lib/perl5:$HOME/mylib/lib/perl5/"$(perl -MConfig -e 'print $Config{archname}') >> $GITHUB_ENV
       - name: Download cpanm
-        run: perl -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(PeerAddr => qq(cpanmin.us), PeerPort => 80, Proto=> qq(tcp));print $socket qq(GET / HTTP/1.0\r\nHost:cpanmin.us\r\n\r\n);binmode STDOUT;print <$socket>;' | perl -p -0777 -e 'BEGIN { binmode STDOUT;binmode STDIN  } s/.*?\r\n\r\n//s' > cpanm
+        run: perl -0777 -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(  Proto => qq(tcp),  PeerAddr => qq(cpanmin.us),  PeerPort => 80,) or die $!;print $socket join qq(\r\n),  qq(GET / HTTP/1.1),  qq(Connection: close),  qq(Host:cpanmin.us),  qq(\r\n);my $res = <$socket>;$res =~ s[^HTTP/1\.1 200 OK\r\n.*?\r\n\r\n][]s or die $res;open my $out, qq(>), qq(cpanm) or die $!;print $out $res'
       - name: cpanm installs dependent modules
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--no-build-spvm-modules"
       - run: perl Makefile.PL
