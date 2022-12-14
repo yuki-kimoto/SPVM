@@ -42,7 +42,7 @@ DEVELOPERS NOTE
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/SPVM -o solo/work/myexe --config solo/myexe.debug.config -f MyExe
        
        # Cleanup
-       make -f solo/Makefile clean
+       rm solo/work/myexe
 
     See batcktrace of core dump
 
