@@ -3,6 +3,8 @@
     * Added --no-build-spvm-modules option to Makefile.PL.
     * Added --no-precompile-tests option to Makefile.PL.
     * Added --meta option to Makefile.PL.
+  [Test Improvement]
+    * Solo tests use spvmcc command.
 
 0.9665 2022-12-10
   [Internal Compatible Changes]
