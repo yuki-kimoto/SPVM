@@ -45,10 +45,8 @@ my $optimize;
 GetOptions(
   "--DEFINE=s" => \@defines,
   "--OPTIMIZE=s" => \$optimize,
-  'no-build-spvm-modules' => \my $no_build_spvm_modules,
-  'no-precompile-tests' => \my $no_precompile_tests,
+  'meta' => \my $meta,
 );
-
 
 # Macro
 @defines = map { "-D$_" } @defines;
@@ -150,7 +148,7 @@ sub MY::postamble {
   # The content of Makefile
   my $make_rule = '';
 
-  unless ($no_build_spvm_modules) {
+  unless ($meta) {
     require SPVM::Builder::Util::API;
     
     # Build native
@@ -167,10 +165,8 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
-  }
   
-  # Create precompile tests
-  unless ($no_precompile_tests) {
+    # Create precompile tests
     my @test_files;
     find(
       sub {

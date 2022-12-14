@@ -22,7 +22,7 @@ jobs:
       - name: Download cpanm
         run: perl -0777 -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(  Proto => qq(tcp),  PeerAddr => qq(cpanmin.us),  PeerPort => 80,) or die $!;print $socket join qq(\r\n),  qq(GET / HTTP/1.1),  qq(Connection:close),  qq(Host:cpanmin.us),  qq(\r\n);my $res = <$socket>;$res =~ s[^HTTP/1\.1 200 OK\r\n.*?\r\n\r\n][]s or die $res;open my $out, qq(>), qq(cpanm) or die $!;print $out $res'
       - name: cpanm installs dependent modules
-        run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--no-build-spvm-modules"
+        run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
       - run: perl Makefile.PL
       - run: make
       - run: make disttest
