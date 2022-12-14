@@ -1,4 +1,4 @@
-0.9665 2022-12-14
+0.9666 2022-12-15
   [Build Process Improvement]
     * Added --no-build-spvm-modules option to Makefile.PL.
     * Added --no-precompile-tests option to Makefile.PL.
