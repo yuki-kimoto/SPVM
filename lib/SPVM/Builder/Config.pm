@@ -640,7 +640,7 @@ sub remove_ext_from_config_file {
   
   my $config_file_without_ext = $config_file;
   
-  $config_file_without_ext =~ s/(\.[a-zA-Z0-9_]+)?\.config$//;
+  $config_file_without_ext =~ s/(\.[a-zA-Z0-9_-]+)?\.config$//;
   
   return $config_file_without_ext;
 }
