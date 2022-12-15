@@ -25,62 +25,6 @@ class Array {
     
     return $new_array;
   }
-  
-  precompile static method equals_byte : int ($array1 : byte[], $array2 : byte[]) {
-    
-    if ($array1 == undef && $array2 == undef) {
-      return 1;
-    }
-    elsif ($array1 != undef && $array2 == undef) {
-      return 0;
-    }
-    elsif ($array1 == undef && $array2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$array1 == @$array2) {
-      for (my $i = 0; $i < @$array1; $i++) {
-        if ($array1->[$i] != $array2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  
-  precompile static method equals_double : int ($array1 : double[], $array2 : double[]) {
-    if ($array1 == undef && $array2 == undef) {
-      return 1;
-    }
-    elsif ($array1 != undef && $array2 == undef) {
-      return 0;
-    }
-    elsif ($array1 == undef && $array2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$array1 == @$array2) {
-      for (my $i = 0; $i < @$array1; $i++) {
-        if ($array1->[$i] != $array2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
-  }
-
   native static method memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
   native static method memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
