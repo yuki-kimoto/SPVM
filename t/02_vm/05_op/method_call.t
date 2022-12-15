@@ -7,6 +7,8 @@ use Config;
 
 use Test::More;
 
+use SPVM::Builder::Util;
+
 use SPVM 'TestCase::Method';
 
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -225,7 +227,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Check precompile module file
   {
-    my $precompile_module_file = "$build_dir/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
+    my $precompile_module_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file("$build_dir/work/lib/SPVM/TestCase/Method.spvm", 'precompile');
     ok(-f $precompile_module_file);
   }
   

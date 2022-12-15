@@ -6,6 +6,8 @@ use warnings;
 
 use Test::More;
 
+use SPVM::Builder::Util;
+
 use SPVM 'TestCase::Callback';
 
 # Start objects count
@@ -22,7 +24,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Check the precompile source
 {
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    my $callback_precompile_source_file = "$ENV{SPVM_BUILD_DIR}/work/src/SPVM/TestCase/Callback.precompile.c";
+    my $callback_precompile_source_file = "$ENV{SPVM_BUILD_DIR}/work/src/" . SPVM::Builder::Util::convert_class_name_to_category_rel_file('TestCase::Callback', 'precompile', 'c');
     my $content = do { open my $fh, '<', $callback_precompile_source_file; local $/; <$fh>; };
     like($content, qr/TestCase__Callback__anon__\d+__\d+/);
   }

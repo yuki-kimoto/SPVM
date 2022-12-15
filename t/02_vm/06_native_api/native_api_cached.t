@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use Config;
 
+use SPVM::Builder::Util;
+
 use FindBin;
 
 use Test::More;
@@ -54,7 +56,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
+  $precompile_object_file = "$build_dir/work/object/" . SPVM::Builder::Util::convert_class_name_to_category_rel_file('TestCase::NativeAPI', 'precompile', 'o');
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
    ok(-f $precompile_object_file);
    $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
@@ -67,7 +69,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
+   $precompile_shared_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file("$build_dir/work/lib/SPVM/TestCase/NativeAPI.spvm", 'precompile');
    if ($ENV{SPVM_TEST_PRECOMPILE}) {
      ok(-f $precompile_shared_lib_file);
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
@@ -130,7 +132,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
+  $precompile_object_file = "$build_dir/work/object/" . SPVM::Builder::Util::convert_class_name_to_category_rel_file('TestCase::NativeAPI', 'precompile', 'o');
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
    ok(-f $precompile_object_file);
    $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
@@ -143,7 +145,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
+   $precompile_shared_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file("$build_dir/work/lib/SPVM/TestCase/NativeAPI.spvm", 'precompile');
    if ($ENV{SPVM_TEST_PRECOMPILE}) {
      ok(-f $precompile_shared_lib_file);
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
