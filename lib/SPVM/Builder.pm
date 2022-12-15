@@ -260,6 +260,7 @@ sub bind_methods {
 
     my $cfunc_address;
     if ($dynamic_lib_file) {
+      warn "DLL_FILE:$dynamic_lib_file";
       my $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
       
       if ($dynamic_lib_libref) {

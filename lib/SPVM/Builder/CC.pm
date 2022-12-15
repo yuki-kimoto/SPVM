@@ -761,10 +761,14 @@ sub link {
     
     warn "AAA $dll_module_name";
     warn "BBB $link_info_output_file";
+    use Data::Dumper;
+    warn "CCC @$merged_ldflags";
+    warn Dumper $link_info_object_files;
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
+      warn Dumper $dl_func_list;
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $dll_module_name,
