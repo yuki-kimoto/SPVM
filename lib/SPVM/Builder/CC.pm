@@ -745,6 +745,7 @@ sub link {
     
     my $link_info_ld = $link_info->ld;
     my $link_info_class_name = $link_info->class_name;
+    
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
     
@@ -758,9 +759,16 @@ sub link {
     
     my $dll_module_name = SPVM::Builder::Util::create_dll_module_name($link_info_class_name, $category);
     
+    warn "AAA $dll_module_name";
+    warn "BBB $link_info_output_file";
+    use Data::Dumper;
+    warn "CCC @$merged_ldflags";
+    warn Dumper $link_info_object_files;
+    
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
+      warn Dumper $dl_func_list;
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $dll_module_name,
@@ -1030,6 +1038,8 @@ sub create_precompile_source_file {
   my $output_dir = $options->{output_dir};
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, 'precompile', 'c');
   my $source_file = "$output_dir/$source_rel_file";
+  
+  warn "DDD $source_file";
   
   # Check if generating is needed
   my $module_file = $self->builder->get_module_file($class_name);
