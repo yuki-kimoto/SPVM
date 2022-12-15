@@ -175,35 +175,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
   }
-  
-  unless ($no_precompile_tests) {
-    # Create precompile tests
-    my @test_files;
-    find(
-      sub {
-        if (-f $File::Find::name) {
-          my $rel_path = $File::Find::name;
-          $rel_path =~ s|^\Q$FindBin::Bin/||;
-          
-          # Slip hidden files
-          return if $rel_path =~ /[\/\\]\./;
-
-          push @test_files, $rel_path;
-        }
-      },
-      "$FindBin::Bin/t/02_vm"
-    );
-    my $test_files_str = join(' ', @test_files);
-    
-    my $time_stamp_file = "$FindBin::Bin/t/03_precompile/time_stamp.txt";
-    
-    $make_rule .= "dynamic :: $time_stamp_file\n";
-    $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-
-    $make_rule .= "$time_stamp_file :: $test_files_str\n";
-    $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
-  }
-  
   return $make_rule;
 }
 
