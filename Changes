@@ -1,4 +1,6 @@
 0.9666 2022-12-15
+  [Prerequirement Changes]
+    * SPVM needs ExtUtils::CBuilder 0.280236+.
   [New Features]
     * The string in the config mode allow "-"
       Foo.my_mode-azAZ09.config
