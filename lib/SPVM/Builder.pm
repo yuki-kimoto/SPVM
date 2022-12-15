@@ -256,15 +256,14 @@ sub bind_methods {
     my $class_name = $method_info->{class_name};
     my $method_name = $method_info->{method_name};
 
-    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
-
     my $cfunc_address;
     if ($dynamic_lib_file) {
       warn "DLL_FILE:$dynamic_lib_file";
       my $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
       
       if ($dynamic_lib_libref) {
-
+        my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
+        
         $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
