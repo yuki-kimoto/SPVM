@@ -468,6 +468,7 @@ t/02_vm/00_minimal/000_000_use_spvm.t
 t/02_vm/00_minimal/000_001_use_spvm_noimport.t
 t/02_vm/00_minimal/000_002_use_spvm_call_exchange_api_only.t
 t/02_vm/00_minimal/000_003_use_spvm_noimport_call_exchange_api_only.t
+t/02_vm/00_minimal/001_001_use_native_class.t
 t/02_vm/00_minimal/001_use_empty_class.t
 t/02_vm/00_minimal/002_use_minimal_method_class.t
 t/02_vm/00_minimal/003_call_minimal_method.t
