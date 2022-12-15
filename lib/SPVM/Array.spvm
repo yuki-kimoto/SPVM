@@ -1,6 +1,5 @@
 class Array {
   use Stringer;
-  use Cloner;
   use Format;
   
   static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int) {
@@ -131,43 +130,6 @@ class Array {
     Array->memcpy_long($new_array, 0, $array, $offset, $length);
     
     return $new_array;
-  }
-  
-  precompile static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $length = -1 : int) {
-    
-    unless ($array) {
-      die "The \$array must be defined";
-    }
-    
-    unless ($offset >= 0) {
-      die "The \$offset must be greater than or equal to 0";
-    }
-    
-    my $array_length = @$array;
-    if ($length < 0) {
-      $length = $array_length - $offset;
-    }
-    
-    unless ($offset + $length <= $array_length) {
-      die "The \$offset + the \$length must be less than or equal to the length of the \$array";
-    }
-    
-    my $new_array = &new_proto($array, $length);
-    
-    if ($cloner) {
-      for (my $i = 0; $i < $length; $i++) {
-        $new_array->[$i] = $cloner->($array->[$offset + $i]);
-      }
-    }
-    else {
-      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
-    }
-    
-    return $new_array;
-  }
-  
-  static method copy_object_address : object[] ($array : object[], $offset = 0 : int, $length = -1 : int) {
-    return &copy_object($array, undef, $offset, $length);
   }
   
   static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int) {
