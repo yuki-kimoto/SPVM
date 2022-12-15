@@ -164,15 +164,9 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array2');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time::Info');
     
     # Build precompile
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
   }
   return $make_rule;
 }

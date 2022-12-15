@@ -103,7 +103,7 @@ class Fn {
   
   native static method get_code_point : int ($string : string, $offset_ref : int*);
   
-  precompile static method hex : int ($hex_string : string) {
+  static method hex : int ($hex_string : string) {
     
     unless ($hex_string) {
       die "The \$hex string must be defined";
@@ -141,7 +141,7 @@ class Fn {
     return $value;
   }
   
-  precompile static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
+  static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -191,7 +191,7 @@ class Fn {
     return -1;
   }
   
-  precompile static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 : int, $length = -1 : int) {
+  static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 : int, $length = -1 : int) {
     unless ($string) {
       die "The \$string must be defined";
     }
@@ -402,7 +402,7 @@ class Fn {
     }
   }
   
-  precompile static method join : string ($separator : string, $strings : string[]) {
+  static method join : string ($separator : string, $strings : string[]) {
     unless ($separator) {
       die "The \$separator must be defined";
     }
@@ -443,7 +443,7 @@ class Fn {
     return $labs;
   }
   
-  precompile static method lc : string ($string : string) {
+  static method lc : string ($string : string) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -502,7 +502,7 @@ class Fn {
     return $code_point;
   }
   
-  precompile static method powi : int ($base : int, $exponant : int) {
+  static method powi : int ($base : int, $exponant : int) {
     
     unless ($exponant >= 0) {
       die "The \$exponant number must be greater than or equal to 0";
@@ -522,7 +522,7 @@ class Fn {
     return $ret;
   }
   
-  precompile static method powl : long ($base : long, $exponant : long) {
+  static method powl : long ($base : long, $exponant : long) {
     unless ($exponant >= 0) {
       die "The \$exponant number must be greater than or equal to 0";
     }
@@ -549,7 +549,7 @@ class Fn {
     return $random_number;
   }
   
-  precompile static method repeat : string ($string : string, $count : int) {
+  static method repeat : string ($string : string, $count : int) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -568,7 +568,7 @@ class Fn {
     return $repeat_string;
   }
 
-  precompile static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int) {
+  static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -582,7 +582,7 @@ class Fn {
     }
   }
 
-  precompile static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
+  static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
     unless ($string) {
       die "The \$string must be defined";
     }
@@ -630,7 +630,7 @@ class Fn {
 
   native static method shorten : void ($string : mutable string, $length : int);
 
-  precompile static method shorten_null_char : void ($string : mutable string) {
+  static method shorten_null_char : void ($string : mutable string) {
     
     if (!$string) {
       die "The \$string must be defined";
@@ -650,7 +650,7 @@ class Fn {
     }
   }
   
-  precompile static method split : string[] ($separator : string, $string : string, $limit = -1 : int) {
+  static method split : string[] ($separator : string, $string : string, $limit = -1 : int) {
     unless ($separator) {
       die "The \$separator must be defined";
     }
@@ -778,7 +778,7 @@ class Fn {
     return $code_point;
   }
   
-  precompile static method trim : string ($string : string) {
+  static method trim : string ($string : string) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -829,7 +829,7 @@ class Fn {
     return $trimed_string;
   }
   
-  precompile static method uc : string ($string : string) {
+  static method uc : string ($string : string) {
     
     unless ($string) {
       die "The \$string must be defined";
