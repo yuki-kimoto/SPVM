@@ -165,6 +165,7 @@ sub MY::postamble {
     
     # Build precompile
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
   }
   return $make_rule;
 }
