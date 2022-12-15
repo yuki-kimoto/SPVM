@@ -170,7 +170,6 @@ sub MY::postamble {
     # Build precompile
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array2');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');

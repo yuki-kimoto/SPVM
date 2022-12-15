@@ -134,7 +134,7 @@ class Array2 {
     return $new_array;
   }
   
-  precompile static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $length = -1 : int) {
+  static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $length = -1 : int) {
     
     unless ($array) {
       die "The \$array must be defined";
@@ -197,7 +197,7 @@ class Array2 {
     return $new_array;
   }
   
-  precompile static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -249,7 +249,7 @@ class Array2 {
     return $new_array;
   }
   
-  precompile static method dump_unsigned_byte : string ($array : byte[]) {
+  static method dump_unsigned_byte : string ($array : byte[]) {
     
     unless ($array) {
       return "undef";
@@ -273,7 +273,7 @@ class Array2 {
     return $dump;
   }
   
-  precompile static method dump_unsigned_int : string ($array : int[]) {
+  static method dump_unsigned_int : string ($array : int[]) {
     
     unless ($array) {
       return "undef";
@@ -297,7 +297,7 @@ class Array2 {
     return $dump;
   }
   
-  precompile static method dump_unsigned_long : string ($array : long[]) {
+  static method dump_unsigned_long : string ($array : long[]) {
     
     unless ($array) {
       return "undef";
@@ -320,7 +320,7 @@ class Array2 {
     return $dump;
   }
   
-  precompile static method dump_unsigned_short : string ($array : short[]) {
+  static method dump_unsigned_short : string ($array : short[]) {
     
     unless ($array) {
       return "undef";
@@ -344,7 +344,7 @@ class Array2 {
     return $dump;
   }
   
-  precompile static method equals_byte : int ($array1 : byte[], $array2 : byte[]) {
+  static method equals_byte : int ($array1 : byte[], $array2 : byte[]) {
     
     if ($array1 == undef && $array2 == undef) {
       return 1;
@@ -372,7 +372,7 @@ class Array2 {
     return $is_equals;
   }
   
-  precompile static method equals_double : int ($array1 : double[], $array2 : double[]) {
+  static method equals_double : int ($array1 : double[], $array2 : double[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -399,7 +399,7 @@ class Array2 {
     return $is_equals;
   }
 
-  precompile static method equals_float : int ($array1 : float[], $array2 : float[]) {
+  static method equals_float : int ($array1 : float[], $array2 : float[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -426,7 +426,7 @@ class Array2 {
     return $is_equals;
   }
 
-  precompile static method equals_int : int ($array1 : int[], $array2 : int[]) {
+  static method equals_int : int ($array1 : int[], $array2 : int[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -452,7 +452,7 @@ class Array2 {
 
     return $is_equals;
   }
-  precompile static method equals_long : int ($array1 : long[], $array2 : long[]) {
+  static method equals_long : int ($array1 : long[], $array2 : long[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -479,7 +479,7 @@ class Array2 {
     return $is_equals;
   }
 
-  precompile static method equals_object : int ($array1 : object[], $array2 : object[], $equality_checker : EqualityChecker) {
+  static method equals_object : int ($array1 : object[], $array2 : object[], $equality_checker : EqualityChecker) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -520,7 +520,7 @@ class Array2 {
     return &equals_object($array1, $array2, undef);
   }
   
-  precompile static method equals_short : int ($array1 : short[], $array2 : short[]) {
+  static method equals_short : int ($array1 : short[], $array2 : short[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -547,7 +547,7 @@ class Array2 {
     return $is_equals;
   }
 
-  precompile static method equals_string : int ($array1 : string[], $array2 : string[]) {
+  static method equals_string : int ($array1 : string[], $array2 : string[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
     }
@@ -587,7 +587,7 @@ class Array2 {
   static method memcpy_string_address : void ($dest : string[], $dest_offset : int, $source : string[], $source_offset : int, $length : int) {
     &memcpy_object_address($dest, $dest_offset, $source, $source_offset, $length);
   }
-  precompile static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
+  static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
       die "The \$dest must be defined";
     }
@@ -679,7 +679,7 @@ class Array2 {
     }
   }
   
-  precompile static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -701,7 +701,7 @@ class Array2 {
       $array->[$offset + $i] = (byte)$element;
     }
   }
-  precompile static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int) {
+  static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -723,7 +723,7 @@ class Array2 {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int) {
+  static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -745,7 +745,7 @@ class Array2 {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -767,7 +767,7 @@ class Array2 {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int) {
+  static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -789,7 +789,7 @@ class Array2 {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int) {
+  static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
@@ -812,7 +812,7 @@ class Array2 {
     }
   }
   
-  precompile static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int) {
     unless ($array) {
       die "The \$array must be defined";
     }
