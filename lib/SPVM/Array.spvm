@@ -1,5 +1,4 @@
 class Array {
-  use Stringer;
   use Format;
   
   static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int) {
