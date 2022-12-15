@@ -1,7 +1,6 @@
 class Array {
   use Stringer;
   use Cloner;
-  use EqualityChecker;
   use Format;
   
   static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int) {
@@ -479,47 +478,6 @@ class Array {
     return $is_equals;
   }
 
-  precompile static method equals_object : int ($array1 : object[], $array2 : object[], $equality_checker : EqualityChecker) {
-    if ($array1 == undef && $array2 == undef) {
-      return 1;
-    }
-    elsif ($array1 != undef && $array2 == undef) {
-      return 0;
-    }
-    elsif ($array1 == undef && $array2 != undef) {
-      return 0;
-    }
-    
-    my $is_equals = 1;
-    if (@$array1 == @$array2) {
-      if ($equality_checker) {
-        for (my $i = 0; $i < @$array1; $i++) {
-          unless ($equality_checker->($array1->[$i], $array2->[$i])) {
-            $is_equals = 0;
-            last;
-          }
-        }
-      }
-      else {
-        for (my $i = 0; $i < @$array1; $i++) {
-          unless ($array1->[$i] == $array2->[$i]) {
-            $is_equals = 0;
-            last;
-          }
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-   
-    return $is_equals;
-  }
-  
-  static method equals_object_address : int ($array1 : object[], $array2 : object[]) {
-    return &equals_object($array1, $array2, undef);
-  }
-  
   precompile static method equals_short : int ($array1 : short[], $array2 : short[]) {
     if ($array1 == undef && $array2 == undef) {
       return 1;
@@ -574,10 +532,6 @@ class Array {
     return $is_equals;
   }
   
-  static method equals_string_address : int ($array1 : string[], $array2 : string[]) {
-    return &equals_object_address($array1, $array2);
-  }
-
   native static method memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
   native static method memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int);
   native static method memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int);
