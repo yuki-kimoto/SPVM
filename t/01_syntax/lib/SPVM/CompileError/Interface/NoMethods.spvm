@@ -1,3 +1,0 @@
-class CompileError::Interface::NoMethods : interface_t {
-
-}

@@ -1,3 +1,0 @@
-class CompileError::Use::ImportMethodNotFound {
-  use Byte(not_found);
-}

@@ -4,9 +4,9 @@ use TestAuto;
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 1;
 
-use SPVM 'Error::System';
+use SPVM 'Array';
 
 ok(1);
 

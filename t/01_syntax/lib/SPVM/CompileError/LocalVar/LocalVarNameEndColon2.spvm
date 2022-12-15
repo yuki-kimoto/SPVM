@@ -1,5 +1,0 @@
-class CompileError::LocalVar::LocalVarNameEndColon2 {
-  static method foo : void () {
-    my $FOO:: = 0;
-  }
-}

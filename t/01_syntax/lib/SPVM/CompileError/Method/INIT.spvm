@@ -1,5 +1,0 @@
-class CompileError::Method::INIT {
-  static method INIT : int () {
-    
-  }
-}

@@ -1,5 +1,0 @@
-class CompileError::TypeCantBeDetectedUndefDefault {
-  static method main : int () {
-    my $value;
-  }
-}

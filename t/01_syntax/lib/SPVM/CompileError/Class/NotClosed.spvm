@@ -1,4 +1,0 @@
-class CompileError::Class::NotClosed {
-  use Fn;
-  use Array;
-
