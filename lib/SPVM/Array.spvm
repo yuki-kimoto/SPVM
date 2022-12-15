@@ -1,5 +1,4 @@
 class Array {
-  use Format;
   
   static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int) {
     
@@ -207,101 +206,6 @@ class Array {
     Array->memcpy_string_address($new_array, 0, $array, $offset, $length);
     
     return $new_array;
-  }
-  
-  precompile static method dump_unsigned_byte : string ($array : byte[]) {
-    
-    unless ($array) {
-      return "undef";
-    }
-    
-    my $dump = "[\n";
-    
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", (int)$array->[$i] & 0xFF);
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
-    
-    return $dump;
-  }
-  
-  precompile static method dump_unsigned_int : string ($array : int[]) {
-    
-    unless ($array) {
-      return "undef";
-    }
-    
-    my $dump = "[\n";
-    
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", $array->[$i]);
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
-    
-    return $dump;
-  }
-  
-  precompile static method dump_unsigned_long : string ($array : long[]) {
-    
-    unless ($array) {
-      return "undef";
-    }
-    
-    my $dump = "[\n";
-    
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%lu", $array->[$i]);
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
-    return $dump;
-  }
-  
-  precompile static method dump_unsigned_short : string ($array : short[]) {
-    
-    unless ($array) {
-      return "undef";
-    }
-    
-    my $dump = "[\n";
-    
-    for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", (int)$array->[$i] & 0xFFFF);
-      $dump .= "  $string";
-      if ($i != @$array - 1) {
-        $dump .= ",\n";
-      }
-      else {
-        $dump .= "\n";
-      }
-    }
-    
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
-    
-    return $dump;
   }
   
   precompile static method equals_byte : int ($array1 : byte[], $array2 : byte[]) {
