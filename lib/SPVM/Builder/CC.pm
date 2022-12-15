@@ -725,16 +725,6 @@ sub link {
     
     my $cbuilder_config = {
       ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      
-      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
     };
 
     # Quiet output
