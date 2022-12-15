@@ -104,7 +104,7 @@ my $dev_null = File::Spec->devnull;
 
   # no_precompile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_no_precompile -c $test_dir/myexe.no_precompile.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_no_precompile -c $test_dir/myexe.no_precompile-azAZ09.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 

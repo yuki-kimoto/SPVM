@@ -120,7 +120,6 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.BAK$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.o$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bs$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^cpanm$'));
   
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
   ok(-f $basic_test_file);
@@ -524,6 +523,9 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
+
+  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
+  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
   
   chdir($save_cur_dir) or die;
 }
@@ -543,6 +545,52 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
+
+  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# --meta
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c --precompile Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  my $make = $Config{make};
+  my $ret = system("$^X Makefile.PL --meta");
+  ok($ret == 0);
+
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# --no-build-spvm-modules
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c --precompile Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  my $make = $Config{make};
+  my $ret = system("$^X Makefile.PL --no-build-spvm-modules");
+  ok($ret == 0);
+  
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
   
   chdir($save_cur_dir) or die;
 }

@@ -291,16 +291,16 @@ $version
 
 =head1 Name
 
-SPVM::$class_name - $class_name is a SPVM module
+SPVM::$class_name - foo
+
+=head1 Description
+
+C<SPVM::$class_name> is the L<SPVM>'s C<$class_name> class.
 
 =head1 Usage
 
   use $class_name;
   
-=head1 Description
-
-C<$class_name> is a L<SPVM> module.
-
 =head1 Fields
 
 
@@ -502,7 +502,6 @@ sub generate_manifest_skip_file {
 \.BAK$
 \.o$
 \.bs$
-^cpanm$
 EOS
 
   # Generate file
@@ -575,7 +574,16 @@ use ExtUtils::MakeMaker;
 use strict;
 use warnings;
 use Config;
-use SPVM::Builder::Util::API;
+use Getopt::Long 'GetOptions';
+
+GetOptions(
+  'meta' => \\my \$meta,
+  'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
+);
+
+if (\$meta) {
+  \$no_build_spvm_modules = 1;
+}
 
 WriteMakefile(
   NAME              => 'SPVM::$class_name',
@@ -601,8 +609,7 @@ WriteMakefile(
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
-    # SPVM::Builder::Util::API is needed for Makefile.PL
-    'SPVM'              => '$SPVM::VERSION',
+    'SPVM' => '$SPVM::VERSION',
   },
   PREREQ_PM => {
     
@@ -616,8 +623,12 @@ sub MY::postamble {
 
   my \$make_rule = '';
   
-  $make_rule_native
-  $make_rule_precompile
+  unless (\$no_build_spvm_modules) {
+    require SPVM::Builder::Util::API;
+    
+    $make_rule_native
+    $make_rule_precompile
+  }
   
   return \$make_rule;
 }
