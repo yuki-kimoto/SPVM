@@ -218,7 +218,11 @@ sub build_and_bind_dynamic_lib_at_runtime {
     
     # Try runtime compile if shared library is not found
     unless (-f $dynamic_lib_file) {
+      warn "Not Exists $dynamic_lib_file";
       $dynamic_lib_file = $cc->build_runtime($class_name, {category => $category});
+    }
+    else {
+      warn "Exists $dynamic_lib_file";
     }
     
     $self->bind_methods($cc, $dynamic_lib_file, $class_name, $category);
