@@ -195,7 +195,7 @@ sub create_dll_module_name {
   # Precompile Method names
   my $class_name_under_score = "${class_name}";
   $class_name_under_score =~ s/:/_/g;
-  my $windows_module_name = "$prefix$class_name";
+  my $windows_module_name = "$prefix$class_name_under_score";
   
   return $windows_module_name;
 }

@@ -159,6 +159,7 @@ sub MY::postamble {
     require SPVM::Builder::Util::API;
     
     # Build native
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time::Info');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array');
     
     # Build precompile
