@@ -6,12 +6,10 @@ use warnings;
 
 use Test::More tests => 1;
 
-use SPVM 'Fn';
-use SPVM 'Hash';
-use SPVM 'Format';
-use SPVM 'Time';
-use SPVM 'Time::Info';
-use SPVM 'Sort';
+use SPVM 'Array2';
+use SPVM 'Array';
+
+use SPVM 'Array2';
 use SPVM 'Array';
 
 ok(1);

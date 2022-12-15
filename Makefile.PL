@@ -161,6 +161,7 @@ sub MY::postamble {
     # Build native
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array2');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time');
@@ -169,6 +170,7 @@ sub MY::postamble {
     # Build precompile
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array2');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');

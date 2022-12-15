@@ -49,6 +49,9 @@ lib/SPVM/Array.c
 lib/SPVM/Array.config
 lib/SPVM/Array.pm
 lib/SPVM/Array.spvm
+lib/SPVM/Array2.c
+lib/SPVM/Array2.config
+lib/SPVM/Array2.spvm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Class.pm
