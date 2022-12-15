@@ -502,7 +502,6 @@ sub generate_manifest_skip_file {
 \.BAK$
 \.o$
 \.bs$
-^cpanm$
 EOS
 
   # Generate file

@@ -120,7 +120,6 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.BAK$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.o$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bs$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^cpanm$'));
   
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
   ok(-f $basic_test_file);
