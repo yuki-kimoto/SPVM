@@ -87,7 +87,7 @@ my $dev_null = File::Spec->devnull;
     like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-std=gnu99/);
     like($spvmcc_output, qr/NativeAPI2\.o/);
-    like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
+    like($spvmcc_output, qr/NativeAPI2__precompile\.o/);
     
     warn "$spvmcc_output";
 
