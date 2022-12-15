@@ -1,4 +1,6 @@
-0.9666 2022-12-15
+0.9666 2022-12-16
+  [Bug Fix]
+    * Fixed the bug that SPVM don't work on Windows Server 2020/2022.
   [Prerequirement Changes]
     * SPVM needs ExtUtils::CBuilder 0.280236+.
   [New Features]
