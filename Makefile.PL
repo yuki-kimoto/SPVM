@@ -161,9 +161,11 @@ sub MY::postamble {
     # Build native
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array2');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
+    
+    # Build precompile
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array');
   }
   return $make_rule;
 }
