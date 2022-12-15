@@ -233,7 +233,7 @@ sub convert_module_file_to_dynamic_lib_file {
   my $dlext = $Config{dlext};
   $module_file =~ s/\.[^.]+$//;
   my $dynamic_lib_category_file = $module_file;
-  $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : "_$category.$dlext";
   
   return $dynamic_lib_category_file;
 }
@@ -243,7 +243,7 @@ sub convert_class_name_to_dynamic_lib_rel_file {
   
   my $dlext = $Config{dlext};
   my $dynamic_lib_category_rel_file = convert_class_name_to_rel_file($class_name);
-  $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : "_$category.$dlext";
   
   return $dynamic_lib_category_rel_file;
 }
@@ -255,7 +255,7 @@ sub convert_class_name_to_category_rel_file {
   
   my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
-  $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
+  $rel_file_with_ext .= $category eq 'native' ? "" : "_$category";
   if (defined $ext) {
     $rel_file_with_ext .= ".$ext";
   }

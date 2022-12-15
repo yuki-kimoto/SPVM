@@ -1036,8 +1036,10 @@ sub create_precompile_source_file {
   
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
-  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, 'precompile', 'c');
   my $source_file = "$output_dir/$source_rel_file";
+  
+  warn "DDD $source_file";
   
   # Check if generating is needed
   my $module_file = $self->builder->get_module_file($class_name);
