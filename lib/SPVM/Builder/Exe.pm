@@ -827,7 +827,7 @@ sub create_bootstrap_source {
   my $target_perl_class_name = "SPVM::$class_name";
   my $bootstrap_base = $target_perl_class_name;
   $bootstrap_base =~ s|::|/|g;
-  my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
+  my $bootstrap_source_file = "$build_src_dir/${bootstrap_base}__boot.c";
   
   my $no_precompile = $config->no_precompile;
 
@@ -885,8 +885,8 @@ sub compile_bootstrap_source {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
-  my $source_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
+  my $object_file = $self->builder->create_build_object_path("${class_name_rel_file}__boot.o");
+  my $source_file = $self->builder->create_build_src_path("${class_name_rel_file}__boot.c");
   
   # Create directory for object file output
   mkdir dirname $object_file;

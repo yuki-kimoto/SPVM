@@ -119,7 +119,7 @@ my $dev_null = File::Spec->devnull;
     is($output, $output_expect);
     
     # No precompile source
-    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe.boot.c";
+    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe__boot.c";
     my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
@@ -141,7 +141,7 @@ my $dev_null = File::Spec->devnull;
     is($output, $output_expect);
     
     # No precompile source
-    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe.boot.c";
+    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe__boot.c";
     my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
