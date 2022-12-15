@@ -760,6 +760,7 @@ sub link {
     my $dll_module_name = SPVM::Builder::Util::create_dll_module_name($link_info_class_name, $category);
     
     warn "AAA $dll_module_name";
+    warn "BBB $link_info_output_file";
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
