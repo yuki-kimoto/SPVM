@@ -745,6 +745,7 @@ sub link {
     
     my $link_info_ld = $link_info->ld;
     my $link_info_class_name = $link_info->class_name;
+    
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
     
@@ -756,12 +757,14 @@ sub link {
     
     my $output_type = $config->output_type;
     
+    my $dll_module_name = SPVM::Builder::Util::create_dll_module_name($link_info_class_name, $category);
+    
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
-        module_name => $link_info_class_name,
+        module_name => $dll_module_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
         dl_func_list => $dl_func_list,
@@ -785,7 +788,7 @@ sub link {
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_files,
-        module_name => $link_info_class_name,
+        module_name => $dll_module_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
       );

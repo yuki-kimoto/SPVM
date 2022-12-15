@@ -181,6 +181,25 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
+sub create_dll_module_name {
+  my ($class_name, $category) = @_;
+  
+  my $prefix;
+  if ($category eq 'native') {
+    $prefix = 'SPVM__';
+  }
+  elsif ($category eq 'precompile') {
+    $prefix = 'SPVMPRECOMPILE__'
+  }
+  
+  # Precompile Method names
+  my $class_name_under_score = "${class_name}";
+  $class_name_under_score =~ s/:/_/g;
+  my $windows_module_name = "$prefix$class_name";
+  
+  return $windows_module_name;
+}
+
 sub unindent {
   my $str = shift;
   my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;
