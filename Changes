@@ -24,6 +24,18 @@
       +  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name);
       +  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
       +  int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
+  [Runtime Exception Message Improvement]
+    * Improved exception messages.
+      [After]
+      "The %s field is not found"
+      "The %s class method in the %s class is not found"
+      "The object must be defined"
+      "The type dimension of the object must be equal to 0"
+      "The %s instance method is not found in the %s class or its super class"
+      "The %s class is not loaded"
+      "The type dimension of the object must be equal to 0"
+      "The %s field is not found in the %s class or its super class"
+      "The %s class variable in the %s class is not found"   q
 
 0.9666 2022-12-16
   [Bug Fix]
