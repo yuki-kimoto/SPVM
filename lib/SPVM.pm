@@ -1,6 +1,6 @@
 package SPVM;
 
-our $VERSION = '0.9666';
+our $VERSION = '0.9667';
 
 use 5.008007;
 use strict;
