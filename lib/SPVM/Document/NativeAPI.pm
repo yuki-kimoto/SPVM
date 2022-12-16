@@ -247,7 +247,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
 
   void* class_vars_heap;
 
-the pointer to the storage area of the class variables. This is used internally.
+The pointer to the storage area of the class variables. This is used internally.
 
 =head2 object_header_size
 
@@ -259,31 +259,31 @@ The byte size of the object's header. This is used internally.
 
   void* object_weaken_backref_head_offset;
 
-Offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
+The offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
 
 =head2 object_ref_count_offset
 
   void* object_ref_count_offset;
 
-Reference count offset in the object structure. This is used internally.
+The reference count offset in the object structure. This is used internally.
 
 =head2 object_basic_type_id_offset
 
   void* object_basic_type_id_offset;
 
-Offset of basic type ID in object structure. This is used internally.
+The offset of basic type ID in object structure. This is used internally.
 
 =head2 object_type_dimension_offset
 
   void* object_type_dimension_offset;
 
-Offset of type dimension in object structure. This is used internally.
+The offset of type dimension in object structure. This is used internally.
 
 =head2 object_type_category_offset
 
   void* object_type_category_offset;
 
-Offset of runtime type category in object structure. This is used internally.
+The offset of runtime type category in object structure. This is used internally.
 
 This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
 
@@ -291,7 +291,7 @@ This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
 
   void* object_flag_offset;
 
-Offset of flag in object structure. This is used internally.
+The offset of flag in object structure. This is used internally.
 
 =head2 object_length_offset
 
@@ -332,25 +332,25 @@ The memory allocator for this environment.
 
   SPVM_ENV* (*new_env_raw)();
 
-Create a new raw envriment.
+Creates a new raw envriment.
 
 =head2 free_env_raw
 
   void (*free_env_raw)(SPVM_ENV* env);
 
-Free the raw environemt that is created by L</"new_env_raw">.
+Frees the raw environemt that is created by L</"new_env_raw">.
 
 =head2 isa
 
   int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
 
-Perform C<isa> operation.
+Performs C<isa> operation.
 
 =head2 elem_isa
 
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
 
-Check the runtime type assignability of an array element.
+Checks the runtime type assignability of an array element.
 
 =head2 runtime
 
@@ -386,7 +386,7 @@ Reserved.
 
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-Get the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
+Gets the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
 
 B<Examples:>
 
@@ -412,7 +412,7 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
   int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name);
 
-Get the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
+Gets the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
 B<Examples:>
 
@@ -422,7 +422,7 @@ B<Examples:>
 
   int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
 
-Get a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
+Gets a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
 
 This ID is used by L<"call_class_method">.
 
@@ -434,7 +434,7 @@ B<Examples:>
 
   int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
 
-Get a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
+Gets a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
 
 This ID is used by L<"call_instance_method">.
 
@@ -446,13 +446,13 @@ B<Examples:>
 
   void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Create a new object with a basic type ID. The basic type ID must be the correct base type ID return by C<get_basic_type_id> function.
+Creates a new object with a basic type ID. The basic type ID must be the correct base type ID return by C<get_basic_type_id> function.
 
 =head2 new_object
 
   void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Do the same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
+The same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
 
 B<Examples:>
 
@@ -463,13 +463,13 @@ B<Examples:>
 
   void* (*new_byte_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new byte[] type array by specifying the length.
+Creates a new byte[] type array by specifying the length.
 
 =head2 new_byte_array
 
   void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_byte_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_raw>.
+The same as C<new_byte_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_raw>.
 
 B<Examples:>
 
@@ -479,13 +479,13 @@ B<Examples:>
 
   void* (*new_short_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new short[] type array by specifying the length.
+Creates a new short[] type array by specifying the length.
 
 =head2 new_short_array
 
   void* (*new_short_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_short_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_raw>.
+The same as C<new_short_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_raw>.
 
 B<Examples:>
 
@@ -495,13 +495,13 @@ B<Examples:>
 
   void* (*new_int_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new int[] type array by specifying the length.
+Creates a new int[] type array by specifying the length.
 
 =head2 new_int_array
 
   void* (*new_int_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_int_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_raw>.
+The same as C<new_int_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_raw>.
 
 B<Examples:>
 
@@ -511,13 +511,13 @@ B<Examples:>
 
   void* (*new_long_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new long[] type array by specifying the length.
+Creates a new long[] type array by specifying the length.
 
 =head2 new_long_array
 
   void* (*new_long_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_long_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_raw>.
+The same as C<new_long_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_raw>.
 
 B<Examples:>
 
@@ -527,13 +527,13 @@ B<Examples:>
 
   void* (*new_float_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new float[] type array by specifying the length.
+Creates a new float[] type array by specifying the length.
 
 =head2 new_float_array
 
   void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_float_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_raw>.
+The same as C<new_float_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_raw>.
 
 B<Examples:>
 
@@ -543,13 +543,13 @@ B<Examples:>
 
   void* (*new_double_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new double[] type array by specifying the length.
+Creates a new double[] type array by specifying the length.
 
 =head2 new_double_array
 
   void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Do the same as C<new_double_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_raw>.
+The same as C<new_double_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_raw>.
 
 B<Examples:>
 
@@ -559,13 +559,13 @@ B<Examples:>
 
   void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Create a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+Creates a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
 =head2 new_object_array
 
   void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Do the same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
+The same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
 
 B<Examples:>
 
@@ -576,13 +576,13 @@ B<Examples:>
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
-Create a new multi dimension array by specifying the basic type ID, the type dimension of the element, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
+Creates a new multi dimension array by specifying the basic type ID, the type dimension of the element, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
-Do the same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
+The same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
 
 B<Examples:>
 
@@ -594,13 +594,13 @@ B<Examples:>
 
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Create a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<basic_type_id> function.
+Creates a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<basic_type_id> function.
 
 =head2 new_mulnum_array
 
   void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Do the same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
+The same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
 
 B<Examples:>
 
@@ -611,13 +611,13 @@ B<Examples:>
 
   void* (*new_string_nolen_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
 
-Create a new string object by specifying C language char* type value. this value must end with "\0".
+Creates a new string object by specifying C language char* type value. this value must end with "\0".
 
 =head2 new_string_nolen
 
   void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
 
-Do the same as C<new_string_nolen_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_raw>.
+The same as C<new_string_nolen_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_raw>.
 
 B<Examples:>
 
@@ -627,7 +627,7 @@ B<Examples:>
 
   void* (*new_string_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 
-Create a new string object with the bytes and the length.
+Creates a new string object with the bytes and the length.
 
 If the length of bytes is lower than the specified length or the bytes is NULL, The part that longer than the length of bytes will be filled with C<\0>. 
 
@@ -635,7 +635,7 @@ If the length of bytes is lower than the specified length or the bytes is NULL, 
 
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 
-Same as C<new_string_raw>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_raw>.
+The same as C<new_string_raw>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_raw>.
 
 B<Examples:>
 
@@ -645,13 +645,13 @@ B<Examples:>
 
   void* (*new_pointer_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
 
-Create a pointer type object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+Creates a pointer type object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
 =head2 new_pointer
 
   void* (*new_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
 
-Do the same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
+The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
 
 B<Examples:>
 
@@ -663,25 +663,25 @@ B<Examples:>
 
   void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
 
-Concat two strings.
+Concats two strings.
 
 =head2 concat
 
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
 
-Do the same as C<concat_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_raw>.
+The same as C<concat_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_raw>.
 
 =head2 new_stack_trace_raw
 
   void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
 
-Create a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
+Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace
 
   void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
 
-Same as L</"new_stack_trace_raw">, and push the created object to the mortal stack.
+The same as L</"new_stack_trace_raw">, and push the created object to the mortal stack.
 
 =head2 length
 
@@ -930,7 +930,7 @@ B<Examples:>
 
   void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, void* value);
 
-Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+The object and field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 B<Examples:>
 
@@ -1092,7 +1092,7 @@ B<Examples:>
 
   void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, void* value);
 
-Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+The object and field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 B<Examples:>
 
@@ -1105,7 +1105,7 @@ B<Examples:>
 
   void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);
 
-Specify a pointer type object and return the C language pointer stored inside the object.
+Specifies a pointer type object and return the C language pointer stored inside the object.
 
 B<Examples:>
 
@@ -1129,19 +1129,19 @@ The return value of the method is set to args[0].
 
   void* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Get a exception message which type is byte[].
+Gets a exception message which type is byte[].
 
 =head2 set_exception
 
   void (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception);
 
-Set a exception message which type is byte[].
+Sets a exception message which type is byte[].
 
 =head2 get_ref_count
 
   int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Get the refernce count of the object.
+Gets the refernce count of the object.
 
 =head2 inc_ref_count
 
@@ -1163,7 +1163,7 @@ Use this method only if you have a specific reason to use it. Normally, the refe
 
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Create a new scope and return the scope ID.
+Creates a new scope and return the scope ID.
 
 =head2 push_mortal
 
@@ -1179,7 +1179,7 @@ If this method don't alloc memory for new mortal information, return 1.
 
   void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);
 
-Specify a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
+Specifies a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
 
 =head2 remove_mortal
 
@@ -1217,7 +1217,7 @@ Gets the dimension of the type of object.
 
   int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
 
-Create weak reference to the object which is specified by object address.
+Creates weak reference to the object which is specified by object address.
 
 The reference count of the object is decrimented by 1 and weaken flag is added to the object address.
 
@@ -1249,7 +1249,7 @@ Specifying the address of the object releases the weak reference to the object.
 
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
 
-Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
+Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the environment is incremented by C<1>.
 
@@ -1257,7 +1257,7 @@ The count of the memory block that is managed by the environment is incremented 
 
   void (*free_memory_block)(SPVM_ENV* env, void* block);
 
-Free the memory block that is managed by the environment.
+Frees the memory block that is managed by the environment.
 
 The count of the memory block that is managed by the environment is decremented by C<1>.
 
@@ -1265,7 +1265,7 @@ The count of the memory block that is managed by the environment is decremented 
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 
-Return the count of the memory blocks on the environment.
+Returns the count of the memory blocks on the environment.
 
 =head2 get_type_name_raw
 
@@ -1285,7 +1285,7 @@ If you specify an object, a new byte[] type object that stores the type name is 
 
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
 
-Create a new environment that is ready to call methods.
+Creates a new environment that is ready to call methods.
 
 1. Create a new environment using the L<"new_env_raw"> native API.
 
@@ -1303,7 +1303,7 @@ Note that L</"call_init_blocks"> need to be called before calling user methods b
 
   void (*free_env)(SPVM_ENV* env);
 
-Free an environment that is created by the L<"new_env"> native API.
+Frees an environment that is created by the L<"new_env"> native API.
 
 =head2 memory_blocks_count
 
@@ -1315,7 +1315,7 @@ Unused from v0.9508+. The count of memory blocks is managed in L<"runtime">.
 
   const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);
 
-Get characters pointer in the string object.
+Gets characters pointer in the string object.
 
 B<Examples:>
 
@@ -1325,11 +1325,11 @@ B<Examples:>
 
   int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
 
-Create a C<sprintf> formatted message with file name and line number and set it to the exception.
+Creates a C<sprintf> formatted message with file name and line number and set it to the exception.
 
 Last two arguments are file name and line number.
 
-Return value is always 1;
+Returns value is always 1;
 
 B<Examples:>
 
@@ -1848,19 +1848,19 @@ B<Examples:>
   
   void (*free_env_prepared)(SPVM_ENV* env);
 
-Free the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
+Frees the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
 
 =head2 dump_raw
 
   void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Get the string which dump the object. The string is the same as the return value of C<dump> operator.
+Gets the string which dump the object. The string is the same as the return value of C<dump> operator.
 
 =head2 dump
 
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Do the same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
+The same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
 
 =head2 call_class_method
 
@@ -1874,7 +1874,7 @@ Alias for L<"call_spvm_method">
 
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name);
 
-Get a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
+Gets a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
 
 This ID is used by L<"call_instance_method">.
 
@@ -1886,7 +1886,7 @@ B<Examples:>
 
   int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);
 
-Get the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return 1, otherwise return 0.
+Gets the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return 1, otherwise return 0.
 
 B<Examples:>
 
@@ -1946,13 +1946,13 @@ If the object is C<NULL>, returns C<0>.
 
   int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
 
-Get the byte size of the element of the array.
+Gets the byte size of the element of the array.
 
 =head2 new_array_proto
 
   void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
 
-Create a new array that have the type of the given array and the given length.
+Creates a new array that have the type of the given array and the given length.
 
 The given array must be the object that is an array type.
 
@@ -2004,7 +2004,7 @@ Check the type of the object has the interface.
 
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
 
-Print the characters of the string to stdout.
+Prints the characters of the string to stdout.
 
 If the string is C<NULL>, nothing is printed.
 
@@ -2012,7 +2012,7 @@ If the string is C<NULL>, nothing is printed.
 
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
 
-Print the characters of the string to stderr.
+Prints the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
 
@@ -2044,7 +2044,7 @@ Call C<INIT> blocks.
 
   void* (*new_memory_env)(SPVM_ENV* env, size_t size);
 
-Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
+Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the environment is incremented by C<1>.
 
@@ -2054,7 +2054,7 @@ This is the same as L</"alloc_memory_block_zero">. This is more understandable n
 
   void (*free_memory_env)(SPVM_ENV* env, void* block);
 
-Free the memory block that is managed by the environment.
+Frees the memory block that is managed by the environment.
 
 The count of the memory block that is managed by the environment is decremented by C<1>.
 
@@ -2064,7 +2064,7 @@ This is the same as L</"free_memory_block">. This is more understandable name th
 
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
 
-Return the count of the memory blocks on the environment.
+Returns the count of the memory blocks on the environment.
 
 This is the same as L</"get_memory_blocks_count">. This is more understandable name that memories are managed by the environment.
 
@@ -2072,7 +2072,7 @@ This is the same as L</"get_memory_blocks_count">. This is more understandable n
 
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 
-Create a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
+Creates a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the stack is incremented by C<1>.
 
@@ -2082,7 +2082,7 @@ The count of the memory block that is managed by the environment is incremented 
 
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 
-Free the memory block that is managed by the environment.
+Frees the memory block that is managed by the environment.
 
 The count of the memory block that is managed by the stack is decremented by C<1>.
 
@@ -2092,13 +2092,13 @@ The count of the memory block that is managed by the environment is decremented 
 
   int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Return the count of the memory blocks on the stack.
+Returns the count of the memory blocks on the stack.
 
 =head2 set_command_info_program_name
 
   int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
 
-Set the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
+Sets the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
 
 If it succeed, return C<0>.
 
@@ -2108,7 +2108,7 @@ The program name must be a C<string> object. Otherwise return non-zero value.
 
   int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
 
-Set the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
+Sets the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
 
 If it succeed, return C<0>.
 
@@ -2126,7 +2126,7 @@ If the class is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
 
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
-Get the value of C<strerror> of C<C language> on thread-safely.
+Gets the value of C<strerror> of C<C language> on thread-safely.
 
 If the length is C<0>, the length is set to C<64>.
 
@@ -2134,7 +2134,7 @@ If the length is C<0>, the length is set to C<64>.
 
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Create a new string array. This is alias for the following code using L</"new_object_array">.
+Creates a new string array. This is alias for the following code using L</"new_object_array">.
 
   void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
@@ -2142,13 +2142,13 @@ Create a new string array. This is alias for the following code using L</"new_ob
 
   int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Get the stack length of the arguments specified by the caller.
+Gets the stack length of the arguments specified by the caller.
 
 =head2 set_args_stack_length
 
   void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 
-Set the stack length of the arguments for a method call.
+Sets the stack length of the arguments for a method call.
 
 =head2 dumpc
 
@@ -2162,13 +2162,13 @@ The alias for the following code using L</"dump">.
 
   void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
   
-Create a pointer type object by specifying a basic type ID and a C language pointer with the length of the pointer fields. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+Creates a pointer type object by specifying a basic type ID and a C language pointer with the length of the pointer fields. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
 =head2 new_pointer_with_fields
 
   void* (*new_pointer_with_fields)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
 
-Do the same as L</"new_pointer_with_fields_raw">, and push the created object to the mortal stack using L</"push_mortal"> function.
+The same as L</"new_pointer_with_fields_raw">, and push the created object to the mortal stack using L</"push_mortal"> function.
 
 =head2 new_pointer_with_fields_by_name
 
@@ -2196,97 +2196,97 @@ If the object is C<NULL>, returns C<0>.
 
   int32_t (*get_pointer_fields_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Get the length of the pointer fields.
+Gets the length of the pointer fields.
 
 =head2 get_pointer_field_byte
 
   int8_t (*get_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<byte> value of a pointer field with the field index.
+Gets the C<byte> value of a pointer field with the field index.
 
 =head2 get_pointer_field_short
 
   int16_t (*get_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<short> value of a pointer field with the field index.
+Gets the C<short> value of a pointer field with the field index.
 
 =head2 get_pointer_field_int
 
   int32_t (*get_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<int> value of a pointer field with the field index.
+Gets the C<int> value of a pointer field with the field index.
 
 =head2 get_pointer_field_long
 
   int64_t (*get_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<long> value of a pointer field with the field index.
+Gets the C<long> value of a pointer field with the field index.
 
 =head2 get_pointer_field_float
 
   float (*get_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<float> value of a pointer field with the field index.
+Gets the C<float> value of a pointer field with the field index.
 
 =head2 get_pointer_field_double
 
   double (*get_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the C<double> value of a pointer field with the field index.
+Gets the C<double> value of a pointer field with the field index.
 
 =head2 get_pointer_field_pointer
 
   void* (*get_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
 
-Get the pointer value of a pointer field with the field index.
+Gets the pointer value of a pointer field with the field index.
 
 =head2 set_pointer_field_byte
 
   void (*set_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int8_t value);
 
-Set the C<byte> value of a pointer field with the field index.
+Sets the C<byte> value of a pointer field with the field index.
 
 =head2 set_pointer_field_short
 
   void (*set_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int16_t value);
 
-Set the C<short> value of a pointer field with the field index.
+Sets the C<short> value of a pointer field with the field index.
 
 =head2 set_pointer_field_int
 
   void (*set_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int32_t value);
 
-Set the C<int> value of a pointer field with the field index.
+Sets the C<int> value of a pointer field with the field index.
 
 =head2 set_pointer_field_long
 
   void (*set_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int64_t value);
 
-Set the C<long> value of a pointer field with the field index.
+Sets the C<long> value of a pointer field with the field index.
 
 =head2 set_pointer_field_float
 
   void (*set_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, float value);
 
-Set the C<float> value of a pointer field with the field index.
+Sets the C<float> value of a pointer field with the field index.
 
 =head2 set_pointer_field_double
 
   void (*set_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, double value);
 
-Set the C<double> value of a pointer field with the field index.
+Sets the C<double> value of a pointer field with the field index.
 
 =head2 set_pointer_field_pointer
 
   void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
 
-Set the pointer value of a pointer field with the field index.
+Sets the pointer value of a pointer field with the field index.
 
 =head2 get_pointer_no_need_free
 
   void (*get_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-Sets the the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
+Sets s the the flag that indicates that the pointer set by L</"set_pointer"> doesn't need to be freed.
 
 =head2 set_pointer_no_need_free
 
@@ -2304,13 +2304,13 @@ Gets the length of the array set by L</"set_pointer">. The default value is C<0>
 
   void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
 
-Sets the length of the array set by L</"set_pointer">. It is useful when the data is the pointer to an array.
+Sets s the length of the array set by L</"set_pointer">. It is useful when the data is the pointer to an array.
 
 =head2 strerror_string
 
   void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
-Same as the L</"strerror"> function, but return a C<string> object.
+The same as the L</"strerror"> function, but return a C<string> object.
 
 =head2 get_basic_type_id_by_name
 
@@ -2544,7 +2544,7 @@ The class id of L<Error::NotSupported|SPVM::Error::NotSupported> class.
 
   void spvm_warn(const char* format, ...)
 
-Print the formatted message to C<stderr> with a new line.
+Prints the formatted message to C<stderr> with a new line.
 
 B<Examples:>
 
