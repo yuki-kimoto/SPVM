@@ -305,7 +305,7 @@ The length offset in the object structure. This is used internally.
 
 The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>.
 
-B<Examples:>
+Examples:
   
   // Compiler native APIs
   void* compiler_api = env->api->compiler;
@@ -388,7 +388,7 @@ Reserved.
 
 Gets the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
 
-B<Examples:>
+Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
@@ -398,7 +398,7 @@ B<Examples:>
 
 Gets the ID of the field given an object and field name. If the field does not exist, a value less than 0 is returned.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
 
@@ -414,7 +414,7 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
 Gets the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
 
@@ -426,7 +426,7 @@ Gets a class method ID by the class name, the method name. If the class method d
 
 This ID is used by L<"call_class_method">.
 
-B<Examples:>
+Examples:
 
   int32_t method_id = env->get_class_method_id(env, "Foo", "get");
 
@@ -438,7 +438,7 @@ Gets a instance method ID by the object, the method name. If the instance method
 
 This ID is used by L<"call_instance_method">.
 
-B<Examples:>
+Examples:
 
   int32_t method_id = env->get_instance_method_id(env, object, "get");
 
@@ -454,7 +454,7 @@ Creates a new object with a basic type ID. The basic type ID must be the correct
 
 The same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
 
-B<Examples:>
+Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object = env->new_object(env, stack, basic_type_id);
@@ -471,7 +471,7 @@ Creates a new byte[] type array by specifying the length.
 
 The same as C<new_byte_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* byte_array = env->new_byte_array(env, stack, 100);
 
@@ -487,7 +487,7 @@ Creates a new short[] type array by specifying the length.
 
 The same as C<new_short_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* short_array = env->new_short_array(env, stack, 100);
 
@@ -503,7 +503,7 @@ Creates a new int[] type array by specifying the length.
 
 The same as C<new_int_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* int_array = env->new_int_array(env, stack, 100);
 
@@ -519,7 +519,7 @@ Creates a new long[] type array by specifying the length.
 
 The same as C<new_long_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* long_array = env->new_long_array(env, stack, 100);
 
@@ -535,7 +535,7 @@ Creates a new float[] type array by specifying the length.
 
 The same as C<new_float_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* float_array = env->new_float_array(env, stack, 100);
 
@@ -551,7 +551,7 @@ Creates a new double[] type array by specifying the length.
 
 The same as C<new_double_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_raw>.
 
-B<Examples:>
+Examples:
 
   void* double_array = env->new_double_array(env, stack, 100);
 
@@ -567,7 +567,7 @@ Creates a new object type array by specifying the basic type ID and the array le
 
 The same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
 
-B<Examples:>
+Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object_array = env->new_object_array(env, stack, basic_type_id, 100);
@@ -584,7 +584,7 @@ Creates a new multi dimension array by specifying the basic type ID, the type di
 
 The same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
 
-B<Examples:>
+Examples:
 
   // new Int[][][100]
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
@@ -602,7 +602,7 @@ Creates a new multi-numeric array by specifying the basic type ID and the array 
 
 The same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
 
-B<Examples:>
+Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Complex_2d");
   void* value_array = env->new_mulnum_array(env, stack, basic_type_id, 100);
@@ -619,7 +619,7 @@ Creates a new string object by specifying C language char* type value. this valu
 
 The same as C<new_string_nolen_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_raw>.
 
-B<Examples:>
+Examples:
 
   void* str_obj = env->new_string_nolen(env, stack, "Hello World");
 
@@ -637,7 +637,7 @@ If the length of bytes is lower than the specified length or the bytes is NULL, 
 
 The same as C<new_string_raw>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_raw>.
 
-B<Examples:>
+Examples:
 
   void* str_obj = env->new_string(env, stack, "Hello \0World", 11);
 
@@ -653,7 +653,7 @@ Creates a pointer type object by specifying a basic type ID and a C language poi
 
 The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
 
-B<Examples:>
+Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "MyTime");
   void* pointer = malloc(sizeof (struct tm));
@@ -689,7 +689,7 @@ The same as L</"new_stack_trace_raw">, and push the created object to the mortal
 
 If you specify an array, the length of the array is returned.
 
-B<Examples:>
+Examples:
 
   int32_t length = env->length(env, stack, array);
 
@@ -699,7 +699,7 @@ B<Examples:>
 
 If you specify a byte[] type array, the pointer at the beginning of the internally stored C language int8_t[] type array is returned.  
 
-B<Examples:>
+Examples:
 
   int8_t* values = env->get_elems_byte(env, stack, array);
   values[3] = 5;
@@ -710,7 +710,7 @@ B<Examples:>
 
 If a short[] type array is specified, the pointer at the beginning of the internally stored C language int16_t[] type array is returned.
 
-B<Examples:>
+Examples:
 
   int16_t* values = env->get_elems_short(env, stack, array);
   values[3] = 5;
@@ -721,7 +721,7 @@ B<Examples:>
 
 When an int[] type array is specified, the pointer at the beginning of the internally stored C language int32_t[] type array is returned.
 
-B<Examples:>
+Examples:
 
   int32_t* values = env->get_elems_int(env, stack, array);
   values[3] = 5;
@@ -732,7 +732,7 @@ B<Examples:>
 
 When a long[] type array is specified, the pointer at the beginning of the internally stored C language int64_t[] type array is returned.
 
-B<Examples:>
+Examples:
 
   int64_t* values = env->get_elems_long(env, stack, array);
   values[3] = 5;
@@ -743,7 +743,7 @@ B<Examples:>
 
 When a float[] type array is specified, the pointer at the beginning of the C language float[] type array internally held is returned.
 
-B<Examples:>
+Examples:
 
   float* values = env->get_elems_float(env, stack, array);
   values[3] = 1.5f;
@@ -754,7 +754,7 @@ B<Examples:>
 
 If a double[] type array is specified, the pointer at the beginning of the internally stored C double[] type array is returned.
 
-B<Examples:>
+Examples:
 
   double* values = env->get_elems_double(env, stack, array);
   values[3] = 1.5;
@@ -765,7 +765,7 @@ B<Examples:>
 
 Gets an object of an element given an array of object types and a methodscript. If the element is a weak reference, the weak reference is removed.
 
-B<Examples:>
+Examples:
 
   void* object = env->get_elem_object(env, stack, array, 3);
 
@@ -775,7 +775,7 @@ B<Examples:>
 
 If you specify an array of object type and methodscript and element objects, the element object is assigned to the corresponding methodscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
 
-B<Examples:>
+Examples:
 
   env->get_elem_object(env, stack, array, 3, object);
 
@@ -785,7 +785,7 @@ B<Examples:>
 
 If an object and field ID are specified, the byte field value will be returned as a C language int8_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int8_t field_value = env->get_field_byte(env, stack, object, field_id);
@@ -796,7 +796,7 @@ B<Examples:>
 
 If you specify the object and field ID, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int16_t field_value = env->get_field_short(env, stack, object, field_id);
@@ -807,7 +807,7 @@ B<Examples:>
 
 If an object and a field ID are specified, the value of the int type field will be returned as a C language int32_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int32_t field_value = env->get_field_int(env, stack, object, field_id);
@@ -818,7 +818,7 @@ B<Examples:>
 
 If you specify the object and field ID, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int64_t field_value = env->get_field_long(env, stack, object, field_id);
@@ -829,7 +829,7 @@ B<Examples:>
 
 If you specify the object and field ID, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   float field_value = env->get_field_float(env, stack, object, field_id);
@@ -840,7 +840,7 @@ B<Examples:>
 
 If you specify the object and field ID, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   double field_value = env->get_field_double(env, stack, object, field_id);
@@ -860,7 +860,7 @@ If you specify the object and field ID, the value of the object type field is re
 
 If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int8_t field_value = 5;
@@ -872,7 +872,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int16_t field_value = 5;
@@ -884,7 +884,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int32_t field_value = 5;
@@ -896,7 +896,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int64_t field_value = 5;
@@ -908,7 +908,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   float field_value = 1.5f;
@@ -920,7 +920,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   double field_value = 1.55;
@@ -932,7 +932,7 @@ B<Examples:>
 
 The object and field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id(env, object, "x");
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
@@ -945,7 +945,7 @@ B<Examples:>
 
 If an object and a class variable ID are specified, the value of the byte type class variable is returned as a C language int8_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int8_t class_var_value = env->get_class_var_byte(env, stack, object, class_var_id);
@@ -956,7 +956,7 @@ B<Examples:>
 
 If an object and a class variable ID are specified, the value of the short type class variable will be returned as a C language int16_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int16_t class_var_value = env->get_class_var_short(env, stack, object, class_var_id);
@@ -967,7 +967,7 @@ B<Examples:>
 
 If an object and a class variable ID are specified, the value of the int type class variable will be returned as a C language int32_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int32_t class_var_value = env->get_class_var_int(env, stack, object, class_var_id);
@@ -978,7 +978,7 @@ B<Examples:>
 
 If an object and a class variable ID are specified, the value of the long type class variable will be returned as a C language int64_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int64_t class_var_value = env->get_class_var_long(env, stack, object, class_var_id);
@@ -989,7 +989,7 @@ B<Examples:>
 
 If an object and a class variable ID are specified, the value of the float type class variable will be returned as a C language float type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   float class_var_value = env->get_class_var_float(env, stack, object, class_var_id);
@@ -1000,7 +1000,7 @@ B<Examples:>
 
 If you specify an object and a class variable ID, the value of the double type class variable is returned as a C type double type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   double class_var_value = env->get_class_var_double(env, stack, object, class_var_id);
@@ -1011,7 +1011,7 @@ B<Examples:>
 
 When an object and a class variable ID are specified, the value of the object type class variable is returned as a C language void* type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   void* class_var_value = env->get_class_var_byte(env, stack, object, class_var_id);
@@ -1022,7 +1022,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int8_t class_var_value = 5;
@@ -1034,7 +1034,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int16_t class_var_value = 5;
@@ -1046,7 +1046,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int32_t class_var_value = 5;
@@ -1058,7 +1058,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int64_t class_var_value = 5;
@@ -1070,7 +1070,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   float class_var_value = 5;
@@ -1082,7 +1082,7 @@ B<Examples:>
 
 If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   double class_var_value = 5;
@@ -1094,7 +1094,7 @@ B<Examples:>
 
 The object and field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
-B<Examples:>
+Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
@@ -1107,7 +1107,7 @@ B<Examples:>
 
 Specifies a pointer type object and return the C language pointer stored inside the object.
 
-B<Examples:>
+Examples:
 
   strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
@@ -1317,7 +1317,7 @@ Unused from v0.9508+. The count of memory blocks is managed in L<"runtime">.
 
 Gets characters pointer in the string object.
 
-B<Examples:>
+Examples:
 
   const char* bytes = env->get_chars(env, stack, string_object);
 
@@ -1331,7 +1331,7 @@ Last two arguments are file name and line number.
 
 Returns value is always 1;
 
-B<Examples:>
+Examples:
 
   return env->die(env, stack, "Value must be %d", 3, __FILE__, __LINE__);
 
@@ -1343,7 +1343,7 @@ This is same as C<new_object> function, but you can specify class name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &e, __FILE__, __LINE__);
@@ -1371,7 +1371,7 @@ This is same as C<set_field_byte> function, but you can specify field name direc
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &e, __FILE__, __LINE__);
@@ -1387,7 +1387,7 @@ This is same as C<set_field_short> function, but you can specify field name dire
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_short_by_name(env, stack, object, "short_value", 13, &e, __FILE__, __LINE__);
@@ -1403,7 +1403,7 @@ This is same as C<set_field_int> function, but you can specify field name direct
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_int_by_name(env, stack, object, "int_value", 13, &e, __FILE__, __LINE__);
@@ -1419,7 +1419,7 @@ This is same as C<set_field_long> function, but you can specify field name direc
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_long_by_name(env, stack, object, "long_value", 13, &e, __FILE__, __LINE__);
@@ -1435,7 +1435,7 @@ This is same as C<set_field_float> function, but you can specify field name dire
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_float_by_name(env, stack, object, "float_value", 13, &e, __FILE__, __LINE__);
@@ -1451,7 +1451,7 @@ This is same as C<set_field_double> function, but you can specify field name dir
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_double_by_name(env, stack, object, "double_value", 13, &e, __FILE__, __LINE__);
@@ -1467,7 +1467,7 @@ This is same as C<set_field_object> function, but you can specify field name dir
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &e, __FILE__, __LINE__);
@@ -1483,7 +1483,7 @@ This is same as C<get_field_byte> function, but you can specify field name direc
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &e, __FILE__, __LINE__);
@@ -1499,7 +1499,7 @@ This is same as C<get_field_short> function, but you can specify field name dire
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &e, __FILE__, __LINE__);
@@ -1515,7 +1515,7 @@ This is same as C<get_field_int> function, but you can specify field name direct
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &e, __FILE__, __LINE__);
@@ -1531,7 +1531,7 @@ This is same as C<get_field_long> function, but you can specify field name direc
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &e, __FILE__, __LINE__);
@@ -1547,7 +1547,7 @@ This is same as C<get_field_float> function, but you can specify field name dire
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &e, __FILE__, __LINE__);
@@ -1563,7 +1563,7 @@ This is same as C<get_field_double> function, but you can specify field name dir
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &e, __FILE__, __LINE__);
@@ -1579,7 +1579,7 @@ This is same as C<get_field_object> function, but you can specify field name dir
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
@@ -1595,7 +1595,7 @@ This is same as C<set_class_var_byte> function, but you can specify the class na
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1611,7 +1611,7 @@ This is same as C<set_class_var_short> function, but you can specify the class n
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1627,7 +1627,7 @@ This is same as C<set_class_var_int> function, but you can specify the class nam
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1643,7 +1643,7 @@ This is same as C<set_class_var_long> function, but you can specify the class na
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1659,7 +1659,7 @@ This is same as C<set_class_var_float> function, but you can specify the class n
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1675,7 +1675,7 @@ This is same as C<set_class_var_double> function, but you can specify the class 
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
@@ -1691,7 +1691,7 @@ This is same as C<set_class_var_object> function, but you can specify the class 
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
@@ -1707,7 +1707,7 @@ This is same as C<get_class_var_byte> function, but you can specify the class na
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
@@ -1723,7 +1723,7 @@ This is same as C<get_class_var_short> function, but you can specify the class n
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
@@ -1739,7 +1739,7 @@ This is same as C<get_class_var_int> function, but you can specify the class nam
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
@@ -1755,7 +1755,7 @@ This is same as C<get_class_var_long> function, but you can specify the class na
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
@@ -1771,7 +1771,7 @@ This is same as C<get_class_var_float> function, but you can specify the class n
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
@@ -1787,7 +1787,7 @@ This is same as C<get_class_var_double> function, but you can specify the class 
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
 
   int32_t e;
   double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
@@ -1803,7 +1803,7 @@ This is same as C<get_class_var_object> function, but you can specify the class 
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
-B<Examples:>
+Examples:
   
   int32_t e;
   void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &e, __FILE__, __LINE__);
@@ -1817,7 +1817,7 @@ B<Examples:>
 
 This is same as C<call_spvm_method> function, but you can specify the class name and method name directly.
 
-B<Examples:>
+Examples:
 
   int32_t output;
   {
@@ -1842,7 +1842,7 @@ B<Examples:>
     void* object, const char* field_name,
     int32_t* error, const char* file, int32_t line);
 
-B<Examples:>
+Examples:
 
 =head2 free_env_prepared
   
@@ -1878,7 +1878,7 @@ Gets a instance method ID by the class name, the method name. If the instance me
 
 This ID is used by L<"call_instance_method">.
 
-B<Examples:>
+Examples:
 
   int32_t method_id = env->get_instance_method_id_static(env, "Foo", "get");
 
@@ -1888,7 +1888,7 @@ B<Examples:>
 
 Gets the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return 1, otherwise return 0.
 
-B<Examples:>
+Examples:
 
   int32_t bool_value = env->get_bool_object_value(env, stack, bool_object);
 
@@ -2326,7 +2326,7 @@ If the basic_type is not loaded, The C<error> is set to C<1>. Otherwise set to C
 
 Gets the ID of the field given an class name and field name. If the field does not exist, a value less than 0 is returned.
 
-B<Examples:>
+Examples:
 
   int32_t field_id = env->get_field_id_static(env, stack, "Point", "x");
 
@@ -2546,7 +2546,7 @@ The class id of L<Error::NotSupported|SPVM::Error::NotSupported> class.
 
 Prints the formatted message to C<stderr> with a new line.
 
-B<Examples:>
+Examples:
 
   spvm_warn("Hello");
   spvm_warn("Hello %s%d", "Foo", 3);
