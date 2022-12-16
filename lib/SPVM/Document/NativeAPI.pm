@@ -241,6 +241,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   224 set_pointer_field_pointer
   225 strerror_string
   226 get_basic_type_id_by_name
+  227 get_field_id_static
 
 =head2 class_vars_heap
 
@@ -2318,6 +2319,16 @@ Same as the L</"strerror"> function, but return a C<string> object.
 Gets the basic_type id by the basic_type name.
 
 If the basic_type is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
+
+=head2 get_field_id_static
+
+  int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
+
+Gets the ID of the field given an class name and field name. If the field does not exist, a value less than 0 is returned.
+
+B<Examples:>
+
+  int32_t field_id = env->get_field_id_static(env, stack, "Point", "x");
 
 =head1 Compiler Native API
 

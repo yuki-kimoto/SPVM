@@ -1,4 +1,9 @@
 0.9667 2022-12-16
+  [New Features]
+    * Added the following native API.
+    
+      int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
+    
   [Incompatible Changes]
     * Renamed the following runtime native APIs
       -  void* object_header_byte_size;
