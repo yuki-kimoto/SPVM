@@ -1289,8 +1289,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC);
                             }
                           }
-                          opcode.operand1 = call_method->method->id;
-                          opcode.operand2 = call_method->args_length << 16;
+                          opcode.operand0 = call_method->method->id;
+                          opcode.operand1 = call_method->args_length;
                           
                           SPVM_OPCODE opcode_return = {0};
                           {
@@ -1386,12 +1386,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-
-                          opcode.operand0 = mem_id_out;
-                          int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
-                          int32_t operand3 = call_method_return_type_stack_length;
-                          assert(operand3 < 0xFFFF);
-                          opcode.operand3 = operand3;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
