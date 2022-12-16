@@ -572,18 +572,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
   
-  // Class name
-  const char* class_name = "$class_name";
-  
-  // Class
-  int32_t method_id = env->get_class_method_id(env, class_name, "main");
-  
-  if (method_id < 0) {
-    fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
-    return -1;
-  }
-  
-  
   SPVM_VALUE* stack = env->new_stack(env);
   
   // Enter scope
@@ -613,6 +601,17 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     assert(e == 0);
     e = env->set_command_info_argv(env, stack, obj_argv);
     assert(e == 0);
+  }
+
+  // Class name
+  const char* class_name = "$class_name";
+  
+  // Class
+  int32_t method_id = env->get_class_method_id(env, stack, class_name, "main");
+  
+  if (method_id < 0) {
+    fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
+    return -1;
   }
   
   // Run

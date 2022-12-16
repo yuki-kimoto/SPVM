@@ -15,21 +15,6 @@ enum {
 };
 
 /*
-  Runtime information APIs
-*/
-
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name);
-int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name);
-int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name);
-int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name);
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* field_name);
-int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name);
-int32_t SPVM_API_object_header_size(SPVM_ENV* env);
-
-/*
   Environment APIs
 */
 
@@ -50,11 +35,21 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
   These APIs need stack argument
 */
 
+// Runtime information
+
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name);
+int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
+int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
+int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name);
+int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name);
+int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name);
+int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id);
+int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
+
 // Manipulate memory
 void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack);
-
 
 // Call INIT blocks
 void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);

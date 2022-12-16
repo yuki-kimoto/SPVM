@@ -4866,16 +4866,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         // Call method
         if (is_class_method_call) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, class_name, method_name);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
         }
         else {
           if (is_static_instance_method_call) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, class_name, method_name);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
           }
           // Interface
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, object, method_name);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
           }
         }
         

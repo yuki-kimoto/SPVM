@@ -704,7 +704,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
 const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
 
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -722,7 +722,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, int32_t args_stack_length, const char* file, int32_t line) {
   
-  int32_t method_id = env->get_class_method_id(env, class_name, method_name);
+  int32_t method_id = env->get_class_method_id(env, stack, class_name, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The class method %s->%s is not defined", class_name, method_name, file, line);
     return 1;
@@ -744,7 +744,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
     return 1;
   };
 
-  int32_t method_id = env->get_instance_method_id(env, object, method_name);
+  int32_t method_id = env->get_instance_method_id(env, stack, object, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The instance method INVOCANT<%p>->%s is not defined", object, method_name, file, line);
     return 1;
@@ -763,7 +763,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_basic_type_id(env, class_name);
+  int32_t id = env->get_basic_type_id(env, stack, class_name);
   if (id < 0) {
     env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
     *error = 1;
@@ -778,7 +778,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 SPVM_OBJECT* SPVM_API_new_pointer_with_fields_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t fields_length, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_basic_type_id(env, class_name);
+  int32_t id = env->get_basic_type_id(env, stack, class_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
@@ -791,7 +791,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_by_name(SPVM_ENV* env, SPVM_VALUE*
 SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_basic_type_id(env, class_name);
+  int32_t id = env->get_basic_type_id(env, stack, class_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
@@ -804,7 +804,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
 void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int8_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -816,7 +816,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
 void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int16_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -828,7 +828,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -840,7 +840,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
 void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int64_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -852,7 +852,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
 void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, float value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -864,7 +864,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, double value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -876,7 +876,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, SPVM_OBJECT* value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -888,7 +888,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -901,7 +901,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -914,7 +914,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -927,7 +927,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -940,7 +940,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -953,7 +953,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -966,7 +966,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_field_id(env, object, field_name);
+  int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The field %s is not defined", field_name, file, line);
@@ -979,7 +979,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int8_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -991,7 +991,7 @@ void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
 void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int16_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1003,7 +1003,7 @@ void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
 void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1015,7 +1015,7 @@ void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
 void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int64_t value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1027,7 +1027,7 @@ void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
 void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, float value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1039,7 +1039,7 @@ void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
 void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, double value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1051,7 +1051,7 @@ void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, SPVM_OBJECT* value, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1063,7 +1063,7 @@ void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1076,7 +1076,7 @@ int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1089,7 +1089,7 @@ int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
 int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1102,7 +1102,7 @@ int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1115,7 +1115,7 @@ int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, co
 float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1128,7 +1128,7 @@ float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -1141,7 +1141,7 @@ double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
 SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_class_var_id(env, class_name, class_var_name);
+  int32_t id = env->get_class_var_id(env, stack, class_name, class_var_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The class variable %s in %s is not defined", class_var_name, class_name, file, line);
@@ -2890,7 +2890,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   }
 }
 
-int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
+int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name) {
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;
@@ -2909,7 +2909,7 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   }
 }
 
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, const char* class_name) {
+int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name) {
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;
@@ -2934,7 +2934,7 @@ int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   return object->ref_count;
 }
 
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
+int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id) {
   (void)env;
   
   // Runtime
@@ -2946,7 +2946,7 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   return field->offset;
 }
 
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* field_name) {
+int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
   (void)env;
   
   // Method ID
@@ -2995,7 +2995,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* fi
   return field_id;
 }
 
-int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name) {
+int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3024,7 +3024,7 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const c
   return class_var->id;
 }
 
-int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name) {
+int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3055,7 +3055,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
   return method_id;
 }
 
-int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name) {
+int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3086,7 +3086,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_
 }
 
 
-int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name) {
+int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
   (void)env;
   
   // Method ID
@@ -3764,7 +3764,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
 int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t class_id = env->get_class_id(env, class_name);
+  int32_t class_id = env->get_class_id(env, stack, class_name);
   if (class_id < 0) {
     *error = 1;
     env->die(env, stack, "The \"%s\" class is not loaded", class_name, file, line);
@@ -3775,7 +3775,7 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
 int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     *error = 1;
     env->die(env, stack, "The basic_type \"%s\" is not loaded", basic_type_name, file, line);

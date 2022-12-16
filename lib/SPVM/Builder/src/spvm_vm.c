@@ -2144,7 +2144,7 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
           void* object = stack[0].oval;
           const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method->name_id, NULL);
           
-          call_method_id = env->get_instance_method_id(env, object, method_name);
+          call_method_id = env->get_instance_method_id(env, stack, object, method_name);
           if (call_method_id < 0) {
             memset(tmp_buffer, sizeof(tmp_buffer), 0);
             SPVM_RUNTIME_CLASS* decl_method_class = SPVM_API_RUNTIME_get_class(runtime, decl_method->class_id);

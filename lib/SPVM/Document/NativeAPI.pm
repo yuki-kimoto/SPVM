@@ -383,7 +383,7 @@ Reserved.
 
 =head2 get_basic_type_id
 
-  int32_t (*get_basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
+  int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
 Get the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
 
@@ -393,7 +393,7 @@ B<Examples:>
 
 =head2 get_field_id
 
-  int32_t (*get_field_id)(SPVM_ENV* env, void* object, const char* field_name);
+  int32_t (*get_field_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 
 Gets the ID of the field given an object and field name. If the field does not exist, a value less than 0 is returned.
 
@@ -403,13 +403,13 @@ B<Examples:>
 
 =head2 get_field_offset
 
-  int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
+  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id);
 
 Gets the offset of the field given the field ID. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_class_var_id
 
-  int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name);
+  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name);
 
 Get the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
@@ -419,7 +419,7 @@ B<Examples:>
 
 =head2 get_class_method_id
 
-  int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name);
+  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
 
 Get a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
 
@@ -431,7 +431,7 @@ B<Examples:>
 
 =head2 get_instance_method_id
 
-  int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name);
+  int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
 
 Get a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
 
