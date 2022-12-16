@@ -1290,7 +1290,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                           }
                           opcode.operand1 = call_method->method->id;
-                          opcode.operand2 = (call_method->args_length << 16) + (call_method->is_static_instance_method_call << 8) + call_method->is_class_method_call;
+                          opcode.operand2 = call_method->args_length << 16;
                           
                           SPVM_OPCODE opcode_return = {0};
                           {

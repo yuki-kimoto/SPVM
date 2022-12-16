@@ -4683,12 +4683,8 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC:
       {
-        int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
-        int32_t is_class_method_call = opcode->operand2 & 0xF;
-        int32_t is_static_instance_method_call = (opcode->operand2 >> 8) & 0xF;
         int32_t call_method_args_stack_length = opcode->operand2 >> 16;
-        int32_t is_interface = !is_class_method_call && !is_static_instance_method_call;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, decl_method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -4714,15 +4710,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
         
-        // Call method
-        if (is_class_method_call) {
+        // Call a class method
+        if (opcode_id == SPVM_OPCODE_C_ID_CALL_CLASS_METHOD) {
           SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
         }
         else {
-          if (is_static_instance_method_call) {
+          // Call an instance method statically
+          if (opcode_id == SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC) {
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
           }
-          // Interface
+          // Call an instance method dinamically
           else {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "  call_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
