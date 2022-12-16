@@ -96,7 +96,7 @@ The passed length to L</"new_len"> is the length of the array. If the array is C
 
 The element's addresses of the string array are copied to the values of the the created array.
 
-B<Examples:>
+Examples:
 
   my $list = StringList->new;
   my $list = StringList->new(["abc", "def", "ghi"]);

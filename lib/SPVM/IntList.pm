@@ -96,7 +96,7 @@ The passed length to L</"new_len"> is the length of the array. If the array is C
 
 The elements of the array are copied to the values of the the created array.
 
-B<Examples:>
+Examples:
 
   my $list = IntList->new;
   my $list = IntList->new([(int)1, 2, 3]);

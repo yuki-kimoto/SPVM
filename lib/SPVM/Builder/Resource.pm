@@ -125,7 +125,7 @@ Get and set the config of the resource. The config is a L<SPVM::Builder::Config>
   
 Create a L<SPVM::Builder::Resource> object.
 
-B<Examples:>
+Examples:
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib::V1_0_0',

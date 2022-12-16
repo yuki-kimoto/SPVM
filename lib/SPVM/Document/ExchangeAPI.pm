@@ -1159,7 +1159,7 @@ The second argument is a Perl array of hash references. Each hash reference must
 
 Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-B<Examples:>
+Examples:
 
   # new_mulnum_array - byte
   {
@@ -1235,7 +1235,7 @@ The first argument is a multi-numeric array type of SPVM.
 
 The second argument is the Perl packed binary data. The length of the created array is calcurated automatically.
 
-B<Examples:>
+Examples:
   
   # new_mulnum_array_from_bin - byte
   {

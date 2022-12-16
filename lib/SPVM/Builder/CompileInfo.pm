@@ -266,7 +266,7 @@ Create a new C<SPVM::Builder::CompileInfo> object.
 
 Get the merged ccflags as an array reference.
 
-B<Examples:>
+Examples:
 
   [qw(-O2 -Iinclude_dir)]
 
@@ -276,7 +276,7 @@ B<Examples:>
 
 Get the compile command as an array reference.
 
-B<Examples:>
+Examples:
 
   [qw(cc -c -o foo.o -O2 -Iinclude_dir foo.c)]
 
@@ -286,6 +286,6 @@ B<Examples:>
 
 Get the string representaion of the L<compile command|/"create_compile_command">.
 
-B<Examples:>
+Examples:
 
   cc -c -O2 -Iinclude_dir -o foo.o foo.c 

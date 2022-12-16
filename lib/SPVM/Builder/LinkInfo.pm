@@ -322,7 +322,7 @@ Create a new C<SPVM::Builder::LinkInfo> object.
 
 Create the merged ldflags as an array reference.
 
-B<Examples:>
+Examples:
 
   [qw(-shared -O2 -Llibdir -lz)]
 
@@ -332,7 +332,7 @@ B<Examples:>
 
 Create the link command as an array reference.
 
-B<Examples:>
+Examples:
 
   [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
 
@@ -342,6 +342,6 @@ B<Examples:>
 
 Get the string representation of the L<link command|/"create_link_command">.
 
-B<Examples:>
+Examples:
 
   cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz

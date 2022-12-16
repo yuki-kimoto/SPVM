@@ -124,7 +124,7 @@ Exceptions:
 
 The C<$length> must be greater than or equal to C<0>.
 
-B<Examples:>
+Examples:
 
   # Create a Int list with length
   my $list = List->new_len(new Int[0], 3);

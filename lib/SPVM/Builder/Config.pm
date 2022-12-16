@@ -789,7 +789,7 @@ Get and set the extension of the SPVM native source.
 
 The default is C<undef>.
 
-B<Examples:>
+Examples:
   
   # Foo/Bar.c
   $config->ext('c');
@@ -804,7 +804,7 @@ B<Examples:>
 
 Get and set a compiler name. The default is the value of C<cc> of L<Config> module.
 
-B<Examples:>
+Examples:
   
   # gcc
   $config->cc('gcc');
@@ -886,7 +886,7 @@ Get and set the option for optimization of the compiler.
 
 The default is C<-O3>.
 
-B<Examples:>
+Examples:
 
   $config->optimize('-O3');
   $config->optimize('-O2');
@@ -899,7 +899,7 @@ B<Examples:>
 
 Get and get source files. The file name is the relative pass from L</"own_src_dir">.
 
-B<Examples:>
+Examples:
 
   $config->source_files(['foo.c', 'bar.c']);
 
@@ -983,7 +983,7 @@ C<undef> means forcing is not determined by config.
 
 Get and set the callback that is executed before the compile. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::CompileInfo> object used by the compileer.
 
-B<Examples:>
+Examples:
 
   $config->before_compile(sub {
     my ($config, $compile_info) = @_;
@@ -1000,7 +1000,7 @@ B<Examples:>
 
 Get and set the callback that is executed before the link. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
 
-B<Examples:>
+Examples:
 
   $config->before_link(sub {
     my ($config, $link_info) = @_;
@@ -1167,7 +1167,7 @@ Add the values after the last element of C<source_files> field.
 
 Add library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
 
-B<Examples:>
+Examples:
 
   $config->add_libs('gsl');
   $config->add_libs('gsl', 'z');
@@ -1184,7 +1184,7 @@ Add library names or L<SPVM::Builder::LibInfo> objects after the last element of
 
 C<static> field is set to a true value.
 
-B<Examples:>
+Examples:
 
   $config->add_static_libs('gsl');
   $config->add_static_libs('gsl', 'z');

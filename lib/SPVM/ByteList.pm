@@ -96,7 +96,7 @@ The passed length to L</"new_len"> is the length of the C<$array>. If the array 
 
 The elements of the C<$array> are copied to the values of the the created array.
 
-B<Examples:>
+Examples:
 
   my $list = ByteList->new;
   my $list = ByteList->new([(byte)1, 2, 3]);

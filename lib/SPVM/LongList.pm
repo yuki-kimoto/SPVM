@@ -96,7 +96,7 @@ The passed length to L</"new_len"> is the length of the array. If the array is C
 
 The elements of the array are copied to the values of the the created array.
 
-B<Examples:>
+Examples:
 
   my $list = LongList->new;
   my $list = LongList->new([(long)1, 2, 3]);

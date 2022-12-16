@@ -96,7 +96,7 @@ The passed length to L</"new_len"> is the length of the array. If the array is C
 
 The elements of the array are copied to the values of the the created array.
 
-B<Examples:>
+Examples:
 
   my $list = FloatList->new;
   my $list = FloatList->new([(float)1, 2, 3]);
