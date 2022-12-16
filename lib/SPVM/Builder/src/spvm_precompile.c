@@ -1999,18 +1999,26 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t field_id = opcode->operand2;
         
+        int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
-        
+
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, class_name, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");

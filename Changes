@@ -3,7 +3,8 @@
     * Added the following native API.
     
       int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
-    
+  [Changes]
+    * Getting and setting field in precompiled modules use env->get_field_id_static instead of env->get_field_id.
   [Incompatible Changes]
     * Renamed the following runtime native APIs
       -  void* object_header_byte_size;
