@@ -103,20 +103,6 @@ static inline int32_t SPVM_IMPLEMENT_GET_CLASS_ID_RET(SPVM_ENV* env, SPVM_VALUE*
   return class_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, char* message, int32_t* error) {
-
-  int32_t field_id = env->get_field_id(env, stack, object, field_name);
-
-  if (field_id < 0) {
-    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
-    void* exception = env->new_string_nolen_raw(env, stack, message);
-    env->set_exception(env, stack, exception);
-    *error = 1;
-  }
-  
-  return field_id;
-}
-
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name, char* message, int32_t* error) {
 
   int32_t field_id = env->get_field_id_static(env, stack, class_name, field_name);
