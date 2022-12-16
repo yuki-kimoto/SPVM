@@ -3613,6 +3613,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand1;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -3624,7 +3627,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, class_name, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_id, &error, object_header_size);\n"
@@ -3635,6 +3638,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand1;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -3646,7 +3652,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, class_name, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_id, &error, object_header_size);\n"
@@ -3657,6 +3663,9 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         int32_t field_id = opcode->operand2;
         
         int32_t field_class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, field_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
 
@@ -3668,7 +3677,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID(env, stack, object, field_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, class_name, field_name, message, &error);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_id, &error, object_header_size);\n"
