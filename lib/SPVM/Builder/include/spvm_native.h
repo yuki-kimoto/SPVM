@@ -98,7 +98,7 @@ union spvm_value {
 
 struct spvm_env {
   void* class_vars_heap;
-  void* object_header_byte_size;
+  void* object_header_size;
   void* object_weaken_backref_head_offset;
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
@@ -209,7 +209,7 @@ struct spvm_env {
   int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, SPVM_VALUE* stack, void** object);
   void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
-  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t byte_size);
+  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
   void (*free_memory_block)(SPVM_ENV* env, void* block);
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
   void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -266,7 +266,7 @@ struct spvm_env {
   int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_numeric_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  int32_t (*get_elem_byte_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   void* (*new_array_proto_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
   void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
   void* (*copy_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -284,10 +284,10 @@ struct spvm_env {
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* reserved186;
-  void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
+  void* (*new_memory_env)(SPVM_ENV* env, size_t size);
   void (*free_memory_env)(SPVM_ENV* env, void* block);
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
-  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_size);
+  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
   int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
@@ -400,7 +400,7 @@ struct spvm_env_runtime {
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
   void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
   void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
-  void* object_header_byte_size;
+  void* object_header_size;
   void* object_weaken_backref_head_offset;
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;

@@ -859,7 +859,7 @@ static inline void SPVM_IMPLEMENT_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_MAKE_READ_ONLY(env, stack, in) (env->make_read_only(env, stack, in))
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   int8_t element = 0;
   
@@ -873,12 +873,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
       *error = 1;
     }
     else { 
-      *out = ((int8_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int8_t*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   int16_t element = 0;
   
@@ -892,12 +892,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VA
       *error = 1;
     }
     else { 
-      *out = ((int16_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int16_t*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   int32_t element = 0;
   
@@ -911,12 +911,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
       *error = 1;
     }
     else { 
-      *out = ((int32_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int32_t*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   int64_t element = 0;
   
@@ -930,12 +930,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VAL
       *error = 1;
     }
     else { 
-      *out = ((int64_t*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((int64_t*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   float element = 0;
   
@@ -949,12 +949,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VA
       *error = 1;
     }
     else { 
-      *out = ((float*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((float*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   double element = 0;
   
@@ -968,12 +968,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
       *error = 1;
     }
     else { 
-      *out = ((double*)((intptr_t)array + object_header_byte_size))[index];
+      *out = ((double*)((intptr_t)array + object_header_size))[index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   
   void* element = NULL;
   
@@ -987,12 +987,12 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
       *error = 1;
     }
     else { 
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, ((void**)((intptr_t)array + object_header_byte_size))[index]);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, ((void**)((intptr_t)array + object_header_size))[index]);
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int8_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int8_t in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1005,7 +1005,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
       *error = 1;
     }
     else {
-      ((int8_t*)((intptr_t)array + object_header_byte_size))[index] = in;
+      ((int8_t*)((intptr_t)array + object_header_size))[index] = in;
     }
   }
 }
@@ -1100,7 +1100,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1113,13 +1113,13 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
       *error = 1;
     }
     else {
-      void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
+      void** element_address = &((void**)((intptr_t)array + object_header_size))[index];
       SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, element_address, in);
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1132,7 +1132,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
       *error = 1;
     }
     else {
-      void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
+      void** element_address = &((void**)((intptr_t)array + object_header_size))[index];
       void* object = in;
       int32_t elem_isa = env->elem_isa(env, stack, array, object);
       if (elem_isa) {
@@ -1147,7 +1147,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1160,7 +1160,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VA
       *error = 1;
     }
     else {
-      void* object_address = &((void**)((intptr_t)array + object_header_byte_size))[index];
+      void* object_address = &((void**)((intptr_t)array + object_header_size))[index];
       SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, NULL);
     }
   }
@@ -1177,7 +1177,7 @@ static inline void SPVM_IMPLEMENT_ARRAY_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack,
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1186,7 +1186,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error = 1;
   }
   else {
-    *out = *(int8_t*)((intptr_t)object + object_header_byte_size + field_offset);
+    *out = *(int8_t*)((intptr_t)object + object_header_size + field_offset);
   }
 }
 
@@ -1259,7 +1259,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1268,12 +1268,12 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error = 1;
   }
   else {
-    void* get_field_object = *(void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void* get_field_object = *(void**)((intptr_t)object + object_header_size + field_offset);
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, get_field_object);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int8_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int8_t in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1282,11 +1282,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error = 1;
   }
   else {
-    *(int8_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(int8_t*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int16_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int16_t in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1295,11 +1295,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
     *error = 1;
   }
   else {
-    *(int16_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(int16_t*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1308,11 +1308,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
     *error = 1;
   }
   else {
-    *(int32_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(int32_t*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int64_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int64_t in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1321,11 +1321,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
     *error = 1;
   }
   else {
-    *(int64_t*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(int64_t*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, float in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, float in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1334,11 +1334,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
     *error = 1;
   }
   else {
-    *(float*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(float*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, double in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, double in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1347,11 +1347,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
     *error = 1;
   }
   else {
-    *(double*)((intptr_t)object + object_header_byte_size + field_offset) = in;
+    *(double*)((intptr_t)object + object_header_size + field_offset) = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, void* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, void* in, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1360,12 +1360,12 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error = 1;
   }
   else {
-    void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void* get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, in);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   
   if (__builtin_expect(object == NULL, 0)) {
@@ -1374,7 +1374,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
     *error = 1;
   }
   else {
-    void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void* get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
   }
 }
@@ -1597,7 +1597,7 @@ static inline void SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1612,13 +1612,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int8_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((int8_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1633,13 +1633,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int16_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((int16_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1654,13 +1654,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int32_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((int32_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1675,13 +1675,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int64_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((int64_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1696,13 +1696,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((float*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((float*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double* array, int32_t index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1717,13 +1717,13 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((double*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+        *(out + field_index) = ((double*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* array, int32_t index, int32_t fields_length, int8_t* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* array, int32_t index, int32_t fields_length, int8_t* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1738,13 +1738,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int8_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((int8_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* array, int32_t index, int32_t fields_length, int16_t* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* array, int32_t index, int32_t fields_length, int16_t* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1759,13 +1759,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int16_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((int16_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* array, int32_t index, int32_t fields_length, int32_t* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* array, int32_t index, int32_t fields_length, int32_t* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1780,13 +1780,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int32_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((int32_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* array, int32_t index, int32_t fields_length, int64_t* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* array, int32_t index, int32_t fields_length, int64_t* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1801,13 +1801,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int64_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((int64_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* array, int32_t index, int32_t fields_length, float* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* array, int32_t index, int32_t fields_length, float* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1822,13 +1822,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((float*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((float*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* array, int32_t index, int32_t fields_length, double* in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* array, int32_t index, int32_t fields_length, double* in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1843,13 +1843,13 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((double*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = *(in + field_index);
+        ((double*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1862,12 +1862,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
       *error = 1;
     }
     else {
-      *out = ((int8_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((int8_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1880,12 +1880,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
       *error = 1;
     }
     else {
-      *out = ((int16_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((int16_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1898,12 +1898,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
       *error = 1;
     }
     else {
-      *out = ((int32_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((int32_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1916,12 +1916,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
       *error = 1;
     }
     else {
-      *out = ((int64_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((int64_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1934,12 +1934,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
       *error = 1;
     }
     else {
-      *out = ((float*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((float*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(array == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1952,12 +1952,12 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
       *error = 1;
     }
     else {
-      *out = ((double*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index];
+      *out = ((double*)((intptr_t)array + object_header_size))[fields_length * index + field_index];
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* array, int32_t index, int32_t field_index, int32_t fields_length, int8_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* array, int32_t index, int32_t field_index, int32_t fields_length, int8_t in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1970,12 +1970,12 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
       *error = 1;
     }
     else {
-      ((int8_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((int8_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* array, int32_t index, int32_t field_index, int32_t fields_length, int16_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* array, int32_t index, int32_t field_index, int32_t fields_length, int16_t in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1988,12 +1988,12 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
       *error = 1;
     }
     else {
-      ((int16_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((int16_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* array, int32_t index, int32_t field_index, int32_t fields_length, int32_t in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -2006,12 +2006,12 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
       *error = 1;
     }
     else {
-      ((int32_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((int32_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* array, int32_t index, int32_t field_index, int32_t fields_length, int64_t in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* array, int32_t index, int32_t field_index, int32_t fields_length, int64_t in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -2024,12 +2024,12 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
       *error = 1;
     }
     else {
-      ((int64_t*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((int64_t*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* array, int32_t index, int32_t field_index, int32_t fields_length, float in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* array, int32_t index, int32_t field_index, int32_t fields_length, float in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -2042,12 +2042,12 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
       *error = 1;
     }
     else {
-      ((float*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((float*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* array, int32_t index, int32_t field_index, int32_t fields_length, double in, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* array, int32_t index, int32_t field_index, int32_t fields_length, double in, int32_t* error, int32_t object_header_size) {
   if (__builtin_expect(!array, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -2060,7 +2060,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
       *error = 1;
     }
     else {
-      ((double*)((intptr_t)array + object_header_byte_size))[fields_length * index + field_index] = in;
+      ((double*)((intptr_t)array + object_header_size))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2115,7 +2115,7 @@ static inline void SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT(mulnum_ref, field_index, in) (*((float*)mulnum_ref +field_index) = in)
 #define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(mulnum_ref, field_index, in) (*((double*)mulnum_ref +field_index) = in)
 
-static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -2123,7 +2123,7 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
     int32_t status = env->weaken(env, stack, get_field_object_address);
     if (status != 0) {
       void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
@@ -2133,7 +2133,7 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
   }
 }
 
-static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -2141,12 +2141,12 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
     *error = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
     env->unweaken(env, stack, get_field_object_address);
   }
 }
 
-static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_id, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_id, int32_t* error, int32_t object_header_size) {
   int32_t field_offset = env->get_field_offset(env, field_id);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -2154,7 +2154,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
+    void** get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
     *out = env->isweak(env, stack, get_field_object_address);
   }
 }
@@ -2257,55 +2257,55 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV*
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int8_t*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int16_t*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int32_t*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int64_t*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(float*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, int32_t object_header_size) {
   int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS;
   void* object = env->new_object_raw(env, stack, basic_type_id);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(double*)&fields[0] = value;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2315,7 +2315,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int8_t*)&fields[0];
     }
     else {
@@ -2326,7 +2326,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2336,7 +2336,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int16_t*)&fields[0];
     }
     else {
@@ -2347,7 +2347,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2357,7 +2357,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* en
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int32_t*)&fields[0];
     }
     else {
@@ -2368,7 +2368,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* en
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2378,7 +2378,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* 
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int64_t*)&fields[0];
     }
     else {
@@ -2389,7 +2389,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2399,7 +2399,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(float*)&fields[0];
     }
     else {
@@ -2410,7 +2410,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error, int32_t object_header_byte_size) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error, int32_t object_header_size) {
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_FROM_UNDEF]);
     env->set_exception(env, stack, exception);
@@ -2420,7 +2420,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
     int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
     int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
     if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS && object_type_dimension == 0) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_byte_size);
+      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(double*)&fields[0];
     }
     else {

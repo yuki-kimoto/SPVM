@@ -547,7 +547,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 
 {
-  ok(SPVM::TestCase->new_near_small_base_object_max_byte_size_use_memory_pool());
+  ok(SPVM::TestCase->new_near_small_base_object_max_size_use_memory_pool());
 }
 
 # SPVM new_object_array

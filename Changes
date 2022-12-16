@@ -1,3 +1,16 @@
+0.9667 2022-12-16
+  [Incompatible Changes]
+    * Renamed the following runtime native APIs
+      -  void* object_header_byte_size;
+      +  void* object_header_size;
+    
+    * Renamed the following native APIs
+      -  void* object_header_byte_size;
+      +  void* object_header_size;
+      
+      -  int32_t (*get_elem_byte_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+      +  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+    
 0.9666 2022-12-16
   [Bug Fix]
     * Fixed the bug that SPVM don't work on Windows Server 2020/2022.

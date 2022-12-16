@@ -24,18 +24,18 @@ int32_t SPVM_ALLOCATOR_get_memory_blocks_count(SPVM_ALLOCATOR* allocator) {
   return memory_blocks_count;
 }
 
-void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t size) {
   
-  if (byte_size < 1) {
+  if (size < 1) {
     return NULL;
   }
   
-  if ((size_t)byte_size > SIZE_MAX) {
+  if ((size_t)size > SIZE_MAX) {
     return NULL;
   }
   
   // Alloc memory block
-  void* block = calloc(1, (size_t)byte_size);
+  void* block = calloc(1, (size_t)size);
   
   return block;
 }
@@ -44,10 +44,10 @@ void SPVM_ALLOCATOR_free_memory_block_unmanaged(void* block) {
   free(block);
 }
 
-void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t size) {
   (void)allocator;
   
-  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
+  void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size);
 
   assert(allocator);
   allocator->memory_blocks_count_tmp++;
@@ -63,10 +63,10 @@ void SPVM_ALLOCATOR_free_memory_block_tmp(SPVM_ALLOCATOR* allocator, void* block
   allocator->memory_blocks_count_tmp--;
 }
 
-void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size) {
+void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t size) {
   (void)allocator;
   
-  void* parmanent_block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(byte_size);
+  void* parmanent_block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size);
   allocator->memory_blocks_count_permanent++;
   
   int32_t length = allocator->permanent_memory_blocks_length;

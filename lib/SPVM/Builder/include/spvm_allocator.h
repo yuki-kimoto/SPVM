@@ -28,11 +28,11 @@ struct spvm_allocator {
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new();
 int32_t SPVM_ALLOCATOR_get_memory_blocks_count(SPVM_ALLOCATOR* allocator);
-void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t byte_size);
+void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t size);
 void SPVM_ALLOCATOR_free_memory_block_unmanaged(void* block);
-void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t byte_size);
+void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t size);
 void SPVM_ALLOCATOR_free_memory_block_tmp(SPVM_ALLOCATOR* allocator, void* block);
-void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t byte_size);
+void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, size_t size);
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator);
 
 #endif

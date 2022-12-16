@@ -4656,17 +4656,17 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
     return;
   }
   
-  int32_t alignment_byte_size;
+  int32_t alignment_size;
   if (sizeof(void*) > sizeof(int64_t)) {
-    alignment_byte_size = sizeof(void*);
+    alignment_size = sizeof(void*);
   }
   else {
-    alignment_byte_size = sizeof(int64_t);
+    alignment_size = sizeof(int64_t);
   }
   
   int32_t alignment_index = 0;
   int32_t offset = 0;
-  int32_t offset_byte_size;
+  int32_t offset_size;
   
   // 8 byte data
   for (int32_t merged_field_index = 0; merged_field_index < class->merged_fields->length; merged_field_index++) {
@@ -4676,48 +4676,48 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
     int32_t next_offset;
     if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
       || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_byte_size = 8;
+      offset_size = 8;
     }
     else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
       || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_byte_size = 4;
+      offset_size = 4;
     }
     else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_byte_size = 2;
+      offset_size = 2;
     }
     else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_byte_size = 1;
+      offset_size = 1;
     }
     else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_byte_size = sizeof(void*);
+      offset_size = sizeof(void*);
     }
     else {
       assert(0);
     }
     
-    next_offset = offset + offset_byte_size;
+    next_offset = offset + offset_size;
     
-    if (next_offset % offset_byte_size != 0) {
-      offset += (offset_byte_size - offset % offset_byte_size);
+    if (next_offset % offset_size != 0) {
+      offset += (offset_size - offset % offset_size);
     }
     
-    if (next_offset == alignment_byte_size * (alignment_index + 1)) {
+    if (next_offset == alignment_size * (alignment_index + 1)) {
       alignment_index++;
     }
-    else if (next_offset > alignment_byte_size * (alignment_index + 1)) {
+    else if (next_offset > alignment_size * (alignment_index + 1)) {
       alignment_index++;
       // Next alignment
-      offset += (alignment_byte_size - offset % alignment_byte_size);
+      offset += (alignment_size - offset % alignment_size);
       
-      assert(offset % alignment_byte_size == 0);
+      assert(offset % alignment_size == 0);
     }
 
     merged_field->offset = offset;
     
-    offset += offset_byte_size;
+    offset += offset_size;
   }
 
-  class->fields_byte_size = offset;
+  class->fields_size = offset;
   
   int32_t merged_fields_original_offset = class->merged_fields_original_offset;
   for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {

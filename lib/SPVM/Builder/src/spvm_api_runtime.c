@@ -170,7 +170,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_set_native_method_address,
     SPVM_API_RUNTIME_get_precompile_method_address,
     SPVM_API_RUNTIME_set_precompile_method_address,
-    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
+    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset

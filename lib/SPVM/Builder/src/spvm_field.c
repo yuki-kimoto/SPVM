@@ -15,32 +15,32 @@ SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
   return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_FIELD));
 }
 
-int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+int32_t SPVM_FIELD_get_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
   (void)compiler;
   
   SPVM_TYPE* field_type = field->type;
   
-  int32_t byte_size;
+  int32_t size;
   if (field_type->dimension == 0 && field_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && field_type->basic_type->id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
     if (field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-      byte_size = sizeof(int8_t);
+      size = sizeof(int8_t);
     }
     else if (field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
-      byte_size = sizeof(int16_t);
+      size = sizeof(int16_t);
     }
     else if (field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-      byte_size = sizeof(int32_t);
+      size = sizeof(int32_t);
     }
     else if (field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-      byte_size = sizeof(int64_t);
+      size = sizeof(int64_t);
     }
     else {
       assert(0);
     }
   }
   else {
-    byte_size = sizeof(void*);
+    size = sizeof(void*);
   }
   
-  return byte_size;
+  return size;
 }

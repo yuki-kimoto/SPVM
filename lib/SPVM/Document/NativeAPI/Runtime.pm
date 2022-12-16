@@ -94,7 +94,7 @@ Runtime native APIs have its IDs.
   70 set_native_method_address
   71 get_precompile_method_address
   72 set_precompile_method_address
-  73 object_header_byte_size
+  73 object_header_size
   74 object_weaken_backref_head_offset
   75 object_ref_count_offset
   76 object_basic_type_id_offset
@@ -407,9 +407,9 @@ Reserved.
 
   void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
 
-=head2 object_header_byte_size
+=head2 object_header_size
 
-  void* object_header_byte_size;
+  void* object_header_size;
 
 =head2 object_weaken_backref_head_offset
 

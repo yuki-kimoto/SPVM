@@ -269,8 +269,8 @@ class TestCase {
     return 0;
   }
   
-  # new near small base_object_max_byte_size_use_memory_pool
-  static method new_near_small_base_object_max_byte_size_use_memory_pool : int () {
+  # new near small base_object_max_size_use_memory_pool
+  static method new_near_small_base_object_max_size_use_memory_pool : int () {
     my $block = new byte[0xFFF0];
     
     return 1;

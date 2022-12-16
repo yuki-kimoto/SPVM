@@ -15,7 +15,7 @@ The native APIs is used when L<native methods|SPVM::Document::NativeModule> are 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
   0 class_vars_heap
-  1 object_header_byte_size
+  1 object_header_size
   2 object_weaken_backref_head_offset
   3 object_ref_count_offset
   4 object_basic_type_id_offset
@@ -183,7 +183,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   166 is_string
   167 is_numeric_array
   168 is_mulnum_array
-  169 get_elem_byte_size
+  169 get_elem_size
   170 new_array_proto_raw
   171 new_array_proto
   172 copy_raw
@@ -248,9 +248,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
 
 the pointer to the storage area of the class variables. This is used internally.
 
-=head2 object_header_byte_size
+=head2 object_header_size
 
-  void* object_header_byte_size;
+  void* object_header_size;
 
 The byte size of the object's header. This is used internally.
 
@@ -1246,7 +1246,7 @@ Specifying the address of the object releases the weak reference to the object.
 
 =head2 alloc_memory_block_zero
 
-  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t byte_size);
+  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
 
 Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
@@ -1941,9 +1941,9 @@ If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
 
 If the object is C<NULL>, returns C<0>.
 
-=head2 get_elem_byte_size
+=head2 get_elem_size
 
-  int32_t (*get_elem_byte_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
 
 Get the byte size of the element of the array.
 
@@ -2041,7 +2041,7 @@ Call C<INIT> blocks.
 
 =head2 new_memory_env
 
-  void* (*new_memory_env)(SPVM_ENV* env, size_t byte_size);
+  void* (*new_memory_env)(SPVM_ENV* env, size_t size);
 
 Create a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
@@ -2069,7 +2069,7 @@ This is the same as L</"get_memory_blocks_count">. This is more understandable n
 
 =head2 new_memory_stack
 
-  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t byte_size);
+  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 
 Create a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
 
