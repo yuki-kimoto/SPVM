@@ -1,3 +1,7 @@
+0.9668 2022-12-18
+  [Compatible Internal Changes]
+    * The CALL_METHOD opcode is separated into CALL_CLASS_METHOD, CALL_INSTANCE_METHOD_STATIC, and CALL_INSTANCE_METHOD_DYNAMIC.
+    
 0.9667 2022-12-17
   [New Features]
     * Added the following native API.

@@ -1277,11 +1277,21 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* call_method_return_type = call_method->method->return_type;
                           // Call method
                           SPVM_OPCODE opcode = {0};
-
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_METHOD);
+                          
+                          if (call_method->is_class_method_call) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_CLASS_METHOD);
+                          }
+                          else {
+                            if (call_method->is_static_instance_method_call) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC);
+                            }
+                            else {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC);
+                            }
+                          }
                           opcode.operand1 = call_method->method->id;
                           opcode.operand2 = (call_method->args_length << 16) + (call_method->is_static_instance_method_call << 8) + call_method->is_class_method_call;
-                        
+                          
                           SPVM_OPCODE opcode_return = {0};
                           {
                             mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);

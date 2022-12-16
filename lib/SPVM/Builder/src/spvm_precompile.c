@@ -4679,7 +4679,10 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_METHOD: {
+      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC:
+      {
         int32_t var_id = opcode->operand0;
         int32_t decl_method_id = opcode->operand1;
         int32_t is_class_method_call = opcode->operand2 & 0xF;
