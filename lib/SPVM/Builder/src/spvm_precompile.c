@@ -2020,11 +2020,16 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         
         SPVM_STRING_BUFFER_add(string_buffer, "  field_id = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, class_name, field_name, message, &error);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
-                                              "    SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", object, field_id, &error, object_header_size);\n"
-                                              "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n");
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
+            SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_id, &error, object_header_size);\n");
+            break;
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
