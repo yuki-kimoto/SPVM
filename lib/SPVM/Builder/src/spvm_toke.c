@@ -2169,6 +2169,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IF);
                   keyword_token = IF;
                 }
+                else if (strcmp(symbol_name, "interface") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INTERFACE);
+                  keyword_token = INTERFACE;
+                }
+                else if (strcmp(symbol_name, "int") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INT);
+                  keyword_token = INT;
+                }
+                else if (strcmp(symbol_name, "interface_t") == 0) {
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
+                }
                 else if (strcmp(symbol_name, "isa") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ISA);
                   keyword_token = ISA;
@@ -2184,19 +2197,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "is_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   keyword_token = IS_READ_ONLY;
-                }
-                else if (strcmp(symbol_name, "interface") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INTERFACE);
-                  keyword_token = INTERFACE;
-                }
-                else if (strcmp(symbol_name, "int") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INT);
-                  keyword_token = INT;
-                }
-                else if (strcmp(symbol_name, "interface_t") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_attribute;
-                  keyword_token = ATTRIBUTE;
                 }
                 break;
               }
