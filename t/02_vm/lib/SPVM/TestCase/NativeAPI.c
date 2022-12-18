@@ -2828,6 +2828,13 @@ int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_2(SPVM_ENV* env, SPVM_V
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_4(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->get_args_stack_length(env, stack);
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   
