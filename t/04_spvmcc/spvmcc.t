@@ -164,5 +164,19 @@ my $dev_null = File::Spec->devnull;
   is($output, $output_expect);
 }
 
+# Execute solo test. This is described in DEVELOPMENT.txt
+{
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo --config solo/myexe.config MyExe);
+  system($spvmcc_cmd) == 0
+   or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+
+  my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_solo/);
+  my $execute_cmd_with_args = "$execute_cmd foo bar";
+  system($execute_cmd_with_args) == 0
+    or die "Can't execute command:$execute_cmd_with_args:$!";
+  
+  ok(1);
+}
+
 ok(1);
 done_testing;
