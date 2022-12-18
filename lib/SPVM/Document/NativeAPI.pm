@@ -242,6 +242,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   225 strerror_string
   226 get_basic_type_id_by_name
   227 get_field_id_static
+  228 get_args_stack_length
 
 =head2 class_vars_heap
 
@@ -2329,6 +2330,16 @@ Gets the ID of the field given an class name and field name. If the field does n
 Examples:
 
   int32_t field_id = env->get_field_id_static(env, stack, "Point", "x");
+
+=head2 items
+
+  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+The alias for the L</"get_args_stack_length">.
+
+Examples:
+
+  int32_t items = env->items(env, stack);
 
 =head1 Compiler Native API
 

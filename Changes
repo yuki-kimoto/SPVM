@@ -1,4 +1,9 @@
 0.9668 2022-12-18
+  [New Features]
+    * Added the items native API.
+      
+      int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+      
   [Incompatible Bug Fix]
     * Fixed the bug that env->get_args_stack_length returns the legnth of arguments, not the stack length of the arguments.
   [Compatible Internal Changes]

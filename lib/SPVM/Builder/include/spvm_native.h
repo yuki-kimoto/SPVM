@@ -325,6 +325,7 @@ struct spvm_env {
   void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line);
   int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
+  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_runtime {

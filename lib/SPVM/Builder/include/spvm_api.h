@@ -70,6 +70,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t meth
 int32_t SPVM_API_call_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
 int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
 int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_API_items(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 
 // Call Method by name
