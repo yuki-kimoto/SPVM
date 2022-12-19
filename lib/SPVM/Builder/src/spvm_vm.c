@@ -2157,7 +2157,6 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         
         void* object = stack[0].oval;
         SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_DYNAMIC(env, stack, object, class_name, method_name, args_stack_length, &error, tmp_buffer);
-        
         break;
       }
     }
