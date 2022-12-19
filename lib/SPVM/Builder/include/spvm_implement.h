@@ -2653,4 +2653,23 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 #define SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error, method_id, args_stack_length) (error = env->call_spvm_method(env, stack, method_id, args_stack_length))
 #define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error, method_id, args_stack_length) (error = env->call_spvm_method(env, stack, method_id, args_stack_length))
 
+static inline int SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_DYNAMIC(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_name, void* method_name, int32_t args_stack_length, char* tmp_buffer) {
+  
+  int32_t error = 0;
+  int32_t entity_method_id = env->get_instance_method_id(env, stack, object, method_name);
+  if (entity_method_id < 0) {
+    memset(tmp_buffer, sizeof(tmp_buffer), 0);
+    snprintf(tmp_buffer, 255, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, interface_name);
+    void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
+    env->set_exception(env, stack, exception);
+    error = 1;
+  }
+  
+  if (!error) {
+    error = env->call_spvm_method(env, stack, entity_method_id, args_stack_length);
+  }
+  
+  return error;
+}
+
 #endif
