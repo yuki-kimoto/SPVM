@@ -2650,4 +2650,7 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
   }
 }
 
+#define SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error, method_id, args_stack_length) (error = env->call_spvm_method(env, stack, method_id, args_stack_length))
+#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error, method_id, args_stack_length) (error = env->call_spvm_method(env, stack, method_id, args_stack_length))
+
 #endif
