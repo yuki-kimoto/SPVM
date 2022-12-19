@@ -4745,19 +4745,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
           }
           case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  if (entity_method_id < 0) {\n"
-                                                  "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], class_name, method_name);\n"
-
-                                                  "    exception = env->new_string_nolen_raw(env, stack, message);\n"
-                                                  "    env->set_exception(env, stack, exception);\n"
-                                                  "    error = 1;\n"
-                                                  "  }\n");
-
-            SPVM_STRING_BUFFER_add(string_buffer,
-                                                  "  if (__builtin_expect(error == 0, 1)) {\n"
-                                                  "    error = env->call_spvm_method(env, stack, entity_method_id, args_stack_length);\n"
-                                                  "  }\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_DYNAMIC(env, stack, object, class_name, method_name, args_stack_length, &error, tmp_buffer);\n");
             break;
           }
           default: {
