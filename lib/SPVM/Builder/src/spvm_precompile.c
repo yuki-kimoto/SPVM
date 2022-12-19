@@ -272,6 +272,7 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_stack_length = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t method_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t entity_method_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string = NULL;\n");
@@ -4686,7 +4687,6 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC:
       {
         int32_t method_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
@@ -4709,26 +4709,58 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        
-        // Call a class method
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
-            break;
-          }
-          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
             break;
           }
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (entity_method_id < 0) {\n"
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (method_id < 0) {\n"
                                               "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], class_name, method_name);\n"
+
+                                              "    exception = env->new_string_nolen_raw(env, stack, message);\n"
+                                              "    env->set_exception(env, stack, exception);\n"
+                                              "    error = 1;\n"
+                                              "  }\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer,
+                                              "  if (__builtin_expect(error == 0, 1)) {\n"
+                                              "    error = env->call_spvm_method(env, stack, method_id, args_stack_length);\n"
+                                              "  }\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
+        int32_t method_id = opcode->operand0;
+        int32_t args_stack_length = opcode->operand1;
+        
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
+        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+        int32_t method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, method_class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_stack_length = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
+        SPVM_STRING_BUFFER_add(string_buffer,
+                                              ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (entity_method_id < 0) {\n"
+                                              "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], class_name, method_name);\n"
 
                                               "    exception = env->new_string_nolen_raw(env, stack, message);\n"
                                               "    env->set_exception(env, stack, exception);\n"
