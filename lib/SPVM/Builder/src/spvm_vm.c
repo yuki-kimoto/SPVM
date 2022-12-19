@@ -1199,6 +1199,10 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         SPVM_IMPLEMENT_GET_CLASS_ID(int_vars[opcode->operand0], class_id);
         break;
       }
+      case SPVM_OPCODE_C_ID_ITEMS: {
+        SPVM_IMPLEMENT_ITEMS(env, stack, int_vars[opcode->operand0]);
+        break;
+      }
       case SPVM_OPCODE_C_ID_REFOP: {
         void* object = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_REFOP(env, stack, &object_vars[opcode->operand0], object);

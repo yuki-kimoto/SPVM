@@ -3489,6 +3489,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           break;
                         }
+                        case SPVM_OP_C_ID_ITEMS : {
+                          
+                          SPVM_OPCODE opcode = {0};
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ITEMS);
+                          
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          opcode.operand0 = mem_id_out;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_VAR : {
                           // Multi numeric type
                           if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {

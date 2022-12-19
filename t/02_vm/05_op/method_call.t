@@ -29,7 +29,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Method->call_keyword_name_method);
 }
 
-# Import sub
+# Import method
 {
   ok(SPVM::TestCase::Method->test_import_method);
 }
@@ -47,7 +47,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Method->vaarg_objects_pass_empty);
 }
 
-# Anon sub
+# Anon method
 {
   ok(SPVM::TestCase::Method->cb_obj_capture);
   ok(SPVM::TestCase::Method->cb_obj_call_cb_obj);
@@ -245,6 +245,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Optional arguments
 {
   ok(SPVM::TestCase::Method->optional_args);
+}
+
+# items
+{
+  ok(SPVM::TestCase::Method->items);
 }
 
 # All object is freed

@@ -247,6 +247,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "error_code",
     "set_error_code",
     "error",
+    "items",
   };
   
   return id_names;
@@ -1524,6 +1525,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ERROR_CODE:
     case SPVM_OP_C_ID_SET_ERROR_CODE:
     case SPVM_OP_C_ID_ERROR:
+    case SPVM_OP_C_ID_ITEMS:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;

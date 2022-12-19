@@ -248,6 +248,7 @@ enum {
   SPVM_OP_C_ID_ERROR_CODE,
   SPVM_OP_C_ID_SET_ERROR_CODE,
   SPVM_OP_C_ID_ERROR,
+  SPVM_OP_C_ID_ITEMS,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

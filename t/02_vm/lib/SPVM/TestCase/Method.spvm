@@ -1559,4 +1559,97 @@ class TestCase::Method {
     return $$value;
   }
 
+  static method items_0 : int () {
+    my $items = items;
+    
+    return $items;
+  }
+  
+  static method items_1 : int ($args0 : int) {
+    my $items = items;
+    
+    return $items;
+  }
+  
+  static method items_2 : int ($args0 : int, $args1 = 0 : int) {
+    my $items = items;
+    
+    return $items;
+  }
+  
+  static method items_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int) {
+    my $items = items;
+    
+    return $items;
+  }
+
+  method instance_method_items_2 : int ($args0 : int, $args1 = 0 : int) {
+    my $items = items;
+    
+    return $items;
+  }
+
+  static method items : int () {
+    {
+      my $args_length = &items_0;
+      unless ($args_length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $args_length = &items_1(0);
+      unless ($args_length == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $args_length = &items_2(0);
+      unless ($args_length == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $args_length = &items_2(0, 0);
+      unless ($args_length == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = new TestCase::Method;
+      my $args_length = $object->instance_method_items_2(0);
+      unless ($args_length == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = new TestCase::Method;
+      my $args_length = $object->instance_method_items_2(0, 0);
+      unless ($args_length == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $z : Complex_2d;
+      my $args_length = &items_4($z, 0, 0);
+      unless ($args_length == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $z : Complex_2d;
+      my $args_length = &items_4($z);
+      unless ($args_length == 2) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

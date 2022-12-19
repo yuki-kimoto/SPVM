@@ -102,6 +102,10 @@ SPVM::Test - SPVM test module
   static method main : int ($start_file : string, $args : string[]) {
     
     {
+      my $items = items;
+    }
+    
+    {
       my $nums = new int[3];
       
       if ($nums is_type Int) {

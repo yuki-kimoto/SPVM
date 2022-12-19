@@ -2503,6 +2503,12 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR(error, error_code);\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_ITEMS: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ITEMS(env, stack, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
         int32_t class_id = opcode->operand1;
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
