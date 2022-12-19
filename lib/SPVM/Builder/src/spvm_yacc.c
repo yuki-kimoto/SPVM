@@ -632,7 +632,7 @@ static const char *const yytname[] =
   "eval_block", "opt_operators", "opt_operator", "operator", "operators",
   "unary_operator", "is_read_only", "inc", "dec", "binary_operator",
   "comparison_operator", "isa", "is_type", "logical_operator", "assign",
-  "new", "array_init", "convert", "array_access", "call_spvm_method",
+  "new", "array_init", "convert", "array_access", "call_method",
   "field_access", "weaken_field", "unweaken_field", "isweak_field",
   "has_impl", "array_length", "var_decl", "var", "qualified_type", "type",
   "basic_type", "ref_type", "array_type", "array_type_with_length",

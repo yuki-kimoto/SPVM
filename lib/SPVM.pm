@@ -172,7 +172,7 @@ sub bind_to_perl {
         SPVM::init() unless $SPVM_INITED;
 
         my $return_value;
-        eval { $return_value = SPVM::call_spvm_method($class_name, $method_name, @_) };
+        eval { $return_value = SPVM::call_method($class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
@@ -341,9 +341,9 @@ sub get_memory_blocks_count {
   SPVM::ExchangeAPI::get_memory_blocks_count($BUILDER, @_);
 }
 
-sub call_spvm_method {
+sub call_method {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::call_spvm_method($BUILDER, @_);
+  SPVM::ExchangeAPI::call_method($BUILDER, @_);
 }
 
 1;

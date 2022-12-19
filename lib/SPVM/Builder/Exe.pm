@@ -615,7 +615,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   }
   
   // Run
-  int32_t error = env->call_spvm_method(env, stack, method_id, args_stack_length);
+  int32_t error = env->call_method(env, stack, method_id, args_stack_length);
   
   int32_t status;
   if (error) {

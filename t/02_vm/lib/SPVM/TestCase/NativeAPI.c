@@ -111,7 +111,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_class_var_object != &env_array[92]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_pointer != &env_array[93]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_pointer != &env_array[94]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->call_spvm_method != &env_array[95]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_method != &env_array[95]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_exception != &env_array[96]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_exception != &env_array[97]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_ref_count != &env_array[98]) { stack[0].ival = 0; return 0; }
@@ -1650,7 +1650,7 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__native_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1662,7 +1662,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_spvm_method(SPVM_ENV* env, SPVM_V
   {
     int32_t args_stack_length = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_spvm_method(env, stack, method_id, args_stack_length);
+    int32_t error = env->call_method(env, stack, method_id, args_stack_length);
     if (error) {
       return 1;
     }
@@ -1856,7 +1856,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   int32_t ret;
   {
     int32_t args_stack_length = 0;
-    env->call_spvm_method(env, stack, method_id, args_stack_length);
+    env->call_method(env, stack, method_id, args_stack_length);
     if (e) { return e; }
     ret = stack[0].ival;
   }

@@ -5,6 +5,8 @@
 
 #include "ppport.h"
 
+#undef call_method
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -165,7 +167,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
-xs_call_spvm_method(...)
+xs_call_method(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1041,7 +1043,7 @@ xs_call_spvm_method(...)
   
   // Call method
   int32_t args_stack_length = stack_index;
-  int32_t excetpion_flag = excetpion_flag = env->call_spvm_method(env, stack, method_id, args_stack_length);
+  int32_t excetpion_flag = excetpion_flag = env->call_method(env, stack, method_id, args_stack_length);
   
   // Create Perl return value
   if (excetpion_flag) {

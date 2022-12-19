@@ -155,9 +155,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->enter_scope_leave_scope);
 }
 
-# env->call_spvm_method
+# env->call_method
 {
-  ok(SPVM::TestCase::NativeAPI->native_call_spvm_method);
+  ok(SPVM::TestCase::NativeAPI->native_call_method);
 }
 
 # env->call_class_method

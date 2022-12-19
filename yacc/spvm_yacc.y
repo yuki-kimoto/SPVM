@@ -38,7 +38,7 @@
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_operator binary_operator comparison_operator isa is_type
-%type <opval> call_spvm_method opt_vaarg
+%type <opval> call_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow has_impl
 %type <opval> new array_init die opt_extends
@@ -725,7 +725,7 @@ operator
   | EXCEPTION_VAR
   | CONSTANT
   | UNDEF
-  | call_spvm_method
+  | call_method
   | field_access
   | array_access
   | convert
@@ -1120,7 +1120,7 @@ array_access
       $$ = SPVM_OP_build_array_access(compiler, $1, $3);
     }
 
-call_spvm_method
+call_method
   : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->cur_file, compiler->cur_line);

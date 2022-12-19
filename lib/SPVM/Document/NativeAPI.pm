@@ -109,7 +109,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   92 set_class_var_object
   93 get_pointer
   94 set_pointer
-  95 call_spvm_method
+  95 call_method
   96 get_exception
   97 set_exception
   98 get_ref_count
@@ -1118,9 +1118,9 @@ Examples:
 
 If you specify a pointer type object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
 
-=head2 call_spvm_method
+=head2 call_method
 
-  int32_t (*call_spvm_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
 
 Call a method by specifying the method ID and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1816,7 +1816,7 @@ Examples:
     const char* class_name, const char* method_name, int32_t args_stack_length,
     const char* file, int32_t line);
 
-This is same as C<call_spvm_method> function, but you can specify the class name and method name directly.
+This is same as C<call_method> function, but you can specify the class name and method name directly.
 
 Examples:
 
@@ -1865,11 +1865,11 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
 =head2 call_class_method
 
-Alias for L<"call_spvm_method">
+Alias for L<"call_method">
 
 =head2 call_instance_method
 
-Alias for L<"call_spvm_method">
+Alias for L<"call_method">
 
 =head2 get_instance_method_id_static
 

@@ -453,9 +453,9 @@ Set the SPVM method argument to stack before calling the method.
   stack[0].ival = 1;
   stack[0].ival = 2;
 
-To call a SPVM method, use the <a href="#native-api-native-sub-api-call_spvm_method">call_spvm_method</a> function.
+To call a SPVM method, use the <a href="#native-api-native-sub-api-call_method">call_method</a> function.
 
-  int32_t error = env->call_spvm_method(env, method_id, stack);
+  int32_t error = env->call_method(env, method_id, stack);
 
 Nonzero if the method raised an exception, 0 if no exception occurred.
 

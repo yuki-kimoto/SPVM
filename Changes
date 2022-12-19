@@ -8,6 +8,8 @@
     * Fixed the bug that env->get_args_stack_length returns the legnth of arguments, not the stack length of the arguments.
   [Compatible Internal Changes]
     * The CALL_METHOD opcode is separated into CALL_CLASS_METHOD, CALL_INSTANCE_METHOD_STATIC, and CALL_INSTANCE_METHOD_DYNAMIC.
+  [Incompatible Changes]
+    * Change the name of the call_spvm_method native API to call_method.
   
 0.9667 2022-12-17
   [New Features]

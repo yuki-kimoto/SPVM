@@ -121,7 +121,7 @@ class TestCase::Exception {
     
     return 1;
   }
-  static method exception_eval_call_spvm_method : int () {
+  static method exception_eval_call_method : int () {
     eval {
       TestCase::Exception->exception_die_return_int();
     };

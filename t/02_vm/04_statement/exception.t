@@ -30,7 +30,7 @@ my $file = basename $0;
 # Exception
 {
   {
-    ok(SPVM::TestCase::Exception->exception_eval_call_spvm_method());
+    ok(SPVM::TestCase::Exception->exception_eval_call_method());
   }
   
   {
