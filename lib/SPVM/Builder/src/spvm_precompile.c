@@ -4711,18 +4711,19 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
                                               ";\n");
         
         // Call a class method
-        if (opcode_id == SPVM_OPCODE_C_ID_CALL_CLASS_METHOD) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
-        }
-        else {
-          // Call an instance method statically
-          if (opcode_id == SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC) {
-            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
+            break;
           }
-          // Call an instance method dinamically
-          else {
+          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
+            SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
             SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "  entity_method_id = env->get_instance_method_id(env, stack, object, method_name);\n");
+            break;
           }
         }
         
