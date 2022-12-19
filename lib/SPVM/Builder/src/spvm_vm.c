@@ -2156,18 +2156,8 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
         
         void* object = stack[0].oval;
-        int32_t entity_method_id = env->get_instance_method_id(env, stack, object, method_name);
-        if (entity_method_id < 0) {
-          memset(tmp_buffer, sizeof(tmp_buffer), 0);
-          snprintf(tmp_buffer, 255, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, class_name);
-          void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
-          env->set_exception(env, stack, exception);
-          error = 1;
-        }
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_DYNAMIC(env, stack, object, class_name, method_name, args_stack_length, &error, tmp_buffer);
         
-        if (!error) {
-          error = env->call_spvm_method(env, stack, entity_method_id, args_stack_length);
-        }
         break;
       }
     }
