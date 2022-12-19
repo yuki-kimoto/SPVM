@@ -2145,25 +2145,25 @@ int32_t SPVM_VM_call_spvm_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t curre
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
-        int32_t decl_method_id = opcode->operand0;
+        int32_t method_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
         
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, decl_method_id);
+        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
         void* object = stack[0].oval;
-        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method->name_id, NULL);
+        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
-        int32_t method_id = env->get_instance_method_id(env, stack, object, method_name);
-        if (method_id < 0) {
+        int32_t entity_method_id = env->get_instance_method_id(env, stack, object, method_name);
+        if (entity_method_id < 0) {
           memset(tmp_buffer, sizeof(tmp_buffer), 0);
-          SPVM_RUNTIME_CLASS* decl_method_class = SPVM_API_RUNTIME_get_class(runtime, decl_method->class_id);
-          snprintf(tmp_buffer, 255, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, SPVM_API_RUNTIME_get_constant_string_value(runtime, decl_method_class->name_id, NULL));
+          SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
+          snprintf(tmp_buffer, 255, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL));
           void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
           env->set_exception(env, stack, exception);
           error = 1;
         }
         
         if (!error) {
-          error = env->call_spvm_method(env, stack, method_id, args_stack_length);
+          error = env->call_spvm_method(env, stack, entity_method_id, args_stack_length);
         }
         break;
       }
