@@ -48,16 +48,13 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_PRECOMPILE_build_head(precompile, string_buffer);
   
   // Method implementations
-  {
-    int32_t method_index;
-    for (method_index = 0; method_index < class_methods_length; method_index++) {
-      int32_t method_id = class_methods_base_id + method_index;
-      int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
-      const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-      int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
-      if (method_has_precompile_flag) {
-        SPVM_PRECOMPILE_build_method_implementation(precompile, string_buffer, class_name, method_name);
-      }
+  for (int32_t method_index = 0; method_index < class_methods_length; method_index++) {
+    int32_t method_id = class_methods_base_id + method_index;
+    int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
+    const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+    int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
+    if (method_has_precompile_flag) {
+      SPVM_PRECOMPILE_build_method_implementation(precompile, string_buffer, class_name, method_name);
     }
   }
   
