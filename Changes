@@ -1,6 +1,11 @@
 0.9669 2022-12-20
   [Incompatible Changes]
-    * Renamed the create_precompile_source precompile native API to build_class_source.
+    * Renamed the create_precompile_source Precompile Native API to build_class_source.
+  [New Features]
+    * Added the build_method_source Precompile Native API.
+      
+      void (*build_method_source)(void* precompile, void* string_buffer, const char* class_name, const char* method_name);
+      
 0.9668 2022-12-20
   [New Features]
     * Added the items native API.
