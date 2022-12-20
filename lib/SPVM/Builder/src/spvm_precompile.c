@@ -45,8 +45,6 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
   int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
 
-  SPVM_PRECOMPILE_build_header(precompile, string_buffer);
-  
   // Method implementations
   for (int32_t method_index = 0; method_index < class_methods_length; method_index++) {
     int32_t method_id = class_methods_base_id + method_index;
@@ -111,7 +109,9 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
 
 void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
-
+  
+  // Headers
+  SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
   // Class
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
