@@ -39,24 +39,13 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  SPVM_STRING_BUFFER_add(string_buffer, "// ");
-  SPVM_STRING_BUFFER_add(string_buffer, class_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\n");
-  
   // Class
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
   int32_t class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(runtime, class_id);
   int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
   int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
-  
-  // Constant strings
-  if (!class_is_anon) {
-    // Head part - include and define
-    SPVM_PRECOMPILE_build_head(precompile, string_buffer);
-    SPVM_STRING_BUFFER_add(string_buffer, "static const char* current_class_name = \"");
-    SPVM_STRING_BUFFER_add(string_buffer, class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  }
+
+  SPVM_PRECOMPILE_build_head(precompile, string_buffer);
   
   // Method decrations
   {
@@ -158,12 +147,11 @@ void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SP
 
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
-
-  if (class_is_anon) {
-    SPVM_STRING_BUFFER_add(string_buffer,"    const char* current_class_name = \"");
-    SPVM_STRING_BUFFER_add(string_buffer, class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  }
+  
+  // The class name
+  SPVM_STRING_BUFFER_add(string_buffer,"  const char* current_class_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
