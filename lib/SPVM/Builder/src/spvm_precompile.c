@@ -81,7 +81,6 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer,
     "#include \"spvm_native.h\"\n"
     "#include \"spvm_implement.h\"\n"
-    "\n"
     "#include <stdlib.h>\n"
     "#include <string.h>\n"
     "#include <stdio.h>\n"
