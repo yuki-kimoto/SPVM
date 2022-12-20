@@ -45,7 +45,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
   int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
 
-  SPVM_PRECOMPILE_build_head(precompile, string_buffer);
+  SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
   // Method implementations
   for (int32_t method_index = 0; method_index < class_methods_length; method_index++) {
@@ -74,7 +74,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
 }
 
-void SPVM_PRECOMPILE_build_head(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer) {
+void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
   // Include headers and define macros
