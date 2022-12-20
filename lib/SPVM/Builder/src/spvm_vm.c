@@ -2144,7 +2144,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error, method_id, args_stack_length);
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_DYNAMIC: {
+      case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD: {
         int32_t method_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
         
