@@ -438,7 +438,7 @@ Examples:
 
 Gets a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
 
-This ID is used by L<"call_instance_method">.
+This ID is used by L<"call_method">.
 
 Examples:
 
@@ -1870,7 +1870,7 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
 Gets a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
 
-This ID is used by L<"call_instance_method">.
+This ID is used by L<"call_method">.
 
 Examples:
 
