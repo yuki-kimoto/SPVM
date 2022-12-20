@@ -5023,3 +5023,39 @@ void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "&");
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, var_index);
 }
+
+void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "basic_type_id");
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+}
+
+void SPVM_PRECOMPILE_add_class_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "class_id");
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+}
+
+void SPVM_PRECOMPILE_add_field_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "field_id");
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, field_name);
+}
+
+void SPVM_PRECOMPILE_add_class_var_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* class_var_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "class_var_id");
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+}
+
+void SPVM_PRECOMPILE_add_method_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "method_id");
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
+  SPVM_STRING_BUFFER_add(string_buffer, method_name);
+}
