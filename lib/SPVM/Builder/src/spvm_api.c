@@ -729,7 +729,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     env->die(env, stack, "The %s class method in the %s class is not found", class_name, method_name, file, line);
     return 1;
   }
-  int32_t e = env->call_class_method(env, stack, method_id, args_stack_length);
+  int32_t e = env->call_method(env, stack, method_id, args_stack_length);
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, file, line);
@@ -759,7 +759,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
     return 1;
   };
   
-  int32_t e = env->call_instance_method(env, stack, method_id, args_stack_length);
+  int32_t e = env->call_method(env, stack, method_id, args_stack_length);
   
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
