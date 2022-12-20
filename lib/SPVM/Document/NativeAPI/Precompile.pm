@@ -25,7 +25,7 @@ Precompile native APIs have its IDs.
   1 free_precompile
   2 set_runtime
   3 get_runtime
-  4 create_precompile_source
+  4 build_class_source
 
 =head1 Precompile Native APIs
 
@@ -53,8 +53,8 @@ Set a runtime to the precompile object.
 
 Get the runtime from the precompile object.
 
-=head2 create_precompile_source
+=head2 build_class_source
 
-  void (*create_precompile_source)(void* precompile, void* string_buffer, const char* class_name);
+  void (*build_class_source)(void* precompile, void* string_buffer, const char* class_name);
 
 Create precompile-source. The created source is saved to L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.

@@ -341,7 +341,7 @@ sub build_exe_file {
 
   unless ($no_precompile) {
     # Create precompile C source_files
-    $self->create_precompile_sources;
+    $self->build_class_sources;
     
     # Compile precompile C source_files
     my $precompile_object_files = $self->compile_precompile_sources;
@@ -945,7 +945,7 @@ sub compile_spvm_core_sources {
   return $object_file_infos;
 }
 
-sub create_precompile_sources {
+sub build_class_sources {
   my ($self) = @_;
 
   my $config = $self->config;
@@ -973,7 +973,7 @@ sub create_precompile_sources {
       
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
-      $builder_cc_precompile->create_precompile_source_file(
+      $builder_cc_precompile->build_class_source_file(
         $class_name,
         {
           output_dir => $build_src_dir,

@@ -1,3 +1,6 @@
+0.9669 2022-12-20
+  [Incompatible Changes]
+    * Renamed the create_precompile_source precompile native API to build_class_source.
 0.9668 2022-12-20
   [New Features]
     * Added the items native API.

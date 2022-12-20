@@ -438,7 +438,7 @@ struct spvm_env_precompile {
   void (*free_precompile)(void* precompile);
   void (*set_runtime)(void* precompile, void* runtime);
   void* (*get_runtime)(void* precompile);
-  void (*create_precompile_source)(void* precompile, void* string_buffer, const char* class_name);
+  void (*build_class_source)(void* precompile, void* string_buffer, const char* class_name);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();

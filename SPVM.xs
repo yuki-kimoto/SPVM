@@ -4724,7 +4724,7 @@ DESTROY(...)
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
 
 SV*
-create_precompile_source(...)
+build_precompile_class_source(...)
   PPCODE:
 {
   SV* sv_self = ST(0);
@@ -4763,7 +4763,7 @@ create_precompile_source(...)
   
   env->api->precompile->set_runtime(precompile, runtime);
   
-  env->api->precompile->create_precompile_source(precompile, string_buffer, class_name);
+  env->api->precompile->build_class_source(precompile, string_buffer, class_name);
   
   env->api->precompile->free_precompile(precompile);
 

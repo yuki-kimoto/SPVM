@@ -134,7 +134,7 @@ sub build_runtime {
     $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
     
-    $self->create_precompile_source_file(
+    $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
@@ -179,7 +179,7 @@ sub build_dist {
     $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
 
-    $self->create_precompile_source_file(
+    $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
@@ -1015,7 +1015,7 @@ sub create_link_info {
   return $link_info;
 }
 
-sub create_precompile_source_file {
+sub build_precompile_class_source_file {
   my ($self, $class_name, $options) = @_;
   
   # Config
@@ -1046,7 +1046,7 @@ sub create_precompile_source_file {
   
   # Generate precompile C source file
   if ($need_generate) {
-    my $precompile_source = $self->create_precompile_source($class_name);
+    my $precompile_source = $self->build_precompile_class_source($class_name);
     mkpath dirname $source_file;
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
