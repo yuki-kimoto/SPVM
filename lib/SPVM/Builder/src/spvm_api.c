@@ -239,8 +239,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_free_env_prepared,
     SPVM_API_dump_raw,
     SPVM_API_dump,
-    SPVM_API_call_class_method,
-    SPVM_API_call_instance_method,
+    NULL,
+    NULL,
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
     SPVM_API_cleanup_global_vars,
@@ -1479,14 +1479,6 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_API_free_memory_env(env, stack);
   stack = NULL;
-}
-
-int32_t SPVM_API_call_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
-  return SPVM_API_call_method(env, stack, method_id, args_stack_length);
-}
-
-int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
-  return SPVM_API_call_method(env, stack, method_id, args_stack_length);
 }
 
 int32_t SPVM_API_call_method_precompile_address(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {

@@ -255,8 +255,8 @@ struct spvm_env {
   void (*free_env_prepared)(SPVM_ENV* env);
   void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
-  int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+  NULL,
+  NULL,
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);
   void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);

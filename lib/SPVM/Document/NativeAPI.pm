@@ -172,8 +172,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   155 free_env_prepared
   156 dump_raw
   157 dump
-  158 call_class_method
-  159 call_instance_method
+  158 reserved158
+  159 reserved159
   160 get_instance_method_id_static
   161 get_bool_object_value
   162 cleanup_global_vars
@@ -426,7 +426,7 @@ Examples:
 
 Gets a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
 
-This ID is used by L<"call_class_method">.
+This ID is used by L<"call_method">.
 
 Examples:
 
@@ -1864,14 +1864,6 @@ Gets the string which dump the object. The string is the same as the return valu
 
 The same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
 
-=head2 call_class_method
-
-Alias for L<"call_method">
-
-=head2 call_instance_method
-
-Alias for L<"call_method">
-
 =head2 get_instance_method_id_static
 
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name);
@@ -1989,18 +1981,6 @@ The charaters of the after the given length are filled with C<\0>.
   int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t interface_basic_type_id);
 
 Check the type of the object has the interface.
-
-=head2 reserved176
-
-  void* reserved176
-
-=head2 reserved177
-
-  void* reserved177
-
-=head2 reserved178
-
-  void* reserved178
 
 =head2 print
 
