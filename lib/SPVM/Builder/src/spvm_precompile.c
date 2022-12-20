@@ -333,6 +333,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     int32_t opcode_id = opcode->id;
 
     int32_t basic_type_id = -1;
+    int32_t class_id = -1;
     int32_t field_id = -1;
     int32_t class_var_id = -1;
     int32_t id_set = 1;
@@ -365,6 +366,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_IS_TYPE:
       {
         basic_type_id = opcode->operand2;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_CLASS_ID: {
+        class_id = opcode->operand1;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE:
@@ -416,6 +421,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         class_var_id = opcode->operand0;
         break;
       }
+      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
+      {
+        method_id = opcode->operand0;
+        break;
+      }
       default: {
         id_set = 0;
       }
@@ -425,6 +436,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       if (basic_type_id >= 0) {
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+      }
+      else if (class_id >= 0) {
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
       }
       else if (field_id >= 0) {
         int32_t class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
@@ -440,6 +455,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+      }
+      else if (method_id >= 0) {
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
+        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+        int32_t class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
       }
       else {
         assert(0);
