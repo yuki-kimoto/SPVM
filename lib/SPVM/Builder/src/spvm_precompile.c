@@ -325,7 +325,55 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t opcode_index = 0;
   
   SPVM_OPCODE* opcode = NULL;
+  
+  // Static local variables
+  opcode_index = 0;
+  while (opcode_index < opcodes_length) {
+    opcode = &(opcodes[method_opcodes_base_id + opcode_index]);
+    int32_t opcode_id = opcode->id;
 
+    int32_t field_id = -1;
+    switch(opcode_id) {
+      case SPVM_OPCODE_C_ID_GET_FIELD_BYTE:
+      case SPVM_OPCODE_C_ID_GET_FIELD_SHORT:
+      case SPVM_OPCODE_C_ID_GET_FIELD_INT:
+      case SPVM_OPCODE_C_ID_GET_FIELD_LONG:
+      case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT:
+      case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE:
+      case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT:
+      {
+        field_id = opcode->operand2;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_FIELD_BYTE:
+      case SPVM_OPCODE_C_ID_SET_FIELD_SHORT:
+      case SPVM_OPCODE_C_ID_SET_FIELD_INT:
+      case SPVM_OPCODE_C_ID_SET_FIELD_LONG:
+      case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT:
+      case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
+      case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF:
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD:
+      case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD:
+      case SPVM_OPCODE_C_ID_ISWEAK_FIELD:
+      {
+        field_id = opcode->operand1;
+        break;
+      }
+      
+      if (field_id >= 0) {
+        int32_t class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
+        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+      }
+    }
+    opcode_index++;
+  }
+
+  opcode_index = 0;
   while (opcode_index < opcodes_length) {
 
     // Line label
