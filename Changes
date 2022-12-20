@@ -15,12 +15,13 @@
   [Compatible Internal Changes]
     * The CALL_METHOD opcode is separated into CALL_CLASS_METHOD, CALL_INSTANCE_METHOD_STATIC, and CALL_INSTANCE_METHOD_DYNAMIC.
   [Incompatible Changes]
-    * Change the name of the call_spvm_method native API to call_method.
+    * Changed the name of the call_spvm_method native API to call_method.
     * Removed the following native APIs. Use call_method instead.
       
       -  int32_t (*call_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
       -  int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
-  
+    * Changed the definition of the call_instance_method_by_name native API.
+      
 0.9667 2022-12-17
   [New Features]
     * Added the following native API.

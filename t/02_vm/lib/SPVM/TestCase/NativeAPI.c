@@ -1787,7 +1787,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
   {
     int32_t args_stack_length = 1;
     stack[0].oval = minimal;
-    int32_t error = env->call_instance_method_by_name(env, stack, minimal, "x", args_stack_length, FILE_NAME, __LINE__);
+    int32_t error = env->call_instance_method_by_name(env, stack, "x", args_stack_length, FILE_NAME, __LINE__);
     if (e) { return e; }
     output = stack[0].ival;
   }
@@ -1809,7 +1809,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   {
     int32_t args_stack_length = 1;
     stack[0].oval = minimal;
-    e = env->call_instance_method_by_name(env, stack, minimal, "not_found", args_stack_length, FILE_NAME, __LINE__);
+    e = env->call_instance_method_by_name(env, stack, "not_found", args_stack_length, FILE_NAME, __LINE__);
     if (e) { return e; };
     output = stack[0].ival;
   }

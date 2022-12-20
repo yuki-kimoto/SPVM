@@ -1835,7 +1835,7 @@ Examples:
 =head2 call_instance_method_by_name
 
   int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* method_name, int32_t args_stack_length,
+    const char* method_name, int32_t args_stack_length,
     const char* file, int32_t line);
 
 =head2 get_field_string_chars_by_name
