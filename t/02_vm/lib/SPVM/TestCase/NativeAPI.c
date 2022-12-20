@@ -245,6 +245,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_basic_type_id_by_name != &env_array[226]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_field_id_static != &env_array[227]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->items != &env_array[228]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->call_instance_method_static_by_name != &env_array[229]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -1770,6 +1771,54 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
     if (error) {
       return error;
     }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* minimal = stack[0].oval;
+  
+  int32_t output;
+  {
+    int32_t args_stack_length = 1;
+    stack[0].oval = minimal;
+    int32_t error = env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "x", args_stack_length, FILE_NAME, __LINE__);
+    if (e) { return e; }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = output;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+
+  void* minimal = stack[0].oval;
+  
+  int32_t output;
+  {
+    int32_t args_stack_length = 1;
+    stack[0].oval = minimal;
+    e = env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "not_found", args_stack_length, FILE_NAME, __LINE__);
+    if (e) { return e; };
     output = stack[0].ival;
   }
   

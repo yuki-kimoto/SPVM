@@ -4,6 +4,12 @@
       
       int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
     * Added the items operator.
+    * Added the call_instance_method_static_by_name native API.
+    
+      int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+        const char* class_name, const char* method_name, int32_t args_stack_length,
+        const char* file, int32_t line);
+      
   [Incompatible Bug Fix]
     * Fixed the bug that env->get_args_stack_length returns the legnth of arguments, not the stack length of the arguments.
   [Compatible Internal Changes]

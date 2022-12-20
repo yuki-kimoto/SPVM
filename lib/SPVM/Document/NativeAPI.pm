@@ -243,6 +243,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   226 get_basic_type_id_by_name
   227 get_field_id_static
   228 get_args_stack_length
+  229 call_instance_method_static_by_name
 
 =head2 class_vars_heap
 
@@ -2340,6 +2341,27 @@ The alias for the L</"get_args_stack_length">.
 Examples:
 
   int32_t items = env->items(env, stack);
+
+=head2 call_instance_method_static_by_name
+
+  int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* class_name, const char* method_name, int32_t args_stack_length,
+    const char* file, int32_t line);
+
+Calls a instance method by the class name and the method name.
+
+Examples:
+
+  int32_t output;
+  {
+    int32_t args_stack_length = 1;
+    stack[0].oval = obj_point;
+    int32_t error = env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, __FILE__, __LINE__);
+    if (error) {
+      return error;
+    }
+    output = stack[0].ival;
+  }
 
 =head1 Compiler Native API
 
