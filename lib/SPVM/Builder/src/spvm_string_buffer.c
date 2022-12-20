@@ -255,3 +255,14 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
     assert(0);
   }
 }
+
+int32_t SPVM_STRING_BUFFER_contains(SPVM_STRING_BUFFER* string_buffer, int32_t offset, const char* string) {
+  const char* found_ptr = strstr(string_buffer->value + offset, string);
+  
+  int32_t found = 0;
+  if (found_ptr) {
+    found = 1;
+  }
+  
+  return found;
+}

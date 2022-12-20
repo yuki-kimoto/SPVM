@@ -31,4 +31,6 @@ int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, ch
 
 SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity);
 
+int32_t SPVM_STRING_BUFFER_contains(SPVM_STRING_BUFFER* string_buffer, int32_t offset, const char* string);
+
 #endif
