@@ -52,7 +52,7 @@ void SPVM_PRECOMPILE_create_precompile_source(SPVM_PRECOMPILE* precompile, SPVM_
     const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
     int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
     if (method_has_precompile_flag) {
-      SPVM_PRECOMPILE_build_method_implementation(precompile, string_buffer, class_name, method_name);
+      SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, class_name, method_name);
     }
   }
   
@@ -107,7 +107,7 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
   SPVM_STRING_BUFFER_add(string_buffer, "(SPVM_ENV* env, SPVM_VALUE* stack)");
 }
 
-void SPVM_PRECOMPILE_build_method_implementation(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
+void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
   // Headers
