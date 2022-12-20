@@ -333,6 +333,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     int32_t opcode_id = opcode->id;
 
     int32_t field_id = -1;
+    int32_t class_var_id = -1;
     switch(opcode_id) {
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE:
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT:
@@ -360,16 +361,47 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         field_id = opcode->operand1;
         break;
       }
-      
-      if (field_id >= 0) {
-        int32_t class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
-        
-        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
-        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE:
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT:
+      {
+        int32_t class_var_id = opcode->operand1;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT:
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF:
+      {
+        int32_t class_var_id = opcode->operand0;
+        break;
       }
     }
+    if (field_id >= 0) {
+      int32_t class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
+      int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+      const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+      
+      int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
+      const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+    }
+    
+    if (class_var_id >= 0) {
+      int32_t class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
+      int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
+      const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+      int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
+      const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+    }
+    
     opcode_index++;
   }
 
