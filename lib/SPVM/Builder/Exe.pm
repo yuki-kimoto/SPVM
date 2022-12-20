@@ -973,7 +973,7 @@ sub build_class_sources {
       
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
-      $builder_cc_precompile->build_class_source_file(
+      $builder_cc_precompile->build_precompile_class_source_file(
         $class_name,
         {
           output_dir => $build_src_dir,
