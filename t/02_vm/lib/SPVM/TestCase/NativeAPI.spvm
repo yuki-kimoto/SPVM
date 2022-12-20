@@ -1370,5 +1370,7 @@ class TestCase::NativeAPI {
   native static method get_pointer_no_need_free : int ();
   native static method get_pointer_length : int ();
 
+  native static method precompile_build_methodd_source : int ();
+
   native static method check_stdin_stdout_stderr_binary_mode : int ();
 }

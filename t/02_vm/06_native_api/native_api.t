@@ -312,6 +312,8 @@ ok(SPVM::TestCase::NativeAPI->pointer_fields);
 ok(SPVM::TestCase::NativeAPI->get_pointer_no_need_free);
 ok(SPVM::TestCase::NativeAPI->get_pointer_length);
 
+ok(SPVM::TestCase::NativeAPI->precompile_build_methodd_source);
+
 # Clear exception
 SPVM::set_exception(undef);
 

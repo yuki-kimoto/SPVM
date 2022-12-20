@@ -3153,3 +3153,45 @@ int32_t SPVM__TestCase__NativeAPI__check_stdin_stdout_stderr_binary_mode(SPVM_EN
   return 0;
 #endif
 }
+
+int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t success = 1;
+  
+  {
+    // New allocator
+    void* allocator = env->api->allocator->new_allocator();
+    
+    // New string buffer
+    void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
+
+    void* precompile = env->api->precompile->new_precompile();
+    
+    env->api->precompile->set_runtime(precompile, env->runtime);
+    
+    env->api->precompile->build_method_source(precompile, string_buffer, "TestCase::NativeAPI", "get_class_var_byte_by_name");
+    
+    env->api->precompile->free_precompile(precompile);
+
+    const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+    int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+    
+    if (!strstr(string_buffer_value, "TestCase::NativeAPI")) {
+      success = 0;
+    }
+
+    if (!strstr(string_buffer_value, "get_class_var_byte_by_name")) {
+      success = 0;
+    }
+    
+    // Free string buffer
+    env->api->string_buffer->free_string_buffer(string_buffer);
+
+    // Free allocator
+    env->api->allocator->free_allocator(allocator);
+  }
+  
+  stack[0].ival = success;
+  
+  return 0;
+}

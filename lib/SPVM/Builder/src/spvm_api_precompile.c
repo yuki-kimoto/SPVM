@@ -13,6 +13,7 @@ SPVM_ENV_PRECOMPILE* SPVM_API_PRECOMPILE_new_env() {
     SPVM_API_PRECOMPILE_set_runtime,
     SPVM_API_PRECOMPILE_get_runtime,
     SPVM_API_PRECOMPILE_build_class_source,
+    SPVM_API_PRECOMPILE_build_method_source,
   };
   SPVM_ENV_PRECOMPILE* env_precompile = calloc(1, sizeof(env_precompile_init));
   memcpy(env_precompile, env_precompile_init, sizeof(env_precompile_init));

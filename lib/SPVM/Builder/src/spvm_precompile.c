@@ -110,6 +110,7 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
 void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
+  
   // Headers
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
