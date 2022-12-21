@@ -5138,3 +5138,61 @@ int32_t SPVM_STRING_BUFFER_contains_class_id(const char* string, const char* cla
   
   return found;
 }
+
+int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* label, const char* name1, const char* name2) {
+  
+  // basic_type_id__BASIC_TYPE_NAME__
+  // class_id__CLASS_NAME__
+  // field_id__CLASS_NAME__FIELD_NAME__
+  // method_id__METHOD_NAME__FIELD_NAME__
+  // class_var_id__CLASS_VAR_NAME__
+  
+  int32_t label_length = strlen(label);
+  
+  const char* separator = "__";
+  int32_t separator_length = strlen(separator);
+  
+  int32_t name1_length = strlen(name1);
+  
+  int32_t found = 0;
+  const char* before_found_ptr;
+  const char* found_ptr;
+  found_ptr = strstr(string, label);
+  if (found_ptr) {
+    before_found_ptr = found_ptr;
+    found_ptr = strstr(before_found_ptr + label_length, "__");
+    if (found_ptr) {
+      if (found_ptr == before_found_ptr + label_length) {
+        before_found_ptr = found_ptr;
+        found_ptr = strstr(before_found_ptr + name1_length, name1);
+        if (found_ptr) {
+          before_found_ptr = found_ptr;
+          if (found_ptr == before_found_ptr +  name1_length) {
+            found_ptr = strstr(before_found_ptr + label_length, "__");
+            if (found_ptr) {
+              if (name2) {
+                int32_t name2_length = strlen(name2);
+                before_found_ptr = found_ptr;
+                found_ptr = strstr(before_found_ptr + name2_length, name2);
+                if (found_ptr) {
+                  before_found_ptr = found_ptr;
+                  if (found_ptr == before_found_ptr +  name2_length) {
+                    found_ptr = strstr(before_found_ptr + label_length, "__");
+                    if (found_ptr) {
+                      found = 1;
+                    }
+                  }
+                }
+              }
+              else {
+                found = 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  return found;
+}

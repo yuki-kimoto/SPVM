@@ -66,5 +66,8 @@ void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 const char* SPVM_PRECOMPILE_get_ctype_name(SPVM_PRECOMPILE* precompile, int32_t ctype_id);
 
 int32_t SPVM_STRING_BUFFER_contains_basic_type_id(const char* string, const char* basic_type_name);
+int32_t SPVM_STRING_BUFFER_contains_class_id(const char* string, const char* class_name);
+
+int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* label, const char* string1, const char* string2);
 
 #endif
