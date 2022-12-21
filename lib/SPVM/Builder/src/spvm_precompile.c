@@ -299,7 +299,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t short_string_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t retval;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cmp;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_method_id = env->api->runtime->get_method_id_by_name(env->runtime, current_class_name, current_method_name);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
@@ -316,7 +315,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
-
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, current_method_id);
@@ -380,6 +378,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                           "      goto END_OF_METHOD;\n"
                                           "    }\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_method_id = ");
+    SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, current_class_name, current_method_name);
+    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
