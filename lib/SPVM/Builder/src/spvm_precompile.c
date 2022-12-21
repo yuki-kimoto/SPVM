@@ -110,7 +110,7 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
 void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  const char* string_buffer_begin_offset = string_buffer->value;
+  const char* string_buffer_begin = string_buffer->value;
   
   // Headers
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
@@ -5029,12 +5029,14 @@ void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_
   SPVM_STRING_BUFFER_add(string_buffer, "basic_type_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
 void SPVM_PRECOMPILE_add_class_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "class_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
 void SPVM_PRECOMPILE_add_field_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* field_name) {
@@ -5043,6 +5045,7 @@ void SPVM_PRECOMPILE_add_field_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, field_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
 void SPVM_PRECOMPILE_add_class_var_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* class_var_name) {
@@ -5051,6 +5054,7 @@ void SPVM_PRECOMPILE_add_class_var_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_B
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
 void SPVM_PRECOMPILE_add_method_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
@@ -5059,54 +5063,55 @@ void SPVM_PRECOMPILE_add_method_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, method_name);
+  SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
-int32_t SPVM_STRING_BUFFER_contains_basic_type_id(const char* string, const char* basic_type_name) {
+int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name) {
   
   // basic_type_id__BASIC_TYPE_NAME__
   const char* label = "basic_type_id";
-  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, basic_type_name, NULL);
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, NULL);
   
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_class_id(const char* string, const char* class_name) {
+int32_t SPVM_PRECOMPILE_contains_class_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name) {
   
   // class_id__CLASS_NAME__
   const char* label = "class_id";
-  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, NULL);
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, class_name, NULL);
   
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_field_id(const char* string, const char* class_name, const char* field_name) {
+int32_t SPVM_PRECOMPILE_contains_field_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* field_name) {
   
   // field_id__CLASS_NAME__FIELD_NAME__
   const char* label = "field_id";
-  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, field_name);
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, class_name, field_name);
   
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_class_var_id(const char* string, const char* class_name, const char* class_var_name) {
+int32_t SPVM_PRECOMPILE_contains_class_var_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* class_var_name) {
   
   // class_var_id__CLASS_VAR_NAME__
   const char* label = "class_var_id";
-  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, class_var_name);
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, class_name, class_var_name);
   
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_method_id(const char* string, const char* class_name, const char* method_name) {
+int32_t SPVM_PRECOMPILE_contains_method_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* method_name) {
   
   // method_id__METHOD_NAME__FIELD_NAME__
   const char* label = "method_id";
-  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, method_name);
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, class_name, method_name);
   
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* label, const char* name1, const char* name2) {
+int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const char* string, const char* label, const char* name1, const char* name2) {
   
   int32_t label_length = strlen(label);
   
@@ -5115,45 +5120,39 @@ int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* la
   
   int32_t name1_length = strlen(name1);
   
-  int32_t found = 0;
-  const char* before_found_ptr;
-  const char* found_ptr;
-  found_ptr = strstr(string, label);
-  if (found_ptr) {
-    before_found_ptr = found_ptr;
-    found_ptr = strstr(before_found_ptr + label_length, "__");
-    if (found_ptr) {
-      if (found_ptr == before_found_ptr + label_length) {
-        before_found_ptr = found_ptr;
-        found_ptr = strstr(before_found_ptr + name1_length, name1);
-        if (found_ptr) {
-          before_found_ptr = found_ptr;
-          if (found_ptr == before_found_ptr +  name1_length) {
-            found_ptr = strstr(before_found_ptr + label_length, "__");
-            if (found_ptr) {
-              if (name2) {
-                int32_t name2_length = strlen(name2);
-                before_found_ptr = found_ptr;
-                found_ptr = strstr(before_found_ptr + name2_length, name2);
-                if (found_ptr) {
-                  before_found_ptr = found_ptr;
-                  if (found_ptr == before_found_ptr +  name2_length) {
-                    found_ptr = strstr(before_found_ptr + label_length, "__");
-                    if (found_ptr) {
-                      found = 1;
-                    }
-                  }
-                }
-              }
-              else {
-                found = 1;
-              }
-            }
-          }
-        }
-      }
+  int32_t name2_length = 0;
+  if (name2) {
+    name2_length = strlen(name2);
+  }
+  
+  int32_t length = label_length + separator_length + name1_length + separator_length;
+  if (name2) {
+    length += separator_length + name2_length + separator_length;
+  }
+  
+  char* name_abs = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(length + 1);
+  for (int32_t i = 0; i < strlen(name_abs); i++) {
+    if (name_abs[i] == ':') {
+      name_abs[i] = '_';
     }
   }
+  
+  memcpy(name_abs, label, label_length);
+  memcpy(name_abs + label_length, separator, separator_length);
+  memcpy(name_abs + label_length + separator_length, name1, name1_length);
+  memcpy(name_abs + label_length + separator_length + name1_length, separator, separator_length);
+  if (name2) {
+    memcpy(name_abs + label_length + separator_length + name1_length + separator_length, name2, name2_length);
+    memcpy(name_abs + label_length + separator_length + name1_length + separator_length + name2_length, separator, separator_length);
+  }
+  
+  int32_t found = 0;
+  const char* found_ptr = strstr(string, label);
+  if (found_ptr) {
+    found = 1;
+  }
+  
+  SPVM_ALLOCATOR_free_memory_block_unmanaged(name_abs);
   
   return found;
 }
