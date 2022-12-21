@@ -2797,7 +2797,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = SPVM_IMPLEMENT_GET_CLASS_ID_RET(env, stack, class_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_id = ");
+        SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_GET_CLASS_ID(");
