@@ -246,6 +246,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_field_id_static != &env_array[227]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->items != &env_array[228]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->call_instance_method_static_by_name != &env_array[229]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_method_id != &env_array[230]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -1675,7 +1676,12 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   if (output == 5) {
     stack[0].ival = 1;
   }
-  
+
+  int32_t method_id2 = env->get_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  if (method_id2 != method_id) {
+    return 1;
+  }
+
   return 0;
 }
 

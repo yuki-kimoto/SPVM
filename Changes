@@ -7,6 +7,10 @@
       void (*build_method_source)(void* precompile, void* string_buffer, const char* class_name, const char* method_name);
       
       This generates the source for JIT compile.
+    * Added the get_method_id Native API.
+    
+      int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
+    
 0.9668 2022-12-20
   [New Features]
     * Added the items native API.
