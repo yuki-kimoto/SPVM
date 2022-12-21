@@ -2476,7 +2476,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_IMPLEMENT_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = ");
+        SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n");
         switch (opcode_id) {
@@ -2555,7 +2557,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = SPVM_IMPLEMENT_GET_CLASS_VAR_ID(env, stack, class_name, class_var_name, message, &error);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_id = ");
+        SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n");
         switch (opcode_id) {
