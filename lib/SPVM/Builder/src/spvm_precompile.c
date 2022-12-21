@@ -467,6 +467,19 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
           SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_ID_RET(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
       }
       else if (field_id >= 0) {
@@ -481,6 +494,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
           SPVM_PRECOMPILE_add_field_id(precompile, string_buffer, class_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_PRECOMPILE_add_field_id(precompile, string_buffer, class_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_field_id(precompile, string_buffer, class_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
       }
       else if (class_var_id >= 0) {
@@ -494,6 +522,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
           SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_VAR_ID(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
       }
       else if (method_id >= 0) {
