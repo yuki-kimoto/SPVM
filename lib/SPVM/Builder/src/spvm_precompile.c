@@ -5079,11 +5079,34 @@ int32_t SPVM_STRING_BUFFER_contains_class_id(const char* string, const char* cla
   return found;
 }
 
-int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* label, const char* name1, const char* name2) {
+int32_t SPVM_STRING_BUFFER_contains_field_id(const char* string, const char* class_name, const char* field_name) {
   
   // field_id__CLASS_NAME__FIELD_NAME__
-  // method_id__METHOD_NAME__FIELD_NAME__
+  const char* label = "field_id";
+  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, field_name);
+  
+  return found;
+}
+
+int32_t SPVM_STRING_BUFFER_contains_class_var_id(const char* string, const char* class_name, const char* class_var_name) {
+  
   // class_var_id__CLASS_VAR_NAME__
+  const char* label = "class_var_id";
+  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, class_var_name);
+  
+  return found;
+}
+
+int32_t SPVM_STRING_BUFFER_contains_method_id(const char* string, const char* class_name, const char* method_name) {
+  
+  // method_id__METHOD_NAME__FIELD_NAME__
+  const char* label = "method_id";
+  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, class_name, method_name);
+  
+  return found;
+}
+
+int32_t SPVM_STRING_BUFFER_contains_access_id(const char* string, const char* label, const char* name1, const char* name2) {
   
   int32_t label_length = strlen(label);
   
