@@ -131,7 +131,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE*
   return class_var_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, char* message, int32_t* error) {
+static inline int32_t SPVM_IMPLEMENT_GET_METHOD_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, char* message, int32_t* error) {
 
   int32_t method_id = env->get_method_id(env, stack, class_name, method_name);
   
