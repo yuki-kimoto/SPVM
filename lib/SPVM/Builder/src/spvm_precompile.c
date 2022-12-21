@@ -5066,36 +5066,7 @@ int32_t SPVM_STRING_BUFFER_contains_basic_type_id(const char* string, const char
   // basic_type_id__BASIC_TYPE_NAME__
   
   const char* label = "basic_type_id";
-  int32_t label_length = strlen(label);
-  
-  const char* separator = "__";
-  int32_t separator_length = strlen(separator);
-  
-  int32_t basic_type_name_length = strlen(basic_type_name);
-  
-  int32_t found = 0;
-  const char* before_found_ptr;
-  const char* found_ptr;
-  found_ptr = strstr(string, label);
-  if (found_ptr) {
-    before_found_ptr = found_ptr;
-    found_ptr = strstr(before_found_ptr + label_length, "__");
-    if (found_ptr) {
-      if (found_ptr == before_found_ptr + label_length) {
-        before_found_ptr = found_ptr;
-        found_ptr = strstr(before_found_ptr + basic_type_name_length, basic_type_name);
-        if (found_ptr) {
-          before_found_ptr = found_ptr;
-          if (found_ptr == before_found_ptr +  basic_type_name_length) {
-            found_ptr = strstr(before_found_ptr + label_length, "__");
-            if (found_ptr) {
-              found = 1;
-            }
-          }
-        }
-      }
-    }
-  }
+  int32_t found = SPVM_STRING_BUFFER_contains_access_id(string, label, basic_type_name, NULL);
   
   return found;
 }
