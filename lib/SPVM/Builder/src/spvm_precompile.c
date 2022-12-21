@@ -4943,6 +4943,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   // No exception
+  SPVM_STRING_BUFFER_add(string_buffer, "  END_OF_METHOD:\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (error) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    return_value = error;\n");
