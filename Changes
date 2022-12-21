@@ -10,7 +10,9 @@
     * Added the get_method_id Native API.
     
       int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
-    
+  [Performance Improvement]
+    * Improve the performance of the method call, field access, class variable access, basic type access, class access in precompiled source
+      because the ids are cached at the beginning of the precompiled function.
 0.9668 2022-12-20
   [New Features]
     * Added the items native API.
