@@ -131,6 +131,20 @@ static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE*
   return class_var_id;
 }
 
+static inline int32_t SPVM_IMPLEMENT_GET_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, char* message, int32_t* error) {
+
+  int32_t method_id = env->get_method_id(env, stack, class_name, method_name);
+  
+  if (method_id < 0) {
+    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], method_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error = 1;
+  }
+  
+  return method_id;
+}
+
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
