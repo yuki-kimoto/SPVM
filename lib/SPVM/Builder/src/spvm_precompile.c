@@ -4911,7 +4911,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_class_method_id(env, stack, class_name, method_name);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_method_id(env, stack, class_name, method_name);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  if (method_id < 0) {\n"
                                               "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], class_name, method_name);\n"
 
@@ -4948,7 +4948,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_id = env->get_method_id(env, stack, class_name, method_name);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  if (method_id < 0) {\n"
                                               "    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], class_name, method_name);\n"
 
