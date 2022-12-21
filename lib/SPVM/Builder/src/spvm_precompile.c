@@ -110,8 +110,6 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
 void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  const char* string_buffer_begin = string_buffer->value;
-  
   // Headers
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
@@ -328,6 +326,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_OPCODE* opcode = NULL;
   
   // Static local variables
+  const char* string_buffer_begin = string_buffer->value + string_buffer->length;
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
     opcode = &(opcodes[method_opcodes_base_id + opcode_index]);
@@ -448,6 +447,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       else if (class_id >= 0) {
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_class_id(precompile, string_buffer_begin, class_name);
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+        }
       }
       else if (field_id >= 0) {
         int32_t class_id = SPVM_API_RUNTIME_get_field_class_id(runtime, field_id);
@@ -456,6 +461,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field_id);
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_field_id(precompile, string_buffer_begin, class_name, field_name);
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_PRECOMPILE_add_field_id(precompile, string_buffer, class_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+        }
       }
       else if (class_var_id >= 0) {
         int32_t class_id = SPVM_API_RUNTIME_get_class_var_class_id(runtime, class_var_id);
@@ -463,6 +474,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_id);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_class_var_id(precompile, string_buffer_begin, class_name, class_var_name);
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+        }
       }
       else if (method_id >= 0) {
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
@@ -470,6 +487,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_method_id(precompile, string_buffer_begin, class_name, method_name);
+        
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, class_name, method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+        }
       }
       else {
         assert(0);
@@ -5155,11 +5179,11 @@ int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const ch
     memcpy(name_abs + label_length + separator_length + name1_length + separator_length, name2, name2_length);
     memcpy(name_abs + label_length + separator_length + name1_length + separator_length + name2_length, separator, separator_length);
   }
-
+  
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, name_abs);
   
   int32_t found = 0;
-  const char* found_ptr = strstr(string, label);
+  const char* found_ptr = strstr(string, name_abs);
   if (found_ptr) {
     found = 1;
   }
