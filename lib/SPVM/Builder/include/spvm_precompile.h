@@ -71,5 +71,6 @@ int32_t SPVM_PRECOMPILE_contains_field_id(SPVM_PRECOMPILE* precompile, const cha
 int32_t SPVM_PRECOMPILE_contains_class_var_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* class_var_name);
 int32_t SPVM_PRECOMPILE_contains_method_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* method_name);
 int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const char* string, const char* label, const char* string1, const char* string2);
+void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
 
 #endif

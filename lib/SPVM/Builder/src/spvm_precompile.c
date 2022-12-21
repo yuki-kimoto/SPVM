@@ -437,6 +437,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       if (basic_type_id >= 0) {
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        
+        int32_t found = SPVM_PRECOMPILE_contains_basic_type_id(precompile, string_buffer_begin, basic_type_name);
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+        }
       }
       else if (class_id >= 0) {
         int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
@@ -5029,6 +5036,7 @@ void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_
   SPVM_STRING_BUFFER_add(string_buffer, "basic_type_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(basic_type_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
@@ -5036,6 +5044,7 @@ void SPVM_PRECOMPILE_add_class_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "class_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
@@ -5043,8 +5052,10 @@ void SPVM_PRECOMPILE_add_field_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_STRING_BUFFER_add(string_buffer, "field_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, field_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(field_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
@@ -5052,8 +5063,10 @@ void SPVM_PRECOMPILE_add_class_var_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_B
   SPVM_STRING_BUFFER_add(string_buffer, "class_var_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_var_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
@@ -5061,8 +5074,10 @@ void SPVM_PRECOMPILE_add_method_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "method_id");
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, class_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, method_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(method_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
@@ -5131,11 +5146,6 @@ int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const ch
   }
   
   char* name_abs = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(length + 1);
-  for (int32_t i = 0; i < strlen(name_abs); i++) {
-    if (name_abs[i] == ':') {
-      name_abs[i] = '_';
-    }
-  }
   
   memcpy(name_abs, label, label_length);
   memcpy(name_abs + label_length, separator, separator_length);
@@ -5145,6 +5155,8 @@ int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const ch
     memcpy(name_abs + label_length + separator_length + name1_length + separator_length, name2, name2_length);
     memcpy(name_abs + label_length + separator_length + name1_length + separator_length + name2_length, separator, separator_length);
   }
+
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, name_abs);
   
   int32_t found = 0;
   const char* found_ptr = strstr(string, label);
@@ -5155,4 +5167,14 @@ int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const ch
   SPVM_ALLOCATOR_free_memory_block_unmanaged(name_abs);
   
   return found;
+}
+
+void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string) {
+  int32_t offset = 0;
+  while (string[offset] != '\0') {
+    if (string[offset] == ':') {
+      string[offset] = '_';
+    }
+    offset++;
+  }
 }
