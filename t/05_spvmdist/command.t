@@ -68,8 +68,11 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "t/*.t t/*/*.t t/*/*/*.t"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "NORECURS => 1"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "CONFIGURE_REQUIRES"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "PREREQ_PM"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "no_index"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|my %spvm_requires = ('SPVM' => |));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);

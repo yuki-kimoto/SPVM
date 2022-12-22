@@ -585,6 +585,11 @@ if (\$meta) {
   \$no_build_spvm_modules = 1;
 }
 
+unless (\$meta) {
+  # Do something such as environment check.
+}
+
+my \%spvm_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME              => 'SPVM::$class_name',
   VERSION_FROM      => '$perl_module_rel_file',
@@ -609,10 +614,10 @@ WriteMakefile(
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
-    'SPVM' => '$SPVM::VERSION',
+    \%spvm_requires,
   },
-  PREREQ_PM => {
-    
+  PREREQ_PM         => {
+    \%spvm_requires,
   },
   TEST_REQUIRES => {
     
