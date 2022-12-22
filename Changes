@@ -1,3 +1,14 @@
+0.9670 2022-12-22
+  [New Features]
+    * Added the following Native APIs.
+    
+      const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
+      void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
+
+  [Bug Fix]
+    * Fixed the bug that the length of the return vlaue of the strerror_string Native API was wrong.
+  [Test Fix]
+    * Fixed the testging bug that the tests of the strerror and strerror_string Native APIs don't work.
 0.9669 2022-12-21
   [Incompatible Changes]
     * Renamed the create_precompile_source Precompile Native API to build_class_source.

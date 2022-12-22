@@ -247,6 +247,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->items != &env_array[228]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->call_instance_method_static_by_name != &env_array[229]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method_id != &env_array[230]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->strerror_nolen != &env_array[231]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->strerror_string_nolen != &env_array[232]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -2718,6 +2720,29 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_value(SPVM_ENV* env, SPVM_VAL
   int32_t errno_value = stack[0].ival;
   
   void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
+  
+  stack[0].oval = strerror_string_value;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__strerror_nolen_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t errno_value = stack[0].ival;
+  
+  const char* strerror_value = env->strerror_nolen(env, stack, errno_value);
+  void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
+  
+  stack[0].oval = obj_strerror_value;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__strerror_string_nolen_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t errno_value = stack[0].ival;
+  
+  void* strerror_string_value = env->strerror_string_nolen(env, stack, errno_value);
   
   stack[0].oval = strerror_string_value;
   

@@ -312,6 +312,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
     SPVM_API_get_method_id,
+    SPVM_API_strerror_nolen,
+    SPVM_API_strerror_string_nolen,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4031,6 +4033,7 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
   int32_t status = SPVM_STRERROR_strerror(errno_value, strerror_value, length);
   
   if (status == 0) {
+    env->shorten(env, stack, obj_strerror_value, strlen(strerror_value));
     return obj_strerror_value;
   }
   else {
@@ -4049,6 +4052,14 @@ const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_va
   else {
     return NULL;
   }
+}
+
+void* SPVM_API_strerror_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value) {
+  return SPVM_API_strerror_string(env, stack, errno_value, 0);
+}
+
+const char* SPVM_API_strerror_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value) {
+  return SPVM_API_strerror(env, stack, errno_value, 0);
 }
 
 int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack) {
