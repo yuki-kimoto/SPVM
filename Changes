@@ -43,7 +43,10 @@
       *.tmp
       *.o
       *.bs
-
+  [Improved Exception Messages]
+    * Improve an exception message.
+      [After]
+      The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for the $category methods in the $class_name class: $dl_error
 
 0.9670 2022-12-22
   [New Features]
