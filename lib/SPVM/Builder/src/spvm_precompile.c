@@ -326,7 +326,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // Static local variables
   int32_t string_buffer_begin_offset = string_buffer->length;
   {
-    SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
     SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, current_class_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
     
@@ -343,7 +343,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                           "    }\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
-    SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
     SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, current_class_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -360,7 +360,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                           "    }\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
-    SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
     SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, current_class_name, current_method_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -496,7 +496,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         int32_t found = SPVM_PRECOMPILE_contains_basic_type_id(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name);
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
           
@@ -520,7 +520,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_class_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name);
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -547,7 +547,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_field_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name, field_name);
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_field_id(precompile, string_buffer, class_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -575,7 +575,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_class_var_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name, class_var_name);
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_class_var_id(precompile, string_buffer, class_name, class_var_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -604,7 +604,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_method_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name, method_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, class_name, method_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
