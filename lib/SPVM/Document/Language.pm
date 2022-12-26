@@ -7630,6 +7630,39 @@ Examples:
   if ($object is_type Stringable[]) {
     
   }
+
+=head2 is_compile_type Operator
+
+The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of the left operand is the right type.
+
+  LEFT_OPERAND is_compile_type RIGHT_TYPE
+
+If the compilation-time type of the left operand is the right type, return C<1>. Otherwise return C<0>.
+
+The return type is L<int type|/"int Type">.
+
+Examples:
+  
+  {
+    my $value : int;
+    if ($value is_compile_type int) {
+      # Pass
+    }
+  }
+  
+  {
+    my $object : object = new TestCase::Minimal;
+    if ($object is_compile_type object) {
+      # Pass
+    }
+  }
+
+  {
+    my $value : Stringer = method : string () { return "aaa"; };
+    if ($value is_compile_type Stringer) {
+      # Pass
+    }
+  }
   
 =head2 ref Operator
 

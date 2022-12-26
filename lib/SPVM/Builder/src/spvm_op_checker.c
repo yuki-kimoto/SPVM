@@ -1387,6 +1387,38 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_IS_COMPILE_TYPE: {
+              SPVM_TYPE* left_operand_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_OP* op_type = op_cur->last;
+              
+              SPVM_TYPE* right_type = op_type->uv.type;
+              
+              // If left type is same as right type, this return true, otherwise return false
+              if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
+                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                op_cur = op_assign_bool;
+              }
+              else {
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
+                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                op_cur = op_assign_bool;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_ARRAY_LENGTH: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
@@ -3709,6 +3741,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_CMP:
                         case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_IS_TYPE:
+                        case SPVM_OP_C_ID_IS_COMPILE_TYPE:
                         case SPVM_OP_C_ID_BOOL:
                         {
                           assert(0);

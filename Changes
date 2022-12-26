@@ -1,3 +1,6 @@
+0.9673 2022-12-25
+  [New Features]
+    * Added the is_compile_type operator.
 0.9672 2022-12-24
   [Performance Degration]
     * Degrates the performance of the method call, field access, class variable access, basic type access, class access in precompiled source

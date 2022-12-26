@@ -37,7 +37,7 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_operator binary_operator comparison_operator isa is_type
+%type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
 %type <opval> call_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow has_impl
@@ -54,7 +54,7 @@
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE NUMERIC_CMP STRING_CMP
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
@@ -759,6 +759,7 @@ operator
   | comparison_operator
   | isa
   | is_type
+  | is_compile_type
   | TRUE
     {
       $$ = SPVM_OP_new_op_true(compiler, $1);
@@ -1011,6 +1012,12 @@ isa
 
 is_type
   : operator IS_TYPE type
+    {
+      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
+    }
+    
+is_compile_type
+  : operator IS_COMPILE_TYPE type
     {
       $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
     }

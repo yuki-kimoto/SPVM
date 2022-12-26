@@ -218,6 +218,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "string_cmp",
     "isa",
     "is_type",
+    "is_compile_type",
     "sequence",
     "scalar",
     "array_field_access",
