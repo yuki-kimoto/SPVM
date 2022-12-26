@@ -72,7 +72,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "PREREQ_PM"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|my %spvm_requires = ('SPVM' => |));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|my %configure_and_runtime_requires = ('SPVM' => |));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);

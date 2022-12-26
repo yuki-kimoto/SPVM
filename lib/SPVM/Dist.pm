@@ -588,7 +588,7 @@ unless (\$meta) {
   # Do something such as environment check.
 }
 
-my \%spvm_requires = ('SPVM' => '$SPVM::VERSION');
+my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME              => 'SPVM::$class_name',
   VERSION_FROM      => '$perl_module_rel_file',
@@ -613,10 +613,10 @@ WriteMakefile(
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
-    \%spvm_requires,
+    \%configure_and_runtime_requires,
   },
   PREREQ_PM         => {
-    \%spvm_requires,
+    \%configure_and_runtime_requires,
   },
   TEST_REQUIRES => {
     
