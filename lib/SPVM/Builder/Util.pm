@@ -324,7 +324,7 @@ sub create_make_rule {
   # Dependency c source files
   push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$class_rel_file/*";
   
-  # Dependency module file
+  # Dependency native module file
   if ($category eq 'native') {
     my $config_file = $noext_file;
     $config_file .= '.config';

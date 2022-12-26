@@ -123,7 +123,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.o$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bs$'));
   
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
@@ -182,7 +182,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $manifest_skip_file);
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, "Makefile"));
   
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'use lib "$FindBin::Bin/lib";'));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
@@ -214,7 +214,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo::Bar::Baz {"));
   
-  my $basic_test_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo::Bar::Baz';"));
 
@@ -412,7 +412,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(!-f $manifest_skip_file);
   
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(!-f $basic_test_file);
 
   chdir($save_cur_dir) or die;
@@ -633,7 +633,7 @@ for my $test_index (0 .. 1) {
   my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
   ok(-f $gitkeep_file_for_native_module_src_dir);
 
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
@@ -689,7 +689,7 @@ for my $test_index (0 .. 1) {
   my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
   ok(-f $gitkeep_file_for_native_module_src_dir);
 
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
@@ -791,7 +791,7 @@ for my $test_index (0 .. 1) {
   my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(!-f $manifest_skip_file);
   
-  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/use_spvm_class.t";
+  my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(!-f $basic_test_file);
 
   chdir($save_cur_dir) or die;
