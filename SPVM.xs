@@ -434,7 +434,8 @@ xs_call_method(...)
               }
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
-                croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL), FILE_NAME, __LINE__);
+                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
+                croak("The %dth argument of the %s field in the %s class is not found at %s line %d\n", args_index_nth, mulnum_field_name, arg_class_name, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -640,7 +641,8 @@ xs_call_method(...)
                 }
                 else {
                   int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
-                  croak("%dth argument's field \"%s\" of \"%s\" is missing at %s line %d\n", args_index_nth, mulnum_field_name, env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL), FILE_NAME, __LINE__);
+                  const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
+                  croak("The %s field in the %dth argument must be defined. The field is defined in the %s class at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, FILE_NAME, __LINE__);
                 }
                 
                 switch (arg_class_field_type_basic_type_id) {
@@ -1012,7 +1014,7 @@ xs_call_method(...)
     int32_t length = env->length(env, stack, exception);
     const char* exception_chars = env->get_chars(env, stack, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
-    croak("%s\n at %s line %d\n", SvPV_nolen(sv_exception), FILE_NAME, __LINE__);
+    croak("%sn at %s line %d\n", SvPV_nolen(sv_exception), FILE_NAME, __LINE__);
   }
   else {
     SV* sv_return_value = NULL;
