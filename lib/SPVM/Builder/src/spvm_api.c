@@ -1983,14 +1983,14 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return sv_type_name;
 }
 
-SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object_in) {
+SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_get_type_name_raw(env, stack, object_in);
+  SPVM_OBJECT* obj_type_name = SPVM_API_get_type_name_raw(env, stack, object);
   
-  SPVM_API_push_mortal(env, stack, object);
+  SPVM_API_push_mortal(env, stack, obj_type_name);
   
-  return object;
+  return obj_type_name;
 }
 
 void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
