@@ -60,7 +60,7 @@ void* SPVM_XS_UTIL_get_object(pTHX_ SV* sv_data) {
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    *sv_error = sv_2mortal(newSVpvf("Argument must be array reference at %s line %d\n", MFILE, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The argument must be array reference at %s line %d\n", MFILE, __LINE__));
     return NULL;
   }
   
@@ -1559,7 +1559,7 @@ xs_array_to_elems(...)
     }
   }
   else {
-    croak("Argument must be array type at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be array type at %s line %d\n", MFILE, __LINE__);
   }
 
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -1716,7 +1716,7 @@ xs_array_to_bin(...)
     }
   }
   else {
-    croak("Argument must be array type at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be array type at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_bin);
@@ -2364,7 +2364,7 @@ xs_new_string(...)
   if (SvOK(sv_value)) {
     
     if (SvROK(sv_value)) {
-      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+      croak("The argument can't be reference at %s line %d\n", MFILE, __LINE__);
     }
     else {
       // Environment
@@ -2385,7 +2385,7 @@ xs_new_string(...)
     }
   }
   else {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2417,7 +2417,7 @@ xs_new_string_from_bin(...)
   SV* sv_string;
   if (SvOK(sv_binary)) {
     if (SvROK(sv_binary)) {
-      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+      croak("The argument can't be reference at %s line %d\n", MFILE, __LINE__);
     }
     else {
       int32_t binary_length = sv_len(sv_binary);
@@ -2438,7 +2438,7 @@ xs_new_string_from_bin(...)
     }
   }
   else {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -3542,7 +3542,7 @@ _xs_new_muldim_array(...)
   SV* sv_elems = ST(3);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be array reference at %s line %d\n", MFILE, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3662,7 +3662,7 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+    croak("The argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
