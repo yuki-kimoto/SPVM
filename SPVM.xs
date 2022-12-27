@@ -910,28 +910,8 @@ xs_call_method(...)
               int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
               int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
               
-              int32_t runtime_assignability;
-              if (object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension) {
-                runtime_assignability = 1;
-              }
-              else {
-                if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-                  if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
-                    runtime_assignability = 0;
-                  }
-                  else {
-                    runtime_assignability = 1;
-                  }
-                }
-                else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-                  runtime_assignability = 1;
-                }
-                else {
-                  runtime_assignability = 0;
-                }
-              }
-              
-              if (!runtime_assignability) {
+              int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
+              if (!isa) {
                 croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
@@ -999,35 +979,15 @@ xs_call_method(...)
           int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
           int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
           
-          int32_t runtime_assignability;
-          if (object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension) {
-            runtime_assignability = 1;
-          }
-          else {
-            if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-              if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && object_type_dimension == 1) {
-                runtime_assignability = 0;
-              }
-              else {
-                runtime_assignability = 1;
-              }
-            }
-            else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-              runtime_assignability = 1;
-            }
-            else {
-              runtime_assignability = 0;
-            }
-          }
-          
-          if (!runtime_assignability) {
+          int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
+          if (!isa) {
             croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
           }
           
           stack[stack_index].oval = object;
         }
         else {
-          croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+          croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
         }
       }
       
