@@ -3454,15 +3454,13 @@ _xs_new_object_array(...)
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
       void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
-      
-      if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-        env->set_elem_object(env, stack, array, index, object);
-      }
-      else if (env->get_object_basic_type_id(env, stack, object) == array_basic_type_id && env->get_object_type_dimension(env, stack, object) == element_type_dimension) {
+
+      int32_t elem_isa = env->elem_isa(env, stack, array, object);
+      if (elem_isa) {
         env->set_elem_object(env, stack, array, index, object);
       }
       else {
-        croak("Element is invalid object type at %s line %d\n", FILE_NAME, __LINE__);
+        croak("The object must be assigned to the element of the array at %s line %d\n", FILE_NAME, __LINE__);
       }
     }
     else {
@@ -3539,11 +3537,12 @@ _xs_new_muldim_array(...)
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
       void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
       
-      if (env->get_object_basic_type_id(env, stack, object) == array_basic_type_id && env->get_object_type_dimension(env, stack, object) == element_type_dimension) {
+      int32_t elem_isa = env->elem_isa(env, stack, array, object);
+      if (elem_isa) {
         env->set_elem_object(env, stack, array, index, object);
       }
       else {
-        croak("Element is invalid object type at %s line %d\n", FILE_NAME, __LINE__);
+        croak("The object must be assigned to the element of the array at %s line %d\n", FILE_NAME, __LINE__);
       }
     }
     else {
@@ -3680,8 +3679,9 @@ _xs_new_mulnum_array_from_bin(...)
       field_stack_length = 8;
       break;
     }
-    default:
-      croak("Unexpected error");
+    default: {
+      assert(0);
+    }
   }
   
   if (binary_length % (field_length * field_stack_length) != 0) {
