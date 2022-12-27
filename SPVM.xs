@@ -202,7 +202,7 @@ xs_call_method(...)
   // Method not found
   int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
   if (method_id < 0) {
-    croak("%s->%s method not found at %s line %d\n", class_name, method_name, MFILE, __LINE__);
+    croak("The %s method in the %s class is not found at %s line %d\n", method_name, class_name, MFILE, __LINE__);
   }
   
   // Base index of SPVM arguments
@@ -222,10 +222,10 @@ xs_call_method(...)
   // Check argument count
   int32_t call_method_args_length = items - spvm_args_base;
   if (call_method_args_length < method_required_args_length) {
-    croak("Too few arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
+    croak("Too few arguments. The length of the arguments of the %s method in the %s class must be less than %d at %s line %d\n", method_name, class_name, method_required_args_length, MFILE, __LINE__);
   }
   else if (call_method_args_length > method_args_length) {
-    croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
+    croak("Too many arguments. The length of the arguments of the %s method in the %s class must be more than %d at %s line %d\n", method_name, class_name, method_args_length, MFILE, __LINE__);
   }
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal stack.
@@ -275,8 +275,9 @@ xs_call_method(...)
                 else {
                   is_iok_scalar_ref = 0;
                 }
+                
                 if (!is_iok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 
                 SV* sv_value_deref = SvRV(sv_value);
@@ -299,7 +300,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -321,7 +322,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -343,7 +344,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a interger compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -365,7 +366,7 @@ xs_call_method(...)
                   is_nok_scalar_ref = 0;
                 }
                 if (!is_nok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a floating-point compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a floating-point reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 float value = (float)SvNV(sv_value_deref);
@@ -387,7 +388,7 @@ xs_call_method(...)
                   is_nok_scalar_ref = 0;
                 }
                 if (!is_nok_scalar_ref) {
-                  croak("%dth argument of %s->%s must be a floating-point compatible scalar reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a floating-point reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 double value = (double)SvNV(sv_value_deref);
@@ -414,7 +415,7 @@ xs_call_method(...)
               }
             }
             if (hv_value == NULL) {
-              croak("%dth argument of %s->%s must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a scalar reference of a hash reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);
@@ -490,7 +491,7 @@ xs_call_method(...)
               // Perl scalar to SPVM byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
@@ -500,7 +501,7 @@ xs_call_method(...)
               // Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
@@ -510,7 +511,7 @@ xs_call_method(...)
               // Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
@@ -520,7 +521,7 @@ xs_call_method(...)
               // Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
@@ -530,7 +531,7 @@ xs_call_method(...)
               // Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
@@ -540,7 +541,7 @@ xs_call_method(...)
               // Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("%dth argument of %s->%s must be a defined number compatible value at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a number at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;
@@ -585,7 +586,7 @@ xs_call_method(...)
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("%dth argument of %s->%s must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
               }
               else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
@@ -594,19 +595,21 @@ xs_call_method(...)
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("%dth argument of %s->%s must be a SPVM::BlessedObject at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
               }
               else {
                 if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
                   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                  if (env->get_object_basic_type_id(env, stack, object) != arg_basic_type_id) {
-                    croak("%dth argument of %s->%s must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  
+                  if (!env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension)) {
+                    croak("The %dth argument of the %s method in the %s class must be assinged to the argument type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                   }
+                  
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("%dth argument of %s->%s must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
               }
             }
@@ -679,7 +682,7 @@ xs_call_method(...)
               stack_index += arg_class_fields_length;
             }
             else {
-              croak("%dth argument of %s->%s must be a hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a hash reference at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
             break;
           }
@@ -798,13 +801,13 @@ xs_call_method(...)
               int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
               
               if (!(object_basic_type_id == arg_basic_type_id)) {
-                croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("%dth argument of %s->%s must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -841,13 +844,13 @@ xs_call_method(...)
               int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
               int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
               if (!(object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension)) {
-                croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("%dth argument of %s->%s must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -892,7 +895,7 @@ xs_call_method(...)
                       env->set_elem_object(env, stack, array, i, object);
                     }
                     else {
-                      croak("%dth argument of %s->%s must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                      croak("The %dth argument of the %s method in the %s class must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                     }
                   }
                 }
@@ -929,13 +932,13 @@ xs_call_method(...)
               }
               
               if (!runtime_assignability) {
-                croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("%dth argument of %s->%s must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -981,7 +984,7 @@ xs_call_method(...)
                   env->set_elem_object(env, stack, array, i, object);
                 }
                 else {
-                  croak("%dth argument of %s->%s must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
               }
             }
@@ -1018,13 +1021,13 @@ xs_call_method(...)
           }
           
           if (!runtime_assignability) {
-            croak("%dth argument of %s->%s is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+            croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
           }
           
           stack[stack_index].oval = object;
         }
         else {
-          croak("%dth argument of %s->%s must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
+          croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
         }
       }
       

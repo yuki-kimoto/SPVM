@@ -415,13 +415,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # new_string_from_bin - undef
   {
     eval { SPVM::new_string_from_bin(undef) };
-    like($@, qr/Argument must be defined/);
+    like($@, qr/The argument must be defined/);
   }
 
   # new_string_from_bin - reference
   {
     eval { SPVM::new_string_from_bin([]) };
-    like($@, qr/Argument must not be reference/);
+    like($@, qr/The argument can't be reference/);
   }
 }
 
@@ -756,13 +756,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # new_string - undef
   {
     eval { SPVM::new_string(undef) };
-    like($@, qr/Argument must be defined/);
+    like($@, qr/The argument must be defined/);
   }
 
   # new_string - reference
   {
     eval { SPVM::new_string([]) };
-    like($@, qr/Argument must not be reference/);
+    like($@, qr/The argument can't be reference/);
   }
 }
 

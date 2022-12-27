@@ -61,7 +61,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     eval {
       SPVM::Int->new;
     };
-    like($@, qr/too few arguments/i);
+    like($@, qr/Too few arguments/);
   }
   
   # Argument general exception - too many arguments
@@ -69,7 +69,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     eval {
       SPVM::Int->new(1, 2);
     };
-    like($@, qr/too many arguments/i);
+    like($@, qr/Too many arguments/);
   }
 }
 
