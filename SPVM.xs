@@ -2056,7 +2056,7 @@ xs_new_string_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_string_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_string_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
 
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -2120,7 +2120,7 @@ xs_new_byte_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_byte_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_byte_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2177,7 +2177,7 @@ xs_new_byte_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_byte_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_byte_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2430,7 +2430,7 @@ xs_new_short_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_short_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_short_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2487,7 +2487,7 @@ xs_new_short_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_short_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_short_array in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2633,7 +2633,7 @@ xs_new_int_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_int_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_int_array in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2689,7 +2689,7 @@ xs_new_int_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_int_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_int_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2834,7 +2834,7 @@ xs_new_long_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_long_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_long_array in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2891,7 +2891,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_long_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_long_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -3037,7 +3037,7 @@ xs_new_float_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_float_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_float_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3182,7 +3182,7 @@ xs_new_double_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The argument of SPVM::ExchangeAPI::new_double_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of the new_double_array function in the SPVM::ExchangeAPI module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
