@@ -1625,8 +1625,9 @@ xs_array_to_bin(...)
           sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
           break;
         }
-        default:
+        default: {
           croak("Invalid type at %s line %d\n", FILE_NAME, __LINE__);
+        }
       }
     }
     else if (array_is_object_array) {
@@ -1713,7 +1714,7 @@ xs_string_object_to_bin(...)
 
   // String must be a SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
-    croak("String must be a SPVM::BlessedObject::String object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The string must be a SPVM::BlessedObject::String object at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1810,8 +1811,8 @@ xs_array_set(...)
   int32_t length = env->length(env, stack, array);
   
   // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
+  if (!(index >= 0 || index < length)) {
+    croak("The index must be more than or equal to 0 and less than the length");
   }
 
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, array);
@@ -1938,8 +1939,8 @@ xs_array_get(...)
   int32_t length = env->length(env, stack, array);
   
   // Check range
-  if (index < 0 || index > length - 1) {
-    croak("Out of range)");
+  if (!(index >= 0 || index < length)) {
+    croak("The index must be more than or equal to 0 and less than the length");
   }
 
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, array);
@@ -3419,7 +3420,7 @@ _xs_new_object_array(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Second argument of SPVM::new_object_array must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The second argument of the new_object_array function in the SPVM module must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
