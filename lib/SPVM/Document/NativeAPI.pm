@@ -2558,6 +2558,13 @@ The basic type category for the interface types.
 
 The basic type category for the any object type.
 
+=head2 Type Flags
+
+  1 SPVM_NATIVE_C_TYPE_FLAG_REF
+  2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
+
+The type flags.
+
 =head2 Class IDs
 
   1  SPVM_NATIVE_C_CLASS_ID_ERROR

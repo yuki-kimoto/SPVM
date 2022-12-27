@@ -2325,6 +2325,12 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM != 2) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED != 3) { stack[0].ival = 0; return 0; }
   }
+
+  // Type flags
+  {
+    if (SPVM_NATIVE_C_TYPE_FLAG_REF != 1) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_TYPE_FLAG_MUTABLE != 2) { stack[0].ival = 0; return 0; }
+  }
   
   stack[0].ival = 1;
 

@@ -1,3 +1,10 @@
+0.9676 2022-12-28
+  [New Features]
+    * Added the following constant values of Native API.
+    
+      1 SPVM_NATIVE_C_TYPE_FLAG_REF
+      2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
+    
 0.9675 2022-12-27
   [Improve Exception Messages]
     * Improve the exception messages of Exchange API.

@@ -492,6 +492,11 @@ enum {
   SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED = 3,
 };
 
+enum {
+  SPVM_NATIVE_C_TYPE_FLAG_REF = 1,
+  SPVM_NATIVE_C_TYPE_FLAG_MUTABLE = 2,
+};
+
 struct spvm_env_allocator {
   void* (*new_allocator)();
   void (*free_allocator)(void* allocator);
