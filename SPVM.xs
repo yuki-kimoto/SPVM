@@ -797,17 +797,15 @@ xs_call_method(...)
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
               void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
               
-              int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
-              int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
-              
-              if (!(object_basic_type_id == arg_basic_type_id)) {
-                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+              int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
+              if (!isa) {
+                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -850,7 +848,7 @@ xs_call_method(...)
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -895,7 +893,7 @@ xs_call_method(...)
                       env->set_elem_object(env, stack, array, i, object);
                     }
                     else {
-                      croak("The %dth argument of the %s method in the %s class must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+                      croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                     }
                   }
                 }
@@ -912,13 +910,13 @@ xs_call_method(...)
               
               int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
               if (!isa) {
-                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the %s method in the %s class must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+              croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
             }
           }
           
@@ -964,7 +962,7 @@ xs_call_method(...)
                   env->set_elem_object(env, stack, array, i, object);
                 }
                 else {
-                  croak("The %dth argument of the %s method in the %s class must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
                 }
               }
             }
@@ -981,7 +979,7 @@ xs_call_method(...)
           
           int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
           if (!isa) {
-            croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
+            croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, MFILE, __LINE__);
           }
           
           stack[stack_index].oval = object;
