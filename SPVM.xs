@@ -60,7 +60,7 @@ void* SPVM_XS_UTIL_get_object(pTHX_ SV* sv_data) {
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    *sv_error = sv_2mortal(newSVpvf("The argument must be array reference at %s line %d\n", FILE_NAME, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The argument must be an array reference at %s line %d\n", FILE_NAME, __LINE__));
     return NULL;
   }
   
@@ -587,7 +587,7 @@ xs_call_method(...)
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("The %dth argument of the %s method in the %s class must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the %s method in the %s class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
                 }
               }
               else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
@@ -841,10 +841,9 @@ xs_call_method(...)
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
               void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
               
-              int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
-              int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
-              if (!(object_basic_type_id == arg_basic_type_id && object_type_dimension == arg_type_dimension)) {
-                croak("The %dth argument of the %s method in the %s class is invalid object type at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
+              if (!isa) {
+                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
@@ -906,9 +905,6 @@ xs_call_method(...)
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
               void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-              
-              int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
-              int32_t object_type_dimension = env->get_object_type_dimension(env, stack, object);
               
               int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
               if (!isa) {
@@ -1014,7 +1010,7 @@ xs_call_method(...)
     int32_t length = env->length(env, stack, exception);
     const char* exception_chars = env->get_chars(env, stack, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
-    croak("%sn at %s line %d\n", SvPV_nolen(sv_exception), FILE_NAME, __LINE__);
+    croak("%s at %s line %d\n", SvPV_nolen(sv_exception), FILE_NAME, __LINE__);
   }
   else {
     SV* sv_return_value = NULL;
@@ -1341,9 +1337,9 @@ xs_array_to_elems(...)
   // Runtime
   void* runtime = env->runtime;
 
-  // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
+  // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1415,8 +1411,9 @@ xs_array_to_elems(...)
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
-            default:
-              croak("Unexpected error: set field value");
+            default: {
+              assert(0);
+            }
           }
           SvREFCNT_inc(sv_field_value);
           (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), sv_field_value, 0);
@@ -1522,7 +1519,7 @@ xs_array_to_elems(...)
     }
   }
   else {
-    croak("The argument must be array type at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The argument must be an array type at %s line %d\n", FILE_NAME, __LINE__);
   }
 
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -1559,9 +1556,9 @@ xs_array_to_bin(...)
   // Runtime
   void* runtime = env->runtime;
 
-  // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
+  // Array must be a SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("Data must be SPVM::BlessedObject::Array at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array at %s line %d\n", FILE_NAME, __LINE__);
   }
 
   // Get object
@@ -1679,7 +1676,7 @@ xs_array_to_bin(...)
     }
   }
   else {
-    croak("The argument must be array type at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The argument must be an array type at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_bin);
@@ -1714,9 +1711,9 @@ xs_string_object_to_bin(...)
   // Runtime
   void* runtime = env->runtime;
 
-  // String must be SPVM::BlessedObject::String or SPVM::BlessedObject::String
+  // String must be a SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
-    croak("String must be SPVM::BlessedObject::String object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("String must be a SPVM::BlessedObject::String object at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1759,9 +1756,9 @@ xs_array_length(...)
   // Runtime
   void* runtime = env->runtime;
 
-  // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
+  // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -2059,7 +2056,7 @@ xs_new_string_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_string_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_string_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
 
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -2123,7 +2120,7 @@ xs_new_byte_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_byte_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2180,7 +2177,7 @@ xs_new_byte_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_byte_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2433,7 +2430,7 @@ xs_new_short_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_short_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2490,7 +2487,7 @@ xs_new_short_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_short_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2636,7 +2633,7 @@ xs_new_int_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_int_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2692,7 +2689,7 @@ xs_new_int_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_int_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2837,7 +2834,7 @@ xs_new_long_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_long_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2894,7 +2891,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_long_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -3040,7 +3037,7 @@ xs_new_float_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_float_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_float_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3185,7 +3182,7 @@ xs_new_double_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_double_array() must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The argument of SPVM::ExchangeAPI::new_double_array() must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3422,7 +3419,7 @@ _xs_new_object_array(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Second argument of SPVM::new_object_array must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+    croak("Second argument of SPVM::new_object_array must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3468,7 +3465,7 @@ _xs_new_object_array(...)
       }
     }
     else {
-      croak("The element must be SPVM::BlessedObject object at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The element must be a SPVM::BlessedObject object at %s line %d\n", FILE_NAME, __LINE__);
     }
   }
   
@@ -3505,7 +3502,7 @@ _xs_new_muldim_array(...)
   SV* sv_elems = ST(3);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("The argument must be array reference at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The argument must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
