@@ -141,10 +141,21 @@ sub bind_to_perl {
     my $perl_class_name = "SPVM::$class_name";
     
     unless ($class_name_h->{$class_name}) {
-    
-      my $code = "package $perl_class_name; our \@ISA = ('SPVM::BlessedObject::Class');";
+      
+      my $parent_class_name = $builder->get_parent_class_name($class_name);
+      my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
+      
+      # The inheritance
+      my @isa;
+      if (defined $parent_class_name) {
+        push @isa, "SPVM::$parent_class_name";
+      }
+      push @isa, 'SPVM::BlessedObject::Class';
+      my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
+      
+      my $code = "package $perl_class_name; $isa";
       eval $code;
-
+      
       if (my $error = $@) {
         confess $error;
       }

@@ -29,6 +29,7 @@ use SPVM 'LongList';
 use SPVM 'FloatList';
 use SPVM 'DoubleList';
 use SPVM 'StringList';
+use SPVM 'Point3D';
 
 use SPVM 'TestCase::Minimal';
 
@@ -1232,6 +1233,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok($@);
   eval { SPVM::Double->new($ref) };
   ok($@);
+}
+
+# Inheritance
+{
+  my $point = SPVM::Point3D->new(1, 2);
+  
+  is($point->x, 1);
+  is($point->y, 2);
 }
 
 # All object is freed
