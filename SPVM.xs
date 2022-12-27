@@ -4115,6 +4115,56 @@ get_method_names(...)
 }
 
 SV*
+get_parent_class_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+  SV* sv_category = ST(2);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack;
+  if (SvOK(sv_stack)) {
+    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  }
+  
+  // Runtime
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  
+  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+  int32_t parent_class_id = env->api->runtime->get_class_parent_class_id(runtime, class_id);
+  
+  SV* sv_parent_class_name = &PL_sv_undef;
+  if (parent_class_id >= 0) {
+    int32_t parent_class_name_id = env->api->runtime->get_class_name_id(runtime, parent_class_id);
+    const char* parent_class_name = env->api->runtime->get_name(runtime, parent_class_name_id);
+    sv_parent_class_name = sv_2mortal(newSVpv(parent_class_name, 0));
+  }
+  
+  XPUSHs(sv_parent_class_name);
+  XSRETURN(1);
+}
+
+SV*
 get_anon_class_names_by_parent_class_name(...)
   PPCODE:
 {
