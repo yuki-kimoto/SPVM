@@ -1958,7 +1958,7 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   //[]
   length += type_dimension * 2;
   
-  void* obj_type_name = env->new_string(env, stack, NULL, length);
+  void* obj_type_name = env->new_string_raw(env, stack, NULL, length);
   
   char* type_name = (char*)env->get_chars(env, stack, obj_type_name);
   
@@ -1971,8 +1971,6 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
     sprintf((char*)(type_name + type_name_index), "[]");
     type_name_index += 2;
   }
-  
-  SPVM_API_dec_ref_count_only(env, stack, obj_type_name);
   
   return obj_type_name;
 }
@@ -3133,16 +3131,6 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     assert(object->ref_count >= 0);
     // Increment reference count
     object->ref_count++;
-  }
-}
-
-void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  (void)env;
-  
-  if (object != NULL) {
-    assert(object->ref_count >= 0);
-    // Increment reference count
-    object->ref_count--;
   }
 }
 
