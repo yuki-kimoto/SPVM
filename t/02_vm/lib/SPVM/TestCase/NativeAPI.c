@@ -2510,6 +2510,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->object_length_offset != &env_array[79]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_allocator != &env_array[80]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build != &env_array[81]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_parent_class_id != &env_array[82]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_required_args_length != &env_array[83]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_is_pointer != &env_array[84]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_is_enum != &env_array[85]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
@@ -3281,6 +3285,21 @@ int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VAL
     if (!(strcmp(compile_type_name, "mutable string") == 0)) {
       stack[0].ival = 0;
     }
+  }
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  stack[0].ival = 1;
+  
+  int32_t method_id = env->get_method_id(env, stack, "TestCase::NativeAPI", "VALUE0");
+  assert(method_id >= 0);
+  
+  int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method_id);
+  if (!is_enum) {
+      stack[0].ival = 0;
   }
   
   return 0;

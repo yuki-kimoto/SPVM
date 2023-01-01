@@ -336,6 +336,8 @@ ok(SPVM::TestCase::NativeAPI->precompile_build_methodd_source);
 
 ok(SPVM::TestCase::NativeAPI->get_compile_type_name);
 
+ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
+
 # Clear exception
 SPVM::set_exception(undef);
 

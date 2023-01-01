@@ -420,6 +420,7 @@ struct spvm_env_runtime {
   int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);
   int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
   int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+  int32_t (*get_method_is_enum)(void* runtime, int32_t method_id);
 };
 
 struct spvm_env_compiler {
