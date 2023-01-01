@@ -2525,7 +2525,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, SPVM_VALUE* stack, con
   
   int32_t length = strlen((char*)bytes);
   
-  SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, stack, length);
+  SPVM_OBJECT* object = SPVM_API_new_string_raw(env, stack, NULL, length);
   
   object->basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_STRING;
   object->type_dimension = 0;
