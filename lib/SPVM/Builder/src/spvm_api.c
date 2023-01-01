@@ -315,7 +315,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_strerror_nolen,
     SPVM_API_strerror_string_nolen,
   };
-  
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
     return NULL;
@@ -1951,36 +1950,29 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   
   int32_t length = 0;
   
-  
   // Basic type
   length += strlen(basic_type_name);
   
   //[]
   length += type_dimension * 2;
   
-  int32_t scope_id = env->enter_scope(env, stack);
-  void* type_name_byte_array = env->new_byte_array(env, stack, length + 1);
+  void* obj_type_name = env->new_string(env, stack, NULL, length);
   
+  char* type_name = (char*)env->get_chars(env, stack, obj_type_name);
   
-  char* cur = SPVM_API_new_memory_stack(env, stack, length + 1);
-  
-  int32_t cur_index = 0;
-  sprintf((char*)cur, "%s", basic_type_name);
-  cur_index += strlen(basic_type_name);
+  int32_t type_name_index = 0;
+  sprintf((char*)type_name, "%s", basic_type_name);
+  type_name_index += strlen(basic_type_name);
   
   int32_t dim_index;
   for (dim_index = 0; dim_index < type_dimension; dim_index++) {
-    sprintf((char*)(cur + cur_index), "[]");
-    cur_index += 2;
+    sprintf((char*)(type_name + type_name_index), "[]");
+    type_name_index += 2;
   }
   
-  void* sv_type_name = env->new_string_raw(env, stack, (const char*)cur, length);
+  SPVM_API_dec_ref_count_only(env, stack, obj_type_name);
   
-  SPVM_API_free_memory_stack(env, stack, cur);
-  
-  env->leave_scope(env, stack, scope_id);
-  
-  return sv_type_name;
+  return obj_type_name;
 }
 
 SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -3142,6 +3134,16 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     assert(object->ref_count >= 0);
     // Increment reference count
     object->ref_count++;
+  }
+}
+
+void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  (void)env;
+  
+  if (object != NULL) {
+    assert(object->ref_count >= 0);
+    // Increment reference count
+    object->ref_count--;
   }
 }
 

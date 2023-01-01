@@ -1276,15 +1276,15 @@ Returns the count of the memory blocks on the environment.
 
   void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If you specify an object, a new byte[] type object that stores the type name is returned.
+Gets a new C<string> object that is the type name of the object.
 
-This function does not add objects to the mortal stack, so use type_name for normal use to avoid memory leaks.
+This function does not add the returned object to the mortal stack, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
 
 =head2 get_type_name
 
   void* (*get_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If you specify an object, a new byte[] type object that stores the type name is returned. Add the newly created object to the mortal stack.
+Gets a new C<string> object that is the type name of the object.
 
 =head2 new_env
 
@@ -2364,9 +2364,9 @@ Examples:
 
 The same as L</"strerror"> given the length to C<0>.
 
-=head2 strerror_string_nolen
+=head2 get_compile_type_name
 
-  void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
+  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 The same as L</"strerror_string"> given the length to C<0>.
 
