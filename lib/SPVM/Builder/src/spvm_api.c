@@ -643,37 +643,37 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           if (field_type_dimension == 0 && field_basic_type_id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && field_basic_type_id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
             switch (field_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                int8_t field_value = *(int8_t*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                int8_t field_value = *(int8_t*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%d", field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                int16_t field_value = *(int16_t*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                int16_t field_value = *(int16_t*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%d", field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                int32_t field_value = *(int32_t*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                int32_t field_value = *(int32_t*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%d", field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                int64_t field_value = *(int64_t*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                int64_t field_value = *(int64_t*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%lld", (long long int)field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                float field_value = *(float*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                float field_value = *(float*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%g", field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                double field_value = *(double*)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+                double field_value = *(double*)((intptr_t)object + (size_t)env->object_header_size + field_offset);
                 sprintf(tmp_buffer, "%g", field_value);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
@@ -684,7 +684,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             }
           }
           else  {
-            SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_size + field_offset);
+            SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (size_t)env->object_header_size + field_offset);
             (*depth)++;
             SPVM_API_dump_recursive(env, stack, field_value, depth, string_buffer, address_symtable);
             (*depth)--;
@@ -2555,7 +2555,7 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const cha
     return NULL;
   }
   
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(char) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(char) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2607,7 +2607,7 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32
     return NULL;
   }
   
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(int8_t) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(int8_t) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2624,7 +2624,7 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32
 
 SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   (void)env;
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(int16_t) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(int16_t) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2644,7 +2644,7 @@ SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int3
 SPVM_OBJECT* SPVM_API_new_int_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   (void)env;
 
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(int32_t) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(int32_t) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2668,7 +2668,7 @@ SPVM_OBJECT* SPVM_API_new_long_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32
     return NULL;
   }
   
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(int64_t) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(int64_t) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2688,7 +2688,7 @@ SPVM_OBJECT* SPVM_API_new_long_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32
 SPVM_OBJECT* SPVM_API_new_float_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   (void)env;
 
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(float) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(float) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2708,7 +2708,7 @@ SPVM_OBJECT* SPVM_API_new_float_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int3
 SPVM_OBJECT* SPVM_API_new_double_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   (void)env;
 
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(double) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(double) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2736,7 +2736,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
     return NULL;
   }
   
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(void*) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2767,7 +2767,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
     return NULL;
   }
   
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(void*) * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2825,7 +2825,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
     assert(0);
   }
 
-  int64_t alloc_size = (intptr_t)env->object_header_size + unit_size * fields_length * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + unit_size * fields_length * (length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2863,7 +2863,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   // Alloc body length + 1
   int32_t fields_length = class->fields_length;
 
-  int64_t alloc_size = (intptr_t)env->object_header_size + class->fields_size + 1;
+  size_t alloc_size = (size_t)env->object_header_size + class->fields_size + 1;
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2909,7 +2909,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_raw(SPVM_ENV* env, SPVM_VALUE* sta
   
   // First data is the pointer data. The default is NULL (oval).
   // Second data is the length of the pointer fields. The default is 0 (ival).
-  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(SPVM_VALUE) * (2 + fields_length);
+  size_t alloc_size = (size_t)env->object_header_size + sizeof(SPVM_VALUE) * (2 + fields_length);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
@@ -2917,8 +2917,8 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_raw(SPVM_ENV* env, SPVM_VALUE* sta
     return NULL;
   }
   
-  *(void**)((intptr_t)object + (intptr_t)env->object_header_size) = pointer;
-  *(int32_t*)((intptr_t)object + (intptr_t)env->object_header_size + sizeof(SPVM_VALUE)) = fields_length;
+  *(void**)((intptr_t)object + (size_t)env->object_header_size) = pointer;
+  *(int32_t*)((intptr_t)object + (size_t)env->object_header_size + sizeof(SPVM_VALUE)) = fields_length;
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
@@ -3011,13 +3011,13 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   (void)env;
   
-  return *(void**)((intptr_t)object + (intptr_t)env->object_header_size);
+  return *(void**)((intptr_t)object + (size_t)env->object_header_size);
 }
 
 void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* ptr) {
   (void)env;
   
-  *(void**)((intptr_t)object + (intptr_t)env->object_header_size) = ptr;
+  *(void**)((intptr_t)object + (size_t)env->object_header_size) = ptr;
 }
 
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -3103,7 +3103,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           int32_t field_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, field_type_id);
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
           if (field_type_is_object) {
-            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_size + field->offset);
+            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)env->object_header_size + field->offset);
             if (*get_field_object_address != NULL) {
               // If object is weak, unweaken
               if (SPVM_API_isweak(env, stack, get_field_object_address)) {
@@ -3825,10 +3825,9 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     return NULL;
   }
   
-  int32_t element_size = env->get_elem_size(env, stack, array);
+  size_t element_size = env->get_elem_size(env, stack, array);
   
-
-  int64_t alloc_size = (intptr_t)env->object_header_size + element_size * ((int64_t)length + 1);
+  size_t alloc_size = (size_t)env->object_header_size + element_size * (length + 1);
   
   // Create object
   SPVM_OBJECT* new_array = SPVM_API_new_memory_stack(env, stack, (size_t)alloc_size);
@@ -3876,7 +3875,7 @@ SPVM_OBJECT* SPVM_API_copy_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
     const char* object_bytes = (const char*)env->get_elems_byte(env, stack, object);
     char* new_object_bytes = (char*)env->get_elems_byte(env, stack, new_object);
     
-    int32_t element_size = env->get_elem_size(env, stack, object);
+    size_t element_size = env->get_elem_size(env, stack, object);
     
     memcpy(new_object_bytes, object_bytes, element_size * length);
   }
