@@ -2217,7 +2217,7 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   int32_t string2_length = SPVM_API_length(env, stack, string2);
   
   int32_t string3_length = string1_length + string2_length;
-  SPVM_OBJECT* string3 = SPVM_API_new_byte_array_raw(env, stack, string3_length);
+  SPVM_OBJECT* string3 = SPVM_API_new_string_raw(env, stack, NULL, string3_length);
 
   string3->basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_STRING;
   string3->type_dimension = 0;

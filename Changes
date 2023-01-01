@@ -19,6 +19,13 @@
       
       [After]
       string
+
+    * Fixed the return type of the SPVM object the concat_raw and concat native API.
+      [Before]
+      byte[]
+      
+      [After]
+      string
       
 0.9675 2022-12-27
   [Improve Exception Messages]
