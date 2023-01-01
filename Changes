@@ -4,7 +4,11 @@
     
       1 SPVM_NATIVE_C_TYPE_FLAG_REF
       2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
-    
+  [Warning Fix]
+    * Fixed the following warning on FreeBSD.
+        warning: logical not is only applied to the left hand side of this comparison [-Wlogical-not-parentheses]
+      if (!strcmp(dumpc, "undef") == 0) {
+      
 0.9675 2022-12-27
   [Improve Exception Messages]
     * Improve the exception messages of Exchange API.

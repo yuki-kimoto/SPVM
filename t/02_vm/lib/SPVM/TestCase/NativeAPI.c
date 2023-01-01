@@ -2901,7 +2901,7 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* dumpc = env->dumpc(env, stack, NULL);
   
-  if (!strcmp(dumpc, "undef") == 0) {
+  if (!(strcmp(dumpc, "undef") == 0)) {
     stack[0].ival = 0;
     return 0;
   }
