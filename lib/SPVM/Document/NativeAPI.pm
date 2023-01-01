@@ -247,6 +247,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   230 get_method_id
   231 strerror_nolen
   232 strerror_string_nolen
+  233 get_compile_type_name_raw
+  234 get_compile_type_name
 
 =head2 class_vars_heap
 
@@ -2364,11 +2366,25 @@ Examples:
 
 The same as L</"strerror"> given the length to C<0>.
 
-=head2 get_compile_type_name
+=head2 strerror_string_nolen
 
-  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
+  void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
 
 The same as L</"strerror_string"> given the length to C<0>.
+
+=head2 get_compile_type_name_raw
+
+  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+
+Gets a new C<string> object that is the compile-time type name with a basic type id, a type dimension, a type flag.
+
+This function does not add the returned object to the mortal stack, so use the L<get_compile_type_name> Native API for normal use to avoid memory leaks.
+
+=head2 get_compile_type_name
+
+  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+
+Gets a new C<string> object that is the compile-time type name with a basic type id, a type dimension, a type flag.
 
 =head1 Compiler Native API
 

@@ -249,6 +249,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_method_id != &env_array[230]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror_nolen != &env_array[231]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->strerror_string_nolen != &env_array[232]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_compile_type_name_raw != &env_array[233]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->get_compile_type_name != &env_array[234]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 
@@ -3229,6 +3231,57 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
   }
   
   stack[0].ival = success;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = 1;
+  
+  {
+    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT;
+    int32_t type_dimension = 0;
+    int32_t type_flag = 0;
+    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_id, type_dimension, type_flag);
+    const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+    if (!(strcmp(compile_type_name, "int") == 0)) {
+      stack[0].ival = 0;
+    }
+  }
+  
+  {
+    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT;
+    int32_t type_dimension = 2;
+    int32_t type_flag = 0;
+    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_id, type_dimension, type_flag);
+    const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+    if (!(strcmp(compile_type_name, "int[][]") == 0)) {
+      stack[0].ival = 0;
+    }
+  }
+  
+  {
+    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_INT;
+    int32_t type_dimension = 0;
+    int32_t type_flag = SPVM_NATIVE_C_TYPE_FLAG_REF;
+    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_id, type_dimension, type_flag);
+    const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+    if (!(strcmp(compile_type_name, "int*") == 0)) {
+      stack[0].ival = 0;
+    }
+  }
+  
+  {
+    int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_STRING;
+    int32_t type_dimension = 0;
+    int32_t type_flag = SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_id, type_dimension, type_flag);
+    const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+    if (!(strcmp(compile_type_name, "mutable string") == 0)) {
+      stack[0].ival = 0;
+    }
+  }
   
   return 0;
 }

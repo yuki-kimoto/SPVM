@@ -1375,5 +1375,7 @@ class TestCase::NativeAPI {
 
   native static method precompile_build_methodd_source : int ();
 
+  native static method get_compile_type_name : int ();
+
   native static method check_stdin_stdout_stderr_binary_mode : int ();
 }

@@ -334,6 +334,8 @@ ok(SPVM::TestCase::NativeAPI->get_pointer_length);
 
 ok(SPVM::TestCase::NativeAPI->precompile_build_methodd_source);
 
+ok(SPVM::TestCase::NativeAPI->get_compile_type_name);
+
 # Clear exception
 SPVM::set_exception(undef);
 

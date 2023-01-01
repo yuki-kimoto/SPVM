@@ -4,10 +4,21 @@
     
       1 SPVM_NATIVE_C_TYPE_FLAG_REF
       2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
+    * Added the following native APIs.
+      void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
+      void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
+    
   [Warning Fix]
     * Fixed the following warning on FreeBSD.
         warning: logical not is only applied to the left hand side of this comparison [-Wlogical-not-parentheses]
       if (!strcmp(dumpc, "undef") == 0) {
+  [Incompatible Bug Fix]
+    * Fixed the return type of the SPVM object the get_type_name_raw and get_type_name native API.
+      [Before]
+      byte[]
+      
+      [After]
+      string
       
 0.9675 2022-12-27
   [Improve Exception Messages]
