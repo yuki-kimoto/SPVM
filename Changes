@@ -39,7 +39,8 @@
       
   [Test Improvement]
     * Added the tests of get_class_parent_class_id, get_method_required_args_length, get_method_required_args_length Runtime Native APIs.
-      
+  [Improve Exception Messages]
+    * Improve the exception messages of Exchange API.
 0.9675 2022-12-27
   [Improve Exception Messages]
     * Improve the exception messages of Exchange API.
