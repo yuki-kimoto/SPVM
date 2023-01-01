@@ -2550,10 +2550,22 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, const c
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length) {
   (void)env;
 
-  SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, stack, length);
+  // If lenght is less than 0, return NULL.
+  if (length < 0) {
+    return NULL;
+  }
   
+  int64_t alloc_size = (intptr_t)env->object_header_size + sizeof(char) * ((int64_t)length + 1);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
+  if (!object) {
+    return NULL;
+  }
+
   object->basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_STRING;
   object->type_dimension = 0;
+  object->length = length;
 
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_size), (char*)bytes, length);
