@@ -183,6 +183,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_required_args_length,
     SPVM_API_RUNTIME_get_class_is_pointer,
     SPVM_API_RUNTIME_get_method_is_enum,
+    SPVM_API_RUNTIME_get_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -407,6 +408,17 @@ int32_t SPVM_API_RUNTIME_get_type_is_ref(SPVM_RUNTIME* runtime, int32_t type_id)
   int32_t is_ref = type->flag & SPVM_TYPE_C_FLAG_REF;
   
   return is_ref;
+}
+
+int32_t SPVM_API_RUNTIME_get_type_flag(SPVM_RUNTIME* runtime, int32_t type_id) {
+  
+  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
+  
+  assert(type);
+  
+  int32_t type_flag = type->flag;
+  
+  return type_flag;
 }
 
 int32_t SPVM_API_RUNTIME_get_type_is_object(SPVM_RUNTIME* runtime, int32_t type_id) {

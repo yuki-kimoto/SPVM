@@ -2514,6 +2514,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_required_args_length != &env_array[83]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_is_pointer != &env_array[84]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_enum != &env_array[85]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_type_flag != &env_array[86]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");

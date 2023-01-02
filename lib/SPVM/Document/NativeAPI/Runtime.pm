@@ -107,6 +107,7 @@ Runtime native APIs have its IDs.
   83 get_method_required_args_length
   84 get_class_is_pointer
   85 get_method_is_enum
+  86 get_type_flag
 
 =head1 Runtime Native APIs
 
@@ -456,9 +457,11 @@ Reserved.
 
   int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
 
-
 =head2 get_method_is_enum
 
   int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
 
-int32_t SPVM_API_RUNTIME_get_method_is_enum(SPVM_RUNTIME* runtime, int32_t method_id);
+=head2 get_type_flag
+
+  int32_t (*get_type_flag)(void* runtime, int32_t type_id);
+

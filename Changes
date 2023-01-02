@@ -4,12 +4,15 @@
     
       1 SPVM_NATIVE_C_TYPE_FLAG_REF
       2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
-    * Added the following native APIs.
+    * Added the following Native APIs.
       void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
       void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
     * Added the get_method_is_enum Runtime Native API.
       
       int32_t SPVM_API_RUNTIME_get_method_is_enum(SPVM_RUNTIME* runtime, int32_t method_id);
+    * Added the following Runtime Native APIs.
+      
+      int32_t (*get_type_flag)(SPVM_RUNTIME* runtime, int32_t type_id);
       
   [Warning Fix]
     * Fixed the following warning on FreeBSD.
