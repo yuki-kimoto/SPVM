@@ -74,7 +74,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   if (basic_type_id < 0) {
-    *sv_error = sv_2mortal(newSVpvf("Not found %s at %s line %d\n", basic_type_name, FILE_NAME, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The %s basic type is not found at %s line %d\n", basic_type_name, FILE_NAME, __LINE__));
     return NULL;
   }
   
@@ -103,11 +103,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
       while (hv_iternext(hv_value)) {
         hash_keys_length++;
       }
-      if (hash_keys_length != fields_length) {
-        *sv_error = sv_2mortal(newSVpvf("Value element hash key is lacked at %s line %d\n", FILE_NAME, __LINE__));
-        return NULL;
-      }
-
+      
       for (int32_t field_index = 0; field_index < class_fields_length; field_index++) {
         int32_t mulnum_field_id = class_fields_base_id + field_index;
         int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
@@ -120,7 +116,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
           sv_field_value = *sv_field_value_ptr;
         }
         else {
-          *sv_error = sv_2mortal(newSVpvf("Value element must be defined at %s line %d\n", FILE_NAME, __LINE__));
+          *sv_error = sv_2mortal(newSVpvf("The %s field of the %dth element must be defined at %s line %d\n", mulnum_field_name, index + 1, FILE_NAME, __LINE__));
           return NULL;
         }
 
@@ -257,10 +253,10 @@ xs_call_method(...)
     int32_t arg_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_type_id);
     int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type_id);
     int32_t arg_type_dimension = env->api->runtime->get_type_dimension(env->runtime, arg_type_id);
-    int32_t arg_type_is_ref = env->api->runtime->get_type_is_ref(env->runtime, arg_type_id);
+    int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
     
     if (arg_type_dimension == 0) {
-      if (arg_type_is_ref) {
+      if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             switch (arg_basic_type_id) {
@@ -801,7 +797,9 @@ xs_call_method(...)
               
               int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
               if (!isa) {
-                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+                const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+                croak("The object must be assigned to the %s type of the %dth argument of the %s method in the %s class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
@@ -843,7 +841,9 @@ xs_call_method(...)
               
               int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
               if (!isa) {
-                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+                const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+                croak("The object must be assigned to the %s type of the %dth argument of the %s method in the %s class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
@@ -908,7 +908,9 @@ xs_call_method(...)
               
               int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
               if (!isa) {
-                croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+                const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+                croak("The object must be assigned to the %s type of the %dth argument of the %s method in the %s class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
@@ -977,7 +979,9 @@ xs_call_method(...)
           
           int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
           if (!isa) {
-            croak("The object must be assigned to the type of the %dth argument of the %s method in the %s class at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+            void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+            const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+            croak("The object must be assigned to the %s type of the %dth argument of the %s method in the %s class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
           }
           
           stack[stack_index].oval = object;
@@ -1198,10 +1202,10 @@ xs_call_method(...)
         // Convert to runtime type
         int32_t arg_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_type_id);
         int32_t arg_type_dimension = env->api->runtime->get_type_dimension(env->runtime, arg_type_id);
-        int32_t arg_type_is_ref = env->api->runtime->get_type_is_ref(env->runtime, arg_type_id);
+        int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
         int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type_id);
         
-        if (arg_type_is_ref) {
+        if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
           int32_t ref_stack_index = ref_stack_indexes[args_index];
           switch (arg_basic_type_category) {
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
@@ -3454,14 +3458,16 @@ _xs_new_object_array(...)
       env->set_elem_object(env, stack, array, index, NULL);
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
-      void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
+      void* element = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
 
-      int32_t elem_isa = env->elem_isa(env, stack, array, object);
+      int32_t elem_isa = env->elem_isa(env, stack, array, element);
       if (elem_isa) {
-        env->set_elem_object(env, stack, array, index, object);
+        env->set_elem_object(env, stack, array, index, element);
       }
       else {
-        croak("The object must be assigned to the element of the array at %s line %d\n", FILE_NAME, __LINE__);
+        void* obj_element_type_name = env->get_type_name(env, stack, element);
+        const char* element_type_name = env->get_chars(env, stack, obj_element_type_name);
+        croak("The element must be assigned to the %s type at %s line %d\n", element_type_name, FILE_NAME, __LINE__);
       }
     }
     else {
