@@ -3935,6 +3935,13 @@ create_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  // Create compiler env
+  SPVM_ENV* compiler_env = SPVM_NATIVE_new_env_raw();
+  size_t iv_compiler_env = PTR2IV(compiler_env);
+  SV* sviv_compiler_env = sv_2mortal(newSViv(iv_compiler_env));
+  SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
+  (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
+
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
