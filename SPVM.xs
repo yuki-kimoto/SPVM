@@ -3942,12 +3942,8 @@ create_compiler(...)
   SV* sv_compiler_env = sv_2mortal(newRV_inc(sviv_compiler_env));
   (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
 
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
   // Create compiler
-  void* compiler = env->api->compiler->new_compiler();
+  void* compiler = compiler_env->api->compiler->new_compiler();
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
