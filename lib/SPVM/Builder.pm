@@ -99,11 +99,11 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  # Create an environment
-  $self->create_env;
-  
   # Create the compiler
   $self->create_compiler;
+  
+  # Create an environment
+  $self->create_env;
   
   $self->native_address_info({});
   
