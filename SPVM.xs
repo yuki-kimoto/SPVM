@@ -4577,7 +4577,7 @@ build_precompile_class_source(...)
 }
 
 SV*
-new_env(...)
+build_env(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4606,7 +4606,7 @@ new_env(...)
 }
 
 SV*
-new_stack(...)
+build_stack(...)
   PPCODE:
 {
   (void)RETVAL;
