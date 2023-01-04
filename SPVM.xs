@@ -4047,6 +4047,41 @@ compile_spvm(...)
 }
 
 SV*
+get_error_messages(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // The compiler_environment
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
+  // Compiler
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
+
+  int32_t error_messages_legnth = compiler_env->api->compiler->get_error_messages_length(compiler);
+
+  for (int32_t i = 0; i < error_messages_legnth; i++) {
+    const char* error_message = compiler_env->api->compiler->get_error_message(compiler, i);
+    SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
+    av_push(av_error_messages, SvREFCNT_inc(sv_error_message));
+  }
+  
+  XPUSHs(sv_error_messages);
+  XSRETURN(1);
+}
+
+SV*
 get_method_names(...)
   PPCODE:
 {
@@ -4221,41 +4256,6 @@ get_class_names(...)
   }
   
   XPUSHs(sv_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_error_messages(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
-
-  int32_t error_messages_legnth = compiler_env->api->compiler->get_error_messages_length(compiler);
-
-  for (int32_t i = 0; i < error_messages_legnth; i++) {
-    const char* error_message = compiler_env->api->compiler->get_error_message(compiler, i);
-    SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
-    av_push(av_error_messages, SvREFCNT_inc(sv_error_message));
-  }
-  
-  XPUSHs(sv_error_messages);
   XSRETURN(1);
 }
 
