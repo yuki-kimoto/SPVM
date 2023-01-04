@@ -4491,16 +4491,18 @@ free_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Free compiler
-  env->api->compiler->free_compiler(compiler);
+  compiler_env->api->compiler->free_compiler(compiler);
+  
+  compiler_env->free_env_raw(compiler_env);
 
   XSRETURN(0);
 }
