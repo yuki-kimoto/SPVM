@@ -48,6 +48,17 @@ sub compiler {
   }
 }
 
+sub runtime {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime};
+  }
+}
+
 sub env {
   my $self = shift;
   if (@_) {
@@ -58,14 +69,15 @@ sub env {
     return $self->{env};
   }
 }
-sub runtime {
+
+sub stack {
   my $self = shift;
   if (@_) {
-    $self->{runtime} = $_[0];
+    $self->{stack} = $_[0];
     return $self;
   }
   else {
-    return $self->{runtime};
+    return $self->{stack};
   }
 }
 

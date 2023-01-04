@@ -133,7 +133,7 @@ sub init {
     }
     
     # Call INIT blocks
-    $BUILDER->call_init_blocks;
+    $BUILDER->call_init_blocks($BUILDER->env, $BUILDER->stack);
     
     # Set command line info
     $BUILDER->set_command_info($0, \@ARGV);
