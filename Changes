@@ -1,3 +1,6 @@
+0.9677 2022-01-04
+  [Changes]
+    * Dynamic library files are loaded at run-time instead of compile-time.
 0.9676 2022-01-03
   [New Features]
     * Added the following constant values of Native API.

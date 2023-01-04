@@ -98,7 +98,6 @@ sub import {
           
           if (-f $dynamic_lib_file) {
             $BUILDER->dynamic_lib_files->{$category}{$added_class_name} = $dynamic_lib_file;
-            $BUILDER->bind_methods($dynamic_lib_file, $added_class_name, $category);
           }
         }
       }
@@ -121,25 +120,15 @@ sub init {
     
     # Prepare runtime environment
     $BUILDER->prepare_env;
-
-    # Set native method addresses
-    for my $class_name (keys %{$BUILDER->native_address_info}) {
-      my $address_of_methods = $BUILDER->native_address_info->{$class_name};
-      for my $method_name (keys %$address_of_methods) {
-        my $address = $address_of_methods->{$method_name};
-        $BUILDER->set_native_method_address($class_name, $method_name, $address);
+    
+    # Set function addresses of native and precompile methods
+    for my $category ('precompile', 'native') {
+      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
+        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
+        $BUILDER->bind_methods($dynamic_lib_file, $class_name, $category);
       }
     }
-
-    # Set precompile method addresses
-    for my $class_name (keys %{$BUILDER->precompile_address_info}) {
-      my $address_of_methods = $BUILDER->precompile_address_info->{$class_name};
-      for my $method_name (keys %$address_of_methods) {
-        my $address = $address_of_methods->{$method_name};
-        $BUILDER->set_precompile_method_address($class_name, $method_name, $address);
-      }
-    }
-
+    
     # Call INIT blocks
     $BUILDER->call_init_blocks;
     
