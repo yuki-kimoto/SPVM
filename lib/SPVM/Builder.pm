@@ -89,6 +89,17 @@ sub precompile_address_info {
   }
 }
 
+sub dynamic_lib_files {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_lib_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib_files};
+  }
+}
+
 sub new {
   my $class = shift;
   
@@ -108,6 +119,8 @@ sub new {
   $self->native_address_info({});
   
   $self->precompile_address_info({});
+
+  $self->dynamic_lib_files({});
   
   return $self;
 }

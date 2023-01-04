@@ -97,6 +97,7 @@ sub import {
           }
           
           if (-f $dynamic_lib_file) {
+            $BUILDER->dynamic_lib_files->{$category}{$added_class_name} = $dynamic_lib_file;
             $BUILDER->bind_methods($dynamic_lib_file, $added_class_name, $category);
           }
         }
