@@ -21,12 +21,12 @@ sub new {
   return bless $self, $class;
 }
 
-sub compile_spvm {
+sub compile {
   my ($self, $class_name) = @_;
   
   my $builder = $self->{builder};
   
-  my $success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
+  my $success = $builder->compile($class_name, __FILE__, __LINE__);
   
   return $success;
 }
@@ -95,7 +95,7 @@ SPVM::Builder::API - SPVM Builder Public APIs
   );
   
   # Compile SPVM
-  my $success = $api->compile_spvm('MyLib');
+  my $success = $api->compile('MyLib');
   unless ($success) {
     # Error message
     my $error_messages = $self->get_error_messages;
@@ -147,10 +147,10 @@ Build directory.
 
 =back
 
-=head2 compile_spvm
+=head2 compile
 
   # Compile SPVM
-  my $success = $api->compile_spvm('MyLib');
+  my $success = $api->compile('MyLib');
 
 Compile SPVM module. If succeeded, return true value, otherwise false value.
 

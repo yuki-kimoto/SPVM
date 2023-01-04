@@ -299,7 +299,7 @@ sub build_runtime {
   my $class_name = $self->{class_name};
   
   # Compile SPVM
-  my $compile_success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
+  my $compile_success = $builder->compile($class_name, __FILE__, __LINE__);
   unless ($compile_success) {
     $builder->print_error_messages(*STDERR);
     exit(255);
@@ -332,7 +332,7 @@ sub build_exe_file {
   my $object_files = [];
 
   # Compile SPVM core source files
-  my $spvm_core_objects = $self->compile_spvm_core_sources;
+  my $spvm_core_objects = $self->compile_core_sources;
   push @$object_files, @$spvm_core_objects;
   
   my $config = $self->config;
@@ -896,7 +896,7 @@ sub compile_bootstrap_source {
   return $object_file_info;
 }
 
-sub compile_spvm_core_sources {
+sub compile_core_sources {
   my ($self) = @_;
 
   # Config

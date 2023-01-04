@@ -26,7 +26,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('CompileError::BitOperator::NotIntegral', __FILE__, __LINE__);
+      my $success = $build->compile('CompileError::BitOperator::NotIntegral', __FILE__, __LINE__);
       ok($success == 0);
     }
   }

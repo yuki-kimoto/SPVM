@@ -180,7 +180,7 @@ sub get_dynamic_lib_file_dist {
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
-  my $compile_success = $self->compile_spvm($class_name, '(build_dynamic_lib_dist)', 0);
+  my $compile_success = $self->compile($class_name, '(build_dynamic_lib_dist)', 0);
   unless ($compile_success) {
     $self->print_error_messages(*STDERR);
     exit(255);

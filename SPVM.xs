@@ -3988,7 +3988,7 @@ DESTROY(...)
 }
 
 SV*
-compile_spvm(...)
+compile(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4044,7 +4044,7 @@ compile_spvm(...)
   }
 
   // Compile SPVM
-  int32_t compile_error_code = compiler_env->api->compiler->compile_spvm(compiler, class_name);
+  int32_t compile_error_code = compiler_env->api->compiler->compile(compiler, class_name);
   
   SV* sv_compile_success;
   if (compile_error_code == 0) {

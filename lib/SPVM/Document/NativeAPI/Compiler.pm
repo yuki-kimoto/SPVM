@@ -11,7 +11,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
   void* compiler = compiler_api->new_compiler();
   
   // Compile SPVM
-  int32_t status = compiler_api->compile_spvm(compiler, "MyClass");
+  int32_t status = compiler_api->compile(compiler, "MyClass");
   
   // Free compiler
   compiler_api->free_compiler(compiler);
@@ -33,7 +33,7 @@ Compiler native APIs have its IDs.
   6  add_module_dir
   7  get_module_dirs_length
   8  get_module_dir
-  9  compile_spvm
+  9  compile
   10 get_error_messages_length
   11 get_error_message
   12 create_spvm_32bit_codes
@@ -94,9 +94,9 @@ Get the length of the module searching directories of the compiler.
 
 Get a searching directories of the compiler with the index.
 
-=head2 compile_spvm
+=head2 compile
   
-  int32_t (*compile_spvm)(void* compiler, const char* class_name);
+  int32_t (*compile)(void* compiler, const char* class_name);
 
 Compile the SPVM class.
 

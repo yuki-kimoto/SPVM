@@ -89,7 +89,7 @@ sub compile_not_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $status_code = $builder->compile_spvm($class_name, $file, $line);
+  my $status_code = $builder->compile($class_name, $file, $line);
   ok($status_code == 0);
   my $error_messages = $builder->get_error_messages;
   my $first_error_message = $error_messages->[0];
@@ -176,7 +176,7 @@ sub compile_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $status_code = $builder->compile_spvm($class_name, $file, $line);
+  my $status_code = $builder->compile($class_name, $file, $line);
   ok($status_code != 0);
   
   if ($status_code == 0) {

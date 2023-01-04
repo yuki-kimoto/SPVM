@@ -158,7 +158,7 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh);
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
-int32_t SPVM_COMPILER_compile_spvm(SPVM_COMPILER* compiler, const char* class_name);
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name);
 
 int32_t SPVM_COMPILER_calculate_spvm_32bit_codes_length(SPVM_COMPILER* compiler);
 int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
