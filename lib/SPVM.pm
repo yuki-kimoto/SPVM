@@ -84,7 +84,7 @@ sub import {
           runtime => 1,
         );
         
-        my $method_names = $BUILDER->get_method_names($added_class_name, $category);
+        my $method_names = $BUILDER->get_method_names($BUILDER->runtime, $added_class_name, $category);
         
         if (@$method_names) {
           # Build classs - Compile C source codes and link them to SPVM precompile method
@@ -180,7 +180,7 @@ sub bind_to_perl {
       $class_name_h->{$class_name} = 1;
     }
 
-    my $method_names = $builder->get_method_names($class_name);
+    my $method_names = $builder->get_method_names($builder->runtime, $class_name);
 
     for my $method_name (@$method_names) {
       # Destrutor is skip

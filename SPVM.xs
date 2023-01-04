@@ -4088,8 +4088,12 @@ get_method_names(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
+
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  SV* sv_class_name = ST(2);
+  SV* sv_category = ST(3);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -4103,11 +4107,6 @@ get_method_names(...)
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
   
   int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
   int32_t methods_length = compiler_env->api->runtime->get_class_methods_length(runtime, class_id);
