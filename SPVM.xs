@@ -4280,18 +4280,10 @@ get_classes_length(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
+  // The compiler_environment
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
@@ -4300,7 +4292,7 @@ get_classes_length(...)
   int32_t classes_length;
   if (SvOK(sv_runtime)) {
     void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-    classes_length = env->api->runtime->get_classes_length(runtime);
+    classes_length = compiler_env->api->runtime->get_classes_length(runtime);
   }
   else {
     classes_length = 0;
