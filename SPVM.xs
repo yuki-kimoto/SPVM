@@ -4326,42 +4326,34 @@ get_module_file(...)
   const char* class_name = SvPV_nolen(sv_class_name);
   
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(void*, SvIV(SvRV(sv_env)));
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(void*, SvIV(SvRV(sv_compiler_env)));
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-  
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Copy class load path to builder
-  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+  int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
   const char* module_file;
   SV* sv_module_file;
 
   if (class_id >= 0) {
-    int32_t module_rel_file_id = env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
-    int32_t module_dir_id = env->api->runtime->get_class_module_dir_id(runtime, class_id);
+    int32_t module_rel_file_id = compiler_env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
+    int32_t module_dir_id = compiler_env->api->runtime->get_class_module_dir_id(runtime, class_id);
     const char* module_dir = NULL;
     const char* module_dir_sep;
     if (module_dir_id >= 0) {
       module_dir_sep = "/";
-      module_dir = env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
+      module_dir = compiler_env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
     }
     else {
       module_dir_sep = "";
       module_dir = "";
     }
-    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+    const char* module_rel_file = compiler_env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
 
     sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
     sv_catpv(sv_module_file, module_dir_sep);
