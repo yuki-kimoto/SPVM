@@ -160,7 +160,7 @@ sub bind_to_perl {
     
     unless ($class_name_h->{$class_name}) {
       
-      my $parent_class_name = $builder->get_parent_class_name($builder->runtime, $class_name);
+      my $parent_class_name = $builder->get_parent_class_name($class_name);
       my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
       
       # The inheritance
