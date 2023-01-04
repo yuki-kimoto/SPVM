@@ -4384,9 +4384,9 @@ build_runtime(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
@@ -4410,24 +4410,24 @@ build_runtime(...)
   }
   
   if (runtime) {
-    env->api->runtime->free_runtime(runtime);
+    compiler_env->api->runtime->free_runtime(runtime);
     runtime = NULL;
   }
 
   // Build runtime information
-  runtime = env->api->runtime->new_runtime(env);
+  runtime = compiler_env->api->runtime->new_runtime(compiler_env);
 
   // Runtime allocator
-  void* runtime_allocator = env->api->runtime->get_allocator(runtime);
+  void* runtime_allocator = compiler_env->api->runtime->get_allocator(runtime);
   
   // SPVM 32bit codes
-  int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
+  int32_t* spvm_32bit_codes = compiler_env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
   
   // Build runtime
-  env->api->runtime->build(runtime, spvm_32bit_codes);
+  compiler_env->api->runtime->build(runtime, spvm_32bit_codes);
 
   // Prepare runtime
-  env->api->runtime->prepare(runtime);
+  compiler_env->api->runtime->prepare(runtime);
 
   // Set runtime information
   size_t iv_runtime = PTR2IV(runtime);
