@@ -1,3 +1,24 @@
 class Compiler {
-
+  use NativeData::Compiler;
+  use Hash;
+  
+  has module_dirs : rw string[];
+  has compiler : NativeData::Compiler;
+  
+  static method new : Compiler ($options = undef : object[]) {
+    
+    my $options_h = Hash->new($options);
+    
+    my $self = new Compiler;
+    
+    my $module_dirs = $options_h->delete_or_default("module_dirs" => undef);
+    
+    if ($module_dirs) {
+      $self->{module_dirs} = $module_dirs;
+    }
+    
+    return $self;
+  }
+  
+  
 }
