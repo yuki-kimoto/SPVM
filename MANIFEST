@@ -194,6 +194,10 @@ lib/SPVM/Comparator/Long.pm
 lib/SPVM/Comparator/Long.spvm
 lib/SPVM/Comparator/String.pm
 lib/SPVM/Comparator/String.spvm
+lib/SPVM/Compiler.c
+lib/SPVM/Compiler.config
+lib/SPVM/Compiler.pm
+lib/SPVM/Compiler.spvm
 lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
