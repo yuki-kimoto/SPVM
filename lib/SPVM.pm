@@ -96,7 +96,9 @@ sub import {
             $dynamic_lib_file = $cc->build_runtime($added_class_name, {category => $category});
           }
           
-          $BUILDER->bind_methods($dynamic_lib_file, $added_class_name, $category);
+          if (-f $dynamic_lib_file) {
+            $BUILDER->bind_methods($dynamic_lib_file, $added_class_name, $category);
+          }
         }
       }
     }
