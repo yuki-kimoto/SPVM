@@ -651,8 +651,10 @@ sub create_bootstrap_get_spvm_32bit_codes_func_source {
 
   # Builder
   my $builder = $self->builder;
+  
+  my $runtime = $builder->runtime;
 
-  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
+  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes($runtime);
   my $spvm_32bit_codes_length = @$spvm_32bit_codes;
   my $source = '';
   
