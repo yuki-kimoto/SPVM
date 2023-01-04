@@ -4299,22 +4299,19 @@ get_module_file(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  
   // Name
+  SV* sv_class_name = ST(2);
   const char* class_name = SvPV_nolen(sv_class_name);
   
   // Env
   SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
   SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
   SPVM_ENV* compiler_env = INT2PTR(void*, SvIV(SvRV(sv_compiler_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Copy class load path to builder
   int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
