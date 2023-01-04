@@ -124,6 +124,10 @@ sub init {
     # Create an stack
     $BUILDER->new_stack;
     
+    my $env = $BUILDER->env;
+    
+    my $stack = $BUILDER->stack;
+    
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
       for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
@@ -133,10 +137,10 @@ sub init {
     }
     
     # Call INIT blocks
-    $BUILDER->call_init_blocks($BUILDER->env, $BUILDER->stack);
+    $BUILDER->call_init_blocks($env, $stack);
     
     # Set command line info
-    $BUILDER->set_command_info($0, \@ARGV);
+    $BUILDER->set_command_info($env, $stack, $0, \@ARGV);
     
     $SPVM_INITED = 1;
   }

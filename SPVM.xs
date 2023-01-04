@@ -4669,28 +4669,21 @@ set_command_info(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SV* sv_program_name = ST(1);
+  SV* sv_stack = ST(2);
+  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  
+  SV* sv_program_name = ST(3);
   const char* program_name = SvPV_nolen(sv_program_name);
   int32_t program_name_length = strlen(program_name);
   
-  SV* sv_argv = ST(2);
+  SV* sv_argv = ST(4);
   AV* av_argv = (AV*)SvRV(sv_argv);
   int32_t argv_length = av_len(av_argv) + 1;
   
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-  
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
   // Program name - string
   void* obj_program_name = env->new_string(env, stack, program_name, program_name_length);
   
