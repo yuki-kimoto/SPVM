@@ -77,11 +77,10 @@ sub import {
     for my $added_class_name (@$added_class_names) {
       next if $added_class_name =~ /::anon/;
       
-      # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
-      $BUILDER->build_and_bind_dynamic_lib_at_runtime($added_class_name, 'precompile');
-      
-      # Build native classs - Compile C source codes and link them to SPVM native method
-      $BUILDER->build_and_bind_dynamic_lib_at_runtime($added_class_name, 'native');
+      for my $category ('precompile', 'native') {
+        # Build classs - Compile C source codes and link them to SPVM precompile method
+        $BUILDER->build_and_bind_dynamic_lib_at_runtime($added_class_name, $category);
+      }
     }
   }
 }
