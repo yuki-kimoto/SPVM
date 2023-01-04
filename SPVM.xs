@@ -4549,7 +4549,7 @@ build_precompile_class_source(...)
   void* allocator = env->api->allocator->new_allocator();
   
   // New string buffer
-  void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
+  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
 
   void* precompile = env->api->precompile->new_precompile();
   

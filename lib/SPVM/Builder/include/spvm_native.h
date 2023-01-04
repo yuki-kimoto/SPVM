@@ -507,7 +507,7 @@ struct spvm_env_allocator {
 };
 
 struct spvm_env_string_buffer {
-  void* (*new_string_buffer_tmp)();
+  void* (*new_object)();
   void (*free_string_buffer)(void* string_buffer);
   const char* (*get_value)(void* string_buffer);
   int32_t (*get_length)(void* string_buffer);

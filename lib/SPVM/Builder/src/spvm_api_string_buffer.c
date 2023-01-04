@@ -9,7 +9,7 @@
 
 SPVM_ENV_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_env() {
   void* env_string_buffer_init[]  = {
-    SPVM_API_STRING_BUFFER_new_string_buffer_tmp,
+    SPVM_API_STRING_BUFFER_new_object,
     SPVM_API_STRING_BUFFER_free_string_buffer,
     SPVM_API_STRING_BUFFER_get_value,
     SPVM_API_STRING_BUFFER_get_length,
@@ -20,7 +20,7 @@ SPVM_ENV_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_env() {
   return env_string_buffer;
 }
 
-SPVM_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_string_buffer_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+SPVM_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_object(SPVM_ALLOCATOR* allocator, int32_t capacity) {
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new_tmp(allocator, capacity);
   
   return string_buffer;

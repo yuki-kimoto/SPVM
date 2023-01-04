@@ -2367,7 +2367,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_E
   
   void** env_array = (void**)env->api->string_buffer;
 
-  if ((void*)&env->api->string_buffer->new_string_buffer_tmp != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->string_buffer->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->string_buffer->free_string_buffer != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->string_buffer->get_value != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->string_buffer->get_length != &env_array[3]) { stack[0].ival = 0; return 0; }
@@ -3207,7 +3207,7 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
     void* allocator = env->api->allocator->new_allocator();
     
     // New string buffer
-    void* string_buffer = env->api->string_buffer->new_string_buffer_tmp(allocator, 0);
+    void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
 
     void* precompile = env->api->precompile->new_precompile();
     

@@ -21,16 +21,16 @@ SPVM String Buffer Native APIs are the public APIs for string buffers.
 
 String buffer native APIs have its IDs.
 
-  0 new_string_buffer_tmp
+  0 new_object
   1 free_string_buffer
   2 get_value
   3 get_length
 
 =head1 String Buffer Native APIs
 
-=head2 new_string_buffer_tmp
+=head2 new_object
 
-  void* (*new_string_buffer_tmp)();
+  void* (*new_object)();
 
 Create a new temporary string buffer object.
 

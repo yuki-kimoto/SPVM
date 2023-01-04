@@ -4,10 +4,13 @@
   [Bug Fix]
     * Fixed the bug that the SPVM compiler is not released.
   [Incompatible Changes]
-    Changed the name of the following a Compiler Native API.
-    -  int32_t (*compile_spvm)(void* compiler, const char* class_name);
-    +  int32_t (*compile)(void* compiler, const char* class_name);
+    * Changed the names of the following a Compiler Native APIs.
+      -  int32_t (*compile_spvm)(void* compiler, const char* class_name);
+      +  int32_t (*compile)(void* compiler, const char* class_name);
 
+    * Changed the names of the following a String Buffer APIs.
+      -  void* (*new_string_buffer_tmp)();
+      +  void* (*new_object)();
 0.9676 2022-01-03
   [New Features]
     * Added the following constant values of Native API.
