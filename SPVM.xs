@@ -3908,25 +3908,6 @@ DESTROY(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
-create_env(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Create env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-  size_t iv_env = PTR2IV(env);
-  SV* sviv_env = sv_2mortal(newSViv(iv_env));
-  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  
-  XSRETURN(0);
-}
-
-SV*
 create_compiler(...)
   PPCODE:
 {
@@ -4456,13 +4437,12 @@ prepare_env(...)
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  if (env == NULL) {
-    croak("The environemnt can't be created");
-  }
+  // Create env
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
 
   // Set runtime information
   env->runtime = runtime;

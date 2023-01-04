@@ -91,9 +91,6 @@ sub new {
   # Create the compiler
   $self->create_compiler;
   
-  # Create an environment
-  $self->create_env;
-  
   $self->dynamic_lib_files({});
   
   return $self;
