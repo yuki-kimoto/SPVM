@@ -4425,7 +4425,7 @@ free_compiler(...)
 }
 
 SV*
-prepare_env(...)
+new_env(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4449,6 +4449,23 @@ prepare_env(...)
   
   // Initialize env
   env->init_env(env);
+  
+  XSRETURN(0);
+}
+
+SV*
+new_stack(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Create stack
   SPVM_VALUE* stack = env->new_stack(env);

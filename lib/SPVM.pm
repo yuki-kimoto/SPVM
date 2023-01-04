@@ -118,8 +118,11 @@ sub init {
       $BUILDER->build_runtime;
     }
     
-    # Prepare runtime environment
-    $BUILDER->prepare_env;
+    # Create an environment
+    $BUILDER->new_env;
+
+    # Create an stack
+    $BUILDER->new_stack;
     
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
