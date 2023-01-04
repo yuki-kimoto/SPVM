@@ -221,12 +221,12 @@ sub build_and_bind_dynamic_lib_at_runtime {
       $dynamic_lib_file = $cc->build_runtime($class_name, {category => $category});
     }
     
-    $self->bind_methods($cc, $dynamic_lib_file, $class_name, $category);
+    $self->bind_methods($dynamic_lib_file, $class_name, $category);
   }
 }
 
 sub bind_methods {
-  my ($self, $cc, $dynamic_lib_file, $class_name, $category) = @_;
+  my ($self, $dynamic_lib_file, $class_name, $category) = @_;
 
   my $method_names = $self->get_method_names($class_name, $category);
   my $method_infos = [];
