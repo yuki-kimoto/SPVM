@@ -136,7 +136,6 @@ sub build_runtime {
     
     my $force = $self->detect_force;
     $self->builder->build_precompile_class_source_file(
-      $self->builder->runtime,
       $class_name,
       {
         output_dir => $build_src_dir,
@@ -184,7 +183,6 @@ sub build_dist {
     
     my $force = $self->detect_force;
     $self->builder->build_precompile_class_source_file(
-      $self->builder->runtime,
       $class_name,
       {
         output_dir => $build_src_dir,

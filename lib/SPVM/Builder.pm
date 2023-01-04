@@ -199,7 +199,7 @@ sub build_dynamic_lib_dist {
 }
 
 sub bind_methods {
-  my ($self, $runtime, $dynamic_lib_file, $class_name, $category) = @_;
+  my ($self, $dynamic_lib_file, $class_name, $category) = @_;
 
   my $method_names = $self->get_method_names($class_name, $category);
   if (@$method_names) {
@@ -264,17 +264,17 @@ EOS
       }
       
       if ($category eq 'native') {
-        $self->set_native_method_address($runtime, $class_name, $method_name, $cfunc_address);
+        $self->set_native_method_address($class_name, $method_name, $cfunc_address);
       }
       elsif ($category eq 'precompile') {
-        $self->set_precompile_method_address($runtime, $class_name, $method_name, $cfunc_address);
+        $self->set_precompile_method_address($class_name, $method_name, $cfunc_address);
       }
     }
   }
 }
 
 sub build_precompile_class_source_file {
-  my ($self, $runtime, $class_name, $options) = @_;
+  my ($self, $class_name, $options) = @_;
   
   # Config
   my $config = $options->{config};
@@ -304,7 +304,7 @@ sub build_precompile_class_source_file {
   
   # Generate precompile C source file
   if ($need_generate) {
-    my $precompile_source = $self->build_precompile_class_source($runtime, $class_name);
+    my $precompile_source = $self->build_precompile_class_source($class_name);
     mkpath dirname $source_file;
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
