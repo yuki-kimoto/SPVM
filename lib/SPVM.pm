@@ -118,13 +118,15 @@ sub init {
       $BUILDER->build_runtime;
     }
     
+    my $runtime = $BUILDER->runtime;
+    
     # Create an environment
-    $BUILDER->new_env;
-
-    # Create an stack
-    $BUILDER->new_stack;
+    $BUILDER->new_env($runtime);
     
     my $env = $BUILDER->env;
+    
+    # Create an stack
+    $BUILDER->new_stack($env);
     
     my $stack = $BUILDER->stack;
     
