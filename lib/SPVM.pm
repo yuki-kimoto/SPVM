@@ -64,7 +64,7 @@ sub import {
 
     # Class names added at this compilation
     my $added_class_names = [];
-    my $class_names = $BUILDER->get_class_names;
+    my $class_names = $BUILDER->get_class_names($BUILDER->runtime);
     for (my $i = $start_classes_length; $i < @$class_names; $i++) {
       my $added_class_name =  $class_names->[$i];
       push @$added_class_names, $added_class_name;
