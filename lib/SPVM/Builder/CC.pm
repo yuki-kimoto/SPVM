@@ -134,10 +134,12 @@ sub build_runtime {
     $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
     
+    my $force = $self->detect_force;
     $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
+        force => $force,
       }
     );
   }
@@ -178,11 +180,13 @@ sub build_dist {
   if ($category eq 'precompile') {
     $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
-
+    
+    my $force = $self->detect_force;
     $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
+        force => $force,
       }
     );
   }
@@ -1022,7 +1026,7 @@ sub build_precompile_class_source_file {
   my $config = $options->{config};
   
   # Force
-  my $force = $self->detect_force($config);
+  my $force = $options->{force};
   
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
