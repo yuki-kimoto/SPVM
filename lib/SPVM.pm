@@ -78,8 +78,26 @@ sub import {
       next if $added_class_name =~ /::anon/;
       
       for my $category ('precompile', 'native') {
-        # Build classs - Compile C source codes and link them to SPVM precompile method
-        $BUILDER->build_and_bind_dynamic_lib_at_runtime($added_class_name, $category);
+        my $cc = SPVM::Builder::CC->new(
+          build_dir => $BUILDER->{build_dir},
+          builder => $BUILDER,
+          runtime => 1,
+        );
+        
+        my $method_names = $BUILDER->get_method_names($added_class_name, $category);
+        
+        if (@$method_names) {
+          # Build classs - Compile C source codes and link them to SPVM precompile method
+          # Shared library which is already installed in distribution directory
+          my $dynamic_lib_file = $BUILDER->get_dynamic_lib_file_dist($added_class_name, $category);
+          
+          # Try runtime compile if shared library is not found
+          unless (-f $dynamic_lib_file) {
+            $dynamic_lib_file = $cc->build_runtime($added_class_name, {category => $category});
+          }
+          
+          $BUILDER->bind_methods($dynamic_lib_file, $added_class_name, $category);
+        }
       }
     }
   }

@@ -200,31 +200,6 @@ sub build_dynamic_lib_dist {
   $cc_native->build_dist($class_name, {category => $category});
 }
 
-sub build_and_bind_dynamic_lib_at_runtime {
-  my ($self, $class_name, $category) = @_;
-  
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $self->{build_dir},
-    builder => $self,
-    runtime => 1,
-  );
-  
-  my $method_names = $self->get_method_names($class_name, $category);
-  
-  if (@$method_names) {
-    # Shared library which is already installed in distribution directory
-    my $dynamic_lib_file = $self->get_dynamic_lib_file_dist($class_name, $category);
-
-    
-    # Try runtime compile if shared library is not found
-    unless (-f $dynamic_lib_file) {
-      $dynamic_lib_file = $cc->build_runtime($class_name, {category => $category});
-    }
-    
-    $self->bind_methods($dynamic_lib_file, $class_name, $category);
-  }
-}
-
 sub bind_methods {
   my ($self, $dynamic_lib_file, $class_name, $category) = @_;
 
