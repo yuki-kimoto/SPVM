@@ -134,7 +134,7 @@ sub init {
     for my $category ('precompile', 'native') {
       for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
         my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
-        $BUILDER->bind_methods($dynamic_lib_file, $class_name, $category);
+        $BUILDER->bind_methods($runtime, $dynamic_lib_file, $class_name, $category);
       }
     }
     
