@@ -4564,7 +4564,7 @@ build_precompile_class_source(...)
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
 
   // Free string buffer
-  env->api->string_buffer->free_string_buffer(string_buffer);
+  env->api->string_buffer->free_object(string_buffer);
 
   // Free allocator
   env->api->allocator->free_allocator(allocator);

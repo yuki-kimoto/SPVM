@@ -11,7 +11,9 @@
     * Changed the names of the following a String Buffer APIs.
       -  void* (*new_string_buffer_tmp)();
       +  void* (*new_object)();
-0.9676 2022-01-03
+      -  void (*free_string_buffer)(void* string_buffer);
+      +  void (*free_object)(void* string_buffer);
+
   [New Features]
     * Added the following constant values of Native API.
     
