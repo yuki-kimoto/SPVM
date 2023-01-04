@@ -67,28 +67,6 @@ sub runtime {
   }
 }
 
-sub native_address_info {
-  my $self = shift;
-  if (@_) {
-    $self->{native_address_info} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_address_info};
-  }
-}
-
-sub precompile_address_info {
-  my $self = shift;
-  if (@_) {
-    $self->{precompile_address_info} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{precompile_address_info};
-  }
-}
-
 sub dynamic_lib_files {
   my $self = shift;
   if (@_) {
@@ -116,10 +94,6 @@ sub new {
   # Create an environment
   $self->create_env;
   
-  $self->native_address_info({});
-  
-  $self->precompile_address_info({});
-
   $self->dynamic_lib_files({});
   
   return $self;
