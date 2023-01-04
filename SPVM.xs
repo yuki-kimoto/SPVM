@@ -4203,19 +4203,11 @@ get_class_names(...)
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  // The compiler_environment
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-  
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -4224,9 +4216,9 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_legnth = env->api->runtime->get_classes_length(runtime);
+  int32_t classes_legnth = compiler_env->api->runtime->get_classes_length(runtime);
   for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
-    const char* class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, class_id));
+    const char* class_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_class_name_id(runtime, class_id));
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
   }
@@ -4376,14 +4368,6 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-  
   void* runtime = NULL;
   {
     SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
@@ -4432,17 +4416,9 @@ get_spvm_32bit_codes(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
+  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
+  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
+  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
@@ -4450,8 +4426,8 @@ get_spvm_32bit_codes(...)
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // SPVM 32bit codes
-  int32_t* spvm_32bit_codes = env->api->runtime->get_spvm_32bit_codes(runtime);
-  int32_t spvm_32bit_codes_length = env->api->runtime->get_spvm_32bit_codes_length(runtime);
+  int32_t* spvm_32bit_codes = compiler_env->api->runtime->get_spvm_32bit_codes(runtime);
+  int32_t spvm_32bit_codes_length = compiler_env->api->runtime->get_spvm_32bit_codes_length(runtime);
   
   AV* av_spvm_32bit_codes = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_spvm_32bit_codes = sv_2mortal(newRV_inc((SV*)av_spvm_32bit_codes));
