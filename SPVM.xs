@@ -4182,8 +4182,10 @@ get_anon_class_names_by_parent_class_name(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  SV* sv_class_name = ST(2);
+  SV* sv_category = ST(3);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -4195,11 +4197,6 @@ get_anon_class_names_by_parent_class_name(...)
   SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
   SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
   
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
   AV* av_anon_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
   
