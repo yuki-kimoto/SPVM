@@ -4585,8 +4585,9 @@ new_env(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV* sv_runtime = ST(1);
-  SPVM_ENV* runtime = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_runtime)));
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Create env
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
@@ -4613,7 +4614,9 @@ new_stack(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV* sv_env = ST(1);
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
   // Create stack
