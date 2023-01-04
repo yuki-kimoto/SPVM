@@ -3935,6 +3935,46 @@ create_compiler(...)
 }
 
 SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  if (SvOK(sv_env)) {
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
+    if (env->runtime) {
+      // Free stack
+      SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+      SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+      void* stack = NULL;
+      if (SvOK(sv_stack)) {
+        stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+      }
+        
+      // Cleanup global varialbes
+      env->cleanup_global_vars(env, stack);
+      
+      // Free stack
+      env->free_stack(env, stack);
+
+      // Free runtime
+      env->api->runtime->free_runtime(env->runtime);
+      env->runtime = NULL;
+    }
+    
+    env->free_env_raw(env);
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 compile_spvm(...)
   PPCODE:
 {
@@ -4425,136 +4465,6 @@ free_compiler(...)
 }
 
 SV*
-new_env(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  // Create env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-  size_t iv_env = PTR2IV(env);
-  SV* sviv_env = sv_2mortal(newSViv(iv_env));
-  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-
-  // Set runtime information
-  env->runtime = runtime;
-  
-  // Initialize env
-  env->init_env(env);
-  
-  XSRETURN(0);
-}
-
-SV*
-new_stack(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
-  // Create stack
-  SPVM_VALUE* stack = env->new_stack(env);
-  size_t iv_stack = PTR2IV(stack);
-  SV* sviv_stack = sv_2mortal(newSViv(iv_stack));
-  SV* sv_stack = sv_2mortal(newRV_inc(sviv_stack));
-  (void)hv_store(hv_self, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
-
-  XSRETURN(0);
-}
-
-SV*
-set_command_info(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  SV* sv_program_name = ST(1);
-  const char* program_name = SvPV_nolen(sv_program_name);
-  int32_t program_name_length = strlen(program_name);
-  
-  SV* sv_argv = ST(2);
-  AV* av_argv = (AV*)SvRV(sv_argv);
-  int32_t argv_length = av_len(av_argv) + 1;
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-  
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-
-  // Program name - string
-  void* obj_program_name = env->new_string(env, stack, program_name, program_name_length);
-  
-  void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
-  for (int32_t index = 0; index < argv_length; index++) {
-    SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
-    SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
-    
-    const char* arg = SvPV_nolen(sv_arg);
-    int32_t arg_length = strlen(arg);
-    
-    void* obj_arg = env->new_string(env, stack, arg, arg_length);
-    env->set_elem_object(env, stack, obj_argv, index, obj_arg);
-  }
-
-  // Set command info
-  {
-    int32_t e;
-    e = env->set_command_info_program_name(env, stack, obj_program_name);
-    assert(e == 0);
-    e = env->set_command_info_argv(env, stack, obj_argv);
-    assert(e == 0);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-call_init_blocks(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV* sv_env = ST(1);
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  SV* sv_stack = ST(2);
-  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  
-  env->call_init_blocks(env, stack);
-
-  XSRETURN(0);
-}
-
-SV*
 set_native_method_address(...)
   PPCODE:
 {
@@ -4679,7 +4589,7 @@ build_precompile_class_source(...)
 }
 
 SV*
-DESTROY(...)
+new_env(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4687,32 +4597,122 @@ DESTROY(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  // Create env
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+
+  // Set runtime information
+  env->runtime = runtime;
+  
+  // Initialize env
+  env->init_env(env);
+  
+  XSRETURN(0);
+}
+
+SV*
+new_stack(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // The environment
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  if (SvOK(sv_env)) {
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-    if (env->runtime) {
-      // Free stack
-      SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-      SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-      void* stack = NULL;
-      if (SvOK(sv_stack)) {
-        stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-      }
-        
-      // Cleanup global varialbes
-      env->cleanup_global_vars(env, stack);
-      
-      // Free stack
-      env->free_stack(env, stack);
+  // Create stack
+  SPVM_VALUE* stack = env->new_stack(env);
+  size_t iv_stack = PTR2IV(stack);
+  SV* sviv_stack = sv_2mortal(newSViv(iv_stack));
+  SV* sv_stack = sv_2mortal(newRV_inc(sviv_stack));
+  (void)hv_store(hv_self, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
 
-      // Free runtime
-      env->api->runtime->free_runtime(env->runtime);
-      env->runtime = NULL;
-    }
+  XSRETURN(0);
+}
+
+SV*
+call_init_blocks(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SV* sv_stack = ST(2);
+  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  
+  env->call_init_blocks(env, stack);
+
+  XSRETURN(0);
+}
+
+SV*
+set_command_info(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV* sv_program_name = ST(1);
+  const char* program_name = SvPV_nolen(sv_program_name);
+  int32_t program_name_length = strlen(program_name);
+  
+  SV* sv_argv = ST(2);
+  AV* av_argv = (AV*)SvRV(sv_argv);
+  int32_t argv_length = av_len(av_argv) + 1;
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack;
+  if (SvOK(sv_stack)) {
+    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+  }
+  
+  // The environment
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
+  // Program name - string
+  void* obj_program_name = env->new_string(env, stack, program_name, program_name_length);
+  
+  void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
+  for (int32_t index = 0; index < argv_length; index++) {
+    SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
+    SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
     
-    env->free_env_raw(env);
+    const char* arg = SvPV_nolen(sv_arg);
+    int32_t arg_length = strlen(arg);
+    
+    void* obj_arg = env->new_string(env, stack, arg, arg_length);
+    env->set_elem_object(env, stack, obj_argv, index, obj_arg);
+  }
+
+  // Set command info
+  {
+    int32_t e;
+    e = env->set_command_info_program_name(env, stack, obj_program_name);
+    assert(e == 0);
+    e = env->set_command_info_argv(env, stack, obj_argv);
+    assert(e == 0);
   }
   
   XSRETURN(0);
