@@ -4279,14 +4279,17 @@ get_classes_length(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV* sv_runtime = ST(1);
+  HV* hv_self = (HV*)SvRV(sv_self);
 
   // The compiler_environment
   SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
   SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
   SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  
+  // Runtime
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
   
   int32_t classes_length;
   if (SvOK(sv_runtime)) {
