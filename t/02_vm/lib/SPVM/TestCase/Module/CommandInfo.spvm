@@ -1,0 +1,9 @@
+class TestCase::Module::CommandInfo {
+  our $INIT_BLOCK_PROGRAM_NAME : ro string;
+  our $INIT_BLOCK_ARGV : ro string[];
+  
+  INIT {
+    $INIT_BLOCK_PROGRAM_NAME = CommandInfo->PROGRAM_NAME;
+    $INIT_BLOCK_ARGV = CommandInfo->ARGV;
+  }
+}

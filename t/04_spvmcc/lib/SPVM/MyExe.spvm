@@ -2,6 +2,14 @@ class MyExe {
   use MyExe::Precompile;
   use TestCase::NativeAPI2;
   
+  our $INIT_BLOCK_PROGRAM_NAME : ro string;
+  our $INIT_BLOCK_ARGV : ro string[];
+
+  INIT {
+    $INIT_BLOCK_PROGRAM_NAME = CommandInfo->PROGRAM_NAME;
+    $INIT_BLOCK_ARGV = CommandInfo->ARGV;
+  }
+  
   static method main : int () {
     my $program_name = CommandInfo->PROGRAM_NAME;
     my $argv = CommandInfo->ARGV;
@@ -17,13 +25,22 @@ class MyExe {
     my $global_program_name = CommandInfo->PROGRAM_NAME;
     
     unless ($global_program_name == $program_name) {
-      warn "Wrong";
+      die "Wrong";
     }
     
     my $global_argv = CommandInfo->ARGV;
     unless ($global_argv == $argv) {
-      warn "Wrong";
+      die "Wrong";
     }
+    
+    unless ($global_program_name == $INIT_BLOCK_PROGRAM_NAME) {
+      die "Wrong";
+    }
+    
+    unless ($global_argv == $INIT_BLOCK_ARGV) {
+      die "Wrong";
+    }
+    
     
     print "AAA $program_name $sum $ret1 $ret2 $ret3 $argv->[0] $argv->[1]\n";
   }
