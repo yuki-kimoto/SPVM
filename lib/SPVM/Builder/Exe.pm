@@ -571,34 +571,43 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 #endif
   
   SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
+  
+  // Set the program name and the command line arguments
+  {
+    SPVM_VALUE* my_stack = env->new_stack(env);
+    
+    // Enter scope
+    int32_t scope_id = env->enter_scope(env, my_stack);
+    
+    // Program name - string
+    void* obj_program_name = env->new_string(env, my_stack, command_args[0], strlen(command_args[0]));
+    
+    // ARGV - string[]
+    void* obj_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
+    for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
+      void* obj_arg = env->new_string(env, my_stack, command_args[arg_index], strlen(command_args[arg_index]));
+      env->set_elem_object(env, my_stack, obj_argv, arg_index - 1, obj_arg);
+    }
+    
+    // Set command info
+    {
+      int32_t e;
+      e = env->set_command_info_program_name(env, obj_program_name);
+      assert(e == 0);
+      e = env->set_command_info_argv(env, obj_argv);
+      assert(e == 0);
+    }
+    // Leave scope
+    env->leave_scope(env, my_stack, scope_id);
+    
+    env->free_stack(env, my_stack);
+  }
 
   // Call INIT blocks
   env->call_init_blocks(env);
   
   SPVM_VALUE* stack = env->new_stack(env);
   
-  // Enter scope
-  int32_t scope_id = env->enter_scope(env, stack);
-  
-  // Program name - string
-  void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
-  
-  // ARGV - string[]
-  void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
-  for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
-    void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
-    env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
-  }
-  
-  // Set command info
-  {
-    int32_t e;
-    e = env->set_command_info_program_name(env, obj_program_name);
-    assert(e == 0);
-    e = env->set_command_info_argv(env, obj_argv);
-    assert(e == 0);
-  }
-
   // Class name
   const char* class_name = "$class_name";
   
@@ -623,9 +632,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   else {
     status = stack[0].ival;
   }
-  
-  // Leave scope
-  env->leave_scope(env, stack, scope_id);
   
   // Free stack
   env->free_stack(env, stack);
