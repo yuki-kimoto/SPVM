@@ -88,6 +88,18 @@
       [After]
       The "%s" class method
       The "%s" instance method
+  [Exception Message Improvement]
+    * Unified exception messages in Exchange API.
+      [Before]
+      %s basic type
+      %s field
+      %s class
+      %s method
+      [After]
+      "%s" basic type
+      "%s" field
+      "%s" class
+      "%s" method
       
   [Test Improvement]
     * Added the tests of get_class_parent_class_id, get_method_required_args_length, get_method_required_args_length Runtime Native APIs.
