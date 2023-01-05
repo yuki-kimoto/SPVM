@@ -31,6 +31,9 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_call_init_blocks(SPVM_ENV* env);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
+int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_program_name);
+int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_OBJECT* obj_argv);
+
 
 /*
   Object manipulating APIs
@@ -54,10 +57,6 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack,
 void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack);
-
-// Set command info
-int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name);
-int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv);
 
 // Class id
 int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);

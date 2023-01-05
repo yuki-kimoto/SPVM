@@ -4687,9 +4687,9 @@ set_command_info(...)
   // Set command info
   {
     int32_t e;
-    e = env->set_command_info_program_name(env, stack, obj_program_name);
+    e = env->set_command_info_program_name(env, obj_program_name);
     assert(e == 0);
-    e = env->set_command_info_argv(env, stack, obj_argv);
+    e = env->set_command_info_argv(env, obj_argv);
     assert(e == 0);
   }
   

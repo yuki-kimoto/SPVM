@@ -43,6 +43,10 @@
       +  void (*cleanup_global_vars)(SPVM_ENV* env);
       -  void (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  void (*call_init_blocks)(SPVM_ENV* env);    
+      -  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
+      +  int32_t (*set_command_info_program_name)(SPVM_ENV* env, void* obj_program_name);
+      -  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
+      +  int32_t (*set_command_info_argv)(SPVM_ENV* env, void* obj_argv);
     * The program name and command line arguments are not used in INIT blocks.
     
   [New Features]
