@@ -1505,7 +1505,7 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   
   int32_t error = 0;
-  stack[STACK_INDEX_ARGS_LENGTH].ival = args_stack_length;
+  stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_stack_length;
   stack[STACK_INDEX_CALL_DEPTH].ival++;
   
   int32_t max_call_depth = 10000;
@@ -4156,7 +4156,7 @@ const char* SPVM_API_strerror_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t er
 int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  int32_t args_length = stack[STACK_INDEX_ARGS_LENGTH].ival;
+  int32_t args_length = stack[STACK_INDEX_ARGS_STACK_LENGTH].ival;
   
   return args_length;
 }
@@ -4168,7 +4168,7 @@ int32_t SPVM_API_items(SPVM_ENV* env, SPVM_VALUE* stack) {
 void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length) {
   (void)env;
   
-  stack[STACK_INDEX_ARGS_LENGTH].ival = args_length;
+  stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_length;
 }
 
 int32_t SPVM_API_get_pointer_fields_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
