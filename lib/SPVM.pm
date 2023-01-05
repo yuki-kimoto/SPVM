@@ -120,12 +120,15 @@ sub init {
     
     # Build an environment
     $BUILDER->build_env;
-
+    
     my $env = $BUILDER->env;
-
+    
+    # Set command line info
+    $BUILDER->set_command_info($env, $0, \@ARGV);
+    
     # Call INIT blocks
     $BUILDER->call_init_blocks($env);
-
+    
     # Build an stack
     $BUILDER->build_stack;
     
@@ -138,9 +141,6 @@ sub init {
         $BUILDER->bind_methods($dynamic_lib_file, $class_name, $category);
       }
     }
-    
-    # Set command line info
-    $BUILDER->set_command_info($env, $stack, $0, \@ARGV);
     
     $SPVM_INITED = 1;
   }
