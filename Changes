@@ -4,21 +4,28 @@
   [Bug Fix]
     * Fixed the bug that the SPVM compiler is not released.
   [Incompatible Changes]
-    * Changed the names of the following a Compiler Native APIs.
+    * Changed the names of the following Compiler Native APIs.
       -  int32_t (*compile_spvm)(void* compiler, const char* class_name);
       +  int32_t (*compile)(void* compiler, const char* class_name);
 
-    * Changed the names of the following a String Buffer Native APIs.
+    * Changed the names of the following String Buffer Native APIs.
       -  void* (*new_string_buffer_tmp)();
       +  void* (*new_object)();
       -  void (*free_string_buffer)(void* string_buffer);
       +  void (*free_object)(void* string_buffer);
 
-    * Changed the names of the following a Precompile Native APIs.
+    * Changed the names of the following Precompile Native APIs.
       -  void* (*new_precompile)();
       +  void* (*new_object)();
       -  void (*free_precompile)(void* precompile);
       +  void (*free_object)(void* precompile);
+
+    * Changed the names of the following Allocator Native APIs.
+      -  void* (*new_allocator)();
+      +  void* (*new_object)();
+      -  void (*free_allocator)(void* allocator);
+      +  void (*free_object)(void* allocator);
+
   [New Features]
     * Added the following constant values of Native API.
     

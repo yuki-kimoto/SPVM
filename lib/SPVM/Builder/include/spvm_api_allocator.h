@@ -6,7 +6,7 @@
 
 SPVM_ENV_ALLOCATOR* SPVM_API_ALLOCATOR_new_env();
 
-SPVM_ALLOCATOR* SPVM_API_ALLOCATOR_new_allocator();
-void SPVM_API_ALLOCATOR_free_allocator(SPVM_ALLOCATOR* allocator);
+SPVM_ALLOCATOR* SPVM_API_ALLOCATOR_new_object();
+void SPVM_API_ALLOCATOR_free_object(SPVM_ALLOCATOR* allocator);
 
 #endif

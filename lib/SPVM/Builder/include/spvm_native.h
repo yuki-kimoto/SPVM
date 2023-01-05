@@ -502,8 +502,8 @@ enum {
 };
 
 struct spvm_env_allocator {
-  void* (*new_allocator)();
-  void (*free_allocator)(void* allocator);
+  void* (*new_object)();
+  void (*free_object)(void* allocator);
 };
 
 struct spvm_env_string_buffer {

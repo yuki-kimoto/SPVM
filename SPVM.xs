@@ -4546,7 +4546,7 @@ build_precompile_class_source(...)
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // New allocator
-  void* allocator = env->api->allocator->new_allocator();
+  void* allocator = env->api->allocator->new_object();
   
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
@@ -4567,7 +4567,7 @@ build_precompile_class_source(...)
   env->api->string_buffer->free_object(string_buffer);
 
   // Free allocator
-  env->api->allocator->free_allocator(allocator);
+  env->api->allocator->free_object(allocator);
 
   // Free env
   env->free_env_raw(env);
