@@ -4551,13 +4551,13 @@ build_precompile_class_source(...)
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
 
-  void* precompile = env->api->precompile->new_precompile();
+  void* precompile = env->api->precompile->new_object();
   
   env->api->precompile->set_runtime(precompile, runtime);
   
   env->api->precompile->build_class_source(precompile, string_buffer, class_name);
   
-  env->api->precompile->free_precompile(precompile);
+  env->api->precompile->free_object(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);

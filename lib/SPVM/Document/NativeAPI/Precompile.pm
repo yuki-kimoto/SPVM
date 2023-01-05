@@ -8,10 +8,10 @@ SPVM::Document::NativeAPI::Precompile - SPVM Precompile Native APIs
   void* precompile_api = env->api->precompile;
   
   // New precompile
-  void* precompile = precompile_api->new_precompile();
+  void* precompile = precompile_api->new_object();
   
   // Free precompile
-  precompile_api->free_precompile(precompile);
+  precompile_api->free_object(precompile);
 
 =head1 Description
 
@@ -21,8 +21,8 @@ SPVM Precompile Native APIs are public APIs to create precompile-source.
 
 Precompile native APIs have its IDs.
 
-  0 new_precompile
-  1 free_precompile
+  0 new_object
+  1 free_object
   2 set_runtime
   3 get_runtime
   4 build_class_source
@@ -30,15 +30,15 @@ Precompile native APIs have its IDs.
 
 =head1 Precompile Native APIs
 
-=head2 new_precompile
+=head2 new_object
 
-  void* (*new_precompile)();
+  void* (*new_object)();
 
 Creates a new Precompile Native API object.
 
-=head2 free_precompile
+=head2 free_object
   
-  void (*free_precompile)(void* precompile);
+  void (*free_object)(void* precompile);
 
 Frees a Precompile Native API object.
 

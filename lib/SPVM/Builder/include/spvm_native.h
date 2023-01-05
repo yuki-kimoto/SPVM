@@ -441,8 +441,8 @@ struct spvm_env_compiler {
 };
 
 struct spvm_env_precompile {
-  void* (*new_precompile)();
-  void (*free_precompile)(void* precompile);
+  void* (*new_object)();
+  void (*free_object)(void* precompile);
   void (*set_runtime)(void* precompile, void* runtime);
   void* (*get_runtime)(void* precompile);
   void (*build_class_source)(void* precompile, void* string_buffer, const char* class_name);

@@ -2347,8 +2347,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_precompile_indexes(SPVM_ENV*
   
   void** env_array = (void**)env->api->precompile;
 
-  if ((void*)&env->api->precompile->new_precompile != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->free_precompile != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->precompile->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->precompile->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->set_runtime != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->get_runtime != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->build_class_source != &env_array[4]) { stack[0].ival = 0; return 0; }
@@ -3209,13 +3209,13 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
     // New string buffer
     void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
 
-    void* precompile = env->api->precompile->new_precompile();
+    void* precompile = env->api->precompile->new_object();
     
     env->api->precompile->set_runtime(precompile, env->runtime);
     
     env->api->precompile->build_method_source(precompile, string_buffer, "TestCase::NativeAPI", "get_class_var_byte_by_name");
     
-    env->api->precompile->free_precompile(precompile);
+    env->api->precompile->free_object(precompile);
 
     const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
     int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
