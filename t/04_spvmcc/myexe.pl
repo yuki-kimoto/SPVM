@@ -3,4 +3,4 @@ use warnings;
 
 use SPVM 'MyExe';
 
-SPVM::MyExe->main($0, \@ARGV);
+SPVM::MyExe->main;

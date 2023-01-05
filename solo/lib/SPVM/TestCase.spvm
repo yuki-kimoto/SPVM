@@ -99,7 +99,11 @@ SPVM::Test - SPVM test module
     return $value;
   }
 
-  static method main : int ($start_file : string, $args : string[]) {
+  static method main : int () {
+    
+    my $start_file = CommandInfo->PROGRAM_NAME;
+    
+    my $args = CommandInfo->ARGV;
     
     {
       my $items = items;

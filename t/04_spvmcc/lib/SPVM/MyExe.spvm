@@ -2,7 +2,10 @@ class MyExe {
   use MyExe::Precompile;
   use TestCase::NativeAPI2;
   
-  static method main : int ($program_name : string, $argv : string[]) {
+  static method main : int () {
+    my $program_name = CommandInfo->PROGRAM_NAME;
+    my $argv = CommandInfo->ARGV;
+  
     my $sum = MyExe::Precompile->sum(1, 2);
     my $ret1 = TestCase::NativeAPI2->src_foo;
     my $ret2 = TestCase::NativeAPI2->src_bar;
