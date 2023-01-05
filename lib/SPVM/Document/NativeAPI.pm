@@ -1893,7 +1893,7 @@ Examples:
 
 =head2 cleanup_global_vars
   
-  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*cleanup_global_vars)(SPVM_ENV* env);
 
 Cleanup gloval variable, such as class variables and the exception variable.
 

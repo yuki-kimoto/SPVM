@@ -3957,12 +3957,12 @@ DESTROY(...)
         stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
       }
         
-      // Cleanup global varialbes
-      env->cleanup_global_vars(env, stack);
-      
       // Free stack
       env->free_stack(env, stack);
 
+      // Cleanup global varialbes
+      env->cleanup_global_vars(env);
+      
       // Free runtime
       env->api->runtime->free_object(env->runtime);
       env->runtime = NULL;

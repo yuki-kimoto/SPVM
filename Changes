@@ -38,6 +38,10 @@
       -  void (*free_runtime)(void* runtime);
       +  void (*free_object)(void* runtime);
       
+    * Changed the definitions of the following Native APIs.
+      -  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  void (*cleanup_global_vars)(SPVM_ENV* env);
+
   [New Features]
     * Added the following constant values of Native API.
     
