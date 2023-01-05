@@ -41,7 +41,10 @@
     * Changed the definitions of the following Native APIs.
       -  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  void (*cleanup_global_vars)(SPVM_ENV* env);
-
+      -  void (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  void (*call_init_blocks)(SPVM_ENV* env);    
+    * The program name and command line arguments are not used in INIT blocks.
+    
   [New Features]
     * Added the following constant values of Native API.
     

@@ -4641,10 +4641,7 @@ call_init_blocks(...)
   SV* sv_env = ST(1);
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SV* sv_stack = ST(2);
-  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  
-  env->call_init_blocks(env, stack);
+  env->call_init_blocks(env);
 
   XSRETURN(0);
 }

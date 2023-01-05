@@ -3925,11 +3925,13 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
   }
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
+void SPVM_API_call_init_blocks(SPVM_ENV* env) {
   (void)env;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
+
+  SPVM_VALUE* my_stack = env->new_stack(env);
   
   // Call INIT blocks
   int32_t classes_length = runtime->classes_length;
@@ -3938,10 +3940,12 @@ void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (class->has_init_block) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, "INIT");
       assert(init_method);
-      int32_t args_stack_length = 0;
-      env->call_method(env, stack, init_method->id, args_stack_length);
+      int32_t args_my_stack_length = 0;
+      env->call_method(env, my_stack, init_method->id, args_my_stack_length);
     }
   }
+  
+  env->free_stack(env, my_stack);
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {

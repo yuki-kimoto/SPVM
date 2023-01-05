@@ -571,6 +571,9 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 #endif
   
   SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
+
+  // Call INIT blocks
+  env->call_init_blocks(env);
   
   SPVM_VALUE* stack = env->new_stack(env);
   
@@ -590,9 +593,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   int32_t args_stack_length = 2;
   stack[0].oval = obj_program_name;
   stack[1].oval = obj_argv;
-  
-  // Call INIT blocks
-  env->call_init_blocks(env, stack);
   
   // Set command info
   {
