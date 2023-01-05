@@ -82,6 +82,13 @@ int32_t SPVM__Compiler__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Compiler__call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  return 0;
+}
+
 int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

@@ -46,8 +46,9 @@ class Compiler {
   native static method call_init_blocks : void ($env : Native::Env, $stack : Native::Stack);
 
   native static method set_command_info : void ($env : Native::Env, $stack : Native::Stack);
+
+  native static method call_method : void ($env : Native::Env, $stack : Native::Stack, $class_name : string, $method_name : string);
   
   # Instance Methods
   native method compile : Native::Runtime ($class_name : string, $start_file = undef : string, $start_line = 0 : int);
-
 }
