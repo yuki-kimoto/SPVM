@@ -425,8 +425,8 @@ struct spvm_env_runtime {
 };
 
 struct spvm_env_compiler {
-  void* (*new_compiler)();
-  void (*free_compiler)(void* compiler);
+  void* (*new_object)();
+  void (*free_object)(void* compiler);
   void (*set_start_line)(void* compiler, int32_t start_line);
   int32_t (*get_start_line)(void* compiler);
   void (*set_start_file)(void* compiler, const char* start_file);

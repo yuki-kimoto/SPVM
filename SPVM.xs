@@ -3924,7 +3924,7 @@ create_compiler(...)
   (void)hv_store(hv_self, "compiler_env", strlen("compiler_env"), SvREFCNT_inc(sv_compiler_env), 0);
 
   // Create compiler
-  void* compiler = compiler_env->api->compiler->new_compiler();
+  void* compiler = compiler_env->api->compiler->new_object();
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -3980,7 +3980,7 @@ DESTROY(...)
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Free compiler
-  compiler_env->api->compiler->free_compiler(compiler);
+  compiler_env->api->compiler->free_object(compiler);
   
   compiler_env->free_env_raw(compiler_env);
   

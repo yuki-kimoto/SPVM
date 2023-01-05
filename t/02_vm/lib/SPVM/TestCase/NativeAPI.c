@@ -2401,8 +2401,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* e
   
   void** env_array = (void**)env->api->compiler;
 
-  if ((void*)&env->api->compiler->new_compiler != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->free_compiler != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_line != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_start_line != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_file != &env_array[4]) { stack[0].ival = 0; return 0; }

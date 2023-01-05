@@ -26,6 +26,12 @@
       -  void (*free_allocator)(void* allocator);
       +  void (*free_object)(void* allocator);
 
+    * Changed the names of the following Compiler Native APIs.
+      -  void* (*new_compiler)();
+      +  void* (*new_object)();
+      -  void (*free_compiler)(void* compiler);
+      +  void (*free_object)(void* compiler);
+
   [New Features]
     * Added the following constant values of Native API.
     

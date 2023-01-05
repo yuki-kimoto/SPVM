@@ -16,8 +16,8 @@
 
 SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
   void* env_compiler_init[]  = {
-    SPVM_API_COMPILER_new_compiler,
-    SPVM_API_COMPILER_free_compiler,
+    SPVM_API_COMPILER_new_object,
+    SPVM_API_COMPILER_free_object,
     SPVM_API_COMPILER_set_start_line,
     SPVM_API_COMPILER_get_start_line,
     SPVM_API_COMPILER_set_start_file,
@@ -36,13 +36,13 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
   return env_compiler;
 }
 
-SPVM_COMPILER* SPVM_API_COMPILER_new_compiler() {
+SPVM_COMPILER* SPVM_API_COMPILER_new_object() {
   
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   return compiler;
 }
 
-void SPVM_API_COMPILER_free_compiler(SPVM_COMPILER* compiler) {
+void SPVM_API_COMPILER_free_object(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_free(compiler);
 }
