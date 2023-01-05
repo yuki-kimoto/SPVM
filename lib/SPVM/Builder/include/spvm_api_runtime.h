@@ -23,9 +23,9 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
 int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t super_class_basic_type_id, int32_t child_class_basic_type_id);
 
 // Runtime
-SPVM_RUNTIME* SPVM_API_RUNTIME_new_runtime();
+SPVM_RUNTIME* SPVM_API_RUNTIME_new_object();
 void SPVM_API_RUNTIME_prepare(SPVM_RUNTIME* runtime);
-void SPVM_API_RUNTIME_free_runtime(SPVM_RUNTIME* runtime);
+void SPVM_API_RUNTIME_free_object(SPVM_RUNTIME* runtime);
 
 // Runtime information
 SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime);

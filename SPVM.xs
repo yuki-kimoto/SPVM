@@ -3964,7 +3964,7 @@ DESTROY(...)
       env->free_stack(env, stack);
 
       // Free runtime
-      env->api->runtime->free_runtime(env->runtime);
+      env->api->runtime->free_object(env->runtime);
       env->runtime = NULL;
     }
     
@@ -4388,12 +4388,12 @@ build_runtime(...)
   }
   
   if (runtime) {
-    compiler_env->api->runtime->free_runtime(runtime);
+    compiler_env->api->runtime->free_object(runtime);
     runtime = NULL;
   }
 
   // Build runtime information
-  runtime = compiler_env->api->runtime->new_runtime(compiler_env);
+  runtime = compiler_env->api->runtime->new_object(compiler_env);
 
   // Runtime allocator
   void* runtime_allocator = compiler_env->api->runtime->get_allocator(runtime);

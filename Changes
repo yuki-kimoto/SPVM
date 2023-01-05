@@ -32,6 +32,12 @@
       -  void (*free_compiler)(void* compiler);
       +  void (*free_object)(void* compiler);
 
+    * Changed the names of the following Runtime Native APIs.
+      -  void* (*new_runtime)();
+      +  void* (*new_object)();
+      -  void (*free_runtime)(void* runtime);
+      +  void (*free_object)(void* runtime);
+      
   [New Features]
     * Added the following constant values of Native API.
     

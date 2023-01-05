@@ -4002,7 +4002,7 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Free runtime
-  SPVM_API_RUNTIME_free_runtime(runtime);
+  SPVM_API_RUNTIME_free_object(runtime);
   env->runtime = NULL;
   
   // Free env
