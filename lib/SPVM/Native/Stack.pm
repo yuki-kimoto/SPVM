@@ -1,4 +1,4 @@
-package SPVM::NativeData::Env;
+package SPVM::Native::Stack;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::NativeData::Env;
 
 =head1 Name
 
-SPVM::NativeData::Env - foo
+SPVM::Native::Stack - foo
 
 =head1 Description
 
-C<SPVM::NativeData::Env> is the L<SPVM>'s C<NativeData::Env> class.
+C<SPVM::Native::Stack> is the L<SPVM>'s C<Native::Stack> class.
 
 =head1 Usage
 
-  use NativeData::Env;
+  use Native::Stack;
   
 =head1 Fields
 

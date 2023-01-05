@@ -1,4 +1,4 @@
-package SPVM::NativeData::Stack;
+package SPVM::Native::Compiler;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::NativeData::Stack;
 
 =head1 Name
 
-SPVM::NativeData::Stack - foo
+SPVM::Native::Compiler - foo
 
 =head1 Description
 
-C<SPVM::NativeData::Stack> is the L<SPVM>'s C<NativeData::Stack> class.
+C<SPVM::Native::Compiler> is the L<SPVM>'s C<Native::Compiler> class.
 
 =head1 Usage
 
-  use NativeData::Stack;
+  use Native::Compiler;
   
 =head1 Fields
 

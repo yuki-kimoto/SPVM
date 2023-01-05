@@ -1,4 +1,4 @@
-package SPVM::NativeData::Runtime;
+package SPVM::Native::Env;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::NativeData::Runtime;
 
 =head1 Name
 
-SPVM::NativeData::Runtime - foo
+SPVM::Native::Env - foo
 
 =head1 Description
 
-C<SPVM::NativeData::Runtime> is the L<SPVM>'s C<NativeData::Runtime> class.
+C<SPVM::Native::Env> is the L<SPVM>'s C<Native::Env> class.
 
 =head1 Usage
 
-  use NativeData::Runtime;
+  use Native::Env;
   
 =head1 Fields
 

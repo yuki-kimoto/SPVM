@@ -1,3 +1,0 @@
-class NativeData::Stack : pointer_t {
-
-}

@@ -1,4 +1,4 @@
-package SPVM::NativeData::Compiler;
+package SPVM::Native::Runtime;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::NativeData::Compiler;
 
 =head1 Name
 
-SPVM::NativeData::Compiler - foo
+SPVM::Native::Runtime - foo
 
 =head1 Description
 
-C<SPVM::NativeData::Compiler> is the L<SPVM>'s C<NativeData::Compiler> class.
+C<SPVM::Native::Runtime> is the L<SPVM>'s C<Native::Runtime> class.
 
 =head1 Usage
 
-  use NativeData::Compiler;
+  use Native::Runtime;
   
 =head1 Fields
 
