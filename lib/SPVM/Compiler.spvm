@@ -3,42 +3,51 @@ class Compiler {
   use Native::Runtime;
   use Native::Env;
   use Native::Stack;
-  
+  use Native::Address;
   use Hash;
   
-  has start_line : rw int;
-  has start_file : rw string;
+  # Fields
   has module_dirs : rw string[];
   has native_compiler : Native::Compiler;
   
+  # Class Methods
   static method new : Compiler ($options = undef : object[]) {
     
     my $options_h = Hash->new($options);
     
     my $self = new Compiler;
     
-    my $module_dirs = $options_h->delete_or_default("module_dirs" => undef);
-    
-    if ($module_dirs) {
-      $self->{module_dirs} = $module_dirs;
-    }
+    my $native_compiler = &new_native_compiler;
+    $self->{native_compiler} = $native_compiler;
     
     return $self;
   }
   
-  static method new : Compiler ($options = undef : object[]) {
-    
-    my $options_h = Hash->new($options);
-    
-    my $self = new Compiler;
-    
-    my $module_dirs = $options_h->delete_or_default("module_dirs" => undef);
-    
-    if ($module_dirs) {
-      $self->{module_dirs} = $module_dirs;
-    }
-    
-    return $self;
-  }
+  native static method new_native_compiler : Native::Compiler ($class_name : string);
   
+  native static method get_spvm_32bit_codes : int[] ($runtime : Native::Runtime);
+
+  native static method get_native_method_address : Native::Address ($runtime : Native::Runtime, $class_name : string, $method_name : string);
+
+  native static method set_native_method_address : string ($runtime : Native::Runtime, $class_name : string, $method_name : string, $address : Native::Address);
+  
+  native static method get_precompile_method_address : Native::Address ($runtime : Native::Runtime, $class_name : string, $method_name : string);
+
+  native static method set_precompile_method_address : string ($runtime : Native::Runtime, $class_name : string, $method_name : string, $address : Native::Address);
+  
+  native static method build_class_source : string ($runtime : Native::Runtime, $class_name : string);
+  
+  native static method build_method_source : string ($runtime : Native::Runtime, $class_name : string, $method_name : string);
+  
+  native static method new_env : Native::Env ($runtime : Native::Runtime);
+  
+  native static method new_stack : Native::Stack ($runtime : Native::Env);
+  
+  native static method call_init_blocks : void ($env : Native::Env, $stack : Native::Stack);
+
+  native static method set_command_info : void ($env : Native::Env, $stack : Native::Stack);
+  
+  # Instance Methods
+  native method compile : Native::Runtime ($class_name : string, $start_file = undef : string, $start_line = 0 : int);
+
 }
