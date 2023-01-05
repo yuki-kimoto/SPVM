@@ -1,15 +1,15 @@
 class Compiler {
-  use NativeData::Compiler;
-  use NativeData::Runtime;
-  use NativeData::Env;
-  use NativeData::Stack;
+  use Native::Compiler;
+  use Native::Runtime;
+  use Native::Env;
+  use Native::Stack;
   
   use Hash;
   
   has start_line : rw int;
   has start_file : rw string;
   has module_dirs : rw string[];
-  has native_data_compiler : NativeData::Compiler;
+  has native_compiler : Native::Compiler;
   
   static method new : Compiler ($options = undef : object[]) {
     
