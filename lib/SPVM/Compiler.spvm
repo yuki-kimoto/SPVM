@@ -23,7 +23,7 @@ class Compiler {
     return $self;
   }
   
-  native static method new_native_compiler : Native::Compiler ($class_name : string);
+  native static method new_native_compiler : Native::Compiler ();
   
   native static method get_spvm_32bit_codes : int[] ($runtime : Native::Runtime);
 
