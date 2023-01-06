@@ -1,3 +1,0 @@
-class Native::Runtime : pointer_t {
-
-}
