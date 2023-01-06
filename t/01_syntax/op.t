@@ -112,7 +112,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass : pointer_t { has foo : int; }';
-    compile_not_ok($source, qr/The pointer class can't have fields/);
+    compile_ok($source);
   }
 }
 

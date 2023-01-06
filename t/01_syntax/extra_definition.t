@@ -30,7 +30,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass : pointer_t { has x : int; }';
-      compile_not_ok($source, qr|The pointer class can't have fields|);
+      compile_ok($source);
     }
   }
   
@@ -65,7 +65,7 @@ use Test::More;
       }
       {
         my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer_t {}'];
-        compile_not_ok($source);
+        compile_ok($source);
       }
       {
         my $source = 'class MyClass extends MyClass {}';

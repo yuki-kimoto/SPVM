@@ -343,9 +343,9 @@ use Test::More;
   {
     my $source = [
       'class MyClass { use MyPoint; static method main : void () { new MyPoint; } }',
-      'class MyPoint : pointer_t;',
+      'class MyPoint : public pointer_t;',
     ];
-    compile_not_ok($source, q|The operand of the new operator can't be a pointer class type|);
+    compile_ok($source);
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
@@ -1057,7 +1057,7 @@ use Test::More;
       'class MyClass extends MyClass2 {}',
       'class MyClass2 : pointer_t;',
     ];
-    compile_not_ok($source, q|The parant class can't be a pointer class|);
+    compile_ok($source);
   }
   {
     my $source = 'class MyClass extends MyClass {}';
@@ -1069,7 +1069,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass extends Point : pointer_t { }';
-    compile_not_ok($source, q|The current class can't be a pointer class type when the class becomes a child class|);
+    compile_ok($source);
   }
 }
 

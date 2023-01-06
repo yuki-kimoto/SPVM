@@ -2377,11 +2377,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
       }
 
-      if (class->is_pointer) {
-        SPVM_COMPILER_error(compiler, "The pointer class can't have fields at %s line %d", field->op_field->file, field->op_field->line);
-        continue;
-      }
-
       field->index = i;
       const char* field_name = field->op_name->uv.name;
 
