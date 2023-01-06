@@ -2921,7 +2921,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_with_fields_raw(SPVM_ENV* env, SPVM_VALUE* sta
     return NULL;
   }
   
-  *(void**)((intptr_t)object + (size_t)env->object_header_size) = pointer;
+  env->set_pointer(env, stack, object, pointer);
   *(int32_t*)((intptr_t)object + (size_t)env->object_header_size + sizeof(SPVM_VALUE)) = fields_length;
 
   object->basic_type_id = basic_type->id;
@@ -3015,13 +3015,13 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   (void)env;
   
-  return *(void**)((intptr_t)object + (size_t)env->object_header_size);
+  return object->native_object;
 }
 
-void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* ptr) {
+void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* pointer) {
   (void)env;
   
-  *(void**)((intptr_t)object + (size_t)env->object_header_size) = ptr;
+  object->native_object = pointer;
 }
 
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
