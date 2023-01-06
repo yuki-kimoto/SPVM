@@ -2953,13 +2953,13 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   (void)env;
   
-  return object->native_object;
+  return object->pointer;
 }
 
 void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* pointer) {
   (void)env;
   
-  object->native_object = pointer;
+  object->pointer = pointer;
 }
 
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
