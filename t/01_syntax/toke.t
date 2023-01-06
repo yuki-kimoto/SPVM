@@ -445,4 +445,20 @@ use Test::More;
   }
 }
 
+# pointer
+{
+  {
+    my $source = q|class MyClass : pointer { }|;
+    compile_ok($source);
+  }
+}
+
+# pointer_t
+{
+  {
+    my $source = q|class MyClass : pointer_t { }|;
+    compile_ok($source);
+  }
+}
+
 done_testing;

@@ -1,4 +1,8 @@
 0.9680 2022-01-07
+  [New Features]
+    * Added the pointer class desciptor. This is the same as the pointer_t descriptor.
+  [Deprecation]
+    * The pointer_t descriptor is deprecated because pointer_t is not type. Use the pointer descriptor instead.
   [Incompatible Changes]
     * Removed the following Native APIs because a pointer class can have fields as the language feature.
       -  void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);

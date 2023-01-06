@@ -2333,6 +2333,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   keyword_token = ATTRIBUTE;
                 }
+                else if (strcmp(symbol_name, "pointer") == 0) {
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_attribute;
+                  
+                  keyword_token = ATTRIBUTE;
+                }
                 else if (strcmp(symbol_name, "pointer_t") == 0) {
                   SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_POINTER_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_attribute;
