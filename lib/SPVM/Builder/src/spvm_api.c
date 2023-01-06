@@ -131,8 +131,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_string_nolen,
     SPVM_API_new_string_raw,
     SPVM_API_new_string,
-    SPVM_API_new_pointer_raw,
-    SPVM_API_new_pointer,
+    SPVM_API_new_pointer_object_raw,
+    SPVM_API_new_pointer_object,
     SPVM_API_concat_raw,
     SPVM_API_concat,
     SPVM_API_new_stack_trace_raw,
@@ -204,7 +204,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_chars,
     SPVM_API_die,
     SPVM_API_new_object_by_name,
-    SPVM_API_new_pointer_by_name,
+    SPVM_API_new_pointer_object_by_name,
     SPVM_API_set_field_byte_by_name,
     SPVM_API_set_field_short_by_name,
     SPVM_API_set_field_int_by_name,
@@ -282,9 +282,9 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_args_stack_length,
     SPVM_API_set_args_stack_length,
     SPVM_API_dumpc,
-    NULL,
-    NULL,
-    NULL,
+    SPVM_API_new_pointer_object_raw,
+    SPVM_API_new_pointer_object,
+    SPVM_API_new_pointer_object_by_name,
     NULL,
     NULL,
     NULL,
@@ -809,7 +809,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line) {
   *error = 0;
   
   int32_t id = env->get_basic_type_id(env, stack, class_name);
@@ -2491,10 +2491,10 @@ SPVM_OBJECT* SPVM_API_new_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer) {
+SPVM_OBJECT* SPVM_API_new_pointer_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_new_pointer_raw(env, stack, basic_type_id, pointer);
+  SPVM_OBJECT* object = SPVM_API_new_pointer_object_raw(env, stack, basic_type_id, pointer);
   
   SPVM_API_push_mortal(env, stack, object);
   
@@ -2865,7 +2865,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer) {
+SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer) {
   (void)env;
   
   void* obj_object = SPVM_API_new_object_raw(env, stack, basic_type_id);

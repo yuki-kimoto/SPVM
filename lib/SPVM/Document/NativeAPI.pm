@@ -215,9 +215,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   198 get_args_stack_length
   199 set_args_stack_length
   200 dumpc
-  201 reserved201
-  202 reserved202
-  203 reserved203
+  201 new_pointer_object_raw
+  202 new_pointer_object
+  203 new_pointer_object_by_name
   204 reserved204
   205 reserved205
   206 reserved206
@@ -654,17 +654,13 @@ Examples:
 
 Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
+The same as the L</"new_pointer_raw">, but this is deprecagted and will be removed.
+
 =head2 new_pointer
 
   void* (*new_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
 
-The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
-
-Examples:
-
-  int32_t basic_type_id = env->get_basic_type_id(env, "MyTime");
-  void* pointer = malloc(sizeof (struct tm));
-  void* pointer_obj = env->new_pointer(env, stack, basic_type_id, pointer);
+The same as the L</"new_pointer_object">, but this is deprecagted and will be removed.
 
 =head2 concat_raw
 
@@ -1360,13 +1356,7 @@ Examples:
 
   void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
 
-This is same as L</"new_pointer"> function, but you can specify class name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-  int32_t e;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
-  if (e) { return e; }
+The same as the L</"new_pointer_object_by_name">, but this is deprecagted and will be removed.
 
 =head2 set_field_byte_by_name
 
@@ -2144,6 +2134,36 @@ Sets the stack length of the arguments for a method call.
 The alias for the following code using L</"dump">.
 
   const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
+
+=head2 new_pointer_object_raw
+
+  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+
+Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+
+=head2 new_pointer_object
+
+  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+
+The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
+
+Examples:
+
+  int32_t basic_type_id = env->get_basic_type_id(env, "MyTime");
+  void* pointer = malloc(sizeof (struct tm));
+  void* pointer_obj = env->new_pointer(env, stack, basic_type_id, pointer);
+
+=head2 new_pointer_object_by_name
+
+  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
+
+This is same as L</"new_pointer"> function, but you can specify class name directly.
+
+If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
+
+  int32_t e;
+  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 is_class
 

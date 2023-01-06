@@ -298,9 +298,9 @@ struct spvm_env {
   int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
   const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* reserved201;
-  void* reserved202;
-  void* reserved203;
+  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
   void* reserved204;
   void* reserved205;
   void* reserved206;

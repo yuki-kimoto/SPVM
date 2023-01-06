@@ -217,9 +217,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_args_stack_length != &env_array[198]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_args_stack_length != &env_array[199]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->dumpc != &env_array[200]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved201 != &env_array[201]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved202 != &env_array[202]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved203 != &env_array[203]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_object_raw != &env_array[201]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_object != &env_array[202]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->new_pointer_object_by_name != &env_array[203]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved204 != &env_array[204]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved205 != &env_array[205]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->reserved206 != &env_array[206]) { stack[0].ival = 0; return 0;}
