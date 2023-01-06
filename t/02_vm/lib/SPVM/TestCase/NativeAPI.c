@@ -637,13 +637,13 @@ int32_t SPVM__TestCase__NativeAPI__native_new_object_by_name_exception(SPVM_ENV*
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__native_new_pointer_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__native_new_pointer_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   void* pointer;
   int32_t e;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::NotFound", pointer, &e, FILE_NAME, __LINE__);
+  void* minimal = env->new_pointer_object_by_name(env, stack, "TestCase::NotFound", pointer, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = minimal;
@@ -1607,7 +1607,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
     if (basic_type_id < 0) {
       return 1;
     }
-    void* obj_objects = env->new_pointer(env, stack, basic_type_id, NULL);
+    void* obj_objects = env->new_pointer_object(env, stack, basic_type_id, NULL);
     ref_count += env->get_ref_count(env, stack, obj_objects);
   }
   

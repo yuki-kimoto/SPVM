@@ -28,7 +28,7 @@ int32_t SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   localtime_r(&time, st_tm);
 #endif
   
-  void* obj_time_info = env->new_pointer_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
+  void* obj_time_info = env->new_pointer_object_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_time_info;
@@ -49,7 +49,7 @@ int32_t SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   gmtime_r(&time, st_tm);
 #endif
   
-  void* obj_time_info = env->new_pointer_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
+  void* obj_time_info = env->new_pointer_object_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_time_info;

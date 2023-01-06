@@ -10,7 +10,7 @@ int32_t SPVM__Time__Info__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   struct tm* st_tm = env->new_memory_stack(env, stack, sizeof(struct tm));
   
-  void* obj_tm = env->new_pointer_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
+  void* obj_tm = env->new_pointer_object_by_name(env, stack, "Time::Info", st_tm, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
 
   stack[0].oval = obj_tm;

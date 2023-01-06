@@ -1184,7 +1184,7 @@ class TestCase::NativeAPI {
 
 
   
-  static method new_pointer_by_name : int () {
+  static method new_pointer_object_by_name : int () {
     my $pointer = TestCase::Pointer->new(3);
     
     unless ($pointer isa TestCase::Pointer) {
@@ -1198,9 +1198,9 @@ class TestCase::NativeAPI {
     return 1;
   }
 
-  static method new_pointer_by_name_exception : int () {
+  static method new_pointer_object_by_name_exception : int () {
     my $pointer : TestCase::Pointer;
-    eval { $pointer = TestCase::NativeAPI->native_new_pointer_by_name_exception(); };
+    eval { $pointer = TestCase::NativeAPI->native_new_pointer_object_by_name_exception(); };
     
     unless ($@) {
       return 0;
@@ -1209,7 +1209,7 @@ class TestCase::NativeAPI {
     $@ = undef;
     return 1;
   }
-  native static method native_new_pointer_by_name_exception : TestCase::Pointer ();
+  native static method native_new_pointer_object_by_name_exception : TestCase::Pointer ();
 
   static method get_instance_method_id_static : int () {
     

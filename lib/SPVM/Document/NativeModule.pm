@@ -547,7 +547,7 @@ Next is the definition on the C language side.
     void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
 
     // Create strcut tm instance
-    void* tm_obj = env->new_pointer(env, stack, "MyTimeInfo", tm_ptr);
+    void* tm_obj = env->new_pointer_object(env, stack, "MyTimeInfo", tm_ptr);
 
     stack[0].oval = tm_obj;
 
@@ -579,10 +579,10 @@ In the constructor new, the memory of "struct tm" is first allocated by the new_
   // Alloc strcut tm
   void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
 
-Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
+Next, use the new_pointer_object function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
 
   // Create strcut tm instance
-  void* tm_obj = env->new_pointer(env, stack, "MyTimeInfo", tm_ptr);
+  void* tm_obj = env->new_pointer_object(env, stack, "MyTimeInfo", tm_ptr);
 
 If you return this as a return value, the constructor is complete.
 
