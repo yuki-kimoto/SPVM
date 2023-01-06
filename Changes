@@ -1,4 +1,4 @@
-0.9680 2022-01-06
+0.9680 2022-01-07
   [Incompatible Changes]
     * Removed the following Native APIs because a pointer class can have fields as the language feature.
       -  void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
@@ -23,7 +23,8 @@
       -  void (*set_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int64_t value);
       -  void (*set_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, float value);
       -  void (*set_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, double value);
-      -  void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);0.9679 2022-01-06
+      -  void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);
+0.9679 2022-01-06
   [Cancel Revert]
     * Cancel revert of 0.9678.
   [Bug Fix]
