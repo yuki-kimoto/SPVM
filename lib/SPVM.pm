@@ -120,9 +120,17 @@ sub init {
     
     # Build an environment
     $BUILDER->build_env;
+
+    # Set function addresses of native and precompile methods
+    for my $category ('precompile', 'native') {
+      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
+        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
+        $BUILDER->bind_methods($dynamic_lib_file, $class_name, $category);
+      }
+    }
     
     my $env = $BUILDER->env;
-    
+
     # Set command line info
     $BUILDER->set_command_info($env, $0, \@ARGV);
     
@@ -133,14 +141,6 @@ sub init {
     $BUILDER->build_stack;
     
     my $stack = $BUILDER->stack;
-    
-    # Set function addresses of native and precompile methods
-    for my $category ('precompile', 'native') {
-      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
-        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
-        $BUILDER->bind_methods($dynamic_lib_file, $class_name, $category);
-      }
-    }
     
     $SPVM_INITED = 1;
   }

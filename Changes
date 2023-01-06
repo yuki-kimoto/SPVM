@@ -1,3 +1,11 @@
+0.9679 2022-01-06
+  [Cancel Revert]
+    * Cancel revert of 0.9678.
+  [Bug Fix]
+    * Fixed the bug that native methods can't be called in INIT block.
+0.9678 2022-01-06
+  [Revert]
+    * Temporary reverted 0.9677 release because of breaking SPVM::SYS.
 0.9677 2022-01-06
   [Changes]
     * Dynamic library files are loaded at run-time instead of compile-time.

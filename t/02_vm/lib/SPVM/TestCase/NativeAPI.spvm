@@ -14,6 +14,11 @@ class TestCase::NativeAPI {
   use Error;
   use Complex_2d;
   
+  INIT {
+    # Call native method in INIT block
+    Fn->sizeof_native_int;
+  }
+  
   enum {
     VALUE0,
   }
