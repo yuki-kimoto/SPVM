@@ -1,4 +1,4 @@
-0.9677 2022-01-04
+0.9677 2022-01-06
   [Changes]
     * Dynamic library files are loaded at run-time instead of compile-time.
   [Bug Fix]
@@ -53,6 +53,36 @@
       The command line arguments can be get CommandInfo->ARGV.
       
   [New Features]
+    * The pointer class can have fields.
+    * The object of the pointer class can be created by the new operator.
+    * The pointer class can inherit the parent class.
+  [Compilation Error Message Fix]
+    * Fixed the compilation error messages
+      [Before]
+      The class "%s" method
+      The instance "%s" method
+      
+      [After]
+      The "%s" class method
+      The "%s" instance method
+  [Exception Message Improvement]
+    * Unified exception messages in Exchange API.
+      [Before]
+      %s basic type
+      %s field
+      %s class
+      %s method
+      [After]
+      "%s" basic type
+      "%s" field
+      "%s" class
+      "%s" method
+      
+  [Memory Usage Degration]
+    * Internal object data has the native_object member variable. This size is the size of void*.
+      This is used for the pointer class.
+0.9676 2022-01-03
+  [New Features]
     * Added the following constant values of Native API.
     
       1 SPVM_NATIVE_C_TYPE_FLAG_REF
@@ -66,9 +96,7 @@
     * Added the following Runtime Native APIs.
       
       int32_t (*get_type_flag)(SPVM_RUNTIME* runtime, int32_t type_id);
-    * The pointer class can have fields.
-    * The object of the pointer class can be created by the new operator.
-    * The pointer class can inherit the parent class.
+      
   [Warning Fix]
     * Fixed the following warning on FreeBSD.
         warning: logical not is only applied to the left hand side of this comparison [-Wlogical-not-parentheses]
@@ -94,37 +122,12 @@
       
       [After]
       string
-  
-  [Compilation Error Message Fix]
-    * Fixed the compilation error messages
-      [Before]
-      The class "%s" method
-      The instance "%s" method
-      
-      [After]
-      The "%s" class method
-      The "%s" instance method
-  [Exception Message Improvement]
-    * Unified exception messages in Exchange API.
-      [Before]
-      %s basic type
-      %s field
-      %s class
-      %s method
-      [After]
-      "%s" basic type
-      "%s" field
-      "%s" class
-      "%s" method
       
   [Test Improvement]
     * Added the tests of get_class_parent_class_id, get_method_required_args_length, get_method_required_args_length Runtime Native APIs.
   [Improve Exception Messages]
     * Improve the exception messages of Exchange API.
-  [Memory Usage Degration]
-    * Internal object data has the native_object member variable. This size is the size of void*.
-      This is used for the pointer class.
-  
+
 0.9675 2022-12-27
   [Improve Exception Messages]
     * Improve the exception messages of Exchange API.
