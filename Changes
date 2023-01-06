@@ -1,4 +1,29 @@
-0.9679 2022-01-06
+0.9680 2022-01-06
+  [Incompatible Changes]
+    * Removed the following Native APIs because a pointer class can have fields as the language feature.
+      -  void* (*new_pointer_with_fields_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
+      -  void* (*new_pointer_with_fields)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer, int32_t fields_length);
+      -  void* (*new_pointer_with_fields_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t fields_length, int32_t* error, c
+      onst char* file, int32_t line);
+      -  int32_t (*get_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void (*set_pointer_no_need_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t flag);
+      -  int32_t (*get_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void (*set_pointer_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);    
+      -  int32_t (*get_pointer_fields_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  int8_t (*get_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  int16_t (*get_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  int32_t (*get_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  int64_t (*get_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  float (*get_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  double (*get_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  void* (*get_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index);
+      -  void (*set_pointer_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int8_t value);
+      -  void (*set_pointer_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int16_t value);
+      -  void (*set_pointer_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int32_t value);
+      -  void (*set_pointer_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, int64_t value);
+      -  void (*set_pointer_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, float value);
+      -  void (*set_pointer_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, double value);
+      -  void (*set_pointer_field_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_index, void* value);0.9679 2022-01-06
   [Cancel Revert]
     * Cancel revert of 0.9678.
   [Bug Fix]

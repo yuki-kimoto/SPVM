@@ -217,30 +217,30 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_args_stack_length != &env_array[198]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->set_args_stack_length != &env_array[199]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->dumpc != &env_array[200]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_with_fields_raw != &env_array[201]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_with_fields != &env_array[202]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_with_fields_by_name != &env_array[203]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_no_need_free != &env_array[204]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_no_need_free != &env_array[205]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_length != &env_array[206]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_length != &env_array[207]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved201 != &env_array[201]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved202 != &env_array[202]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved203 != &env_array[203]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved204 != &env_array[204]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved205 != &env_array[205]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved206 != &env_array[206]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved207 != &env_array[207]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_class != &env_array[208]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->is_pointer_class != &env_array[209]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_fields_length != &env_array[210]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_byte != &env_array[211]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_short != &env_array[212]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_int != &env_array[213]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_long != &env_array[214]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_float != &env_array[215]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_double != &env_array[216]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_pointer_field_pointer != &env_array[217]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_byte != &env_array[218]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_short != &env_array[219]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_int != &env_array[220]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_long != &env_array[221]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_float != &env_array[222]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_double != &env_array[223]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_pointer_field_pointer != &env_array[224]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved210 != &env_array[210]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved211 != &env_array[211]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved212 != &env_array[212]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved213 != &env_array[213]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved214 != &env_array[214]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved215 != &env_array[215]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved216 != &env_array[216]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved217 != &env_array[217]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved218 != &env_array[218]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved219 != &env_array[219]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved220 != &env_array[220]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved221 != &env_array[221]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved222 != &env_array[222]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved223 != &env_array[223]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->reserved224 != &env_array[224]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->strerror_string != &env_array[225]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_basic_type_id_by_name != &env_array[226]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_field_id_static != &env_array[227]) { stack[0].ival = 0; return 0;}
@@ -2911,254 +2911,6 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!(strcmp(dumpc, "undef") == 0)) {
     stack[0].ival = 0;
     return 0;
-  }
-  
-  stack[0].ival = 1;
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__pointer_fields(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  (void)env;
-  (void)stack;
-  
-  const char* message = "5";
-  int32_t e;
-  int32_t fields_length = 4;
-  void* obj_pointer = env->new_pointer_with_fields_by_name(env, stack, "TestCase::Pointer", (void*)message, fields_length, &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  
-  // get_pointer
-  const char* message2 = env->get_pointer(env, stack, obj_pointer);
-  if (!(strcmp(message2, "5") == 0)) {
-    stack[0].ival = 1;
-    return 0;
-  }
-  
-  // get_pointer_fields_length
-  int32_t fields_length2 = env->get_pointer_fields_length(env, stack, obj_pointer);
-  if (!(fields_length2 == 4)) {
-    stack[0].ival = 1;
-    return 0;
-  }
-  
-  // Default field values
-  {
-    int64_t first_field_long = env->get_pointer_field_long(env, stack, obj_pointer, 0);
-    if (!(first_field_long == 0)) {
-      stack[0].ival = 1;
-      return 0;
-    }
-    
-    int64_t last_field_long = env->get_pointer_field_long(env, stack, obj_pointer, 3);
-    if (!(first_field_long == 0)) {
-      stack[0].ival = 1;
-      return 0;
-    }
-  }
-  
-  {
-    env->set_pointer_field_byte(env, stack, obj_pointer, 0, INT8_MIN);
-    env->set_pointer_field_byte(env, stack, obj_pointer, 3, INT8_MIN + 1);
-    {
-      int8_t field_value = env->get_pointer_field_byte(env, stack, obj_pointer, 0);
-      if (!(field_value == INT8_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      int8_t field_value = env->get_pointer_field_byte(env, stack, obj_pointer, 3);
-      if (!(field_value == INT8_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-  
-  {
-    env->set_pointer_field_short(env, stack, obj_pointer, 0, INT16_MIN);
-    env->set_pointer_field_short(env, stack, obj_pointer, 3, INT16_MIN + 1);
-    {
-      int16_t field_value = env->get_pointer_field_short(env, stack, obj_pointer, 0);
-      if (!(field_value == INT16_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      int16_t field_value = env->get_pointer_field_short(env, stack, obj_pointer, 3);
-      if (!(field_value == INT16_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-
-  {
-    env->set_pointer_field_int(env, stack, obj_pointer, 0, INT32_MIN);
-    env->set_pointer_field_int(env, stack, obj_pointer, 3, INT32_MIN + 1);
-    {
-      int32_t field_value = env->get_pointer_field_int(env, stack, obj_pointer, 0);
-      if (!(field_value == INT32_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      int32_t field_value = env->get_pointer_field_int(env, stack, obj_pointer, 3);
-      if (!(field_value == INT32_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-
-  {
-    env->set_pointer_field_long(env, stack, obj_pointer, 0, INT64_MIN);
-    env->set_pointer_field_long(env, stack, obj_pointer, 3, INT64_MIN + 1);
-    {
-      int64_t field_value = env->get_pointer_field_long(env, stack, obj_pointer, 0);
-      if (!(field_value == INT64_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      int64_t field_value = env->get_pointer_field_long(env, stack, obj_pointer, 3);
-      if (!(field_value == INT64_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-  
-  {
-    env->set_pointer_field_float(env, stack, obj_pointer, 0, FLT_MIN);
-    env->set_pointer_field_float(env, stack, obj_pointer, 3, FLT_MIN + 1);
-    {
-      float field_value = env->get_pointer_field_float(env, stack, obj_pointer, 0);
-      if (!(field_value == FLT_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      float field_value = env->get_pointer_field_float(env, stack, obj_pointer, 3);
-      if (!(field_value == FLT_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-
-  {
-    env->set_pointer_field_double(env, stack, obj_pointer, 0, DBL_MIN);
-    env->set_pointer_field_double(env, stack, obj_pointer, 3, DBL_MIN + 1);
-    {
-      double field_value = env->get_pointer_field_double(env, stack, obj_pointer, 0);
-      if (!(field_value == DBL_MIN)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      double field_value = env->get_pointer_field_double(env, stack, obj_pointer, 3);
-      if (!(field_value == DBL_MIN + 1)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-
-  {
-    {
-      const char* message = "5";
-      env->set_pointer_field_pointer(env, stack, obj_pointer, 0, (void*)message);
-    }
-    {
-      const char* message = "6";
-      env->set_pointer_field_pointer(env, stack, obj_pointer, 3, (void*)message);
-    }
-    {
-      const char* field_value = env->get_pointer_field_pointer(env, stack, obj_pointer, 0);
-      if (!(strcmp(field_value, "5") == 0)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-    {
-      const char* field_value = env->get_pointer_field_pointer(env, stack, obj_pointer, 3);
-      if (!(strcmp(field_value, "6") == 0)) {
-        stack[0].ival = 1;
-        return 0;
-      }
-    }
-  }
-
-  env->set_pointer(env, stack, obj_pointer, NULL);
-  
-  stack[0].ival = 1;
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__get_pointer_no_need_free(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  {
-    int32_t e = 0;
-    int32_t num = 0;
-    int32_t* num_ptr = &num;
-    void* obj_pointer = env->new_pointer_by_name(env, stack, "TestCase::PointerNoNeedFree", num_ptr, &e, FILE_NAME, __LINE__);
-    if (e) { return e; }
-    
-    if (env->get_pointer_no_need_free(env, stack, obj_pointer)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    env->set_pointer_no_need_free(env, stack, obj_pointer, 1);
-    
-    if (!env->get_pointer_no_need_free(env, stack, obj_pointer)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-
-    env->set_pointer_no_need_free(env, stack, obj_pointer, 0);
-    if (env->get_pointer_no_need_free(env, stack, obj_pointer)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    // Enable
-    env->set_pointer_no_need_free(env, stack, obj_pointer, 1);
-  }
-  
-  stack[0].ival = 1;
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__get_pointer_length(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  {
-    int32_t e = 0;
-    int32_t num = 0;
-    int32_t* num_ptr = &num;
-    void* obj_pointer = env->new_pointer_by_name(env, stack, "TestCase::PointerEmpty", num_ptr, &e, FILE_NAME, __LINE__);
-    if (e) { return e; }
-    
-    if (!(env->get_pointer_length(env, stack, obj_pointer) == 0)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    env->set_pointer_length(env, stack, obj_pointer, 3);
-    
-    if (!(env->get_pointer_length(env, stack, obj_pointer) == 3)) {
-      stack[0].ival = 0;
-      return 0;
-    }
   }
   
   stack[0].ival = 1;

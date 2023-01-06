@@ -728,9 +728,6 @@ t/02_vm/lib/SPVM/TestCase/Pointer.config
 t/02_vm/lib/SPVM/TestCase/Pointer.spvm
 t/02_vm/lib/SPVM/TestCase/PointerChild.spvm
 t/02_vm/lib/SPVM/TestCase/PointerEmpty.spvm
-t/02_vm/lib/SPVM/TestCase/PointerNoNeedFree.c
-t/02_vm/lib/SPVM/TestCase/PointerNoNeedFree.config
-t/02_vm/lib/SPVM/TestCase/PointerNoNeedFree.spvm
 t/02_vm/lib/SPVM/TestCase/PointForTest.spvm
 t/02_vm/lib/SPVM/TestCase/PointInterface.spvm
 t/02_vm/lib/SPVM/TestCase/Precedence.spvm

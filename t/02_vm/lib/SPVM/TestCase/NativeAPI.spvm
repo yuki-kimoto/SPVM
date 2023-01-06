@@ -4,7 +4,6 @@ class TestCase::NativeAPI {
   use TestCase::Minimal;
   use TestCase::Pointer;
   use TestCase::PointerChild;
-  use TestCase::PointerNoNeedFree;
   use TestCase::PointerEmpty;
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
@@ -1378,9 +1377,6 @@ class TestCase::NativeAPI {
   native static method items_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int);
 
   native static method dumpc : int ();
-  native static method pointer_fields : int ();
-  native static method get_pointer_no_need_free : int ();
-  native static method get_pointer_length : int ();
 
   native static method precompile_build_methodd_source : int ();
 
