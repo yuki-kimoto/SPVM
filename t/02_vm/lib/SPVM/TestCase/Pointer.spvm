@@ -1,4 +1,4 @@
-class TestCase::Pointer : pointer_t {
+class TestCase::Pointer : pointer {
   native static method new : TestCase::Pointer ($x : int);
   
   native method get_x : int ();

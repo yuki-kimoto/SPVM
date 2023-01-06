@@ -298,6 +298,7 @@ The list of keywords:
   protected
   public
   precompile
+  pointer
   pointer_t
   ref
   refcnt
@@ -2167,7 +2168,7 @@ Examples:
   
   }
 
-  class Point : public pointer_t {
+  class Point : public pointer {
   
   }
 
@@ -2266,10 +2267,18 @@ The list of class attributes.
   </tr>
   <tr>
     <td>
+      <b>pointer</b>
+    </td>
+    <td>
+      The class is a <a href="#Pointer-Class">pointer class</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>pointer_t</b>
     </td>
     <td>
-      This class is a <a href="#Pointer-Type">pointer type</a>.
+      The same as pointer_t, but this is deprecated and will be removed</a>.
     </td>
   </tr>
   <tr>
@@ -2286,7 +2295,7 @@ The list of class attributes.
 
 Only one of class attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
-If more than one of C<interface_t>, C<mulnum_t>, and C<pointer_t> are specified, a compilation error will occur.
+If more than one of C<interface_t>, C<mulnum_t>, and C<pointer> are specified, a compilation error will occur.
 
 =head2 Destructor
 
@@ -2386,14 +2395,16 @@ L<Examples:>
 
 =head2 Pointer Class
 
-The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attribute"> C<pointer_t>.
+The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attribute"> C<pointer>.
 
   # Pointer Class
-  class Foo : pointer_t {
+  class Foo : pointer {
   
   }
 
 The type of a pointer class is the L<class type|/"Class Type">.
+
+A object of a pointer class has the pointer to a native address.
 
 =head1 Inheritance
 
@@ -2404,8 +2415,6 @@ A class inherits a class using the C<extends> keyword.
   }
 
 The parant class must be a L<class type|/"Class Type">. Otherwise a compilation error will occur.
-
-The parant class must be a non-L<pointer type|/"Pointer Type">. Otherwise a compilation error will occur.
 
 The name of the parant class must be different from the name of the class. Otherwise a compilation error will occur.
 

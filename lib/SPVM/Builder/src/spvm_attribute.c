@@ -9,7 +9,7 @@ const char* const* SPVM_ATTRIBUTE_C_ID_NAMES(void) {
   static const char* const id_names[] = {
     "unknown",
     "mulnum_t",
-    "pointer_t",
+    "pointer",
     "native",
     "precompile",
     "public",

@@ -520,10 +520,10 @@ The exception is stored in env.
 
 There is a type called pointer type in SPVM, but I will explain how to use it.
 
-The pointer type definition specifies the pointer_t attribute in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
+The pointer type definition specifies the pointer attribute in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
 
   # SPVM/MyTimeInfo.spvm
-  class MyTimeInfo : pointer_t {
+  class MyTimeInfo : pointer {
 
     # Constructor
     native static method new : MyTimeInfo ();

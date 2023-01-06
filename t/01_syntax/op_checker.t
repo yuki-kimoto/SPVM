@@ -343,7 +343,7 @@ use Test::More;
   {
     my $source = [
       'class MyClass { use MyPoint; static method main : void () { new MyPoint; } }',
-      'class MyPoint : public pointer_t;',
+      'class MyPoint : public pointer;',
     ];
     compile_ok($source);
   }
@@ -1055,7 +1055,7 @@ use Test::More;
   {
     my $source = [
       'class MyClass extends MyClass2 {}',
-      'class MyClass2 : pointer_t;',
+      'class MyClass2 : pointer;',
     ];
     compile_ok($source);
   }
@@ -1068,7 +1068,7 @@ use Test::More;
     compile_not_ok($source, q|The current class must be a class type when the class becomes a child class|);
   }
   {
-    my $source = 'class MyClass extends Point : pointer_t { }';
+    my $source = 'class MyClass extends Point : pointer { }';
     compile_ok($source);
   }
 }

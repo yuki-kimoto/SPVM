@@ -29,7 +29,7 @@ use Test::More;
   # Class attribute
   {
     {
-      my $source = 'class MyClass : pointer_t { has x : int; }';
+      my $source = 'class MyClass : pointer { has x : int; }';
       compile_ok($source);
     }
   }
@@ -64,7 +64,7 @@ use Test::More;
         compile_not_ok($source);
       }
       {
-        my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer_t {}'];
+        my $source = ['class MyClass extends PointerType {}', 'class PointerType : pointer {}'];
         compile_ok($source);
       }
       {

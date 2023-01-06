@@ -1,1 +1,1 @@
-class TestCase::PointerEmpty : pointer_t;
+class TestCase::PointerEmpty : pointer;

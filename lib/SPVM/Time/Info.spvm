@@ -1,4 +1,4 @@
-class Time::Info : pointer_t {
+class Time::Info : pointer {
   
   native static method new : Time::Info ();
 

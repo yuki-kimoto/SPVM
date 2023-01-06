@@ -62,8 +62,8 @@ use Test::More;
     compile_not_ok($source, qr/Invalid class attribute "native"/);
   }
   {
-    my $source = 'class MyClass : mulnum_t pointer_t interface_t;';
-    compile_not_ok($source, qr/Only one of class attributes "mulnum_t", "pointer_t" or "interface_t" can be specified/);
+    my $source = 'class MyClass : mulnum_t pointer interface_t;';
+    compile_not_ok($source, qr/Only one of class attributes "mulnum_t", "pointer" or "interface_t" can be specified/);
   }
   {
     my $source = 'class MyClass : private public;';
@@ -111,7 +111,7 @@ use Test::More;
 # Pointer Class
 {
   {
-    my $source = 'class MyClass : pointer_t { has foo : int; }';
+    my $source = 'class MyClass : pointer { has foo : int; }';
     compile_ok($source);
   }
 }

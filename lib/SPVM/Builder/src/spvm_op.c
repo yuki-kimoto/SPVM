@@ -1964,7 +1964,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
       SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
       switch (attribute->id) {
-        case SPVM_ATTRIBUTE_C_ID_POINTER_T: {
+        case SPVM_ATTRIBUTE_C_ID_POINTER: {
           class->category = SPVM_CLASS_C_CATEGORY_CLASS;
           class->is_pointer = 1;
           class_attributes_count++;
@@ -2005,7 +2005,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     if (class_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer_t\" or \"interface_t\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
     if (access_control_attributes_count > 1) {
       SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
