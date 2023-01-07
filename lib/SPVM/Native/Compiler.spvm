@@ -1,0 +1,3 @@
+class Native::Compiler : pointer_t {
+
+}

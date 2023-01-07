@@ -1,0 +1,3 @@
+class Native::Address : pointer_t {
+
+}
