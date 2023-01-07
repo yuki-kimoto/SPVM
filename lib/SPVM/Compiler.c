@@ -12,13 +12,6 @@ int32_t SPVM__Compiler__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPVM__Compiler__new_native_compiler(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  return 0;
-}
-
 int32_t SPVM__Compiler__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

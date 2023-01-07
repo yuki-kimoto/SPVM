@@ -17,13 +17,11 @@ class Compiler {
     
     my $self = new Compiler;
     
-    my $native_compiler = &new_native_compiler;
+    my $native_compiler = Native::Compiler->new;
     $self->{native_compiler} = $native_compiler;
     
     return $self;
   }
-  
-  native static method new_native_compiler : Native::Compiler ();
   
   native static method get_spvm_32bit_codes : int[] ($runtime : Native::Runtime);
 

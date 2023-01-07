@@ -1,3 +1,4 @@
-class Native::Compiler : pointer_t {
-
+class Native::Compiler : pointer {
+  native static method new : Native::Compiler ();
+  native method DESTROY : void ();
 }
