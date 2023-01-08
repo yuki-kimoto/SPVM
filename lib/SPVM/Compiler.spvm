@@ -1,5 +1,6 @@
 class Compiler {
   use Native::Compiler;
+  use Native::Precompile;
   use Native::Runtime;
   use Native::Env;
   use Native::Stack;
@@ -17,11 +18,13 @@ class Compiler {
     
     my $self = new Compiler;
     
-    my $native_compiler = Native::Compiler->new;
+    my $native_compiler = &new_native_compiler;
     $self->{native_compiler} = $native_compiler;
     
     return $self;
   }
+  
+  native static method new_native_compiler : Native::Compiler ();
   
   native static method get_spvm_32bit_codes : int[] ($runtime : Native::Runtime);
 
