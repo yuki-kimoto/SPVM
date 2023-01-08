@@ -1,3 +1,12 @@
 class Native::Stack : pointer {
-
+  use Native::Env;
+  
+  # Fields
+  has env : Native::Env;
+  
+  # Class Methods
+  native static method new : Native::Stack ($env : Native::Env);
+  
+  # Instance Methods
+  native method DESTROY : void ();
 }
