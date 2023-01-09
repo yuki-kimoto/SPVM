@@ -389,40 +389,6 @@ get_anon_class_names_by_parent_class_name(...)
 }
 
 SV*
-get_class_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
-  
-  int32_t classes_length = compiler_env->api->runtime->get_classes_length(runtime);
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    const char* class_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_class_name_id(runtime, class_id));
-    SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-    av_push(av_class_names, SvREFCNT_inc(sv_class_name));
-  }
-  
-  XPUSHs(sv_class_names);
-  XSRETURN(1);
-}
-
-SV*
 get_module_file(...)
   PPCODE:
 {
