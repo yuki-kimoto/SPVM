@@ -38,4 +38,6 @@ class Runtime {
   native method DESTROY : void ();
 
   native method get_classes_length : int ();
+
+  native method get_class_names : string[] ();
 }

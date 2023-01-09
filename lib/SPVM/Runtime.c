@@ -219,6 +219,32 @@ int32_t SPVM__Compiler__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Compiler__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+
+  void* obj_self = stack[0].oval;
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  int32_t classes_length = env->api->runtime->get_classes_length(runtime);
+  
+  void* obj_class_names = env->new_string_array(env, stack, classes_length);
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
+    const char* class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, class_id));
+    void* obj_class_name = env->new_string_nolen(env, stack, class_name);
+    env->set_elem_object(env, stack, obj_class_names, class_id, obj_class_name);
+  }
+  
+  stack[0].oval = obj_class_names;
+  
+  return 0;
+}
+
 /*
 SV*
 get_method_names(...)
@@ -280,7 +306,6 @@ get_parent_class_name(...)
   
   SV* sv_self = ST(0);
   SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -322,7 +347,6 @@ get_anon_class_names_by_parent_class_name(...)
   
   SV* sv_self = ST(0);
   SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -387,8 +411,8 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_legnth = compiler_env->api->runtime->get_classes_length(runtime);
-  for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
+  int32_t classes_length = compiler_env->api->runtime->get_classes_length(runtime);
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     const char* class_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_class_name_id(runtime, class_id));
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
