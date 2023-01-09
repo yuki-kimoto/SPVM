@@ -4118,9 +4118,9 @@ get_error_messages(...)
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
 
-  int32_t error_messages_legnth = compiler_env->api->compiler->get_error_messages_length(compiler);
+  int32_t error_messages_length = compiler_env->api->compiler->get_error_messages_length(compiler);
 
-  for (int32_t i = 0; i < error_messages_legnth; i++) {
+  for (int32_t i = 0; i < error_messages_length; i++) {
     const char* error_message = compiler_env->api->compiler->get_error_message(compiler, i);
     SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
     av_push(av_error_messages, SvREFCNT_inc(sv_error_message));
@@ -4190,7 +4190,6 @@ get_parent_class_name(...)
   
   SV* sv_self = ST(0);
   SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -4232,7 +4231,6 @@ get_anon_class_names_by_parent_class_name(...)
   
   SV* sv_self = ST(0);
   SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -4297,8 +4295,8 @@ get_class_names(...)
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_legnth = compiler_env->api->runtime->get_classes_length(runtime);
-  for (int32_t class_id = 0; class_id < classes_legnth; class_id++) {
+  int32_t classes_length = compiler_env->api->runtime->get_classes_length(runtime);
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     const char* class_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_class_name_id(runtime, class_id));
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
