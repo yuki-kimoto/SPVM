@@ -31,9 +31,9 @@ class Runtime {
   
   native method set_precompile_method_address : string ($class_name : string, $method_name : string, $address : Native::Address);
   
-  native method build_class_source : string ($class_name : string);
+  native method build_precompile_class_source : string ($class_name : string);
   
-  native method build_method_source : string ($class_name : string, $method_name : string);
+  native method build_precompile_method_source : string ($class_name : string, $method_name : string);
 
   native method DESTROY : void ();
 

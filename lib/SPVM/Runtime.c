@@ -93,21 +93,20 @@ int32_t SPVM__Compiler__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE*
   (void)stack;
   
   int32_t e = 0;
-
+  
   void* obj_self = stack[0].oval;
+  
   void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+
   void* obj_method_name = stack[2].oval;
+  const char* method_name = env->get_chars(env, stack, obj_method_name);
+  
   void* obj_native_address = stack[3].oval;
 
   void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   void* runtime = env->get_pointer(env, stack, obj_native_runtime);
-  
-  // Class name
-  const char* class_name = env->get_chars(env, stack, obj_class_name);
-
-  // Method name
-  const char* method_name = env->get_chars(env, stack, obj_method_name);
   
   // Method id
   int32_t method_id = env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
@@ -120,16 +119,99 @@ int32_t SPVM__Compiler__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPVM__Compiler__build_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Compiler__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+
+  // New allocator
+  void* allocator = env->api->allocator->new_object();
+  
+  // New string buffer
+  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+
+  void* precompile = env->api->precompile->new_object();
+  
+  env->api->precompile->set_runtime(precompile, runtime);
+  
+  env->api->precompile->build_class_source(precompile, string_buffer, class_name);
+  
+  env->api->precompile->free_object(precompile);
+
+  const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+  void* obj_precompile_class_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
+
+  // Free string buffer
+  env->api->string_buffer->free_object(string_buffer);
+
+  // Free allocator
+  env->api->allocator->free_object(allocator);
+
+  // Free env
+  env->free_env_raw(env);
+  
+  stack[0].oval = obj_precompile_class_source;
   
   return 0;
 }
 
-int32_t SPVM__Compiler__build_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Compiler__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+
+  void* obj_method_name = stack[2].oval;
+  const char* method_name = env->get_chars(env, stack, obj_method_name);
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+
+  // New allocator
+  void* allocator = env->api->allocator->new_object();
+  
+  // New string buffer
+  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+
+  void* precompile = env->api->precompile->new_object();
+  
+  env->api->precompile->set_runtime(precompile, runtime);
+  
+  env->api->precompile->build_method_source(precompile, string_buffer, class_name, method_name);
+  
+  env->api->precompile->free_object(precompile);
+
+  const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+  void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
+
+  // Free string buffer
+  env->api->string_buffer->free_object(string_buffer);
+
+  // Free allocator
+  env->api->allocator->free_object(allocator);
+
+  // Free env
+  env->free_env_raw(env);
+  
+  stack[0].oval = obj_precompile_method_source;
   
   return 0;
 }
