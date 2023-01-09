@@ -407,6 +407,53 @@ int32_t SPVM__Compiler__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   return 0;
 }
 
+int32_t SPVM__Compiler__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+
+  void* obj_self = stack[0].oval;
+
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+
+  int32_t methods_length = env->api->runtime->get_class_methods_length(runtime, class_id);
+  
+  int32_t anon_classes_length = 0;
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
+    if (is_anon_method) {
+      anon_classes_length++;
+    }
+  }
+  
+  void* obj_anon_class_names = env->new_string_array(env, stack, anon_classes_length);
+  int32_t anon_class_index = 0;
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
+    if (is_anon_method) {
+      int32_t anon_class_id = env->api->runtime->get_method_class_id(runtime, method_id);
+      const char* anon_class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, anon_class_id));
+      void* obj_anon_class_name = env->new_string_nolen(env, stack, anon_class_name);
+      env->set_elem_object(env, stack, obj_anon_class_names, anon_class_index, obj_anon_class_name);
+      anon_class_index++;
+    }
+  }
+  
+  stack[0].oval = obj_anon_class_names;
+  
+  return 0;
+}
+
 /*
 SV*
 get_method_names(...)
@@ -457,55 +504,6 @@ get_method_names(...)
   }
   
   XPUSHs(sv_method_names);
-  XSRETURN(1);
-}
-
-SV*
-get_anon_class_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  AV* av_anon_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
-  
-  // Copy class load path to builder
-  int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
-
-  int32_t methods_length = compiler_env->api->runtime->get_class_methods_length(runtime, class_id);
-
-  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    
-    int32_t method_id = compiler_env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
-    int32_t is_anon_method = compiler_env->api->runtime->get_method_is_anon(runtime, method_id);
-    
-    if (is_anon_method) {
-      int32_t anon_class_id = compiler_env->api->runtime->get_method_class_id(runtime, method_id);
-      const char* anon_class_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_class_name_id(runtime, anon_class_id));
-      SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
-      av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
-    }
-  }
-  
-  XPUSHs(sv_anon_class_names);
   XSRETURN(1);
 }
 
