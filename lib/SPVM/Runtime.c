@@ -461,7 +461,7 @@ get_method_names(...)
 }
 
 SV*
-get_anon_class_names_by_parent_class_name(...)
+get_anon_class_names(...)
   PPCODE:
 {
   (void)RETVAL;

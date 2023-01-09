@@ -210,7 +210,7 @@ sub bind_methods {
     
     # Add anon class sub names if precompile
     if ($category eq 'precompile') {
-      my $anon_class_names = $self->get_anon_class_names_by_parent_class_name($class_name);
+      my $anon_class_names = $self->get_anon_class_names($class_name);
       for my $anon_class_name (@$anon_class_names) {
         my $method_info = {};
         $method_info->{class_name} = $anon_class_name;

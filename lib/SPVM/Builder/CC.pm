@@ -659,7 +659,7 @@ sub create_dl_func_list {
   
   if ($category eq 'precompile') {
     # Add anon class sub names to dl_func_list
-    my $anon_class_names = $self->builder->get_anon_class_names_by_parent_class_name($class_name);
+    my $anon_class_names = $self->builder->get_anon_class_names($class_name);
     
     for my $anon_class_name (@$anon_class_names) {
       my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_class_name, "", $category);
