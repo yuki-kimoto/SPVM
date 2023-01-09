@@ -41,5 +41,7 @@ class Runtime {
 
   native method get_class_names : string[] ();
 
-  native method get_module_file : string ();
+  native method get_module_file : string ($class_name : string);
+
+  native method get_parent_class_name : string ($class_name : string);
 }

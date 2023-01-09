@@ -295,6 +295,36 @@ int32_t SPVM__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Compiler__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+  int32_t parent_class_id = env->api->runtime->get_class_parent_class_id(runtime, class_id);
+  
+  void* obj_parent_class_name = NULL;
+  if (parent_class_id >= 0) {
+    int32_t parent_class_name_id = env->api->runtime->get_class_name_id(runtime, parent_class_id);
+    const char* parent_class_name = env->api->runtime->get_name(runtime, parent_class_name_id);
+    obj_parent_class_name = env->new_string_nolen(env, stack, parent_class_name);
+  }
+  
+  stack[0].oval = obj_parent_class_name;
+  
+  return 0;
+}
+
 /*
 SV*
 get_method_names(...)
@@ -345,47 +375,6 @@ get_method_names(...)
   }
   
   XPUSHs(sv_method_names);
-  XSRETURN(1);
-}
-
-SV*
-get_parent_class_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-  
-  int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
-  int32_t parent_class_id = compiler_env->api->runtime->get_class_parent_class_id(runtime, class_id);
-  
-  SV* sv_parent_class_name = &PL_sv_undef;
-  if (parent_class_id >= 0) {
-    int32_t parent_class_name_id = compiler_env->api->runtime->get_class_name_id(runtime, parent_class_id);
-    const char* parent_class_name = compiler_env->api->runtime->get_name(runtime, parent_class_name_id);
-    sv_parent_class_name = sv_2mortal(newSVpv(parent_class_name, 0));
-  }
-  
-  XPUSHs(sv_parent_class_name);
   XSRETURN(1);
 }
 
