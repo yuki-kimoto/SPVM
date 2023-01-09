@@ -111,7 +111,7 @@ sub init {
       # If any SPVM module are not yet loaded, $BUILDER is not set.
       my $build_dir = $ENV{SPVM_BUILD_DIR};
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
-      my $compile_success = $BUILDER->compile('Int', 'embedded://none', 0);
+      my $compile_success = $BUILDER->compile('Int', __FILE__, __LINE__);
       unless ($compile_success) {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
