@@ -245,6 +245,56 @@ int32_t SPVM__Compiler__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+
+int32_t SPVM__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  // Copy class load path to builder
+  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+  const char* module_file;
+  void* sv_module_file;
+
+  void* obj_module_file = NULL;
+  if (class_id >= 0) {
+    int32_t module_rel_file_id = env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
+    int32_t module_dir_id = env->api->runtime->get_class_module_dir_id(runtime, class_id);
+    const char* module_dir = NULL;
+    const char* module_dir_sep;
+    if (module_dir_id >= 0) {
+      module_dir_sep = "/";
+      module_dir = env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
+    }
+    else {
+      module_dir_sep = "";
+      module_dir = "";
+    }
+    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+    
+    int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
+    obj_module_file = env->new_string(env, stack, NULL, module_file_length);
+    char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
+    memcpy(module_file, module_dir, strlen(module_dir));
+    memcpy(module_file + strlen(module_dir), module_dir_sep, strlen(module_dir_sep));
+    memcpy(module_file + strlen(module_dir) + strlen(module_dir_sep), module_rel_file, strlen(module_rel_file));
+  }
+  
+  stack[0].oval = obj_module_file;
+  
+  return 0;
+}
+
 /*
 SV*
 get_method_names(...)
@@ -385,62 +435,6 @@ get_anon_class_names_by_parent_class_name(...)
   }
   
   XPUSHs(sv_anon_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_module_file(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-  
-  // Env
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(void*, SvIV(SvRV(sv_compiler_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  // Copy class load path to builder
-  int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
-  const char* module_file;
-  SV* sv_module_file;
-
-  if (class_id >= 0) {
-    int32_t module_rel_file_id = compiler_env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
-    int32_t module_dir_id = compiler_env->api->runtime->get_class_module_dir_id(runtime, class_id);
-    const char* module_dir = NULL;
-    const char* module_dir_sep;
-    if (module_dir_id >= 0) {
-      module_dir_sep = "/";
-      module_dir = compiler_env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
-    }
-    else {
-      module_dir_sep = "";
-      module_dir = "";
-    }
-    const char* module_rel_file = compiler_env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
-
-    sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
-    sv_catpv(sv_module_file, module_dir_sep);
-    sv_catpv(sv_module_file, module_rel_file);
-  }
-  else {
-    sv_module_file = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_module_file);
   XSRETURN(1);
 }
 

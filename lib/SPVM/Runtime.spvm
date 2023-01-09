@@ -40,4 +40,6 @@ class Runtime {
   native method get_classes_length : int ();
 
   native method get_class_names : string[] ();
+
+  native method get_module_file : string ();
 }
