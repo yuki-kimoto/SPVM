@@ -113,9 +113,6 @@ sub init {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
     }
-    
-    # Build an environment
-    $BUILDER->build_env;
 
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
@@ -125,6 +122,9 @@ sub init {
       }
     }
     
+    # Build an environment
+    $BUILDER->build_env;
+
     my $env = $BUILDER->env;
 
     # Set command line info
