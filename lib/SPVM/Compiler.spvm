@@ -40,13 +40,9 @@ class Compiler {
   
   native static method build_method_source : string ($runtime : Native::Runtime, $class_name : string, $method_name : string);
   
-  native static method new_env : Native::Env ($runtime : Native::Runtime);
-  
-  native static method new_stack : Native::Stack ($runtime : Native::Env);
-  
-  native static method call_init_blocks : void ($env : Native::Env, $stack : Native::Stack);
+  native static method call_init_blocks : void ($env : Native::Env);
 
-  native static method set_command_info : void ($env : Native::Env, $stack : Native::Stack);
+  native static method set_command_info : void ($env : Native::Env);
 
   native static method call_method : void ($env : Native::Env, $stack : Native::Stack, $class_name : string, $method_name : string);
   

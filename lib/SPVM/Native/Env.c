@@ -20,9 +20,6 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Initialize env
   my_env->init_env(my_env);
   
-  // Call INIT blocks
-  my_env->call_init_blocks(my_env);
-
   void* obj_self= env->new_pointer_object_by_name(env, stack, "Native::Env", my_env, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
