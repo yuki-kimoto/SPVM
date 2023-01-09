@@ -171,6 +171,13 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Runtime');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Env');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Stack');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::BasicType');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::Type');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::Class');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::Method');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::Field');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::ClassVar');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime::ConstantString');
     
     # Build precompile
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');
