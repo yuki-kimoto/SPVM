@@ -186,9 +186,6 @@ sub build_dynamic_lib_dist {
     exit(255);
   }
 
-  # Build runtime information
-  $self->build_runtime;
-
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     builder => $self,

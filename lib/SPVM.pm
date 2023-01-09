@@ -59,9 +59,6 @@ sub import {
       exit(255);
     }
 
-    # Build runtime information
-    $BUILDER->build_runtime;
-
     # Class names added at this compilation
     my $added_class_names = [];
     my $class_names = $BUILDER->get_class_names;
@@ -115,7 +112,6 @@ sub init {
       unless ($compile_success) {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
-      $BUILDER->build_runtime;
     }
     
     # Build an environment

@@ -189,8 +189,8 @@ sub get_dependent_resources {
   
   my $config = $self->config;
   
-  unless ($self->{finish_build_runtime}) {
-    $self->build_runtime;
+  unless ($self->{finish_compile}) {
+    $self->compile;
   }
   
   my $dependent_resources = [];
@@ -289,7 +289,7 @@ sub get_dependent_resource_lines {
   return \@lines;
 }
 
-sub build_runtime {
+sub compile {
   my ($self) = @_;
 
   # Builder
@@ -305,10 +305,7 @@ sub build_runtime {
     exit(255);
   }
   
-  # Build runtime
-  $builder->build_runtime;
-  
-  $self->{finish_build_runtime} = 1;
+  $self->{finish_compile} = 1;
 }
 
 sub build_exe_file {
@@ -321,8 +318,8 @@ sub build_exe_file {
   my $class_name = $self->{class_name};
   
   # Build runtime
-  unless ($self->{finish_build_runtime}) {
-    $self->build_runtime;
+  unless ($self->{finish_compile}) {
+    $self->compile;
   }
   
   # Config file

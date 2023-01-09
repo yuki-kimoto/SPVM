@@ -4050,6 +4050,41 @@ compile(...)
   SV* sv_compile_success;
   if (compile_error_code == 0) {
     sv_compile_success = sv_2mortal(newSViv(1));
+
+    void* runtime = NULL;
+    {
+      SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+      SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+      if (SvOK(sv_runtime)) {
+        runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+      }
+    }
+    
+    if (runtime) {
+      compiler_env->api->runtime->free_object(runtime);
+      runtime = NULL;
+    }
+
+    // Build runtime information
+    runtime = compiler_env->api->runtime->new_object(compiler_env);
+
+    // Runtime allocator
+    void* runtime_allocator = compiler_env->api->runtime->get_allocator(runtime);
+    
+    // SPVM 32bit codes
+    int32_t* spvm_32bit_codes = compiler_env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
+    
+    // Build runtime
+    compiler_env->api->runtime->build(runtime, spvm_32bit_codes);
+
+    // Prepare runtime
+    compiler_env->api->runtime->prepare(runtime);
+
+    // Set runtime information
+    size_t iv_runtime = PTR2IV(runtime);
+    SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
+    SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   else {
     sv_compile_success = sv_2mortal(newSViv(0));
@@ -4360,61 +4395,6 @@ get_module_file(...)
   
   XPUSHs(sv_module_file);
   XSRETURN(1);
-}
-
-SV*
-build_runtime(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
-  void* runtime = NULL;
-  {
-    SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-    SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-    if (SvOK(sv_runtime)) {
-      runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-    }
-  }
-  
-  if (runtime) {
-    compiler_env->api->runtime->free_object(runtime);
-    runtime = NULL;
-  }
-
-  // Build runtime information
-  runtime = compiler_env->api->runtime->new_object(compiler_env);
-
-  // Runtime allocator
-  void* runtime_allocator = compiler_env->api->runtime->get_allocator(runtime);
-  
-  // SPVM 32bit codes
-  int32_t* spvm_32bit_codes = compiler_env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
-  
-  // Build runtime
-  compiler_env->api->runtime->build(runtime, spvm_32bit_codes);
-
-  // Prepare runtime
-  compiler_env->api->runtime->prepare(runtime);
-
-  // Set runtime information
-  size_t iv_runtime = PTR2IV(runtime);
-  SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
-  SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
-  (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
-
-  XSRETURN(0);
 }
 
 SV*
