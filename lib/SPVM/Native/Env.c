@@ -12,7 +12,7 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  SPVM_ENV* my_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* my_env = env->new_env_raw(env);
   
   // Set runtime information
   my_env->runtime = runtime;
