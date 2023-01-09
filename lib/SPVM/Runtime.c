@@ -200,6 +200,25 @@ int32_t SPVM__Compiler__get_spvm_32bit_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Compiler__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+
+  void* obj_self = stack[0].oval;
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  int32_t classes_length = env->api->runtime->get_classes_length(runtime);
+  
+  stack[0].ival = classes_length;
+  
+  return 0;
+}
+
 /*
 SV*
 get_method_names(...)

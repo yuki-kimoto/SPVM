@@ -36,4 +36,6 @@ class Runtime {
   native method build_method_source : string ($class_name : string, $method_name : string);
 
   native method DESTROY : void ();
+
+  native method get_classes_length : int ();
 }
