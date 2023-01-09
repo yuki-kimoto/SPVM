@@ -399,39 +399,6 @@ get_class_names(...)
 }
 
 SV*
-get_classes_length(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  
-  int32_t classes_length;
-  if (SvOK(sv_runtime)) {
-    void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-    classes_length = compiler_env->api->runtime->get_classes_length(runtime);
-  }
-  else {
-    classes_length = 0;
-  }
-  SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
-  
-  XPUSHs(sv_classes_length);
-  XSRETURN(1);
-}
-
-SV*
 get_module_file(...)
   PPCODE:
 {
