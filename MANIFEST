@@ -284,6 +284,10 @@ lib/SPVM/Point/Interface.pm
 lib/SPVM/Point/Interface.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
+lib/SPVM/Runtime.c
+lib/SPVM/Runtime.config
+lib/SPVM/Runtime.pm
+lib/SPVM/Runtime.spvm
 lib/SPVM/Scope/Guard.pm
 lib/SPVM/Scope/Guard.spvm
 lib/SPVM/Scope/Guard/Handler.pm
