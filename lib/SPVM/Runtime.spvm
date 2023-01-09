@@ -4,6 +4,7 @@ class Runtime {
   use Native::Env;
   use Native::Stack;
   use Native::Address;
+  use Hash;
   
   has native_runtime : Native::Runtime;
   
@@ -46,4 +47,21 @@ class Runtime {
   native method get_parent_class_name : string ($class_name : string);
 
   native method get_anon_class_names : string ($class_name : string);
+
+  method get_method_names : string[] ($options = undef : object[]) {
+    my $options_h = Hash->new($options);
+    
+    my $native_flag = $options_h->delete_or_default_int("native", 0);
+    my $precompile_flag = $options_h->delete_or_default_int("precompile", 0);
+    
+    if ($native_flag && $precompile_flag) {
+      die "The \"native\" option and the \"precompile\" option can't be used together";
+    }
+
+    my $method_names = $self->_get_method_names($native_flag, $precompile_flag);
+    
+    return $method_names;
+  }
+  
+  private native method _get_method_names : string[] ($native_flag : int, $precompile_flag : int);
 }

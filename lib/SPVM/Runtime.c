@@ -454,57 +454,79 @@ int32_t SPVM__Compiler__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-/*
-SV*
-get_method_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
+int32_t SPVM__Compiler___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
   
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
+  int32_t e = 0;
 
-  HV* hv_self = (HV*)SvRV(sv_self);
+  void* obj_self = stack[0].oval;
 
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
+  void* obj_class_name = stack[1].oval;
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  
+  int32_t native_flag = stack[2].ival;
+  int32_t precompile_flag = stack[3].ival;
 
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
   
-  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+
+  int32_t methods_length = env->api->runtime->get_class_methods_length(runtime, class_id);
   
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-  
-  int32_t class_id = compiler_env->api->runtime->get_class_id_by_name(runtime, class_name);
-  int32_t methods_length = compiler_env->api->runtime->get_class_methods_length(runtime, class_id);
+  int32_t match_methodes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = compiler_env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
-    const char* method_name = compiler_env->api->runtime->get_name(runtime, compiler_env->api->runtime->get_method_name_id(runtime, method_id));
-    SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
-    int32_t is_push = 0;
-    if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && compiler_env->api->runtime->get_method_is_native(runtime, method_id)) {
-        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t match = 0;
+    if (native_flag) {
+      if (env->api->runtime->get_method_is_native(runtime, method_id)) {
+        match = 1;
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && compiler_env->api->runtime->get_method_is_precompile(runtime, method_id)) {
-        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+    }
+    else if (precompile_flag) {
+      if (env->api->runtime->get_method_is_precompile(runtime, method_id)) {
+        match = 1;
       }
     }
     else {
-      av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+      match = 1;
+    }
+
+    if (match) {
+      match_methodes_length++;
     }
   }
   
-  XPUSHs(sv_method_names);
-  XSRETURN(1);
+  void* obj_method_names = env->new_string_array(env, stack, match_methodes_length);
+  int32_t match_method_index = 0;
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t match = 0;
+    if (native_flag) {
+      if (env->api->runtime->get_method_is_native(runtime, method_id)) {
+        match = 1;
+      }
+    }
+    else if (precompile_flag) {
+      if (env->api->runtime->get_method_is_precompile(runtime, method_id)) {
+        match = 1;
+      }
+    }
+    else {
+      match = 1;
+    }
+    
+    if (match) {
+      const char* method_name = env->api->runtime->get_name(runtime, env->api->runtime->get_method_name_id(runtime, method_id));
+      void* obj_method_name = env->new_string_nolen(env, stack, method_name);
+      env->set_elem_object(env, stack, obj_method_names, match_method_index, obj_method_name);
+      match_method_index++;
+    }
+  }
+  
+  stack[0].oval = obj_method_names;
+  
+  return 0;
 }
-
-*/
