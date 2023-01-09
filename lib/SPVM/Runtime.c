@@ -468,40 +468,4 @@ get_module_file(...)
   XSRETURN(1);
 }
 
-SV*
-get_spvm_32bit_codes(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  // SPVM 32bit codes
-  int32_t* spvm_32bit_codes = compiler_env->api->runtime->get_spvm_32bit_codes(runtime);
-  int32_t spvm_32bit_codes_length = compiler_env->api->runtime->get_spvm_32bit_codes_length(runtime);
-  
-  AV* av_spvm_32bit_codes = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_spvm_32bit_codes = sv_2mortal(newRV_inc((SV*)av_spvm_32bit_codes));
-  for (int32_t i = 0; i < spvm_32bit_codes_length; i++) {
-    int32_t spvm_32bit_code = spvm_32bit_codes[i];
-    SV* sv_spvm_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
-    av_push(av_spvm_32bit_codes, SvREFCNT_inc(sv_spvm_32bit_code));
-  }
-  
-  XPUSHs(sv_spvm_32bit_codes);
-
-  XSRETURN(1);
-}
-
 */
