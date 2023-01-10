@@ -70,7 +70,11 @@ const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir) {  
-  SPVM_LIST_push(compiler->module_dirs, (void*)module_dir);
+  int32_t module_dir_length = strlen(module_dir);
+  char* compiler_module_dir = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, module_dir_length + 1);
+  memcpy(compiler_module_dir, module_dir, module_dir_length);
+
+  SPVM_LIST_push(compiler->module_dirs, (void*)compiler_module_dir);
 }
 
 int32_t SPVM_API_COMPILER_get_module_dirs_length (SPVM_COMPILER* compiler) {  
