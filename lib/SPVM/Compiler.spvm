@@ -1,27 +1,29 @@
 class Compiler {
   use Native::Compiler;
   use Runtime;
-  use Hash;
   
   # Fields
-  has module_dirs : rw string[];
   has native_compiler : Native::Compiler;
   
   # Class Methods
-  static method new : Compiler ($options = undef : object[]) {
-    
-    my $options_h = Hash->new($options);
+  static method new : Compiler () {
     
     my $self = new Compiler;
     
-    my $native_compiler = &new_native_compiler;
-    $self->{native_compiler} = $native_compiler;
+    $self->{native_compiler} = Native::Compiler->new;
     
     return $self;
   }
   
-  native static method new_native_compiler : Native::Compiler ();
-  
   # Instance Methods
-  native method compile : Runtime ($class_name : string, $start_file = undef : string, $start_line = 0 : int);
+  native method compile : Runtime ($class_name : string);
+  
+  native method set_start_file : void ();
+  
+  native method set_start_line : void ();
+  
+  native method add_module_dir : void ();
+  
+  native method get_error_messages : string[] ();
 }
+
