@@ -206,8 +206,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
 
   int32_t cur_basic_type_base = compiler->basic_types->length;
   
-  const char* start_file = compiler->start_file;
-  int32_t start_line = compiler->start_line;
+  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
+  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
   
   //yacc/bison debug mode. The default is off.
   SPVM_yydebug = 0;
