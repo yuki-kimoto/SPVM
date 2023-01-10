@@ -53,15 +53,16 @@ class Runtime {
     
     my $native_flag = $options_h->delete_or_default_int("native", 0);
     my $precompile_flag = $options_h->delete_or_default_int("precompile", 0);
+    my $enum_flag = $options_h->delete_or_default_int("enum", 0);
     
     if ($native_flag && $precompile_flag) {
-      die "The \"native\" option and the \"precompile\" option can't be used together";
+      die "The \"native\" option, the \"precompile\" and the \"enum\" option can't be used together";
     }
 
-    my $method_names = $self->_get_method_names($native_flag, $precompile_flag);
+    my $method_names = $self->_get_method_names($native_flag, $precompile_flag, $enum_flag);
     
     return $method_names;
   }
   
-  private native method _get_method_names : string[] ($native_flag : int, $precompile_flag : int);
+  private native method _get_method_names : string[] ($native_flag : int, $precompile_flag : int, $enum_flag : int);
 }
