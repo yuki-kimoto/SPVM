@@ -950,3 +950,19 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR_free(compiler->allocator);
   compiler->allocator = NULL;
 }
+
+const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
+  return compiler->start_file;
+}
+
+void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
+  compiler->start_file = start_file;
+}
+
+int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler) {
+  return compiler->start_line;
+}
+
+void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
+  compiler->start_line = start_line;
+}

@@ -155,6 +155,11 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
 void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh);
 
+const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file);
+int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
+
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 

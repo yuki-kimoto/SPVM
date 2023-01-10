@@ -48,12 +48,12 @@ void SPVM_API_COMPILER_free_object(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
-  
-  compiler->start_line = start_line;
+  SPVM_COMPILER_set_start_line(compiler, start_line);
 }
 
 int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler) {  
-  return compiler->start_line;
+  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
+  return start_line;
 }
 
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
@@ -62,11 +62,12 @@ void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start
   char* compiler_start_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, start_file_length + 1);
   memcpy(compiler_start_file, start_file, start_file_length);
   
-  compiler->start_file = compiler_start_file;
+  SPVM_COMPILER_set_start_file(compiler, compiler_start_file);
 }
 
 const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
-  return compiler->start_file;
+  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
+  return start_file;
 }
 
 void SPVM_API_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir) {  
