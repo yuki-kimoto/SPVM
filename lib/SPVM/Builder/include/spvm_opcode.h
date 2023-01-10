@@ -495,7 +495,7 @@ enum {
   SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD,
 };
 
-// Operation code is 64bit
+// An operation code is 128 bits
 struct spvm_opcode {
   uint16_t id;
   uint16_t operand3;
