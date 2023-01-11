@@ -405,9 +405,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (!found_module_source) {
               // Search module file
               FILE* fh = NULL;
-              int32_t module_dirs_length = compiler->module_dirs->length;
+              int32_t module_dirs_length = SPVM_COMPILER_get_module_dirs_length(compiler);
               for (int32_t i = 0; i < module_dirs_length; i++) {
-                module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
+                module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
@@ -435,13 +435,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (!op_use->uv.use->is_require) {
                   int32_t moduler_dirs_str_length = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
+                    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
                     moduler_dirs_str_length += 1 + strlen(module_dir);
                   }
                   char* moduler_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, moduler_dirs_str_length + 1);
                   int32_t moduler_dirs_str_offset = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = (const char*) SPVM_LIST_get(compiler->module_dirs, i);
+                    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
                     sprintf(moduler_dirs_str + moduler_dirs_str_offset, "%s", module_dir);
                     moduler_dirs_str_offset += strlen(module_dir);
                     if (i != module_dirs_length - 1) {
