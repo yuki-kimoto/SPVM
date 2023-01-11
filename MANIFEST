@@ -62,6 +62,7 @@ lib/SPVM/Builder/Compiler.pm
 lib/SPVM/Builder/Compiler/Util.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
+lib/SPVM/Builder/Env.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
@@ -172,6 +173,7 @@ lib/SPVM/Builder/src/spvm_var_decl.c
 lib/SPVM/Builder/src/spvm_vm.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
+lib/SPVM/Builder/Stack.pm
 lib/SPVM/Builder/Util.pm
 lib/SPVM/Builder/Util/API.pm
 lib/SPVM/Byte.pm

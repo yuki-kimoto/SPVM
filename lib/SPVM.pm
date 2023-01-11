@@ -16,6 +16,8 @@ use SPVM::BlessedObject::String;
 use FindBin;
 
 use SPVM::Builder;
+use SPVM::Builder::Env;
+use SPVM::Builder::Stack;
 use SPVM::ExchangeAPI;
 
 use Carp 'confess';
