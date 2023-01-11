@@ -116,6 +116,8 @@ sub init {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
     }
+    
+    my $runtime = $BUILDER->runtime;
 
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
@@ -141,9 +143,14 @@ sub init {
     
     my $stack = $BUILDER->stack;
     
-    $SPVM::ENV_STACK = {
-      env => $env,
-      stack => $stack,
+    my $obj_runtime = bless ({runtime => $runtime}, "SPVM::Builder::Runtime");
+    my $obj_env = bless ({runtime => $runtime, env => $env}, "SPVM::Builder::Env");
+    my $obj_stack = bless ({stack => $stack, env => $obj_env}, "SPVM::Builder::Stack");
+    
+    $SPVM::RUNTIME_ENV_STACK = {
+      runtime => $runtime,
+      env => $obj_env,
+      stack => $obj_stack,
     };
     
     $SPVM_INITED = 1;

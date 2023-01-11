@@ -127,6 +127,7 @@ lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
+lib/SPVM/Builder/Runtime.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
