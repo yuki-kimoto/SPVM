@@ -952,6 +952,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
     SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)start_file);
   }
   
+  SPVM_COMPILER_clear_module_dirs(compiler);
+  
   // Free allocator
   SPVM_ALLOCATOR_free(compiler->allocator);
   compiler->allocator = NULL;
