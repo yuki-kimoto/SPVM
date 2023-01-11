@@ -166,6 +166,13 @@ void* SPVM_LIST_pop(SPVM_LIST* list) {
   }
 }
 
+void SPVM_LIST_clear(SPVM_LIST* list) {
+  
+  while (list->length > 0) {
+    list->length--;
+  }
+}
+
 void* SPVM_LIST_shift(SPVM_LIST* list) {
   
   assert(list->length >= 0);
