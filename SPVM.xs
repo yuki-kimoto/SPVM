@@ -174,11 +174,19 @@ xs_call_method(...)
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_builder, "stack", strlen("stack"), 0);
+  SV* sv_runtime_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  HV* hv_runtime_env_stack = (HV*)SvRV(sv_runtime_env_stack);
+  SV** sv_obj_stack_ptr = hv_fetch(hv_runtime_env_stack, "stack", strlen("stack"), 0);
+  SV* sv_obj_stack = sv_obj_stack_ptr ? *sv_obj_stack_ptr : &PL_sv_undef;
+  HV* hv_obj_stack = (HV*)SvRV(sv_obj_stack);
+  SV** sv_stack_ptr = hv_fetch(hv_obj_stack, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
 
   // The environment
-  SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
+  HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
+  SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
 
   SV* sv_class_name = ST(1);
