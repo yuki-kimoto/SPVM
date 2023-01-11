@@ -4,17 +4,19 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 
 =head1 Usage
 
-  // Compiler API
-  void* compiler_api = env->api->compiler;
-  
   // New compiler
-  void* compiler = compiler_api->new_object();
+  void* compiler = env->api->compiler->new_object();
+  
+  // @INC
+  env->api->compiler->add_module_dir(compiler, "lib");
   
   // Compile SPVM
-  int32_t status = compiler_api->compile(compiler, "MyClass");
+  env->api->compiler->set_start_file(compiler, __FILE__);
+  env->api->compiler->get_start_line(compiler, __LINE__ + 1);
+  int32_t status = env->api->compiler->compile(compiler, "MyClass");
   
   // Free compiler
-  compiler_api->free_object(compiler);
+  env->api->compiler->free_object(compiler);
 
 =head1 Description
 
@@ -37,6 +39,7 @@ Compiler native APIs have its IDs.
   10 get_error_messages_length
   11 get_error_message
   12 create_spvm_32bit_codes
+  13 clear_module_dirs
 
 =head1 Compiler Native APIs
 
@@ -44,76 +47,82 @@ Compiler native APIs have its IDs.
   
   void* (*new_object)();
 
-New a SVPM compiler.
+Creates a compiler object.
 
 =head2 free_object
   
   void (*free_object)(void* compiler);
 
-Free a compiler.
+Frees a compiler.
 
 =head2 set_start_line
   
   void (*set_start_line)(void* compiler, int32_t start_line);
 
-Set the start line of the compiler.
+Sets the start line of the caller.
 
 =head2 get_start_line
   
   int32_t (*get_start_line)(void* compiler);
 
-Get the start line of the compiler.
+Gets the start line of the caller.
 
 =head2 set_start_file
   
   void (*set_start_file)(void* compiler, const char* start_file);
 
-Set the start file of the compiler.
+Set the start file of the caller. C<start_file> is copied.
 
 =head2 get_start_file
   
   const char* (*get_start_file)(void* compiler);
 
-Get the start file of the compiler.
+Gets the start file of the caller.
 
 =head2 add_module_dir
   
   void (*add_module_dir)(void* compiler, const char* module_dir);
 
-Add a module searching directory of the compiler.
+Adds a module searching directory. C<module_dir> is copied.
 
 =head2 get_module_dirs_length
   
   int32_t (*get_module_dirs_length)(void* compiler);
 
-Get the length of the module searching directories of the compiler.
+Gets the length of the module searching directories.
 
 =head2 get_module_dir
 
-  const char* (*get_module_dir)(void* compiler, int32_t module_dir_id);
+  const char* (*get_module_dir)(void* compiler, int32_t index);
 
-Get a searching directories of the compiler with the index.
+Gets a searching directory.
 
 =head2 compile
   
   int32_t (*compile)(void* compiler, const char* class_name);
 
-Compile the SPVM class.
+Compile SPVM classes.
 
 =head2 get_error_messages_length
   
   int32_t (*get_error_messages_length)(void* compiler);
 
-Get the length of the compiler error messages.
+Gets the length of the compilation error messages.
 
 =head2 get_error_message
   
   const char* (*get_error_message)(void* compiler, int32_t index);
 
-Get a compiler error messages with the index.
+Gets the compiler error messages.
 
 =head2 create_spvm_32bit_codes
 
   int32_t* (*create_spvm_32bit_codes)(void* compiler, void* allocator);
 
-Create SPVM 32bit codes on the memory allocated by the L<allocator|SPVM::Document::NativeAPI::Allocator> and return them.
+Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocator> object and returns the address.
+
+=head2 clear_module_dirs
+  
+  void (*clear_module_dirs)(SPVM_COMPILER* compiler);
+
+Clear the module searching directories. The module searching directories are freed.

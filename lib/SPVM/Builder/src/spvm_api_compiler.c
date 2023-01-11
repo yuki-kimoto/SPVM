@@ -29,6 +29,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_create_spvm_32bit_codes,
+    SPVM_API_COMPILER_clear_module_dirs,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -77,6 +78,10 @@ int32_t SPVM_API_COMPILER_get_module_dirs_length (SPVM_COMPILER* compiler) {
 const char* SPVM_API_COMPILER_get_module_dir (SPVM_COMPILER* compiler, int32_t module_dir_id) {  
   const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, module_dir_id);
   return module_dir;
+}
+
+void SPVM_API_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler) {
+  SPVM_COMPILER_clear_module_dirs(compiler);
 }
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {

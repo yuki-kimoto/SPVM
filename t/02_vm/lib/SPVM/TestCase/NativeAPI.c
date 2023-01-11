@@ -2414,6 +2414,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* e
   if ((void*)&env->api->compiler->get_error_messages_length != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_error_message != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->create_spvm_32bit_codes != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->clear_module_dirs != &env_array[13]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 

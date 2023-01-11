@@ -433,11 +433,12 @@ struct spvm_env_compiler {
   const char* (*get_start_file)(void* compiler);
   void (*add_module_dir)(void* compiler, const char* module_dir);
   int32_t (*get_module_dirs_length )(void* compiler);
-  const char* (*get_module_dir )(void* compiler, int32_t module_dir_id);
+  const char* (*get_module_dir )(void* compiler, int32_t index);
   int32_t (*compile)(void* compiler, const char* class_name);
   int32_t (*get_error_messages_length)(void* compiler);
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t* (*create_spvm_32bit_codes)(void* compiler, void* allocator);
+  void (*clear_module_dirs)(void* compiler);
 };
 
 struct spvm_env_precompile {
