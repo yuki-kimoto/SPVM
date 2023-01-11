@@ -57,12 +57,7 @@ int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
-  
-  int32_t start_file_length = strlen(start_file);
-  char* compiler_start_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, start_file_length + 1);
-  memcpy(compiler_start_file, start_file, start_file_length);
-  
-  SPVM_COMPILER_set_start_file(compiler, compiler_start_file);
+  SPVM_COMPILER_set_start_file(compiler, start_file);
 }
 
 const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
