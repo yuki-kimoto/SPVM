@@ -163,6 +163,7 @@ void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 void SPVM_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir);
 int32_t SPVM_COMPILER_get_module_dirs_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_module_dir(SPVM_COMPILER* compiler, int32_t index);
+void SPVM_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler);
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);

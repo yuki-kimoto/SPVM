@@ -999,6 +999,10 @@ void SPVM_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_di
   SPVM_LIST_push(compiler->module_dirs, (void*)compiler_module_dir);
 }
 
+void SPVM_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler) {
+  SPVM_LIST_clear(compiler->module_dirs);
+}
+
 const char* SPVM_COMPILER_get_module_dir (SPVM_COMPILER* compiler, int32_t module_dir_id) {
   const char* module_dir = SPVM_LIST_get(compiler->module_dirs, module_dir_id);
   return module_dir;
