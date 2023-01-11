@@ -21,6 +21,6 @@ void SPVM_LIST_set(SPVM_LIST* array, int32_t index, void* value);
 void* SPVM_LIST_pop(SPVM_LIST* array);
 void* SPVM_LIST_shift(SPVM_LIST* array);
 void SPVM_LIST_unshift(SPVM_LIST* list, void* value);
-void SPVM_LIST_clear(SPVM_LIST* list);
+void SPVM_LIST_clear(SPVM_LIST* list); 
 
 #endif
