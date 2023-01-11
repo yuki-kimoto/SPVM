@@ -191,7 +191,6 @@ sub build_dynamic_lib_dist {
     builder => $self,
   );
   
-  my $method_names = $self->get_method_names($class_name, $category);
   $cc_native->build_dist($class_name, {category => $category});
 }
 
