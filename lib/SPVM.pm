@@ -149,7 +149,6 @@ sub init {
     
     $SPVM::RUNTIME_ENV_STACK = {
       runtime => $runtime,
-      env => $obj_env,
       stack => $obj_stack,
     };
     

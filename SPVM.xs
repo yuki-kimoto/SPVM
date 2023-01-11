@@ -188,7 +188,7 @@ xs_call_method(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1344,7 +1344,7 @@ xs_array_to_elems(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
 
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1568,7 +1568,7 @@ xs_array_to_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1730,7 +1730,7 @@ xs_string_object_to_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1780,7 +1780,7 @@ xs_array_length(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1832,7 +1832,7 @@ xs_array_set(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -1965,7 +1965,7 @@ xs_array_get(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2095,7 +2095,7 @@ xs_new_string_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2165,7 +2165,7 @@ xs_new_byte_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2230,7 +2230,7 @@ xs_new_byte_array_unsigned(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2294,7 +2294,7 @@ xs_new_byte_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2339,7 +2339,7 @@ xs_new_byte_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2394,7 +2394,7 @@ xs_new_string(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2455,7 +2455,7 @@ xs_new_string_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2515,7 +2515,7 @@ xs_new_short_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2579,7 +2579,7 @@ xs_new_short_array_unsigned(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2643,7 +2643,7 @@ xs_new_short_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2688,7 +2688,7 @@ xs_new_short_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2742,7 +2742,7 @@ xs_new_int_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2804,7 +2804,7 @@ xs_new_int_array_unsigned(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2866,7 +2866,7 @@ xs_new_int_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2911,7 +2911,7 @@ xs_new_int_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -2963,7 +2963,7 @@ xs_new_long_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3026,7 +3026,7 @@ xs_new_long_array_unsigned(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3089,7 +3089,7 @@ xs_new_long_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3134,7 +3134,7 @@ xs_new_long_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3186,7 +3186,7 @@ xs_new_float_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3246,7 +3246,7 @@ xs_new_float_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3291,7 +3291,7 @@ xs_new_float_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3343,7 +3343,7 @@ xs_new_double_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3402,7 +3402,7 @@ xs_new_double_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3447,7 +3447,7 @@ xs_new_double_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3499,7 +3499,7 @@ xs_new_string_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3549,7 +3549,7 @@ xs_new_object_array_len(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3601,7 +3601,7 @@ _xs_new_object_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3686,7 +3686,7 @@ _xs_new_muldim_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3772,7 +3772,7 @@ _xs_new_mulnum_array(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3817,7 +3817,7 @@ _xs_new_mulnum_array_from_bin(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -3971,7 +3971,7 @@ xs_get_exception(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -4014,7 +4014,7 @@ _xs_set_exception(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -4057,7 +4057,7 @@ xs_get_memory_blocks_count(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
@@ -4103,7 +4103,7 @@ DESTROY(...)
   SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   
   // The environment
-  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV** sv_obj_env_ptr = hv_fetch(hv_obj_stack, "env", strlen("env"), 0);
   SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
