@@ -173,6 +173,9 @@ xs_call_method(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+
   // Stack
   SV* sv_runtime_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
   HV* hv_runtime_env_stack = (HV*)SvRV(sv_runtime_env_stack);
@@ -181,6 +184,7 @@ xs_call_method(...)
   HV* hv_obj_stack = (HV*)SvRV(sv_obj_stack);
   SV** sv_stack_ptr = hv_fetch(hv_obj_stack, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
 
   // The environment
   SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
@@ -188,12 +192,9 @@ xs_call_method(...)
   HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
   SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  
-  // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+
+  // Env
   
   // Runtime
   void* runtime = env->runtime;
@@ -234,7 +235,6 @@ xs_call_method(...)
   }
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal stack.
-  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
   int32_t stack_index = 0;
 
   // Arguments have reference type
