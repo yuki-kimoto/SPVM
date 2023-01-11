@@ -3,7 +3,18 @@
     * Added the following Compiler Native APIs.
     
       void (*clear_module_dirs)(SPVM_COMPILER* compiler);
-    
+
+  [Incompative Changes]
+    * Rename the following Compiler Native APIs.
+      -  int32_t* (*create_spvm_32bit_codes)(void* compiler, void* allocator);
+      +  int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
+    * Rename the following Runtime Native APIs.
+      -  int32_t* (*get_spvm_32bit_codes)(void* runtime);
+      +  int32_t* (*get_runtime_codes)(void* runtime);
+      
+      -  int32_t (*get_spvm_32bit_codes_length)(void* runtime);
+      +  int32_t (*get_runtime_codes_length)(void* runtime);
+
 0.9680 2022-01-07
   [New Features]
     * Added the pointer class desciptor. This is the same as the pointer_t descriptor.

@@ -22,7 +22,7 @@ class Runtime {
   native static method call_method : void ($env : Native::Env, $stack : Native::Stack, $class_name : string, $method_name : string, $args_stack_length : int);
   
   # Instance Methods
-  native method get_spvm_32bit_codes : int[] ();
+  native method get_runtime_codes : int[] ();
   
   native method get_native_method_address : Native::Address ($class_name : string, $method_name : string);
   

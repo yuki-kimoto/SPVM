@@ -28,7 +28,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_compile,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
-    SPVM_API_COMPILER_create_spvm_32bit_codes,
+    SPVM_API_COMPILER_create_runtime_codes,
     SPVM_API_COMPILER_clear_module_dirs,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
@@ -98,9 +98,9 @@ const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t
   return SPVM_COMPILER_get_error_message(compiler, index);
 }
 
-int32_t* SPVM_API_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
+int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
   
-  int32_t* spvm_32bit_codes = SPVM_COMPILER_create_spvm_32bit_codes(compiler, allocator);
+  int32_t* runtime_codes = SPVM_COMPILER_create_runtime_codes(compiler, allocator);
   
-  return spvm_32bit_codes;
+  return runtime_codes;
 }

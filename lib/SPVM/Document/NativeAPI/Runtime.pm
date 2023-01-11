@@ -26,8 +26,8 @@ Runtime native APIs have its IDs.
   2  prepare
   3  get_opcodes
   4  get_opcodes_length
-  5  get_spvm_32bit_codes
-  6  get_spvm_32bit_codes_length
+  5  get_runtime_codes
+  6  get_runtime_codes_length
   7  get_classes_length
   8  get_constant_string_id
   9  get_constant_string_value
@@ -131,13 +131,13 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_opcodes_length)(void* runtime);
 
-=head2 get_spvm_32bit_codes
+=head2 get_runtime_codes
 
-  int32_t* (*get_spvm_32bit_codes)(void* runtime);
+  int32_t* (*get_runtime_codes)(void* runtime);
 
-=head2 get_spvm_32bit_codes_length
+=head2 get_runtime_codes_length
 
-  int32_t (*get_spvm_32bit_codes_length)(void* runtime);
+  int32_t (*get_runtime_codes_length)(void* runtime);
 
 =head2 get_classes_length
 
@@ -443,7 +443,7 @@ Reserved.
 
 =head2 build
 
-  void (*build)(void* runtime, int32_t* spvm_32bit_codes);
+  void (*build)(void* runtime, int32_t* runtime_codes);
 
 =head2 get_class_parent_class_id
 

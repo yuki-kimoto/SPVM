@@ -406,7 +406,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   return error_code;
 }
 
-int32_t SPVM_COMPILER_calculate_spvm_32bit_codes_length(SPVM_COMPILER* compiler) {
+int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
 
   int32_t length = 0;
   
@@ -512,54 +512,54 @@ int32_t SPVM_COMPILER_calculate_spvm_32bit_codes_length(SPVM_COMPILER* compiler)
   return length;
 }
 
-int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
+int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
   
-  int32_t spvm_32bit_codes_length = SPVM_COMPILER_calculate_spvm_32bit_codes_length(compiler);
-  int32_t* spvm_32bit_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * spvm_32bit_codes_length);
+  int32_t runtime_codes_length = SPVM_COMPILER_calculate_runtime_codes_length(compiler);
+  int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * runtime_codes_length);
 
-  int32_t* spvm_32bit_codes_ptr = spvm_32bit_codes;
+  int32_t* runtime_codes_ptr = runtime_codes;
   
   // Total length
-  *spvm_32bit_codes_ptr = spvm_32bit_codes_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = runtime_codes_length;
+  runtime_codes_ptr++;
   
   // opcodes length
-  *spvm_32bit_codes_ptr = compiler->opcode_array->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->opcode_array->length;
+  runtime_codes_ptr++;
   
   // opcodes 32bit length
   int32_t opcodes_32bit_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
-  *spvm_32bit_codes_ptr = opcodes_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = opcodes_32bit_length;
+  runtime_codes_ptr++;
   
   // opcodes
-  memcpy(spvm_32bit_codes_ptr, compiler->opcode_array->values, sizeof(int32_t) * opcodes_32bit_length);
-  spvm_32bit_codes_ptr += opcodes_32bit_length;
+  memcpy(runtime_codes_ptr, compiler->opcode_array->values, sizeof(int32_t) * opcodes_32bit_length);
+  runtime_codes_ptr += opcodes_32bit_length;
   
   // constant_strings_buffer length
-  *spvm_32bit_codes_ptr = compiler->constant_strings_buffer->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->constant_strings_buffer->length;
+  runtime_codes_ptr++;
 
   // constant_strings_buffer 32bit length
   int32_t constant_strings_buffer_32bit_length = (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
-  *spvm_32bit_codes_ptr = constant_strings_buffer_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = constant_strings_buffer_32bit_length;
+  runtime_codes_ptr++;
   
   // constant_strings_buffer
-  memcpy(spvm_32bit_codes_ptr, compiler->constant_strings_buffer->value, sizeof(int32_t) * constant_strings_buffer_32bit_length);
-  spvm_32bit_codes_ptr += constant_strings_buffer_32bit_length;
+  memcpy(runtime_codes_ptr, compiler->constant_strings_buffer->value, sizeof(int32_t) * constant_strings_buffer_32bit_length);
+  runtime_codes_ptr += constant_strings_buffer_32bit_length;
   
   // constant_strings length
-  *spvm_32bit_codes_ptr = compiler->constant_strings->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->constant_strings->length;
+  runtime_codes_ptr++;
 
   // constant_strings 32bit length
   int32_t constant_strings_32bit_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
-  *spvm_32bit_codes_ptr = constant_strings_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = constant_strings_32bit_length;
+  runtime_codes_ptr++;
   
   // constant_strings
-  int32_t* constant_string_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* constant_string_32bit_ptr = runtime_codes_ptr;
   for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
     SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = (SPVM_RUNTIME_CONSTANT_STRING*)constant_string_32bit_ptr;
@@ -569,38 +569,38 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     runtime_string->string_buffer_id = string->string_buffer_id;
     constant_string_32bit_ptr += sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += constant_strings_32bit_length;
+  runtime_codes_ptr += constant_strings_32bit_length;
 
   // anon_method_methods length
-  *spvm_32bit_codes_ptr = compiler->anon_methods->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->anon_methods->length;
+  runtime_codes_ptr++;
 
   // anon_method_methods 32bit length
   int32_t anon_method_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
-  *spvm_32bit_codes_ptr = anon_method_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = anon_method_32bit_length;
+  runtime_codes_ptr++;
 
   // anon_method_method_ids
-  int32_t* anon_method_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* anon_method_32bit_ptr = runtime_codes_ptr;
   for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
     SPVM_METHOD* anon_method = SPVM_LIST_get(compiler->anon_methods, anon_method_id);
     int32_t anon_method_id = anon_method->anon_method_id;
     *anon_method_32bit_ptr = anon_method->id;
     anon_method_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += anon_method_32bit_length;
+  runtime_codes_ptr += anon_method_32bit_length;
 
   // classes length
-  *spvm_32bit_codes_ptr = compiler->classes->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->classes->length;
+  runtime_codes_ptr++;
 
   // classes 32bit length
   int32_t classes_32bit_length = (sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t)) * (compiler->classes->length + 1);
-  *spvm_32bit_codes_ptr = classes_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = classes_32bit_length;
+  runtime_codes_ptr++;
 
   // classes
-  int32_t* class_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* class_32bit_ptr = runtime_codes_ptr;
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_id);
     SPVM_RUNTIME_CLASS* runtime_class = (SPVM_RUNTIME_CLASS*)class_32bit_ptr;
@@ -699,19 +699,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     class_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += classes_32bit_length;
+  runtime_codes_ptr += classes_32bit_length;
 
   // basic_types length
-  *spvm_32bit_codes_ptr = compiler->basic_types->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->basic_types->length;
+  runtime_codes_ptr++;
 
   // basic_types 32bit length
   int32_t basic_types_32bit_length = (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length + 1);
-  *spvm_32bit_codes_ptr = basic_types_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = basic_types_32bit_length;
+  runtime_codes_ptr++;
 
   // basic_types
-  int32_t* basic_type_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* basic_type_32bit_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = (SPVM_RUNTIME_BASIC_TYPE*)basic_type_32bit_ptr;
@@ -729,19 +729,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += basic_types_32bit_length;
+  runtime_codes_ptr += basic_types_32bit_length;
 
   // types length
-  *spvm_32bit_codes_ptr = compiler->types->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->types->length;
+  runtime_codes_ptr++;
 
   // types 32bit length
   int32_t types_32bit_length = (sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t)) * (compiler->types->length + 1);
-  *spvm_32bit_codes_ptr = types_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = types_32bit_length;
+  runtime_codes_ptr++;
 
   // types
-  int32_t* type_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* type_32bit_ptr = runtime_codes_ptr;
   for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
     SPVM_TYPE* type = SPVM_LIST_get(compiler->types, type_id);
     SPVM_RUNTIME_TYPE* runtime_type = (SPVM_RUNTIME_TYPE*)type_32bit_ptr;
@@ -754,19 +754,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     type_32bit_ptr += sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += types_32bit_length;
+  runtime_codes_ptr += types_32bit_length;
 
   // class_vars length
-  *spvm_32bit_codes_ptr = compiler->class_vars->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->class_vars->length;
+  runtime_codes_ptr++;
 
   // class_vars 32bit length
   int32_t class_vars_32bit_length = (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (compiler->class_vars->length + 1);
-  *spvm_32bit_codes_ptr = class_vars_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = class_vars_32bit_length;
+  runtime_codes_ptr++;
 
   // class_vars
-  int32_t* class_var_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* class_var_32bit_ptr = runtime_codes_ptr;
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_get(compiler->class_vars, class_var_id);
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
@@ -780,19 +780,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     class_var_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += class_vars_32bit_length;
+  runtime_codes_ptr += class_vars_32bit_length;
 
   // methods length
-  *spvm_32bit_codes_ptr = compiler->methods->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->methods->length;
+  runtime_codes_ptr++;
 
   // methods 32bit length
   int32_t methods_32bit_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
-  *spvm_32bit_codes_ptr = methods_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = methods_32bit_length;
+  runtime_codes_ptr++;
 
   // methods
-  int32_t* method_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* method_32bit_ptr = runtime_codes_ptr;
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
     SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_32bit_ptr;
@@ -835,19 +835,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += methods_32bit_length;
+  runtime_codes_ptr += methods_32bit_length;
 
   // args length
-  *spvm_32bit_codes_ptr = compiler->args->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->args->length;
+  runtime_codes_ptr++;
 
   // arg_type_method_ids 32bit length
   int32_t arg_type_ids_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->args->length + 1);
-  *spvm_32bit_codes_ptr = arg_type_ids_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = arg_type_ids_32bit_length;
+  runtime_codes_ptr++;
 
   // arg_type_method_ids
-  int32_t* arg_type_id_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* arg_type_id_32bit_ptr = runtime_codes_ptr;
   for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
     SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(compiler->args, arg_id);
     int32_t arg_type_id = arg_var_decl->type->id;
@@ -855,19 +855,19 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
     
     arg_type_id_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += arg_type_ids_32bit_length;
+  runtime_codes_ptr += arg_type_ids_32bit_length;
 
   // fields length
-  *spvm_32bit_codes_ptr = compiler->fields->length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = compiler->fields->length;
+  runtime_codes_ptr++;
 
   // fields 32bit length
   int32_t fields_32bit_length = (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
-  *spvm_32bit_codes_ptr = fields_32bit_length;
-  spvm_32bit_codes_ptr++;
+  *runtime_codes_ptr = fields_32bit_length;
+  runtime_codes_ptr++;
 
   // fields
-  int32_t* field_32bit_ptr = spvm_32bit_codes_ptr;
+  int32_t* field_32bit_ptr = runtime_codes_ptr;
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
     SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
@@ -883,9 +883,9 @@ int32_t* SPVM_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALL
 
     field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
   }
-  spvm_32bit_codes_ptr += fields_32bit_length;
+  runtime_codes_ptr += fields_32bit_length;
   
-  return spvm_32bit_codes;
+  return runtime_codes;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {

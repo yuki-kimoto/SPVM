@@ -4072,10 +4072,10 @@ compile(...)
     void* runtime_allocator = compiler_env->api->runtime->get_allocator(runtime);
     
     // SPVM 32bit codes
-    int32_t* spvm_32bit_codes = compiler_env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
+    int32_t* runtime_codes = compiler_env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
     
     // Build runtime
-    compiler_env->api->runtime->build(runtime, spvm_32bit_codes);
+    compiler_env->api->runtime->build(runtime, runtime_codes);
 
     // Prepare runtime
     compiler_env->api->runtime->prepare(runtime);
@@ -4396,7 +4396,7 @@ get_module_file(...)
 }
 
 SV*
-get_spvm_32bit_codes(...)
+get_runtime_codes(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4415,18 +4415,18 @@ get_spvm_32bit_codes(...)
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // SPVM 32bit codes
-  int32_t* spvm_32bit_codes = compiler_env->api->runtime->get_spvm_32bit_codes(runtime);
-  int32_t spvm_32bit_codes_length = compiler_env->api->runtime->get_spvm_32bit_codes_length(runtime);
+  int32_t* runtime_codes = compiler_env->api->runtime->get_runtime_codes(runtime);
+  int32_t runtime_codes_length = compiler_env->api->runtime->get_runtime_codes_length(runtime);
   
-  AV* av_spvm_32bit_codes = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_spvm_32bit_codes = sv_2mortal(newRV_inc((SV*)av_spvm_32bit_codes));
-  for (int32_t i = 0; i < spvm_32bit_codes_length; i++) {
-    int32_t spvm_32bit_code = spvm_32bit_codes[i];
+  AV* av_runtime_codes = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_runtime_codes = sv_2mortal(newRV_inc((SV*)av_runtime_codes));
+  for (int32_t i = 0; i < runtime_codes_length; i++) {
+    int32_t spvm_32bit_code = runtime_codes[i];
     SV* sv_spvm_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
-    av_push(av_spvm_32bit_codes, SvREFCNT_inc(sv_spvm_32bit_code));
+    av_push(av_runtime_codes, SvREFCNT_inc(sv_spvm_32bit_code));
   }
   
-  XPUSHs(sv_spvm_32bit_codes);
+  XPUSHs(sv_runtime_codes);
 
   XSRETURN(1);
 }

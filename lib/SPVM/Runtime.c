@@ -257,7 +257,7 @@ int32_t SPVM__Compiler__call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__get_spvm_32bit_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Compiler__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -270,14 +270,14 @@ int32_t SPVM__Compiler__get_spvm_32bit_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* runtime = env->get_pointer(env, stack, obj_native_runtime);
   
   // SPVM 32bit codes
-  int32_t* runtime_spvm_32bit_codes = env->api->runtime->get_spvm_32bit_codes(runtime);
-  int32_t spvm_32bit_codes_length = env->api->runtime->get_spvm_32bit_codes_length(runtime);
+  int32_t* runtime_runtime_codes = env->api->runtime->get_runtime_codes(runtime);
+  int32_t runtime_codes_length = env->api->runtime->get_runtime_codes_length(runtime);
   
-  void* obj_spvm_32bit_codes = env->new_int_array(env, stack, spvm_32bit_codes_length);
-  int32_t* spvm_32bit_codes = env->get_elems_int(env, stack, obj_spvm_32bit_codes);
-  memcpy(spvm_32bit_codes, runtime_spvm_32bit_codes, sizeof(int32_t) * spvm_32bit_codes_length);
+  void* obj_runtime_codes = env->new_int_array(env, stack, runtime_codes_length);
+  int32_t* runtime_codes = env->get_elems_int(env, stack, obj_runtime_codes);
+  memcpy(runtime_codes, runtime_runtime_codes, sizeof(int32_t) * runtime_codes_length);
   
-  stack[0].oval = obj_spvm_32bit_codes;
+  stack[0].oval = obj_runtime_codes;
   
   return 0;
 }

@@ -102,8 +102,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_prepare,
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcodes_length,
-    SPVM_API_RUNTIME_get_spvm_32bit_codes,
-    SPVM_API_RUNTIME_get_spvm_32bit_codes_length,
+    SPVM_API_RUNTIME_get_runtime_codes,
+    SPVM_API_RUNTIME_get_runtime_codes_length,
     SPVM_API_RUNTIME_get_classes_length,
     SPVM_API_RUNTIME_get_constant_string_id,
     SPVM_API_RUNTIME_get_constant_string_value,
@@ -222,14 +222,14 @@ int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime) {
   return runtime->classes_length;
 }
 
-int32_t* SPVM_API_RUNTIME_get_spvm_32bit_codes(SPVM_RUNTIME* runtime) {
+int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime) {
 
-  return runtime->spvm_32bit_codes;
+  return runtime->runtime_codes;
 }
 
-int32_t SPVM_API_RUNTIME_get_spvm_32bit_codes_length(SPVM_RUNTIME* runtime) {
+int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime) {
   
-  return runtime->spvm_32bit_codes_length;
+  return runtime->runtime_codes_length;
 }
 
 const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_string_id) {
@@ -1289,6 +1289,6 @@ SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
   return SPVM_RUNTIME_get_allocator(runtime);
 }
 
-void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* spvm_32bit_codes) {
-  SPVM_RUNTIME_build(runtime, spvm_32bit_codes);
+void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
+  SPVM_RUNTIME_build(runtime, runtime_codes);
 }

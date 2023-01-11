@@ -529,7 +529,7 @@ EOS
 
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n";
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes();\n";
+  $source .= "static int32_t* SPVM_BOOTSTRAP_get_runtime_codes();\n";
 
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
@@ -646,23 +646,23 @@ EOS
   return $source;
 }
 
-sub create_bootstrap_get_spvm_32bit_codes_func_source {
+sub create_bootstrap_get_runtime_codes_func_source {
   my ($self) = @_;
 
   # Builder
   my $builder = $self->builder;
 
-  my $spvm_32bit_codes = $builder->get_spvm_32bit_codes;
-  my $spvm_32bit_codes_length = @$spvm_32bit_codes;
+  my $runtime_codes = $builder->get_runtime_codes;
+  my $runtime_codes_length = @$runtime_codes;
   my $source = '';
   
-  my $spvm_32bit_codes_str = join(",", @$spvm_32bit_codes);
+  my $runtime_codes_str = join(",", @$runtime_codes);
 
-  $source .= "static int32_t SPVM_BOOTSTRAP_spvm_32bit_codes[$spvm_32bit_codes_length] = {$spvm_32bit_codes_str};\n";
+  $source .= "static int32_t SPVM_BOOTSTRAP_runtime_codes[$runtime_codes_length] = {$runtime_codes_str};\n";
 
   $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_get_spvm_32bit_codes() {
-  return SPVM_BOOTSTRAP_spvm_32bit_codes;
+static int32_t* SPVM_BOOTSTRAP_get_runtime_codes() {
+  return SPVM_BOOTSTRAP_runtime_codes;
 }
 EOS
   
@@ -709,10 +709,10 @@ EOS
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);
   
   // Create SPVM 32bit codes
-  int32_t* spvm_32bit_codes = SPVM_BOOTSTRAP_get_spvm_32bit_codes();
+  int32_t* runtime_codes = SPVM_BOOTSTRAP_get_runtime_codes();
   
   // Build runtime
-  env->api->runtime->build(runtime, spvm_32bit_codes);
+  env->api->runtime->build(runtime, runtime_codes);
 
   // Prepare runtime
   env->api->runtime->prepare(runtime);
@@ -852,8 +852,8 @@ sub create_bootstrap_source {
     # Set native method addresses function
     $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
 
-    # get_spvm_32bit_codes function
-    $bootstrap_source .= $self->create_bootstrap_get_spvm_32bit_codes_func_source;
+    # get_runtime_codes function
+    $bootstrap_source .= $self->create_bootstrap_get_runtime_codes_func_source;
 
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;

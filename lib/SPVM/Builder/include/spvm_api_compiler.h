@@ -18,6 +18,6 @@ int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_nam
 void SPVM_API_COMPILER_free_object(SPVM_COMPILER* compiler);
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
-int32_t* SPVM_API_COMPILER_create_spvm_32bit_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
+int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
 
 #endif

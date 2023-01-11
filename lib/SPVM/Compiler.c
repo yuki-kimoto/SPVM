@@ -29,10 +29,10 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* runtime_allocator = env->api->runtime->get_allocator(runtime);
     
     // SPVM 32bit codes
-    int32_t* spvm_32bit_codes = env->api->compiler->create_spvm_32bit_codes(compiler, runtime_allocator);
+    int32_t* runtime_codes = env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
     
     // Build runtime
-    env->api->runtime->build(runtime, spvm_32bit_codes);
+    env->api->runtime->build(runtime, runtime_codes);
 
     // Prepare runtime
     env->api->runtime->prepare(runtime);
