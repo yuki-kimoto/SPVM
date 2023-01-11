@@ -194,8 +194,6 @@ xs_call_method(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
 
-  // Env
-  
   // Runtime
   void* runtime = env->runtime;
   
@@ -1331,20 +1329,24 @@ xs_array_to_elems(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_builder, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack;
-  if (SvOK(sv_stack)) {
-    stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
-  }
-
-  // The environment
-  SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SV* sv_array = ST(1);
   
-  // Env
+  // Stack
+  SV* sv_runtime_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  HV* hv_runtime_env_stack = (HV*)SvRV(sv_runtime_env_stack);
+  SV** sv_obj_stack_ptr = hv_fetch(hv_runtime_env_stack, "stack", strlen("stack"), 0);
+  SV* sv_obj_stack = sv_obj_stack_ptr ? *sv_obj_stack_ptr : &PL_sv_undef;
+  HV* hv_obj_stack = (HV*)SvRV(sv_obj_stack);
+  SV** sv_stack_ptr = hv_fetch(hv_obj_stack, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+
+  // The environment
+  SV** sv_obj_env_ptr = hv_fetch(hv_runtime_env_stack, "env", strlen("env"), 0);
+  SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
+  HV* hv_obj_env = (HV*)SvRV(sv_obj_env);
+  SV** sv_env_ptr = hv_fetch(hv_obj_env, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
