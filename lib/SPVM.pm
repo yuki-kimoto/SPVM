@@ -27,6 +27,7 @@ use Carp 'confess';
 my $SPVM_INITED;
 
 our $BUILDER;
+our $INTERPRETER;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -139,6 +140,11 @@ sub init {
     $BUILDER->build_stack;
     
     my $stack = $BUILDER->stack;
+    
+    $SPVM::ENV_STACK = {
+      env => $env,
+      stack => $stack,
+    };
     
     $SPVM_INITED = 1;
   }
