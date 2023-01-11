@@ -996,12 +996,20 @@ int32_t SPVM_COMPILER_get_module_dirs_length(SPVM_COMPILER* compiler) {
 
 void SPVM_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir) {  
   int32_t module_dir_length = strlen(module_dir);
-  char* compiler_module_dir = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, module_dir_length + 1);
+  char* compiler_module_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, module_dir_length + 1);
   memcpy(compiler_module_dir, module_dir, module_dir_length);
   SPVM_LIST_push(compiler->module_dirs, (void*)compiler_module_dir);
 }
 
 void SPVM_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler) {
+  int32_t module_dirs_length = SPVM_COMPILER_get_module_dirs_length(compiler);
+  
+  for (int32_t i = 0; i < module_dirs_length; i++) {
+    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)module_dir);
+    module_dir = NULL;
+  }
+  
   SPVM_LIST_clear(compiler->module_dirs);
 }
 
