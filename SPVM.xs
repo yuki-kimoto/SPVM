@@ -4643,27 +4643,22 @@ get_runtime_codes(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+
 SV*
 set_native_method_address(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_native_address = ST(3);
-
-  // The api_environment
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  SV* sv_runtime = ST(1);
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  SV* sv_class_name = ST(2);
+  SV* sv_method_name = ST(3);
+  SV* sv_native_address = ST(4);
+
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4681,10 +4676,11 @@ set_native_method_address(...)
 
   assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method_id));
 
+  // Free native_env
+  api_env->free_env_raw(api_env);
+
   XSRETURN(0);
 }
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
 set_precompile_method_address(...)

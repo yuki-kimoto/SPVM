@@ -261,7 +261,7 @@ EOS
       }
       
       if ($category eq 'native') {
-        $self->set_native_method_address($class_name, $method_name, $cfunc_address);
+        SPVM::Builder::Runtime->set_native_method_address($self->runtime, $class_name, $method_name, $cfunc_address);
       }
       elsif ($category eq 'precompile') {
         SPVM::Builder::Runtime->set_precompile_method_address($self->runtime, $class_name, $method_name, $cfunc_address);
