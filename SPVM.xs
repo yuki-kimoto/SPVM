@@ -4259,26 +4259,11 @@ compile(...)
   // Compile SPVM
   int32_t compile_error_code = api_env->api->compiler->compile(compiler, class_name);
   
-  SV* sv_compile_success;
+  SV* sv_runtime = &PL_sv_undef;
   if (compile_error_code == 0) {
-    sv_compile_success = sv_2mortal(newSViv(1));
-
-    void* runtime = NULL;
-    {
-      SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-      SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-      if (SvOK(sv_runtime)) {
-        runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-      }
-    }
-    
-    if (runtime) {
-      api_env->api->runtime->free_object(runtime);
-      runtime = NULL;
-    }
 
     // Build runtime information
-    runtime = api_env->api->runtime->new_object(api_env);
+    void* runtime = api_env->api->runtime->new_object(api_env);
 
     // Runtime allocator
     void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);
@@ -4295,14 +4280,10 @@ compile(...)
     // Set runtime information
     size_t iv_runtime = PTR2IV(runtime);
     SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
-    SV* sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
-  }
-  else {
-    sv_compile_success = sv_2mortal(newSViv(0));
+    sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
   }
 
-  XPUSHs(sv_compile_success);
+  XPUSHs(sv_runtime);
   
   XSRETURN(1);
 }

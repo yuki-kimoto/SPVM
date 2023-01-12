@@ -56,9 +56,10 @@ sub import {
     my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($BUILDER->runtime);
 
     # Compile SPVM source code and create runtime env
-    my $compile_success = $BUILDER->compile($class_name, $file, $line);
+    my $runtime = $BUILDER->compile($class_name, $file, $line);
+    $BUILDER->runtime($runtime);
 
-    unless ($compile_success) {
+    unless ($runtime) {
       $BUILDER->print_error_messages(*STDERR);
       exit(255);
     }
@@ -115,8 +116,9 @@ sub init {
       # If any SPVM module are not yet loaded, $BUILDER is not set.
       my $build_dir = $ENV{SPVM_BUILD_DIR};
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
-      my $compile_success = $BUILDER->compile('Int', __FILE__, __LINE__);
-      unless ($compile_success) {
+      my $runtime = $BUILDER->compile('Int', __FILE__, __LINE__);
+      $BUILDER->runtime($runtime);
+      unless ($runtime) {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
     }
