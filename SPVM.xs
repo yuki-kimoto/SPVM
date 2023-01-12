@@ -4726,35 +4726,6 @@ set_precompile_method_address(...)
 }
 
 SV*
-build_native_env(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
-
-  // Create native_env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-  size_t iv_native_env = PTR2IV(env);
-  SV* sviv_native_env = sv_2mortal(newSViv(iv_native_env));
-  SV* sv_native_env = sv_2mortal(newRV_inc(sviv_native_env));
-
-  // Set runtime information
-  env->runtime = runtime;
-  
-  // Initialize native_env
-  env->init_env(env);
-  
-  XPUSHs(sv_native_env);
-  XSRETURN(1);
-}
-
-SV*
 build_native_stack(...)
   PPCODE:
 {
@@ -4895,6 +4866,33 @@ build_precompile_class_source(...)
   env->free_env_raw(env);
   
   XPUSHs(sv_precompile_source);
+  XSRETURN(1);
+}
+
+SV*
+build_native_env(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  // Create native_env
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  size_t iv_native_env = PTR2IV(env);
+  SV* sviv_native_env = sv_2mortal(newSViv(iv_native_env));
+  SV* sv_native_env = sv_2mortal(newRV_inc(sviv_native_env));
+
+  // Set runtime information
+  env->runtime = runtime;
+  
+  // Initialize native_env
+  env->init_env(env);
+  
+  XPUSHs(sv_native_env);
   XSRETURN(1);
 }
 

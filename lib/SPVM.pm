@@ -19,6 +19,7 @@ use SPVM::Builder;
 use SPVM::Builder::Env;
 use SPVM::Builder::Stack;
 use SPVM::ExchangeAPI;
+use SPVM::Builder::Runtime;
 
 use Carp 'confess';
 
@@ -128,7 +129,7 @@ sub init {
     }
     
     # Build an environment
-    my $native_env = $BUILDER->build_native_env;
+    my $native_env = SPVM::Builder::Runtime->build_native_env($BUILDER->runtime);
     $BUILDER->native_env($native_env);
 
     # Set command line info
