@@ -49,17 +49,6 @@ sub compiler {
   }
 }
 
-sub runtime {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime};
-  }
-}
-
 sub native_env {
   my $self = shift;
   if (@_) {
