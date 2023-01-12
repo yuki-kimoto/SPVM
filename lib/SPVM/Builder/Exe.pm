@@ -976,11 +976,14 @@ sub build_class_sources {
       
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
-      SPVM::Builder::Runtime->build_precompile_class_source_file(
-        $builder->runtime,
+      my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+      my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($builder->runtime, $class_name);
+      $builder_cc_precompile->build_precompile_class_source_file(
         $class_name,
         {
           output_dir => $build_src_dir,
+          precompile_source => $precompile_source,
+          module_file => $module_file,
         }
       );
     }
