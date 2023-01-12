@@ -133,7 +133,6 @@ sub init {
     
     # Build an environment
     my $native_env = SPVM::Builder::Runtime->build_native_env($SPVM::RUNTIME_ENV_STACK->{runtime});
-    $BUILDER->native_env($native_env);
 
     # Set command line info
     SPVM::Builder::Runtime->set_command_info($native_env, $0, \@ARGV);
@@ -143,7 +142,6 @@ sub init {
     
     # Build an stack
     my $native_stack = SPVM::Builder::Runtime->build_native_stack($native_env);
-    $BUILDER->native_stack($native_stack);
     
     my $runtime = bless ({runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}}, "SPVM::Builder::Runtime");
     

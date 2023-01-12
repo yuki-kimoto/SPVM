@@ -49,28 +49,6 @@ sub compiler {
   }
 }
 
-sub native_env {
-  my $self = shift;
-  if (@_) {
-    $self->{native_env} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_env};
-  }
-}
-
-sub native_stack {
-  my $self = shift;
-  if (@_) {
-    $self->{native_stack} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_stack};
-  }
-}
-
 sub dynamic_lib_files {
   my $self = shift;
   if (@_) {
