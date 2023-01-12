@@ -4156,30 +4156,6 @@ DESTROY(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  SV** sv_native_env_ptr = hv_fetch(hv_self, "native_env", strlen("native_env"), 0);
-  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
-  if (SvOK(sv_native_env)) {
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
-
-    if (env->runtime) {
-      // Free native_stack
-      SV** sv_native_stack_ptr = hv_fetch(hv_self, "native_stack", strlen("native_stack"), 0);
-      SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-      SPVM_VALUE* stack = NULL;
-      if (SvOK(sv_native_stack)) {
-        stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
-      }
-      // Cleanup global varialbes
-      env->cleanup_global_vars(env);
-      
-      // Free runtime
-      env->api->runtime->free_object(env->runtime);
-      env->runtime = NULL;
-    }
-    
-    env->free_env_raw(env);
-  }
-
   SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
   SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
@@ -4826,6 +4802,30 @@ set_command_info(...)
     env->leave_scope(env, my_stack, scope_id);
     env->free_stack(env, my_stack);
   }
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Env
+  SV** sv_native_env_ptr = hv_fetch(hv_self, "native_env", strlen("native_env"), 0);
+  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  
+  // Cleanup global varialbes
+  env->cleanup_global_vars(env);
+  
+  env->free_env_raw(env);
   
   XSRETURN(0);
 }
