@@ -4246,7 +4246,7 @@ compile(...)
     // Prepare runtime
     api_env->api->runtime->prepare(runtime);
 
-    sv_runtime = SPVM_XS_UTIL_new_sv_object(runtime, "SPVM::Builder::Runtime");
+    sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   }
 
   XPUSHs(sv_runtime);
@@ -4701,7 +4701,7 @@ build_env(...)
   // Initialize native_env
   env->init_env(env);
 
-  SV* sv_env = SPVM_XS_UTIL_new_sv_object(env, "SPVM::Builder::Env");
+  SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
   
   XPUSHs(sv_env);
   XSRETURN(1);
@@ -4721,7 +4721,7 @@ build_stack(...)
 
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_object(stack, "SPVM::Builder::Stack");
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_object(aTHX_ stack, "SPVM::Builder::Stack");
 
   XPUSHs(sv_stack);
   XSRETURN(1);
