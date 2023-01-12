@@ -369,11 +369,13 @@ sub build_exe_file {
     quiet => $self->quiet,
     force => $self->force,
   );
+  my $category
   my $options = {
     output_file => $self->{output_file},
     config => $self->config,
     category => 'native',
   };
+
   $cc_linker->link($class_name, $object_files, $options);
 }
 

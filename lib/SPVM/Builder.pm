@@ -193,7 +193,8 @@ sub build_dynamic_lib_dist {
   );
   
   my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
-  $cc_native->build_dist($class_name, {category => $category, module_file => $module_file});
+  my $dl_func_list = $self->create_dl_func_list($class_name, {category => $category});
+  $cc_native->build_dist($class_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list});
 }
 
 sub bind_methods {

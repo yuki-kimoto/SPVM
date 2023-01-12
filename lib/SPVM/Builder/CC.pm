@@ -118,6 +118,8 @@ sub build_runtime {
   
   $options ||= {};
   
+  my $dl_func_list = $options->{dl_func_list};
+  
   my $category = $options->{category};
   
   # Build directory
@@ -166,6 +168,7 @@ sub build_runtime {
       link_output_dir => $build_lib_dir,
       category => $category,
       module_file => $module_file,
+      dl_func_list => $dl_func_list,
     }
   );
   
@@ -176,6 +179,8 @@ sub build_dist {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
+
+  my $dl_func_list = $options->{dl_func_list};
   
   my $category = $options->{category};
   
@@ -212,6 +217,7 @@ sub build_dist {
       link_output_dir => $build_lib_dir,
       category => $category,
       module_file => $module_file,
+      dl_func_list => $dl_func_list,
     }
   );
 }
@@ -220,6 +226,8 @@ sub build {
   my ($self, $class_name, $options) = @_;
 
   $options ||= {};
+
+  my $dl_func_list = $options->{dl_func_list};
   
   my $category = $options->{category};
 
@@ -259,6 +267,7 @@ sub build {
     output_dir => $options->{link_output_dir},
     config => $config,
     category => $category,
+    dl_func_list => $dl_func_list,
   };
   my $output_file = $self->link(
     $class_name,
@@ -649,6 +658,8 @@ EOS
 sub link {
   my ($self, $class_name, $object_file_infos, $options) = @_;
   
+  my $dl_func_list = $options->{dl_func_list};
+  
   my $category = $options->{category};
   
   # Build directory
@@ -733,7 +744,6 @@ sub link {
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
-      my $dl_func_list = $self->builder->create_dl_func_list($class_name, {category => $category});
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
         module_name => $link_info_class_name,
