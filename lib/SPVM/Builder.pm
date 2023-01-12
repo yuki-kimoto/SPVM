@@ -198,7 +198,7 @@ sub build_dynamic_lib_dist {
 sub bind_methods {
   my ($self, $dynamic_lib_file, $class_name, $category) = @_;
 
-  my $method_names = $self->get_method_names($class_name, $category);
+  my $method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, $category);
   if (@$method_names) {
     my $method_infos = [];
     for my $method_name (@$method_names) {

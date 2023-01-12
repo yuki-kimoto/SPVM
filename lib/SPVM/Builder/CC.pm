@@ -652,7 +652,7 @@ sub create_dl_func_list {
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
-  my $method_names = $self->builder->get_method_names($class_name, $category);
+  my $method_names = SPVM::Builder::Runtime->get_method_names($self->builder->runtime, $class_name, $category);
   for my $method_name (@$method_names) {
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
     push @$dl_func_list, $cfunc_name;
