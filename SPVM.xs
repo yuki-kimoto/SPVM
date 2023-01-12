@@ -4169,10 +4169,6 @@ DESTROY(...)
       if (SvOK(sv_native_stack)) {
         stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
       }
-        
-      // Free native_stack
-      env->free_stack(env, stack);
-
       // Cleanup global varialbes
       env->cleanup_global_vars(env);
       
@@ -4830,6 +4826,32 @@ set_command_info(...)
     env->leave_scope(env, my_stack, scope_id);
     env->free_stack(env, my_stack);
   }
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM::Builder::Stack		PACKAGE = SPVM::Builder::Stack
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Stack
+  SV** sv_native_stack_ptr = hv_fetch(hv_self, "native_stack", strlen("native_stack"), 0);
+  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+
+  // Free native_stack
+  api_env->free_stack(api_env, stack);
+  
+  api_env->free_env_raw(api_env);
   
   XSRETURN(0);
 }
