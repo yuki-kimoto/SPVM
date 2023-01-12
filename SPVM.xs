@@ -4684,6 +4684,8 @@ set_native_method_address(...)
   XSRETURN(0);
 }
 
+MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+
 SV*
 set_precompile_method_address(...)
   PPCODE:
@@ -4692,16 +4694,15 @@ set_precompile_method_address(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_precompile_address = ST(3);
+
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  SV* sv_class_name = ST(2);
+  SV* sv_method_name = ST(3);
+  SV* sv_precompile_address = ST(4);
 
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
   // Class name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4724,8 +4725,6 @@ set_precompile_method_address(...)
 
   XSRETURN(0);
 }
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
 build_precompile_class_source(...)
