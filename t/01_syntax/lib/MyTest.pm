@@ -90,7 +90,6 @@ sub compile_not_ok_file {
   }
   
   my $runtime = $builder->compile($class_name, $file, $line);
-  $builder->runtime($runtime);
   ok(!$runtime);
   my $error_messages = $builder->get_error_messages;
   my $first_error_message = $error_messages->[0];
@@ -178,7 +177,6 @@ sub compile_ok_file {
   }
   
   my $runtime = $builder->compile($class_name, $file, $line);
-  $builder->runtime($runtime);
   ok($runtime);
   
   if (!$runtime) {
