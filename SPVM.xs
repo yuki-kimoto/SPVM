@@ -4607,25 +4607,20 @@ get_module_file(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+
 SV*
 get_runtime_codes(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Environment
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
-  
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  SV* sv_runtime = ST(1);
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
 
+  // Environment
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  
   // SPVM 32bit codes
   int32_t* runtime_codes = api_env->api->runtime->get_runtime_codes(runtime);
   int32_t runtime_codes_length = api_env->api->runtime->get_runtime_codes_length(runtime);
@@ -4637,13 +4632,14 @@ get_runtime_codes(...)
     SV* sv_spvm_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
     av_push(av_runtime_codes, SvREFCNT_inc(sv_spvm_32bit_code));
   }
+
+  // Free native_env
+  api_env->free_env_raw(api_env);
   
   XPUSHs(sv_runtime_codes);
 
   XSRETURN(1);
 }
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
 set_native_method_address(...)

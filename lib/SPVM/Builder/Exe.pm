@@ -10,6 +10,7 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
+use SPVM::Builder::Runtime;
 
 use File::Spec;
 use File::Find 'find';
@@ -652,7 +653,7 @@ sub create_bootstrap_get_runtime_codes_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $runtime_codes = $builder->get_runtime_codes;
+  my $runtime_codes = SPVM::Builder::Runtime->get_runtime_codes($builder->runtime);
   my $runtime_codes_length = @$runtime_codes;
   my $source = '';
   
