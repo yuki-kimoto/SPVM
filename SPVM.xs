@@ -4484,25 +4484,18 @@ get_anon_class_names(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+
 SV*
 get_class_names(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // The api_environment
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  SV* sv_runtime = ST(1);
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
 
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
@@ -4513,12 +4506,12 @@ get_class_names(...)
     SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
     av_push(av_class_names, SvREFCNT_inc(sv_class_name));
   }
+
+  api_env->free_env_raw(api_env);
   
   XPUSHs(sv_class_names);
   XSRETURN(1);
 }
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
 get_classes_length(...)

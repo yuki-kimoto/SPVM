@@ -209,7 +209,7 @@ sub get_dependent_resources {
     force => $self->force,
   );
   
-  my $class_names = $builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
   for my $class_name (@$class_names_without_anon) {
@@ -470,7 +470,7 @@ sub create_bootstrap_header_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = $self->builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
@@ -552,7 +552,7 @@ sub create_bootstrap_main_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = $self->builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
@@ -683,7 +683,7 @@ sub create_bootstrap_new_env_prepared_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = $self->builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
@@ -744,7 +744,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = $self->builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
 
   my $source = '';
 
@@ -775,7 +775,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = $self->builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
 
   my $source = '';
 
@@ -812,7 +812,7 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names = $builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   # Module files - Input
@@ -966,7 +966,7 @@ sub build_class_sources {
     force => $self->force,
   );
 
-  my $class_names = $builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   for my $class_name (@$class_names_without_anon) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
@@ -1004,7 +1004,7 @@ sub compile_precompile_sources {
     force => $self->force,
   );
   
-  my $class_names = $builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $object_files = [];
   for my $class_name (@$class_names_without_anon) {
@@ -1053,7 +1053,7 @@ sub compile_native_sources {
     force => $self->force,
   );
   
-  my $class_names = $builder->get_class_names;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
   for my $class_name (@$class_names_without_anon) {
