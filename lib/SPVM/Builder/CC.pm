@@ -119,7 +119,9 @@ sub build_runtime {
   $options ||= {};
   
   my $dl_func_list = $options->{dl_func_list};
-  
+  my $module_file = $options->{module_file};
+  my $precompile_source = $options->{precompile_source};
+
   my $category = $options->{category};
   
   # Build directory
@@ -138,12 +140,14 @@ sub build_runtime {
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
-    SPVM::Builder::Runtime->build_precompile_class_source_file(
-      $self->builder->runtime,
+    
+    $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
         force => $force,
+        precompile_source => $precompile_source,
+        module_file => $module_file,
       }
     );
   }
@@ -160,7 +164,6 @@ sub build_runtime {
   my $build_lib_dir = $self->builder->create_build_lib_path;
   mkpath $build_lib_dir;
   
-  my $module_file = $options->{module_file};
   my $build_file = $self->build(
     $class_name,
     {
@@ -182,6 +185,8 @@ sub build_dist {
   $options ||= {};
 
   my $dl_func_list = $options->{dl_func_list};
+  my $module_file = $options->{module_file};
+  my $precompile_source = $options->{precompile_source};
   
   my $category = $options->{category};
   
@@ -191,12 +196,14 @@ sub build_dist {
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
-    SPVM::Builder::Runtime->build_precompile_class_source_file(
-      $self->builder->runtime,
+    
+    $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
         force => $force,
+        precompile_source => $precompile_source,
+        module_file => $module_file,
       }
     );
   }
@@ -209,8 +216,6 @@ sub build_dist {
   
   my $build_lib_dir = 'blib/lib';
   
-  
-  my $module_file = $options->{module_file};
   $self->build(
     $class_name,
     {
@@ -1000,6 +1005,44 @@ sub create_link_info {
   );
   
   return $link_info;
+}
+
+sub build_precompile_class_source_file {
+  my ($self, $class_name, $options) = @_;
+
+  my $precompile_source = $options->{precompile_source};
+  my $module_file = $options->{module_file};
+  
+  # Force
+  my $force = $options->{force};
+  
+  # Output - Precompile C source file
+  my $output_dir = $options->{output_dir};
+  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+  my $source_file = "$output_dir/$source_rel_file";
+  
+  # Check if generating is needed
+  my $spvm_module_dir = $INC{'SPVM/Builder.pm'};
+  $spvm_module_dir =~ s/\.pm$//;
+  $spvm_module_dir .= '/src';
+  my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_precompile.c";
+  unless (-f $spvm_precompile_soruce_file) {
+    confess "Can't find $spvm_precompile_soruce_file";
+  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    force => $force,
+    output_file => $source_file,
+    input_files => [$module_file, $spvm_precompile_soruce_file],
+  });
+  
+  # Generate precompile C source file
+  if ($need_generate) {
+    mkpath dirname $source_file;
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
+    print $fh $precompile_source;
+    close $fh;
+  }
 }
 
 1;

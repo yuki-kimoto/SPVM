@@ -126,7 +126,7 @@ WriteMakefile(
     OBJECT            => '$(O_FILES)', # link all the C files too
     INC => $inc,
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/default/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
+    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/02_vm/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
     DEFINE => "@defines -o \$@",
     META_MERGE => {
         'meta-spec' => { version => 2 },
