@@ -300,8 +300,9 @@ sub compile {
   my $class_name = $self->{class_name};
   
   # Compile SPVM
-  my $compile_success = $builder->compile($class_name, __FILE__, __LINE__);
-  unless ($compile_success) {
+  my $runtime = $builder->compile($class_name, __FILE__, __LINE__);
+  $builder->runtime($runtime);
+  unless ($runtime) {
     $builder->print_error_messages(*STDERR);
     exit(255);
   }

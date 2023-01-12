@@ -171,8 +171,9 @@ sub create_build_lib_path {
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
-  my $compile_success = $self->compile($class_name, __FILE__, __LINE__);
-  unless ($compile_success) {
+  my $runtime = $self->compile($class_name, __FILE__, __LINE__);
+  $self->runtime($runtime);
+  unless ($runtime) {
     $self->print_error_messages(*STDERR);
     exit(255);
   }

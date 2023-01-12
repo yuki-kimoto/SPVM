@@ -89,8 +89,9 @@ sub compile_not_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $status_code = $builder->compile($class_name, $file, $line);
-  ok($status_code == 0);
+  my $runtime = $builder->compile($class_name, $file, $line);
+  $builder->runtime($runtime);
+  ok(!$runtime);
   my $error_messages = $builder->get_error_messages;
   my $first_error_message = $error_messages->[0];
   my $message_ok;
@@ -98,7 +99,7 @@ sub compile_not_ok_file {
     $message_ok = like($first_error_message, $error_message_re);
   }
   
-  if ($status_code != 0 || ($error_message_re && !$message_ok)) {
+  if ($runtime || ($error_message_re && !$message_ok)) {
     warn "  at $file line $line\n";
   }
 }
@@ -176,10 +177,11 @@ sub compile_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $status_code = $builder->compile($class_name, $file, $line);
-  ok($status_code != 0);
+  my $runtime = $builder->compile($class_name, $file, $line);
+  $builder->runtime($runtime);
+  ok($runtime);
   
-  if ($status_code == 0) {
+  if (!$runtime) {
     warn "  at $file line $line\n";
     
     my $error_messages = $builder->get_error_messages;
