@@ -125,6 +125,17 @@ sub config_file {
   }
 }
 
+sub runtime {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -209,16 +220,16 @@ sub get_dependent_resources {
     force => $self->force,
   );
   
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
   for my $class_name (@$class_names_without_anon) {
 
     my $perl_class_name = "SPVM::$class_name";
     
-    my $native_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'native');
+    my $native_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'native');
     if (@$native_method_names) {
-      my $native_module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+      my $native_module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
       my $native_dir = $native_module_file;
       
       $native_dir =~ s/\.spvm$//;
@@ -228,7 +239,7 @@ sub get_dependent_resources {
       mkpath $build_object_dir;
 
       # Module file
-      my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+      my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
       unless (defined $module_file) {
         my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
         if ($config_file) {
@@ -301,11 +312,11 @@ sub compile {
   
   # Compile SPVM
   my $runtime = $builder->compile($class_name, __FILE__, __LINE__);
-  $builder->runtime($runtime);
   unless ($runtime) {
     $builder->print_error_messages(*STDERR);
     exit(255);
   }
+  $self->runtime($runtime);
   
   $self->{finish_compile} = 1;
 }
@@ -325,7 +336,7 @@ sub build_exe_file {
   }
   
   # Config file
-  my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+  my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
 
   # Object files
   my $object_files = [];
@@ -472,7 +483,7 @@ sub create_bootstrap_header_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
@@ -498,7 +509,7 @@ EOS
   unless ($no_precompile) {
     $source .= "// precompile functions declaration\n";
     for my $class_name (@$class_names) {
-      my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'precompile');
+      my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
       for my $method_name (@$precompile_method_names) {
         my $class_cname = $class_name;
         $class_cname =~ s/::/__/g;
@@ -520,7 +531,7 @@ EOS
   
   $source .= "// native functions declaration\n";
   for my $class_cname (@$class_names_without_anon) {
-    my $native_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_cname, 'native');
+    my $native_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_cname, 'native');
     for my $method_name (@$native_method_names) {
       my $class_cname = $class_cname;
       $class_cname =~ s/::/__/g;
@@ -554,7 +565,7 @@ sub create_bootstrap_main_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
@@ -655,7 +666,7 @@ sub create_bootstrap_get_runtime_codes_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $runtime_codes = SPVM::Builder::Runtime->get_runtime_codes($builder->runtime);
+  my $runtime_codes = SPVM::Builder::Runtime->get_runtime_codes($self->runtime);
   my $runtime_codes_length = @$runtime_codes;
   my $source = '';
   
@@ -685,7 +696,7 @@ sub create_bootstrap_new_env_prepared_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
@@ -746,7 +757,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
 
   my $source = '';
 
@@ -756,7 +767,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
-    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'precompile');
+    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
     
     for my $precompile_method_name (@$precompile_method_names) {
       $source .= <<"EOS";
@@ -777,7 +788,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
 
   my $source = '';
 
@@ -787,7 +798,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
-    my $native_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'native');
+    my $native_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'native');
     
     for my $native_method_name (@$native_method_names) {
       $source .= <<"EOS";
@@ -814,13 +825,13 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   # Module files - Input
   my $module_files = [];
   for my $class_name (@$class_names_without_anon) {
-    my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+    my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
     push @$module_files, $module_file;
   }
   
@@ -968,16 +979,16 @@ sub build_class_sources {
     force => $self->force,
   );
 
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   for my $class_name (@$class_names_without_anon) {
-    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'precompile');
+    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
     if (@$precompile_method_names) {
       
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
-      my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
-      my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($builder->runtime, $class_name);
+      my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
+      my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($self->runtime, $class_name);
       $builder_cc_precompile->build_precompile_class_source_file(
         $class_name,
         {
@@ -1010,11 +1021,11 @@ sub compile_precompile_sources {
     force => $self->force,
   );
   
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $object_files = [];
   for my $class_name (@$class_names_without_anon) {
-    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'precompile');
+    my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
     if (@$precompile_method_names) {
       my $build_src_dir = $self->builder->create_build_src_path;
       mkpath $build_src_dir;
@@ -1059,16 +1070,16 @@ sub compile_native_sources {
     force => $self->force,
   );
   
-  my $class_names = SPVM::Builder::Runtime->get_class_names($builder->runtime) ;
+  my $class_names = SPVM::Builder::Runtime->get_class_names($self->runtime) ;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
   for my $class_name (@$class_names_without_anon) {
 
     my $perl_class_name = "SPVM::$class_name";
     
-    my $native_method_names = SPVM::Builder::Runtime->get_method_names($builder->runtime, $class_name, 'native');
+    my $native_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'native');
     if (@$native_method_names) {
-      my $native_module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+      my $native_module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
       my $native_dir = $native_module_file;
       
       $native_dir =~ s/\.spvm$//;
@@ -1078,7 +1089,7 @@ sub compile_native_sources {
       mkpath $build_object_dir;
 
       # Module file
-      my $module_file = SPVM::Builder::Runtime->get_module_file($builder->runtime, $class_name);
+      my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
       unless (defined $module_file) {
         my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
         if ($config_file) {
