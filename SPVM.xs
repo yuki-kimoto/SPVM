@@ -4696,10 +4696,7 @@ set_precompile_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_precompile_address = ST(3);
 
-  // The compiler_environment
-  SV** sv_compiler_env_ptr = hv_fetch(hv_self, "compiler_env", strlen("compiler_env"), 0);
-  SV* sv_compiler_env = sv_compiler_env_ptr ? *sv_compiler_env_ptr : &PL_sv_undef;
-  SPVM_ENV* compiler_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_compiler_env)));
+  SPVM_ENV* compiler_env = SPVM_NATIVE_new_env_raw();
 
   // Runtime
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
@@ -4721,6 +4718,9 @@ set_precompile_method_address(...)
   compiler_env->api->runtime->set_precompile_method_address(runtime, method_id, precompile_address);
 
   assert(precompile_address == compiler_env->api->runtime->get_precompile_method_address(runtime, method_id));
+
+  // Free native_env
+  compiler_env->free_env_raw(compiler_env);
 
   XSRETURN(0);
 }
