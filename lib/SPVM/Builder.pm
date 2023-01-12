@@ -171,7 +171,7 @@ sub create_build_lib_path {
 sub get_dynamic_lib_file_dist {
   my ($self, $class_name, $category) = @_;
 
-  my $module_module_file = $self->get_module_file($class_name);
+  my $module_module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
   
   my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_module_file, $category);
   
@@ -285,7 +285,7 @@ sub build_precompile_class_source_file {
   my $source_file = "$output_dir/$source_rel_file";
   
   # Check if generating is needed
-  my $module_file = $self->get_module_file($class_name);
+  my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
   my $spvm_module_dir = $INC{'SPVM/Builder.pm'};
   $spvm_module_dir =~ s/\.pm$//;
   $spvm_module_dir .= '/src';

@@ -18,6 +18,7 @@ use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
+use SPVM::Builder::Runtime;
 
 sub global_before_compile {
   my $self = shift;
@@ -144,7 +145,7 @@ sub build_runtime {
     );
   }
   elsif ($category eq 'native') {
-    my $module_file = $self->builder->get_module_file($class_name);
+    my $module_file = SPVM::Builder::Runtime->get_module_file($self->builder->runtime, $class_name);
     $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
   }
   
@@ -219,7 +220,7 @@ sub build {
   my $category = $options->{category};
 
   # Module file
-  my $module_file = $self->builder->get_module_file($class_name);
+  my $module_file = SPVM::Builder::Runtime->get_module_file($self->builder->runtime, $class_name);
   unless (defined $module_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
     if ($config_file) {

@@ -4551,6 +4551,8 @@ get_classes_length(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+
 SV*
 get_module_file(...)
   PPCODE:
@@ -4558,22 +4560,17 @@ get_module_file(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
   HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV* sv_runtime = ST(1);
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+
+  SV* sv_class_name = ST(2);
 
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
   
-  // Env
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(void*, SvIV(SvRV(sv_api_env)));
-
-  // Runtime
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
 
   // Copy class load path to builder
   int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
@@ -4602,12 +4599,12 @@ get_module_file(...)
   else {
     sv_module_file = &PL_sv_undef;
   }
+
+  api_env->free_env_raw(api_env);
   
   XPUSHs(sv_module_file);
   XSRETURN(1);
 }
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
 get_runtime_codes(...)
