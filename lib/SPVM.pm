@@ -130,23 +130,22 @@ sub init {
         SPVM::Builder::Runtime->bind_methods($SPVM::RUNTIME_ENV_STACK->{runtime}, $dynamic_lib_file, $class_name, $category);
       }
     }
-    
-    # Build an environment
-    my $native_env = SPVM::Builder::Runtime->build_native_env($SPVM::RUNTIME_ENV_STACK->{runtime});
 
-    # Set command line info
-    SPVM::Builder::Runtime->set_command_info($native_env, $0, \@ARGV);
-    
-    # Call INIT blocks
-    SPVM::Builder::Runtime->call_init_blocks($native_env);
-    
     # Build an stack
     my $runtime = bless ({runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}}, "SPVM::Builder::Runtime");
     
-    my $env = bless ({runtime => $runtime, native_env => $native_env}, "SPVM::Builder::Env");
+    # Build an environment
+    my $env = SPVM::Builder::Runtime->build_env($SPVM::RUNTIME_ENV_STACK->{runtime});
+    $env->{runtime} = $runtime;
     $SPVM::RUNTIME_ENV_STACK->{env} = $env;
+
+    # Set command line info
+    SPVM::Builder::Runtime->set_command_info($env, $0, \@ARGV);
     
-    my $stack = SPVM::Builder::Runtime->build_stack($native_env);
+    # Call INIT blocks
+    SPVM::Builder::Runtime->call_init_blocks($env);
+    
+    my $stack = SPVM::Builder::Runtime->build_stack($env);
     $stack->{env} = $env;
     $SPVM::RUNTIME_ENV_STACK->{stack} = $stack;
     
