@@ -53,7 +53,7 @@ sub import {
   my $build_success;
   if (defined $class_name) {
 
-    my $start_classes_length = $BUILDER->get_classes_length;
+    my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($BUILDER->runtime);
 
     # Compile SPVM source code and create runtime env
     my $compile_success = $BUILDER->compile($class_name, $file, $line);
