@@ -128,22 +128,21 @@ sub init {
     }
     
     # Build an environment
-    $BUILDER->build_env;
-
-    my $env = $BUILDER->env;
+    my $native_env = $BUILDER->build_native_env;
+    $BUILDER->native_env($native_env);
 
     # Set command line info
-    $BUILDER->set_command_info($env, $0, \@ARGV);
+    $BUILDER->set_command_info($native_env, $0, \@ARGV);
     
     # Call INIT blocks
-    $BUILDER->call_init_blocks($env);
+    $BUILDER->call_init_blocks($native_env);
     
     # Build an stack
     my $native_stack = $BUILDER->build_native_stack;
     $BUILDER->native_stack($native_stack);
     
     my $obj_runtime = bless ({runtime => $runtime}, "SPVM::Builder::Runtime");
-    my $obj_env = bless ({runtime => $runtime, env => $env}, "SPVM::Builder::Env");
+    my $obj_env = bless ({runtime => $runtime, native_env => $native_env}, "SPVM::Builder::Env");
     my $stack = bless ({native_stack => $native_stack, env => $obj_env}, "SPVM::Builder::Stack");
     
     $SPVM::RUNTIME_ENV_STACK = {

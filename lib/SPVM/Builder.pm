@@ -59,14 +59,14 @@ sub runtime {
   }
 }
 
-sub env {
+sub native_env {
   my $self = shift;
   if (@_) {
-    $self->{env} = $_[0];
+    $self->{native_env} = $_[0];
     return $self;
   }
   else {
-    return $self->{env};
+    return $self->{native_env};
   }
 }
 
