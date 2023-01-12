@@ -143,9 +143,7 @@ sub init {
     # Build an stack
     my $native_stack = SPVM::Builder::Runtime->build_native_stack($native_env);
     
-    my $runtime = bless ({native_runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}}, "SPVM::Builder::Runtime");
-    
-    my $env = bless ({runtime => $runtime, native_env => $native_env}, "SPVM::Builder::Env");
+    my $env = bless ({runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}, native_env => $native_env}, "SPVM::Builder::Env");
     $SPVM::RUNTIME_ENV_STACK->{env} = $env;
     
     my $stack = bless ({native_stack => $native_stack, env => $env}, "SPVM::Builder::Stack");
