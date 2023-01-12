@@ -144,9 +144,8 @@ sub init {
     SPVM::Builder::Runtime->call_init_blocks($native_env);
     
     # Build an stack
-    my $native_stack = SPVM::Builder::Runtime->build_native_stack($native_env);
-    
-    my $stack = bless ({native_stack => $native_stack, env => $env}, "SPVM::Builder::Stack");
+    my $stack = SPVM::Builder::Runtime->build_stack($native_env);
+    $stack->{env} = $env;
     $SPVM::RUNTIME_ENV_STACK->{stack} = $stack;
     
     $SPVM_INITED = 1;
