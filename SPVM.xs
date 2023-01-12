@@ -4766,61 +4766,6 @@ call_init_blocks(...)
   XSRETURN(0);
 }
 
-SV*
-set_command_info(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV* sv_native_env = ST(1);
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
-  
-  SV* sv_program_name = ST(2);
-  const char* program_name = SvPV_nolen(sv_program_name);
-  int32_t program_name_length = strlen(program_name);
-  
-  SV* sv_argv = ST(3);
-  AV* av_argv = (AV*)SvRV(sv_argv);
-  int32_t argv_length = av_len(av_argv) + 1;
-  
-  {
-    SPVM_VALUE* my_stack = env->new_stack(env);
-    int32_t scope_id = env->enter_scope(env, my_stack);
-    
-    // Program name - string
-    void* obj_program_name = env->new_string(env, my_stack, program_name, program_name_length);
-    
-    void* obj_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
-    for (int32_t index = 0; index < argv_length; index++) {
-      SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
-      SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
-      
-      const char* arg = SvPV_nolen(sv_arg);
-      int32_t arg_length = strlen(arg);
-      
-      void* obj_arg = env->new_string(env, my_stack, arg, arg_length);
-      env->set_elem_object(env, my_stack, obj_argv, index, obj_arg);
-    }
-
-    // Set command info
-    {
-      int32_t e;
-      e = env->set_command_info_program_name(env, obj_program_name);
-      assert(e == 0);
-      e = env->set_command_info_argv(env, obj_argv);
-      assert(e == 0);
-    }
-    
-    env->leave_scope(env, my_stack, scope_id);
-    env->free_stack(env, my_stack);
-  }
-  
-  XSRETURN(0);
-}
-
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
@@ -4894,6 +4839,60 @@ build_native_env(...)
   
   XPUSHs(sv_native_env);
   XSRETURN(1);
+}
+
+SV*
+set_command_info(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+
+  SV* sv_native_env = ST(1);
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  
+  SV* sv_program_name = ST(2);
+  const char* program_name = SvPV_nolen(sv_program_name);
+  int32_t program_name_length = strlen(program_name);
+  
+  SV* sv_argv = ST(3);
+  AV* av_argv = (AV*)SvRV(sv_argv);
+  int32_t argv_length = av_len(av_argv) + 1;
+  
+  {
+    SPVM_VALUE* my_stack = env->new_stack(env);
+    int32_t scope_id = env->enter_scope(env, my_stack);
+    
+    // Program name - string
+    void* obj_program_name = env->new_string(env, my_stack, program_name, program_name_length);
+    
+    void* obj_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
+    for (int32_t index = 0; index < argv_length; index++) {
+      SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
+      SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
+      
+      const char* arg = SvPV_nolen(sv_arg);
+      int32_t arg_length = strlen(arg);
+      
+      void* obj_arg = env->new_string(env, my_stack, arg, arg_length);
+      env->set_elem_object(env, my_stack, obj_argv, index, obj_arg);
+    }
+
+    // Set command info
+    {
+      int32_t e;
+      e = env->set_command_info_program_name(env, obj_program_name);
+      assert(e == 0);
+      e = env->set_command_info_argv(env, obj_argv);
+      assert(e == 0);
+    }
+    
+    env->leave_scope(env, my_stack, scope_id);
+    env->free_stack(env, my_stack);
+  }
+  
+  XSRETURN(0);
 }
 
 MODULE = SPVM		PACKAGE = SPVM

@@ -133,7 +133,7 @@ sub init {
     $BUILDER->native_env($native_env);
 
     # Set command line info
-    $BUILDER->set_command_info($native_env, $0, \@ARGV);
+    SPVM::Builder::Runtime->set_command_info($native_env, $0, \@ARGV);
     
     # Call INIT blocks
     $BUILDER->call_init_blocks($native_env);
