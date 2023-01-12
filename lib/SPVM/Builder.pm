@@ -70,14 +70,14 @@ sub env {
   }
 }
 
-sub stack {
+sub native_stack {
   my $self = shift;
   if (@_) {
-    $self->{stack} = $_[0];
+    $self->{native_stack} = $_[0];
     return $self;
   }
   else {
-    return $self->{stack};
+    return $self->{native_stack};
   }
 }
 
