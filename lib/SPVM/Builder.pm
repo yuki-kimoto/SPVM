@@ -172,7 +172,6 @@ sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
   my $runtime = $self->compile($class_name, __FILE__, __LINE__);
-  $self->runtime($runtime);
   unless ($runtime) {
     $self->print_error_messages(*STDERR);
     exit(255);
@@ -183,9 +182,9 @@ sub build_dynamic_lib_dist {
     builder => $self,
   );
   
-  my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
-  my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($self->runtime, $class_name, {category => $category});
-  my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($self->runtime, $class_name);
+  my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+  my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($runtime, $class_name, {category => $category});
+  my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
   
   $cc_native->build_dist($class_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
