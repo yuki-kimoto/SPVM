@@ -138,7 +138,8 @@ sub build_runtime {
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
-    $self->builder->build_precompile_class_source_file(
+    SPVM::Builder::Runtime->build_precompile_class_source_file(
+      $self->builder->runtime,
       $class_name,
       {
         output_dir => $build_src_dir,
@@ -190,7 +191,8 @@ sub build_dist {
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
-    $self->builder->build_precompile_class_source_file(
+    SPVM::Builder::Runtime->build_precompile_class_source_file(
+      $self->builder->runtime,
       $class_name,
       {
         output_dir => $build_src_dir,
