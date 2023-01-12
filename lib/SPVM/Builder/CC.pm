@@ -157,6 +157,7 @@ sub build_runtime {
   my $build_lib_dir = $self->builder->create_build_lib_path;
   mkpath $build_lib_dir;
   
+  my $module_file = $options->{module_file};
   my $build_file = $self->build(
     $class_name,
     {
@@ -164,6 +165,7 @@ sub build_runtime {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
+      module_file => $module_file,
     }
   );
   
@@ -201,6 +203,7 @@ sub build_dist {
   my $build_lib_dir = 'blib/lib';
   
   
+  my $module_file = $options->{module_file};
   $self->build(
     $class_name,
     {
@@ -208,6 +211,7 @@ sub build_dist {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
+      module_file => $module_file,
     }
   );
 }
@@ -220,7 +224,7 @@ sub build {
   my $category = $options->{category};
 
   # Module file
-  my $module_file = SPVM::Builder::Runtime->get_module_file($self->builder->runtime, $class_name);
+  my $module_file = $options->{module_file};
   unless (defined $module_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
     if ($config_file) {
