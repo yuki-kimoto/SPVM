@@ -6,6 +6,16 @@ use Carp 'confess';
 use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
 
+sub get_dynamic_lib_file_dist {
+  my ($class, $runtime, $class_name, $category) = @_;
+
+  my $module_module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+  
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_module_file, $category);
+  
+  return $dynamic_lib_file;
+}
+
 sub build_precompile_class_source_file {
   my ($class, $runtime, $class_name, $options) = @_;
   

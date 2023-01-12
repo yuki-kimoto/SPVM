@@ -168,16 +168,6 @@ sub create_build_lib_path {
   return $build_lib_path;
 }
 
-sub get_dynamic_lib_file_dist {
-  my ($self, $class_name, $category) = @_;
-
-  my $module_module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
-  
-  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_module_file, $category);
-  
-  return $dynamic_lib_file;
-}
-
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
