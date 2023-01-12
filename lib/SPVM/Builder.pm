@@ -9,6 +9,7 @@ use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::CC;
+use SPVM::Builder::Runtime;
 
 # This SPVM load is needed for SPVM::Builder XS method binding to Perl
 # because SPVM::Builder XS method is loaded when SPVM is loaded
@@ -300,7 +301,7 @@ sub build_precompile_class_source_file {
   
   # Generate precompile C source file
   if ($need_generate) {
-    my $precompile_source = $self->build_precompile_class_source($class_name);
+    my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($self->runtime, $class_name);
     mkpath dirname $source_file;
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
