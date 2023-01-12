@@ -26,8 +26,8 @@ use Carp 'confess';
 # For the reason, this variable is needed.
 my $SPVM_INITED;
 
+our $RUNTIME_ENV_STACK;
 our $BUILDER;
-our $INTERPRETER;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -147,6 +147,7 @@ sub init {
     
     $SPVM::RUNTIME_ENV_STACK = {
       runtime => $runtime,
+      env => $env,
       stack => $stack,
     };
     
