@@ -4725,30 +4725,6 @@ set_precompile_method_address(...)
   XSRETURN(0);
 }
 
-SV*
-build_native_stack(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Env
-  SV** sv_native_env_ptr = hv_fetch(hv_self, "native_env", strlen("native_env"), 0);
-  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
-
-  // Create native_stack
-  SPVM_VALUE* stack = env->new_stack(env);
-  size_t iv_native_stack = PTR2IV(stack);
-  SV* sviv_native_stack = sv_2mortal(newSViv(iv_native_stack));
-  SV* sv_native_stack = sv_2mortal(newRV_inc(sviv_native_stack));
-  
-  XPUSHs(sv_native_stack);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
@@ -4821,6 +4797,28 @@ build_native_env(...)
   env->init_env(env);
   
   XPUSHs(sv_native_env);
+  XSRETURN(1);
+}
+
+SV*
+build_native_stack(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+
+  // Env
+  SV* sv_native_env = ST(1);
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+
+  // Create native_stack
+  SPVM_VALUE* stack = env->new_stack(env);
+  size_t iv_native_stack = PTR2IV(stack);
+  SV* sviv_native_stack = sv_2mortal(newSViv(iv_native_stack));
+  SV* sv_native_stack = sv_2mortal(newRV_inc(sviv_native_stack));
+  
+  XPUSHs(sv_native_stack);
   XSRETURN(1);
 }
 
