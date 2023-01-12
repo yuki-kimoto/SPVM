@@ -145,7 +145,7 @@ sub build_runtime {
     );
   }
   elsif ($category eq 'native') {
-    my $module_file = SPVM::Builder::Runtime->get_module_file($self->builder->runtime, $class_name);
+    my $module_file = $options->{module_file};
     $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
   }
   
