@@ -136,7 +136,7 @@ sub init {
     SPVM::Builder::Runtime->set_command_info($native_env, $0, \@ARGV);
     
     # Call INIT blocks
-    $BUILDER->call_init_blocks($native_env);
+    SPVM::Builder::Runtime->call_init_blocks($native_env);
     
     # Build an stack
     my $native_stack = $BUILDER->build_native_stack;

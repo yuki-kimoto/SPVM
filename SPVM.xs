@@ -4749,23 +4749,6 @@ build_native_stack(...)
   XSRETURN(1);
 }
 
-SV*
-call_init_blocks(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV* sv_native_env = ST(1);
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
-  
-  env->call_init_blocks(env);
-
-  XSRETURN(0);
-}
-
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
@@ -4839,6 +4822,22 @@ build_native_env(...)
   
   XPUSHs(sv_native_env);
   XSRETURN(1);
+}
+
+SV*
+call_init_blocks(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_class = ST(0);
+
+  SV* sv_native_env = ST(1);
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  
+  env->call_init_blocks(env);
+
+  XSRETURN(0);
 }
 
 SV*
