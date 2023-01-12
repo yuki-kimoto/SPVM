@@ -139,13 +139,12 @@ sub init {
     $BUILDER->call_init_blocks($env);
     
     # Build an stack
-    $BUILDER->build_stack;
-    
-    my $stack = $BUILDER->stack;
+    my $native_stack = $BUILDER->build_stack;
+    $BUILDER->stack($native_stack);
     
     my $obj_runtime = bless ({runtime => $runtime}, "SPVM::Builder::Runtime");
     my $obj_env = bless ({runtime => $runtime, env => $env}, "SPVM::Builder::Env");
-    my $obj_stack = bless ({stack => $stack, env => $obj_env}, "SPVM::Builder::Stack");
+    my $obj_stack = bless ({stack => $native_stack, env => $obj_env}, "SPVM::Builder::Stack");
     
     $SPVM::RUNTIME_ENV_STACK = {
       runtime => $runtime,
