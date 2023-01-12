@@ -4246,10 +4246,7 @@ compile(...)
     // Prepare runtime
     api_env->api->runtime->prepare(runtime);
 
-    // Set runtime information
-    size_t iv_runtime = PTR2IV(runtime);
-    SV* sviv_runtime = sv_2mortal(newSViv(iv_runtime));
-    sv_runtime = sv_2mortal(newRV_inc(sviv_runtime));
+    sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   }
 
   XPUSHs(sv_runtime);
@@ -4301,7 +4298,7 @@ get_method_names(...)
   (void)RETVAL;
   
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
   
   SV* sv_class_name = ST(2);
   SV* sv_category = ST(3);
@@ -4347,7 +4344,7 @@ get_parent_class_name(...)
   (void)RETVAL;
   
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
   
   SV* sv_class_name = ST(2);
 
@@ -4385,7 +4382,7 @@ get_anon_class_names(...)
   SV* sv_self = ST(0);
 
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SV* sv_class_name = ST(2);
 
@@ -4430,7 +4427,7 @@ get_class_names(...)
   (void)RETVAL;
   
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
 
@@ -4462,7 +4459,7 @@ get_classes_length(...)
   
   int32_t classes_length;
   if (SvOK(sv_runtime)) {
-    void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+    void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
     classes_length = api_env->api->runtime->get_classes_length(runtime);
   }
   else {
@@ -4486,7 +4483,7 @@ get_module_file(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SV* sv_class_name = ST(2);
 
@@ -4536,7 +4533,7 @@ get_runtime_codes(...)
   (void)RETVAL;
   
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   // Environment
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
@@ -4568,7 +4565,7 @@ set_native_method_address(...)
   (void)RETVAL;
   
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SV* sv_class_name = ST(2);
   SV* sv_method_name = ST(3);
@@ -4608,7 +4605,7 @@ set_precompile_method_address(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SV* sv_class_name = ST(2);
   SV* sv_method_name = ST(3);
@@ -4645,7 +4642,7 @@ build_precompile_class_source(...)
   SV* sv_class = ST(0);
 
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SV* sv_class_name = ST(2);
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4693,7 +4690,7 @@ build_env(...)
   SV* sv_class = ST(0);
 
   SV* sv_runtime = ST(1);
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_runtime)));
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   // Create native_env
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
@@ -4812,7 +4809,7 @@ DESTROY(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Runtime
-  SV** sv_native_runtime_ptr = hv_fetch(hv_self, "native_runtime", strlen("native_runtime"), 0);
+  SV** sv_native_runtime_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
   SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
 
