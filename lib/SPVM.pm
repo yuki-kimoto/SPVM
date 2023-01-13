@@ -16,10 +16,8 @@ use SPVM::BlessedObject::String;
 use FindBin;
 
 use SPVM::Builder;
-use SPVM::Builder::Env;
-use SPVM::Builder::Stack;
-use SPVM::ExchangeAPI;
 use SPVM::Builder::Runtime;
+use SPVM::ExchangeAPI;
 
 use Carp 'confess';
 
@@ -57,6 +55,7 @@ sub import {
 
     # Compile SPVM source code and create runtime env
     my $runtime = $BUILDER->compile($class_name, $file, $line);
+    
     $SPVM::INTERPRETER->{runtime} = $runtime;
 
     unless ($runtime) {

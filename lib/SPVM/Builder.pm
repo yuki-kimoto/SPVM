@@ -9,7 +9,10 @@ use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::CC;
+use SPVM::Builder::Compiler;
 use SPVM::Builder::Runtime;
+use SPVM::Builder::Env;
+use SPVM::Builder::Stack;
 
 # This SPVM load is needed for SPVM::Builder XS method binding to Perl
 # because SPVM::Builder XS method is loaded when SPVM is loaded
@@ -27,17 +30,6 @@ sub build_dir {
   }
 }
 
-sub module_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{module_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{module_dirs};
-  }
-}
-
 sub compiler {
   my $self = shift;
   if (@_) {
@@ -47,6 +39,12 @@ sub compiler {
   else {
     return $self->{compiler};
   }
+}
+
+sub module_dirs {
+  my $self = shift;
+  
+  return $self->compiler->module_dirs(@_);
 }
 
 sub dynamic_lib_files {
@@ -63,21 +61,33 @@ sub dynamic_lib_files {
 sub new {
   my $class = shift;
   
-  my $self = {
-    module_dirs => [map { "$_/SPVM" } @INC],
-    @_
-  };
+  my $self = {@_};
   
   bless $self, ref $class || $class;
   
   # Create the compiler
-  $self->create_compiler;
+  my $compiler = SPVM::Builder::Compiler->new(
+    module_dirs => [map { "$_/SPVM" } @INC],
+  );
+  
+  $self->compiler($compiler);
   
   $self->dynamic_lib_files({});
   
   return $self;
 }
 
+sub compile {
+  my $self = shift;
+  
+  return $self->compiler->compile(@_);
+}
+
+sub get_error_messages {
+  my $self = shift;
+  
+  return $self->compiler->get_error_messages;
+}
 sub print_error_messages {
   my ($self, $fh) = @_;
 

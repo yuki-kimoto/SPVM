@@ -4115,7 +4115,7 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
+MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
 create_compiler(...)
