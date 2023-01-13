@@ -14,7 +14,14 @@
       
       -  int32_t (*get_spvm_32bit_codes_length)(void* runtime);
       +  int32_t (*get_runtime_codes_length)(void* runtime);
-
+  [Internal Compatible Changes]
+    * The SPVM runtime, env, stack that are used for Perl interpreter are automatically destructed by the destructors.
+    * Added SPVM::Builder::Runtime and the runtime is separated from SPVM::Builder
+    * Removed the stack field in the SPVM::Builder class.
+    * Removed the env field in the SPVM::Builder class.
+    * Removed the runtime field in the SPVM::Builder class.
+    * Added the $SPVM::INTERPRETER package variable.
+    
 0.9680 2022-01-07
   [New Features]
     * Added the pointer class desciptor. This is the same as the pointer_t descriptor.
