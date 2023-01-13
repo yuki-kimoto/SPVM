@@ -24,7 +24,7 @@ SPVM_ALLOCATOR* SPVM_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
   return runtime->allocator;
 }
 
-void SPVM_RUNTIME_prepare(SPVM_RUNTIME* runtime) {
+void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;
 
@@ -228,5 +228,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   fprintf(stderr, "arg_type_ids size: %d bytes\n", (int32_t)(sizeof(int32_t) * runtime->arg_types_length));
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime->fields_length));
 #endif
-
+  
+  SPVM_RUNTIME_build_symbol_table(runtime);
 }

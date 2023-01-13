@@ -24,7 +24,6 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
 
 // Runtime
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_object();
-void SPVM_API_RUNTIME_prepare(SPVM_RUNTIME* runtime);
 void SPVM_API_RUNTIME_free_object(SPVM_RUNTIME* runtime);
 
 // Runtime information

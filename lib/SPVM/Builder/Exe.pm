@@ -728,9 +728,6 @@ EOS
   // Build runtime
   env->api->runtime->build(runtime, runtime_codes);
 
-  // Prepare runtime
-  env->api->runtime->prepare(runtime);
-
   // Set runtime information
   env->runtime = runtime;
 

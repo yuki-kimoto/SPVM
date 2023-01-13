@@ -3961,9 +3961,6 @@ compile(...)
     // Build runtime
     api_env->api->runtime->build(runtime, runtime_codes);
 
-    // Prepare runtime
-    api_env->api->runtime->prepare(runtime);
-
     sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   }
 

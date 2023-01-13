@@ -2431,7 +2431,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
 
   if ((void*)&env->api->runtime->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->prepare != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved2 != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_opcodes != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_opcodes_length != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_runtime_codes != &env_array[5]) { stack[0].ival = 0; return 0; }

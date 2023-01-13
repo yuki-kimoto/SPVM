@@ -4,14 +4,14 @@ SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
 
 =head1 Usage
 
-  // Runtime API
-  void* runtime_api = env->api->runtime;
+  // New a runtime
+  void* runtime = env->api->runtime->new_object();
   
-  // New runtime
-  void* runtime = runtime_api->new_object();
+  // Build the runtime
+  env->api->runtime->build(runtime, runtime_codes);
   
-  // Free runtime
-  runtime_api->free_object(runtime);
+  // Free a runtime
+  env->api->runtime->free_object(runtime);
 
 =head1 Description
 
@@ -23,7 +23,7 @@ Runtime native APIs have its IDs.
 
   0  new_object
   1  free_object
-  2  prepare
+  2  reserved2
   3  get_opcodes
   4  get_opcodes_length
   5  get_runtime_codes
@@ -118,10 +118,6 @@ Runtime native APIs have its IDs.
 =head2 free_object
 
   void (*free_object)(void* runtime);
-
-=head2 prepare
-
-  void (*prepare)(void* runtime);
 
 =head2 get_opcodes
 
