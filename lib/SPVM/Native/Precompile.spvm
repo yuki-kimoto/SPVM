@@ -1,4 +1,0 @@
-class Native::Precompile {
-  native static method new : Native::Precompile ();
-  native method DESTROY : void ();
-}
