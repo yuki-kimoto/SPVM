@@ -173,7 +173,7 @@ xs_call_method(...)
   SV* sv_class_name = ST(1);
   SV* sv_method_name = ST(2);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1329,7 +1329,7 @@ xs_array_to_elems(...)
 
   SV* sv_array = ST(1);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1553,7 +1553,7 @@ xs_array_to_bin(...)
 
   SV* sv_array = ST(1);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1715,7 +1715,7 @@ xs_string_object_to_bin(...)
 
   SV* sv_string = ST(1);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1765,7 +1765,7 @@ xs_array_length(...)
 
   SV* sv_array = ST(1);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1817,7 +1817,7 @@ xs_array_set(...)
   SV* sv_index = ST(2);
   SV* sv_value = ST(3);
   
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -1950,7 +1950,7 @@ xs_array_get(...)
   SV* sv_array = ST(1);
   SV* sv_index = ST(2);
   
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2080,7 +2080,7 @@ xs_new_string_array(...)
 
   SV* sv_elems = ST(1);
   
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2150,7 +2150,7 @@ xs_new_byte_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2215,7 +2215,7 @@ xs_new_byte_array_unsigned(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2279,7 +2279,7 @@ xs_new_byte_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2324,7 +2324,7 @@ xs_new_byte_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2379,7 +2379,7 @@ xs_new_string(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2440,7 +2440,7 @@ xs_new_string_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2500,7 +2500,7 @@ xs_new_short_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2564,7 +2564,7 @@ xs_new_short_array_unsigned(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2628,7 +2628,7 @@ xs_new_short_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2673,7 +2673,7 @@ xs_new_short_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2727,7 +2727,7 @@ xs_new_int_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2789,7 +2789,7 @@ xs_new_int_array_unsigned(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2851,7 +2851,7 @@ xs_new_int_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2896,7 +2896,7 @@ xs_new_int_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -2948,7 +2948,7 @@ xs_new_long_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3011,7 +3011,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3074,7 +3074,7 @@ xs_new_long_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3119,7 +3119,7 @@ xs_new_long_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3171,7 +3171,7 @@ xs_new_float_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3231,7 +3231,7 @@ xs_new_float_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3276,7 +3276,7 @@ xs_new_float_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3328,7 +3328,7 @@ xs_new_double_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3387,7 +3387,7 @@ xs_new_double_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3432,7 +3432,7 @@ xs_new_double_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3484,7 +3484,7 @@ xs_new_string_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3534,7 +3534,7 @@ xs_new_object_array_len(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3586,7 +3586,7 @@ _xs_new_object_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3671,7 +3671,7 @@ _xs_new_muldim_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3757,7 +3757,7 @@ _xs_new_mulnum_array(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3802,7 +3802,7 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3956,7 +3956,7 @@ xs_get_exception(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -3999,7 +3999,7 @@ _xs_set_exception(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -4042,7 +4042,7 @@ xs_get_memory_blocks_count(...)
   SV* sv_builder = ST(0);
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
@@ -4088,7 +4088,7 @@ DESTROY(...)
   SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
   HV* hv_builder = (HV*)SvRV(sv_builder);
 
-  SV* sv_runtime_native_env_stack = get_sv("SPVM::RUNTIME_ENV_STACK", 0);
+  SV* sv_runtime_native_env_stack = get_sv("SPVM::INTERPRETER", 0);
   HV* hv_runtime_native_env_stack = (HV*)SvRV(sv_runtime_native_env_stack);
   
   // Stack
