@@ -311,7 +311,7 @@ sub compile {
   my $class_name = $self->{class_name};
   
   # Compile SPVM
-  my $runtime = $builder->compile($class_name, __FILE__, __LINE__);
+  my $runtime = $builder->compiler->compile($class_name, __FILE__, __LINE__);
   unless ($runtime) {
     $builder->print_error_messages(*STDERR);
     exit(255);

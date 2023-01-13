@@ -3,6 +3,8 @@
     * The runtime field in the SPVM::Builder::CC is renamed to the at_runtime field.
     * The build_runtime method in the SPVM::Builder::CC is renamed to the build_at_runtime method.
     * The module_dirs method in the SPVM::Builder save the field to its instance instead of the compiler object.
+    * Removed the get_error_messages, print_error_messages, compile methods in the SPVM::Builder.
+    * Removed the print_error_messages in the SPVM::Builder::Compiler.
   [Incompatible Changes]
     * Removed the prepare Runtime Native API. This method is called in the build Runtime Native API automatically.
 0.9681 2022-01-13

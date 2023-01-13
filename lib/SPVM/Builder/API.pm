@@ -26,7 +26,7 @@ sub compile {
   
   my $builder = $self->{builder};
   
-  my $success = $builder->compile($class_name, __FILE__, __LINE__);
+  my $success = $builder->compiler->compile($class_name, __FILE__, __LINE__);
   
   return $success;
 }
@@ -36,7 +36,7 @@ sub get_error_messages {
   
   my $builder = $self->{builder};
   
-  my $error_messages = $builder->get_error_messages;
+  my $error_messages = $builder->compiler->get_error_messages;
   
   return $error_messages;
 }

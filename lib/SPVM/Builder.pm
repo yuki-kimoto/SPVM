@@ -85,27 +85,6 @@ sub new {
   return $self;
 }
 
-sub compile {
-  my $self = shift;
-  
-  return $self->compiler->compile(@_);
-}
-
-sub get_error_messages {
-  my $self = shift;
-  
-  return $self->compiler->get_error_messages;
-}
-
-sub print_error_messages {
-  my ($self, $fh) = @_;
-
-  my $error_messages = $self->get_error_messages;
-  for my $error_message (@$error_messages) {
-    printf $fh "[CompileError]$error_message\n";
-  }
-}
-
 sub create_build_src_path {
   my ($self, $rel_file) = @_;
   
@@ -157,9 +136,9 @@ sub create_build_lib_path {
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
 
-  my $runtime = $self->compile($class_name, __FILE__, __LINE__);
+  my $runtime = $self->compiler->compile($class_name, __FILE__, __LINE__);
   unless ($runtime) {
-    $self->print_error_messages(*STDERR);
+    $self->compiler->print_error_messages(*STDERR);
     exit(255);
   }
 
