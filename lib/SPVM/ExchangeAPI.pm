@@ -6,29 +6,29 @@ use warnings;
 use Carp 'confess';
 
 sub new_byte_array_from_string {
-  my ($builder, $string) = @_;
+  my ($env, $stack, $string) = @_;
   
   utf8::encode($string);
   
   my $ret;
-  eval { $ret = &new_byte_array_from_bin($builder, $string) };
+  eval { $ret = &new_byte_array_from_bin($env, $stack, $string) };
   if ($@) { confess $@ }
   
   return $ret;
 }
 
 sub new_any_object_array {
-  my $builder = shift;
+  my ($env, $stack, $array_ref) = @_;
   
   my $type_name = 'object[]';
   
-  my $array = &new_object_array($builder, $type_name, @_);
+  my $array = &new_object_array($env, $stack, $type_name, $array_ref);
   
   return $array;
 }
 
 sub new_object_array {
-  my ($builder, $type_name, $elems) = @_;
+  my ($env, $stack, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -59,11 +59,11 @@ sub new_object_array {
   
   my $ret;
   if ($type_dimension == 1) {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_object_array($builder, $basic_type_name, $elems) };
+    eval { $ret = SPVM::ExchangeAPI::_xs_new_object_array($env, $stack, $basic_type_name, $elems) };
     if ($@) { confess $@ }
   }
   else {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_muldim_array($builder, $basic_type_name, $type_dimension - 1, $elems) };
+    eval { $ret = SPVM::ExchangeAPI::_xs_new_muldim_array($env, $stack, $basic_type_name, $type_dimension - 1, $elems) };
     if ($@) { confess $@ }
   }
   
@@ -71,7 +71,7 @@ sub new_object_array {
 }
 
 sub new_mulnum_array {
-  my ($builder, $type_name, $elems) = @_;
+  my ($env, $stack, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -101,14 +101,14 @@ sub new_mulnum_array {
   }
   
   my $ret;
-  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array($builder, $basic_type_name, $elems) };
+  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array($env, $stack, $basic_type_name, $elems) };
   if ($@) { confess $@ }
   
   return $ret;
 }
 
 sub new_mulnum_array_from_bin {
-  my ($builder, $type_name, $elems) = @_;
+  my ($env, $stack, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -133,21 +133,21 @@ sub new_mulnum_array_from_bin {
   }
   
   my $ret;
-  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array_from_bin($builder, $basic_type_name, $elems) };
+  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array_from_bin($env, $stack, $basic_type_name, $elems) };
   if ($@) { confess $@ }
   
   return $ret;
 }
 
 sub set_exception {
-  my ($builder, $exception) = @_;
+  my ($env, $stack, $exception) = @_;
   
   if (defined $exception && !ref $exception) {
-    $exception = SPVM::ExchangeAPI::new_string($builder, $exception);
+    $exception = SPVM::ExchangeAPI::new_string($env, $stack, $exception);
   }
   
   my $ret;
-  eval { $ret = _xs_set_exception($builder, $exception) };
+  eval { $ret = _xs_set_exception($env, $stack, $exception) };
   if ($@) { confess $@ }
   
   return $ret;

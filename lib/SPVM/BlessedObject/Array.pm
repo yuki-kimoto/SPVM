@@ -17,19 +17,19 @@ use SPVM::ExchangeAPI;
 sub length {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_length($SPVM::BUILDER, $self);
+  SPVM::ExchangeAPI::array_length($self->env, $self->stack, $self);
 }
 
 sub to_elems {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $self);
+  SPVM::ExchangeAPI::array_to_elems($self->env, $self->stack, $self);
 }
 
 sub to_string {
   my $self = shift;
   
-  my $elems = SPVM::ExchangeAPI::array_to_elems($SPVM::BUILDER, $self);
+  my $elems = SPVM::ExchangeAPI::array_to_elems($self->env, $self->stack, $self);
   
   my $string = join(" ", @$elems);
   
@@ -39,19 +39,19 @@ sub to_string {
 sub to_bin {
   my $self = shift;
 
-  SPVM::ExchangeAPI::array_to_bin($SPVM::BUILDER, $self);
+  SPVM::ExchangeAPI::array_to_bin($self->env, $self->stack, $self);
 }
 
 sub set {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_set($SPVM::BUILDER, $self, @_);
+  SPVM::ExchangeAPI::array_set($self->env, $self->stack, $self, @_);
 }
 
 sub get {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_get($SPVM::BUILDER, $self, @_);
+  SPVM::ExchangeAPI::array_get($self->env, $self->stack, $self, @_);
 }
 
 1;
