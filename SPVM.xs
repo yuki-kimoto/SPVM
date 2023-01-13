@@ -4587,12 +4587,16 @@ DESTROY(...)
   SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  HV* hv_env = (HV*)SvRV(sv_env);
+  SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
 
   // Free native_stack
-  api_env->free_stack(api_env, stack);
-  
-  api_env->free_env_raw(api_env);
+  env->free_stack(env, stack);
   
   XSRETURN(0);
 }
