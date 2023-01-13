@@ -4420,6 +4420,9 @@ build_env(...)
   env->init_env(env);
 
   SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
+  HV* hv_env = (HV*)SvRV(sv_env);
+
+  (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
   XPUSHs(sv_env);
   XSRETURN(1);
@@ -4440,6 +4443,9 @@ build_stack(...)
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
   SV* sv_stack = SPVM_XS_UTIL_new_sv_object(aTHX_ stack, "SPVM::Builder::Stack");
+  HV* hv_stack = (HV*)SvRV(sv_stack);
+
+  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
 
   XPUSHs(sv_stack);
   XSRETURN(1);

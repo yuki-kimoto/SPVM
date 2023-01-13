@@ -138,7 +138,6 @@ sub init {
 
     # Build an environment
     my $env = SPVM::Builder::Runtime->build_env($runtime);
-    $env->{runtime} = $runtime;
     $ENV = $env;
 
     # Set command line info
@@ -148,7 +147,6 @@ sub init {
     SPVM::Builder::Runtime->call_init_blocks($env);
     
     my $stack = SPVM::Builder::Runtime->build_stack($env);
-    $stack->{env} = $env;
     $STACK = $stack;
     
     $SPVM_INITED = 1;
