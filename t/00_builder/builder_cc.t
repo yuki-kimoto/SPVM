@@ -63,13 +63,13 @@ use SPVM::Builder::Config;
     }
   }
   
-  # $cc->runtime
+  # $cc->at_runtime
   {
     my $config = SPVM::Builder::Config->new(file_optional => 1);
     my $cc = SPVM::Builder::CC->new;
     
     {
-      $cc->runtime(1);
+      $cc->at_runtime(1);
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 1);
     }
@@ -84,7 +84,7 @@ use SPVM::Builder::Config;
       $cc->debug(1);
       $cc->quiet(1);
       $config->quiet(1);
-      $cc->runtime(1);
+      $cc->at_runtime(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);
@@ -96,7 +96,7 @@ use SPVM::Builder::Config;
       
       $cc->quiet(0);
       $config->quiet(1);
-      $cc->runtime(1);
+      $cc->at_runtime(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);
@@ -107,7 +107,7 @@ use SPVM::Builder::Config;
       my $cc = SPVM::Builder::CC->new;
       
       $config->quiet(0);
-      $cc->runtime(1);
+      $cc->at_runtime(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);

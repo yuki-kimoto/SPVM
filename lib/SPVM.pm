@@ -92,12 +92,12 @@ sub import {
           # Shared library which is already installed in distribution directory
           my $dynamic_lib_file = SPVM::Builder::Runtime->get_dynamic_lib_file_dist($RUNTIME, $added_class_name, $category);
           
-          # Try runtime compile if shared library is not found
+          # Try to build the shared library at runtime if shared library is not found
           unless (-f $dynamic_lib_file) {
             my $module_file = SPVM::Builder::Runtime->get_module_file($RUNTIME, $added_class_name);
             my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($RUNTIME, $added_class_name, {category => $category});
             my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($RUNTIME, $added_class_name);
-            $dynamic_lib_file = $cc->build_runtime($added_class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+            $dynamic_lib_file = $cc->build_at_runtime($added_class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
           }
           
           if (-f $dynamic_lib_file) {

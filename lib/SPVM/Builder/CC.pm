@@ -64,14 +64,14 @@ sub quiet {
   }
 }
 
-sub runtime {
+sub at_runtime {
   my $self = shift;
   if (@_) {
-    $self->{runtime} = $_[0];
+    $self->{at_runtime} = $_[0];
     return $self;
   }
   else {
-    return $self->{runtime};
+    return $self->{at_runtime};
   }
 }
 
@@ -113,7 +113,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub build_runtime {
+sub build_at_runtime {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
@@ -130,7 +130,7 @@ sub build_runtime {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for build $category method in runtime";
+    confess "SPVM_BUILD_DIR environment variable must be set to build a $category method at runtime";
   }
   
   # Source directory
@@ -366,7 +366,7 @@ sub detect_quiet {
   elsif (defined $config && defined $config->quiet) {
     $quiet = $config->quiet;
   }
-  elsif ($self->runtime) {
+  elsif ($self->at_runtime) {
     $quiet = 1;
   }
   else {
