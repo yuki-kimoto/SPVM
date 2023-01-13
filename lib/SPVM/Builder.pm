@@ -43,8 +43,13 @@ sub compiler {
 
 sub module_dirs {
   my $self = shift;
-  
-  return $self->compiler->module_dirs(@_);
+  if (@_) {
+    $self->{module_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{module_dirs};
+  }
 }
 
 sub dynamic_lib_files {
@@ -61,13 +66,16 @@ sub dynamic_lib_files {
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    module_dirs => [map { "$_/SPVM" } @INC],
+    @_
+  };
   
   bless $self, ref $class || $class;
   
   # Create the compiler
   my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => [map { "$_/SPVM" } @INC],
+    module_dirs => $self->module_dirs
   );
   
   $self->compiler($compiler);
@@ -88,6 +96,7 @@ sub get_error_messages {
   
   return $self->compiler->get_error_messages;
 }
+
 sub print_error_messages {
   my ($self, $fh) = @_;
 
