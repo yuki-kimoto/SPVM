@@ -123,18 +123,20 @@ sub init {
       }
     }
     
+    my $runtime = $SPVM::RUNTIME_ENV_STACK->{runtime};
+    $SPVM::RUNTIME_ENV_STACK->{runtime} = undef;
+    
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
       for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
         my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
-        SPVM::Builder::Runtime->bind_methods($SPVM::RUNTIME_ENV_STACK->{runtime}, $dynamic_lib_file, $class_name, $category);
+        SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $category);
       }
     }
 
     # Build an environment
-    my $env = SPVM::Builder::Runtime->build_env($SPVM::RUNTIME_ENV_STACK->{runtime});
-    $env->{runtime} = $SPVM::RUNTIME_ENV_STACK->{runtime};
-    $SPVM::RUNTIME_ENV_STACK->{env} = $env;
+    my $env = SPVM::Builder::Runtime->build_env($runtime);
+    $env->{runtime} = $runtime;
 
     # Set command line info
     SPVM::Builder::Runtime->set_command_info($env, $0, \@ARGV);
