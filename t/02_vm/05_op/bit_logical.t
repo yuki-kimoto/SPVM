@@ -22,15 +22,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(SPVM::TestCase::BitOperator->bit_not_long);
   }
 
-  # Bit not - Compile Error
-  {
-    {
-      my $build = SPVM::Builder->new;
-      my $success = $build->compile('CompileError::BitOperator::NotIntegral', __FILE__, __LINE__);
-      ok($success == 0);
-    }
-  }
-  
   # Extra
   {
     ok(SPVM::TestCase::BitOperator->complement());

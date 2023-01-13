@@ -59,7 +59,7 @@ sub import {
     $RUNTIME = $BUILDER->compiler->compile($class_name, $file, $line);
 
     unless ($RUNTIME) {
-      $BUILDER->print_error_messages(*STDERR);
+      $BUILDER->compiler->print_error_messages(*STDERR);
       exit(255);
     }
 

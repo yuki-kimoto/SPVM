@@ -164,4 +164,9 @@ use Test::More;
   compile_not_ok_file('CompileError::New::Private');
 }
 
+# New operator - new
+{
+  compile_not_ok_file('CompileError::BitOperator::NotIntegral');
+}
+
 done_testing;
