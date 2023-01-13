@@ -25,7 +25,7 @@ use Carp 'confess';
 # For the reason, this variable is needed.
 my $SPVM_INITED;
 
-our $BUILDER;
+my $BUILDER;
 our $INTERPRETER = {};
 
 require XSLoader;
