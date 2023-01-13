@@ -27,6 +27,7 @@ my $SPVM_INITED;
 
 my $BUILDER;
 my $RUNTIME;
+my $ENV;
 my $STACK;
 
 require XSLoader;
@@ -129,23 +130,25 @@ sub init {
     }
 
     # Build an environment
-    my $env = SPVM::Builder::Runtime->build_env($RUNTIME);
+    $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
     
     # Set command line info
-    SPVM::Builder::Runtime->set_command_info($env, $0, \@ARGV);
+    SPVM::Builder::Runtime->set_command_info($ENV, $0, \@ARGV);
     
     # Call INIT blocks
-    SPVM::Builder::Runtime->call_init_blocks($env);
+    SPVM::Builder::Runtime->call_init_blocks($ENV);
     
-    $STACK = SPVM::Builder::Runtime->build_stack($env);
-    
-    # This is not needed ideally, but memory problems occur if there is not this.
-    $STACK->{runtime} = $env->{runtime};
+    $STACK = SPVM::Builder::Runtime->build_stack($ENV);
     
     $SPVM_INITED = 1;
     $BUILDER = undef;
-    $RUNTIME = undef;
   }
+}
+
+END {
+  $STACK = undef;
+  $ENV = undef;
+  $RUNTIME = undef;
 }
 
 my $class_name_h = {};
