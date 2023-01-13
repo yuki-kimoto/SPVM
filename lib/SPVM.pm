@@ -132,6 +132,7 @@ sub init {
         SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $category);
       }
     }
+    $BUILDER = undef;
 
     # Build an environment
     my $env = SPVM::Builder::Runtime->build_env($runtime);

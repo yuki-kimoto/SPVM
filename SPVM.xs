@@ -4160,7 +4160,7 @@ DESTROY(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
+  
   // Free compiler
   api_env->api->compiler->free_object(compiler);
   

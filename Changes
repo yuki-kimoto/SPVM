@@ -22,6 +22,7 @@
     * Removed the runtime field in the SPVM::Builder class.
     * Added the $SPVM::INTERPRETER package variable.
     * Added SPVM::Builder::Compiler and the compiler is separated from SPVM::Builder
+    * $SPVM::Builder is destructed after building the runtime.
     
 0.9680 2022-01-07
   [New Features]
