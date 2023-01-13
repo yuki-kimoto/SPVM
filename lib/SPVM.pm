@@ -132,11 +132,11 @@ sub init {
     }
 
     # Build an stack
-    my $runtime = bless ({runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}}, "SPVM::Builder::Runtime");
+    # my $runtime = bless ({runtime => $SPVM::RUNTIME_ENV_STACK->{runtime}}, "SPVM::Builder::Runtime");
     
     # Build an environment
     my $env = SPVM::Builder::Runtime->build_env($SPVM::RUNTIME_ENV_STACK->{runtime});
-    $env->{runtime} = $runtime;
+    # $env->{runtime} = $runtime;
     $SPVM::RUNTIME_ENV_STACK->{env} = $env;
 
     # Set command line info
