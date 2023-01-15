@@ -34,9 +34,6 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
     // Build runtime
     env->api->runtime->build(runtime, runtime_codes);
 
-    // Prepare runtime
-    env->api->runtime->prepare(runtime);
-    
     obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, FILE_NAME, __LINE__);
   }
   
