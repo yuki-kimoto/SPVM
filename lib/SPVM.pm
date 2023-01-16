@@ -128,6 +128,14 @@ sub import {
         }
       }
     }
+    # Set function addresses of native and precompile methods
+    for my $category ('precompile', 'native') {
+      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
+        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
+        SPVM::Builder::Runtime->bind_methods($RUNTIME, $dynamic_lib_file, $class_name, $category);
+      }
+    }
+
     # Bind SPVM method to Perl
     bind_to_perl($RUNTIME, $added_class_names);
   }
@@ -149,16 +157,6 @@ sub init {
       $RUNTIME = $COMPILER->build_runtime;
     }
     
-    my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
-    
-    # Set function addresses of native and precompile methods
-    for my $category ('precompile', 'native') {
-      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
-        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
-        SPVM::Builder::Runtime->bind_methods($RUNTIME, $dynamic_lib_file, $class_name, $category);
-      }
-    }
-
     # Build an environment
     $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
     
