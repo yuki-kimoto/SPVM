@@ -36,6 +36,16 @@ XSLoader::load('SPVM', $VERSION);
 
 my $loaded_spvm_modules = {};
 
+sub use_spvm_module {
+  my ($compiler, $class_name, $file, $line) = @_;
+  
+  my $runtime = $compiler->compile($class_name, __FILE__, __LINE__);
+  unless ($runtime) {
+    $compiler->print_error_messages(*STDERR);
+    exit(255);
+  }
+}
+
 sub import {
   my ($class, $class_name) = @_;
   
@@ -51,6 +61,15 @@ sub import {
     $COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
     );
+
+    # Load SPVM Compilers
+    use_spvm_module($COMPILER, "Compiler", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Runtime", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Compiler", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Runtime", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Precompile", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Stack", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Address", __FILE__, __LINE__);
   }
 
   # Add class informations
@@ -61,7 +80,6 @@ sub import {
 
     # Compile SPVM source code and create runtime env
     $RUNTIME = $COMPILER->compile($class_name, $file, $line);
-
     unless ($RUNTIME) {
       $COMPILER->print_error_messages(*STDERR);
       exit(255);
