@@ -104,3 +104,10 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+
+int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return 0;
+}
+

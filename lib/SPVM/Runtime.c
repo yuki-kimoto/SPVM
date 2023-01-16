@@ -22,7 +22,11 @@ int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+}
+
+int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -55,7 +59,7 @@ int32_t SPVM__Compiler__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* sta
   return 0;
 }
 
-int32_t SPVM__Compiler__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -88,7 +92,7 @@ int32_t SPVM__Compiler__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPVM__Compiler__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -119,7 +123,7 @@ int32_t SPVM__Compiler__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPVM__Compiler__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -166,7 +170,7 @@ int32_t SPVM__Compiler__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPVM__Compiler__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -216,7 +220,7 @@ int32_t SPVM__Compiler__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE
   return 0;
 }
 
-int32_t SPVM__Compiler__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -228,7 +232,7 @@ int32_t SPVM__Compiler__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -250,14 +254,14 @@ int32_t SPVM__Compiler__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   return 0;
 }
 
-int32_t SPVM__Compiler__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -282,7 +286,7 @@ int32_t SPVM__Compiler__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -301,7 +305,7 @@ int32_t SPVM__Compiler__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -328,7 +332,7 @@ int32_t SPVM__Compiler__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPVM__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -377,7 +381,7 @@ int32_t SPVM__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -407,7 +411,7 @@ int32_t SPVM__Compiler__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   return 0;
 }
 
-int32_t SPVM__Compiler__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -454,7 +458,7 @@ int32_t SPVM__Compiler__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
