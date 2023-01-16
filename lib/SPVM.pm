@@ -97,9 +97,6 @@ sub import {
       push @$added_class_names, $added_class_name;
     }
     
-    # Bind SPVM method to Perl
-    bind_to_perl($added_class_names);
-
     # Set addresses of native methods and precompile methods
     for my $added_class_name (@$added_class_names) {
       next if $added_class_name =~ /::anon/;
@@ -131,6 +128,8 @@ sub import {
         }
       }
     }
+    # Bind SPVM method to Perl
+    bind_to_perl($added_class_names);
   }
 }
 
@@ -184,9 +183,9 @@ END {
 my $class_name_h = {};
 my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($added_class_names) = @_;
+  my ($class_names) = @_;
 
-  for my $class_name (@$added_class_names) {
+  for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
     my $perl_class_name = "SPVM::$class_name";
