@@ -41,17 +41,6 @@ sub module_dirs {
   }
 }
 
-sub dynamic_lib_files {
-  my $self = shift;
-  if (@_) {
-    $self->{dynamic_lib_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{dynamic_lib_files};
-  }
-}
-
 sub new {
   my $class = shift;
   
@@ -61,8 +50,6 @@ sub new {
   };
   
   bless $self, ref $class || $class;
-  
-  $self->dynamic_lib_files({});
   
   return $self;
 }

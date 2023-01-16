@@ -28,6 +28,7 @@ my $SPVM_INITED;
 my $BUILDER;
 my $COMPILER;
 my $RUNTIME;
+my $DYNAMIC_LIB_FILES = {};
 my $ENV;
 my $STACK;
 
@@ -127,19 +128,20 @@ sub import {
           }
           
           if (-f $dynamic_lib_file) {
-            $BUILDER->dynamic_lib_files->{$category}{$added_class_name} = $dynamic_lib_file;
+            $DYNAMIC_LIB_FILES->{$category}{$added_class_name} = $dynamic_lib_file;
           }
         }
       }
     }
+
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
-      for my $class_name (keys %{$BUILDER->dynamic_lib_files->{$category}}) {
-        my $dynamic_lib_file = $BUILDER->dynamic_lib_files->{$category}{$class_name};
+      for my $class_name (keys %{$DYNAMIC_LIB_FILES->{$category}}) {
+        my $dynamic_lib_file = $DYNAMIC_LIB_FILES->{$category}{$class_name};
         SPVM::Builder::Runtime->bind_methods($RUNTIME, $dynamic_lib_file, $class_name, $category);
       }
     }
-
+    
     # Bind SPVM method to Perl
     bind_to_perl($RUNTIME, $added_class_names);
   }
@@ -150,7 +152,7 @@ sub init {
     unless ($RUNTIME) {
       confess "SPVM->import must be called at least once";
     }
-    
+
     # Build an environment
     $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
     
