@@ -15,6 +15,14 @@
     * Removed the build_dir method in the SPVM::Builder::Exe.
   [Incompatible Changes]
     * Removed the prepare Runtime Native API. This method is called in the build Runtime Native API automatically.
+    * Removed the following method in the SPVM::Builder::API class.
+      sub compile;
+      sub get_error_messages;
+      sub get_class_names;
+      sub get_method_names;
+      sub build_shared_lib_dist_precompile;
+      sub build_shared_lib_dist_native;
+      
 0.9681 2022-01-13
   [New Features]
     * Added the following Compiler Native APIs.

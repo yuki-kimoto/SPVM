@@ -9,4 +9,4 @@ use SPVM::Builder::API;
 
 my $api = SPVM::Builder::API->new;
 
-$api->build_shared_lib_dist_precompile('TestCase::CompileError::ForTest');
+$api->build_dynamic_lib_dist_precompile('TestCase::CompileError::ForTest');
