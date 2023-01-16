@@ -47,6 +47,50 @@ sub use_spvm_module {
   }
 }
 
+sub load_dynamic_libs {
+  my ($runtime, $class_names, $dynamic_lib_files) = @_;
+  
+  # Set addresses of native methods and precompile methods
+  for my $class_name (@$class_names) {
+    next if $class_name =~ /::anon/;
+    
+    for my $category ('precompile', 'native') {
+      my $cc = SPVM::Builder::CC->new(
+        build_dir => $BUILDER->build_dir,
+        at_runtime => 1,
+      );
+      
+      my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
+      
+      if (@$method_names) {
+        # Build classs - Compile C source codes and link them to SPVM precompile method
+        # Shared library which is already installed in distribution directory
+        my $dynamic_lib_file = SPVM::Builder::Runtime->get_dynamic_lib_file_dist($runtime, $class_name, $category);
+        
+        # Try to build the shared library at runtime if shared library is not found
+        unless (-f $dynamic_lib_file) {
+          my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+          my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($runtime, $class_name, {category => $category});
+          my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
+          $dynamic_lib_file = $cc->build_at_runtime($class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+        }
+        
+        if (-f $dynamic_lib_file) {
+          $dynamic_lib_files->{$category}{$class_name} = $dynamic_lib_file;
+        }
+      }
+    }
+  }
+
+  # Set function addresses of native and precompile methods
+  for my $category ('precompile', 'native') {
+    for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
+      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
+      SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $category);
+    }
+  }
+}
+
 sub import {
   my ($class, $class_name) = @_;
   
@@ -104,45 +148,7 @@ sub import {
       push @$added_class_names, $added_class_name;
     }
     
-    # Set addresses of native methods and precompile methods
-    for my $added_class_name (@$added_class_names) {
-      next if $added_class_name =~ /::anon/;
-      
-      for my $category ('precompile', 'native') {
-        my $cc = SPVM::Builder::CC->new(
-          build_dir => $BUILDER->build_dir,
-          at_runtime => 1,
-        );
-        
-        my $method_names = SPVM::Builder::Runtime->get_method_names($BOOT_RUNTIME, $added_class_name, $category);
-        
-        if (@$method_names) {
-          # Build classs - Compile C source codes and link them to SPVM precompile method
-          # Shared library which is already installed in distribution directory
-          my $dynamic_lib_file = SPVM::Builder::Runtime->get_dynamic_lib_file_dist($BOOT_RUNTIME, $added_class_name, $category);
-          
-          # Try to build the shared library at runtime if shared library is not found
-          unless (-f $dynamic_lib_file) {
-            my $module_file = SPVM::Builder::Runtime->get_module_file($BOOT_RUNTIME, $added_class_name);
-            my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($BOOT_RUNTIME, $added_class_name, {category => $category});
-            my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($BOOT_RUNTIME, $added_class_name);
-            $dynamic_lib_file = $cc->build_at_runtime($added_class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
-          }
-          
-          if (-f $dynamic_lib_file) {
-            $BOOT_DYNAMIC_LIB_FILES->{$category}{$added_class_name} = $dynamic_lib_file;
-          }
-        }
-      }
-    }
-
-    # Set function addresses of native and precompile methods
-    for my $category ('precompile', 'native') {
-      for my $class_name (keys %{$BOOT_DYNAMIC_LIB_FILES->{$category}}) {
-        my $dynamic_lib_file = $BOOT_DYNAMIC_LIB_FILES->{$category}{$class_name};
-        SPVM::Builder::Runtime->bind_methods($BOOT_RUNTIME, $dynamic_lib_file, $class_name, $category);
-      }
-    }
+    load_dynamic_libs($BOOT_RUNTIME, $added_class_names, $BOOT_DYNAMIC_LIB_FILES);
     
     # Bind SPVM method to Perl
     bind_to_perl($BOOT_RUNTIME, $added_class_names);
