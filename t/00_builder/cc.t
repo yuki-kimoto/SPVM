@@ -115,5 +115,76 @@ use SPVM::Builder::Config;
   }
 }
 
+# detect_force
+{
+  # default - 0
+  {
+    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $cc = SPVM::Builder::CC->new;
+    
+    my $force = $cc->detect_force($config);
+    is($force, 0);
+  }
+
+  # $cc->force
+  {
+    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $cc = SPVM::Builder::CC->new;
+    
+    {
+      $cc->force(0);
+      my $force = $cc->detect_force($config);
+      is($force, 0);
+    }
+    
+    {
+      $cc->force(1);
+      my $force = $cc->detect_force($config);
+      is($force, 1);
+    }
+  }
+
+  # $config->force
+  {
+    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $cc = SPVM::Builder::CC->new;
+    
+    {
+      $config->force(0);
+      my $force = $cc->detect_force($config);
+      is($force, 0);
+    }
+    
+    {
+      $config->force(1);
+      my $force = $cc->detect_force($config);
+      is($force, 1);
+    }
+  }
+  
+  # order
+  {
+    {
+      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $cc = SPVM::Builder::CC->new;
+      
+      $cc->force(0);
+      $config->force(1);
+      
+      my $force = $cc->detect_force($config);
+      is($force, 0);
+    }
+
+    {
+      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $cc = SPVM::Builder::CC->new;
+      
+      $config->force(0);
+      
+      my $force = $cc->detect_force($config);
+      is($force, 0);
+    }
+  }
+}
 
 done_testing;

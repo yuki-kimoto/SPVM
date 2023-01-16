@@ -364,13 +364,12 @@ solo/myexe.config
 solo/myexe.debug.config
 solo/myexe.debug_memory_count.config
 SPVM.xs
-t/00_builder/builder_cc.t
-t/00_builder/builder_util.t
 t/00_builder/cc.t
 t/00_builder/config.t
 t/00_builder/config_exe.t
 t/00_builder/link_info.t
 t/00_builder/object_file_info.t
+t/00_builder/util.t
 t/01_syntax/dist.pl
 t/01_syntax/extra_definition.t
 t/01_syntax/extra_operator.t
