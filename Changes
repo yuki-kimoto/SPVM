@@ -25,6 +25,7 @@
       sub get_method_names;
       sub build_shared_lib_dist_precompile;
       sub build_shared_lib_dist_native;
+    * "use SPVM()" occurs runtime error. "use SPVM(MyClass) or "use SPVM" is valid.
       
 0.9681 2022-01-13
   [New Features]

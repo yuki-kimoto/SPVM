@@ -49,37 +49,41 @@ sub use_spvm_module {
 sub import {
   my ($class, $class_name) = @_;
   
+  my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
+
+  unless ($RUNTIME) {
+    # If any SPVM module are not yet loaded, $BUILDER is not set.
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    $COMPILER = SPVM::Builder::Compiler->new(
+      module_dirs => $BUILDER->module_dirs
+    );
+    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
+    unless ($success) {
+      confess "Unexpcted Error:the compiliation must be always successful";
+    }
+    $RUNTIME = $COMPILER->build_runtime;
+  }
+  
   unless (defined $class_name) {
     return;
   }
   
   my ($file, $line) = (caller)[1, 2];
 
-  unless ($BUILDER) {
-    my $build_dir = $ENV{SPVM_BUILD_DIR};
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    $COMPILER = SPVM::Builder::Compiler->new(
-      module_dirs => $BUILDER->module_dirs
-    );
-
-    # Load SPVM Compilers
-    use_spvm_module($COMPILER, "Compiler", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Runtime", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Compiler", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Runtime", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Precompile", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Env", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Stack", __FILE__, __LINE__);
-    use_spvm_module($COMPILER, "Native::Address", __FILE__, __LINE__);
-    
-    my $runtime = $COMPILER->build_runtime;
-  }
+  # Load SPVM Compilers
+  use_spvm_module($COMPILER, "Compiler", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Runtime", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Compiler", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Runtime", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Precompile", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Env", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Stack", __FILE__, __LINE__);
+  use_spvm_module($COMPILER, "Native::Address", __FILE__, __LINE__);
 
   # Add class informations
   my $build_success;
   if (defined $class_name) {
-
-    my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
 
     # Compile SPVM source code and create runtime env
     my $success = $COMPILER->compile($class_name, $file, $line);
@@ -144,17 +148,7 @@ sub import {
 sub init {
   unless ($SPVM_INITED) {
     unless ($RUNTIME) {
-      # If any SPVM module are not yet loaded, $BUILDER is not set.
-      my $build_dir = $ENV{SPVM_BUILD_DIR};
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-      $COMPILER = SPVM::Builder::Compiler->new(
-        module_dirs => $BUILDER->module_dirs
-      );
-      my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
-      unless ($success) {
-        confess "Unexpcted Error:the compiliation must be always successful";
-      }
-      $RUNTIME = $COMPILER->build_runtime;
+      confess "SPVM->import must be called at least once";
     }
     
     # Build an environment
