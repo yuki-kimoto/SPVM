@@ -19,23 +19,40 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Compile SPVM
   int32_t compile_error_code = env->api->compiler->compile(compiler, class_name);
   
-  void* obj_runtime = NULL;
+  int32_t success = 0;
   if (compile_error_code == 0) {
-
-    // Build runtime information
-    void* runtime = env->api->runtime->new_object(env);
-
-    // Runtime allocator
-    void* runtime_allocator = env->api->runtime->get_allocator(runtime);
-    
-    // SPVM 32bit codes
-    int32_t* runtime_codes = env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
-    
-    // Build runtime
-    env->api->runtime->build(runtime, runtime_codes);
-
-    obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, FILE_NAME, __LINE__);
+    success = 1;
   }
+  
+  stack[0].ival = success;
+  
+  return 0;
+}
+
+int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+
+  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  // Build runtime information
+  void* runtime = env->api->runtime->new_object(env);
+
+  // Runtime allocator
+  void* runtime_allocator = env->api->runtime->get_allocator(runtime);
+  
+  // SPVM 32bit codes
+  int32_t* runtime_codes = env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
+  
+  // Build runtime
+  env->api->runtime->build(runtime, runtime_codes);
+
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, FILE_NAME, __LINE__);
   
   stack[0].oval = obj_runtime;
   
@@ -107,6 +124,23 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 
 int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_module_dir = stack[1].oval;
+
+  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  const char* module_dir = NULL;
+  if (obj_module_dir) {
+    module_dir = env->get_chars(env, stack, obj_module_dir);
+  }
+  env->api->compiler->add_module_dir(compiler, module_dir);
   
   return 0;
 }
