@@ -62,11 +62,6 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  # Create the compiler
-  my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => $self->module_dirs
-  );
-  
   $self->dynamic_lib_files({});
   
   return $self;
