@@ -30,17 +30,6 @@ sub build_dir {
   }
 }
 
-sub compiler {
-  my $self = shift;
-  if (@_) {
-    $self->{compiler} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compiler};
-  }
-}
-
 sub module_dirs {
   my $self = shift;
   if (@_) {
@@ -77,8 +66,6 @@ sub new {
   my $compiler = SPVM::Builder::Compiler->new(
     module_dirs => $self->module_dirs
   );
-  
-  $self->compiler($compiler);
   
   $self->dynamic_lib_files({});
   

@@ -88,10 +88,14 @@ sub compile_not_ok_file {
   if (defined $module_dir) {
     unshift @{$builder->module_dirs}, $module_dir;
   }
+
+  my $compiler = SPVM::Builder::Compiler->new(
+    module_dirs => $builder->module_dirs
+  );
   
-  my $success = $builder->compiler->compile($class_name, $file, $line);
+  my $success = $compiler->compile($class_name, $file, $line);
   ok(!$success);
-  my $error_messages = $builder->compiler->get_error_messages;
+  my $error_messages = $compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
   my $message_ok;
   if ($error_message_re) {
@@ -176,13 +180,16 @@ sub compile_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $success = $builder->compiler->compile($class_name, $file, $line);
+  my $compiler = SPVM::Builder::Compiler->new(
+    module_dirs => $builder->module_dirs
+  );
+  my $success = $compiler->compile($class_name, $file, $line);
   ok($success);
   
   if (!$success) {
     warn "  at $file line $line\n";
     
-    my $error_messages = $builder->compiler->get_error_messages;
+    my $error_messages = $compiler->get_error_messages;
     my $first_error_message = $error_messages->[0];
     warn "[Compile Error]$first_error_message";
   }
