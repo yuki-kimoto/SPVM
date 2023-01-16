@@ -4,7 +4,6 @@ class Runtime {
   use Native::Env;
   use Native::Stack;
   use Native::Address;
-  use Hash;
   
   has native_runtime : Native::Runtime;
   
@@ -49,16 +48,27 @@ class Runtime {
   native method get_anon_class_names : string ($class_name : string);
 
   method get_method_names : string[] ($options = undef : object[]) {
-    my $options_h = Hash->new($options);
     
-    my $native_flag = $options_h->delete_or_default_int("native", 0);
-    my $precompile_flag = $options_h->delete_or_default_int("precompile", 0);
-    my $enum_flag = $options_h->delete_or_default_int("enum", 0);
-    
-    if ($native_flag && $precompile_flag) {
-      die "The \"native\" option, the \"precompile\" and the \"enum\" option can't be used together";
+    my $native_flag = 0;
+    my $precompile_flag = 0;
+    my $enum_flag = 0;
+    if ($options) {
+      for (my $i = 0; $i < @$options; $i += 2) {
+        my $key = (string)$options->[$i];
+        my $value = $options->[$i + 1];
+        
+        if ($key eq "native") {
+          $native_flag = (int)$value;
+        }
+        elsif ($key eq "precompile") {
+          $precompile_flag = (int)$value;
+        }
+        elsif ($key eq "enum") {
+          $enum_flag = (int)$value;
+        }
+      }
     }
-
+    
     my $method_names = $self->_get_method_names($native_flag, $precompile_flag, $enum_flag);
     
     return $method_names;

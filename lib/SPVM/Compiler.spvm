@@ -26,4 +26,3 @@ class Compiler {
   
   native method get_error_messages : string[] ();
 }
-

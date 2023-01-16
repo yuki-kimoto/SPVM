@@ -68,6 +68,7 @@ sub import {
     use_spvm_module($COMPILER, "Native::Compiler", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Runtime", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Precompile", __FILE__, __LINE__);
+    use_spvm_module($COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Stack", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Address", __FILE__, __LINE__);
   }
