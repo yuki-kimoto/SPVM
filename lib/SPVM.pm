@@ -129,7 +129,7 @@ sub import {
       }
     }
     # Bind SPVM method to Perl
-    bind_to_perl($added_class_names);
+    bind_to_perl($RUNTIME, $added_class_names);
   }
 }
 
@@ -148,6 +148,8 @@ sub init {
       }
       $RUNTIME = $COMPILER->build_runtime;
     }
+    
+    my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
     
     # Set function addresses of native and precompile methods
     for my $category ('precompile', 'native') {
@@ -183,7 +185,7 @@ END {
 my $class_name_h = {};
 my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($class_names) = @_;
+  my ($runtime, $class_names) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
@@ -192,7 +194,7 @@ sub bind_to_perl {
     
     unless ($class_name_h->{$class_name}) {
       
-      my $parent_class_name = SPVM::Builder::Runtime->get_parent_class_name($RUNTIME, $class_name);
+      my $parent_class_name = SPVM::Builder::Runtime->get_parent_class_name($runtime, $class_name);
       my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
       
       # The inheritance
@@ -212,7 +214,7 @@ sub bind_to_perl {
       $class_name_h->{$class_name} = 1;
     }
 
-    my $method_names = SPVM::Builder::Runtime->get_method_names($RUNTIME, $class_name);
+    my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name);
 
     for my $method_name (@$method_names) {
       # Destrutor is skip
