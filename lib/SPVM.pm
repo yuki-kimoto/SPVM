@@ -52,10 +52,12 @@ sub import {
   
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($BOOT_RUNTIME);
 
-  unless ($BOOT_RUNTIME) {
-    # If any SPVM module are not yet loaded, $BUILDER is not set.
+  unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
+
+  unless ($BOOT_RUNTIME) {
     $BOOT_COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
     );
