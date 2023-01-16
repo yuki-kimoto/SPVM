@@ -48,17 +48,6 @@ sub module_dirs {
   }
 }
 
-sub build_dir {
-  my $self = shift;
-  if (@_) {
-    $self->builder->build_dir($_[0]);
-    return $self;
-  }
-  else {
-    return $self->builder->build_dir;
-  }
-}
-
 sub class_name {
   my $self = shift;
   if (@_) {
@@ -215,7 +204,6 @@ sub get_dependent_resources {
   my $builder_cc_native = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -235,7 +223,7 @@ sub get_dependent_resources {
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
       my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $build_object_dir = $self->builder->create_build_object_path;
+      my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
 
       # Module file
@@ -377,7 +365,6 @@ sub build_exe_file {
   my $cc_linker = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -451,7 +438,6 @@ sub compile_source_file {
   my $builder_cc = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -833,7 +819,7 @@ sub create_bootstrap_source {
   }
   
   # Source file - Output
-  my $build_src_dir = $self->builder->create_build_src_path;
+  my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
   my $target_perl_class_name = "SPVM::$class_name";
   my $bootstrap_base = $target_perl_class_name;
   $bootstrap_base =~ s|::|/|g;
@@ -867,7 +853,7 @@ sub create_bootstrap_source {
     $bootstrap_source .= $self->create_bootstrap_get_runtime_codes_func_source;
 
     # Build source directory
-    my $build_src_dir = $self->builder->create_build_src_path;
+    my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     mkpath dirname $bootstrap_source_file;
     
@@ -895,8 +881,8 @@ sub compile_bootstrap_source {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
-  my $source_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
+  my $object_file = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
+  my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
   # Create directory for object file output
   mkdir dirname $object_file;
@@ -928,7 +914,7 @@ sub compile_core_sources {
   my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
 
   # Object dir
-  my $output_dir = $self->builder->create_build_object_path;
+  my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
   mkpath $output_dir;
   
   # Compile source files
@@ -971,7 +957,6 @@ sub build_class_sources {
   my $builder_cc_precompile = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -982,7 +967,7 @@ sub build_class_sources {
     my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
     if (@$precompile_method_names) {
       
-      my $build_src_dir = $self->builder->create_build_src_path;
+      my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
       mkpath $build_src_dir;
       my $module_file = SPVM::Builder::Runtime->get_module_file($self->runtime, $class_name);
       my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($self->runtime, $class_name);
@@ -1013,7 +998,6 @@ sub compile_precompile_sources {
   my $builder_cc_precompile = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -1024,10 +1008,10 @@ sub compile_precompile_sources {
   for my $class_name (@$class_names_without_anon) {
     my $precompile_method_names = SPVM::Builder::Runtime->get_method_names($self->runtime, $class_name, 'precompile');
     if (@$precompile_method_names) {
-      my $build_src_dir = $self->builder->create_build_src_path;
+      my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
       mkpath $build_src_dir;
       
-      my $build_object_dir = $self->builder->create_build_object_path;
+      my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
       
       my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
@@ -1062,7 +1046,6 @@ sub compile_native_sources {
   my $builder_cc_native = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
-    builder => $builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -1082,7 +1065,7 @@ sub compile_native_sources {
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
       my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $build_object_dir = $self->builder->create_build_object_path;
+      my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
 
       # Module file

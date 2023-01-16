@@ -5,6 +5,14 @@
     * The module_dirs method in the SPVM::Builder save the field to its instance instead of the compiler object.
     * Removed the get_error_messages, print_error_messages, compile methods in the SPVM::Builder.
     * Removed the print_error_messages in the SPVM::Builder::Compiler.
+    * Removed the builder accessor method in the SPVM::Builder::CC class.
+    * Moved the create_build_src_path method in the SPVM::Builder class to SPVM::Builder::Util.
+    * Moved the create_build_include_path method in the SPVM::Builder class to SPVM::Builder::Util.
+    * Moved the create_build_object_path method in the SPVM::Builder class to SPVM::Builder::Util.
+    * Moved the create_build_lib_path method in the SPVM::Builder class to SPVM::Builder::Util.
+    * SPVM::Builder::CC doesn't depend on SPVM::Builder.
+    * Removed the builder method in the SPVM::Builder::CC.
+    * Removed the build_dir method in the SPVM::Builder::Exe.
   [Incompatible Changes]
     * Removed the prepare Runtime Native API. This method is called in the build Runtime Native API automatically.
 0.9681 2022-01-13

@@ -81,7 +81,6 @@ sub import {
       for my $category ('precompile', 'native') {
         my $cc = SPVM::Builder::CC->new(
           build_dir => $BUILDER->{build_dir},
-          builder => $BUILDER,
           at_runtime => 1,
         );
         

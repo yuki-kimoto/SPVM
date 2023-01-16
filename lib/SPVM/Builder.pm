@@ -85,54 +85,6 @@ sub new {
   return $self;
 }
 
-sub create_build_src_path {
-  my ($self, $rel_file) = @_;
-  
-  my $build_dir = $self->build_dir;
-  my $build_src_path = "$build_dir/work/src";
-  if (defined $rel_file) {
-    $build_src_path .= "/$rel_file";
-  }
-  
-  return $build_src_path;
-}
-
-sub create_build_include_path {
-  my ($self, $rel_file) = @_;
-  
-  my $build_dir = $self->build_dir;
-  my $build_include_path = "$build_dir/work/include";
-  if (defined $rel_file) {
-    $build_include_path .= "/$rel_file";
-  }
-  
-  return $build_include_path;
-}
-
-sub create_build_object_path {
-  my ($self, $rel_file) = @_;
-  
-  my $build_dir = $self->build_dir;
-  my $build_output_path = "$build_dir/work/object";
-  if (defined $rel_file) {
-    $build_output_path .= "/$rel_file";
-  }
-  
-  return $build_output_path;
-}
-
-sub create_build_lib_path {
-  my ($self, $rel_file) = @_;
-  
-  my $build_dir = $self->build_dir;
-  my $build_lib_path = "$build_dir/work/lib";
-  if (defined $rel_file) {
-    $build_lib_path .= "/$rel_file";
-  }
-  
-  return $build_lib_path;
-}
-
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
   
@@ -148,7 +100,6 @@ sub build_dynamic_lib_dist {
   }
   my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
-    builder => $self,
   );
   
   my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
