@@ -46,7 +46,7 @@ sub import {
 
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
 
   # Add class informations
@@ -113,7 +113,7 @@ sub init {
     unless ($RUNTIME) {
       # If any SPVM module are not yet loaded, $BUILDER is not set.
       my $build_dir = $ENV{SPVM_BUILD_DIR};
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
+      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
       $RUNTIME = $BUILDER->compiler->compile('Int', __FILE__, __LINE__);
       unless ($RUNTIME) {
         confess "Unexpcted Error:the compiliation must be always successful";
