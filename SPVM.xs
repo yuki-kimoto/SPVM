@@ -3946,23 +3946,50 @@ compile(...)
   // Compile SPVM
   int32_t compile_error_code = api_env->api->compiler->compile(compiler, class_name);
   
-  SV* sv_runtime = &PL_sv_undef;
+  SV* sv_success = &PL_sv_undef;
   if (compile_error_code == 0) {
-
-    // Build runtime information
-    void* runtime = api_env->api->runtime->new_object(api_env);
-
-    // Runtime allocator
-    void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);
-    
-    // SPVM 32bit codes
-    int32_t* runtime_codes = api_env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
-    
-    // Build runtime
-    api_env->api->runtime->build(runtime, runtime_codes);
-
-    sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
+    sv_success = sv_2mortal(newSViv(1));
   }
+
+  XPUSHs(sv_success);
+  
+  XSRETURN(1);
+}
+
+SV*
+build_runtime(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+  SV* sv_start_file = ST(2);
+  SV* sv_start_line = ST(3);
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  
+  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
+  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
+  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+
+  // Build runtime information
+  void* runtime = api_env->api->runtime->new_object(api_env);
+
+  // Runtime allocator
+  void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);
+  
+  // SPVM 32bit codes
+  int32_t* runtime_codes = api_env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
+  
+  // Build runtime
+  api_env->api->runtime->build(runtime, runtime_codes);
+
+  SV* sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
 
   XPUSHs(sv_runtime);
   

@@ -302,11 +302,12 @@ sub compile {
   my $compiler = SPVM::Builder::Compiler->new(
     module_dirs => $builder->module_dirs
   );
-  my $runtime = $compiler->compile($class_name, __FILE__, __LINE__);
-  unless ($runtime) {
+  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
+  unless ($success) {
     $builder->print_error_messages(*STDERR);
     exit(255);
   }
+  my $runtime = $compiler->build_runtime;
   $self->runtime($runtime);
   
   $self->{finish_compile} = 1;

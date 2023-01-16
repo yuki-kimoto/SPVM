@@ -14,6 +14,8 @@
     * Removed the builder method in the SPVM::Builder::CC.
     * Removed the build_dir method in the SPVM::Builder::Exe.
     * Removed the compiler accessor method in the SPVM::Builder.
+    * The compile method in the SPVM::Builder::Compiler returns the success flag instead of the runtime
+    * Added the build_runtime method in the SPVM::Builder::Compiler.
   [Incompatible Changes]
     * Removed the prepare Runtime Native API. This method is called in the build Runtime Native API automatically.
     * Removed the following method in the SPVM::Builder::API class.

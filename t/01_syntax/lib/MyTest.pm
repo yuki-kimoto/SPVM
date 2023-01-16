@@ -89,8 +89,8 @@ sub compile_not_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $runtime = $builder->compiler->compile($class_name, $file, $line);
-  ok(!$runtime);
+  my $success = $builder->compiler->compile($class_name, $file, $line);
+  ok(!$success);
   my $error_messages = $builder->compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
   my $message_ok;
@@ -98,7 +98,7 @@ sub compile_not_ok_file {
     $message_ok = like($first_error_message, $error_message_re);
   }
   
-  if ($runtime || ($error_message_re && !$message_ok)) {
+  if ($success || ($error_message_re && !$message_ok)) {
     warn "  at $file line $line\n";
   }
 }
@@ -176,10 +176,10 @@ sub compile_ok_file {
     unshift @{$builder->module_dirs}, $module_dir;
   }
   
-  my $runtime = $builder->compiler->compile($class_name, $file, $line);
-  ok($runtime);
+  my $success = $builder->compiler->compile($class_name, $file, $line);
+  ok($success);
   
-  if (!$runtime) {
+  if (!$success) {
     warn "  at $file line $line\n";
     
     my $error_messages = $builder->compiler->get_error_messages;

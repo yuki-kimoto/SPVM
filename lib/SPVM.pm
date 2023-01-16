@@ -39,8 +39,8 @@ my $loaded_spvm_modules = {};
 sub use_spvm_module {
   my ($compiler, $class_name, $file, $line) = @_;
   
-  my $runtime = $compiler->compile($class_name, __FILE__, __LINE__);
-  unless ($runtime) {
+  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
+  unless ($success) {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
@@ -71,6 +71,8 @@ sub import {
     use_spvm_module($COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Stack", __FILE__, __LINE__);
     use_spvm_module($COMPILER, "Native::Address", __FILE__, __LINE__);
+    
+    my $runtime = $COMPILER->build_runtime;
   }
 
   # Add class informations
@@ -80,11 +82,12 @@ sub import {
     my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
 
     # Compile SPVM source code and create runtime env
-    $RUNTIME = $COMPILER->compile($class_name, $file, $line);
-    unless ($RUNTIME) {
+    my $success = $COMPILER->compile($class_name, $file, $line);
+    unless ($success) {
       $COMPILER->print_error_messages(*STDERR);
       exit(255);
     }
+    $RUNTIME = $COMPILER->build_runtime;
 
     # Class names added at this compilation
     my $added_class_names = [];
@@ -140,10 +143,11 @@ sub init {
       $COMPILER = SPVM::Builder::Compiler->new(
         module_dirs => $BUILDER->module_dirs
       );
-      $RUNTIME = $COMPILER->compile('Int', __FILE__, __LINE__);
-      unless ($RUNTIME) {
+      my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
+      unless ($success) {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
+      $RUNTIME = $COMPILER->build_runtime;
     }
     
     # Set function addresses of native and precompile methods

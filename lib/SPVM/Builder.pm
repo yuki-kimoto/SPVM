@@ -93,11 +93,12 @@ sub build_dynamic_lib_dist {
     module_dirs => $self->module_dirs
   );
   
-  my $runtime = $compiler->compile($class_name, __FILE__, __LINE__);
-  unless ($runtime) {
+  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
+  unless ($success) {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
+  my $runtime = $compiler->build_runtime;
   my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
   );
