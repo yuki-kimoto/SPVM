@@ -82,7 +82,7 @@ sub import {
         my $cc = SPVM::Builder::CC->new(
           build_dir => $BUILDER->{build_dir},
           builder => $BUILDER,
-          runtime => 1,
+          at_runtime => 1,
         );
         
         my $method_names = SPVM::Builder::Runtime->get_method_names($RUNTIME, $added_class_name, $category);
