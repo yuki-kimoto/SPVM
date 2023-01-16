@@ -36,6 +36,11 @@ my $RUNTIME;
 my $DYNAMIC_LIB_FILES = {};
 my $ENV;
 my $STACK;
+my $SPVM_COMPILER;
+my $SPVM_RUNTIME;
+my $SPVM_DYNAMIC_LIB_FILES = {};
+my $SPVM_ENV;
+my $SPVM_STACK;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
