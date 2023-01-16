@@ -26,6 +26,7 @@ use Carp 'confess';
 my $SPVM_INITED;
 
 my $BUILDER;
+my $COMPILER;
 my $RUNTIME;
 my $ENV;
 my $STACK;
@@ -47,6 +48,9 @@ sub import {
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    $COMPILER = SPVM::Builder::Compiler->new(
+      module_dirs => $BUILDER->module_dirs
+    );
   }
 
   # Add class informations
@@ -56,10 +60,10 @@ sub import {
     my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
 
     # Compile SPVM source code and create runtime env
-    $RUNTIME = $BUILDER->compiler->compile($class_name, $file, $line);
+    $RUNTIME = $COMPILER->compile($class_name, $file, $line);
 
     unless ($RUNTIME) {
-      $BUILDER->compiler->print_error_messages(*STDERR);
+      $COMPILER->print_error_messages(*STDERR);
       exit(255);
     }
 
@@ -72,7 +76,7 @@ sub import {
     }
     
     # Bind SPVM method to Perl
-    bind_to_perl($BUILDER, $added_class_names);
+    bind_to_perl($added_class_names);
 
     # Set addresses of native methods and precompile methods
     for my $added_class_name (@$added_class_names) {
@@ -80,7 +84,7 @@ sub import {
       
       for my $category ('precompile', 'native') {
         my $cc = SPVM::Builder::CC->new(
-          build_dir => $BUILDER->{build_dir},
+          build_dir => $BUILDER->build_dir,
           at_runtime => 1,
         );
         
@@ -114,7 +118,10 @@ sub init {
       # If any SPVM module are not yet loaded, $BUILDER is not set.
       my $build_dir = $ENV{SPVM_BUILD_DIR};
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-      $RUNTIME = $BUILDER->compiler->compile('Int', __FILE__, __LINE__);
+      $COMPILER = SPVM::Builder::Compiler->new(
+        module_dirs => $BUILDER->module_dirs
+      );
+      $RUNTIME = $COMPILER->compile('Int', __FILE__, __LINE__);
       unless ($RUNTIME) {
         confess "Unexpcted Error:the compiliation must be always successful";
       }
@@ -141,6 +148,7 @@ sub init {
     
     $SPVM_INITED = 1;
     $BUILDER = undef;
+    $COMPILER = undef;
   }
 }
 
@@ -153,7 +161,7 @@ END {
 my $class_name_h = {};
 my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($builder, $added_class_names) = @_;
+  my ($added_class_names) = @_;
 
   for my $class_name (@$added_class_names) {
     next if $class_name =~ /::anon/;

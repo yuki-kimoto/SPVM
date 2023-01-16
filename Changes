@@ -13,6 +13,7 @@
     * SPVM::Builder::CC doesn't depend on SPVM::Builder.
     * Removed the builder method in the SPVM::Builder::CC.
     * Removed the build_dir method in the SPVM::Builder::Exe.
+    * Removed the compiler accessor method in the SPVM::Builder.
   [Incompatible Changes]
     * Removed the prepare Runtime Native API. This method is called in the build Runtime Native API automatically.
     * Removed the following method in the SPVM::Builder::API class.
