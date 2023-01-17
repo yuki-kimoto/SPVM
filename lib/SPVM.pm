@@ -225,12 +225,16 @@ END {
 
 my $class_name_h = {};
 sub bind_to_perl {
-  my ($runtime, $class_names) = @_;
+  my ($runtime, $class_names, $is_exchange_api) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
-    my $perl_class_name = "SPVM::$class_name";
+    my $perl_class_name = "SPVM::";
+    if ($is_exchange_api) {
+      $perl_class_name .= 'ExchangeAPI::';
+    }
+    $perl_class_name .= "$class_name";
     
     unless ($class_name_h->{$class_name}) {
       
@@ -272,12 +276,20 @@ sub bind_to_perl {
       
       # Define Perl method
       no strict 'refs';
+      my $call_method;
+      if ($is_exchange_api) {
+        $call_method = 'SPVM::ExchangeAPI::call_method';
+      }
+      else {
+        $call_method = 'SPVM::call_method';
+      }
+      
       *{"$perl_method_abs_name"} = sub {
         my $return_value;
         if ($is_class_method) {
           shift @_;
         }
-        eval { $return_value = SPVM::call_method($class_name, $method_name, @_) };
+        eval { $return_value = &{"$call_method"}($class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
