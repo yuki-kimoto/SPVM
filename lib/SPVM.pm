@@ -273,7 +273,7 @@ sub bind_to_perl {
         SPVM::init() unless $SPVM_INITED;
 
         my $return_value;
-        eval { $return_value = SPVM::call_method($class_name, $method_name, @_) };
+        eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
@@ -286,165 +286,165 @@ sub bind_to_perl {
 
 sub new_byte_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array($ENV, $STACK, @_);
 }
 
 sub new_byte_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_unsigned($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_byte_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_len($ENV, $STACK, @_);
 }
 
 sub new_byte_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_bin($ENV, $STACK, @_);
 }
 sub new_byte_array_from_string {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_byte_array_from_string($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_string($ENV, $STACK, @_);
 }
 
 sub new_short_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array($ENV, $STACK, @_);
 }
 
 sub new_short_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_unsigned($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_short_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_len($ENV, $STACK, @_);
 }
 
 sub new_short_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_short_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_from_bin($ENV, $STACK, @_);
 }
 sub new_int_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array($ENV, $STACK, @_);
 }
 
 sub new_int_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_unsigned($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_int_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_len($ENV, $STACK, @_);
 }
 
 sub new_int_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_int_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_from_bin($ENV, $STACK, @_);
 }
 sub new_long_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array($ENV, $STACK, @_);
 }
 
 sub new_long_array_unsigned {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_unsigned($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_long_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_len($ENV, $STACK, @_);
 }
 
 sub new_long_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_long_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_from_bin($ENV, $STACK, @_);
 }
 sub new_float_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array($ENV, $STACK, @_);
 }
 sub new_float_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_len($ENV, $STACK, @_);
 }
 
 sub new_float_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_float_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_from_bin($ENV, $STACK, @_);
 }
 sub new_double_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array($ENV, $STACK, @_);
 }
 
 sub new_double_array_len {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array_len($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_len($ENV, $STACK, @_);
 }
 
 sub new_double_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_double_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_from_bin($ENV, $STACK, @_);
 }
 sub new_string {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_string($ENV, $STACK, @_);
 }
 
 sub new_string_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_from_bin($ENV, $STACK, @_);
 }
 
 sub new_object_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_object_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array($ENV, $STACK, @_);
 }
 
 sub new_any_object_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_any_object_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_any_object_array($ENV, $STACK, @_);
 }
 
 sub new_mulnum_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_mulnum_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array($ENV, $STACK, @_);
 }
 
 sub new_mulnum_array_from_bin {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_mulnum_array_from_bin($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array_from_bin($ENV, $STACK, @_);
 }
 
 sub new_string_array {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::new_string_array($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_array($ENV, $STACK, @_);
 }
 
 sub get_exception {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::get_exception($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::get_exception($ENV, $STACK, @_);
 }
 
 sub set_exception {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::set_exception($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::set_exception($ENV, $STACK, @_);
 }
 
 sub get_memory_blocks_count {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::get_memory_blocks_count($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::get_memory_blocks_count($ENV, $STACK, @_);
 }
 
 sub call_method {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::call_method($STACK->{env}, $STACK, @_);
+  SPVM::ExchangeAPI::call_method($ENV, $STACK, @_);
 }
 
 1;
