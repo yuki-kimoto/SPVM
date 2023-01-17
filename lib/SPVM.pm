@@ -225,7 +225,7 @@ END {
 
 my $class_name_h = {};
 sub bind_to_perl {
-  my ($runtime, $class_names, $is_exchange_api) = @_;
+  my ($runtime, $class_names, $is_exchange_api, $name_space) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
@@ -233,6 +233,9 @@ sub bind_to_perl {
     my $perl_class_name = "SPVM::";
     if ($is_exchange_api) {
       $perl_class_name .= 'ExchangeAPI::';
+    }
+    if ($name_space) {
+      $perl_class_name .= "${name_space}::";
     }
     $perl_class_name .= "$class_name";
     
