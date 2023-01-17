@@ -142,6 +142,12 @@ sub import {
     SPVM::Builder::Runtime->call_init_blocks($BOOT_ENV);
     
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
+
+    my $class_names = SPVM::Builder::Runtime->get_class_names($BOOT_RUNTIME);
+    
+    my $is_exchange_api = 1;
+    my $name_space = 'Boot';
+    bind_to_perl($BOOT_RUNTIME, $class_names, $is_exchange_api, $name_space);
   }
 
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
@@ -239,7 +245,7 @@ sub bind_to_perl {
     }
     $perl_class_name .= "$class_name";
     
-    unless ($class_name_h->{$class_name}) {
+    unless ($class_name_h->{$perl_class_name}) {
       
       my $parent_class_name = SPVM::Builder::Runtime->get_parent_class_name($runtime, $class_name);
       my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
@@ -258,7 +264,7 @@ sub bind_to_perl {
       if (my $error = $@) {
         confess $error;
       }
-      $class_name_h->{$class_name} = 1;
+      $class_name_h->{$perl_class_name} = 1;
     }
 
     my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name);
@@ -292,6 +298,7 @@ sub bind_to_perl {
         if ($is_class_method) {
           shift @_;
         }
+        
         eval { $return_value = &{"$call_method"}($class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
