@@ -234,7 +234,7 @@ END {
   $RUNTIME = undef;
 }
 
-my $class_name_h = {};
+my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
   my ($runtime, $class_names) = @_;
 
@@ -244,7 +244,7 @@ sub bind_to_perl {
     my $perl_class_name_base = "SPVM::";
     my $perl_class_name = "$perl_class_name_base$class_name";
     
-    unless ($class_name_h->{$perl_class_name}) {
+    unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
       
       my $parent_class_name = SPVM::Builder::Runtime->get_parent_class_name($runtime, $class_name);
       my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
@@ -263,7 +263,7 @@ sub bind_to_perl {
       if (my $error = $@) {
         confess $error;
       }
-      $class_name_h->{$perl_class_name} = 1;
+      $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
     }
 
     my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name);
