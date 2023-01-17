@@ -4034,6 +4034,38 @@ get_error_messages(...)
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
+get_method_is_class_method(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_runtime = ST(1);
+  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+
+  SV* sv_class_name = ST(2);
+  SV* sv_method_name = ST(3);
+
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Method id
+  int32_t method_id = api_env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
+  
+  api_env->api->runtime->get_method_is_class_method(runtime, method_id);
+
+  // Free native_env
+  api_env->free_env_raw(api_env);
+
+  XSRETURN(0);
+}
+
+
+SV*
 get_method_names(...)
   PPCODE:
 {
