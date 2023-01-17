@@ -28,7 +28,15 @@
       sub build_shared_lib_dist_native;
     * "use SPVM()" occurs runtime error. "use SPVM(MyClass) or "use SPVM" is valid.
     * SPVM::ExchangeAPI::call_method doesn't need the class name of the first argument.
-      
+  [Bug Fix]
+    * Fixed the bug that segmentation fault occurs in the following codes.
+      use SPVM;
+
+      SPVM::get_memory_blocks_count();
+
+      my $obj_int = SPVM::ExchangeAPI::call_method(SPVM::GET_ENV(), SPVM::GET_STACK(), "Int", "new", 1);
+      my $value = $obj_int->value;
+
 0.9681 2022-01-13
   [New Features]
     * Added the following Compiler Native APIs.

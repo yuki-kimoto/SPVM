@@ -61,8 +61,10 @@ sub use_spvm_module {
 }
 
 sub load_dynamic_libs {
-  my ($runtime, $class_names, $dynamic_lib_files) = @_;
-  
+  my ($runtime, $dynamic_lib_files) = @_;
+
+  my $class_names = SPVM::Builder::Runtime->get_class_names($runtime);
+
   # Set addresses of native methods and precompile methods
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
@@ -128,9 +130,7 @@ sub import {
     
     $BOOT_RUNTIME = $BOOT_COMPILER->build_runtime;
 
-    my $class_names = SPVM::Builder::Runtime->get_class_names($BOOT_RUNTIME);
-    
-    load_dynamic_libs($BOOT_RUNTIME, $class_names, $BOOT_DYNAMIC_LIB_FILES);
+    &load_dynamic_libs($BOOT_RUNTIME, $BOOT_DYNAMIC_LIB_FILES);
 
     # Build an environment
     $BOOT_ENV = SPVM::Builder::Runtime->build_env($BOOT_RUNTIME);
@@ -155,10 +155,8 @@ sub import {
       confess "Unexpcted Error:the compiliation must be always successful";
     }
     $RUNTIME = $COMPILER->build_runtime;
-  }
-  
-  unless (defined $class_name) {
-    return;
+    
+    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
   
   my ($file, $line) = (caller)[1, 2];
@@ -175,18 +173,20 @@ sub import {
     }
     $RUNTIME = $COMPILER->build_runtime;
 
-    # Class names added at this compilation
-    my $added_class_names = [];
-    my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
-    for (my $i = $start_classes_length; $i < @$class_names; $i++) {
-      my $added_class_name =  $class_names->[$i];
-      push @$added_class_names, $added_class_name;
-    }
-    
-    load_dynamic_libs($RUNTIME, $added_class_names, $DYNAMIC_LIB_FILES);
-    
+    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
+  }
+
+  # Class names added at this compilation
+  my $added_class_names = [];
+  my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
+  for (my $i = $start_classes_length; $i < @$class_names; $i++) {
+    my $added_class_name =  $class_names->[$i];
+    push @$added_class_names, $added_class_name;
+  }
+  
+  if (@$added_class_names) {
     # Bind SPVM method to Perl
-    bind_to_perl($RUNTIME, $added_class_names);
+    bind_to_perl($RUNTIME, $ENV, $STACK, $added_class_names);
   }
 }
 
@@ -226,7 +226,7 @@ END {
 my $class_name_h = {};
 my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($runtime, $class_names) = @_;
+  my ($runtime, $env, $stack, $class_names) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
