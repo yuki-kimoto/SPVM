@@ -1,5 +1,8 @@
 package SPVM::BlessedObject::Array;
 
+use strict;
+use warnings;
+
 use base 'SPVM::BlessedObject';
 
 use overload '@{}' => sub {
@@ -17,19 +20,19 @@ use SPVM::ExchangeAPI;
 sub length {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_length($self->env, $self->stack, $self);
+  SPVM::ExchangeAPI::array_length(SPVM::GET_ENV(), SPVM::GET_STACK(), $self);
 }
 
 sub to_elems {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_to_elems($self->env, $self->stack, $self);
+  SPVM::ExchangeAPI::array_to_elems(SPVM::GET_ENV(), SPVM::GET_STACK(), $self);
 }
 
 sub to_string {
   my $self = shift;
   
-  my $elems = SPVM::ExchangeAPI::array_to_elems($self->env, $self->stack, $self);
+  my $elems = SPVM::ExchangeAPI::array_to_elems(SPVM::GET_ENV(), SPVM::GET_STACK(), $self);
   
   my $string = join(" ", @$elems);
   
@@ -39,19 +42,19 @@ sub to_string {
 sub to_bin {
   my $self = shift;
 
-  SPVM::ExchangeAPI::array_to_bin($self->env, $self->stack, $self);
+  SPVM::ExchangeAPI::array_to_bin(SPVM::GET_ENV(), SPVM::GET_STACK(), $self);
 }
 
 sub set {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_set($self->env, $self->stack, $self, @_);
+  SPVM::ExchangeAPI::array_set(SPVM::GET_ENV(), SPVM::GET_STACK(), $self, @_);
 }
 
 sub get {
   my $self = shift;
   
-  SPVM::ExchangeAPI::array_get($self->env, $self->stack, $self, @_);
+  SPVM::ExchangeAPI::array_get(SPVM::GET_ENV(), SPVM::GET_STACK(), $self, @_);
 }
 
 1;

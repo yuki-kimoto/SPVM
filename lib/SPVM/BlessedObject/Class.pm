@@ -1,5 +1,8 @@
 package SPVM::BlessedObject::Class;
 
+use strict;
+use warnings;
+
 use base 'SPVM::BlessedObject';
 
 1;

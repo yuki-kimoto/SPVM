@@ -1,26 +1,7 @@
 package SPVM::BlessedObject;
 
-sub env {
-  my $self = shift;
-  if (@_) {
-    $self->{env} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{env};
-  }
-}
-
-sub stack {
-  my $self = shift;
-  if (@_) {
-    $self->{stack} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{stack};
-  }
-}
+use strict;
+use warnings;
 
 1;
 
