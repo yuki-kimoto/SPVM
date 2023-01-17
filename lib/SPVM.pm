@@ -143,6 +143,11 @@ sub import {
     SPVM::Builder::Runtime->call_init_blocks($BOOT_ENV);
     
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
+
+    my $class_names = SPVM::Builder::Runtime->get_class_names($BOOT_RUNTIME);
+    
+    my $boot = 1;
+    bind_to_perl($BOOT_RUNTIME, $class_names, $boot);
     
     # Test codes
     my $int_max = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Fn", "abs", -3);
