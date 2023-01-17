@@ -31,8 +31,8 @@ SV* SPVM_XS_UTIL_new_sv_object(pTHX_ void* object, const char* class) {
   HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
   (void)hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
   SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
-
-  HV* hv_class = gv_stashpv(class, 0);
+  
+  HV* hv_class = gv_stashpv(class, GV_ADD);
   sv_bless(sv_data, hv_class);
   
   return sv_data;
@@ -52,7 +52,7 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_env, SV* sv_stack, void* obj
   (void)hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   (void)hv_store(hv_data, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
 
-  HV* hv_class = gv_stashpv(class, 0);
+  HV* hv_class = gv_stashpv(class, GV_ADD);
   sv_bless(sv_data, hv_class);
   
   return sv_data;

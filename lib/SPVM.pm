@@ -144,9 +144,13 @@ sub import {
     
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
     
-    # Test code
+    # Test codes
     my $int_max = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Fn", "abs", -3);
     unless ($int_max == 3) {
+      croak("Unexpected");
+    }
+    my $int_obj = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Int", "new", 1);
+    unless (ref $int_obj eq 'SPVM::Int') {
       croak("Unexpected");
     }
   }
