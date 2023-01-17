@@ -264,9 +264,10 @@ sub bind_to_perl {
         next;
       }
 
-
+      
       my $perl_method_abs_name = "${perl_class_name}::$method_name";
-
+      my $is_class_method = SPVM::Builder::Runtime->get_method_is_class_method($runtime, $class_name, $method_name);
+      
       # Define Perl method
       no strict 'refs';
       *{"$perl_method_abs_name"} = sub {
