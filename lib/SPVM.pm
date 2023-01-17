@@ -42,6 +42,9 @@ my $SPVM_DYNAMIC_LIB_FILES = {};
 my $SPVM_ENV;
 my $SPVM_STACK;
 
+sub GET_ENV { $ENV }
+sub GET_STACK { $STACK }
+
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 

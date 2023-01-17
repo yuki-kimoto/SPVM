@@ -55,6 +55,15 @@ my $ULONG_MAX = 18446744073709551615;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# call_method
+{
+  my $obj_int = SPVM::ExchangeAPI::call_method(SPVM::GET_ENV(), SPVM::GET_STACK(), "Int", "new", 1);
+  isa_ok($obj_int, "SPVM::BlessedObject");
+  isa_ok($obj_int, "SPVM::Int");
+  my $value = $obj_int->value;
+  is($value, 1);
+}
+
 # Argument general exception
 {
   # Argument general exception - too few arguments
