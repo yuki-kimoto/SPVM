@@ -186,7 +186,7 @@ sub import {
   
   if (@$added_class_names) {
     # Bind SPVM method to Perl
-    bind_to_perl($RUNTIME, $ENV, $STACK, $added_class_names);
+    bind_to_perl($RUNTIME, $added_class_names);
   }
 }
 
@@ -206,7 +206,7 @@ sub init {
     SPVM::Builder::Runtime->call_init_blocks($ENV);
     
     $STACK = SPVM::Builder::Runtime->build_stack($ENV);
-    
+
     $SPVM_INITED = 1;
     $BUILDER = undef;
     $BOOT_COMPILER = undef;
@@ -224,9 +224,8 @@ END {
 }
 
 my $class_name_h = {};
-my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($runtime, $env, $stack, $class_names) = @_;
+  my ($runtime, $class_names) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
