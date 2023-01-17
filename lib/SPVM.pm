@@ -273,13 +273,11 @@ sub bind_to_perl {
       # Define Perl method
       no strict 'refs';
       *{"$perl_method_abs_name"} = sub {
-        SPVM::init() unless $SPVM_INITED;
-
         my $return_value;
         if ($is_class_method) {
           shift @_;
         }
-        eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
+        eval { $return_value = SPVM::call_method($class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
