@@ -5,6 +5,22 @@ use warnings;
 
 use base 'SPVM::BlessedObject';
 
+use SPVM::ExchangeAPI;
+
+our $AUTOLOAD;
+sub AUTOLOAD {
+  my ($self) = @_;
+  
+  my $method_name = $AUTOLOAD;
+  $method_name =~ s/^SPVM::BlessedObject::Class:://;
+  
+  my $class_name = $self->get_class_name;
+  
+  my $ret = SPVM::ExchangeAPI::call_method($class_name, $method_name, @_);
+  
+  return $ret;
+}
+
 1;
 
 =head1 Name

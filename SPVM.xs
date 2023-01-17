@@ -3828,6 +3828,52 @@ DESTROY(...)
   XSRETURN(0);
 }
 
+MODULE = SPVM::BlessedObject::Class		PACKAGE = SPVM::BlessedObject::Class
+
+SV*
+get_class_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_object = ST(0);
+  HV* hv_object = (HV*)SvRV(sv_object);
+  
+  SV* sv_method_name = ST(1);
+  const char* method_name = SvPV_nolen(sv_method_name);
+
+  assert(SvOK(sv_object));
+  
+  // Get object
+  void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
+
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  HV* hv_stack = (HV*)SvRV(sv_stack);
+  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
+  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  HV* hv_env = (HV*)SvRV(sv_env);
+  SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  
+  int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
+  int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
+  const char* class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
+  
+  SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
+  
+  XPUSHs(sv_class_name);
+  XSRETURN(1);
+}
+
+
 MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
