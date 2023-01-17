@@ -227,11 +227,6 @@ xs_call_method(...)
   int32_t method_args_base_id = env->api->runtime->get_method_args_base_id(env->runtime, method_id);
   int32_t method_return_type_id = env->api->runtime->get_method_return_type_id(env->runtime, method_id);
 
-  // If class method, first argument is ignored
-  if (method_is_class_method) {
-    spvm_args_base++;
-  }
-  
   // Check argument count
   int32_t call_method_args_length = items - spvm_args_base;
   if (call_method_args_length < method_required_args_length) {
@@ -4056,12 +4051,15 @@ get_method_is_class_method(...)
   // Method id
   int32_t method_id = api_env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
   
-  api_env->api->runtime->get_method_is_class_method(runtime, method_id);
+  int32_t is_class_method = api_env->api->runtime->get_method_is_class_method(runtime, method_id);
 
   // Free native_env
   api_env->free_env_raw(api_env);
+  
+  SV* sv_is_class_method = sv_2mortal(newSViv(is_class_method));
 
-  XSRETURN(0);
+  XPUSHs(sv_is_class_method);
+  XSRETURN(1);
 }
 
 
