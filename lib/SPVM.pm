@@ -241,7 +241,8 @@ sub bind_to_perl {
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
-    my $perl_class_name = "SPVM::$class_name";
+    my $perl_class_name_base = "SPVM::";
+    my $perl_class_name = "$perl_class_name_base$class_name";
     
     unless ($class_name_h->{$perl_class_name}) {
       
@@ -251,7 +252,7 @@ sub bind_to_perl {
       # The inheritance
       my @isa;
       if (defined $parent_class_name) {
-        push @isa, "SPVM::$parent_class_name";
+        push @isa, "$perl_class_name_base$parent_class_name";
       }
       push @isa, 'SPVM::BlessedObject::Class';
       my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
@@ -276,7 +277,6 @@ sub bind_to_perl {
       elsif (length $method_name == 0) {
         next;
       }
-
       
       my $perl_method_abs_name = "${perl_class_name}::$method_name";
       my $is_class_method = SPVM::Builder::Runtime->get_method_is_class_method($runtime, $class_name, $method_name);
@@ -284,12 +284,13 @@ sub bind_to_perl {
       # Define Perl method
       no strict 'refs';
       *{"$perl_method_abs_name"} = sub {
+        SPVM::init() unless $SPVM_INITED;
         my $return_value;
         if ($is_class_method) {
           shift @_;
         }
         
-        eval { $return_value = SPVM::call_method($class_name, $method_name, @_) };
+        eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
