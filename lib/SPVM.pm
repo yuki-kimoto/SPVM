@@ -142,11 +142,6 @@ sub import {
     SPVM::Builder::Runtime->call_init_blocks($BOOT_ENV);
     
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
-
-    my $class_names = SPVM::Builder::Runtime->get_class_names($BOOT_RUNTIME);
-    
-    my $is_exchange_api = 1;
-    my $name_space = 'Boot';
   }
 
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
