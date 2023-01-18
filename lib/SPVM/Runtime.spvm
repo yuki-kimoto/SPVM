@@ -47,7 +47,7 @@ class Runtime {
 
   native method get_anon_class_names : string ($class_name : string);
 
-  method get_method_names : string[] ($options = undef : object[]) {
+  method get_method_names : string[] ($class_name : string, $options = undef : object[]) {
     
     my $native_flag = 0;
     my $precompile_flag = 0;
@@ -69,10 +69,10 @@ class Runtime {
       }
     }
     
-    my $method_names = $self->_get_method_names($native_flag, $precompile_flag, $enum_flag);
+    my $method_names = $self->_get_method_names($class_name, $native_flag, $precompile_flag, $enum_flag);
     
     return $method_names;
   }
   
-  private native method _get_method_names : string[] ($native_flag : int, $precompile_flag : int, $enum_flag : int);
+  private native method _get_method_names : string[] ($class_name : string, $native_flag : int, $precompile_flag : int, $enum_flag : int);
 }

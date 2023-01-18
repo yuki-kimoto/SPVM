@@ -468,7 +468,6 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
-  
   int32_t native_flag = stack[2].ival;
   int32_t precompile_flag = stack[3].ival;
   int32_t enum_flag = stack[4].ival;
