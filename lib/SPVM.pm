@@ -257,7 +257,6 @@ sub import {
     use_spvm_module($BOOT_COMPILER, "Native::Precompile", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Stack", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Native::Address", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Fn", __FILE__, __LINE__);
     
     $BOOT_RUNTIME = $BOOT_COMPILER->build_runtime;
