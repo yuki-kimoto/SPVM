@@ -210,6 +210,7 @@ sub init_runtime {
     );
     my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
     unless ($success) {
+      $COMPILER->print_error_messages(*STDERR);
       confess "Unexpcted Error:the compiliation must be always successful";
     }
     $RUNTIME = $COMPILER->build_runtime;
@@ -302,6 +303,7 @@ sub import {
     }
     
     &spvm_init_runtime();
+    
   }
   
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);

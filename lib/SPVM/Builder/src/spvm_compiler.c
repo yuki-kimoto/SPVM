@@ -122,6 +122,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add CommandInfo source
   const char* spvm_command_info_module_source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  }";
   SPVM_HASH_set(compiler->module_source_symtable, "CommandInfo", strlen("CommandInfo"), (void*)spvm_command_info_module_source);
+
+  // Add Address source
+  const char* spvm_address_module_source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->module_source_symtable, "Address", strlen("Address"), (void*)spvm_address_module_source);
   
   return compiler;
 }
@@ -248,6 +252,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   SPVM_COMPILER_use(compiler, "Float", "Float", 0);
   SPVM_COMPILER_use(compiler, "Double", "Double", 0);
   SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
+  SPVM_COMPILER_use(compiler, "Address", "Address", 0);
   
   // Use the module that is specified at the argument
   SPVM_COMPILER_use(compiler, class_name, start_file, start_line);

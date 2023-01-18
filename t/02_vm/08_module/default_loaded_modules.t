@@ -12,6 +12,7 @@ use SPVM 'Int';
 use SPVM 'Long';
 use SPVM 'Float';
 use SPVM 'Double';
+use SPVM 'Address';
 
 use SPVM;
 
@@ -26,6 +27,7 @@ SPVM::Long->new(1);
 SPVM::Float->new(1);
 SPVM::Double->new(1);
 SPVM::Bool->TRUE;
+SPVM::Address->new;
 
 ok(1);
 

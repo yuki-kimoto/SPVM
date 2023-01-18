@@ -2657,6 +2657,8 @@ The following modules are loaded by default. These modules are deeply related to
 
 =item * L<CommandInfo|SPVM::CommandInfo>
 
+=item * L<Address|SPVM::Address>
+
 =back
 
 =head1 Class Variable

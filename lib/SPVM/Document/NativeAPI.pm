@@ -2320,6 +2320,7 @@ L<SPVM::Document::NativeAPI::Allocator>
   19 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
   20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
   21 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
+  22 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
@@ -2406,6 +2407,10 @@ The basic type ID of L<Error::System|SPVM::Error::System> type.
 =head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
 
 The basic type ID of L<Error::NotSupported|SPVM::Error::NotSupported> type.
+
+=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
+
+The basic type ID of L<Address|SPVM::Address> type.
 
 =head2 Constant Values of Basic Type Categories
 

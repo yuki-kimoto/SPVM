@@ -45,6 +45,7 @@ examples/spvmcc/basic/myapp
 examples/spvmcc/basic/README.txt
 examples/spvmcc/basic/SPVM/MyApp.spvm
 lib/SPVM.pm
+lib/SPVM/Address.pm
 lib/SPVM/Array.c
 lib/SPVM/Array.config
 lib/SPVM/Array.pm
