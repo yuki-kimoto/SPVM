@@ -1,0 +1,30 @@
+class Compiler {
+  use Native::Compiler;
+  use Runtime;
+  
+  # Fields
+  has native_compiler : Native::Compiler;
+  
+  # Class Methods
+  static method new : Compiler () {
+    
+    my $self = new Compiler;
+    
+    $self->{native_compiler} = Native::Compiler->new;
+    
+    return $self;
+  }
+  
+  # Instance Methods
+  native method compile : int ($class_name : string);
+
+  native method build_runtime : Runtime ();
+  
+  native method set_start_file : void ($start_file : string);
+  
+  native method set_start_line : void ($start_line : int);
+  
+  native method add_module_dir : void ($module_dir : string);
+  
+  native method get_error_messages : string[] ();
+}

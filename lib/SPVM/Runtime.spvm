@@ -1,0 +1,78 @@
+class Runtime {
+  use Native::Runtime;
+  use Native::Precompile;
+  use Native::Env;
+  use Native::Stack;
+  use Native::Address;
+  
+  has native_runtime : Native::Runtime;
+  
+  static method new : Runtime () {
+    my $self = new Runtime;
+    
+    return $self;
+  }
+  
+  # Class Methods
+  native static method set_command_info : void ($env : Native::Env);
+  
+  native static method call_init_blocks : void ($env : Native::Env);
+  
+  native static method call_method : void ($env : Native::Env, $stack : Native::Stack, $class_name : string, $method_name : string, $args_stack_length : int);
+  
+  # Instance Methods
+  native method get_runtime_codes : int[] ();
+  
+  native method get_native_method_address : Native::Address ($class_name : string, $method_name : string);
+  
+  native method set_native_method_address : string ($class_name : string, $method_name : string, $address : Native::Address);
+  
+  native method get_precompile_method_address : Native::Address ($class_name : string, $method_name : string);
+  
+  native method set_precompile_method_address : string ($class_name : string, $method_name : string, $address : Native::Address);
+  
+  native method build_precompile_class_source : string ($class_name : string);
+  
+  native method build_precompile_method_source : string ($class_name : string, $method_name : string);
+
+  native method DESTROY : void ();
+
+  native method get_classes_length : int ();
+
+  native method get_class_names : string[] ();
+
+  native method get_module_file : string ($class_name : string);
+
+  native method get_parent_class_name : string ($class_name : string);
+
+  native method get_anon_class_names : string ($class_name : string);
+
+  method get_method_names : string[] ($options = undef : object[]) {
+    
+    my $native_flag = 0;
+    my $precompile_flag = 0;
+    my $enum_flag = 0;
+    if ($options) {
+      for (my $i = 0; $i < @$options; $i += 2) {
+        my $key = (string)$options->[$i];
+        my $value = $options->[$i + 1];
+        
+        if ($key eq "native") {
+          $native_flag = (int)$value;
+        }
+        elsif ($key eq "precompile") {
+          $precompile_flag = (int)$value;
+        }
+        elsif ($key eq "enum") {
+          $enum_flag = (int)$value;
+        }
+      }
+    }
+    
+    my $method_names = $self->_get_method_names($native_flag, $precompile_flag, $enum_flag);
+    
+    return $method_names;
+  }
+  
+  private native method _get_method_names : string[] ($native_flag : int, $precompile_flag : int, $enum_flag : int);
+}
