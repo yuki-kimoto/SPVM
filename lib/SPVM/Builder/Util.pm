@@ -626,6 +626,14 @@ sub create_dl_func_list {
   return $dl_func_list;
 }
 
+sub get_dynamic_lib_file_dist {
+  my ($module_file, $category) = @_;
+
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_file, $category);
+  
+  return $dynamic_lib_file;
+}
+
 1;
 
 =head1 Name

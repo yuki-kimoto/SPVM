@@ -76,7 +76,8 @@ sub load_dynamic_libs {
       if (@$method_names) {
         # Build classs - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
-        my $dynamic_lib_file = SPVM::Builder::Runtime->get_dynamic_lib_file_dist($runtime, $class_name, $category);
+        my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+        my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
