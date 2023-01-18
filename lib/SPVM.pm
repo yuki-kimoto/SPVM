@@ -100,7 +100,9 @@ sub load_dynamic_libs {
   for my $category ('precompile', 'native') {
     for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
-      SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $category);
+      my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
+      my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
+      SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
     }
   }
 }

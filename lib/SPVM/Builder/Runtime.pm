@@ -7,9 +7,8 @@ use File::Path 'mkpath';
 use File::Basename 'dirname', 'basename';
 
 sub bind_methods {
-  my ($class, $runtime, $dynamic_lib_file, $class_name, $category) = @_;
+  my ($class, $runtime, $dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category) = @_;
 
-  my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
   if (@$method_names) {
     my $method_infos = [];
     for my $method_name (@$method_names) {
@@ -21,7 +20,6 @@ sub bind_methods {
     
     # Add anon class sub names if precompile
     if ($category eq 'precompile') {
-      my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
       for my $anon_class_name (@$anon_class_names) {
         my $method_info = {};
         $method_info->{class_name} = $anon_class_name;
