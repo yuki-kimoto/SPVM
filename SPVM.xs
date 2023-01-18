@@ -2447,6 +2447,42 @@ xs_new_string_from_bin(...)
 }
 
 SV*
+xs_new_address_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  int32_t e = 0;
+  
+  // Env
+  SV* sv_env = ST(0);
+  HV* hv_env = (HV*)SvRV(sv_env);
+  SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+  SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  
+  // Stack
+  SV* sv_stack = ST(1);
+  HV* hv_stack = (HV*)SvRV(sv_stack);
+  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
+  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  
+  SV* sv_address = ST(2);
+  
+  void* address = (void*)(intptr_t)SvIV(sv_address);
+  
+  void* obj_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, FILE_NAME, __LINE__);
+  if (e) {
+    croak("Can't create the Address object");
+  }
+  SV* sv_obj_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, obj_address, "SPVM::BlessedObject::Class");
+  
+  XPUSHs(sv_obj_address);
+  XSRETURN(1);
+}
+
+SV*
 xs_new_short_array(...)
   PPCODE:
 {

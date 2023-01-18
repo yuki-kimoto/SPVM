@@ -3,6 +3,7 @@
     * Added get_class_name in the SPVM::BlessedObject::Class.
     * Added the AUTOLOAD method in the SPVM::BlessedObject::Class to call methods dinamically.
     * Added the default loaded Address class.
+    * Added the SPVM::new_address_object function.
   [Internal Compatible Changes]
     * The runtime field in the SPVM::Builder::CC is renamed to the at_runtime field.
     * The build_runtime method in the SPVM::Builder::CC is renamed to the build_at_runtime method.

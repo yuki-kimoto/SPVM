@@ -562,6 +562,10 @@ sub call_method {
   SPVM::ExchangeAPI::call_method($ENV, $STACK, @_);
 }
 
+sub new_address_object {
+  SPVM::ExchangeAPI::new_address_object($ENV, $STACK, @_);
+}
+
 1;
 
 =encoding utf8
