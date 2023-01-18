@@ -182,16 +182,13 @@ int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_class_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
-
+  
   // Free string buffer
   env->api->string_buffer->free_object(string_buffer);
 
   // Free allocator
   env->api->allocator->free_object(allocator);
 
-  // Free env
-  env->free_env_raw(env);
-  
   stack[0].oval = obj_precompile_class_source;
   
   return 0;
@@ -239,9 +236,6 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   // Free allocator
   env->api->allocator->free_object(allocator);
 
-  // Free env
-  env->free_env_raw(env);
-  
   stack[0].oval = obj_precompile_method_source;
   
   return 0;
@@ -568,3 +562,4 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
