@@ -33,6 +33,12 @@
     * "use SPVM()" occurs runtime error. "use SPVM(MyClass) or "use SPVM" is valid.
     * SPVM::ExchangeAPI::call_method doesn't need the class name of the first argument.
     * A object is blessed to SPVM::BlessedObject::Class always.
+    * Changed the arguments of the SPVM::ExchangeAPI::call_method function of the instance method call.
+      [Before]
+      SPVM::ExchangeAPI::call_method ($BOOT_ENV, $BOOT_STACK, $class_name, $method_name, $int_obj, @rest_args);
+      [After]
+      SPVM::ExchangeAPI::call_method ($BOOT_ENV, $BOOT_STACK, $int_obj, $method_name, @rest_args);
+      
   [Bug Fix]
     * Fixed the bug that segmentation fault occurs in the following codes.
       use SPVM;
