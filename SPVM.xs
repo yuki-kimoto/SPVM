@@ -4116,6 +4116,30 @@ get_error_messages(...)
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Runtime
+  SV** sv_native_runtime_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
+  SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
+  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
+
+  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+
+  // Free native_runtime
+  api_env->api->runtime->free_object(runtime);
+
+  api_env->free_env_raw(api_env);
+
+  XSRETURN(0);
+}
+
+SV*
 get_method_is_class_method(...)
   PPCODE:
 {
@@ -4659,32 +4683,6 @@ set_command_info(...)
     env->free_stack(env, my_stack);
   }
   
-  XSRETURN(0);
-}
-
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Runtime
-  SV** sv_native_runtime_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
-  SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
-
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
-  // Free native_runtime
-  api_env->api->runtime->free_object(runtime);
-
-  api_env->free_env_raw(api_env);
-
   XSRETURN(0);
 }
 
