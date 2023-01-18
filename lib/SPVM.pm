@@ -244,15 +244,12 @@ END {
 
 my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
-  my ($runtime, $class_names, $boot) = @_;
+  my ($runtime, $class_names) = @_;
 
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
     my $perl_class_name_base = "SPVM::";
-    if ($boot) {
-      $perl_class_name_base .= "Boot::";
-    }
     my $perl_class_name = "$perl_class_name_base$class_name";
     
     unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
@@ -294,36 +291,19 @@ sub bind_to_perl {
       
       # Define Perl method
       no strict 'refs';
-      if ($boot) {
-        *{"$perl_method_abs_name"} = sub {
-          my $return_value;
-          if ($is_class_method) {
-            shift @_;
-          }
-          
-          eval { $return_value = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $class_name, $method_name, @_) };
-          my $error = $@;
-          if ($error) {
-            confess $error;
-          }
-          $return_value;
-        };
-      }
-      else {
-        *{"$perl_method_abs_name"} = sub {
-          my $return_value;
-          if ($is_class_method) {
-            shift @_;
-          }
-          
-          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
-          my $error = $@;
-          if ($error) {
-            confess $error;
-          }
-          $return_value;
-        };
-      }
+      *{"$perl_method_abs_name"} = sub {
+        my $return_value;
+        if ($is_class_method) {
+          shift @_;
+        }
+        
+        eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
+        my $error = $@;
+        if ($error) {
+          confess $error;
+        }
+        $return_value;
+      };
     }
   }
 }
