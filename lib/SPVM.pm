@@ -81,7 +81,9 @@ sub load_dynamic_libs {
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
           my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
-          my $dl_func_list = SPVM::Builder::Runtime->create_dl_func_list($runtime, $class_name, {category => $category});
+          my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
+          my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
+          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
           my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
           $dynamic_lib_file = $cc->build_at_runtime($class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
