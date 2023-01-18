@@ -151,7 +151,7 @@ sub import {
     unless (ref $int_obj eq 'SPVM::BlessedObject::Class') {
       confess("Unexpected");
     }
-    my $value = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Int", "value", $int_obj);
+    my $value = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $int_obj, "value");
     unless ($value == 1) {
       confess("Unexpected");
     }
@@ -288,10 +288,9 @@ sub bind_to_perl {
         # Define Perl method
         no strict 'refs';
         *{"$perl_method_abs_name"} = sub {
+          my $perl_class_name = shift;
+          
           my $return_value;
-          if ($is_class_method) {
-            shift @_;
-          }
           
           eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
           my $error = $@;

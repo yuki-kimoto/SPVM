@@ -200,26 +200,80 @@ xs_call_method(...)
   SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
   
-  SV* sv_class_name = ST(2);
+  // Invocant
+  SV* sv_invocant = ST(2);
+  
+  // Method name
   SV* sv_method_name = ST(3);
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Class Name
+  int32_t method_id;
+  const char* class_name;
+  int32_t class_method_call;
+  if (sv_isobject(sv_invocant)) {
+    class_method_call = 0;
+    if (!sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class")) {
+      croak("The invocant must be a SPVM::BlessedObject::Class object");
+    }
+    
+    HV* hv_invocant = (HV*)SvRV(sv_invocant);
+    
+    // Env
+    SV** sv_env_ptr = hv_fetch(hv_invocant, "env", strlen("env"), 0);
+    SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+    HV* hv_env = (HV*)SvRV(sv_env);
+    SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+    SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+    SPVM_ENV* object_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+    
+    if (!(object_env == env)) {
+      croak("The env of the argument is differnt from the env of the invocant");
+    }
+    
+    // Stack
+    SV** sv_stack_ptr = hv_fetch(hv_invocant, "stack", strlen("stack"), 0);
+    SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+    HV* hv_stack = (HV*)SvRV(sv_stack);
+    SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
+    SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
+    SPVM_VALUE* object_stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+    
+    if (!(object_stack == stack)) {
+      croak("The stack of the argument is differnt from the stack of the invocant");
+    }
+    
+    void* object = SPVM_XS_UTIL_get_object(sv_invocant);
+    int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
+    int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
+    class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
+    method_id = env->get_instance_method_id(env, stack, object, method_name);
+    
+    ST(2) = sv_method_name;
+    ST(3) = sv_invocant;
+  }
+  else {
+    class_method_call = 1;
+    class_name = SvPV_nolen(sv_invocant);
+    method_id = env->get_class_method_id(env, stack, class_name, method_name);
+  }
   
   // Runtime
   void* runtime = env->runtime;
   
-  // Class Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-  
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
   // Method not found
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
   if (method_id < 0) {
     croak("The \"%s\" method in the \"%s\" class is not found at %s line %d\n", method_name, class_name, FILE_NAME, __LINE__);
   }
   
   // Base index of SPVM arguments
-  int32_t spvm_args_base = 4;
+  int32_t spvm_args_base;
+  if (class_method_call) {
+    spvm_args_base = 4;
+  }
+  else {
+    spvm_args_base = 3;
+  }
 
   int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
@@ -229,6 +283,7 @@ xs_call_method(...)
   
   // Check argument count
   int32_t call_method_args_length = items - spvm_args_base;
+  
   if (call_method_args_length < method_required_args_length) {
     croak("Too few arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be less than %d at %s line %d\n", method_name, class_name, method_required_args_length, FILE_NAME, __LINE__);
   }

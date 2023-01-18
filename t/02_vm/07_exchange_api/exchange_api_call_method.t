@@ -1243,8 +1243,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok($@);
 }
 
-=pod TODO support inheritance
-
 # Inheritance
 {
   my $point = SPVM::Point3D->new(1, 2);
@@ -1252,8 +1250,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($point->x, 1);
   is($point->y, 2);
 }
-
-=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
