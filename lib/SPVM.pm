@@ -180,6 +180,9 @@ sub import {
     }
   }
 
+
+  $SPVM_COMPILER = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Compiler", "new");
+
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
   
   # This is needed in the case that INIT block is not called in "perl -c script.pl"
@@ -225,6 +228,7 @@ INIT {
   $BUILDER = undef;
   $BOOT_COMPILER = undef;
   $COMPILER = undef;
+  $SPVM_COMPILER = undef;
 }
 
 END {
