@@ -155,6 +155,10 @@ sub import {
     unless ($value == 1) {
       confess("Unexpected");
     }
+    my $value2 = $int_obj->value;
+    unless ($value2 == 1) {
+      confess("Unexpected");
+    }
   }
 
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
