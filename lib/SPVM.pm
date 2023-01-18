@@ -102,6 +102,25 @@ sub load_dynamic_libs {
   }
 }
 
+sub init_runtime {
+  unless ($RUNTIME) {
+    unless ($BUILDER) {
+      my $build_dir = $ENV{SPVM_BUILD_DIR};
+      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    }
+    $COMPILER = SPVM::Builder::Compiler->new(
+      module_dirs => $BUILDER->module_dirs
+    );
+    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
+    unless ($success) {
+      confess "Unexpcted Error:the compiliation must be always successful";
+    }
+    $RUNTIME = $COMPILER->build_runtime;
+    
+    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
+  }
+}
+
 sub import {
   my ($class, $class_name) = @_;
   
@@ -162,19 +181,9 @@ sub import {
   }
 
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
-
-  unless ($RUNTIME) {
-    $COMPILER = SPVM::Builder::Compiler->new(
-      module_dirs => $BUILDER->module_dirs
-    );
-    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
-    unless ($success) {
-      confess "Unexpcted Error:the compiliation must be always successful";
-    }
-    $RUNTIME = $COMPILER->build_runtime;
-    
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
-  }
+  
+  # This is needed in the case that INIT block is not called in "perl -c script.pl"
+  &init_runtime();
   
   my ($file, $line) = (caller)[1, 2];
 
@@ -195,23 +204,9 @@ sub import {
 }
 
 INIT {
-  unless ($RUNTIME) {
-    unless ($BUILDER) {
-      my $build_dir = $ENV{SPVM_BUILD_DIR};
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    }
-    $COMPILER = SPVM::Builder::Compiler->new(
-      module_dirs => $BUILDER->module_dirs
-    );
-    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
-    unless ($success) {
-      confess "Unexpcted Error:the compiliation must be always successful";
-    }
-    $RUNTIME = $COMPILER->build_runtime;
-    
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
-  }
-
+  # This is needed in the case that SPVM->import is not called.
+  &init_runtime();
+  
   # Class names added at this compilation
   my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
   bind_to_perl($RUNTIME, $class_names);
