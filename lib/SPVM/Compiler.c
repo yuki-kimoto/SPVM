@@ -134,7 +134,7 @@ int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_module_dir = stack[1].oval;
 
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
   
   const char* module_dir = NULL;
   if (obj_module_dir) {
