@@ -1,5 +1,0 @@
-class Native::Address : pointer {
-  static method new :Native::Address () {
-    return new Native::Address;
-  }
-}

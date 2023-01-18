@@ -1,4 +1,0 @@
-class Native::Compiler : pointer {
-  native static method new : Native::Compiler ();
-  native method DESTROY : void ();
-}
