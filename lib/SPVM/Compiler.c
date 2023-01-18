@@ -36,7 +36,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e = 0;
   
   void* obj_self = stack[0].oval;
-
+  
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
   void* compiler = env->get_pointer(env, stack, obj_compiler);
   
