@@ -14,7 +14,7 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
   
   // Compile SPVM
   int32_t compile_error_code = env->api->compiler->compile(compiler, class_name);
@@ -38,7 +38,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
 
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
   
   // Build runtime information
   void* runtime = env->api->runtime->new_object(env);
@@ -70,7 +70,7 @@ int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_start_file = stack[1].oval;
 
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
   
   const char* start_file = NULL;
   if (obj_start_file) {
@@ -92,7 +92,7 @@ int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t start_line = stack[1].ival;
 
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
   
   env->api->compiler->set_start_line(compiler, start_line);
   
@@ -106,7 +106,7 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
 
   void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_self);
+  void* compiler = env->get_pointer(env, stack, obj_compiler);
 
   int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
   
