@@ -102,7 +102,17 @@ sub load_dynamic_libs {
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
       my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
       my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
-      SPVM::Builder::Runtime->bind_methods($runtime, $dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
+      
+      for my $method_name (sort keys %$method_addresses) {
+        my $cfunc_address = $method_addresses->{$method_name};
+        if ($category eq 'native') {
+          SPVM::Builder::Runtime->set_native_method_address($runtime, $class_name, $method_name, $cfunc_address);
+        }
+        elsif ($category eq 'precompile') {
+          SPVM::Builder::Runtime->set_precompile_method_address($runtime, $class_name, $method_name, $cfunc_address);
+        }
+      }
     }
   }
 }
