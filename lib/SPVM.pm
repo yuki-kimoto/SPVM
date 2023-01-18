@@ -127,12 +127,23 @@ sub spvm_load_dynamic_libs {
     next if $class_name =~ /::anon/;
     
     for my $category ('precompile', 'native') {
+
       my $cc = SPVM::Builder::CC->new(
         build_dir => $BUILDER->build_dir,
         at_runtime => 1,
       );
+
+      my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
+        $runtime->env,
+        $runtime->stack,
+        [
+          SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
+          =>
+          SPVM::ExchangeAPI::call_method($runtime->env, $runtime->stack, 'Int', 'new', 1)
+        ]
+      );
       
-      my $method_names = $runtime->get_method_names($class_name, $category);
+      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
       
       if (@$method_names) {
         # Build classs - Compile C source codes and link them to SPVM precompile method
@@ -143,7 +154,7 @@ sub spvm_load_dynamic_libs {
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
           my $module_file = $runtime->get_module_file($class_name);
-          my $method_names = $runtime->get_method_names($class_name, $category);
+          my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
           my $anon_class_names = $runtime->get_anon_class_names($class_name);
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_class_source($class_name);
@@ -159,9 +170,19 @@ sub spvm_load_dynamic_libs {
 
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
+    my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
+      $runtime->env,
+      $runtime->stack,
+      [
+        SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
+        =>
+        SPVM::ExchangeAPI::call_method($runtime->env, $runtime->stack, 'Int', 'new', 1)
+      ]
+    );
+    
     for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
-      my $method_names = $runtime->get_method_names($class_name, $category);
+      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
       my $anon_class_names = $runtime->get_anon_class_names($class_name);
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
       
@@ -210,6 +231,8 @@ sub spvm_init_runtime {
       confess "Unexpcted Error:the compiliation must be always successful";
     }
     $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
+
+    &spvm_load_dynamic_libs($SPVM_RUNTIME, $SPVM_DYNAMIC_LIB_FILES);
   }
 }
 
