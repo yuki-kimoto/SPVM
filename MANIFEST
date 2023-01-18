@@ -257,10 +257,6 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
-lib/SPVM/Native/Address.c
-lib/SPVM/Native/Address.config
-lib/SPVM/Native/Address.pm
-lib/SPVM/Native/Address.spvm
 lib/SPVM/Native/Compiler.c
 lib/SPVM/Native/Compiler.config
 lib/SPVM/Native/Compiler.pm
