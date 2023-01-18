@@ -21,10 +21,6 @@ use SPVM::ExchangeAPI;
 
 use Carp 'confess';
 
-# INIT and CHECK block can't be used because SPVM supports dynamic module loading.
-# For the reason, this variable is needed.
-my $SPVM_INITED;
-
 my $BUILDER;
 my $BOOT_COMPILER;
 my $BOOT_RUNTIME;
@@ -206,28 +202,38 @@ sub import {
   }
 }
 
-sub init {
-  unless ($SPVM_INITED) {
-    unless ($RUNTIME) {
-      confess "SPVM->import must be called at least once";
+INIT {
+  unless ($RUNTIME) {
+    unless ($BUILDER) {
+      my $build_dir = $ENV{SPVM_BUILD_DIR};
+      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     }
-
-    # Build an environment
-    $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
+    $COMPILER = SPVM::Builder::Compiler->new(
+      module_dirs => $BUILDER->module_dirs
+    );
+    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
+    unless ($success) {
+      confess "Unexpcted Error:the compiliation must be always successful";
+    }
+    $RUNTIME = $COMPILER->build_runtime;
     
-    # Set command line info
-    SPVM::Builder::Runtime->set_command_info($ENV, $0, \@ARGV);
-    
-    # Call INIT blocks
-    SPVM::Builder::Runtime->call_init_blocks($ENV);
-    
-    $STACK = SPVM::Builder::Runtime->build_stack($ENV);
-
-    $SPVM_INITED = 1;
-    $BUILDER = undef;
-    $BOOT_COMPILER = undef;
-    $COMPILER = undef;
+    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
+  
+  # Build an environment
+  $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
+  
+  # Set command line info
+  SPVM::Builder::Runtime->set_command_info($ENV, $0, \@ARGV);
+  
+  # Call INIT blocks
+  SPVM::Builder::Runtime->call_init_blocks($ENV);
+  
+  $STACK = SPVM::Builder::Runtime->build_stack($ENV);
+
+  $BUILDER = undef;
+  $BOOT_COMPILER = undef;
+  $COMPILER = undef;
 }
 
 END {
@@ -308,7 +314,6 @@ sub bind_to_perl {
       }
       else {
         *{"$perl_method_abs_name"} = sub {
-          SPVM::init() unless $SPVM_INITED;
           my $return_value;
           if ($is_class_method) {
             shift @_;
@@ -327,165 +332,131 @@ sub bind_to_perl {
 }
 
 sub new_byte_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array($ENV, $STACK, @_);
 }
 
 sub new_byte_array_unsigned {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_byte_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array_len($ENV, $STACK, @_);
 }
 
 sub new_byte_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array_from_bin($ENV, $STACK, @_);
 }
 sub new_byte_array_from_string {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array_from_string($ENV, $STACK, @_);
 }
 
 sub new_short_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_short_array($ENV, $STACK, @_);
 }
 
 sub new_short_array_unsigned {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_short_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_short_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_short_array_len($ENV, $STACK, @_);
 }
 
 sub new_short_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_short_array_from_bin($ENV, $STACK, @_);
 }
 sub new_int_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_int_array($ENV, $STACK, @_);
 }
 
 sub new_int_array_unsigned {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_int_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_int_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_int_array_len($ENV, $STACK, @_);
 }
 
 sub new_int_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_int_array_from_bin($ENV, $STACK, @_);
 }
 sub new_long_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_long_array($ENV, $STACK, @_);
 }
 
 sub new_long_array_unsigned {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_long_array_unsigned($ENV, $STACK, @_);
 }
 
 sub new_long_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_long_array_len($ENV, $STACK, @_);
 }
 
 sub new_long_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_long_array_from_bin($ENV, $STACK, @_);
 }
 sub new_float_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_float_array($ENV, $STACK, @_);
 }
 sub new_float_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_float_array_len($ENV, $STACK, @_);
 }
 
 sub new_float_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_float_array_from_bin($ENV, $STACK, @_);
 }
 sub new_double_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_double_array($ENV, $STACK, @_);
 }
 
 sub new_double_array_len {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_double_array_len($ENV, $STACK, @_);
 }
 
 sub new_double_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_double_array_from_bin($ENV, $STACK, @_);
 }
 sub new_string {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_string($ENV, $STACK, @_);
 }
 
 sub new_string_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_string_from_bin($ENV, $STACK, @_);
 }
 
 sub new_object_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_object_array($ENV, $STACK, @_);
 }
 
 sub new_any_object_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_any_object_array($ENV, $STACK, @_);
 }
 
 sub new_mulnum_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_mulnum_array($ENV, $STACK, @_);
 }
 
 sub new_mulnum_array_from_bin {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_mulnum_array_from_bin($ENV, $STACK, @_);
 }
 
 sub new_string_array {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_string_array($ENV, $STACK, @_);
 }
 
 sub get_exception {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::get_exception($ENV, $STACK, @_);
 }
 
 sub set_exception {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::set_exception($ENV, $STACK, @_);
 }
 
 sub get_memory_blocks_count {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::get_memory_blocks_count($ENV, $STACK, @_);
 }
 
 sub call_method {
-  SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::call_method($ENV, $STACK, @_);
 }
 
