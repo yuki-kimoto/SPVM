@@ -1,4 +1,4 @@
-0.9682 2022-01-14
+0.9682 2022-01-18
   [New Feature]
     * Added get_class_name in the SPVM::BlessedObject::Class.
     * Added the AUTOLOAD method in the SPVM::BlessedObject::Class to call methods dinamically.
