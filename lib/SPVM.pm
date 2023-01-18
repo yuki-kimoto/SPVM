@@ -145,11 +145,15 @@ sub import {
     # Test codes
     my $int_max = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Fn", "abs", -3);
     unless ($int_max == 3) {
-      croak("Unexpected");
+      confess("Unexpected");
     }
     my $int_obj = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Int", "new", 1);
-    unless (ref $int_obj eq 'SPVM::Int') {
-      croak("Unexpected");
+    unless (ref $int_obj eq 'SPVM::BlessedObject::Class') {
+      confess("Unexpected");
+    }
+    my $value = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Int", "value", $int_obj);
+    unless ($value == 1) {
+      confess("Unexpected");
     }
   }
 
@@ -184,19 +188,6 @@ sub import {
 
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
-
-  # Class names added at this compilation
-  my $added_class_names = [];
-  my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
-  for (my $i = $start_classes_length; $i < @$class_names; $i++) {
-    my $added_class_name =  $class_names->[$i];
-    push @$added_class_names, $added_class_name;
-  }
-  
-  if (@$added_class_names) {
-    # Bind SPVM method to Perl
-    bind_to_perl($RUNTIME, $added_class_names);
-  }
 }
 
 INIT {
@@ -216,6 +207,10 @@ INIT {
     
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
+
+  # Class names added at this compilation
+  my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
+  bind_to_perl($RUNTIME, $class_names);
   
   # Build an environment
   $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
@@ -289,21 +284,23 @@ sub bind_to_perl {
       my $perl_method_abs_name = "${perl_class_name}::$method_name";
       my $is_class_method = SPVM::Builder::Runtime->get_method_is_class_method($runtime, $class_name, $method_name);
       
-      # Define Perl method
-      no strict 'refs';
-      *{"$perl_method_abs_name"} = sub {
-        my $return_value;
-        if ($is_class_method) {
-          shift @_;
-        }
-        
-        eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
-        my $error = $@;
-        if ($error) {
-          confess $error;
-        }
-        $return_value;
-      };
+      if ($is_class_method) {
+        # Define Perl method
+        no strict 'refs';
+        *{"$perl_method_abs_name"} = sub {
+          my $return_value;
+          if ($is_class_method) {
+            shift @_;
+          }
+          
+          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
+          my $error = $@;
+          if ($error) {
+            confess $error;
+          }
+          $return_value;
+        };
+      }
     }
   }
 }

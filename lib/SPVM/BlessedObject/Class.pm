@@ -16,7 +16,7 @@ sub AUTOLOAD {
   
   my $class_name = $self->get_class_name;
   
-  my $ret = SPVM::ExchangeAPI::call_method($class_name, $method_name, @_);
+  my $ret = SPVM::ExchangeAPI::call_method($self->env, $self->stack, $class_name, $method_name, @_);
   
   return $ret;
 }

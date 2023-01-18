@@ -226,7 +226,7 @@ xs_call_method(...)
   int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_id);
   int32_t method_args_base_id = env->api->runtime->get_method_args_base_id(env->runtime, method_id);
   int32_t method_return_type_id = env->api->runtime->get_method_return_type_id(env->runtime, method_id);
-
+  
   // Check argument count
   int32_t call_method_args_length = items - spvm_args_base;
   if (call_method_args_length < method_required_args_length) {
@@ -1139,9 +1139,7 @@ xs_call_method(...)
               }
               // Object
               else {
-                SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-                sv_catpv(sv_perl_class_name, env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
-                sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, SvPV_nolen(sv_perl_class_name));
+                sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
               }
             }
           }
@@ -1175,9 +1173,7 @@ xs_call_method(...)
           }
           // Object
           else {
-            SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-            sv_catpv(sv_perl_class_name, env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
-            sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, SvPV_nolen(sv_perl_class_name));
+            sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
           }
         }
       }
@@ -1191,10 +1187,7 @@ xs_call_method(...)
       sv_return_value = NULL;
       if (return_value != NULL) {
         env->inc_ref_count(env, stack, return_value);
-        int32_t return_value_basic_type_id = env->get_object_basic_type_id(env, stack, return_value);
-        SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-        sv_catpv(sv_perl_class_name, env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, return_value_basic_type_id)));
-        sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, SvPV_nolen(sv_perl_class_name));
+        sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
       }
       // undef
       else {
@@ -1469,9 +1462,7 @@ xs_array_to_elems(...)
               sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
             }
             else {
-              SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-              sv_catpv(sv_perl_class_name, env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, env->get_object_basic_type_id(env, stack, array))));
-              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, SvPV_nolen(sv_perl_class_name));
+              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Class");
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
           }
@@ -2017,12 +2008,10 @@ xs_array_get(...)
     }
     
     if (element_dimension == 0) {
-      SV* sv_perl_class_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_perl_class_name, env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, env->get_object_basic_type_id(env, stack, array))));
-      sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, SvPV_nolen(sv_perl_class_name));
+      sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Class");
     }
     else if (element_dimension > 0) {
-      sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::Data::Array");
+      sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
     }
   }
   
@@ -3839,9 +3828,6 @@ get_class_name(...)
   SV* sv_object = ST(0);
   HV* hv_object = (HV*)SvRV(sv_object);
   
-  SV* sv_method_name = ST(1);
-  const char* method_name = SvPV_nolen(sv_method_name);
-
   assert(SvOK(sv_object));
   
   // Get object

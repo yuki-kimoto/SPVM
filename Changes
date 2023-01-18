@@ -32,6 +32,7 @@
       sub build_shared_lib_dist_native;
     * "use SPVM()" occurs runtime error. "use SPVM(MyClass) or "use SPVM" is valid.
     * SPVM::ExchangeAPI::call_method doesn't need the class name of the first argument.
+    * A object is blessed to SPVM::BlessedObject::Class always.
   [Bug Fix]
     * Fixed the bug that segmentation fault occurs in the following codes.
       use SPVM;

@@ -95,14 +95,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 }
-
 # Convert a scalar value to SPVM numeric object
 {
+
   # SPVM::Byte->new
   {
     {
       my $spvm_value = SPVM::Byte->new(-128);
-      is(ref $spvm_value, 'SPVM::Byte');
+      is($spvm_value->get_class_name, 'Byte');
+      is(ref $spvm_value, 'SPVM::BlessedObject::Class');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -128);
     }
@@ -112,7 +113,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $spvm_value = SPVM::Short->new(-32768);
-      is(ref $spvm_value, 'SPVM::Short');
+      is($spvm_value->get_class_name, 'Short');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -32768);
     }
@@ -122,7 +123,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $spvm_value = SPVM::Int->new(-2147483648);
-      is(ref $spvm_value, 'SPVM::Int');
+      is($spvm_value->get_class_name, 'Int');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -2147483648);
     }
@@ -131,7 +132,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $spvm_value = SPVM::Long->new(-9223372036854775808);
-      is(ref $spvm_value, 'SPVM::Long');
+      is($spvm_value->get_class_name, 'Long');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -9223372036854775808);
     }
@@ -141,7 +142,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $spvm_value = SPVM::Float->new($FLT_MAX);
-      is(ref $spvm_value, 'SPVM::Float');
+      is($spvm_value->get_class_name, 'Float');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, $FLT_MAX);
     }
@@ -151,7 +152,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $spvm_value = SPVM::Double->new($DBL_MAX);
-      is(ref $spvm_value, 'SPVM::Double');
+      is($spvm_value->get_class_name, 'Double');
       ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, $DBL_MAX);
     }
@@ -990,14 +991,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   my $minimal = SPVM::TestCase::Minimal->new;
   
-  is(ref $minimal, 'SPVM::TestCase::Minimal');
+  is(ref $minimal, 'SPVM::BlessedObject::Class');
 }
 
 # stringify SPVM object
 {
   my $minimal = SPVM::TestCase::Minimal->new;
   
-  like("$minimal", qr/SPVM::TestCase::Minimal/);
+  like("$minimal", qr/SPVM::BlessedObject::Class/);
 }
 
 # Array dereference overload
