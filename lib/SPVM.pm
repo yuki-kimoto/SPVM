@@ -191,7 +191,8 @@ sub import {
   unless ($success) {
     confess "Unexpcted Error:the compiliation must be always successful";
   }
-
+  $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
+  
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
   
   # This is needed in the case that INIT block is not called in "perl -c script.pl"
@@ -241,6 +242,9 @@ INIT {
 }
 
 END {
+  $SPVM_STACK = undef;
+  $SPVM_ENV = undef;
+  $SPVM_RUNTIME = undef;
   $BOOT_STACK = undef;
   $BOOT_ENV = undef;
   $BOOT_RUNTIME = undef;

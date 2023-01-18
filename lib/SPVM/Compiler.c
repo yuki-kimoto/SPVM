@@ -52,7 +52,13 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Build runtime
   env->api->runtime->build(runtime, runtime_codes);
 
-  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, FILE_NAME, __LINE__);
+  void* obj_native_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", runtime, &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  void* obj_runtime = env->new_object_by_name(env, stack, "Runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  env->set_field_object_by_name(env, stack, obj_runtime, "native_runtime", obj_native_runtime, &e, FILE_NAME, __LINE__);
   
   stack[0].oval = obj_runtime;
   
