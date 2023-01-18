@@ -243,7 +243,7 @@ xs_call_method(...)
       croak("The stack of the argument is differnt from the stack of the invocant");
     }
     
-    void* object = SPVM_XS_UTIL_get_object(sv_invocant);
+    void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_invocant);
     int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
     int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
     class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
