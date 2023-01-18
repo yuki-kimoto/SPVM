@@ -597,7 +597,7 @@ sub create_build_lib_path {
 }
 
 sub create_dl_func_list {
-  my ($runtime, $class_name, $method_names, $anon_class_names, $options) = @_;
+  my ($class_name, $method_names, $anon_class_names, $options) = @_;
   
   $options ||= {};
   
