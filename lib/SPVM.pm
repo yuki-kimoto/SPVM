@@ -221,31 +221,6 @@ sub init_runtime {
 }
 
 sub spvm_init_runtime {
-  unless ($SPVM_RUNTIME) {
-    $SPVM_COMPILER = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Compiler", "new");
-    for my $module_dir (@{$BUILDER->module_dirs}) {
-      $SPVM_COMPILER->add_module_dir($module_dir);
-    }
-    $SPVM_COMPILER->set_start_file(__FILE__);
-    $SPVM_COMPILER->set_start_line(__LINE__ + 1);
-    my $success = $SPVM_COMPILER->compile('Int');
-    unless ($success) {
-      confess "Unexpcted Error:the compiliation must be always successful";
-    }
-    $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
-
-    &spvm_load_dynamic_libs($SPVM_RUNTIME, $SPVM_DYNAMIC_LIB_FILES);
-  }
-}
-
-sub import {
-  my ($class, $class_name) = @_;
-  
-  unless ($BUILDER) {
-    my $build_dir = $ENV{SPVM_BUILD_DIR};
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-  }
-
   unless ($BOOT_RUNTIME) {
     $BOOT_COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
@@ -275,6 +250,31 @@ sub import {
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
   }
   
+  unless ($SPVM_RUNTIME) {
+    $SPVM_COMPILER = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Compiler", "new");
+    for my $module_dir (@{$BUILDER->module_dirs}) {
+      $SPVM_COMPILER->add_module_dir($module_dir);
+    }
+    $SPVM_COMPILER->set_start_file(__FILE__);
+    $SPVM_COMPILER->set_start_line(__LINE__ + 1);
+    my $success = $SPVM_COMPILER->compile('Int');
+    unless ($success) {
+      confess "Unexpcted Error:the compiliation must be always successful";
+    }
+    $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
+
+    &spvm_load_dynamic_libs($SPVM_RUNTIME, $SPVM_DYNAMIC_LIB_FILES);
+  }
+}
+
+sub import {
+  my ($class, $class_name) = @_;
+  
+  unless ($BUILDER) {
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
+
   {
     my $start_classes_length = 0;
     if ($SPVM_RUNTIME) {
