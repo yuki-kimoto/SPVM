@@ -301,10 +301,7 @@ xs_call_method(...)
     // Stack
     SV** sv_stack_ptr = hv_fetch(hv_invocant, "stack", strlen("stack"), 0);
     SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-    HV* hv_stack = (HV*)SvRV(sv_stack);
-    SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-    SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-    SPVM_VALUE* object_stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+    SPVM_VALUE* object_stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
     
     if (!(object_stack == stack)) {
       croak("The stack of the argument is differnt from the stack of the invocant");
@@ -1454,10 +1451,7 @@ xs_array_to_elems(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_array = ST(2);
   
@@ -1665,10 +1659,7 @@ xs_array_to_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_array = ST(2);
   
@@ -1816,10 +1807,7 @@ xs_string_object_to_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_string = ST(2);
   
@@ -1858,7 +1846,7 @@ xs_array_length(...)
   HV* hv_stack = (HV*)SvRV(sv_stack);
   SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
   SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_array = ST(2);
 
@@ -1894,10 +1882,7 @@ xs_array_set(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_array = ST(2);
   SV* sv_index = ST(3);
@@ -2017,10 +2002,7 @@ xs_array_get(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_array = ST(2);
   SV* sv_index = ST(3);
@@ -2135,10 +2117,7 @@ xs_new_string_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2196,10 +2175,7 @@ xs_new_byte_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
 
   SV* sv_elems = ST(2);
@@ -2250,10 +2226,7 @@ xs_new_byte_array_unsigned(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2303,10 +2276,7 @@ xs_new_byte_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -2338,10 +2308,7 @@ xs_new_byte_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -2380,10 +2347,7 @@ xs_new_string(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_value = ST(2);
   
@@ -2428,10 +2392,7 @@ xs_new_string_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -2477,10 +2438,7 @@ xs_new_address_object(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_address = ST(2);
   
@@ -2508,10 +2466,7 @@ xs_new_short_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2561,10 +2516,7 @@ xs_new_short_array_unsigned(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2614,10 +2566,7 @@ xs_new_short_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -2649,10 +2598,7 @@ xs_new_short_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -2693,10 +2639,7 @@ xs_new_int_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2745,10 +2688,7 @@ xs_new_int_array_unsigned(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2797,10 +2737,7 @@ xs_new_int_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -2832,10 +2769,7 @@ xs_new_int_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -2874,10 +2808,7 @@ xs_new_long_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2927,10 +2858,7 @@ xs_new_long_array_unsigned(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -2980,10 +2908,7 @@ xs_new_long_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -3015,10 +2940,7 @@ xs_new_long_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -3057,10 +2979,7 @@ xs_new_float_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -3107,10 +3026,7 @@ xs_new_float_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -3142,10 +3058,7 @@ xs_new_float_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -3184,10 +3097,7 @@ xs_new_double_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_elems = ST(2);
   
@@ -3233,10 +3143,7 @@ xs_new_double_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
   
@@ -3268,10 +3175,7 @@ xs_new_double_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_binary = ST(2);
   
@@ -3310,10 +3214,7 @@ xs_new_string_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_length = ST(2);
 
@@ -3350,10 +3251,7 @@ xs_new_object_array_len(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(2);
   SV* sv_length = ST(3);
@@ -3392,10 +3290,7 @@ _xs_new_object_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(2);
   SV* sv_elems = ST(3);
@@ -3467,10 +3362,7 @@ _xs_new_muldim_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   
   SV* sv_basic_type_name = ST(2);
@@ -3543,10 +3435,7 @@ _xs_new_mulnum_array(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(2);
   SV* sv_elems = ST(3);
@@ -3578,10 +3467,7 @@ _xs_new_mulnum_array_from_bin(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(2);
   SV* sv_binary = ST(3);
@@ -3722,10 +3608,7 @@ xs_get_exception(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   void* str_exception = env->get_exception(env, stack);
   
@@ -3754,10 +3637,7 @@ _xs_set_exception(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_exception = ST(2);
   
@@ -3787,10 +3667,7 @@ xs_get_memory_blocks_count(...)
   
   // Stack
   SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   int32_t memory_blocks_count = env->get_memory_blocks_count(env);
   SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
@@ -3815,18 +3692,15 @@ DESTROY(...)
   // Get object
   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
-  
   // Env
   SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   assert(env->get_ref_count(env, stack, object));
   
@@ -3852,18 +3726,15 @@ get_class_name(...)
   // Get object
   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
 
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
-  
   // Env
   SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
   int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
