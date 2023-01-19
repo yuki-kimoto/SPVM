@@ -10,7 +10,7 @@ int32_t SPVM__Native__Stack__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_my_env = stack[0].oval;
   
-  SPVM_ENV* my_env = my_env->get_pointer(my_env, stack, obj_my_env);
+  SPVM_ENV* my_env = env->get_pointer(my_env, stack, obj_my_env);
   
   SPVM_VALUE* my_stack = my_env->new_stack(my_env);
   

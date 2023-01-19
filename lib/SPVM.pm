@@ -345,6 +345,8 @@ INIT {
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $SPVM_ENV, $0, \@ARGV);
     
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $SPVM_ENV);
+    
+    my $SPVM_STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Native::Stack', 'new', $SPVM_ENV);
   }
   
   # This is needed in the case that SPVM->import is not called.
