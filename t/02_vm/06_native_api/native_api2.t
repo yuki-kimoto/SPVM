@@ -16,6 +16,19 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+
+# Native Exception
+{
+  is(SPVM::TestCase::NativeAPI2->mul(2, 3), 6);
+  ok(SPVM::TestCase::NativeAPI2->spvm_extension2);
+}
+
+# src and include directory
+{
+  ok(SPVM::TestCase::NativeAPI2->src_foo);
+  ok(SPVM::TestCase::NativeAPI2->src_bar);
+}
+
 {
   my $link_info = $main::NATIVE_API2_LINK_INFO;
   
@@ -32,18 +45,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
   ok($is_object_file_infos);
-}
-
-# Native Exception
-{
-  is(SPVM::TestCase::NativeAPI2->mul(2, 3), 6);
-  ok(SPVM::TestCase::NativeAPI2->spvm_extension2);
-}
-
-# src and include directory
-{
-  ok(SPVM::TestCase::NativeAPI2->src_foo);
-  ok(SPVM::TestCase::NativeAPI2->src_bar);
 }
 
 # Clear exception

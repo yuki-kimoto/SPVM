@@ -38,8 +38,8 @@ my $SPVM_DYNAMIC_LIB_FILES = {};
 my $SPVM_ENV;
 my $SPVM_STACK;
 
-sub GET_ENV { $ENV }
-sub GET_STACK { $STACK }
+sub GET_ENV { $SPVM_ENV }
+sub GET_STACK { $SPVM_STACK }
 
 my $loaded_spvm_modules = {};
 
@@ -116,7 +116,7 @@ sub load_dynamic_libs {
 sub spvm_load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
 
-  my $class_names = $runtime->get_class_names;
+  my $class_names = [map { "$_" } @{$runtime->get_class_names}];
 
   # Set addresses of native methods and precompile methods
   for my $class_name (@$class_names) {
@@ -139,7 +139,7 @@ sub spvm_load_dynamic_libs {
         ]
       );
       
-      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
+      my $method_names = [map { "$_" } @{$runtime->get_method_names($class_name, $get_method_names_options)}];
       
       if (@$method_names) {
         # Build classs - Compile C source codes and link them to SPVM precompile method
@@ -194,26 +194,6 @@ sub spvm_load_dynamic_libs {
         }
       }
     }
-  }
-}
-
-sub init_runtime {
-  unless ($RUNTIME) {
-    unless ($BUILDER) {
-      my $build_dir = $ENV{SPVM_BUILD_DIR};
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    }
-    $COMPILER = SPVM::Builder::Compiler->new(
-      module_dirs => $BUILDER->module_dirs
-    );
-    my $success = $COMPILER->compile('Int', __FILE__, __LINE__);
-    unless ($success) {
-      $COMPILER->print_error_messages(*STDERR);
-      confess "Unexpcted Error:the compiliation must be always successful";
-    }
-    $RUNTIME = $COMPILER->build_runtime;
-    
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
 }
 
@@ -286,10 +266,6 @@ sub import {
     my $build_success;
     if (defined $class_name) {
       
-      $SPVM_COMPILER = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Compiler", "new");
-      for my $module_dir (@{$BUILDER->module_dirs}) {
-        $SPVM_COMPILER->add_module_dir($module_dir);
-      }
       $SPVM_COMPILER->set_start_file(__FILE__);
       $SPVM_COMPILER->set_start_line(__LINE__ + 1);
       my $success = $SPVM_COMPILER->compile($class_name);
@@ -298,34 +274,13 @@ sub import {
         for my $error_message (@$error_messages) {
           printf STDERR "[CompileError]$error_message\n";
         }
+        $SPVM_COMPILER = undef;
         exit(255);
       }
       $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
 
       &spvm_load_dynamic_libs($SPVM_RUNTIME, $SPVM_DYNAMIC_LIB_FILES);
     }
-  }
-  
-  my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);
-  
-  # This is needed in the case that INIT block is not called in "perl -c script.pl"
-  &init_runtime();
-  
-  my ($file, $line) = (caller)[1, 2];
-
-  # Add class informations
-  my $build_success;
-  if (defined $class_name) {
-
-    # Compile SPVM source code and create runtime env
-    my $success = $COMPILER->compile($class_name, $file, $line);
-    unless ($success) {
-      $COMPILER->print_error_messages(*STDERR);
-      exit(255);
-    }
-    $RUNTIME = $COMPILER->build_runtime;
-
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
 }
 
@@ -342,27 +297,9 @@ INIT {
     
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $SPVM_ENV);
     
-    my $SPVM_STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Stack', 'new', $SPVM_ENV);
+    $SPVM_STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Stack', 'new', $SPVM_ENV);
   }
   
-  # This is needed in the case that SPVM->import is not called.
-  &init_runtime();
-  
-  # Class names added at this compilation
-  my $class_names = SPVM::Builder::Runtime->get_class_names($RUNTIME);
-  bind_to_perl($RUNTIME, $class_names);
-  
-  # Build an environment
-  $ENV = SPVM::Builder::Runtime->build_env($RUNTIME);
-  
-  # Set command line info
-  SPVM::Builder::Runtime->set_command_info($ENV, $0, \@ARGV);
-  
-  # Call INIT blocks
-  SPVM::Builder::Runtime->call_init_blocks($ENV);
-  
-  $STACK = SPVM::Builder::Runtime->build_stack($ENV);
-
   $BUILDER = undef;
   $BOOT_COMPILER = undef;
   $COMPILER = undef;
@@ -373,79 +310,13 @@ END {
   $SPVM_STACK = undef;
   $SPVM_ENV = undef;
   $SPVM_RUNTIME = undef;
+  $SPVM_DYNAMIC_LIB_FILES = undef;
   $BOOT_STACK = undef;
   $BOOT_ENV = undef;
   $BOOT_RUNTIME = undef;
   $STACK = undef;
   $ENV = undef;
   $RUNTIME = undef;
-}
-
-my $BIND_TO_PERL_CLASS_NAME_H = {};
-sub bind_to_perl {
-  my ($runtime, $class_names) = @_;
-
-  for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-
-    my $perl_class_name_base = "SPVM::";
-    my $perl_class_name = "$perl_class_name_base$class_name";
-    
-    unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
-      
-      my $parent_class_name = SPVM::Builder::Runtime->get_parent_class_name($runtime, $class_name);
-      my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
-      
-      # The inheritance
-      my @isa;
-      if (defined $parent_class_name) {
-        push @isa, "$perl_class_name_base$parent_class_name";
-      }
-      push @isa, 'SPVM::BlessedObject::Class';
-      my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
-      
-      my $code = "package $perl_class_name; $isa";
-      eval $code;
-      
-      if (my $error = $@) {
-        confess $error;
-      }
-      $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
-    }
-
-    my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name);
-
-    for my $method_name (@$method_names) {
-      # Destrutor is skip
-      if ($method_name eq 'DESTROY') {
-        next;
-      }
-      # Anon method is skip
-      elsif (length $method_name == 0) {
-        next;
-      }
-      
-      my $perl_method_abs_name = "${perl_class_name}::$method_name";
-      my $is_class_method = SPVM::Builder::Runtime->get_method_is_class_method($runtime, $class_name, $method_name);
-      
-      if ($is_class_method) {
-        # Define Perl method
-        no strict 'refs';
-        *{"$perl_method_abs_name"} = sub {
-          my $perl_class_name = shift;
-          
-          my $return_value;
-          
-          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
-          my $error = $@;
-          if ($error) {
-            confess $error;
-          }
-          $return_value;
-        };
-      }
-    }
-  }
 }
 
 my $SPVM_BIND_TO_PERL_CLASS_NAME_H = {};
@@ -455,10 +326,10 @@ sub spvm_bind_to_perl {
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
-    my $perl_class_name_base = "SPVM::TmpBind";
+    my $perl_class_name_base = "SPVM::";
     my $perl_class_name = "$perl_class_name_base$class_name";
     
-    unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
+    unless ($SPVM_BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
       
       my $parent_class_name = $runtime->get_parent_class_name($class_name);
       my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
@@ -477,12 +348,13 @@ sub spvm_bind_to_perl {
       if (my $error = $@) {
         confess $error;
       }
-      $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
+      $SPVM_BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
     }
 
     my $method_names = $runtime->get_method_names($class_name);
 
     for my $method_name (@$method_names) {
+      
       # Destrutor is skip
       if ($method_name eq 'DESTROY') {
         next;
@@ -521,136 +393,136 @@ sub spvm_bind_to_perl {
 }
 
 sub new_byte_array {
-  SPVM::ExchangeAPI::new_byte_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_byte_array_unsigned {
-  SPVM::ExchangeAPI::new_byte_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_unsigned($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_byte_array_len {
-  SPVM::ExchangeAPI::new_byte_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_byte_array_from_bin {
-  SPVM::ExchangeAPI::new_byte_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_byte_array_from_string {
-  SPVM::ExchangeAPI::new_byte_array_from_string($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_string($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_short_array {
-  SPVM::ExchangeAPI::new_short_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_short_array_unsigned {
-  SPVM::ExchangeAPI::new_short_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_unsigned($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_short_array_len {
-  SPVM::ExchangeAPI::new_short_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_short_array_from_bin {
-  SPVM::ExchangeAPI::new_short_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_int_array {
-  SPVM::ExchangeAPI::new_int_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_int_array_unsigned {
-  SPVM::ExchangeAPI::new_int_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_unsigned($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_int_array_len {
-  SPVM::ExchangeAPI::new_int_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_int_array_from_bin {
-  SPVM::ExchangeAPI::new_int_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_long_array {
-  SPVM::ExchangeAPI::new_long_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_long_array_unsigned {
-  SPVM::ExchangeAPI::new_long_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_unsigned($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_long_array_len {
-  SPVM::ExchangeAPI::new_long_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_long_array_from_bin {
-  SPVM::ExchangeAPI::new_long_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_float_array {
-  SPVM::ExchangeAPI::new_float_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_float_array_len {
-  SPVM::ExchangeAPI::new_float_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_float_array_from_bin {
-  SPVM::ExchangeAPI::new_float_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_double_array {
-  SPVM::ExchangeAPI::new_double_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_double_array_len {
-  SPVM::ExchangeAPI::new_double_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_len($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_double_array_from_bin {
-  SPVM::ExchangeAPI::new_double_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 sub new_string {
-  SPVM::ExchangeAPI::new_string($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_string_from_bin {
-  SPVM::ExchangeAPI::new_string_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_object_array {
-  SPVM::ExchangeAPI::new_object_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_any_object_array {
-  SPVM::ExchangeAPI::new_any_object_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_any_object_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_mulnum_array {
-  SPVM::ExchangeAPI::new_mulnum_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_mulnum_array_from_bin {
-  SPVM::ExchangeAPI::new_mulnum_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array_from_bin($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_string_array {
-  SPVM::ExchangeAPI::new_string_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_array($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub get_exception {
-  SPVM::ExchangeAPI::get_exception($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::get_exception($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub set_exception {
-  SPVM::ExchangeAPI::set_exception($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::set_exception($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub get_memory_blocks_count {
-  SPVM::ExchangeAPI::get_memory_blocks_count($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub call_method {
-  SPVM::ExchangeAPI::call_method($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::call_method($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 sub new_address_object {
-  SPVM::ExchangeAPI::new_address_object($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_address_object($SPVM_ENV, $SPVM_STACK, @_);
 }
 
 1;
