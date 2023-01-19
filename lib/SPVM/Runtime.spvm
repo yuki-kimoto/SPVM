@@ -4,7 +4,7 @@ class Runtime {
   use Native::Env;
   use Native::Stack;
   
-  has native_runtime : Native::Runtime;
+  has native_runtime : ro Native::Runtime;
   
   static method new : Runtime () {
     my $self = new Runtime;
@@ -21,6 +21,8 @@ class Runtime {
   
   # Instance Methods
   native method get_runtime_codes : int[] ();
+
+  native method get_method_is_class_method : int ($class_name : string, $method_name : string);
   
   native method get_native_method_address : Address ($class_name : string, $method_name : string);
   

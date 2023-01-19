@@ -86,6 +86,37 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
+int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+
+  void* obj_self = stack[0].oval;
+  void* obj_class_name = stack[1].oval;
+  void* obj_method_name = stack[2].oval;
+
+  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  
+  // Class name
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
+
+  // Method name
+  const char* method_name = env->get_chars(env, stack, obj_method_name);
+  
+  // Method id
+  int32_t method_id = env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
+  
+  int32_t is_class_method = env->api->runtime->get_method_is_class_method(runtime, method_id);
+  
+  stack[0].ival = is_class_method;
+  
+  return 0;
+}
+
+
 int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
