@@ -447,7 +447,7 @@ sub spvm_bind_to_perl {
   for my $class_name (@$class_names) {
     next if $class_name =~ /::anon/;
 
-    my $perl_class_name_base = "SPVM::";
+    my $perl_class_name_base = "SPVM::TmpBind";
     my $perl_class_name = "$perl_class_name_base$class_name";
     
     unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
