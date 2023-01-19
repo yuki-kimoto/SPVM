@@ -75,6 +75,44 @@ void* SPVM_XS_UTIL_get_object(pTHX_ SV* sv_data) {
   }
 }
 
+SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
+  
+  SPVM_ENV* env;
+  if (sv_derived_from(sv_env, "SPVM::Builder::Env")) {
+    HV* hv_env = (HV*)SvRV(sv_env);
+    SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+    SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
+    env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+  }
+  else if (sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
+    HV* hv_env = (HV*)SvRV(sv_env);
+    
+    // Stack
+    SV** sv_blessed_object_stack_ptr = hv_fetch(hv_env, "stack", strlen("stack"), 0);
+    SV* sv_blessed_object_stack = sv_blessed_object_stack_ptr ? *sv_blessed_object_stack_ptr : &PL_sv_undef;
+    HV* hv_blessed_object_stack = (HV*)SvRV(sv_blessed_object_stack);
+    SV** sv_native_blessed_object_stack_ptr = hv_fetch(hv_blessed_object_stack, "object", strlen("object"), 0);
+    SV* sv_native_blessed_object_stack = sv_native_blessed_object_stack_ptr ? *sv_native_blessed_object_stack_ptr : &PL_sv_undef;
+    SPVM_VALUE* blessed_object_stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_blessed_object_stack)));
+    
+    // Env
+    SV** sv_blessed_object_env_ptr = hv_fetch(hv_env, "env", strlen("env"), 0);
+    SV* sv_blessed_object_env = sv_blessed_object_env_ptr ? *sv_blessed_object_env_ptr : &PL_sv_undef;
+    HV* hv_blessed_object_env = (HV*)SvRV(sv_blessed_object_env);
+    SV** sv_native_blessed_object_env_ptr = hv_fetch(hv_blessed_object_env, "object", strlen("object"), 0);
+    SV* sv_native_blessed_object_env = sv_native_blessed_object_env_ptr ? *sv_native_blessed_object_env_ptr : &PL_sv_undef;
+    SPVM_ENV* blessed_object_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_blessed_object_env)));
+
+    SV** sv_obj_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+    SV* sv_obj_env = sv_obj_env_ptr ? *sv_obj_env_ptr : &PL_sv_undef;
+    void* obj_env = INT2PTR(void*, SvIV(SvRV(sv_obj_env)));
+    
+    env = blessed_object_env->get_pointer(blessed_object_env, blessed_object_stack, obj_env);
+  }
+  
+  return env;
+}
+
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
