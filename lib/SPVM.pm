@@ -24,7 +24,6 @@ use Carp 'confess';
 my $BUILDER;
 my $BOOT_COMPILER;
 my $BOOT_RUNTIME;
-my $BOOT_DYNAMIC_LIB_FILES = {};
 my $BOOT_ENV;
 my $BOOT_STACK;
 my $COMPILER;
@@ -53,60 +52,28 @@ sub use_spvm_module {
   }
 }
 
-sub load_dynamic_libs {
-  my ($runtime, $dynamic_lib_files) = @_;
+sub boot_load_dynamic_libs {
+  my ($runtime) = @_;
 
   my $class_names = SPVM::Builder::Runtime->get_class_names($runtime);
 
-  # Set addresses of native methods and precompile methods
+  # Set addresses of native methods
   for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
+    my $category = 'native';
+    my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
     
-    for my $category ('precompile', 'native') {
-      my $cc = SPVM::Builder::CC->new(
-        build_dir => $BUILDER->build_dir,
-        at_runtime => 1,
-      );
-      my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
+    if (@$method_names) {
+      # Build classs - Compile C source codes and link them to SPVM precompile method
+      # Shared library which is already installed in distribution directory
+      my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+      my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
       
-      if (@$method_names) {
-        # Build classs - Compile C source codes and link them to SPVM precompile method
-        # Shared library which is already installed in distribution directory
-        my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
-        my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+      if (-f $dynamic_lib_file) {
+        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, [], $category);
         
-        # Try to build the shared library at runtime if shared library is not found
-        unless (-f $dynamic_lib_file) {
-          my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
-          my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
-          my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
-          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
-          my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
-          $dynamic_lib_file = $cc->build_at_runtime($class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
-        }
-        
-        if (-f $dynamic_lib_file) {
-          $dynamic_lib_files->{$category}{$class_name} = $dynamic_lib_file;
-        }
-      }
-    }
-  }
-
-  # Set function addresses of native and precompile methods
-  for my $category ('precompile', 'native') {
-    for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
-      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
-      my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
-      my $anon_class_names = SPVM::Builder::Runtime->get_anon_class_names($runtime, $class_name);
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
-      
-      for my $method_name (sort keys %$method_addresses) {
-        my $cfunc_address = $method_addresses->{$method_name};
-        if ($category eq 'native') {
+        for my $method_name (sort keys %$method_addresses) {
+          my $cfunc_address = $method_addresses->{$method_name};
           SPVM::Builder::Runtime->set_native_method_address($runtime, $class_name, $method_name, $cfunc_address);
-        }
-        elsif ($category eq 'precompile') {
-          SPVM::Builder::Runtime->set_precompile_method_address($runtime, $class_name, $method_name, $cfunc_address);
         }
       }
     }
@@ -215,7 +182,7 @@ sub spvm_init_runtime {
     
     $BOOT_RUNTIME = $BOOT_COMPILER->build_runtime;
 
-    &load_dynamic_libs($BOOT_RUNTIME, $BOOT_DYNAMIC_LIB_FILES);
+    &boot_load_dynamic_libs($BOOT_RUNTIME);
 
     # Build an environment
     $BOOT_ENV = SPVM::Builder::Runtime->build_env($BOOT_RUNTIME);
