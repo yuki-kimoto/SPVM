@@ -1,6 +1,6 @@
 package SPVM;
 
-our $VERSION = '0.9682';
+our $VERSION = $SPVM::Builder::VERSION;
 
 use 5.008007;
 use strict;
@@ -40,9 +40,6 @@ my $SPVM_STACK;
 
 sub GET_ENV { $ENV }
 sub GET_STACK { $STACK }
-
-require XSLoader;
-XSLoader::load('SPVM', $VERSION);
 
 my $loaded_spvm_modules = {};
 

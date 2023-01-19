@@ -1,5 +1,7 @@
 package SPVM::Builder;
 
+our $VERSION = '0.9682';
+
 use strict;
 use warnings;
 
@@ -14,9 +16,8 @@ use SPVM::Builder::Runtime;
 use SPVM::Builder::Env;
 use SPVM::Builder::Stack;
 
-# This SPVM load is needed for SPVM::Builder XS method binding to Perl
-# because SPVM::Builder XS method is loaded when SPVM is loaded
-use SPVM();
+require XSLoader;
+XSLoader::load('SPVM', $VERSION);
 
 # Fields
 sub build_dir {
