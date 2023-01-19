@@ -13,7 +13,7 @@ class Runtime {
   }
   
   # Class Methods
-  native static method set_command_info : void ($env : Native::Env);
+  native static method set_command_info : void ($env : Native::Env, $program_name : string, $argv : string[]);
   
   native static method call_init_blocks : void ($env : Native::Env);
   

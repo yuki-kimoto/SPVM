@@ -341,6 +341,10 @@ INIT {
 
     my $native_runtime = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $SPVM_RUNTIME, 'native_runtime');
     $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Native::Env", "new", $native_runtime);
+    
+    SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $SPVM_ENV, $0, \@ARGV);
+    
+    SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $SPVM_ENV);
   }
   
   # This is needed in the case that SPVM->import is not called.
