@@ -221,6 +221,11 @@ sub init_runtime {
 }
 
 sub spvm_init_runtime {
+  unless ($BUILDER) {
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
+  
   unless ($BOOT_RUNTIME) {
     $BOOT_COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
@@ -270,11 +275,6 @@ sub spvm_init_runtime {
 sub import {
   my ($class, $class_name) = @_;
   
-  unless ($BUILDER) {
-    my $build_dir = $ENV{SPVM_BUILD_DIR};
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-  }
-
   {
     my $start_classes_length = 0;
     if ($SPVM_RUNTIME) {
@@ -333,6 +333,10 @@ sub import {
 }
 
 INIT {
+  {
+    &spvm_init_runtime();
+  }
+  
   # This is needed in the case that SPVM->import is not called.
   &init_runtime();
   
