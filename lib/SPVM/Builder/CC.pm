@@ -129,7 +129,7 @@ sub build_at_runtime {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set to build a $category method at runtime";
+    confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Source directory
@@ -674,7 +674,7 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for link";
+    confess "The \"build_dir\" field must be defined to build the native module for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config
