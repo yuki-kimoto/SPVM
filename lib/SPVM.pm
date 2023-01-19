@@ -440,6 +440,73 @@ sub bind_to_perl {
   }
 }
 
+my $SPVM_BIND_TO_PERL_CLASS_NAME_H = {};
+sub spvm_bind_to_perl {
+  my ($runtime, $class_names) = @_;
+
+  for my $class_name (@$class_names) {
+    next if $class_name =~ /::anon/;
+
+    my $perl_class_name_base = "SPVM::";
+    my $perl_class_name = "$perl_class_name_base$class_name";
+    
+    unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name}) {
+      
+      my $parent_class_name = $runtime->get_parent_class_name($class_name);
+      my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
+      
+      # The inheritance
+      my @isa;
+      if (defined $parent_class_name) {
+        push @isa, "$perl_class_name_base$parent_class_name";
+      }
+      push @isa, 'SPVM::BlessedObject::Class';
+      my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
+      
+      my $code = "package $perl_class_name; $isa";
+      eval $code;
+      
+      if (my $error = $@) {
+        confess $error;
+      }
+      $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
+    }
+
+    my $method_names = $runtime->get_method_names($class_name);
+
+    for my $method_name (@$method_names) {
+      # Destrutor is skip
+      if ($method_name eq 'DESTROY') {
+        next;
+      }
+      # Anon method is skip
+      elsif (length $method_name == 0) {
+        next;
+      }
+      
+      my $perl_method_abs_name = "${perl_class_name}::$method_name";
+      my $is_class_method = $runtime->get_method_is_class_method($class_name, $method_name);
+      
+      if ($is_class_method) {
+        # Define Perl method
+        no strict 'refs';
+        *{"$perl_method_abs_name"} = sub {
+          my $perl_class_name = shift;
+          
+          my $return_value;
+          
+          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
+          my $error = $@;
+          if ($error) {
+            confess $error;
+          }
+          $return_value;
+        };
+      }
+    }
+  }
+}
+
 sub new_byte_array {
   SPVM::ExchangeAPI::new_byte_array($ENV, $STACK, @_);
 }
