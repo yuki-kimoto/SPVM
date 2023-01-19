@@ -570,6 +570,7 @@ t/02_vm/05_op/warn.t
 t/02_vm/05_op/weaken.t
 t/02_vm/06_native_api/compile_native_api.pl
 t/02_vm/06_native_api/native_api.t
+t/02_vm/06_native_api/native_api2.t
 t/02_vm/06_native_api/native_api_cached.t
 t/02_vm/06_native_api/native_api_cpp.t
 t/02_vm/06_native_api/resource.t
