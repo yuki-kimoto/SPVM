@@ -225,6 +225,10 @@ lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
+lib/SPVM/Env.c
+lib/SPVM/Env.config
+lib/SPVM/Env.pm
+lib/SPVM/Env.spvm
 lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
@@ -258,14 +262,6 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
-lib/SPVM/Native/Env.c
-lib/SPVM/Native/Env.config
-lib/SPVM/Native/Env.pm
-lib/SPVM/Native/Env.spvm
-lib/SPVM/Native/Stack.c
-lib/SPVM/Native/Stack.config
-lib/SPVM/Native/Stack.pm
-lib/SPVM/Native/Stack.spvm
 lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point/Interface.pm
@@ -285,6 +281,10 @@ lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.pm
 lib/SPVM/Sort.spvm
+lib/SPVM/Stack.c
+lib/SPVM/Stack.config
+lib/SPVM/Stack.pm
+lib/SPVM/Stack.spvm
 lib/SPVM/Stringable.pm
 lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm

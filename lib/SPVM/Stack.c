@@ -1,8 +1,8 @@
 #include "spvm_native.h"
 
-static const char* FILE_NAME = "Native/Stack.c";
+static const char* FILE_NAME = "Stack.c";
 
-int32_t SPVM__Native__Stack__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Stack__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -14,7 +14,7 @@ int32_t SPVM__Native__Stack__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_VALUE* my_stack = my_env->new_stack(my_env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Native::Stack", my_stack, &e, FILE_NAME, __LINE__);
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Stack", my_stack, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   env->set_field_object_by_name(env, stack, obj_self, "env", obj_my_env, &e, FILE_NAME, __LINE__);
@@ -25,7 +25,7 @@ int32_t SPVM__Native__Stack__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Stack__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Stack__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

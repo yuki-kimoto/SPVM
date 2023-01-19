@@ -1,0 +1,12 @@
+class Stack : pointer {
+  use Env;
+  
+  # Fields
+  has env : Env;
+  
+  # Class Methods
+  native static method new : Stack ($env : Env);
+  
+  # Instance Methods
+  native method DESTROY : void ();
+}

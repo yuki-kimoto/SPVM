@@ -230,8 +230,8 @@ sub spvm_init_runtime {
     # Load SPVM Compilers
     use_spvm_module($BOOT_COMPILER, "Compiler", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Runtime", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Native::Env", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Native::Stack", __FILE__, __LINE__);
+    use_spvm_module($BOOT_COMPILER, "Env", __FILE__, __LINE__);
+    use_spvm_module($BOOT_COMPILER, "Stack", __FILE__, __LINE__);
     
     $BOOT_RUNTIME = $BOOT_COMPILER->build_runtime;
 
@@ -336,13 +336,13 @@ INIT {
     my $class_names = $SPVM_RUNTIME->get_class_names;
     &spvm_bind_to_perl($SPVM_RUNTIME, $class_names);
     
-    $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Native::Env", "new", $SPVM_RUNTIME);
+    $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Env", "new", $SPVM_RUNTIME);
     
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $SPVM_ENV, $0, \@ARGV);
     
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $SPVM_ENV);
     
-    my $SPVM_STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Native::Stack', 'new', $SPVM_ENV);
+    my $SPVM_STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Stack', 'new', $SPVM_ENV);
   }
   
   # This is needed in the case that SPVM->import is not called.

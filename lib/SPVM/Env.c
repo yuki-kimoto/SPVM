@@ -1,8 +1,8 @@
 #include "spvm_native.h"
 
-static const char* FILE_NAME = "Native/Env.c";
+static const char* FILE_NAME = "Env.c";
 
-int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -20,7 +20,7 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Initialize env
   my_env->init_env(my_env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Native::Env", my_env, &e, FILE_NAME, __LINE__);
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &e, FILE_NAME, __LINE__);
@@ -31,7 +31,7 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
