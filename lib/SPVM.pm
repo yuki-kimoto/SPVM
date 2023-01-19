@@ -335,6 +335,9 @@ sub import {
 INIT {
   {
     &spvm_init_runtime();
+    
+    my $class_names = $SPVM_RUNTIME->get_class_names;
+    &spvm_bind_to_perl($SPVM_RUNTIME, $class_names);
   }
   
   # This is needed in the case that SPVM->import is not called.
@@ -490,12 +493,17 @@ sub spvm_bind_to_perl {
       if ($is_class_method) {
         # Define Perl method
         no strict 'refs';
+        
+        # Suppress refer to objects
+        my $class_name_string = "$class_name";
+        my $method_name_string = "$method_name";
+        
         *{"$perl_method_abs_name"} = sub {
           my $perl_class_name = shift;
           
           my $return_value;
           
-          eval { $return_value = SPVM::ExchangeAPI::call_method($SPVM_ENV, $SPVM_STACK, $class_name, $method_name, @_) };
+          eval { $return_value = SPVM::ExchangeAPI::call_method($SPVM_ENV, $SPVM_STACK, $class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
