@@ -338,6 +338,9 @@ INIT {
     
     my $class_names = $SPVM_RUNTIME->get_class_names;
     &spvm_bind_to_perl($SPVM_RUNTIME, $class_names);
+
+    my $native_runtime = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $SPVM_RUNTIME, 'native_runtime');
+    $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Native::Env", "new", $native_runtime);
   }
   
   # This is needed in the case that SPVM->import is not called.
