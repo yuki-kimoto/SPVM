@@ -70,7 +70,6 @@ sub load_dynamic_libs {
         build_dir => $BUILDER->build_dir,
         at_runtime => 1,
       );
-      
       my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
       
       if (@$method_names) {
@@ -181,6 +180,8 @@ sub spvm_load_dynamic_libs {
     );
     
     for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
+      next unless grep { "$_" eq $class_name } @$class_names;
+      
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
       my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
       my $anon_class_names = $runtime->get_anon_class_names($class_name);
@@ -189,10 +190,10 @@ sub spvm_load_dynamic_libs {
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+          $runtime->set_native_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->env, $runtime->stack, $cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+          $runtime->set_precompile_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->env, $runtime->stack, $cfunc_address));
         }
       }
     }
@@ -303,6 +304,30 @@ sub import {
     
     &spvm_init_runtime();
     
+    my ($file, $line) = (caller)[1, 2];
+    
+    # Add class informations
+    my $build_success;
+    if (defined $class_name) {
+      
+      $SPVM_COMPILER = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Compiler", "new");
+      for my $module_dir (@{$BUILDER->module_dirs}) {
+        $SPVM_COMPILER->add_module_dir($module_dir);
+      }
+      $SPVM_COMPILER->set_start_file(__FILE__);
+      $SPVM_COMPILER->set_start_line(__LINE__ + 1);
+      my $success = $SPVM_COMPILER->compile($class_name);
+      unless ($success) {
+        my $error_messages = $SPVM_COMPILER->get_error_messages;
+        for my $error_message (@$error_messages) {
+          printf STDERR "[CompileError]$error_message\n";
+        }
+        exit(255);
+      }
+      $SPVM_RUNTIME = $SPVM_COMPILER->build_runtime;
+
+      &spvm_load_dynamic_libs($SPVM_RUNTIME, $SPVM_DYNAMIC_LIB_FILES);
+    }
   }
   
   my $start_classes_length = SPVM::Builder::Runtime->get_classes_length($RUNTIME);

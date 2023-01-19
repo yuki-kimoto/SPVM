@@ -587,7 +587,7 @@ int32_t SPVM_API_RUNTIME_get_class_methods_base_id(SPVM_RUNTIME* runtime, int32_
 int32_t SPVM_API_RUNTIME_get_class_methods_length(SPVM_RUNTIME* runtime, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
+  // warn("GGG %d", class_id);
   assert(class);
   
   int32_t class_methods_length = class->methods_length;

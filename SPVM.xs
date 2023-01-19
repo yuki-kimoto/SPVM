@@ -4317,9 +4317,9 @@ get_anon_class_names(...)
   
   // Copy class load path to builder
   int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
-
+  
   int32_t methods_length = api_env->api->runtime->get_class_methods_length(runtime, class_id);
-
+  
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
     int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);

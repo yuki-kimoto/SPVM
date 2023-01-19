@@ -1,4 +1,5 @@
 class TestCase::Object {
+  use TestCase;
   use TestCase::Minimal;
   use TestCase::Simple;
   use TestCase::Destructor::ExceptionNotOverride;
