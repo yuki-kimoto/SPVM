@@ -258,7 +258,6 @@ sub import {
     use_spvm_module($BOOT_COMPILER, "Native::Precompile", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Stack", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Fn", __FILE__, __LINE__);
     
     $BOOT_RUNTIME = $BOOT_COMPILER->build_runtime;
 
@@ -274,26 +273,6 @@ sub import {
     SPVM::Builder::Runtime->call_init_blocks($BOOT_ENV);
     
     $BOOT_STACK = SPVM::Builder::Runtime->build_stack($BOOT_ENV);
-
-    my $class_names = SPVM::Builder::Runtime->get_class_names($BOOT_RUNTIME);
-    
-    # Test codes
-    my $int_max = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Fn", "abs", -3);
-    unless ($int_max == 3) {
-      confess("Unexpected");
-    }
-    my $int_obj = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Int", "new", 1);
-    unless (ref $int_obj eq 'SPVM::BlessedObject::Class') {
-      confess("Unexpected");
-    }
-    my $value = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $int_obj, "value");
-    unless ($value == 1) {
-      confess("Unexpected");
-    }
-    my $value2 = $int_obj->value;
-    unless ($value2 == 1) {
-      confess("Unexpected");
-    }
   }
   
   {
