@@ -201,11 +201,11 @@ sub spvm_load_dynamic_libs {
 }
 
 sub init_runtime {
+  unless ($BUILDER) {
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
   unless ($RUNTIME) {
-    unless ($BUILDER) {
-      my $build_dir = $ENV{SPVM_BUILD_DIR};
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    }
     $COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
     );
@@ -221,6 +221,11 @@ sub init_runtime {
 }
 
 sub spvm_init_runtime {
+  unless ($BUILDER) {
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
+  
   unless ($BOOT_RUNTIME) {
     $BOOT_COMPILER = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
