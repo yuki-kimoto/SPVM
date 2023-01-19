@@ -1,5 +1,4 @@
 class Runtime : pointer {
-  use Native::Precompile;
   use Native::Env;
   use Native::Stack;
   

@@ -266,10 +266,6 @@ lib/SPVM/Native/Env.c
 lib/SPVM/Native/Env.config
 lib/SPVM/Native/Env.pm
 lib/SPVM/Native/Env.spvm
-lib/SPVM/Native/Precompile.c
-lib/SPVM/Native/Precompile.config
-lib/SPVM/Native/Precompile.pm
-lib/SPVM/Native/Precompile.spvm
 lib/SPVM/Native/Stack.c
 lib/SPVM/Native/Stack.config
 lib/SPVM/Native/Stack.pm

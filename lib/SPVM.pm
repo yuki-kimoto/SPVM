@@ -231,7 +231,6 @@ sub spvm_init_runtime {
     use_spvm_module($BOOT_COMPILER, "Compiler", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Runtime", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Compiler", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Native::Precompile", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Stack", __FILE__, __LINE__);
     
