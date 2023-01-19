@@ -46,11 +46,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI2->src_bar);
 }
 
-# get string field
-{
-  ok(SPVM::TestCase::NativeAPI2->get_string_field);
-}
-
 # Clear exception
 SPVM::set_exception(undef);
 

@@ -1,12 +1,5 @@
 class TestCase::NativeAPI2 {
 
-  has text : rw string;
-  has color : rw int;
-  has draw_left : rw int;
-  has draw_top : rw int;
-  has draw_width : rw int;
-  has draw_height : rw int;
-  
   static method new : TestCase::NativeAPI2 () {
     return new TestCase::NativeAPI2;
   }
@@ -27,20 +20,4 @@ class TestCase::NativeAPI2 {
 
   native static method src_bar : int ();
   
-  static method get_string_field : int () {
-    my $na = new TestCase::NativeAPI2;
-
-    $na->set_text("Hello");
-
-    $na->set_draw_left(1);
-    $na->set_draw_top(2);
-    $na->set_draw_width(3);
-    $na->set_draw_height(4);
-    
-    my $ret = $na->get_string_field_native;
-    
-    return $ret;
-  }
-  
-  native method get_string_field_native : int ();
 }

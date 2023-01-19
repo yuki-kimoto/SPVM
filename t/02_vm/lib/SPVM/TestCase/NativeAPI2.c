@@ -57,35 +57,3 @@ int32_t SPVM__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI2__get_string_field_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  void* sv_self = stack[0].oval;
-  
-  int32_t e = 0;
-  
-  void* sv_text = env->get_field_object_by_name(env, stack, sv_self, "text", &e, __FILE__, __LINE__);
-  if (e) {
-    stack[0].ival = 0;
-    return 0;
-  }
-  
-  int32_t length = env->length(env, stack, sv_text);
-  
-  if (length != 5) {
-    stack[0].ival = 0;
-    return 0;
-  }
-
-  const char* text_chars = env->get_chars(env, stack, sv_text);
-
-  if (strcmp(text_chars, "Hello") != 0) {
-    stack[0].ival = 0;
-    return 0;
-  }
-  
-  stack[0].ival = 1;
-  
-  return 0;
-}

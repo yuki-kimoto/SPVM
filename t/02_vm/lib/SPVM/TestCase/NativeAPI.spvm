@@ -29,6 +29,14 @@ class TestCase::NativeAPI {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
   our $MINIMAL_VALUE : TestCase::Minimal;
+
+  has text : rw string;
+  has color : rw int;
+  has draw_left : rw int;
+  has draw_top : rw int;
+  has draw_width : rw int;
+  has draw_height : rw int;
+  
   
   static method new : TestCase::NativeAPI () {
     return new TestCase::NativeAPI;
@@ -1385,4 +1393,21 @@ class TestCase::NativeAPI {
   native static method runtime_get_method_is_enum : int ();
 
   native static method check_stdin_stdout_stderr_binary_mode : int ();
+
+  static method get_string_field : int () {
+    my $na = new TestCase::NativeAPI;
+
+    $na->set_text("Hello");
+
+    $na->set_draw_left(1);
+    $na->set_draw_top(2);
+    $na->set_draw_width(3);
+    $na->set_draw_height(4);
+    
+    my $ret = $na->get_string_field_native;
+    
+    return $ret;
+  }
+  
+  native method get_string_field_native : int ();
 }
