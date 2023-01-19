@@ -495,7 +495,7 @@ sub spvm_bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name, $method_name, @_) };
+          eval { $return_value = SPVM::ExchangeAPI::call_method($SPVM_ENV, $SPVM_STACK, $class_name, $method_name, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
