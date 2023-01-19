@@ -336,6 +336,10 @@ sub import {
 }
 
 INIT {
+  {
+    &spvm_init_runtime();
+  }
+  
   # This is needed in the case that SPVM->import is not called.
   &init_runtime();
   
