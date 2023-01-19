@@ -492,7 +492,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t native_flag = stack[2].ival;
   int32_t precompile_flag = stack[3].ival;
   int32_t enum_flag = stack[4].ival;
-
+  
   void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
   if (e) { return e; }
   void* runtime = env->get_pointer(env, stack, obj_native_runtime);
@@ -519,6 +519,9 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (env->api->runtime->get_method_is_enum(runtime, method_id)) {
         match = 1;
       }
+    }
+    else {
+      match = 1;
     }
 
     if (match) {
