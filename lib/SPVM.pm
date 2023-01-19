@@ -231,7 +231,6 @@ sub spvm_init_runtime {
     use_spvm_module($BOOT_COMPILER, "Compiler", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Runtime", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Compiler", __FILE__, __LINE__);
-    use_spvm_module($BOOT_COMPILER, "Native::Runtime", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Precompile", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Env", __FILE__, __LINE__);
     use_spvm_module($BOOT_COMPILER, "Native::Stack", __FILE__, __LINE__);
@@ -338,9 +337,8 @@ INIT {
     
     my $class_names = $SPVM_RUNTIME->get_class_names;
     &spvm_bind_to_perl($SPVM_RUNTIME, $class_names);
-
-    my $native_runtime = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, $SPVM_RUNTIME, 'native_runtime');
-    $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Native::Env", "new", $native_runtime);
+    
+    $SPVM_ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Native::Env", "new", $SPVM_RUNTIME);
     
     SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $SPVM_ENV, $0, \@ARGV);
     

@@ -169,7 +169,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Compiler');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Compiler');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Runtime');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Precompile');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Env');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Stack');

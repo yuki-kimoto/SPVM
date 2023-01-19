@@ -1,10 +1,7 @@
-class Runtime {
-  use Native::Runtime;
+class Runtime : pointer {
   use Native::Precompile;
   use Native::Env;
   use Native::Stack;
-  
-  has native_runtime : ro Native::Runtime;
   
   static method new : Runtime () {
     my $self = new Runtime;

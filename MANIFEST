@@ -270,10 +270,6 @@ lib/SPVM/Native/Precompile.c
 lib/SPVM/Native/Precompile.config
 lib/SPVM/Native/Precompile.pm
 lib/SPVM/Native/Precompile.spvm
-lib/SPVM/Native/Runtime.c
-lib/SPVM/Native/Runtime.config
-lib/SPVM/Native/Runtime.pm
-lib/SPVM/Native/Runtime.spvm
 lib/SPVM/Native/Stack.c
 lib/SPVM/Native/Stack.config
 lib/SPVM/Native/Stack.pm

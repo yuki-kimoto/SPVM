@@ -12,10 +12,7 @@ int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   env->api->runtime->free_object(runtime);
   
@@ -38,9 +35,7 @@ int32_t SPVM__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
   
   void* obj_address = stack[3].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Method id
   int32_t method_id = env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
@@ -63,9 +58,7 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
   void* obj_class_name = stack[1].oval;
   void* obj_method_name = stack[2].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Class name
   const char* class_name = env->get_chars(env, stack, obj_class_name);
@@ -96,9 +89,7 @@ int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_class_name = stack[1].oval;
   void* obj_method_name = stack[2].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Class name
   const char* class_name = env->get_chars(env, stack, obj_class_name);
@@ -127,9 +118,7 @@ int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
   void* obj_class_name = stack[1].oval;
   void* obj_method_name = stack[2].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Class name
   const char* class_name = env->get_chars(env, stack, obj_class_name);
@@ -166,9 +155,7 @@ int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
   
   void* obj_address = stack[3].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Method id
   int32_t method_id = env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
@@ -192,9 +179,7 @@ int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* 
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
 
   // New allocator
   void* allocator = env->api->allocator->new_object();
@@ -239,9 +224,7 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   void* obj_method_name = stack[2].oval;
   const char* method_name = env->get_chars(env, stack, obj_method_name);
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
 
   // New allocator
   void* allocator = env->api->allocator->new_object();
@@ -321,9 +304,7 @@ int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_self = stack[0].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // SPVM 32bit codes
   int32_t* runtime_runtime_codes = env->api->runtime->get_runtime_codes(runtime);
@@ -346,9 +327,7 @@ int32_t SPVM__Runtime__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_self = stack[0].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t classes_length = env->api->runtime->get_classes_length(runtime);
   
@@ -365,9 +344,7 @@ int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_self = stack[0].oval;
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t classes_length = env->api->runtime->get_classes_length(runtime);
   
@@ -395,9 +372,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   // Copy class load path to builder
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
@@ -444,9 +419,7 @@ int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
   int32_t parent_class_id = env->api->runtime->get_class_parent_class_id(runtime, class_id);
@@ -474,9 +447,7 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
 
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
 
@@ -524,9 +495,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t precompile_flag = stack[3].ival;
   int32_t enum_flag = stack[4].ival;
   
-  void* obj_native_runtime = env->get_field_object_by_name(env, stack, obj_self, "native_runtime", &e, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  void* runtime = env->get_pointer(env, stack, obj_native_runtime);
+  void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
 
