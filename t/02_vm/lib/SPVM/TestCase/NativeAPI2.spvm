@@ -1,26 +1,11 @@
 class TestCase::NativeAPI2 {
 
-  use Hash;
-  use StringList;
-
-  has first : rw TestCase::NativeAPI2;
-  has last : rw TestCase::NativeAPI2;
-  has sibparent : rw TestCase::NativeAPI2;
-  has moresib : rw byte;
-  has tag : rw string;
-  has id : rw string;
-  has style : rw Hash;
-  has classes : rw string[];
   has text : rw string;
-  has calcurated_style : rw Hash;
   has color : rw int;
-  has background_color : rw int;
   has draw_left : rw int;
   has draw_top : rw int;
   has draw_width : rw int;
   has draw_height : rw int;
-  has execution_order_before_z_index_sort : rw int;
-  has z_index : rw int;
   
   static method new : TestCase::NativeAPI2 () {
     return new TestCase::NativeAPI2;
