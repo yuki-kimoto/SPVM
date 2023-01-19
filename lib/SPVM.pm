@@ -26,11 +26,6 @@ my $BOOT_COMPILER;
 my $BOOT_RUNTIME;
 my $BOOT_ENV;
 my $BOOT_STACK;
-my $COMPILER;
-my $RUNTIME;
-my $DYNAMIC_LIB_FILES = {};
-my $ENV;
-my $STACK;
 my $SPVM_COMPILER;
 my $SPVM_RUNTIME;
 my $SPVM_DYNAMIC_LIB_FILES = {};
@@ -269,7 +264,6 @@ INIT {
   
   $BUILDER = undef;
   $BOOT_COMPILER = undef;
-  $COMPILER = undef;
   $SPVM_COMPILER = undef;
 }
 
@@ -281,9 +275,6 @@ END {
   $BOOT_STACK = undef;
   $BOOT_ENV = undef;
   $BOOT_RUNTIME = undef;
-  $STACK = undef;
-  $ENV = undef;
-  $RUNTIME = undef;
 }
 
 my $SPVM_BIND_TO_PERL_CLASS_NAME_H = {};
