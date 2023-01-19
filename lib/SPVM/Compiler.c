@@ -2,6 +2,38 @@
 
 static const char* FILE_NAME = "Compiler.c";
 
+int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+
+  // Create compiler
+  void* compiler = env->api->compiler->new_object();
+  
+  void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &e, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].oval = obj_self;
+  
+  return 0;
+}
+
+int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  env->api->compiler->free_object(compiler);
+  
+  return 0;
+}
+
 int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -13,8 +45,7 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
   int32_t compile_error_code = env->api->compiler->compile(compiler, class_name);
@@ -37,8 +68,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Build runtime information
   void* runtime = env->api->runtime->new_object(env);
@@ -70,8 +100,7 @@ int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_start_file = stack[1].oval;
 
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
   
   const char* start_file = NULL;
   if (obj_start_file) {
@@ -92,8 +121,7 @@ int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t start_line = stack[1].ival;
 
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
   
   env->api->compiler->set_start_line(compiler, start_line);
   
@@ -106,8 +134,7 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
 
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
 
   int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
   
@@ -134,8 +161,7 @@ int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_module_dir = stack[1].oval;
 
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "native_compiler", &e, FILE_NAME, __LINE__);
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
+  void* compiler = env->get_pointer(env, stack, obj_self);
   
   const char* module_dir = NULL;
   if (obj_module_dir) {

@@ -1,23 +1,12 @@
-class Compiler {
-  use Native::Compiler;
+class Compiler : pointer {
   use Runtime;
   
-  # Fields
-  has native_compiler : Native::Compiler;
-  
   # Class Methods
-  static method new : Compiler () {
-    
-    my $self = new Compiler;
-    
-    $self->{native_compiler} = Native::Compiler->new;
-    
-    return $self;
-  }
+  native static method new : Compiler ();
   
   # Instance Methods
   native method compile : int ($class_name : string);
-
+  
   native method build_runtime : Runtime ();
   
   native method set_start_file : void ($start_file : string);
