@@ -4023,14 +4023,10 @@ get_anon_class_names(...)
 {
   (void)RETVAL;
   
-  SV* sv_self = ST(0);
-
-  SV* sv_runtime = ST(1);
+  SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
-  SV* sv_class_name = ST(2);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
 
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
