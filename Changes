@@ -1,4 +1,6 @@
 0.9683 2022-01-19
+  [New Features]
+    * Added the Compiler class.
   [Exception Message Improvement]
     * Exception messages are improved.
       - "SPVM_BUILD_DIR environment variable must be set to build a $category method at runtime";
