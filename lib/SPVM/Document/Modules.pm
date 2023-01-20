@@ -10,6 +10,8 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =over 2
 
+=item * L<Address|SPVM::Address>
+
 =item * L<Array|SPVM::Array>
 
 =item * L<Bool|SPVM::Bool>
@@ -26,8 +28,6 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Comparator|SPVM::Comparator>
 
-=item * L<Comparator::Byte|SPVM::Comparator::Byte>
-
 =item * L<Comparator::Double|SPVM::Comparator::Double>
 
 =item * L<Comparator::Float|SPVM::Comparator::Float>
@@ -36,9 +36,9 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Comparator::Long|SPVM::Comparator::Long>
 
-=item * L<Comparator::Short|SPVM::Comparator::Short>
-
 =item * L<Comparator::String|SPVM::Comparator::String>
+
+=item * L<Compiler|SPVM::Compiler>
 
 =item * L<Complex_2d|SPVM::Complex_2d>
 
@@ -47,6 +47,8 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 =item * L<Double|SPVM::Double>
 
 =item * L<DoubleList|SPVM::DoubleList>
+
+=item * L<Env|SPVM::Env>
 
 =item * L<EqualityChecker|SPVM::EqualityChecker>
 
@@ -84,11 +86,21 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Point3D|SPVM::Point3D>
 
+=item * L<Point::Interface|SPVM::Point::Interface>
+
+=item * L<Runtime|SPVM::Runtime>
+
+=item * L<Scope::Guard|SPVM::Scope::Guard>
+
+=item * L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>
+
 =item * L<Short|SPVM::Short>
 
 =item * L<ShortList|SPVM::ShortList>
 
 =item * L<Sort|SPVM::Sort>
+
+=item * L<Stack|SPVM::Stack>
 
 =item * L<Stringable|SPVM::Stringable>
 
