@@ -6,7 +6,7 @@ use warnings;
 sub load_dynamic_libs {
   my ($self) = @_;
 
-  my $class_names = SPVM::Builder::Runtime->get_class_names($self);
+  my $class_names = $self->get_class_names;
 
   # Set addresses of native methods
   for my $class_name (@$class_names) {

@@ -4066,7 +4066,7 @@ get_class_names(...)
 {
   (void)RETVAL;
   
-  SV* sv_runtime = ST(1);
+  SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
