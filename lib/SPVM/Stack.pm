@@ -1,4 +1,4 @@
-package SPVM::Native::Stack;
+package SPVM::Stack;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Native::Stack;
 
 =head1 Name
 
-SPVM::Native::Stack - foo
+SPVM::Stack - foo
 
 =head1 Description
 
-C<SPVM::Native::Stack> is the L<SPVM>'s C<Native::Stack> class.
+C<SPVM::Stack> is the L<SPVM>'s C<Stack> class.
 
 =head1 Usage
 
-  use Native::Stack;
+  use Stack;
   
 =head1 Fields
 
