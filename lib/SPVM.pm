@@ -146,7 +146,7 @@ sub init_runtime {
     # Call INIT blocks
     SPVM::Builder::Runtime->call_init_blocks($BUILDER_ENV);
     
-    $BUILDER_STACK = SPVM::Builder::Runtime->build_stack($BUILDER_ENV);
+    $BUILDER_STACK = $BUILDER_ENV->build_stack;
     
     $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, "Compiler", "new");
     for my $module_dir (@{$BUILDER->module_dirs}) {

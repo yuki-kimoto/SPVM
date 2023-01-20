@@ -4278,29 +4278,6 @@ build_env(...)
 }
 
 SV*
-build_stack(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-
-  // Env
-  SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
-
-  // Create native_stack
-  SPVM_VALUE* stack = env->new_stack(env);
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_object(aTHX_ stack, "SPVM::Builder::Stack");
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-
-  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-
-  XPUSHs(sv_stack);
-  XSRETURN(1);
-}
-
-SV*
 call_init_blocks(...)
   PPCODE:
 {
@@ -4371,6 +4348,27 @@ set_command_info(...)
 }
 
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
+
+SV*
+build_stack(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // Env
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+
+  // Create native_stack
+  SPVM_VALUE* stack = env->new_stack(env);
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_object(aTHX_ stack, "SPVM::Builder::Stack");
+  HV* hv_stack = (HV*)SvRV(sv_stack);
+
+  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+
+  XPUSHs(sv_stack);
+  XSRETURN(1);
+}
 
 SV*
 DESTROY(...)
