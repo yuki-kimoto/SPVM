@@ -10,7 +10,7 @@ SPVM::Compiler - Compiler
 
 =head1 Description
 
-C<SPVM::Compiler> is C<Compiler> class in L<SPVM>. It compiles SPVM source codes and build the runtime.
+C<SPVM::Compiler> is the C<Compiler> class in the L<SPVM> language. It compiles SPVM source codes and builds the runtime.
 
 =head1 Usage
 
@@ -52,9 +52,9 @@ C<SPVM::Compiler> is C<Compiler> class in L<SPVM>. It compiles SPVM source codes
 
 =head1 Pointer
 
-C<Compiler> is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
+The C<Compiler> class is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
 
-The insntace has the pointer to a L<compiler|SPVM::Document::NativeAPI::Compiler> object.
+Its insntace has a pointer to a L<compiler|SPVM::Document::NativeAPI::Compiler> object.
 
 =head1 Class Methods
 
