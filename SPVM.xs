@@ -4277,22 +4277,22 @@ build_env(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
+
 SV*
 set_command_info(...)
   PPCODE:
 {
   (void)RETVAL;
   
-  SV* sv_class = ST(0);
-
-  SV* sv_env = ST(1);
+  SV* sv_env = ST(0);
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   
-  SV* sv_program_name = ST(2);
+  SV* sv_program_name = ST(1);
   const char* program_name = SvPV_nolen(sv_program_name);
   int32_t program_name_length = strlen(program_name);
   
-  SV* sv_argv = ST(3);
+  SV* sv_argv = ST(2);
   AV* av_argv = (AV*)SvRV(sv_argv);
   int32_t argv_length = av_len(av_argv) + 1;
   
@@ -4330,8 +4330,6 @@ set_command_info(...)
   
   XSRETURN(0);
 }
-
-MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
 call_init_blocks(...)

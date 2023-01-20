@@ -141,7 +141,7 @@ sub init_runtime {
     $BUILDER_ENV = $builder_runtime->build_env;
     
     # Set command line info
-    SPVM::Builder::Runtime->set_command_info($BUILDER_ENV, $0, \@ARGV);
+    $BUILDER_ENV->set_command_info($0, \@ARGV);
     
     # Call INIT blocks
     $BUILDER_ENV->call_init_blocks;
