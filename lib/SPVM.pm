@@ -210,7 +210,7 @@ INIT {
   my $class_names = $RUNTIME->get_class_names;
   &bind_to_perl($RUNTIME, $class_names);
   
-  $ENV = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, "Env", "new", $RUNTIME);
+  $ENV = $RUNTIME->build_env;
   
   SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Runtime', 'set_command_info', $ENV, $0, \@ARGV);
   

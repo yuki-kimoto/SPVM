@@ -72,4 +72,6 @@ class Runtime : pointer {
   }
   
   private native method _get_method_names : string[] ($class_name : string, $native_flag : int, $precompile_flag : int, $enum_flag : int);
+
+  native method build_env : Env ();
 }
