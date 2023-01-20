@@ -17,7 +17,6 @@ use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
-use SPVM::Builder::Runtime;
 
 sub global_before_compile {
   my $self = shift;
