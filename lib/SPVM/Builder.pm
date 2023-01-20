@@ -76,7 +76,7 @@ sub build_dynamic_lib_dist {
   my $module_file = $runtime->get_module_file($class_name);
   my $method_names = $runtime->get_method_names($class_name, $category);
   my $anon_class_names = $runtime->get_anon_class_names($class_name);
-  my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
+  my $precompile_source = $runtime->build_precompile_class_source($class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
   
   $cc->build_dist($class_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});

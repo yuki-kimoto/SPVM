@@ -4210,12 +4210,10 @@ SV*
 build_precompile_class_source(...)
   PPCODE:
 {
-  SV* sv_class = ST(0);
-
-  SV* sv_runtime = ST(1);
+  SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
-  SV* sv_class_name = ST(2);
+  SV* sv_class_name = ST(1);
   const char* class_name = SvPV_nolen(sv_class_name);
   
   // Create precompile source

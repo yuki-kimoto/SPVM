@@ -974,7 +974,7 @@ sub build_class_sources {
       my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
       mkpath $build_src_dir;
       my $module_file = $self->runtime->get_module_file($class_name);
-      my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($self->runtime, $class_name);
+      my $precompile_source = $self->runtime->build_precompile_class_source($class_name);
       $builder_cc_precompile->build_precompile_class_source_file(
         $class_name,
         {
