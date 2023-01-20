@@ -4088,32 +4088,6 @@ get_class_names(...)
 }
 
 SV*
-get_classes_length(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_runtime = ST(1);
-  
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-  
-  int32_t classes_length;
-  if (SvOK(sv_runtime)) {
-    void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-    classes_length = api_env->api->runtime->get_classes_length(runtime);
-  }
-  else {
-    classes_length = 0;
-  }
-  SV* sv_classes_length = sv_2mortal(newSViv(classes_length));
-
-  api_env->free_env_raw(api_env);
-  
-  XPUSHs(sv_classes_length);
-  XSRETURN(1);
-}
-
-SV*
 get_module_file(...)
   PPCODE:
 {
