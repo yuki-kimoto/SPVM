@@ -22,8 +22,6 @@ use SPVM::ExchangeAPI;
 use Carp 'confess';
 
 my $BUILDER;
-my $BUILDER_COMPILER;
-my $BUILDER_RUNTIME;
 my $BUILDER_ENV;
 my $BUILDER_STACK;
 my $COMPILER;
@@ -164,21 +162,21 @@ sub init_runtime {
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     }
     
-    $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
+    my $builder_compiler = SPVM::Builder::Compiler->new(
       module_dirs => $BUILDER->module_dirs
     );
     # Load SPVM Compilers
-    use_spvm_module($BUILDER_COMPILER, "Compiler", __FILE__, __LINE__);
-    use_spvm_module($BUILDER_COMPILER, "Runtime", __FILE__, __LINE__);
-    use_spvm_module($BUILDER_COMPILER, "Env", __FILE__, __LINE__);
-    use_spvm_module($BUILDER_COMPILER, "Stack", __FILE__, __LINE__);
+    use_spvm_module($builder_compiler, "Compiler", __FILE__, __LINE__);
+    use_spvm_module($builder_compiler, "Runtime", __FILE__, __LINE__);
+    use_spvm_module($builder_compiler, "Env", __FILE__, __LINE__);
+    use_spvm_module($builder_compiler, "Stack", __FILE__, __LINE__);
     
-    $BUILDER_RUNTIME = $BUILDER_COMPILER->build_runtime;
+    my $builder_runtime = $builder_compiler->build_runtime;
 
-    &boot_load_dynamic_libs($BUILDER_RUNTIME);
+    &boot_load_dynamic_libs($builder_runtime);
 
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Runtime->build_env($BUILDER_RUNTIME);
+    $BUILDER_ENV = SPVM::Builder::Runtime->build_env($builder_runtime);
     
     # Set command line info
     SPVM::Builder::Runtime->set_command_info($BUILDER_ENV, $0, \@ARGV);
@@ -259,7 +257,6 @@ INIT {
   $STACK = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Stack', 'new', $ENV);
   
   $BUILDER = undef;
-  $BUILDER_COMPILER = undef;
   $COMPILER = undef;
 }
 
@@ -270,7 +267,6 @@ END {
   $DYNAMIC_LIB_FILES = undef;
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
-  $BUILDER_RUNTIME = undef;
 }
 
 my $BIND_TO_PERL_CLASS_NAME_H = {};
