@@ -33,34 +33,6 @@ my $STACK;
 sub GET_ENV { $ENV }
 sub GET_STACK { $STACK }
 
-sub builder_load_dynamic_libs {
-  my ($runtime) = @_;
-
-  my $class_names = SPVM::Builder::Runtime->get_class_names($runtime);
-
-  # Set addresses of native methods
-  for my $class_name (@$class_names) {
-    my $category = 'native';
-    my $method_names = SPVM::Builder::Runtime->get_method_names($runtime, $class_name, $category);
-    
-    if (@$method_names) {
-      # Build classs - Compile C source codes and link them to SPVM precompile method
-      # Shared library which is already installed in distribution directory
-      my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
-      my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
-      
-      if (-f $dynamic_lib_file) {
-        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, [], $category);
-        
-        for my $method_name (sort keys %$method_addresses) {
-          my $cfunc_address = $method_addresses->{$method_name};
-          SPVM::Builder::Runtime->set_native_method_address($runtime, $class_name, $method_name, $cfunc_address);
-        }
-      }
-    }
-  }
-}
-
 sub load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
 
@@ -163,7 +135,7 @@ sub init_runtime {
     
     my $builder_runtime = $builder_compiler->build_runtime;
 
-    &builder_load_dynamic_libs($builder_runtime);
+    $builder_runtime->load_dynamic_libs;
 
     # Build an environment
     $BUILDER_ENV = SPVM::Builder::Runtime->build_env($builder_runtime);
