@@ -216,7 +216,7 @@ INIT {
   
   $ENV->call_init_blocks;
   
-  $STACK = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Stack', 'new', $ENV);
+  $STACK = $ENV->build_stack;
   
   $BUILDER = undef;
   $COMPILER = undef;
