@@ -43,7 +43,7 @@ sub use_spvm_module {
   }
 }
 
-sub boot_load_dynamic_libs {
+sub builder_load_dynamic_libs {
   my ($runtime) = @_;
 
   my $class_names = SPVM::Builder::Runtime->get_class_names($runtime);
@@ -173,7 +173,7 @@ sub init_runtime {
     
     my $builder_runtime = $builder_compiler->build_runtime;
 
-    &boot_load_dynamic_libs($builder_runtime);
+    &builder_load_dynamic_libs($builder_runtime);
 
     # Build an environment
     $BUILDER_ENV = SPVM::Builder::Runtime->build_env($builder_runtime);
