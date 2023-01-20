@@ -3,6 +3,7 @@
     * Added the Compiler class.
     * Added the Runtime class.
     * Added the Env class.
+    * Added the Stack class.
   [Exception Message Improvement]
     * Exception messages are improved.
       - "SPVM_BUILD_DIR environment variable must be set to build a $category method at runtime";

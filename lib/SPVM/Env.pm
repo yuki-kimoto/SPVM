@@ -34,9 +34,11 @@ Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::Native
 
 =head1 Fields
 
+=head2 runtime
+
   has runtime : ro Runtime;
 
-A runtime. This field is the L<Runtime|SPVM::Runtime> class.
+A runtime. The field type is the L<Runtime|SPVM::Runtime> class.
 
 =head1 Instance Methods
 
