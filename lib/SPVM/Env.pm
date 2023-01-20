@@ -1,4 +1,4 @@
-package SPVM::Native::Env;
+package SPVM::Env;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Native::Env;
 
 =head1 Name
 
-SPVM::Native::Env - foo
+SPVM::Env - foo
 
 =head1 Description
 
-C<SPVM::Native::Env> is the L<SPVM>'s C<Native::Env> class.
+C<SPVM::Env> is the L<SPVM>'s C<Env> class.
 
 =head1 Usage
 
-  use Native::Env;
+  use Env;
   
 =head1 Fields
 
