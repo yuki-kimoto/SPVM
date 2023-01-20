@@ -46,4 +46,14 @@ sub new {
   return $self;
 }
 
+sub use {
+  my ($self, $class_name, $file, $line) = @_;
+  
+  my $success = $self->compile($class_name, __FILE__, __LINE__);
+  unless ($success) {
+    $self->print_error_messages(*STDERR);
+    exit(255);
+  }
+}
+
 1;

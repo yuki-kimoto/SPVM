@@ -33,16 +33,6 @@ my $STACK;
 sub GET_ENV { $ENV }
 sub GET_STACK { $STACK }
 
-sub use_spvm_module {
-  my ($compiler, $class_name, $file, $line) = @_;
-  
-  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
-  unless ($success) {
-    $compiler->print_error_messages(*STDERR);
-    exit(255);
-  }
-}
-
 sub builder_load_dynamic_libs {
   my ($runtime) = @_;
 
@@ -166,10 +156,10 @@ sub init_runtime {
       module_dirs => $BUILDER->module_dirs
     );
     # Load SPVM Compilers
-    use_spvm_module($builder_compiler, "Compiler", __FILE__, __LINE__);
-    use_spvm_module($builder_compiler, "Runtime", __FILE__, __LINE__);
-    use_spvm_module($builder_compiler, "Env", __FILE__, __LINE__);
-    use_spvm_module($builder_compiler, "Stack", __FILE__, __LINE__);
+    $builder_compiler->use("Compiler", __FILE__, __LINE__);
+    $builder_compiler->use("Runtime", __FILE__, __LINE__);
+    $builder_compiler->use("Env", __FILE__, __LINE__);
+    $builder_compiler->use("Stack", __FILE__, __LINE__);
     
     my $builder_runtime = $builder_compiler->build_runtime;
 
