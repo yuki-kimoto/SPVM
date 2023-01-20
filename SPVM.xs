@@ -4018,42 +4018,6 @@ get_method_names(...)
 }
 
 SV*
-get_parent_class_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_runtime = ST(1);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-  
-  SV* sv_class_name = ST(2);
-
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
-  
-  int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
-  int32_t parent_class_id = api_env->api->runtime->get_class_parent_class_id(runtime, class_id);
-  
-  SV* sv_parent_class_name = &PL_sv_undef;
-  if (parent_class_id >= 0) {
-    int32_t parent_class_name_id = api_env->api->runtime->get_class_name_id(runtime, parent_class_id);
-    const char* parent_class_name = api_env->api->runtime->get_name(runtime, parent_class_name_id);
-    sv_parent_class_name = sv_2mortal(newSVpv(parent_class_name, 0));
-  }
-
-  api_env->free_env_raw(api_env);
-  
-  XPUSHs(sv_parent_class_name);
-  XSRETURN(1);
-}
-
-
-SV*
 get_anon_class_names(...)
   PPCODE:
 {
