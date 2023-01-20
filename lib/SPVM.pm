@@ -245,20 +245,18 @@ sub import {
 }
 
 INIT {
-  {
-    &init_runtime();
-    
-    my $class_names = $RUNTIME->get_class_names;
-    &bind_to_perl($RUNTIME, $class_names);
-    
-    $ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Env", "new", $RUNTIME);
-    
-    SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $ENV, $0, \@ARGV);
-    
-    SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $ENV);
-    
-    $STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Stack', 'new', $ENV);
-  }
+  &init_runtime();
+  
+  my $class_names = $RUNTIME->get_class_names;
+  &bind_to_perl($RUNTIME, $class_names);
+  
+  $ENV = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, "Env", "new", $RUNTIME);
+  
+  SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'set_command_info', $ENV, $0, \@ARGV);
+  
+  SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Runtime', 'call_init_blocks', $ENV);
+  
+  $STACK = SPVM::ExchangeAPI::call_method($BOOT_ENV, $BOOT_STACK, 'Stack', 'new', $ENV);
   
   $BUILDER = undef;
   $BOOT_COMPILER = undef;
