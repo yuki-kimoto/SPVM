@@ -291,11 +291,11 @@ $version
 
 =head1 Name
 
-SPVM::$class_name - foo
+SPVM::$class_name - Short Description
 
 =head1 Description
 
-C<SPVM::$class_name> is the L<SPVM>'s C<$class_name> class.
+C<SPVM::$class_name> is the C<$class_name> class in L<SPVM> language.
 
 =head1 Usage
 
