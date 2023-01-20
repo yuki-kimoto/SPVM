@@ -255,9 +255,29 @@ The generated shared libraries exists under "work/lib" under the build directory
   # Windows
   ~/.spvm_build/work/object/Foo/Bar.dll
 
-=head1 Stack
+=head1 Execution Environment
 
-The stack is the second argument of the definition of the Native Method. This is called stack. Stack is used getting arguments and return the value.
+The object of the C<SPVM_ENV*> type is an execution environement.
+
+  SPVM_ENV* env;
+
+This object is passed as the first argument of a Native API.
+
+  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  }
+
+To create a new execution environment with the same runtime, initialize command line arguments and call C<INIT> blocks, use the L<new_env|SPVM::Document::NativeAPI/"new_env"> method.
+
+  SPVM_ENV* my_env = env->new_env(env);
+
+To free this object, use the L<free_env|SPVM::Document::NativeAPI/"free_env"> method.
+
+  my_env->free_env(my_env);
+
+=head1 Call Stack
+
+The call stack is the second argument of the definition of the Native Method. This is called stack. Stack is used getting arguments and return the value.
 
   int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 

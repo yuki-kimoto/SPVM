@@ -27,7 +27,10 @@
     =head1 Description
 
     C<SPVM::$class_name> is the C<$class_name> class in L<SPVM> language.
-
+  [Document Changes]
+    * Added the "Executable Envrionment" heading to SPVM::Document::NativeAPI.
+    * Renamed the "Stack" heading to SPVM::Document::NativeAPI to "Call Stack".
+    
 0.9682 2022-01-18
   [New Feature]
     * Added get_class_name in the SPVM::BlessedObject::Class.
