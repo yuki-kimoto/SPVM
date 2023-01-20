@@ -4207,46 +4207,6 @@ set_native_method_address(...)
 }
 
 SV*
-set_precompile_method_address(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV* sv_runtime = ST(1);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
-  SV* sv_class_name = ST(2);
-  SV* sv_method_name = ST(3);
-  SV* sv_precompile_address = ST(4);
-
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
-  // Class name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
-  // Method id
-  int32_t method_id = api_env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
-  
-  // Native address
-  void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
-  
-  api_env->api->runtime->set_precompile_method_address(runtime, method_id, precompile_address);
-
-  assert(precompile_address == api_env->api->runtime->get_precompile_method_address(runtime, method_id));
-
-  // Free native_env
-  api_env->free_env_raw(api_env);
-
-  XSRETURN(0);
-}
-
-SV*
 build_precompile_class_source(...)
   PPCODE:
 {
