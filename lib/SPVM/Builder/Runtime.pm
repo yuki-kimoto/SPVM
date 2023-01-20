@@ -11,7 +11,7 @@ sub load_dynamic_libs {
   # Set addresses of native methods
   for my $class_name (@$class_names) {
     my $category = 'native';
-    my $method_names = SPVM::Builder::Runtime->get_method_names($self, $class_name, $category);
+    my $method_names = $self->get_method_names($class_name, $category);
     
     if (@$method_names) {
       # Build classs - Compile C source codes and link them to SPVM precompile method
