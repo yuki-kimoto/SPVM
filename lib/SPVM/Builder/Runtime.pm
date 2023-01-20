@@ -24,7 +24,7 @@ sub load_dynamic_libs {
         
         for my $method_name (sort keys %$method_addresses) {
           my $cfunc_address = $method_addresses->{$method_name};
-          SPVM::Builder::Runtime->set_native_method_address($self, $class_name, $method_name, $cfunc_address);
+          $self->set_native_method_address($class_name, $method_name, $cfunc_address);
         }
       }
     }
