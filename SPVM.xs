@@ -4256,9 +4256,7 @@ build_env(...)
 {
   (void)RETVAL;
   
-  SV* sv_class = ST(0);
-
-  SV* sv_runtime = ST(1);
+  SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   // Create native_env
