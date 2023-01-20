@@ -2,12 +2,6 @@ class Runtime : pointer {
   use Env;
   use Stack;
   
-  static method new : Runtime () {
-    my $self = new Runtime;
-    
-    return $self;
-  }
-  
   # Instance Methods
   native method get_runtime_codes : int[] ();
   
