@@ -212,9 +212,9 @@ INIT {
   
   $ENV = $RUNTIME->build_env;
   
-  SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Runtime', 'set_command_info', $ENV, $0, \@ARGV);
+  $ENV->set_command_info($0, \@ARGV);
   
-  SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Runtime', 'call_init_blocks', $ENV);
+  $ENV->call_init_blocks;
   
   $STACK = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, 'Stack', 'new', $ENV);
   

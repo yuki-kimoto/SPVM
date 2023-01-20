@@ -9,10 +9,6 @@ class Runtime : pointer {
   }
   
   # Class Methods
-  native static method set_command_info : void ($env : Env, $program_name : string, $argv : string[]);
-  
-  native static method call_init_blocks : void ($env : Env);
-  
   native static method call_method : void ($env : Env, $stack : Stack, $class_name : string, $method_name : string, $args_stack_length : int);
   
   # Instance Methods
