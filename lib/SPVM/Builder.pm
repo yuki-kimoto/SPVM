@@ -73,7 +73,7 @@ sub build_dynamic_lib_dist {
     build_dir => $self->{build_dir},
   );
   
-  my $module_file = SPVM::Builder::Runtime->get_module_file($runtime, $class_name);
+  my $module_file = $runtime->get_module_file($class_name);
   my $method_names = $runtime->get_method_names($class_name, $category);
   my $anon_class_names = $runtime->get_anon_class_names($class_name);
   my $precompile_source = SPVM::Builder::Runtime->build_precompile_class_source($runtime, $class_name);
