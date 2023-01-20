@@ -66,11 +66,31 @@ Gets the class names and returns it.
 
 Gets the parent class name and returns it.
 
-=head2 
+=head2 get_method_names
 
   method get_method_names : string[] ($class_name : string, $options = undef : object[]);
 
 Gets method names and returns it.
+
+Options:
+
+The options are key-value pairs. The key is the C<string> type.
+
+=over 2
+
+=item * C<native> : Int
+
+Gets only C<native> methods if this option is true.
+
+=item * C<precompile> : Int
+
+Gets only C<precompile> methods if this option is true.
+
+=item * C<enum> : Int
+
+Get only C<enum> methods if this option is true.
+
+=back
 
 =head2 get_module_file
 
