@@ -4278,22 +4278,6 @@ build_env(...)
 }
 
 SV*
-call_init_blocks(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_class = ST(0);
-
-  SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
-  
-  env->call_init_blocks(env);
-
-  XSRETURN(0);
-}
-
-SV*
 set_command_info(...)
   PPCODE:
 {
@@ -4348,6 +4332,20 @@ set_command_info(...)
 }
 
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
+
+SV*
+call_init_blocks(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  
+  env->call_init_blocks(env);
+
+  XSRETURN(0);
+}
 
 SV*
 build_stack(...)

@@ -144,7 +144,7 @@ sub init_runtime {
     SPVM::Builder::Runtime->set_command_info($BUILDER_ENV, $0, \@ARGV);
     
     # Call INIT blocks
-    SPVM::Builder::Runtime->call_init_blocks($BUILDER_ENV);
+    $BUILDER_ENV->call_init_blocks;
     
     $BUILDER_STACK = $BUILDER_ENV->build_stack;
     
