@@ -40,7 +40,7 @@ sub stack {
 }
 
 sub new_byte_array_from_string {
-  my ($env, $stack, $string) = @_;
+  my ($self, $env, $stack, $string) = @_;
   
   utf8::encode($string);
   

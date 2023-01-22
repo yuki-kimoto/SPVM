@@ -321,7 +321,7 @@ sub new_byte_array_from_bin {
   SPVM::ExchangeAPI::new_byte_array_from_bin($ENV, $STACK, @_);
 }
 sub new_byte_array_from_string {
-  SPVM::ExchangeAPI::new_byte_array_from_string($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_string($API, $ENV, $STACK, @_);
 }
 
 sub new_short_array {
