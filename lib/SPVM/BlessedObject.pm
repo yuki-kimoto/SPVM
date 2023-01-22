@@ -3,6 +3,17 @@ package SPVM::BlessedObject;
 use strict;
 use warnings;
 
+sub api {
+  my $self = shift;
+  if (@_) {
+    $self->{api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{api};
+  }
+}
+
 sub env {
   my $self = shift;
   if (@_) {
