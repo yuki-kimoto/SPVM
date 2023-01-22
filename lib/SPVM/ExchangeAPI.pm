@@ -5,6 +5,40 @@ use warnings;
 
 use Carp 'confess';
 
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    @_
+  };
+  
+  bless $self, ref $class || $class;
+  
+  return $self;
+}
+
+sub env {
+  my $self = shift;
+  if (@_) {
+    $self->{env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env};
+  }
+}
+
+sub stack {
+  my $self = shift;
+  if (@_) {
+    $self->{stack} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{stack};
+  }
+}
+
 sub new_byte_array_from_string {
   my ($env, $stack, $string) = @_;
   
