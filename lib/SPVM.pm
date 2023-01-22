@@ -24,6 +24,7 @@ use Carp 'confess';
 my $BUILDER;
 my $BUILDER_ENV;
 my $BUILDER_STACK;
+my $BUILDER_API;
 my $COMPILER;
 my $RUNTIME;
 my $DYNAMIC_LIB_FILES = {};
