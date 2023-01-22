@@ -29,6 +29,7 @@ my $RUNTIME;
 my $DYNAMIC_LIB_FILES = {};
 my $ENV;
 my $STACK;
+my $API;
 
 sub GET_ENV { $ENV }
 sub GET_STACK { $STACK }
