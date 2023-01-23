@@ -32,8 +32,6 @@ my $ENV;
 my $STACK;
 my $API;
 
-sub GET_ENV { $ENV }
-sub GET_STACK { $STACK }
 sub api { $API }
 
 sub load_dynamic_libs {
