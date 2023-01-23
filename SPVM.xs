@@ -3465,16 +3465,18 @@ _xs_new_mulnum_array_from_bin(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_binary = ST(3);
+  SV* sv_basic_type_name = ST(3);
+  SV* sv_binary = ST(4);
   
   if (!SvOK(sv_binary)) {
     croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);

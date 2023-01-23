@@ -142,7 +142,7 @@ sub new_mulnum_array {
 }
 
 sub new_mulnum_array_from_bin {
-  my ($env, $stack, $type_name, $elems) = @_;
+  my ($self, $env, $stack, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -167,7 +167,7 @@ sub new_mulnum_array_from_bin {
   }
   
   my $ret;
-  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array_from_bin($env, $stack, $basic_type_name, $elems) };
+  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array_from_bin($self, $env, $stack, $basic_type_name, $elems) };
   if ($@) { confess $@ }
   
   return $ret;
