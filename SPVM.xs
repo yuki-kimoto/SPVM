@@ -2292,16 +2292,17 @@ xs_new_byte_array(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(3);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2343,15 +2344,17 @@ xs_new_byte_array_unsigned(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(2);
+  SV* sv_elems = ST(3);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2392,16 +2395,18 @@ xs_new_byte_array_len(...)
   PPCODE:
 {
   (void)RETVAL;
-
+  
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(2);
+  SV* sv_length = ST(3);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2425,15 +2430,17 @@ xs_new_byte_array_from_bin(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(2);
+  SV* sv_binary = ST(3);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {

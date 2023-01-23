@@ -45,7 +45,7 @@ sub new_byte_array_from_string {
   utf8::encode($string);
   
   my $ret;
-  eval { $ret = &new_byte_array_from_bin($env, $stack, $string) };
+  eval { $ret = &new_byte_array_from_bin($self, $env, $stack, $string) };
   if ($@) { confess $@ }
   
   return $ret;

@@ -314,19 +314,19 @@ sub bind_to_perl {
 }
 
 sub new_byte_array {
-  SPVM::ExchangeAPI::new_byte_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array($API, $ENV, $STACK, @_);
 }
 
 sub new_byte_array_unsigned {
-  SPVM::ExchangeAPI::new_byte_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_unsigned($API, $ENV, $STACK, @_);
 }
 
 sub new_byte_array_len {
-  SPVM::ExchangeAPI::new_byte_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_len($API, $ENV, $STACK, @_);
 }
 
 sub new_byte_array_from_bin {
-  SPVM::ExchangeAPI::new_byte_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_byte_array_from_string {
   SPVM::ExchangeAPI::new_byte_array_from_string($API, $ENV, $STACK, @_);
