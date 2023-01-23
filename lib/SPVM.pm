@@ -21,16 +21,16 @@ use SPVM::ExchangeAPI;
 
 use Carp 'confess';
 
-my $BUILDER;
-my $BUILDER_ENV;
-my $BUILDER_STACK;
-my $BUILDER_API;
-my $COMPILER;
-my $RUNTIME;
-my $DYNAMIC_LIB_FILES = {};
-my $ENV;
-my $STACK;
-my $API;
+our $BUILDER;
+our $BUILDER_ENV;
+our $BUILDER_STACK;
+our $BUILDER_API;
+our $COMPILER;
+our $RUNTIME;
+our $DYNAMIC_LIB_FILES = {};
+our $ENV;
+our $STACK;
+our $API;
 
 sub api { $API }
 
