@@ -410,6 +410,10 @@ sub new_object_array {
   SPVM::ExchangeAPI::new_object_array($API, $ENV, $STACK, @_);
 }
 
+sub new_object_array_len {
+  SPVM::ExchangeAPI::new_long_array_len($API, $ENV, $STACK, @_);
+}
+
 sub new_any_object_array {
   SPVM::ExchangeAPI::new_any_object_array($ENV, $STACK, @_);
 }
