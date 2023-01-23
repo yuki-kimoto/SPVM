@@ -2318,7 +2318,7 @@ xs_new_address_object(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_address = ST(3);
+  SV* sv_address = ST(1);
   
   void* address = (void*)(intptr_t)SvIV(sv_address);
   
