@@ -7,9 +7,11 @@ use SPVM;
 
 SPVM::get_memory_blocks_count();
 
-my $obj_int = SPVM::ExchangeAPI::call_method(SPVM::api(), "Int", "new", 1);
+my $api = SPVM::api();
 
-my $value = SPVM::ExchangeAPI::call_method(SPVM::api(), $obj_int, "value");
+my $obj_int = $api->call_method("Int", "new", 1);
+
+my $value = $obj_int->value;
 is($value, 1);
 
 is($obj_int->value, 1);

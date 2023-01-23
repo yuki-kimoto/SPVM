@@ -57,7 +57,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # call_method
 {
-  my $obj_int = SPVM::ExchangeAPI::call_method(SPVM::api(), "Int", "new", 1);
+  my $api = SPVM::api();
+  
+  my $obj_int = $api->call_method("Int", "new", 1);
   isa_ok($obj_int, "SPVM::BlessedObject");
   my $value = $obj_int->value;
   is($value, 1);
