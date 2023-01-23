@@ -437,7 +437,7 @@ sub new_string_array_len {
 }
 
 sub get_exception {
-  SPVM::ExchangeAPI::get_exception($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::get_exception($API, @_);
 }
 
 sub set_exception {
