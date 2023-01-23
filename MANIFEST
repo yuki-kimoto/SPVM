@@ -248,6 +248,7 @@ lib/SPVM/Format.c
 lib/SPVM/Format.config
 lib/SPVM/Format.pm
 lib/SPVM/Format.spvm
+lib/SPVM/Global.pm
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
 lib/SPVM/Hash.pm
