@@ -363,19 +363,19 @@ sub new_int_array_from_bin {
   SPVM::ExchangeAPI::new_int_array_from_bin($ENV, $STACK, @_);
 }
 sub new_long_array {
-  SPVM::ExchangeAPI::new_long_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array($API, $ENV, $STACK, @_);
 }
 
 sub new_long_array_unsigned {
-  SPVM::ExchangeAPI::new_long_array_unsigned($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_unsigned($API, $ENV, $STACK, @_);
 }
 
 sub new_long_array_len {
-  SPVM::ExchangeAPI::new_long_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_len($API, $ENV, $STACK, @_);
 }
 
 sub new_long_array_from_bin {
-  SPVM::ExchangeAPI::new_long_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_float_array {
   SPVM::ExchangeAPI::new_float_array($API, $ENV, $STACK, @_);
