@@ -3422,8 +3422,8 @@ xs_new_object_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_basic_type_name = ST(3);
-  SV* sv_length = ST(4);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_length = ST(2);
 
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -3466,8 +3466,8 @@ _xs_new_object_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_basic_type_name = ST(3);
-  SV* sv_elems = ST(4);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);

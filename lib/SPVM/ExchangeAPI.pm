@@ -56,13 +56,13 @@ sub new_any_object_array {
   
   my $type_name = 'object[]';
   
-  my $array = &new_object_array($self, $env, $stack, $type_name, $array_ref);
+  my $array = &new_object_array($self, $type_name, $array_ref);
   
   return $array;
 }
 
 sub new_object_array {
-  my ($self, $env, $stack, $type_name, $elems) = @_;
+  my ($self, $type_name, $elems) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -93,7 +93,7 @@ sub new_object_array {
   
   my $ret;
   if ($type_dimension == 1) {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_object_array($self, $env, $stack, $basic_type_name, $elems) };
+    eval { $ret = SPVM::ExchangeAPI::_xs_new_object_array($self, $basic_type_name, $elems) };
     if ($@) { confess $@ }
   }
   else {

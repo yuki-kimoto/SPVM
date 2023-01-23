@@ -409,11 +409,11 @@ sub new_string_from_bin {
 }
 
 sub new_object_array {
-  SPVM::ExchangeAPI::new_object_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array($API, @_);
 }
 
 sub new_object_array_len {
-  SPVM::ExchangeAPI::new_object_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array_len($API, @_);
 }
 
 sub new_any_object_array {
