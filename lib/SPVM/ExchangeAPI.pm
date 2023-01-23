@@ -52,11 +52,11 @@ sub new_byte_array_from_string {
 }
 
 sub new_any_object_array {
-  my ($env, $stack, $array_ref) = @_;
+  my ($self, $env, $stack, $array_ref) = @_;
   
   my $type_name = 'object[]';
   
-  my $array = &new_object_array(my $self = undef, $env, $stack, $type_name, $array_ref);
+  my $array = &new_object_array($self, $env, $stack, $type_name, $array_ref);
   
   return $array;
 }

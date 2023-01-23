@@ -53,6 +53,7 @@ sub load_dynamic_libs {
       );
       
       my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
+        $runtime->api,
         $runtime->env,
         $runtime->stack,
         [
@@ -90,6 +91,7 @@ sub load_dynamic_libs {
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
     my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
+      $runtime->api,
       $runtime->env,
       $runtime->stack,
       [
@@ -415,7 +417,7 @@ sub new_object_array_len {
 }
 
 sub new_any_object_array {
-  SPVM::ExchangeAPI::new_any_object_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_any_object_array($API, $ENV, $STACK, @_);
 }
 
 sub new_mulnum_array {
