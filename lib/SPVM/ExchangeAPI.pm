@@ -97,7 +97,7 @@ sub new_object_array {
     if ($@) { confess $@ }
   }
   else {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_muldim_array($env, $stack, $basic_type_name, $type_dimension - 1, $elems) };
+    eval { $ret = SPVM::ExchangeAPI::_xs_new_muldim_array($self, $env, $stack, $basic_type_name, $type_dimension - 1, $elems) };
     if ($@) { confess $@ }
   }
   
