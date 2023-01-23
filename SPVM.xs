@@ -1461,7 +1461,7 @@ xs_array_to_elems(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(3);
+  SV* sv_array = ST(1);
   
   // Runtime
   void* runtime = env->runtime;
@@ -1674,7 +1674,7 @@ xs_array_to_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(3);
+  SV* sv_array = ST(1);
   
   // Runtime
   void* runtime = env->runtime;
@@ -1868,7 +1868,7 @@ xs_array_length(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(3);
+  SV* sv_array = ST(1);
 
   // Runtime
   void* runtime = env->runtime;
@@ -1909,9 +1909,9 @@ xs_array_set(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(3);
-  SV* sv_index = ST(4);
-  SV* sv_value = ST(5);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
+  SV* sv_value = ST(3);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -2034,8 +2034,8 @@ xs_array_get(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(3);
-  SV* sv_index = ST(4);
+  SV* sv_array = ST(1);
+  SV* sv_index = ST(2);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
