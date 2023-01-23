@@ -1,10 +1,12 @@
 use 5.008007;
 package SPVM;
 
-our $VERSION = $SPVM::Builder::VERSION;
+our $VERSION = '0.9683';
 
 use strict;
 use warnings;
+
+use Carp 'cluck';
 
 use SPVM::Global;
 
@@ -19,43 +21,53 @@ sub import {
 sub api { $SPVM::Global::API }
 
 # The following SPVM::xxx functions are deprecated. Use SPVM::api->xxx instead.
-sub new_byte_array { $SPVM::Global::API->new_byte_array(@_) }
-sub new_byte_array_unsigned { $SPVM::Global::API->new_byte_array_unsigned(@_) }
-sub new_byte_array_len { $SPVM::Global::API->new_byte_array_len(@_) }
-sub new_byte_array_from_bin { $SPVM::Global::API->new_byte_array_from_bin(@_) }
-sub new_byte_array_from_string { $SPVM::Global::API->new_byte_array_from_string(@_) }
-sub new_short_array { $SPVM::Global::API->new_short_array(@_) }
-sub new_short_array_unsigned { $SPVM::Global::API->new_short_array_unsigned(@_) }
-sub new_short_array_len { $SPVM::Global::API->new_short_array_len(@_) }
-sub new_short_array_from_bin { $SPVM::Global::API->new_short_array_from_bin(@_) }
-sub new_int_array { $SPVM::Global::API->new_int_array(@_) }
-sub new_int_array_unsigned { $SPVM::Global::API->new_int_array_unsigned(@_) }
-sub new_int_array_len { $SPVM::Global::API->new_int_array_len(@_) }
-sub new_int_array_from_bin { $SPVM::Global::API->new_int_array_from_bin(@_) }
-sub new_long_array { $SPVM::Global::API->new_long_array(@_) }
-sub new_long_array_unsigned { $SPVM::Global::API->new_long_array_unsigned(@_) }
-sub new_long_array_len { $SPVM::Global::API->new_long_array_len(@_) }
-sub new_long_array_from_bin { $SPVM::Global::API->new_long_array_from_bin(@_) }
-sub new_float_array { $SPVM::Global::API->new_float_array(@_) }
-sub new_float_array_len { $SPVM::Global::API->new_float_array_len(@_) }
-sub new_float_array_from_bin { $SPVM::Global::API->new_float_array_from_bin(@_) }
-sub new_double_array { $SPVM::Global::API->new_double_array(@_) }
-sub new_double_array_len { $SPVM::Global::API->new_double_array_len(@_) }
-sub new_double_array_from_bin { $SPVM::Global::API->new_double_array_from_bin(@_) }
-sub new_string { $SPVM::Global::API->new_string(@_) }
-sub new_string_from_bin { $SPVM::Global::API->new_string_from_bin(@_) }
-sub new_object_array { $SPVM::Global::API->new_object_array(@_) }
-sub new_object_array_len { $SPVM::Global::API->new_object_array_len(@_) }
-sub new_any_object_array { $SPVM::Global::API->new_any_object_array(@_) }
-sub new_mulnum_array { $SPVM::Global::API->new_mulnum_array(@_) }
-sub new_mulnum_array_from_bin { $SPVM::Global::API->new_mulnum_array_from_bin(@_) }
-sub new_string_array { $SPVM::Global::API->new_string_array(@_) }
-sub new_string_array_len { $SPVM::Global::API->new_string_array_len(@_) }
-sub get_exception { $SPVM::Global::API->get_exception(@_) }
-sub set_exception { $SPVM::Global::API->set_exception(@_) }
-sub get_memory_blocks_count { $SPVM::Global::API->get_memory_blocks_count(@_) }
-sub call_method { $SPVM::Global::API->call_method(@_) }
-sub new_address_object { $SPVM::Global::API->new_address_object(@_) }
+my @deprecated_func_names = qw(
+  new_byte_array
+  new_byte_array_unsigne
+  new_byte_array_len
+  new_byte_array_from_bin
+  new_byte_array_from_string
+  new_short_array
+  new_short_array_unsigned
+  new_short_array_len
+  new_short_array_from_bin
+  new_int_array
+  new_int_array_unsigned
+  new_int_array_len
+  new_int_array_from_bin
+  new_long_array
+  new_long_array_unsigned
+  new_long_array_len
+  new_long_array_from_bin
+  new_float_array
+  new_float_array_len
+  new_float_array_from_bin
+  new_double_array
+  new_double_array_len
+  new_double_array_from_bin
+  new_string
+  new_string_from_bin
+  new_object_array
+  new_object_array_len
+  new_any_object_array
+  new_mulnum_array
+  new_mulnum_array_from_bin
+  new_string_array
+  new_string_array_len
+  get_exception
+  set_exception
+  get_memory_blocks_count
+  call_method
+  new_address_object
+);
+
+for my $func_name (@deprecated_func_names) {
+  no strict 'refs';
+  *{"$func_name"} = sub {
+    # cluck "The SPVM::$func_name function is deprecated";
+    $SPVM::Global::API->$func_name(@_);
+  };
+}
 
 1;
 
