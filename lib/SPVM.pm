@@ -59,7 +59,7 @@ sub load_dynamic_libs {
         [
           SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
           =>
-          SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
+          SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
         ]
       );
       
@@ -97,7 +97,7 @@ sub load_dynamic_libs {
       [
         SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
         =>
-        SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
+        SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
       ]
     );
     
@@ -155,7 +155,7 @@ sub init_runtime {
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
-    $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_API, $BUILDER_ENV, $BUILDER_STACK, "Compiler", "new");
+    $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_API, "Compiler", "new");
     for my $module_dir (@{$BUILDER->module_dirs}) {
       $COMPILER->add_module_dir($module_dir);
     }
@@ -303,7 +303,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = SPVM::ExchangeAPI::call_method($API, $ENV, $STACK, $class_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::ExchangeAPI::call_method($API, $class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;

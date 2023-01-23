@@ -277,10 +277,10 @@ xs_call_method(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   // Invocant
-  SV* sv_invocant = ST(3);
+  SV* sv_invocant = ST(1);
   
   // Method name
-  SV* sv_method_name = ST(4);
+  SV* sv_method_name = ST(2);
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Class Name
@@ -319,8 +319,8 @@ xs_call_method(...)
     class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
     method_id = env->get_instance_method_id(env, stack, object, method_name);
     
-    ST(3) = sv_method_name;
-    ST(4) = sv_invocant;
+    ST(1) = sv_method_name;
+    ST(2) = sv_invocant;
   }
   else {
     class_method_call = 1;
@@ -339,10 +339,10 @@ xs_call_method(...)
   // Base index of SPVM arguments
   int32_t spvm_args_base;
   if (class_method_call) {
-    spvm_args_base = 5;
+    spvm_args_base = 3;
   }
   else {
-    spvm_args_base = 4;
+    spvm_args_base = 2;
   }
 
   int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
