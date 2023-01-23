@@ -3288,16 +3288,18 @@ _xs_new_object_array(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_basic_type_name = ST(2);
-  SV* sv_elems = ST(3);
+  SV* sv_basic_type_name = ST(3);
+  SV* sv_elems = ST(4);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
     croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);

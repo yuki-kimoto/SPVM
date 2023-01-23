@@ -407,7 +407,7 @@ sub new_string_from_bin {
 }
 
 sub new_object_array {
-  SPVM::ExchangeAPI::new_object_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array($API, $ENV, $STACK, @_);
 }
 
 sub new_any_object_array {
