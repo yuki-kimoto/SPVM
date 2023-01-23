@@ -3,6 +3,15 @@ use strict;
 use warnings;
 use Carp 'confess';
 
+use SPVM::BlessedObject;
+use SPVM::BlessedObject::Array;
+use SPVM::BlessedObject::Class;
+use SPVM::BlessedObject::String;
+
+use SPVM::Builder;
+use SPVM::Builder::Runtime;
+use SPVM::ExchangeAPI;
+
 our $BUILDER;
 our $BUILDER_ENV;
 our $BUILDER_STACK;

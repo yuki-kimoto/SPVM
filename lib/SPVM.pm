@@ -1,27 +1,14 @@
+use 5.008007;
 package SPVM;
 
 our $VERSION = $SPVM::Builder::VERSION;
 
-use 5.008007;
 use strict;
 use warnings;
 
-use DynaLoader;
-use File::Basename 'basename', 'dirname';
-
-use SPVM::BlessedObject;
-use SPVM::BlessedObject::Array;
-use SPVM::BlessedObject::Class;
-use SPVM::BlessedObject::String;
-use FindBin;
-
-use SPVM::Builder;
-use SPVM::Builder::Runtime;
-use SPVM::ExchangeAPI;
-
 use SPVM::Global;
 
-use Carp 'confess';
+use SPVM::ExchangeAPI;
 
 sub api { $SPVM::Global::API }
 
