@@ -244,6 +244,11 @@ C<SPVM::ExchangeAPI> is APIs to convert Perl data structures to/from SPVM data s
   my $api = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
   my $int_array = $api->new_int_array([1, 2, 3]);
 
+Getting an global ExchangeAPI object:
+
+  my $api = SPVM::api();
+  my $int_array = $api->new_int_array([1, 2, 3]);
+
 =head1 Fields
 
 =head2 env
