@@ -8,10 +8,6 @@ use warnings;
 
 use SPVM::Global;
 
-use SPVM::ExchangeAPI;
-
-sub api { $SPVM::Global::API }
-
 sub import {
   my ($class, $class_name) = @_;
 
@@ -20,146 +16,46 @@ sub import {
   SPVM::Global::build_class($class_name, $file, $line);
 }
 
-sub new_byte_array {
-  SPVM::ExchangeAPI::new_byte_array($SPVM::Global::API, @_);
-}
+sub api { $SPVM::Global::API }
 
-sub new_byte_array_unsigned {
-  SPVM::ExchangeAPI::new_byte_array_unsigned($SPVM::Global::API, @_);
-}
-
-sub new_byte_array_len {
-  SPVM::ExchangeAPI::new_byte_array_len($SPVM::Global::API, @_);
-}
-
-sub new_byte_array_from_bin {
-  SPVM::ExchangeAPI::new_byte_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_byte_array_from_string {
-  SPVM::ExchangeAPI::new_byte_array_from_string($SPVM::Global::API, @_);
-}
-
-sub new_short_array {
-  SPVM::ExchangeAPI::new_short_array($SPVM::Global::API, @_);
-}
-
-sub new_short_array_unsigned {
-  SPVM::ExchangeAPI::new_short_array_unsigned($SPVM::Global::API, @_);
-}
-
-sub new_short_array_len {
-  SPVM::ExchangeAPI::new_short_array_len($SPVM::Global::API, @_);
-}
-
-sub new_short_array_from_bin {
-  SPVM::ExchangeAPI::new_short_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_int_array {
-  SPVM::ExchangeAPI::new_int_array($SPVM::Global::API, @_);
-}
-
-sub new_int_array_unsigned {
-  SPVM::ExchangeAPI::new_int_array_unsigned($SPVM::Global::API, @_);
-}
-
-sub new_int_array_len {
-  SPVM::ExchangeAPI::new_int_array_len($SPVM::Global::API, @_);
-}
-
-sub new_int_array_from_bin {
-  SPVM::ExchangeAPI::new_int_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_long_array {
-  SPVM::ExchangeAPI::new_long_array($SPVM::Global::API, @_);
-}
-
-sub new_long_array_unsigned {
-  SPVM::ExchangeAPI::new_long_array_unsigned($SPVM::Global::API, @_);
-}
-
-sub new_long_array_len {
-  SPVM::ExchangeAPI::new_long_array_len($SPVM::Global::API, @_);
-}
-
-sub new_long_array_from_bin {
-  SPVM::ExchangeAPI::new_long_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_float_array {
-  SPVM::ExchangeAPI::new_float_array($SPVM::Global::API, @_);
-}
-sub new_float_array_len {
-  SPVM::ExchangeAPI::new_float_array_len($SPVM::Global::API, @_);
-}
-
-sub new_float_array_from_bin {
-  SPVM::ExchangeAPI::new_float_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_double_array {
-  SPVM::ExchangeAPI::new_double_array($SPVM::Global::API, @_);
-}
-
-sub new_double_array_len {
-  SPVM::ExchangeAPI::new_double_array_len($SPVM::Global::API, @_);
-}
-
-sub new_double_array_from_bin {
-  SPVM::ExchangeAPI::new_double_array_from_bin($SPVM::Global::API, @_);
-}
-sub new_string {
-  SPVM::ExchangeAPI::new_string($SPVM::Global::API, @_);
-}
-
-sub new_string_from_bin {
-  SPVM::ExchangeAPI::new_string_from_bin($SPVM::Global::API, @_);
-}
-
-sub new_object_array {
-  SPVM::ExchangeAPI::new_object_array($SPVM::Global::API, @_);
-}
-
-sub new_object_array_len {
-  SPVM::ExchangeAPI::new_object_array_len($SPVM::Global::API, @_);
-}
-
-sub new_any_object_array {
-  SPVM::ExchangeAPI::new_any_object_array($SPVM::Global::API, @_);
-}
-
-sub new_mulnum_array {
-  SPVM::ExchangeAPI::new_mulnum_array($SPVM::Global::API, @_);
-}
-
-sub new_mulnum_array_from_bin {
-  SPVM::ExchangeAPI::new_mulnum_array_from_bin($SPVM::Global::API, @_);
-}
-
-sub new_string_array {
-  SPVM::ExchangeAPI::new_string_array($SPVM::Global::API, @_);
-}
-
-sub new_string_array_len {
-  SPVM::ExchangeAPI::new_string_array_len($SPVM::Global::API, @_);
-}
-
-sub get_exception {
-  SPVM::ExchangeAPI::get_exception($SPVM::Global::API, @_);
-}
-
-sub set_exception {
-  SPVM::ExchangeAPI::set_exception($SPVM::Global::API, @_);
-}
-
-sub get_memory_blocks_count {
-  SPVM::ExchangeAPI::get_memory_blocks_count($SPVM::Global::API, @_);
-}
-
-sub call_method {
-  SPVM::ExchangeAPI::call_method($SPVM::Global::API, @_);
-}
-
-sub new_address_object {
-  SPVM::ExchangeAPI::new_address_object($SPVM::Global::API, @_);
-}
+# The following SPVM::xxx functions are deprecated. Use SPVM::api->xxx instead.
+sub new_byte_array { $SPVM::Global::API->new_byte_array(@_) }
+sub new_byte_array_unsigned { $SPVM::Global::API->new_byte_array_unsigned(@_) }
+sub new_byte_array_len { $SPVM::Global::API->new_byte_array_len(@_) }
+sub new_byte_array_from_bin { $SPVM::Global::API->new_byte_array_from_bin(@_) }
+sub new_byte_array_from_string { $SPVM::Global::API->new_byte_array_from_string(@_) }
+sub new_short_array { $SPVM::Global::API->new_short_array(@_) }
+sub new_short_array_unsigned { $SPVM::Global::API->new_short_array_unsigned(@_) }
+sub new_short_array_len { $SPVM::Global::API->new_short_array_len(@_) }
+sub new_short_array_from_bin { $SPVM::Global::API->new_short_array_from_bin(@_) }
+sub new_int_array { $SPVM::Global::API->new_int_array(@_) }
+sub new_int_array_unsigned { $SPVM::Global::API->new_int_array_unsigned(@_) }
+sub new_int_array_len { $SPVM::Global::API->new_int_array_len(@_) }
+sub new_int_array_from_bin { $SPVM::Global::API->new_int_array_from_bin(@_) }
+sub new_long_array { $SPVM::Global::API->new_long_array(@_) }
+sub new_long_array_unsigned { $SPVM::Global::API->new_long_array_unsigned(@_) }
+sub new_long_array_len { $SPVM::Global::API->new_long_array_len(@_) }
+sub new_long_array_from_bin { $SPVM::Global::API->new_long_array_from_bin(@_) }
+sub new_float_array { $SPVM::Global::API->new_float_array(@_) }
+sub new_float_array_len { $SPVM::Global::API->new_float_array_len(@_) }
+sub new_float_array_from_bin { $SPVM::Global::API->new_float_array_from_bin(@_) }
+sub new_double_array { $SPVM::Global::API->new_double_array(@_) }
+sub new_double_array_len { $SPVM::Global::API->new_double_array_len(@_) }
+sub new_double_array_from_bin { $SPVM::Global::API->new_double_array_from_bin(@_) }
+sub new_string { $SPVM::Global::API->new_string(@_) }
+sub new_string_from_bin { $SPVM::Global::API->new_string_from_bin(@_) }
+sub new_object_array { $SPVM::Global::API->new_object_array(@_) }
+sub new_object_array_len { $SPVM::Global::API->new_object_array_len(@_) }
+sub new_any_object_array { $SPVM::Global::API->new_any_object_array(@_) }
+sub new_mulnum_array { $SPVM::Global::API->new_mulnum_array(@_) }
+sub new_mulnum_array_from_bin { $SPVM::Global::API->new_mulnum_array_from_bin(@_) }
+sub new_string_array { $SPVM::Global::API->new_string_array(@_) }
+sub new_string_array_len { $SPVM::Global::API->new_string_array_len(@_) }
+sub get_exception { $SPVM::Global::API->get_exception(@_) }
+sub set_exception { $SPVM::Global::API->set_exception(@_) }
+sub get_memory_blocks_count { $SPVM::Global::API->get_memory_blocks_count(@_) }
+sub call_method { $SPVM::Global::API->call_method(@_) }
+sub new_address_object { $SPVM::Global::API->new_address_object(@_) }
 
 1;
 
@@ -208,6 +104,19 @@ Call the SPVM method from Perl:
 =head1 Description
 
 B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
+
+=head1 Functions
+
+=head2 api
+
+  my $api = SPVM::api();
+
+Gets the global L<SPVM::ExchangeAPI> object.
+
+Examples:
+
+  my $api = SPVM::api();
+  my $int_array = $api->new_int_array([1, 2, 3]);
 
 =head1 Document
 
@@ -334,6 +243,57 @@ Print debug messages of L<SPVM::Builder::CC> to stderr.
 =head2 SPVM_CC_FORCE
 
 Force the compilation and the link of L<SPVM::Builder::CC>.
+
+=head1 Deprecation
+
+The following SPVM::xxx functions are deprecated. These functions will be removed in the future. Use the methods in the L<SPVM::ExchangeAPI> directly.
+
+  new_byte_array
+  new_byte_array_unsigne
+  new_byte_array_len
+  new_byte_array_from_bin
+  new_byte_array_from_string
+  new_short_array
+  new_short_array_unsigned
+  new_short_array_len
+  new_short_array_from_bin
+  new_int_array
+  new_int_array_unsigned
+  new_int_array_len
+  new_int_array_from_bin
+  new_long_array
+  new_long_array_unsigned
+  new_long_array_len
+  new_long_array_from_bin
+  new_float_array
+  new_float_array_len
+  new_float_array_from_bin
+  new_double_array
+  new_double_array_len
+  new_double_array_from_bin
+  new_string
+  new_string_from_bin
+  new_object_array
+  new_object_array_len
+  new_any_object_array
+  new_mulnum_array
+  new_mulnum_array_from_bin
+  new_string_array
+  new_string_array_len
+  get_exception
+  set_exception
+  get_memory_blocks_count
+  call_method
+  new_address_object
+
+How to rewrite the code:
+  
+  # Before
+  my $int_array = SPVM::new_int_array([1, 2, 3]);
+  
+  # After
+  my $api = SPVM::api();
+  my $int_array = $api->new_int_array([1, 2, 3]);
 
 =head1 Repository
 
