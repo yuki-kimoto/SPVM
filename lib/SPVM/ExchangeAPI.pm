@@ -91,7 +91,7 @@ sub new_object_array {
   
   # Check second argument
   unless (ref $elems eq 'ARRAY') {
-    confess "Second argument of SPVM::new_object_array must be array reference";
+    confess "The elements must be an array reference";
   }
   
   my $ret;
@@ -134,7 +134,7 @@ sub new_mulnum_array {
   
   # Check second argument
   unless (ref $elems eq 'ARRAY') {
-    confess "Second argument of SPVM::new_mulnum_array must be array reference";
+    confess "The elements must be an array reference";
   }
   
   my $ret;
