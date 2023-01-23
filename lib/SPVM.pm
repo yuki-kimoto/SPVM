@@ -150,6 +150,8 @@ sub init_runtime {
     
     $BUILDER_STACK = $BUILDER_ENV->build_stack;
     
+    $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    
     $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, "Compiler", "new");
     for my $module_dir (@{$BUILDER->module_dirs}) {
       $COMPILER->add_module_dir($module_dir);
@@ -220,15 +222,19 @@ INIT {
   
   $STACK = $ENV->build_stack;
   
+  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
+    
   $BUILDER = undef;
   $COMPILER = undef;
 }
 
 END {
+  $API = undef;
   $STACK = undef;
   $ENV = undef;
   $RUNTIME = undef;
   $DYNAMIC_LIB_FILES = undef;
+  $BUILDER_API = undef;
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
 }
