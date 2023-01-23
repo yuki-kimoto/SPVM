@@ -1444,18 +1444,17 @@ xs_array_to_elems(...)
 {
   (void)RETVAL;
   
-  SV* sv_builder = ST(0);
-  HV* hv_builder = (HV*)SvRV(sv_builder);
-
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(3);
   
   // Runtime
   void* runtime = env->runtime;
@@ -1655,15 +1654,17 @@ xs_array_to_bin(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(3);
   
   // Runtime
   void* runtime = env->runtime;
@@ -1839,18 +1840,17 @@ xs_array_length(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(2);
+  SV* sv_array = ST(3);
 
   // Runtime
   void* runtime = env->runtime;
@@ -1878,17 +1878,19 @@ xs_array_set(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(2);
-  SV* sv_index = ST(3);
-  SV* sv_value = ST(4);
+  SV* sv_array = ST(3);
+  SV* sv_index = ST(4);
+  SV* sv_value = ST(5);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -1998,16 +2000,18 @@ xs_array_get(...)
 {
   (void)RETVAL;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_array = ST(2);
-  SV* sv_index = ST(3);
+  SV* sv_array = ST(3);
+  SV* sv_index = ST(4);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
