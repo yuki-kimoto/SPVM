@@ -264,6 +264,7 @@ xs_call_method(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -1446,6 +1447,7 @@ xs_array_to_elems(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -1656,6 +1658,7 @@ xs_array_to_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -1806,6 +1809,7 @@ xs_string_object_to_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -1844,6 +1848,7 @@ xs_array_length(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -1882,6 +1887,7 @@ xs_array_set(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2004,6 +2010,7 @@ xs_array_get(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2121,6 +2128,7 @@ xs_new_string_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2181,6 +2189,7 @@ xs_new_string(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2228,6 +2237,7 @@ xs_new_string_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2276,6 +2286,7 @@ xs_new_address_object(...)
   int32_t e = 0;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2306,6 +2317,7 @@ xs_new_byte_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2358,6 +2370,7 @@ xs_new_byte_array_unsigned(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2410,6 +2423,7 @@ xs_new_byte_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2444,6 +2458,7 @@ xs_new_byte_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2485,6 +2500,7 @@ xs_new_short_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2537,6 +2553,7 @@ xs_new_short_array_unsigned(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2589,6 +2606,7 @@ xs_new_short_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2623,6 +2641,7 @@ xs_new_short_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2666,6 +2685,7 @@ xs_new_int_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2717,6 +2737,7 @@ xs_new_int_array_unsigned(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2768,6 +2789,7 @@ xs_new_int_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2802,6 +2824,7 @@ xs_new_int_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2843,6 +2866,7 @@ xs_new_long_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2895,6 +2919,7 @@ xs_new_long_array_unsigned(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2947,6 +2972,7 @@ xs_new_long_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -2981,6 +3007,7 @@ xs_new_long_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3022,6 +3049,7 @@ xs_new_float_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3071,6 +3099,7 @@ xs_new_float_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3105,6 +3134,7 @@ xs_new_float_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3146,6 +3176,7 @@ xs_new_double_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3194,6 +3225,7 @@ xs_new_double_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3228,6 +3260,7 @@ xs_new_double_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3269,6 +3302,7 @@ xs_new_string_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3308,6 +3342,7 @@ xs_new_object_array_len(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3349,6 +3384,7 @@ _xs_new_object_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3423,6 +3459,7 @@ _xs_new_muldim_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3498,6 +3535,7 @@ _xs_new_mulnum_array(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3532,6 +3570,7 @@ _xs_new_mulnum_array_from_bin(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3675,6 +3714,7 @@ xs_get_exception(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3706,6 +3746,7 @@ _xs_set_exception(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
@@ -3738,6 +3779,7 @@ xs_get_memory_blocks_count(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
   SV* sv_env = ST(1);
