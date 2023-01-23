@@ -312,78 +312,78 @@ sub bind_to_perl {
 }
 
 sub new_byte_array {
-  SPVM::ExchangeAPI::new_byte_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array($API, @_);
 }
 
 sub new_byte_array_unsigned {
-  SPVM::ExchangeAPI::new_byte_array_unsigned($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_unsigned($API, @_);
 }
 
 sub new_byte_array_len {
-  SPVM::ExchangeAPI::new_byte_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_len($API, @_);
 }
 
 sub new_byte_array_from_bin {
-  SPVM::ExchangeAPI::new_byte_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_bin($API, @_);
 }
 sub new_byte_array_from_string {
-  SPVM::ExchangeAPI::new_byte_array_from_string($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_byte_array_from_string($API, @_);
 }
 
 sub new_short_array {
-  SPVM::ExchangeAPI::new_short_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array($API, @_);
 }
 
 sub new_short_array_unsigned {
-  SPVM::ExchangeAPI::new_short_array_unsigned($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_unsigned($API, @_);
 }
 
 sub new_short_array_len {
-  SPVM::ExchangeAPI::new_short_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_len($API, @_);
 }
 
 sub new_short_array_from_bin {
-  SPVM::ExchangeAPI::new_short_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_short_array_from_bin($API, @_);
 }
 sub new_int_array {
-  SPVM::ExchangeAPI::new_int_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array($API, @_);
 }
 
 sub new_int_array_unsigned {
-  SPVM::ExchangeAPI::new_int_array_unsigned($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_unsigned($API, @_);
 }
 
 sub new_int_array_len {
-  SPVM::ExchangeAPI::new_int_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_len($API, @_);
 }
 
 sub new_int_array_from_bin {
-  SPVM::ExchangeAPI::new_int_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_int_array_from_bin($API, @_);
 }
 sub new_long_array {
-  SPVM::ExchangeAPI::new_long_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array($API, @_);
 }
 
 sub new_long_array_unsigned {
-  SPVM::ExchangeAPI::new_long_array_unsigned($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_unsigned($API, @_);
 }
 
 sub new_long_array_len {
-  SPVM::ExchangeAPI::new_long_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_len($API, @_);
 }
 
 sub new_long_array_from_bin {
-  SPVM::ExchangeAPI::new_long_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_long_array_from_bin($API, @_);
 }
 sub new_float_array {
-  SPVM::ExchangeAPI::new_float_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array($API, @_);
 }
 sub new_float_array_len {
-  SPVM::ExchangeAPI::new_float_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_len($API, @_);
 }
 
 sub new_float_array_from_bin {
-  SPVM::ExchangeAPI::new_float_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_float_array_from_bin($API, @_);
 }
 sub new_double_array {
   SPVM::ExchangeAPI::new_double_array($API, @_);

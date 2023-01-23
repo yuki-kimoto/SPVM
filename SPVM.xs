@@ -2351,7 +2351,7 @@ xs_new_byte_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2406,7 +2406,7 @@ xs_new_byte_array_unsigned(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2461,7 +2461,7 @@ xs_new_byte_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(3);
+  SV* sv_length = ST(1);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2498,7 +2498,7 @@ xs_new_byte_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2542,7 +2542,7 @@ xs_new_short_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2597,7 +2597,7 @@ xs_new_short_array_unsigned(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2652,7 +2652,7 @@ xs_new_short_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(3);
+  SV* sv_length = ST(1);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2689,7 +2689,7 @@ xs_new_short_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2735,7 +2735,7 @@ xs_new_int_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2789,7 +2789,7 @@ xs_new_int_array_unsigned(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2843,7 +2843,7 @@ xs_new_int_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(3);
+  SV* sv_length = ST(1);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -2880,7 +2880,7 @@ xs_new_int_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -2924,7 +2924,7 @@ xs_new_long_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -2979,7 +2979,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -3034,7 +3034,7 @@ xs_new_long_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(3);
+  SV* sv_length = ST(1);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -3071,7 +3071,7 @@ xs_new_long_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
@@ -3115,7 +3115,7 @@ xs_new_float_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(3);
+  SV* sv_elems = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
@@ -3167,7 +3167,7 @@ xs_new_float_array_len(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_length = ST(3);
+  SV* sv_length = ST(1);
   
   int32_t length = (int32_t)SvIV(sv_length);
   
@@ -3204,7 +3204,7 @@ xs_new_float_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_array;
   if (SvOK(sv_binary)) {

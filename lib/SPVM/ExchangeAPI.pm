@@ -40,12 +40,12 @@ sub stack {
 }
 
 sub new_byte_array_from_string {
-  my ($self, $env, $stack, $string) = @_;
+  my ($self, $string) = @_;
   
   utf8::encode($string);
   
   my $ret;
-  eval { $ret = &new_byte_array_from_bin($self, $env, $stack, $string) };
+  eval { $ret = &new_byte_array_from_bin($self, $string) };
   if ($@) { confess $@ }
   
   return $ret;
