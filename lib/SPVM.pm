@@ -429,11 +429,11 @@ sub new_mulnum_array_from_bin {
 }
 
 sub new_string_array {
-  SPVM::ExchangeAPI::new_string_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_array($API, @_);
 }
 
 sub new_string_array_len {
-  SPVM::ExchangeAPI::new_string_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_array_len($API, @_);
 }
 
 sub get_exception {
