@@ -31,7 +31,7 @@ ok(SPVM::TestCase::Array->array_big_index_double);
 ok(SPVM::TestCase::Array->array_max_index_byte);
 
 # Clear exception
-SPVM::set_exception(undef);
+SPVM::api->set_exception(undef);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

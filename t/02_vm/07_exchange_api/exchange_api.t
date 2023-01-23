@@ -499,13 +499,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # set_exception - string
   {
-    SPVM::set_exception("あいう");
+    SPVM::api->set_exception("あいう");
     ok(SPVM::TestCase::ExchangeAPI->set_exception);
   }
   
   # set_exception - undef
   {
-    SPVM::set_exception(undef);
+    SPVM::api->set_exception(undef);
     ok(SPVM::TestCase::ExchangeAPI->set_exception_undef);
   }
 }
@@ -514,7 +514,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # exception - string
   {
-    SPVM::set_exception("あいう");
+    SPVM::api->set_exception("あいう");
     my $exception = SPVM::get_exception;
     is(ref $exception, 'SPVM::BlessedObject::String');
     is($exception, "あいう");
@@ -522,20 +522,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   
   # exception - SPVM::BlessedObject::String
   {
-    SPVM::set_exception(SPVM::new_string("あいう"));
+    SPVM::api->set_exception(SPVM::new_string("あいう"));
     my $exception = SPVM::get_exception;
     is($exception, "あいう");
   }
 
   # exception - Invalid type
   {
-    eval { SPVM::set_exception([]) };
+    eval { SPVM::api->set_exception([]) };
     ok($@);
   }
 
   # exception - undef
   {
-    SPVM::set_exception(undef);
+    SPVM::api->set_exception(undef);
     ok(!SPVM::get_exception);
   }
 }
