@@ -1,6 +1,9 @@
 0.9684 2022-01-23
   [New Features]
     * Added the api function in the SPVM class.
+    * Added the feature that creating SVPM::ExchangeAPI object
+  [Document Change]
+    * SPVM::Document::ExchangeAPI is rewritten by way to using the SVPM::ExchangeAPI object.
   [Deprecation]
 
     The following SPVM::xxx functions are deprecated. These functions will be removed in the future. Use the methods in the L<SPVM::ExchangeAPI> directly.
