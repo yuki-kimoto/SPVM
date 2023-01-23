@@ -23,7 +23,7 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
   ok(SPVM::TestCase::Method->call_keyword_name_method);
@@ -174,9 +174,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
   {
-    my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+    my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     SPVM::TestCase::Method->call_method_assign();
-    my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+    my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     is($start_memory_blocks_count, $end_memory_blocks_count);
   }
 }
@@ -253,7 +253,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

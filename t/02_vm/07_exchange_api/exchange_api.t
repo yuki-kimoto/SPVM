@@ -41,7 +41,7 @@ my $UINT_MAX = 4294967295;
 my $ULONG_MAX = 18446744073709551615;
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # to_elems
 {
@@ -515,7 +515,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # exception - string
   {
     SPVM::api->set_exception("あいう");
-    my $exception = SPVM::get_exception;
+    my $exception = SPVM::api->get_exception;
     is(ref $exception, 'SPVM::BlessedObject::String');
     is($exception, "あいう");
   }
@@ -523,7 +523,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # exception - SPVM::BlessedObject::String
   {
     SPVM::api->set_exception(SPVM::new_string("あいう"));
-    my $exception = SPVM::get_exception;
+    my $exception = SPVM::api->get_exception;
     is($exception, "あいう");
   }
 
@@ -536,7 +536,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # exception - undef
   {
     SPVM::api->set_exception(undef);
-    ok(!SPVM::get_exception);
+    ok(!SPVM::api->get_exception);
   }
 }
 
@@ -1031,7 +1031,7 @@ new_string_array_len
 =cut
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 

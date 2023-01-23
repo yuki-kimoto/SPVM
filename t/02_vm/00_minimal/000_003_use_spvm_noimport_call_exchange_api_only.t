@@ -5,7 +5,7 @@ use Test::More;
 
 use SPVM ();
 
-SPVM::get_memory_blocks_count();
+SPVM::api->get_memory_blocks_count();
 
 ok(1);
 
