@@ -2166,6 +2166,127 @@ xs_new_string_array(...)
 }
 
 SV*
+xs_new_string(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // Env
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV* sv_stack = ST(1);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_value = ST(2);
+  
+  SV* sv_string;
+  if (SvOK(sv_value)) {
+    
+    if (SvROK(sv_value)) {
+      croak("The string can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
+    }
+    else {
+      // Copy
+      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+      
+      // Encode to UTF-8
+      
+      int32_t length = sv_len(sv_value_tmp);
+      
+      const char* value = SvPV_nolen(sv_value_tmp);
+      
+      void* string = env->new_string(env, stack, value, length);
+      
+      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    croak("The string must be defined at %s line %d\n", FILE_NAME, __LINE__);
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+xs_new_string_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  // Env
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV* sv_stack = ST(1);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_binary = ST(2);
+  
+  SV* sv_string;
+  if (SvOK(sv_binary)) {
+    if (SvROK(sv_binary)) {
+      croak("The binary can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
+    }
+    else {
+      int32_t binary_length = sv_len(sv_binary);
+      int32_t string_length = binary_length;
+      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+      
+      // New string
+      void* string = env->new_string(env, stack, (const char*)binary, string_length);
+
+      const char* chars = env->get_chars(env, stack, string);
+      memcpy((char*)chars, binary, string_length);
+      
+      // New sv string
+      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+xs_new_address_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  int32_t e = 0;
+  
+  SV* sv_self = ST(0);
+  
+  // Env
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV* sv_stack = ST(2);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_address = ST(3);
+  
+  void* address = (void*)(intptr_t)SvIV(sv_address);
+  
+  void* obj_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, FILE_NAME, __LINE__);
+  if (e) {
+    croak("Can't create the Address object");
+  }
+  SV* sv_obj_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, obj_address, "SPVM::BlessedObject::Class");
+  
+  XPUSHs(sv_obj_address);
+  XSRETURN(1);
+}
+
+SV*
 xs_new_byte_array(...)
   PPCODE:
 {
@@ -2334,127 +2455,6 @@ xs_new_byte_array_from_bin(...)
   }
   
   XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-xs_new_string(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // Env
-  SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV* sv_stack = ST(1);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_value = ST(2);
-  
-  SV* sv_string;
-  if (SvOK(sv_value)) {
-    
-    if (SvROK(sv_value)) {
-      croak("The string can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
-    }
-    else {
-      // Copy
-      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
-      
-      // Encode to UTF-8
-      
-      int32_t length = sv_len(sv_value_tmp);
-      
-      const char* value = SvPV_nolen(sv_value_tmp);
-      
-      void* string = env->new_string(env, stack, value, length);
-      
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    croak("The string must be defined at %s line %d\n", FILE_NAME, __LINE__);
-  }
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-xs_new_string_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  // Env
-  SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV* sv_stack = ST(1);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_binary = ST(2);
-  
-  SV* sv_string;
-  if (SvOK(sv_binary)) {
-    if (SvROK(sv_binary)) {
-      croak("The binary can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
-    }
-    else {
-      int32_t binary_length = sv_len(sv_binary);
-      int32_t string_length = binary_length;
-      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
-      
-      // New string
-      void* string = env->new_string(env, stack, (const char*)binary, string_length);
-
-      const char* chars = env->get_chars(env, stack, string);
-      memcpy((char*)chars, binary, string_length);
-      
-      // New sv string
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);
-  }
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-xs_new_address_object(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  int32_t e = 0;
-  
-  SV* sv_self = ST(0);
-  
-  // Env
-  SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV* sv_stack = ST(2);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_address = ST(3);
-  
-  void* address = (void*)(intptr_t)SvIV(sv_address);
-  
-  void* obj_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, FILE_NAME, __LINE__);
-  if (e) {
-    croak("Can't create the Address object");
-  }
-  SV* sv_obj_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, obj_address, "SPVM::BlessedObject::Class");
-  
-  XPUSHs(sv_obj_address);
   XSRETURN(1);
 }
 
