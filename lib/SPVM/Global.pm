@@ -43,7 +43,7 @@ sub load_dynamic_libs {
         [
           $runtime->api->new_string($category)
           =>
-          $runtime->api->call_method('Int', 'new', 1)
+          $runtime->api->class('Int')->new(1)
         ]
       );
       
@@ -78,7 +78,7 @@ sub load_dynamic_libs {
       [
         $runtime->api->new_string($category)
         =>
-        $runtime->api->call_method('Int', 'new', 1)
+        $runtime->api->class('Int')->new(1)
       ]
     );
     
@@ -136,7 +136,7 @@ sub init_runtime {
     
     $SPVM::Global::BUILDER_API = SPVM::ExchangeAPI->new(env => $SPVM::Global::BUILDER_ENV, stack => $SPVM::Global::BUILDER_STACK);
     
-    $SPVM::Global::COMPILER = $SPVM::Global::BUILDER_API->call_method("Compiler", "new");
+    $SPVM::Global::COMPILER = $SPVM::Global::BUILDER_API->class("Compiler")->new;
     for my $module_dir (@{$SPVM::Global::BUILDER->module_dirs}) {
       $SPVM::Global::COMPILER->add_module_dir($module_dir);
     }

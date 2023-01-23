@@ -2,6 +2,8 @@
   [New Features]
     * Added the api function in the SPVM class.
     * Added the feature that creating SVPM::ExchangeAPI object
+    * Added the SPVM::ExchangeAPI::Class class.
+    * Added the class method in the SPVM::ExchangeAPI.
   [Document Change]
     * SPVM::Document::ExchangeAPI is rewritten by way to using the SVPM::ExchangeAPI object.
       and its content is moved into the document of SPVM and SPVM::ExchangeAPI.

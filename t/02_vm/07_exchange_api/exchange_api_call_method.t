@@ -65,6 +65,16 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   is($value, 1);
 }
 
+# class
+{
+  my $api = SPVM::api();
+  
+  my $obj_int = $api->class("Int")->new(1);
+  isa_ok($obj_int, "SPVM::BlessedObject");
+  my $value = $obj_int->value;
+  is($value, 1);
+}
+
 # Argument general exception
 {
   # Argument general exception - too few arguments

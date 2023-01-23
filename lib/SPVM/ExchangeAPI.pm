@@ -3,6 +3,7 @@ package SPVM::ExchangeAPI;
 use strict;
 use warnings;
 
+use SPVM::ExchangeAPI::Class;
 use Carp 'confess';
 
 # Fields
@@ -188,6 +189,14 @@ sub set_exception {
   if ($@) { confess $@ }
   
   return $ret;
+}
+
+sub class {
+  my ($self, $class_name) = @_;
+  
+  my $class = SPVM::ExchangeAPI::Class->__new(__class_name => $class_name, __api => $self);
+  
+  return $class;
 }
 
 # other functions is implemented in SPVM.xs
@@ -720,6 +729,16 @@ Examples:
   my $obj_int = $api->call_method("Int", "new", 1);
   $obj_int->set_value(5);
   my $value = $obj_int->value;
+
+=head2 class
+
+  my $class = $api->class('Int');
+
+Creates a new L<SPVM::ExchangeAPI::Class> object.
+
+Examples:
+
+  $api->class('Int')->new(1);
 
 =head1 Argument Conversion
 
