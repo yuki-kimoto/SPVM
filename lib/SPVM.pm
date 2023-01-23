@@ -445,7 +445,7 @@ sub set_exception {
 }
 
 sub get_memory_blocks_count {
-  SPVM::ExchangeAPI::get_memory_blocks_count($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::get_memory_blocks_count($API, @_);
 }
 
 sub call_method {
