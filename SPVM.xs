@@ -3782,11 +3782,13 @@ xs_get_memory_blocks_count(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Env
-  SV* sv_env = ST(1);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(2);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   int32_t memory_blocks_count = env->get_memory_blocks_count(env);
