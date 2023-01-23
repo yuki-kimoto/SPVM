@@ -2217,7 +2217,7 @@ xs_new_string(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_value = ST(3);
+  SV* sv_value = ST(1);
   
   SV* sv_string;
   if (SvOK(sv_value)) {
@@ -2267,7 +2267,7 @@ xs_new_string_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_binary = ST(3);
+  SV* sv_binary = ST(1);
   
   SV* sv_string;
   if (SvOK(sv_binary)) {

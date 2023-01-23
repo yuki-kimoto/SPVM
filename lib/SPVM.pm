@@ -55,7 +55,7 @@ sub load_dynamic_libs {
       my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
         $runtime->api,
         [
-          SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
+          SPVM::ExchangeAPI::new_string($runtime->api, $category)
           =>
           SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
         ]
@@ -91,7 +91,7 @@ sub load_dynamic_libs {
     my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
       $runtime->api,
       [
-        SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
+        SPVM::ExchangeAPI::new_string($runtime->api, $category)
         =>
         SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
       ]
@@ -397,11 +397,11 @@ sub new_double_array_from_bin {
   SPVM::ExchangeAPI::new_double_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_string {
-  SPVM::ExchangeAPI::new_string($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string($API, @_);
 }
 
 sub new_string_from_bin {
-  SPVM::ExchangeAPI::new_string_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_from_bin($API, @_);
 }
 
 sub new_object_array {

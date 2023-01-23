@@ -177,7 +177,7 @@ sub set_exception {
   my ($self, $exception) = @_;
   
   if (defined $exception && !ref $exception) {
-    $exception = SPVM::ExchangeAPI::new_string($self, my $env = undef, my $stack = undef, $exception);
+    $exception = SPVM::ExchangeAPI::new_string($self, $exception);
   }
   
   my $ret;
