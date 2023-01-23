@@ -14,7 +14,7 @@ use SPVM::ExchangeAPI;
 sub to_string {
   my $self = shift;
   
-  my $string = SPVM::ExchangeAPI::string_object_to_bin($self->api, $self);
+  my $string = $self->api->string_object_to_bin($self);
   
   my $success = utf8::decode($string);
   
@@ -28,7 +28,7 @@ sub to_string {
 sub to_bin {
   my $self = shift;
   
-  my $bin = SPVM::ExchangeAPI::string_object_to_bin($self->api, $self);
+  my $bin = $self->api->string_object_to_bin($self);
   
   return $bin;
 }
