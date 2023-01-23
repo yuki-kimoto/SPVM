@@ -48,7 +48,7 @@ sub new_byte_array_from_string {
   utf8::encode($string);
   
   my $ret;
-  eval { $ret = &new_byte_array_from_bin($self, $string) };
+  eval { $ret = $self->new_byte_array_from_bin($string) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -59,7 +59,7 @@ sub new_any_object_array {
   
   my $type_name = 'object[]';
   
-  my $array = &new_object_array($self, $type_name, $array_ref);
+  my $array = $self->new_object_array($type_name, $array_ref);
   
   return $array;
 }
@@ -79,10 +79,10 @@ sub new_object_array {
   }
   
   unless ($type_dimension >= 1 && $type_dimension <= 255) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_object_array)";
+    confess "Invalid type dimension";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_object_array)";
+    confess "Invalid basic type name";
   }
   
   unless (defined $elems) {
@@ -96,11 +96,11 @@ sub new_object_array {
   
   my $ret;
   if ($type_dimension == 1) {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_object_array($self, $basic_type_name, $elems) };
+    eval { $ret = $self->_xs_new_object_array($basic_type_name, $elems) };
     if ($@) { confess $@ }
   }
   else {
-    eval { $ret = SPVM::ExchangeAPI::_xs_new_muldim_array($self, $basic_type_name, $type_dimension - 1, $elems) };
+    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension - 1, $elems) };
     if ($@) { confess $@ }
   }
   
@@ -122,10 +122,10 @@ sub new_mulnum_array {
   }
   
   unless ($type_dimension == 1) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_mulnum_array)";
+    confess "Invalid type dimension";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_mulnum_array)";
+    confess "Invalid basic type name";
   }
 
   unless (defined $elems) {
@@ -138,7 +138,7 @@ sub new_mulnum_array {
   }
   
   my $ret;
-  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array($self, $basic_type_name, $elems) };
+  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $elems) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -159,10 +159,10 @@ sub new_mulnum_array_from_bin {
   }
   
   unless ($type_dimension == 1) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_mulnum_array_from_bin)";
+    confess "Invalid type dimension";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_mulnum_array_from_bin)";
+    confess "Invalid basic type name";
   }
 
   unless (defined $elems) {
@@ -170,7 +170,7 @@ sub new_mulnum_array_from_bin {
   }
   
   my $ret;
-  eval { $ret = SPVM::ExchangeAPI::_xs_new_mulnum_array_from_bin($self, $basic_type_name, $elems) };
+  eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $elems) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -180,11 +180,11 @@ sub set_exception {
   my ($self, $exception) = @_;
   
   if (defined $exception && !ref $exception) {
-    $exception = SPVM::ExchangeAPI::new_string($self, $exception);
+    $exception = $self->new_string($exception);
   }
   
   my $ret;
-  eval { $ret = _xs_set_exception($self, $exception) };
+  eval { $ret = $self->_xs_set_exception($exception) };
   if ($@) { confess $@ }
   
   return $ret;
