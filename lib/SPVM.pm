@@ -449,7 +449,7 @@ sub get_memory_blocks_count {
 }
 
 sub call_method {
-  SPVM::ExchangeAPI::call_method($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::call_method($API, @_);
 }
 
 sub new_address_object {
