@@ -386,15 +386,15 @@ sub new_float_array_from_bin {
   SPVM::ExchangeAPI::new_float_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_double_array {
-  SPVM::ExchangeAPI::new_double_array($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array($API, @_);
 }
 
 sub new_double_array_len {
-  SPVM::ExchangeAPI::new_double_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_len($API, @_);
 }
 
 sub new_double_array_from_bin {
-  SPVM::ExchangeAPI::new_double_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_from_bin($API, @_);
 }
 sub new_string {
   SPVM::ExchangeAPI::new_string($API, @_);
