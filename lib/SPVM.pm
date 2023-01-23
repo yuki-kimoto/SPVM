@@ -415,7 +415,7 @@ sub new_any_object_array {
 }
 
 sub new_mulnum_array {
-  SPVM::ExchangeAPI::new_mulnum_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array($API, $ENV, $STACK, @_);
 }
 
 sub new_mulnum_array_from_bin {
