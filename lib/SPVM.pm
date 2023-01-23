@@ -57,7 +57,7 @@ sub load_dynamic_libs {
         $runtime->env,
         $runtime->stack,
         [
-          SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
+          SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
           =>
           SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
         ]
@@ -95,7 +95,7 @@ sub load_dynamic_libs {
       $runtime->env,
       $runtime->stack,
       [
-        SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
+        SPVM::ExchangeAPI::new_string($runtime->api, $runtime->env, $runtime->stack, $category)
         =>
         SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
       ]
@@ -401,11 +401,11 @@ sub new_double_array_from_bin {
   SPVM::ExchangeAPI::new_double_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_string {
-  SPVM::ExchangeAPI::new_string($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string($API, $ENV, $STACK, @_);
 }
 
 sub new_string_from_bin {
-  SPVM::ExchangeAPI::new_string_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_from_bin($API, $ENV, $STACK, @_);
 }
 
 sub new_object_array {
@@ -429,7 +429,7 @@ sub new_mulnum_array_from_bin {
 }
 
 sub new_string_array {
-  SPVM::ExchangeAPI::new_string_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_string_array($API, $ENV, $STACK, @_);
 }
 
 sub new_string_array_len {
