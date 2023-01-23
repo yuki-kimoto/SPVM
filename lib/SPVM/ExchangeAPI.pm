@@ -52,7 +52,7 @@ sub new_byte_array_from_string {
 }
 
 sub new_any_object_array {
-  my ($self, $env, $stack, $array_ref) = @_;
+  my ($self, $array_ref) = @_;
   
   my $type_name = 'object[]';
   
