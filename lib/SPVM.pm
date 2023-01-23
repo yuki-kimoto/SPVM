@@ -392,7 +392,7 @@ sub new_double_array {
 }
 
 sub new_double_array_len {
-  SPVM::ExchangeAPI::new_double_array_len($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_len($API, $ENV, $STACK, @_);
 }
 
 sub new_double_array_from_bin {
