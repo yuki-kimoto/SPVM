@@ -3657,8 +3657,8 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_basic_type_name = ST(3);
-  SV* sv_binary = ST(4);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
     croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);

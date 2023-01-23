@@ -425,7 +425,7 @@ sub new_mulnum_array {
 }
 
 sub new_mulnum_array_from_bin {
-  SPVM::ExchangeAPI::new_mulnum_array_from_bin($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_mulnum_array_from_bin($API, @_);
 }
 
 sub new_string_array {
