@@ -39,12 +39,11 @@ sub load_dynamic_libs {
         at_runtime => 1,
       );
       
-      my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
-        $runtime->api,
+      my $get_method_names_options = $runtime->api->new_any_object_array(
         [
-          SPVM::ExchangeAPI::new_string($runtime->api, $category)
+          $runtime->api->new_string($category)
           =>
-          SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
+          $runtime->api->call_method('Int', 'new', 1)
         ]
       );
       
@@ -75,12 +74,11 @@ sub load_dynamic_libs {
 
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
-    my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
-      $runtime->api,
+    my $get_method_names_options = $runtime->api->new_any_object_array(
       [
-        SPVM::ExchangeAPI::new_string($runtime->api, $category)
+        $runtime->api->new_string($category)
         =>
-        SPVM::ExchangeAPI::call_method($runtime->api, 'Int', 'new', 1)
+        $runtime->api->call_method('Int', 'new', 1)
       ]
     );
     
@@ -95,10 +93,10 @@ sub load_dynamic_libs {
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->api, $cfunc_address));
+          $runtime->set_native_method_address($class_name, $method_name, $runtime->api->new_address_object($cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->api, $cfunc_address));
+          $runtime->set_precompile_method_address($class_name, $method_name, $runtime->api->new_address_object($cfunc_address));
         }
       }
     }
@@ -138,7 +136,7 @@ sub init_runtime {
     
     $SPVM::Global::BUILDER_API = SPVM::ExchangeAPI->new(env => $SPVM::Global::BUILDER_ENV, stack => $SPVM::Global::BUILDER_STACK);
     
-    $SPVM::Global::COMPILER = SPVM::ExchangeAPI::call_method($SPVM::Global::BUILDER_API, "Compiler", "new");
+    $SPVM::Global::COMPILER = $SPVM::Global::BUILDER_API->call_method("Compiler", "new");
     for my $module_dir (@{$SPVM::Global::BUILDER->module_dirs}) {
       $SPVM::Global::COMPILER->add_module_dir($module_dir);
     }
@@ -215,7 +213,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = SPVM::ExchangeAPI::call_method($SPVM::Global::API, $class_name_string, $method_name_string, @_) };
+          eval { $return_value = $SPVM::Global::API->call_method($class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
