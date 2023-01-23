@@ -4,6 +4,7 @@
     * Added the feature that creating SVPM::ExchangeAPI object
   [Document Change]
     * SPVM::Document::ExchangeAPI is rewritten by way to using the SVPM::ExchangeAPI object.
+      and its content is moved into the document of SPVM and SPVM::ExchangeAPI.
   [Deprecation]
 
     The following SPVM::xxx functions are deprecated. These functions will be removed in the future. Use the methods in the L<SPVM::ExchangeAPI> directly.

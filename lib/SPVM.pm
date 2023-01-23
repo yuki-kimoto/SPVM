@@ -83,7 +83,7 @@ C<SPVM> is not yet 1.0 release. It is quite often changed without warnings until
 
 =head1 Usage
 
-Write a SPVM Module:
+Creating SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -98,7 +98,7 @@ Write a SPVM Module:
     }
   }
 
-Call the SPVM method from Perl:
+Calling SPVM methods from Perl:
 
   # sum.pl
   use strict;
@@ -117,18 +117,99 @@ Call the SPVM method from Perl:
 
 B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
-=head1 Functions
+=head1 Loading Module
+
+If you load SVPM module from Perl, use the following syntax.
+
+  use SPVM 'Foo';
+
+Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
+
+  # SPVM/Foo.spvm
+  class Foo {
+    static method sum : int ($x1 : int, $x2 : int) {
+      return $x1 + $x2;
+    }
+  }
+
+If you load SPVM C<Foo::Bar> module, do the following.
+
+  use SPVM 'Foo::Bar';
+
+Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
+
+  # SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+    static method sum : int ($x1 : int, $x2 : int) {
+      return $x1 + $x2;
+    }
+  }
+
+C<use SPVM MODULE_NAME> compile the SPVM module and the dependent modules.
+
+Note that at this point a SPVM runtime has not yet been created.
+
+A default SPVM runtime is created the first time you call a method of SPVM module or call a function or method of the Exchange API.
+
+=head1 Class Method Call
+
+Let's call SPVM class method from Perl.
+
+  use SPVM 'Foo';
+
+  my $total = SPVM::Foo->sum(1, 2);
+
+The definition of C<Foo> module is the following.
+
+  # SPVM/Foo.spvm
+  class Foo {
+    static method sum : int ($x1 : int, $x2 : int) {
+      return $x1 + $x2;
+    }
+  }
+
+If the number of arguments does not match the number of arguments of the SPVM method, an exception occurs.
+
+The Perl values of the arguments are converted to the SPVM values by the rule of argument convertion.
+
+If the type is non-conforming, an exception occurs.
+
+The SPVM return value is converted to a Perl return value by the rule of return value convertion.
+
+The SPVM exception is converted to a Perl exception.
+
+=head1 Instance Method Call
+
+Let's call SPVM instance method from Perl.
+
+  use SPVM 'Foo';
+
+  my $foo = SPVM::Foo->new;
+
+  my $total = $foo->sum(1, 2);
+
+The definition of C<Foo> module is the following.
+
+  # SPVM/Foo.spvm
+  class Foo {
+    static method new : Foo () {
+      return new Foo;
+    }
+
+    method sum : int ($x1 : int, $x2 : int) (
+      return $x1 + $x2;
+    }
+  }
+
+=head1 Exchange API
+
+Exchange API is APIs to convert Perl data structures to/from SPVM data structures and to call SPVM methods from Perl.
 
 =head2 api
 
   my $api = SPVM::api();
 
 Gets the global L<SPVM::ExchangeAPI> object.
-
-Examples:
-
-  my $api = SPVM::api();
-  my $int_array = $api->new_int_array([1, 2, 3]);
 
 =head1 Document
 
