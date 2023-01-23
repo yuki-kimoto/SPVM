@@ -388,7 +388,7 @@ sub new_float_array_from_bin {
   SPVM::ExchangeAPI::new_float_array_from_bin($ENV, $STACK, @_);
 }
 sub new_double_array {
-  SPVM::ExchangeAPI::new_double_array($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array($API, $ENV, $STACK, @_);
 }
 
 sub new_double_array_len {
