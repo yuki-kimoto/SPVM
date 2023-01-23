@@ -396,7 +396,7 @@ sub new_double_array_len {
 }
 
 sub new_double_array_from_bin {
-  SPVM::ExchangeAPI::new_double_array_from_bin($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_double_array_from_bin($API, $ENV, $STACK, @_);
 }
 sub new_string {
   SPVM::ExchangeAPI::new_string($ENV, $STACK, @_);
