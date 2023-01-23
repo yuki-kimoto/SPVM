@@ -411,7 +411,7 @@ sub new_object_array {
 }
 
 sub new_object_array_len {
-  SPVM::ExchangeAPI::new_long_array_len($API, $ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_object_array_len($API, $ENV, $STACK, @_);
 }
 
 sub new_any_object_array {
@@ -428,6 +428,10 @@ sub new_mulnum_array_from_bin {
 
 sub new_string_array {
   SPVM::ExchangeAPI::new_string_array($ENV, $STACK, @_);
+}
+
+sub new_string_array_len {
+  SPVM::ExchangeAPI::new_string_array_len($API, $ENV, $STACK, @_);
 }
 
 sub get_exception {
