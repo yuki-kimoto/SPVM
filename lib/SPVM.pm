@@ -110,10 +110,10 @@ sub load_dynamic_libs {
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->env, $runtime->stack, $cfunc_address));
+          $runtime->set_native_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->api, $runtime->env, $runtime->stack, $cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->env, $runtime->stack, $cfunc_address));
+          $runtime->set_precompile_method_address($class_name, $method_name, SPVM::ExchangeAPI::new_address_object($runtime->api, $runtime->env, $runtime->stack, $cfunc_address));
         }
       }
     }
@@ -443,7 +443,7 @@ sub call_method {
 }
 
 sub new_address_object {
-  SPVM::ExchangeAPI::new_address_object($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::new_address_object($API, $ENV, $STACK, @_);
 }
 
 1;

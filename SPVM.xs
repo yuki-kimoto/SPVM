@@ -2434,15 +2434,17 @@ xs_new_address_object(...)
   
   int32_t e = 0;
   
+  SV* sv_self = ST(0);
+  
   // Env
-  SV* sv_env = ST(0);
+  SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV* sv_stack = ST(1);
+  SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_address = ST(2);
+  SV* sv_address = ST(3);
   
   void* address = (void*)(intptr_t)SvIV(sv_address);
   
