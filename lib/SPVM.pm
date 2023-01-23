@@ -51,14 +51,14 @@ sub load_dynamic_libs {
         build_dir => $BUILDER->build_dir,
         at_runtime => 1,
       );
-
+      
       my $get_method_names_options = SPVM::ExchangeAPI::new_any_object_array(
         $runtime->env,
         $runtime->stack,
         [
           SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
           =>
-          SPVM::ExchangeAPI::call_method($runtime->env, $runtime->stack, 'Int', 'new', 1)
+          SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
         ]
       );
       
@@ -95,7 +95,7 @@ sub load_dynamic_libs {
       [
         SPVM::ExchangeAPI::new_string($runtime->env, $runtime->stack, $category)
         =>
-        SPVM::ExchangeAPI::call_method($runtime->env, $runtime->stack, 'Int', 'new', 1)
+        SPVM::ExchangeAPI::call_method($runtime->api, $runtime->env, $runtime->stack, 'Int', 'new', 1)
       ]
     );
     
@@ -153,7 +153,7 @@ sub init_runtime {
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
-    $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_ENV, $BUILDER_STACK, "Compiler", "new");
+    $COMPILER = SPVM::ExchangeAPI::call_method($BUILDER_API, $BUILDER_ENV, $BUILDER_STACK, "Compiler", "new");
     for my $module_dir (@{$BUILDER->module_dirs}) {
       $COMPILER->add_module_dir($module_dir);
     }
@@ -301,7 +301,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = SPVM::ExchangeAPI::call_method($ENV, $STACK, $class_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::ExchangeAPI::call_method($API, $ENV, $STACK, $class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
@@ -439,7 +439,7 @@ sub get_memory_blocks_count {
 }
 
 sub call_method {
-  SPVM::ExchangeAPI::call_method($ENV, $STACK, @_);
+  SPVM::ExchangeAPI::call_method($API, $ENV, $STACK, @_);
 }
 
 sub new_address_object {

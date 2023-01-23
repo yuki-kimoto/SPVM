@@ -14,7 +14,7 @@ sub AUTOLOAD {
   my $method_name = $AUTOLOAD;
   $method_name =~ s/^SPVM::BlessedObject::Class:://;
   
-  my $ret = SPVM::ExchangeAPI::call_method($self->env, $self->stack, $self, $method_name, @_);
+  my $ret = SPVM::ExchangeAPI::call_method($self->api, $self->env, $self->stack, $self, $method_name, @_);
   
   return $ret;
 }
