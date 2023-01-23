@@ -380,8 +380,9 @@ Create "sum.pl" file  and write the following code. This is Perl program.
   
   # Call method with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
-  my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-  my $total_packed = SPVM::MyMath->sum($sv_nums);
+  my $api = SPVM::api();
+  my $sp_nums = $api->new_int_array_from_bin($nums_packed);
+  my $total_packed = SPVM::MyMath->sum($sp_nums);
   
   print "Total Packed: $total_packed\n";
 
@@ -433,16 +434,15 @@ See <a href="/exchange-api.html#exchange-api-spvm-value-to-perl-data">Converting
 =head3 Call SPVM Method with packed data
 
 
-you can pass packed binary data. SPVM::new_int_array_from_bin create SPVM int array from packed binary data. This is efficient.
+you can pass packed binary data. L<SPVM::ExchangeAPI/"new_int_array_from_bin"> create SPVM int array from packed binary data. This is efficient.
 
   
   # Call method with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
-  my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-  my $total_packed = SPVM::MyMath->sum($sv_nums);
+  my $api = SPVM::api();
+  my $sp_nums = $api->new_int_array_from_bin($nums_packed);
+  my $total_packed = SPVM::MyMath->sum($sp_nums);
 
-
-See <a href="/exchange-api.html">SPVM Exchange API</a> about SPVM Exchange API like SPVM::new_int_array_from_bin.
 
 <h3>How to improve SPVM Performance</h2>
 
@@ -487,8 +487,9 @@ Use SPVM Module from Perl
   
   # Call method with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
-  my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-  my $total_packed = SPVM::MyMath->sum($sv_nums);
+  my $api = SPVM::api();
+  my $sp_nums = $api->new_int_array_from_bin($nums_packed);
+  my $total_packed = SPVM::MyMath->sum($sp_nums);
   
   print "Total Packed: $total_packed\n";
 
