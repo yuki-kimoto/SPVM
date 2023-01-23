@@ -34,6 +34,7 @@ my $API;
 
 sub GET_ENV { $ENV }
 sub GET_STACK { $STACK }
+sub api { $API }
 
 sub load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
