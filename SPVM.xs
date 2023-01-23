@@ -3837,7 +3837,7 @@ _xs_set_exception(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_exception = ST(3);
+  SV* sv_exception = ST(1);
   
   if (SvOK(sv_exception)) {
     if (!(sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String"))) {

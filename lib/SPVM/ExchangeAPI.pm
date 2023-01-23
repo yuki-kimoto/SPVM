@@ -174,14 +174,14 @@ sub new_mulnum_array_from_bin {
 }
 
 sub set_exception {
-  my ($self, $env, $stack, $exception) = @_;
+  my ($self, $exception) = @_;
   
   if (defined $exception && !ref $exception) {
-    $exception = SPVM::ExchangeAPI::new_string($self, $env, $stack, $exception);
+    $exception = SPVM::ExchangeAPI::new_string($self, my $env = undef, my $stack = undef, $exception);
   }
   
   my $ret;
-  eval { $ret = _xs_set_exception($self, $env, $stack, $exception) };
+  eval { $ret = _xs_set_exception($self, $exception) };
   if ($@) { confess $@ }
   
   return $ret;
