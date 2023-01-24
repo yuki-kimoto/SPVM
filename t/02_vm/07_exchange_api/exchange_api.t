@@ -395,6 +395,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       my $spvm_values = SPVM::api->new_byte_array_from_string("あいう");
       ok(SPVM::TestCase::ExchangeAPI->new_byte_array_from_string($spvm_values));
     }
+    {
+      my $spvm_values = SPVM::api->new_byte_array_from_string("\xFF\xFE");
+      is($spvm_values->[0], -1);
+      is($spvm_values->[1], -2);
+    }
   }
 }
 

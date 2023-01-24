@@ -46,8 +46,6 @@ sub new {
 sub new_byte_array_from_string {
   my ($self, $string) = @_;
   
-  utf8::encode($string);
-  
   my $ret;
   eval { $ret = $self->new_byte_array_from_bin($string) };
   if ($@) { confess $@ }
@@ -298,214 +296,209 @@ An stack.
 
 =head2 new_byte_array
 
-  my $spvm_nums = $api->new_byte_array([1, 2, 3]);
+  my $sp_nums = $api->new_byte_array([1, 2, 3]);
 
-Convert a Perl array reference to a SPVM C<byte[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_byte_array_len
 
-  my $spvm_nums = $api->new_byte_array_len([1, 2, 3]);
+  my $sp_nums = $api->new_byte_array_len($length);
 
-Create a new SPVM C<byte[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type with length.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_byte_array_from_bin
 
-  my $perl_binary = pack('c3', 97, 98, 99);
-  my $spvm_byte_array = $api->new_byte_array_from_bin($perl_binary);
+  my $pl_binary = pack('c3', 97, 98, 99);
+  my $sp_nums = $api->new_byte_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM byte[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type and returns it.
 
-Thg Perl binary data is interpreted as 8-bit signed integers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is interpreted as 8-bit signed integers. The length of the array is calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
-You can use simple ascii codes as Perl binary data.
-
-  my $perl_binary ="abc";
-  my $spvm_byte_array = $api->new_byte_array_from_bin($perl_binary);
-
-or UTF-8 bytes.
+Examples:
   
-  use utf8;
-  my $perl_binary = encode('UTF-8', "あいう");
-  my $spvm_string = $api->new_string_from_bin($perl_binary);
+  # Convert Perl string to SPVM byte[]
+  my $pl_binary ="abc";
+  my $sp_nums = $api->new_byte_array_from_bin($pl_binary);
 
 =head2 new_byte_array_from_string
 
   use utf8;
-  my $spvm_byte_array = $api->new_byte_array_from_string("あいう");
+  my $sp_nums = $api->new_byte_array_from_string("あいう");
 
-Convert a decoded string to SPVM byte[] value using L<utf8::encode|utf8>. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+The same as the L</"new_byte_array_from_bin"> method. Any decoding is not performed.
 
 =head2 new_short_array
 
-  my $spvm_nums = $api->new_short_array([1, 2, 3]);
+  my $sp_nums = $api->new_short_array([1, 2, 3]);
 
-Convert a Perl array reference to a SPVM C<short[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM C<short[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 =head2 new_short_array_len
 
-  my $spvm_nums = $api->new_short_array_len($length);
+  my $sp_nums = $api->new_short_array_len($length);
 
 Create a new  a SPVM C<short[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_short_array_from_bin
 
-  my $perl_binary = pack('c3', 97, 98, 99);
-  my $spvm_short_array = $api->new_short_array_from_bin($perl_binary);
+  my $pl_binary = pack('c3', 97, 98, 99);
+  my $sp_nums = $api->new_short_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM short[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to SPVM short[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-Thg Perl binary data is interpreted as 16-bit signed integers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is interpreted as 16-bit signed integers. The created array length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
 =head2 new_int_array
 
-  my $spvm_nums = $api->new_int_array([1, 2, 3]);
+  my $sp_nums = $api->new_int_array([1, 2, 3]);
 
-Convert a Perl array reference to a SPVM C<int[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM C<int[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 =head2 new_int_array_len
 
-  my $spvm_nums = $api->new_int_array_len($length);
+  my $sp_nums = $api->new_int_array_len($length);
 
 Create a new  a SPVM C<int[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_int_array_from_bin
 
-  my $perl_binary = pack('l3', 97, 98, 99);
-  my $spvm_int_array = $api->new_int_array_from_bin($perl_binary);
+  my $pl_binary = pack('l3', 97, 98, 99);
+  my $sp_nums = $api->new_int_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM int[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to SPVM int[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-Thg Perl binary data is interpreted as 8-bit signed integers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is interpreted as 8-bit signed integers. The created array length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
 =head2 new_long_array
 
-  my $spvm_nums = $api->new_long_array([1, 2, 3]);
+  my $sp_nums = $api->new_long_array([1, 2, 3]);
 
-Convert a Perl array reference to a SPVM C<long[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM C<long[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 =head2 new_long_array_len
 
-  my $spvm_nums = $api->new_long_array_len($length);
+  my $sp_nums = $api->new_long_array_len($length);
 
 Create a new  a SPVM C<long[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_long_array_from_bin
 
-  my $perl_binary = pack('q3', 97, 98, 99);
-  my $spvm_long_array = $api->new_long_array_from_bin($perl_binary);
+  my $pl_binary = pack('q3', 97, 98, 99);
+  my $sp_nums = $api->new_long_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM long[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to SPVM long[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-Thg Perl binary data is longerpreted as 8-bit signed longegers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is longerpreted as 8-bit signed longegers. The created array length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
 =head2 new_float_array
 
-  my $spvm_nums = $api->new_float_array([1.2, 2.5, 3.3]);
+  my $sp_nums = $api->new_float_array([1.2, 2.5, 3.3]);
 
-Convert a Perl array reference to a SPVM C<float[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM C<float[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 =head2 new_float_array_len
 
-  my $spvm_nums = $api->new_float_array_len($length);
+  my $sp_nums = $api->new_float_array_len($length);
 
 Create a new  a SPVM C<float[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_float_array_from_bin
 
-  my $perl_binary = pack('f3', 0.5, 1.5, 2.5);
-  my $spvm_float_array = $api->new_float_array_from_bin($perl_binary);
+  my $pl_binary = pack('f3', 0.5, 1.5, 2.5);
+  my $sp_nums = $api->new_float_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM float[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to SPVM float[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-Thg Perl binary data is floaterpreted as 8-bit signed floategers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is floaterpreted as 8-bit signed floategers. The created array length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
 =head2 new_double_array
 
-  my $spvm_nums = $api->new_double_array([1.2, 2.5, 3.3]);
+  my $sp_nums = $api->new_double_array([1.2, 2.5, 3.3]);
 
-Convert a Perl array reference to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
 =head2 new_double_array_len
 
-  my $spvm_nums = $api->new_double_array_len($length);
+  my $sp_nums = $api->new_double_array_len($length);
 
 Create a new  a SPVM C<double[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-The lenght must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to zero. Otherwise an exception will occur.
 
 =head2 new_double_array_from_bin
 
-  my $perl_binary = pack('f3', 0.5, 1.5, 2.5);
-  my $spvm_double_array = $api->new_double_array_from_bin($perl_binary);
+  my $pl_binary = pack('f3', 0.5, 1.5, 2.5);
+  my $sp_double_array = $api->new_double_array_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM double[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to SPVM double[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-Thg Perl binary data is doubleerpreted as 8-bit signed doubleegers. The created array length is automatically calcurated from the Perl binary data.
+Thg Perl binary is doubleerpreted as 8-bit signed doubleegers. The created array length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
 =head2 new_string
 
   use utf8;
-  my $spvm_string = $api->new_string("あいう");
+  my $sp_string = $api->new_string("あいう");
 
-Convert a Perl string to a SPVM string.
+Converts a Perl string to a SPVM string.
 
 If the argument is C<undef>, C<undef> is returned.
 
 =head2 new_string_from_bin
 
-  my $perl_binary = pack('c3', 97, 98, 99);
-  my $spvm_string = $api->new_string_from_bin($perl_binary);
+  my $pl_binary = pack('c3', 97, 98, 99);
+  my $sp_string = $api->new_string_from_bin($pl_binary);
 
-Convert a Perl Binary Data to SPVM string object. Return value is L<SPVM::BlessedObject::String> object which wraps the SPVM string.
+Converts a Perl binary to SPVM string object. Return value is L<SPVM::BlessedObject::String> object which wraps the SPVM string.
 
-Thg Perl binary data is interpreted as 8-bit signed integers. The string length is automatically calcurated from the Perl binary data.
+Thg Perl binary is interpreted as 8-bit signed integers. The string length is automatically calcurated from the Perl binary.
 
 If the first argument is C<undef>, C<undef> is returned.
 
-You can use simple ascii codes as Perl binary data.
+You can use simple ascii codes as Perl binary.
 
   my $binary ="abc";
-  my $spvm_string = $api->new_string_from_bin($perl_binary);
+  my $sp_string = $api->new_string_from_bin($pl_binary);
 
 or UTF-8 bytes.
 
   use utf8;
-  my $perl_binary = encode('UTF-8', "あいう");
-  my $spvm_string = $api->new_string_from_bin($perl_binary);
+  my $pl_binary = encode('UTF-8', "あいう");
+  my $sp_string = $api->new_string_from_bin($pl_binary);
 
 =head2 new_any_object_array
 
@@ -515,7 +508,7 @@ or UTF-8 bytes.
 
 The alias for the following code using L</"new_object_array">.
 
-  my $spvm_array = $api->new_object_array('object[]', $perl_array_ref);
+  my $sp_array = $api->new_object_array('object[]', $pl_array_ref);
 
 =head2 new_object_array
 
@@ -524,7 +517,7 @@ The alias for the following code using L</"new_object_array">.
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
-Convert a Perl array reference to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
 
@@ -540,14 +533,14 @@ You can also create multidimensional array.
 
 =head2 new_mulnum_array
 
-Convert a Perl array references to SPVM multi-numeric array.
+Converts a Perl array references to SPVM multi-numeric array.
 
-  my $perl_values = [
+  my $pl_values = [
     {x => 0, y => 1, z => 2},
     {x => 3, y => 4, z => 5},
     {x => 6, y => 7, z => 8},
   ];
-  my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[]", $perl_values);
+  my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[]", $pl_values);
 
 The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
 
@@ -564,7 +557,7 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3b[]", $values);
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3b[]", $values);
   }
 
   # new_mulnum_array - short
@@ -574,7 +567,7 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3s[]",$values);
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3s[]",$values);
   }
 
   # new_mulnum_array - int
@@ -584,7 +577,7 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[],$values);
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[],$values);
   }
 
   # new_mulnum_array - long
@@ -594,7 +587,7 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3l[]", $values);
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3l[]", $values);
   }
 
   # new_mulnum_array - float
@@ -604,7 +597,7 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3f[]",$values);
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3f[]",$values);
   }
 
   # new_mulnum_array - double
@@ -614,59 +607,59 @@ Examples:
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3d[],"$values);
-    ok(SPVM::TestCase::ExchangeAPI-spvm_new_mulnum_array_double($spvm_mulnum_array));
-    my $out_values = $spvm_mulnum_array->to_elems;
+    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3d[],"$values);
+    ok(SPVM::TestCase::ExchangeAPI-spvm_new_mulnum_array_double($sp_mulnum_array));
+    my $out_values = $sp_mulnum_array->to_elems;
     is_deeply($out_values, $values);
   }
 
 =head2 new_mulnum_array_from_bin
 
   my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+  my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
 
-Convert Perl a binary data to SPVM Multi Numeric Array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts Perl a binary to SPVM Multi Numeric Array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 The first argument is a multi-numeric array type of SPVM.
 
-The second argument is the Perl packed binary data. The length of the created array is calcurated automatically.
+The second argument is the Perl binary. The length of the created array is calcurated automatically.
 
 Examples:
   
   # new_mulnum_array_from_bin - byte
   {
     my $binary = pack('c9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
   }
 
   # new_mulnum_array_from_bin - short
   {
     my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8);;
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
   }
 
   # new_mulnum_array_from_bin - int
   {
     my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
   }
 
   # new_mulnum_array_from_bin - long
   {
     my $binary = pack('q9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
   }
 
   # new_mulnum_array_from_bin - float
   {
     my $binary = pack('f9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
   }
 
   # new_mulnum_array_from_bin - double
   {
     my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
   }
 
 =head2 get_exception

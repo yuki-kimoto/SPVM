@@ -60,7 +60,9 @@
       # After
       my $api = SPVM::api();
       my $int_array = $api->new_int_array([1, 2, 3]);
-    
+    [Incompatible Changes]
+      * The new_byte_array_from_string method in the SPVM::ExchangeAPI class doesn't perform C<utf8::encode>.
+        This method becomes the same as the new_byte_array_from_bin method.
 0.9683 2022-01-21
   [New Features]
     * Added the Compiler class.
