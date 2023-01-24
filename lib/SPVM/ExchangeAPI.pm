@@ -742,115 +742,55 @@ Examples:
 
 =head1 Argument Conversion
 
-Perl arguments are converted to SPVM arguments in the following rules.
+The arguments given in the L</"call_method"> are converted to the values of SPVM in the following rules.
 
 =head2 byte Argument
 
-If the SPVM argument type is C<byte>, Perl scalar is converted to SPVM C<byte> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<byte>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<byte> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in C<C Language>.
 
   (int8_t)SvIV(perl_scalar)
 
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : byte) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(12);
-
 =head2 short Argument
 
-If the SPVM argument type is C<short>, Perl scalar is converted to SPVM C<short> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<short>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<short> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in C<C Language>.
   
   (int16_t)SvIV(perl_scalar)
 
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : short) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(12);
-
 =head2 int Argument
 
-If the SPVM argument type is C<int>, Perl scalar is converted to SPVM C<int> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<int>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<int> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in C<C Language>.
 
   (int32_t)SvIV(perl_scalar)
 
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : int) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(12);
-
 =head2 long Argument
 
-If the SPVM argument type is C<long>, Perl scalar is converted to SPVM C<long> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<long>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<long> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in C<C Language>.
 
   (int64_t)SvIV(perl_scalar)
 
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : long) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(12);
-
 =head2 float Argument
 
-If the SPVM argument type is C<float>, Perl scalar is converted to SPVM C<float> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<float>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<float> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in C<C Language>.
 
   (float)SvNV(perl_scalar)
 
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : float) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(1.2);
-
 =head2 double Argument
 
-If the SPVM argument type is C<double>, Perl scalar is converted to SPVM C<double> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+If the SPVM argument type is C<double>, the following coversion is performed.
 
-The conversion logic is
+A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in C<C Language>.
 
   (double)SvNV(perl_scalar)
-
-B<Example:>
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($value : double) { ... }
-  }
-  
-  # Perl
-  SPVM::MyClass->foo(1.2);
 
 =head2 string Argument
 
