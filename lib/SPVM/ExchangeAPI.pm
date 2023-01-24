@@ -329,7 +329,6 @@ Examples:
 
 =head2 new_byte_array_from_string
 
-  use utf8;
   my $sp_nums = $api->new_byte_array_from_string("あいう");
 
 The same as the L</"new_byte_array_from_bin"> method. Any decoding is not performed.
@@ -471,7 +470,6 @@ If the argument is C<undef>, returns C<undef>.
 
 =head2 new_string
 
-  use utf8;
   my $sp_string = $api->new_string("あいう");
 
 Converts a Perl string to a L<SPVM::BlessedObject::String> object. Any decoding is not performed.
