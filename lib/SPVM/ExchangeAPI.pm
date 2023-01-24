@@ -306,7 +306,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_byte_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type with length.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -317,9 +317,9 @@ The length must be greater than or equal to C<0>. Otherwise an exception will oc
 
 Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type and returns it.
 
-Thg Perl binary is interpreted as 8-bit signed integers. The length of the array is calcurated from the Perl binary.
+The Perl binary is interpreted as 8-bit signed integers. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 Examples:
   
@@ -338,167 +338,156 @@ The same as the L</"new_byte_array_from_bin"> method. Any decoding is not perfor
 
   my $sp_nums = $api->new_short_array([1, 2, 3]);
 
-Converts a Perl array reference to a SPVM C<short[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<short[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_short_array_len
 
   my $sp_nums = $api->new_short_array_len($length);
 
-Create a new  a SPVM C<short[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<short[]> type with the length.
 
-The length must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_short_array_from_bin
 
   my $pl_binary = pack('c3', 97, 98, 99);
   my $sp_nums = $api->new_short_array_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM short[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<short[]> type and returns it.
 
-Thg Perl binary is interpreted as 16-bit signed integers. The created array length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 16-bit signed integers. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_int_array
 
   my $sp_nums = $api->new_int_array([1, 2, 3]);
 
-Converts a Perl array reference to a SPVM C<int[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<int[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_int_array_len
 
   my $sp_nums = $api->new_int_array_len($length);
 
-Create a new  a SPVM C<int[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<int[]> type with the length.
 
-The length must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_int_array_from_bin
 
   my $pl_binary = pack('l3', 97, 98, 99);
   my $sp_nums = $api->new_int_array_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM int[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<int[]> type and returns it.
 
-Thg Perl binary is interpreted as 8-bit signed integers. The created array length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 32-bit signed integers. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_long_array
 
   my $sp_nums = $api->new_long_array([1, 2, 3]);
 
-Converts a Perl array reference to a SPVM C<long[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<long[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_long_array_len
 
   my $sp_nums = $api->new_long_array_len($length);
 
-Create a new  a SPVM C<long[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<long[]> type with the length.
 
-The length must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_long_array_from_bin
 
   my $pl_binary = pack('q3', 97, 98, 99);
   my $sp_nums = $api->new_long_array_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM long[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<long[]> type and returns it.
 
-Thg Perl binary is longerpreted as 8-bit signed longegers. The created array length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 64-bit signed integers. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_float_array
 
   my $sp_nums = $api->new_float_array([1.2, 2.5, 3.3]);
 
-Converts a Perl array reference to a SPVM C<float[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<float[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_float_array_len
 
   my $sp_nums = $api->new_float_array_len($length);
 
-Create a new  a SPVM C<float[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<float[]> type with the length.
 
-The length must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_float_array_from_bin
 
   my $pl_binary = pack('f3', 0.5, 1.5, 2.5);
   my $sp_nums = $api->new_float_array_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM float[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<float[]> type and returns it.
 
-Thg Perl binary is floaterpreted as 8-bit signed floategers. The created array length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 32-bit floating point. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_double_array
 
   my $sp_nums = $api->new_double_array([1.2, 2.5, 3.3]);
 
-Converts a Perl array reference to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<double[]> type and returns it.
 
-If the first argument is a C<undef> value, the return value is a C<undef> value.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_double_array_len
 
   my $sp_nums = $api->new_double_array_len($length);
 
-Create a new  a SPVM C<double[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<double[]> type with the length.
 
-The length must be greater than or equal to zero. Otherwise an exception will occur.
+The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_double_array_from_bin
 
   my $pl_binary = pack('f3', 0.5, 1.5, 2.5);
   my $sp_double_array = $api->new_double_array_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM double[] object. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<double[]> type and returns it.
 
-Thg Perl binary is doubleerpreted as 8-bit signed doubleegers. The created array length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 64-bit floating point. The length of the array is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_string
 
   use utf8;
   my $sp_string = $api->new_string("あいう");
 
-Converts a Perl string to a SPVM string.
+Converts a Perl string to a L<SPVM::BlessedObject::String> object. Any decoding is not performed.
 
-If the argument is C<undef>, C<undef> is returned.
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_string_from_bin
 
   my $pl_binary = pack('c3', 97, 98, 99);
   my $sp_string = $api->new_string_from_bin($pl_binary);
 
-Converts a Perl binary to SPVM string object. Return value is L<SPVM::BlessedObject::String> object which wraps the SPVM string.
+Converts a Perl binary to a L<SPVM::BlessedObject::String>.
 
-Thg Perl binary is interpreted as 8-bit signed integers. The string length is automatically calcurated from the Perl binary.
+The Perl binary is interpreted as 8-bit signed integers. The length of the string is calcurated from the Perl binary.
 
-If the first argument is C<undef>, C<undef> is returned.
-
-You can use simple ascii codes as Perl binary.
-
-  my $binary ="abc";
-  my $sp_string = $api->new_string_from_bin($pl_binary);
-
-or UTF-8 bytes.
-
-  use utf8;
-  my $pl_binary = encode('UTF-8', "あいう");
-  my $sp_string = $api->new_string_from_bin($pl_binary);
+If the argument is C<undef>, returns C<undef>.
 
 =head2 new_any_object_array
 
@@ -508,7 +497,7 @@ or UTF-8 bytes.
 
 The alias for the following code using L</"new_object_array">.
 
-  my $sp_array = $api->new_object_array('object[]', $pl_array_ref);
+  my $sp_array = $api->new_object_array('object[]', $pl_array);
 
 =head2 new_object_array
 
@@ -517,15 +506,13 @@ The alias for the following code using L</"new_object_array">.
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
-Converts a Perl array reference to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl array reference to a SPVM L<SPVM::BlessedObject::Array> object that has the value of a object array type and returns it.
 
-The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
+The first argument is a SPVM array type name. If the type doesn't exist, an exception will occur.
 
-The second argument is a Perl array reference. Each element must be valid value or C<undef>. Otherwise an exception will occur.
+The second argument is a Perl array reference. Each element must be a L<SPVM::BlessedObject> object or C<undef>. Otherwise an exception will occur.
 
-Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
-
-You can also create multidimensional array.
+Examples:
 
   my $object1 = $api->new_int_array([1, 2, 3]);
   my $object2 = $api->new_int_array([4, 5, 6]);
@@ -533,7 +520,7 @@ You can also create multidimensional array.
 
 =head2 new_mulnum_array
 
-Converts a Perl array references to SPVM multi-numeric array.
+Converts a Perl array reference to a L<SPVM::BlessedObject::String> object that has the value of a multi-numeric array type and returns it.
 
   my $pl_values = [
     {x => 0, y => 1, z => 2},
@@ -542,87 +529,20 @@ Converts a Perl array references to SPVM multi-numeric array.
   ];
   my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[]", $pl_values);
 
-The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
+The first argument is a SPVM array type name. If the type doesn't exist, an exception will occur.
 
-The second argument is a Perl array of hash references. Each hash reference must be contain all fields of the multi-numeric value. Otherwise an exception will occur.
-
-Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
-
-Examples:
-
-  # new_mulnum_array - byte
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3b[]", $values);
-  }
-
-  # new_mulnum_array - short
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3s[]",$values);
-  }
-
-  # new_mulnum_array - int
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[],$values);
-  }
-
-  # new_mulnum_array - long
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3l[]", $values);
-  }
-
-  # new_mulnum_array - float
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3f[]",$values);
-  }
-
-  # new_mulnum_array - double
-  {
-    my $values = [
-      {x => 0, y => 1, z => 2},
-      {x => 3, y => 4, z => 5},
-      {x => 6, y => 7, z => 8},
-    ];
-    my $sp_mulnum_array = $api->new_mulnum_array("TestCase::Point_3d[],"$values);
-    ok(SPVM::TestCase::ExchangeAPI-spvm_new_mulnum_array_double($sp_mulnum_array));
-    my $out_values = $sp_mulnum_array->to_elems;
-    is_deeply($out_values, $values);
-  }
+The second argument is a Perl array of hash references. Each hash reference must be contain all fields of the multi-numeric typee. Otherwise an exception will occur.
 
 =head2 new_mulnum_array_from_bin
 
-  my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
   my $sp_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
 
-Converts Perl a binary to SPVM Multi Numeric Array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Converts a Perl binary to a L<SPVM::BlessedObject::Array> object that has the value of a multi-numeric array type and returns it.
 
 The first argument is a multi-numeric array type of SPVM.
 
-The second argument is the Perl binary. The length of the created array is calcurated automatically.
+The second argument is a Perl binary. The length of the array is calcurated from the Perl binary.
 
 Examples:
   
@@ -666,13 +586,13 @@ Examples:
 
   my $exception = $api->get_exception();
 
-Get the exception of the SPVM runtime environment as L<SPVM::BlessedObject::String> object.
+Gets the exception of the SPVM runtime environment as L<SPVM::BlessedObject::String> object.
 
 =head2 set_exception
 
-Set a SPVM exception of the SPVM runtime environment.
+Sets an exception.
 
-The argument must be a L<SPVM::BlessedObject::String> object, a decoded string or C<undef>. Otherwise an exception will occur.
+The argument must be a Perl string, a L<SPVM::BlessedObject::String> object or C<undef>. Otherwise an exception will occur.
 
   $api->set_exception($api->new_string("abc"));
   $api->set_exception("abc");
@@ -682,9 +602,9 @@ The argument must be a L<SPVM::BlessedObject::String> object, a decoded string o
 
   my $count = $api->get_memory_blocks_count();
 
-Get the count of created memory blocks. SPVM runtime create a memory block on the heap when a object is created or new week reference is created.
+Gets the count of memory blocks on the execution environment.
 
-You can check the memory leaks by this method.
+Examples:
 
   # First Memory Blocks Count
   my $start_memory_blocks_count = $api->get_memory_blocks_count();
@@ -709,9 +629,9 @@ You can check the memory leaks by this method.
 
 Calls an class method or an instance method with arguments and return the return value.
 
-If the count of given arguments is less than the count of the arguments of the method, an exception occurs.
+If the count of given arguments is less than the count of the arguments of the method, an exception will occur.
 
-If the count of given arguments is more than the count of the arguments of the method, an exception occurs.
+If the count of given arguments is more than the count of the arguments of the method, an exception will occur.
 
 The arguments are converted by the rule of L</"Argument Conversion">.
 
@@ -789,7 +709,7 @@ A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvN
 
 If the SPVM argument type is C<string>, the given Perl scalar is converted by the following rules.
 
-If any of the following rules does not match, an exception occurs.
+If any of the following rules does not match, an exception will occur.
 
 If the SPVM argument type is C<string>, the given Perl non-ref scalar is converted to L<SPVM::BlessedObject::String> object.
 
@@ -830,7 +750,7 @@ Perl can have SPVM class object itself as a object which inherits L<SPVM::Blesse
 
 If the given value is Perl C<undef>, it is converted to SPVM C<undef>.
 
-If class name is different, an exception occurs.
+If class name is different, an exception will occur.
 
 B<Example:>
 
@@ -993,9 +913,9 @@ If the SPVM argument type is a multi-numeric type, the given argument is convert
 
 =head3 Multi-Numeric byte
 
-If the argument type is a multi-numeric byte type, the given argument is hash reference is converted to the value of SPVM multi-numeric byte type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl Scalar to SPVM byte">.
+If the argument type is a multi-numeric byte type, the given argument is hash reference is converted to the value of SPVM multi-numeric byte type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl Scalar to SPVM byte">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1013,9 +933,9 @@ B<Example:>
 
 =head3 Multi-Numeric short Argument
 
-If the argument type is a multi-numeric short type, the given argument is hash reference is converted to the value of SPVM multi-numeric short type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl Scalar to SPVM short">.
+If the argument type is a multi-numeric short type, the given argument is hash reference is converted to the value of SPVM multi-numeric short type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl Scalar to SPVM short">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1033,9 +953,9 @@ B<Example:>
 
 =head3 Multi-Numeric int Argument
 
-If the argument type is a multi-numeric int type, the given argument is hash reference is converted to the value of SPVM multi-numeric int type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl Scalar to SPVM int">.
+If the argument type is a multi-numeric int type, the given argument is hash reference is converted to the value of SPVM multi-numeric int type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl Scalar to SPVM int">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1053,9 +973,9 @@ B<Example:>
 
 =head3 Multi-Numeric long Argument
 
-If the argument type is a multi-numeric long type, the given argument is hash reference is converted to the value of SPVM multi-numeric long type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl Scalar to SPVM long">.
+If the argument type is a multi-numeric long type, the given argument is hash reference is converted to the value of SPVM multi-numeric long type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl Scalar to SPVM long">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1073,9 +993,9 @@ B<Example:>
 
 =head3 Multi-Numeric float Argument
 
-If the argument type is a multi-numeric float type, the given argument is hash reference is converted to the value of SPVM multi-numeric float type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl Scalar to SPVM float">.
+If the argument type is a multi-numeric float type, the given argument is hash reference is converted to the value of SPVM multi-numeric float type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl Scalar to SPVM float">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1093,9 +1013,9 @@ B<Example:>
 
 =head3 Multi-Numeric double Argument
 
-If the argument type is a multi-numeric double type, the given argument is hash reference is converted to the value of SPVM multi-numeric double type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl Scalar to SPVM double">.
+If the argument type is a multi-numeric double type, the given argument is hash reference is converted to the value of SPVM multi-numeric double type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl Scalar to SPVM double">.
 
-If a filed is missing, an exception occurs.
+If a filed is missing, an exception will occur.
 
 B<Example:>
 
@@ -1241,7 +1161,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl Scalar to SPVM byte"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM byte to Perl Scalar|"SPVM byte to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
@@ -1266,7 +1186,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl Scalar to SPVM short"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM short to Perl Scalar|"SPVM short to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
@@ -1291,7 +1211,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl Scalar to SPVM int"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM int to Perl Scalar|"SPVM int to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
@@ -1316,7 +1236,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl Scalar to SPVM long"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM long to Perl Scalar|"SPVM long to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
@@ -1341,7 +1261,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl Scalar to SPVM float"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM float to Perl Scalar|"SPVM float to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
@@ -1366,7 +1286,7 @@ The given reference must be a scalar reference of hash reference. Otherwise an e
 
 The each field of the hash of the given argument is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl Scalar to SPVM double"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM double to Perl Scalar|"SPVM double to Perl scalar">
 
-If a field is missing, an exception occurs.
+If a field is missing, an exception will occur.
 
 B<Example:>
 
