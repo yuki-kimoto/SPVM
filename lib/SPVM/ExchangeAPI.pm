@@ -246,14 +246,14 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head1 Description
 
-C<SPVM::ExchangeAPI> is APIs to convert Perl data structures to/from SPVM data structures, and call SPVM Method from Perl.
+C<SPVM::ExchangeAPI> is APIs to convert Perl data structures to/from SPVM data structures, and to call SPVM methods from Perl.
 
 =head1 Usage
 
   my $api = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
   my $int_array = $api->new_int_array([1, 2, 3]);
 
-Getting an global ExchangeAPI object:
+Getting an global C<ExchangeAPI> object:
 
   my $api = SPVM::api();
   my $int_array = $api->new_int_array([1, 2, 3]);
@@ -282,11 +282,11 @@ Options:
 
 =over 2
 
-=item C<env>
+=item C<env> : L<SPVM::Bulder::Env> | L<SPVM::BlessedObject::Class>
 
 An execution environment.
 
-=item C<stack>
+=item C<stack> : L<SPVM::Bulder::Stack> | L<SPVM::BlessedObject::Class>
 
 An stack.
 
@@ -529,7 +529,7 @@ Converts a Perl array reference to a L<SPVM::BlessedObject::Array> object that h
 
 The first argument is a SPVM array type name. If the type doesn't exist, an exception will occur.
 
-The second argument is a Perl array of hash references. Each hash reference must be contain all fields of the multi-numeric typee. Otherwise an exception will occur.
+The second argument is a Perl array of a hash references. Each hash reference must be contain all fields of the multi-numeric typee. Otherwise an exception will occur.
 
 =head2 new_mulnum_array_from_bin
 
@@ -627,9 +627,9 @@ Examples:
 
 Calls an class method or an instance method with arguments and return the return value.
 
-If the count of given arguments is less than the count of the arguments of the method, an exception will occur.
+If the count of arguments is less than the count of the arguments of the method, an exception will occur.
 
-If the count of given arguments is more than the count of the arguments of the method, an exception will occur.
+If the count of arguments is more than the count of the arguments of the method, an exception will occur.
 
 The arguments are converted by the rule of L</"Argument Conversion">.
 
@@ -656,7 +656,7 @@ Examples:
 
 =head1 Argument Conversion
 
-The arguments given in the L</"call_method"> are converted to the values of SPVM in the following rules.
+The arguments in the L</"call_method"> are converted to the values of SPVM in the following rules.
 
 =head2 byte Argument
 
@@ -708,15 +708,15 @@ A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvN
 
 =head2 string Argument
 
-If the SPVM argument type is C<string>, the given Perl scalar is converted by the following rules.
+If the SPVM argument type is C<string>, the Perl scalar is converted by the following rules.
 
 If any of the following rules does not match, an exception will occur.
 
-If the SPVM argument type is C<string>, the given Perl non-ref scalar is converted to L<SPVM::BlessedObject::String> object.
+If the SPVM argument type is C<string>, the Perl non-ref scalar is converted to L<SPVM::BlessedObject::String> object.
 
-The given non-ref scalar value is assumed to a Perl decoded string, and is converted to UTF-8 bytes.
+The non-ref scalar value is assumed to a Perl decoded string, and is converted to UTF-8 bytes.
 
-If the given non-ref scalar value is Perl C<undef>, it is converted to Perl C<undef>.
+If the non-ref scalar value is Perl C<undef>, it is converted to Perl C<undef>.
 
 And the following L</"Perl SPVM::BlessedObject::String to SPVM String"> conversion is contined.
 
@@ -727,7 +727,7 @@ Examples:
 
 Perl can have SPVM string itself as L<SPVM::BlessedObject::String> object. This object is created by such as L</"new_string">, L</"new_string_from_bin">, or got as a return value of SPVM method.
 
-If the given value is Perl C<undef>, it is converted to SPVM C<undef>
+If the value is Perl C<undef>, it is converted to SPVM C<undef>
 
   # Converts a Perl scalar to string type
   my $string = $api->new_string("あいう");
@@ -739,7 +739,7 @@ No conversion occurs.
 
 Perl can have SPVM class object itself as a object which inherits L<SPVM::BlessedObject::Class>. This object is created by a contructor such as SPVM::Int->new, SPVM::MyClassClass->new.
 
-If the given value is Perl C<undef>, it is converted to SPVM C<undef>.
+If the value is Perl C<undef>, it is converted to SPVM C<undef>.
 
 If class name is different, an exception will occur.
 
@@ -753,7 +753,7 @@ Examples:
 
 Perl can have SPVM object itself as a L<SPVM::BlessedObject> object. This object is created by a contructor or functions of exchange API such as SPVM::Int->new, SPVM::MyClassClass->new, $api->new_int_array.
 
-If the given value is Perl C<undef>, it is converted to SPVM C<undef>.
+If the value is Perl C<undef>, it is converted to SPVM C<undef>.
 
 Examples:
 
@@ -763,22 +763,15 @@ Examples:
 
 =head2 Array Argument
 
-Perl can have SPVM array itself as L<SPVM::BlessedObject::Array> object. This object is created by such as L</"new_byte_array">, L</"new_short_array">, L</"new_int_array">, L</"new_long_array">, L</"new_float_array">, L</"new_double_array">, or got as a return value of SPVM method.
-
-Examples:
-
-  # SPVM method definition
-  class MyClass {
-    static method foo : void ($values : int[]) { ... }
-  }
-  
-  # Converts a Perl array reference to int[] type
-  my $array = $api->new_int_array([1, 2, 3]);
-  SPVM::MyClass->foo($array);
-
 =head3 byte[] Argument
 
-If the SPVM argument type is C<byte[]>, the Perl array reference is converted to SPVM array which type is C<byte[]>. Each element is converted to C<byte> value by the conversion of L</"byte Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<byte[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<byte[]> type.
+
+Each element is converted to a value of the C<byte> type by the conversion of L</"byte Argument">. 
 
 Examples:
 
@@ -787,7 +780,13 @@ Examples:
 
 =head3 short[] Argument
 
-If the SPVM argument type is C<short[]>, the Perl array reference is converted to SPVM array which type is C<short[]>. Each element is converted to C<short> value by L<the rule of Perl Scalar to SPVM short|"Perl Scalar to SPVM short">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<short[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<short[]> type.
+
+Each element is converted to a value of the C<short> type by the conversion of L</"short Argument">. 
 
 Examples:
 
@@ -796,7 +795,13 @@ Examples:
 
 =head3 int[] Argument
 
-If the SPVM argument type is C<int[]>, the Perl array reference is converted to SPVM array which type is C<int[]>. Each element is converted to C<int> value by the conversion of L</"int Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<int[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<int[]> type.
+
+Each element is converted to a value of the C<int> type by the conversion of L</"int Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -805,7 +810,13 @@ Examples:
 
 =head3 long[] Argument
 
-If the SPVM argument type is C<long[]>, the Perl array reference is converted to SPVM array which type is C<long[]>. Each element is converted to C<long> value by the conversion of L</"long Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<int[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<long[]> type.
+
+Each element is converted to a value of the C<long> type by the conversion of L</"long Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -814,7 +825,13 @@ Examples:
 
 =head3 float[] Argument
 
-If the SPVM argument type is C<float[]>, the Perl array reference is converted to SPVM array which type is C<float[]>. Each element is converted to C<float> value by the conversion of L</"float Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<float[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<float[]> type.
+
+Each element is converted to a value of the C<float> type by the conversion of L</"float Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -823,7 +840,13 @@ Examples:
 
 =head3 double[] Argument
 
-If the SPVM argument type is C<double[]>, the Perl array reference is converted to SPVM array which type is C<double[]>. Each element is converted to C<double> value by the conversion of L</"double Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<double[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<double[]> type.
+
+Each element is converted to a value of the C<double> type by the conversion of L</"double Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -832,7 +855,13 @@ Examples:
 
 =head3 string[] Argument
 
-If the SPVM argument type is C<string[]>, the Perl array reference is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by the conversion of L</"string Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is C<string[]>, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<string[]> type.
+
+Each element is converted to C<string> value by the conversion of L</"string Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -841,7 +870,26 @@ Examples:
 
 =head3 Multi-Numeric Array Argument
 
-If the SPVM argument type is an array of multi-numeric type, the given Perl array reference is converted to SPVM multi-numeric array which element type is multi-numeric type. Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+If the SPVM argument type is a multi-numeric Array, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of of a multi-numeric type.
+
+Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+
+Examples:
+
+  # Converts a Perl array reference of a hash reference to Complex_2d[] type
+  SPVM::MyClass->foo([{re => 1.2, im => 2.3}, {re => 3.4, im => 4.5}]);
+
+=head3 Other Array Argument
+
+If the SPVM argument type is a other type of the above, a Perl value is converted by the following rules.
+
+Perl C<undef> is coverted to SPVM C<undef>.
+
+A Perl array reference is converted to SPVM multi-numeric array which element type is multi-numeric type. Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl C<undef> is coverted to SPVM C<undef>.
 
 Examples:
 
@@ -850,13 +898,13 @@ Examples:
 
 =head2 Multi-Numeric Argument
 
-If the SPVM argument type is a multi-numeric type, the given argument is converted by the following rules.
+If the SPVM argument type is a multi-numeric type, the argument is converted by the following rules.
 
 =head3 Multi-Numeric byte
 
-If the argument type is a multi-numeric byte type, the given argument is hash reference is converted to the value of SPVM multi-numeric byte type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<byte> value by the conversion of L</"byte Argument">.
+If the argument type is a multi-numeric byte type, the argument is hash reference is converted to a value of SPVM multi-numeric byte type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<byte> type by the conversion of L</"byte Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -865,9 +913,9 @@ Examples:
 
 =head3 Multi-Numeric short Argument
 
-If the argument type is a multi-numeric short type, the given argument is hash reference is converted to the value of SPVM multi-numeric short type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<short> value by the conversion of L</"short Argument">.
+If the argument type is a multi-numeric short type, the argument is hash reference is converted to a value of SPVM multi-numeric short type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<short> type by the conversion of L</"short Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -876,9 +924,9 @@ Examples:
 
 =head3 Multi-Numeric int Argument
 
-If the argument type is a multi-numeric int type, the given argument is hash reference is converted to the value of SPVM multi-numeric int type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<int> value by the conversion of L</"int Argument">.
+If the argument type is a multi-numeric int type, the argument is hash reference is converted to a value of SPVM multi-numeric int type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<int> type by the conversion of L</"int Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -887,9 +935,9 @@ Examples:
 
 =head3 Multi-Numeric long Argument
 
-If the argument type is a multi-numeric long type, the given argument is hash reference is converted to the value of SPVM multi-numeric long type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<long> value by the conversion of L</"long Argument">.
+If the argument type is a multi-numeric long type, the argument is hash reference is converted to a value of SPVM multi-numeric long type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<long> type by the conversion of L</"long Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -898,9 +946,9 @@ Examples:
 
 =head3 Multi-Numeric float Argument
 
-If the argument type is a multi-numeric float type, the given argument is hash reference is converted to the value of SPVM multi-numeric float type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<float> value by the conversion of L</"float Argument">.
+If the argument type is a multi-numeric float type, the argument is hash reference is converted to a value of SPVM multi-numeric float type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<float> type by the conversion of L</"float Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -909,9 +957,9 @@ Examples:
 
 =head3 Multi-Numeric double Argument
 
-If the argument type is a multi-numeric double type, the given argument is hash reference is converted to the value of SPVM multi-numeric double type. If the given argument is different from a hash reference, an exception will occur. Each field is converted to C<double> value by the conversion of L</"double Argument">.
+If the argument type is a multi-numeric double type, the argument is hash reference is converted to a value of SPVM multi-numeric double type. If the argument is different from a hash reference, an exception will occur. Each field is converted to a value of the C<double> type by the conversion of L</"double Argument">.
 
-If a field is missing, an exception will occur.
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -920,15 +968,17 @@ Examples:
 
 =head2 Numeric Reference Argument
 
-If the SPVM argument type is numeric reference type, the given Perl reference is converted to SPVM numeric reference type in the following rules.
-
 =head3 byte Reference Argument
 
-If the SPVM argument type is byte reference type, the given Perl reference is converted to SPVM byte reference type.
+If the SPVM argument type is the C<byte> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the byte reference type.
 
-The given value is converted to C<byte> value by the conversion of L</"byte Argument"> and return value is converted to Perl scalar by the conversion of L</"byte Argument">
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<byte> type by the conversion of L</"byte Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"byte Return Value">
 
 Examples:
 
@@ -938,11 +988,15 @@ Examples:
 
 =head3 short Reference Argument
 
-If the SPVM argument type is short reference type, the given Perl reference is converted to SPVM short reference type.
+If the SPVM argument type is the C<short> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the short reference type.
 
-The given value is converted to C<short> value by the conversion of L</"short Argument"> and return value is converted to Perl scalar by the conversion of L</"short Argument">
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<short> type by the conversion of L</"short Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"short Return Value">
 
 Examples:
 
@@ -952,11 +1006,15 @@ Examples:
 
 =head3 int Reference Argument
 
-If the SPVM argument type is int reference type, the given Perl reference is converted to SPVM int reference type.
+If the SPVM argument type is the C<int> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the int reference type.
 
-The given value is converted to C<int> value by the conversion of L</"int Argument"> and return value is converted to Perl scalar by the conversion of L</"int Argument">
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<int> type by the conversion of L</"int Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"int Return Value">
 
 Examples:
 
@@ -966,11 +1024,15 @@ Examples:
 
 =head3 long Reference Argument
 
-If the SPVM argument type is long reference type, the given Perl reference is converted to SPVM long reference type.
+If the SPVM argument type is the C<long> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the long reference type.
 
-The given value is converted to C<long> value by the conversion of L</"long Argument"> and return value is converted to Perl scalar by the conversion of L</"long Argument">
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<long> type by the conversion of L</"long Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"long Return Value">
 
 Examples:
 
@@ -980,11 +1042,15 @@ Examples:
 
 =head3 float Reference Argument
 
-If the SPVM argument type is float reference type, the given Perl reference is converted to SPVM float reference type.
+If the SPVM argument type is the C<float> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the float reference type.
 
-The given value is converted to C<float> value by the conversion of L</"float Argument"> and return value is converted to Perl scalar by the conversion of L</"float Argument">.
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<float> type by the conversion of L</"float Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"float Return Value">
 
 Examples:
 
@@ -994,11 +1060,15 @@ Examples:
 
 =head3 double Reference Argument
 
-If the SPVM argument type is double reference type, the given Perl reference is converted to SPVM double reference type.
+If the SPVM argument type is the C<double> reference type, the argument is converted by the following rules.
 
-The given value must be a scalar reference which referenced value is non-ref scalar. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM value of the double reference type.
 
-The given value is converted to C<double> value by the conversion of L</"double Argument"> and return value is converted to Perl scalar by the conversion of L</"double Argument">.
+The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
+
+The value is converted to a SPVM value of the C<double> type by the conversion of L</"double Argument">.
+
+The value set by SPVM is converted to a Perl scalar by the conversion of L</"double Return Value">
 
 Examples:
 
@@ -1008,17 +1078,19 @@ Examples:
 
 =head2 Multi-Numeric Reference Argument
 
-If the SPVM argument type is multi-numeric reference type, the given Perl reference is converted by the following rules.
-
 =head3 Multi-Numeric byte Reference Argument
 
-If the SPVM argument type is multi-numeric byte reference type, the given Perl reference is converted to SPVM multi-numeric byte reference type.
+If the SPVM argument type is multi-numeric C<byte> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<byte> reference type.
 
-The each field of the hash of the given argument is converted to C<byte> value by the conversion of L</"byte Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"byte Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<byte> type by the conversion of L</"byte Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"byte Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1028,13 +1100,17 @@ Examples:
 
 =head3 Multi-Numeric short Reference Argument
 
-If the SPVM argument type is multi-numeric short reference type, the given Perl reference is converted to SPVM multi-numeric short reference type.
+If the SPVM argument type is multi-numeric C<short> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<short> reference type.
 
-The each field of the hash of the given argument is converted to C<short> value by the conversion of L</"short Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"short Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<short> type by the conversion of L</"short Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"short Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1044,13 +1120,17 @@ Examples:
 
 =head3 Multi-Numeric int Reference Argument
 
-If the SPVM argument type is multi-numeric int reference type, the given Perl reference is converted to SPVM multi-numeric int reference type.
+If the SPVM argument type is multi-numeric C<int> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<int> reference type.
 
-The each field of the hash of the given argument is converted to C<int> value by the conversion of L</"int Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"int Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<int> type by the conversion of L</"int Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"int Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1060,13 +1140,17 @@ Examples:
 
 =head3 Multi-Numeric long Reference Argument
 
-If the SPVM argument type is multi-numeric long reference type, the given Perl reference is converted to SPVM multi-numeric long reference type.
+If the SPVM argument type is multi-numeric C<long> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<long> reference type.
 
-The each field of the hash of the given argument is converted to C<long> value by the conversion of L</"long Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"long Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<long> type by the conversion of L</"long Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"long Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1076,13 +1160,17 @@ Examples:
 
 =head3 Multi-Numeric float Reference Argument
 
-If the SPVM argument type is multi-numeric float reference type, the given Perl reference is converted to SPVM multi-numeric float reference type.
+If the SPVM argument type is multi-numeric C<float> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<float> reference type.
 
-The each field of the hash of the given argument is converted to C<float> value by the conversion of L</"float Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"float Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<float> type by the conversion of L</"float Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"float Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1092,13 +1180,17 @@ Examples:
 
 =head3 Multi-Numeric double Reference Argument
 
-If the SPVM argument type is multi-numeric double reference type, the given Perl reference is converted to SPVM multi-numeric double reference type.
+If the SPVM argument type is multi-numeric C<double> reference type, the argument is converted by the following rules.
 
-The given reference must be a scalar reference of hash reference. Otherwise an exception will occur.
+A Perl reference is converted to a SPVM multi-numeric C<double> reference type.
 
-The each field of the hash of the given argument is converted to C<double> value by the conversion of L</"double Argument"> and the each field of the return value is converted to Perl scalar by the conversion of L</"double Argument">.
+The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
 
-If a field is missing, an exception will occur.
+Each value of the hash is converted to a value of the C<double> type by the conversion of L</"double Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"double Return Value">.
+
+If a field is not specified, an exception will occur.
 
 Examples:
 
@@ -1120,37 +1212,37 @@ SPVM void return value is converted to Perl C<undef>.
 
 If the SPVM return type is the long type, the following conversion is performed.
 
-The SPVM byte value is converted to Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+The SPVM byte value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 short Return Value
 
 If the SPVM return type is the long type, the following conversion is performed.
 
-The SPVM short value is converted to Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+The SPVM short value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 int Return Value
 
 If the SPVM return type is the int type, the following conversion is performed.
 
-The SPVM float value is converted to Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+The SPVM float value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 long Return Value
 
 If the SPVM return type is the long type, the following conversion is performed.
 
-The SPVM float value is converted to Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+The SPVM float value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 float Return Value
 
 If the SPVM return type is the float type, the following conversion is performed.
 
-The SPVM float value is converted to Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+The SPVM float value is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 double Return Value
 
 If the SPVM return type is the double type, the following conversion is performed.
 
-The SPVM double value is converted to Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+The SPVM double value is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 string Return Value
 
