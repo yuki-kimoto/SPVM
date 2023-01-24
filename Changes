@@ -63,6 +63,9 @@
     [Incompatible Changes]
       * The new_byte_array_from_string method in the SPVM::ExchangeAPI class doesn't perform C<utf8::encode>.
         This method becomes the same as the new_byte_array_from_bin method.
+    [Document Bug Fix]
+      * Fixed the document bug that currently the methods in the SPVM::ExchangeAPI doesn't perform any encodeing/decoding using utf8::encode/utf8::decode
+        to create strings, but the doc of Exchange API remains this.
 0.9683 2022-01-21
   [New Features]
     * Added the Compiler class.
