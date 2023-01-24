@@ -201,6 +201,22 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
   return new_name;
 }
 
+int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
+  // Use automatically loaded modules
+  SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
+  SPVM_COMPILER_use(compiler, "Error", "Error", 0);
+  SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
+  SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
+  SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
+  SPVM_COMPILER_use(compiler, "Short", "Short", 0);
+  SPVM_COMPILER_use(compiler, "Int", "Int", 0);
+  SPVM_COMPILER_use(compiler, "Long", "Long", 0);
+  SPVM_COMPILER_use(compiler, "Float", "Float", 0);
+  SPVM_COMPILER_use(compiler, "Double", "Double", 0);
+  SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
+  SPVM_COMPILER_use(compiler, "Address", "Address", 0);
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
@@ -240,20 +256,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
   }
   
-  // Use automatically loaded modules
-  SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
-  SPVM_COMPILER_use(compiler, "Error", "Error", 0);
-  SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
-  SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
-  SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
-  SPVM_COMPILER_use(compiler, "Short", "Short", 0);
-  SPVM_COMPILER_use(compiler, "Int", "Int", 0);
-  SPVM_COMPILER_use(compiler, "Long", "Long", 0);
-  SPVM_COMPILER_use(compiler, "Float", "Float", 0);
-  SPVM_COMPILER_use(compiler, "Double", "Double", 0);
-  SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
-  SPVM_COMPILER_use(compiler, "Address", "Address", 0);
-  
+   SPVM_COMPILER_use_default_loaded_modules(compiler);
+   
   // Use the module that is specified at the argument
   SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
 
