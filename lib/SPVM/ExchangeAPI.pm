@@ -493,7 +493,7 @@ If the argument is C<undef>, returns C<undef>.
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
-The alias for the following code using L</"new_object_array">.
+The alias for the following code using the L</"new_object_array"> method.
 
   my $sp_array = $api->new_object_array('object[]', $pl_array);
 
@@ -518,7 +518,7 @@ Examples:
 
 =head2 new_mulnum_array
 
-Converts a Perl array reference to a L<SPVM::BlessedObject::String> object that has the value of a multi-numeric array type and returns it.
+Converts a Perl array reference to a L<SPVM::BlessedObject::Array> object that has the value of a multi-numeric array type and returns it.
 
   my $pl_values = [
     {x => 0, y => 1, z => 2},
@@ -584,11 +584,11 @@ Examples:
 
   my $exception = $api->get_exception();
 
-Gets the exception of the SPVM runtime environment as L<SPVM::BlessedObject::String> object.
+Gets the exception in the current call stack as L<SPVM::BlessedObject::String> object.
 
 =head2 set_exception
 
-Sets an exception.
+Sets an exception in the current call stack.
 
 The argument must be a Perl string, a L<SPVM::BlessedObject::String> object or C<undef>. Otherwise an exception will occur.
 
@@ -637,9 +637,12 @@ The return value is converted by the rule of L</"Return Value Conversion">.
 
 Examples:
 
+  # Class method call
   my $obj_int = $api->call_method("Int", "new", 1);
-  $obj_int->set_value(5);
-  my $value = $obj_int->value;
+  
+  # Instance method call
+  $api->call_method($obj_int, "set_value", 5);
+  my $value = $api->call_method($obj_int, "value");
 
 =head2 class
 
