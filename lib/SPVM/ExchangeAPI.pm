@@ -765,7 +765,7 @@ Examples:
 
 =head3 byte[] Argument
 
-If the SPVM argument type is C<byte[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<byte[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -780,7 +780,7 @@ Examples:
 
 =head3 short[] Argument
 
-If the SPVM argument type is C<short[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<short[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -795,7 +795,7 @@ Examples:
 
 =head3 int[] Argument
 
-If the SPVM argument type is C<int[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<int[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -810,7 +810,7 @@ Examples:
 
 =head3 long[] Argument
 
-If the SPVM argument type is C<int[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<int[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -825,7 +825,7 @@ Examples:
 
 =head3 float[] Argument
 
-If the SPVM argument type is C<float[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<float[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -840,7 +840,7 @@ Examples:
 
 =head3 double[] Argument
 
-If the SPVM argument type is C<double[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<double[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -855,7 +855,7 @@ Examples:
 
 =head3 string[] Argument
 
-If the SPVM argument type is C<string[]>, a Perl value is converted by the following rules.
+If the SPVM argument type is C<string[]>, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -870,7 +870,7 @@ Examples:
 
 =head3 Multi-Numeric Array Argument
 
-If the SPVM argument type is a multi-numeric Array, a Perl value is converted by the following rules.
+If the SPVM argument type is a multi-numeric Array, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
@@ -885,20 +885,15 @@ Examples:
 
 =head3 Other Array Argument
 
-If the SPVM argument type is a other type of the above, a Perl value is converted by the following rules.
+If the SPVM argument type is a other array type of the above, a Perl value is converted by the following rule.
 
 Perl C<undef> is coverted to SPVM C<undef>.
 
-A Perl array reference is converted to SPVM multi-numeric array which element type is multi-numeric type. Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl C<undef> is coverted to SPVM C<undef>.
-
-Examples:
-
-  # Converts a Perl array reference of a hash reference to Complex_2d[] type
-  SPVM::MyClass->foo([{re => 1.2, im => 2.3}, {re => 3.4, im => 4.5}]);
+A Perl array reference is converted to a L<SPVM::BlessedObject::Array> of the corresponding array type.
 
 =head2 Multi-Numeric Argument
 
-If the SPVM argument type is a multi-numeric type, the argument is converted by the following rules.
+If the SPVM argument type is a multi-numeric type, a Perl value is converted by the following rule.
 
 =head3 Multi-Numeric byte
 
@@ -970,7 +965,7 @@ Examples:
 
 =head3 byte Reference Argument
 
-If the SPVM argument type is the C<byte> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<byte> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the byte reference type.
 
@@ -988,7 +983,7 @@ Examples:
 
 =head3 short Reference Argument
 
-If the SPVM argument type is the C<short> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<short> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the short reference type.
 
@@ -1006,7 +1001,7 @@ Examples:
 
 =head3 int Reference Argument
 
-If the SPVM argument type is the C<int> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<int> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the int reference type.
 
@@ -1024,7 +1019,7 @@ Examples:
 
 =head3 long Reference Argument
 
-If the SPVM argument type is the C<long> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<long> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the long reference type.
 
@@ -1042,7 +1037,7 @@ Examples:
 
 =head3 float Reference Argument
 
-If the SPVM argument type is the C<float> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<float> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the float reference type.
 
@@ -1060,7 +1055,7 @@ Examples:
 
 =head3 double Reference Argument
 
-If the SPVM argument type is the C<double> reference type, the argument is converted by the following rules.
+If the SPVM argument type is the C<double> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM value of the double reference type.
 
@@ -1080,7 +1075,7 @@ Examples:
 
 =head3 Multi-Numeric byte Reference Argument
 
-If the SPVM argument type is multi-numeric C<byte> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<byte> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<byte> reference type.
 
@@ -1100,7 +1095,7 @@ Examples:
 
 =head3 Multi-Numeric short Reference Argument
 
-If the SPVM argument type is multi-numeric C<short> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<short> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<short> reference type.
 
@@ -1120,7 +1115,7 @@ Examples:
 
 =head3 Multi-Numeric int Reference Argument
 
-If the SPVM argument type is multi-numeric C<int> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<int> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<int> reference type.
 
@@ -1140,7 +1135,7 @@ Examples:
 
 =head3 Multi-Numeric long Reference Argument
 
-If the SPVM argument type is multi-numeric C<long> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<long> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<long> reference type.
 
@@ -1160,7 +1155,7 @@ Examples:
 
 =head3 Multi-Numeric float Reference Argument
 
-If the SPVM argument type is multi-numeric C<float> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<float> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<float> reference type.
 
@@ -1180,7 +1175,7 @@ Examples:
 
 =head3 Multi-Numeric double Reference Argument
 
-If the SPVM argument type is multi-numeric C<double> reference type, the argument is converted by the following rules.
+If the SPVM argument type is multi-numeric C<double> reference type, a Perl value is converted by the following rule.
 
 A Perl reference is converted to a SPVM multi-numeric C<double> reference type.
 
