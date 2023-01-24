@@ -523,6 +523,8 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
 }
 
 int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
+
+  SPVM_COMPILER_compile(compiler, NULL);
   
   int32_t runtime_codes_length = SPVM_COMPILER_calculate_runtime_codes_length(compiler);
   int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * runtime_codes_length);

@@ -5,6 +5,8 @@
     * Added the SPVM::ExchangeAPI::Class class.
     * Added the class method in the SPVM::ExchangeAPI.
     * The compile method in the Compiler class support undef class name.
+  [Bug Fix]
+    * Fixed the bug that the build_runtime method in the Compiler class can't be called only after the compile method is called.
   [Document Change]
     * SPVM::Document::ExchangeAPI is rewritten by way to using the SVPM::ExchangeAPI object.
       and its content is moved into the document of SPVM and SPVM::ExchangeAPI.

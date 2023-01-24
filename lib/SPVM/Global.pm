@@ -140,12 +140,6 @@ sub init_runtime {
     for my $module_dir (@{$SPVM::Global::BUILDER->module_dirs}) {
       $SPVM::Global::COMPILER->add_module_dir($module_dir);
     }
-    $SPVM::Global::COMPILER->set_start_file(__FILE__);
-    $SPVM::Global::COMPILER->set_start_line(__LINE__ + 1);
-    my $success = $SPVM::Global::COMPILER->compile('Int');
-    unless ($success) {
-      confess "Unexpcted Error:the compiliation must be always successful";
-    }
     $SPVM::Global::RUNTIME = $SPVM::Global::COMPILER->build_runtime;
 
     &load_dynamic_libs($SPVM::Global::RUNTIME, $SPVM::Global::DYNAMIC_LIB_FILES);
