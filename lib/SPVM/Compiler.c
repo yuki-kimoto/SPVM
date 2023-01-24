@@ -43,7 +43,10 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
 
   void* obj_class_name = stack[1].oval;
-  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  const char* class_name = NULL;
+  if (obj_class_name) {
+    class_name = env->get_chars(env, stack, obj_class_name);
+  }
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   

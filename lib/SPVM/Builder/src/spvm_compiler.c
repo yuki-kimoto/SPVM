@@ -219,9 +219,6 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
-  SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
-  class_name = class_name_string->value;
-
   compiler->cur_class_base = compiler->classes->length;
 
   int32_t cur_basic_type_base = compiler->basic_types->length;
@@ -256,11 +253,15 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
   }
   
-   SPVM_COMPILER_use_default_loaded_modules(compiler);
+  SPVM_COMPILER_use_default_loaded_modules(compiler);
    
   // Use the module that is specified at the argument
-  SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
-
+  if (class_name) {
+    SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
+    class_name = class_name_string->value;
+    SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
+  }
+  
   /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {
