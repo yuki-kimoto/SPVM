@@ -179,7 +179,8 @@ my $nan_re = qr/(nan|ind)/i;
       my $sep = ",";
       my $string = "foo,bar,baz,,";
       {
-        is_deeply([split $sep, $string, -1], SPVM::Fn->split($sep, $string)->to_elems);
+        is_deeply([split $sep, $string, -1], SPVM::Fn->split($sep, $string, -1)->to_elems);
+        is_deeply([split $sep, $string, 0], SPVM::Fn->split($sep, $string)->to_elems);
         is_deeply([split $sep, $string, 1], SPVM::Fn->split($sep, $string, 1)->to_elems);
         is_deeply([split $sep, $string, 2], SPVM::Fn->split($sep, $string, 2)->to_elems);
         is_deeply([split $sep, $string, 3], SPVM::Fn->split($sep, $string, 3)->to_elems);

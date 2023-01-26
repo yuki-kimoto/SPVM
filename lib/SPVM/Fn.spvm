@@ -650,7 +650,7 @@ class Fn {
     }
   }
   
-  precompile static method split : string[] ($separator : string, $string : string, $limit = -1 : int) {
+  precompile static method split : string[] ($separator : string, $string : string, $limit = 0 : int) {
     unless ($separator) {
       die "The \$separator must be defined";
     }
@@ -664,10 +664,6 @@ class Fn {
     
     unless ($separator_length > 0) {
       die "The length of the \$separator must be greater than 0";
-    }
-    
-    if ($limit == 0) {
-      die "The \$limit can't be 0";
     }
     
     my $separated_strings_list = StringList->new_len(0);
@@ -715,6 +711,18 @@ class Fn {
       my $separated_string = &substr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
+
+    if ($limit == 0) {
+      while ($separated_strings_list->length > 0) {
+        if ($separated_strings_list->get($separated_strings_list->length - 1) eq "") {
+          $separated_strings_list->pop;
+        }
+        else {
+          last;
+        }
+      }
+    }
+    
     
     my $separated_strings = $separated_strings_list->to_array;
     

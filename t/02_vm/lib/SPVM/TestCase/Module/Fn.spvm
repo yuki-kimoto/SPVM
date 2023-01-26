@@ -2834,7 +2834,7 @@ class TestCase::Module::Fn {
     {
       my $string = "foo,bar,";
       my $splited_strings = Fn->split(",", $string);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
+      unless (Array->equals_string($splited_strings, ["foo", "bar"])) {
         return 0;
       }
     }
@@ -2842,7 +2842,7 @@ class TestCase::Module::Fn {
     {
       my $string = ",foo,,bar,,";
       my $splited_strings = Fn->split(",", $string);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
+      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar"])) {
         return 0;
       }
     }
@@ -2857,14 +2857,14 @@ class TestCase::Module::Fn {
     {
       my $string = "foo : bar : ";
       my $splited_strings = Fn->split(" : ", $string);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
+      unless (Array->equals_string($splited_strings, ["foo", "bar"])) {
         return 0;
       }
     }
     {
       my $string = " : foo :  : bar :  : ";
       my $splited_strings = Fn->split(" : ", $string);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
+      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar"])) {
         return 0;
       }
     }
@@ -2879,14 +2879,14 @@ class TestCase::Module::Fn {
     {
       my $string = "foo---bar---";
       my $splited_strings = Fn->split("---", $string);
-      unless (Array->equals_string($splited_strings, ["foo", "bar", ""])) {
+      unless (Array->equals_string($splited_strings, ["foo", "bar"])) {
         return 0;
       }
     }
     {
       my $string = "---foo------bar------";
       my $splited_strings = Fn->split("---", $string);
-      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar", "", ""])) {
+      unless (Array->equals_string($splited_strings, ["", "foo", "", "bar"])) {
         return 0;
       }
     }
@@ -3048,18 +3048,6 @@ class TestCase::Module::Fn {
           Fn->split($sep, $string, $limit);
         };
         unless (Fn->contains($@, "The length of the \$separator must be greater than 0")) {
-          return 0;
-        }
-      }
-      
-      {
-        my $sep = ",";
-        my $string = "foo,bar,baz";
-        my $limit = 0;
-        eval {
-          Fn->split($sep, $string, $limit);
-        };
-        unless (Fn->contains($@, "The \$limit can't be 0")) {
           return 0;
         }
       }
