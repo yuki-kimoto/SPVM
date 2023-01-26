@@ -8,7 +8,7 @@ use Carp 'cluck';
 use SPVM::Builder;
 use SPVM::Global;
 
-our $VERSION = $SPVM::Builder::VERSION;
+our $VERSION = '0.9685';
 
 sub import {
   my ($class, $class_name) = @_;
@@ -65,7 +65,7 @@ for my $func_name (@deprecated_func_names) {
   no strict 'refs';
   *{"$func_name"} = sub {
     # cluck "The SPVM::$func_name function is deprecated";
-    $SPVM::Global::API->$func_name(@_);
+    SPVM::api()->$func_name(@_);
   };
 }
 

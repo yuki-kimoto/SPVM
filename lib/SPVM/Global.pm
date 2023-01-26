@@ -8,6 +8,7 @@ use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 
+use SPVM ();
 use SPVM::Builder;
 use SPVM::Builder::Runtime;
 use SPVM::ExchangeAPI;
@@ -207,7 +208,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = $SPVM::Global::API->call_method($class_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
