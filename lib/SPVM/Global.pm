@@ -26,7 +26,7 @@ our $API;
 sub load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
 
-  my $class_names = [map { "$_" } @{$runtime->get_class_names}];
+  my $class_names = $runtime->get_class_names->to_strings;
 
   # Set addresses of native methods and precompile methods
   for my $class_name (@$class_names) {
@@ -47,21 +47,21 @@ sub load_dynamic_libs {
         ]
       );
       
-      my $method_names = [map { "$_" } @{$runtime->get_method_names($class_name, $get_method_names_options)}];
+      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options)->to_strings;
       
       if (@$method_names) {
         # Build classs - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
-        my $module_file = $runtime->get_module_file($class_name);
+        my $module_file = $runtime->get_module_file($class_name)->to_string;
         my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
-          my $module_file = $runtime->get_module_file($class_name);
-          my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
-          my $anon_class_names = $runtime->get_anon_class_names($class_name);
+          my $module_file = $runtime->get_module_file($class_name)->to_string;
+          my $method_names = $runtime->get_method_names($class_name, $get_method_names_options)->to_strings;
+          my $anon_class_names = $runtime->get_anon_class_names($class_name)->to_strings;
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
-          my $precompile_source = $runtime->build_precompile_class_source($class_name);
+          my $precompile_source = $runtime->build_precompile_class_source($class_name)->to_string;
           $dynamic_lib_file = $cc->build_at_runtime($class_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
         
@@ -86,8 +86,8 @@ sub load_dynamic_libs {
       next unless grep { "$_" eq $class_name } @$class_names;
       
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$class_name};
-      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options);
-      my $anon_class_names = $runtime->get_anon_class_names($class_name);
+      my $method_names = $runtime->get_method_names($class_name, $get_method_names_options)->to_strings;
+      my $anon_class_names = $runtime->get_anon_class_names($class_name)->to_strings;
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $anon_class_names, $category);
       
       for my $method_name (sort keys %$method_addresses) {
