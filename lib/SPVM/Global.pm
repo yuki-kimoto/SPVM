@@ -257,7 +257,7 @@ sub build_class {
   }
 }
 
-INIT {
+sub init {
   &init_runtime();
   
   my $class_names = $RUNTIME->get_class_names;
@@ -275,6 +275,10 @@ INIT {
     
   $BUILDER = undef;
   $COMPILER = undef;
+}
+
+INIT {
+  &init();
 }
 
 END {
