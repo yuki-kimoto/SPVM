@@ -1,6 +1,6 @@
 package SPVM::Builder;
 
-our $VERSION = '0.9684';
+our $VERSION = '0.9685';
 
 use strict;
 use warnings;
