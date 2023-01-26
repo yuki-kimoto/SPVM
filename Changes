@@ -1,3 +1,14 @@
+0.9685 2022-01-26
+  [Imcompatible Changes]
+    * The default beheivior of the split method in the Fn class becomes the same as the split function in Perl.
+      the split method supports 0 limit and the default becomes 0.
+    [Before]
+    static method split : string[] ($separator : string, $string : string, $limit = -1 : int);
+    [After]
+    static method split : string[] ($separator : string, $string : string, $limit = 0 : int);
+    
+    * Removed undocumented temporary added the to_string method in the SPVM::BlessedObject::Array.
+      
 0.9684 2022-01-24
   [New Features]
     * Added the api function in the SPVM class.

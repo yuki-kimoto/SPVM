@@ -29,16 +29,6 @@ sub to_elems {
   $self->api->array_to_elems($self);
 }
 
-sub to_string {
-  my $self = shift;
-  
-  my $elems = $self->api->array_to_elems($self);
-  
-  my $string = join(" ", @$elems);
-  
-  return $string;
-}
-
 sub to_bin {
   my $self = shift;
 
