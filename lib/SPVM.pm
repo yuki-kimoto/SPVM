@@ -1,14 +1,14 @@
 use 5.008007;
 package SPVM;
-
-our $VERSION = $SPVM::Builder::VERSION;
-
 use strict;
 use warnings;
 
 use Carp 'cluck';
 
+use SPVM::Builder;
 use SPVM::Global;
+
+our $VERSION = $SPVM::Builder::VERSION;
 
 sub import {
   my ($class, $class_name) = @_;

@@ -41,6 +41,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   is($total, 26);
 }
 
+# VERSION
+{
+  is($SPVM::VERSION, $SPVM::Builder::VERSION);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
