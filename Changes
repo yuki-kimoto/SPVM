@@ -8,6 +8,8 @@
     static method split : string[] ($separator : string, $string : string, $limit = 0 : int);
     
     * Removed undocumented temporary added the to_string method in the SPVM::BlessedObject::Array.
+  [New Features]
+    * Added the to_strings and to_bins method in the SPVM::BlessedObject::Array.
       
 0.9684 2022-01-24
   [New Features]

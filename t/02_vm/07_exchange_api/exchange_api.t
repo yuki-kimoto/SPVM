@@ -20,6 +20,7 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 use SPVM 'TestCase::Minimal';
+use SPVM 'Point';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -93,6 +94,34 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       is(ref $values->[0], "SPVM::BlessedObject::String");
       is($values->[0], "あ");
       is($values->[1], "い");
+      is(scalar @$values, 2);
+    }
+    # to_strings - string[]
+    {
+      my $sp_values = $api->new_object_array('Point[]', [SPVM::Point->new(1, 2), SPVM::Point->new(3, 4)]);
+      my $values = $sp_values->to_strings;
+      is($values->[0], "(1,2)");
+      is($values->[1], "(3,4)");
+      is(scalar @$values, 2);
+    }
+    # to_strings - string[]
+    {
+      my $sp_values = $api->new_string_array(["あ", "い"]);
+      my $values = $sp_values->to_strings;
+      ok(!ref $values->[0]);
+      ok(utf8::is_utf8($values->[0]));
+      is($values->[0], "あ");
+      is($values->[1], "い");
+      is(scalar @$values, 2);
+    }
+    # to_bins - string[]
+    {
+      my $sp_values = $api->new_string_array(["あ", "い"]);
+      my $values = $sp_values->to_bins;
+      ok(!ref $values->[0]);
+      ok(!utf8::is_utf8($values->[0]));
+      is($values->[0], Encode::encode('UTF-8', "あ"));
+      is($values->[1], Encode::encode('UTF-8', "い"));
       is(scalar @$values, 2);
     }
   }

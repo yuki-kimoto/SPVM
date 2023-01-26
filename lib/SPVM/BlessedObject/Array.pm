@@ -29,6 +29,26 @@ sub to_elems {
   $self->api->array_to_elems($self);
 }
 
+sub to_strings {
+  my $self = shift;
+  
+  my $elems = $self->api->array_to_elems($self);
+  
+  my $strings = [map { $_->to_string } @$elems];
+  
+  return $strings;
+}
+
+sub to_bins {
+  my $self = shift;
+  
+  my $elems = $self->api->array_to_elems($self);
+  
+  my $strings = [map { $_->to_bin } @$elems];
+  
+  return $strings;
+}
+
 sub to_bin {
   my $self = shift;
 
@@ -62,40 +82,40 @@ This object contains SPVM array object.
 =head1 Usage
 
   # Get the value of an array element
-  my $value = $spvm_nums->get(2);
+  my $value = $sp_array->get(2);
 
   # Set the value of an array element
-  $spvm_nums->set(2 => 5);
+  $sp_array->set(2 => 5);
   
   # Convert SPVM array to Perl array reference
-  my $nums = $spvm_nums->to_elems;
+  my $elems = $sp_array->to_elems;
 
   # Convert SPVM array to Perl binary data
-  my $binary = $spvm_nums->to_bin;
+  my $binary = $sp_array->to_bin;
   
 =head1 Methods
 
 =head2 get
 
-  my $value = $spvm_nums->get(2);
+  my $value = $sp_array->get(2);
 
 Get the value of an array element.
 
 =head2 set
 
-  $spvm_nums->set(2 => 5);
+  $sp_array->set(2 => 5);
 
 Set the value of an array element
 
 =head2 to_elems
 
-  my $nums = $spvm_nums->to_elems;
+  my $elems = $sp_array->to_elems;
 
 Convert SPVM array to Perl array reference.
 
 =head2 to_bin
 
-  my $binary = $spvm_nums->to_bin;
+  my $binary = $sp_array->to_bin;
 
 Convert SPVM array to binary data.
 
@@ -104,6 +124,18 @@ Binary data is unpacked by C<unpack> function.
 An exmaple when array is int array:
 
   my @nums = unpack 'l*', $binary;
+
+=head2 to_strings
+
+  my $elems = $sp_array->to_strings;
+
+Convert SPVM C<string> array to Perl string array reference by calling C<to_string> method of each element.
+
+=head2 to_bins
+
+  my $elems = $sp_array->to_bins;
+
+Convert SPVM C<string> array to Perl binary array reference by calling C<to_bin> method of each element.
 
 =head1 Operators
 
