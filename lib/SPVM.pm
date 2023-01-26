@@ -1,7 +1,7 @@
 use 5.008007;
 package SPVM;
 
-our $VERSION = '0.9683';
+our $VERSION = $SPVM::Builder::VERSION;
 
 use strict;
 use warnings;
