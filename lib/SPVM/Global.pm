@@ -257,7 +257,7 @@ sub build_class {
   }
 }
 
-sub init {
+sub init_api {
   &init_runtime();
   
   my $class_names = $RUNTIME->get_class_names;
@@ -275,7 +275,7 @@ sub init {
 }
 
 INIT {
-  &init();
+  &init_api();
 }
 
 END {
