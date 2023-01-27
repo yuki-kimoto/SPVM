@@ -3712,8 +3712,8 @@ class TestCase::Module::Fn {
 
     {
       my $string = "ab";
-      my $pattern = "ab";
-      my $replace = "xy";
+      my $pattern = "a-b";
+      my $replace = "x-y";
       
       my $ret = Fn->tr($string, $pattern, $replace);
       unless ($ret eq "xy") {
@@ -3721,29 +3721,6 @@ class TestCase::Module::Fn {
       }
     }
 
-    {
-      my $string = "-";
-      my $pattern = "-";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "b") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "a-";
-      my $pattern = "a-";
-      my $replace = "bc";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      
-      unless ($ret eq "bc") {
-        return 0;
-      }
-    }
-    
     {
       my $string = "-";
       my $pattern = "---";
@@ -3781,11 +3758,11 @@ class TestCase::Module::Fn {
     {
       my $string = "abcd";
       my $pattern = "a-c";
-      my $replace = "xxx";
+      my $replace = "x-z";
       
       my $ret = Fn->tr($string, $pattern, $replace);
       
-      unless ($ret eq "xxxd") {
+      unless ($ret eq "xyzd") {
         return 0;
       }
     }
