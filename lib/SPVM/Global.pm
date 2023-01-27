@@ -149,14 +149,14 @@ sub init_runtime {
 
 my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
-  my ($runtime, $class_name) = @_;
-
+  my ($class_name) = @_;
+  
   my $perl_class_name_base = "SPVM::";
   my $perl_class_name = "$perl_class_name_base$class_name";
   
   unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
     
-    my $parent_class_name = $runtime->get_parent_class_name($class_name);
+    my $parent_class_name = $RUNTIME->get_parent_class_name($class_name);
     my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
     
     # The inheritance
@@ -176,7 +176,7 @@ sub bind_to_perl {
     $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
   }
 
-  my $method_names = $runtime->get_method_names($class_name);
+  my $method_names = $RUNTIME->get_method_names($class_name);
 
   for my $method_name (@$method_names) {
     
@@ -190,7 +190,7 @@ sub bind_to_perl {
     }
     
     my $perl_method_abs_name = "${perl_class_name}::$method_name";
-    my $is_class_method = $runtime->get_method_is_class_method($class_name, $method_name);
+    my $is_class_method = $RUNTIME->get_method_is_class_method($class_name, $method_name);
     
     if ($is_class_method) {
       # Define Perl method
@@ -255,12 +255,6 @@ sub build_class {
 
 sub init_api {
   &init_runtime();
-  
-  my $class_names = $RUNTIME->get_class_names->to_strings;
-  for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-    &bind_to_perl($RUNTIME, $class_name);
-  }
   
   $ENV = $RUNTIME->build_env;
   

@@ -30,6 +30,13 @@ use SPVM 'FloatList';
 use SPVM 'DoubleList';
 use SPVM 'StringList';
 use SPVM 'Point3D';
+use SPVM 'Byte';
+use SPVM 'Short';
+use SPVM 'Int';
+use SPVM 'Long';
+use SPVM 'Float';
+use SPVM 'Double';
+use SPVM 'Bool';
 
 use SPVM 'TestCase::Minimal';
 

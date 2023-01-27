@@ -17,6 +17,7 @@ sub import {
   
   if (defined $class_name) {
     SPVM::Global::build_class($class_name, $file, $line);
+    SPVM::Global::bind_to_perl($class_name);
   }
 }
 

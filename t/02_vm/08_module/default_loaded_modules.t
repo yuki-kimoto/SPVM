@@ -6,28 +6,22 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'Byte';
-use SPVM 'Short';
-use SPVM 'Int';
-use SPVM 'Long';
-use SPVM 'Float';
-use SPVM 'Double';
-use SPVM 'Address';
-
 use SPVM;
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
+my $api = SPVM::api();
+
 # Default loaded modules
-SPVM::Byte->new(1);
-SPVM::Short->new(1);
-SPVM::Int->new(1);
-SPVM::Long->new(1);
-SPVM::Float->new(1);
-SPVM::Double->new(1);
-SPVM::Bool->TRUE;
-SPVM::Address->new;
+$api->class('Byte')->new(1);
+$api->class('Short')->new(1);
+$api->class('Int')->new(1);
+$api->class('Long')->new(1);
+$api->class('Float')->new(1);
+$api->class('Double')->new(1);
+$api->class('Bool')->TRUE;
+$api->class('Address')->new;
 
 ok(1);
 

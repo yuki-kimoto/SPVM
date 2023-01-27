@@ -9,6 +9,12 @@ use Test::More;
 
 use SPVM 'TestCase::Module::Format';
 use SPVM 'Format';
+use SPVM 'Byte';
+use SPVM 'Short';
+use SPVM 'Int';
+use SPVM 'Long';
+use SPVM 'Float';
+use SPVM 'Double';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();

@@ -21,6 +21,13 @@ use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 use SPVM 'TestCase::Minimal';
 use SPVM 'Point';
+use SPVM 'Byte';
+use SPVM 'Short';
+use SPVM 'Int';
+use SPVM 'Long';
+use SPVM 'Float';
+use SPVM 'Double';
+use SPVM 'Bool';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;

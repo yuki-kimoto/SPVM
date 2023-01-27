@@ -1,3 +1,7 @@
+0.9686 2022-01-26
+  [Imcompatible Changes]
+    * Default loaded modules are not binded to Perl implicitly. Explicit importing is needed.
+      use SPVM 'Int';
 0.9685 2022-01-26
   [Imcompatible Changes]
     * The default beheivior of the split method in the Fn class becomes the same as the split function in Perl.
