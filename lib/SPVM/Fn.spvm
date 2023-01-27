@@ -928,6 +928,10 @@ class Fn {
       }
     }
     
+    unless ($min_code_point <= $max_code_point) {
+      die "The code point of the ending character in the \$$type must be greater than or equal to the code point of the begining caharater";
+    }
+    
     return [$min_code_point, $max_code_point];
   }
   

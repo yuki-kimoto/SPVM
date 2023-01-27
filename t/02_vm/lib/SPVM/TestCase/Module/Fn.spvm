@@ -3766,6 +3766,19 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
+
+    {
+      my $string = "０１２３４５６７８９";
+      my $pattern = "０-９";
+      my $replace = "0-9";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      
+      unless ($ret eq "0123456789") {
+        return 0;
+      }
+    }
+    
     
     return 1;
   }
