@@ -272,9 +272,6 @@ sub init {
   $STACK = $ENV->build_stack;
   
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
-    
-  $BUILDER = undef;
-  $COMPILER = undef;
 }
 
 INIT {
@@ -282,6 +279,8 @@ INIT {
 }
 
 END {
+  $BUILDER = undef;
+  $COMPILER = undef;
   $API = undef;
   $STACK = undef;
   $ENV = undef;
@@ -291,4 +290,3 @@ END {
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
 }
-
