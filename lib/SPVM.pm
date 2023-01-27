@@ -15,7 +15,9 @@ sub import {
 
   my ($file, $line) = (caller)[1, 2];
   
-  SPVM::Global::build_class($class_name, $file, $line);
+  if (defined $class_name) {
+    SPVM::Global::build_class($class_name, $file, $line);
+  }
 }
 
 sub api { $SPVM::Global::API }
