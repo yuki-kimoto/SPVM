@@ -149,73 +149,69 @@ sub init_runtime {
 
 my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
-  my ($runtime, $class_names) = @_;
+  my ($runtime, $class_name) = @_;
 
-  for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-
-    my $perl_class_name_base = "SPVM::";
-    my $perl_class_name = "$perl_class_name_base$class_name";
+  my $perl_class_name_base = "SPVM::";
+  my $perl_class_name = "$perl_class_name_base$class_name";
+  
+  unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
     
-    unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
-      
-      my $parent_class_name = $runtime->get_parent_class_name($class_name);
-      my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
-      
-      # The inheritance
-      my @isa;
-      if (defined $parent_class_name) {
-        push @isa, "$perl_class_name_base$parent_class_name";
-      }
-      push @isa, 'SPVM::BlessedObject::Class';
-      my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
-      
-      my $code = "package $perl_class_name; $isa";
-      eval $code;
-      
-      if (my $error = $@) {
-        confess $error;
-      }
-      $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
+    my $parent_class_name = $runtime->get_parent_class_name($class_name);
+    my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
+    
+    # The inheritance
+    my @isa;
+    if (defined $parent_class_name) {
+      push @isa, "$perl_class_name_base$parent_class_name";
     }
+    push @isa, 'SPVM::BlessedObject::Class';
+    my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
+    
+    my $code = "package $perl_class_name; $isa";
+    eval $code;
+    
+    if (my $error = $@) {
+      confess $error;
+    }
+    $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
+  }
 
-    my $method_names = $runtime->get_method_names($class_name);
+  my $method_names = $runtime->get_method_names($class_name);
 
-    for my $method_name (@$method_names) {
+  for my $method_name (@$method_names) {
+    
+    # Destrutor is skip
+    if ($method_name eq 'DESTROY') {
+      next;
+    }
+    # Anon method is skip
+    elsif (length $method_name == 0) {
+      next;
+    }
+    
+    my $perl_method_abs_name = "${perl_class_name}::$method_name";
+    my $is_class_method = $runtime->get_method_is_class_method($class_name, $method_name);
+    
+    if ($is_class_method) {
+      # Define Perl method
+      no strict 'refs';
       
-      # Destrutor is skip
-      if ($method_name eq 'DESTROY') {
-        next;
-      }
-      # Anon method is skip
-      elsif (length $method_name == 0) {
-        next;
-      }
+      # Suppress refer to objects
+      my $class_name_string = "$class_name";
+      my $method_name_string = "$method_name";
       
-      my $perl_method_abs_name = "${perl_class_name}::$method_name";
-      my $is_class_method = $runtime->get_method_is_class_method($class_name, $method_name);
-      
-      if ($is_class_method) {
-        # Define Perl method
-        no strict 'refs';
+      *{"$perl_method_abs_name"} = sub {
+        my $perl_class_name = shift;
         
-        # Suppress refer to objects
-        my $class_name_string = "$class_name";
-        my $method_name_string = "$method_name";
+        my $return_value;
         
-        *{"$perl_method_abs_name"} = sub {
-          my $perl_class_name = shift;
-          
-          my $return_value;
-          
-          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
-          my $error = $@;
-          if ($error) {
-            confess $error;
-          }
-          $return_value;
-        };
-      }
+        eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
+        my $error = $@;
+        if ($error) {
+          confess $error;
+        }
+        $return_value;
+      };
     }
   }
 }
@@ -261,7 +257,10 @@ sub init_api {
   &init_runtime();
   
   my $class_names = $RUNTIME->get_class_names->to_strings;
-  &bind_to_perl($RUNTIME, $class_names);
+  for my $class_name (@$class_names) {
+    next if $class_name =~ /::anon/;
+    &bind_to_perl($RUNTIME, $class_name);
+  }
   
   $ENV = $RUNTIME->build_env;
   
