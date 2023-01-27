@@ -260,7 +260,7 @@ sub build_class {
 sub init_api {
   &init_runtime();
   
-  my $class_names = $RUNTIME->get_class_names;
+  my $class_names = $RUNTIME->get_class_names->to_strings;
   &bind_to_perl($RUNTIME, $class_names);
   
   $ENV = $RUNTIME->build_env;
