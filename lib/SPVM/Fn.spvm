@@ -1021,7 +1021,7 @@ class Fn {
           $replace_code_point = $replace_ranges->get($replace_ranges->length - 1);
         }
         else {
-          $replace_code_point = $replace_ranges->get($match_pattern_index) + $match_pattern_code_point_offset;
+          $replace_code_point = $replace_ranges->get($match_pattern_index);
         }
         my $char = &chr($replace_code_point);
         $buffer->push($char);
