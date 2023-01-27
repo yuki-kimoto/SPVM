@@ -1,6 +1,7 @@
 class Fn {
   use StringBuffer;
   use StringList;
+  use IntList;
   
   enum {
     GET_CODE_POINT_ERROR_OVER_STRING_RANGE = -1,
@@ -880,4 +881,149 @@ class Fn {
   }
   
   native static method _chr_native : string ($uchar : int);
+  
+  private precompile static method _parse_range : IntList ($string : string) {
+    my $ranges = IntList->new;
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $start_code_point = -1;
+    my $end_code_point = -1;
+    my $add_range = 0;
+    my $range_start = 0;
+    my $maybe_in_range = 0;
+    while (1) {
+      if ($offset >= $string_length) {
+        last;
+      }
+      
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "The get_code_point method in the Fn class returns an error code: $code_point";
+        }
+      }
+      
+      if ($code_point == '-') {
+        if ($start_code_point >= 0) {
+          $maybe_in_range = 1;
+        }
+        else {
+          $start_code_point = $code_point;
+        }
+      }
+      else {
+        if ($start_code_point >= 0) {
+          if ($maybe_in_range) {
+            $end_code_point = $code_point;
+            $add_range = 1;
+          }
+          else {
+            $end_code_point = $start_code_point;
+            $add_range = 1;
+          }
+        }
+        else {
+          $start_code_point = $code_point;
+        }
+      }
+      
+      if ($add_range) {
+        $ranges->push($start_code_point);
+        $ranges->push($end_code_point);
+        
+        $start_code_point = -1;
+        $end_code_point = -1;
+        $add_range = 0;
+        $range_start = 0;
+        $maybe_in_range = 0;
+      }
+    }
+    
+    if ($end_code_point < 0) {
+      if ($maybe_in_range) {
+        $ranges->push('-');
+        $ranges->push('-');
+      }
+      else {
+        $ranges->push($start_code_point);
+        $ranges->push($start_code_point);
+      }
+    }
+    
+    return $ranges;
+  }
+  
+  precompile static method tr : string ($string : string, $pattern : string, $replace : string) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    unless ($replace) {
+      die "The \$replace must be defined";
+    }
+    
+    my $pattern_ranges = &_parse_range($string);
+    
+    my $replace_ranges = &_parse_range($replace);
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $buffer = StringBuffer->new;
+    while ($offset < $string_length) {
+      
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "The get_code_point method in the Fn class returns an error code: $code_point";
+        }
+      }
+      
+      my $pattern_offset = 0;
+      my $match = 0;
+      my $replace_pos = 0;
+      my $match_pattern_index = -1;
+      my $match_pattern_code_point_offset = -1;
+      for (my $pattern_index = 0; $pattern_index < $pattern_ranges->length; $pattern_index += 2) {
+        my $min_code_point = $pattern_ranges->get($pattern_index);
+        my $max_code_point = $pattern_ranges->get($pattern_index + 1);
+        
+        if ($code_point >= $min_code_point && $code_point <= $max_code_point) {
+          $match = 1;
+          $match_pattern_index = $pattern_index;
+          $match_pattern_code_point_offset = $code_point - $min_code_point;
+          last;
+        }
+        
+        $pattern_offset = $max_code_point - $min_code_point + 1;
+      }
+      
+      if ($match) {
+        my $replace_code_point = 0;
+        if ($match_pattern_index > $replace_ranges->length) {
+          $replace_code_point = $replace_ranges->get($replace_ranges->length - 1);
+        }
+        else {
+          $replace_code_point = $replace_ranges->get($match_pattern_index) + $match_pattern_code_point_offset;
+        }
+        my $char = &chr($replace_code_point);
+        $buffer->push($char);
+      }
+      else {
+        my $char = &chr($code_point);
+        $buffer->push($char);
+      }
+    }
+    
+    my $ret = $buffer->to_string;
+    
+    return $ret;
+  }
 }

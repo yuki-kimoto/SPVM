@@ -3685,4 +3685,20 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method tr : int () {
+    
+    {
+      my $string = "a";
+      my $pattern = "a";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "b") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
