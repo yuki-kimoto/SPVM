@@ -888,16 +888,14 @@ class Fn {
     my $string_length = length $string;
     my $offset = 0;
     my $start_code_point = -1;
-    my $end_code_point = -1;
     my $add_range = 0;
-    my $range_start = 0;
-    my $maybe_in_range = 0;
-    while (1) {
-      if ($offset >= $string_length) {
-        last;
-      }
+    my $in_range = 0;
+    my $range_min = 0;
+    my $range_max = 0;
+    while ($offset < $string_length) {
       
       my $code_point = &get_code_point($string, \$offset);
+      
       if ($code_point < 0) {
         if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
           die "The \$string contains a invalid Unicode code point";
@@ -909,7 +907,7 @@ class Fn {
       
       if ($code_point == '-') {
         if ($start_code_point >= 0) {
-          $maybe_in_range = 1;
+          $in_range = 1;
         }
         else {
           $start_code_point = $code_point;
@@ -917,13 +915,20 @@ class Fn {
       }
       else {
         if ($start_code_point >= 0) {
-          if ($maybe_in_range) {
-            $end_code_point = $code_point;
+          if ($in_range) {
+            $range_min = $start_code_point;
+            $range_max = $code_point;
             $add_range = 1;
+            
+            $start_code_point = -1;
+            $in_range = 0;
           }
           else {
-            $end_code_point = $start_code_point;
+            $range_min = $start_code_point;
+            $range_max = $start_code_point;
             $add_range = 1;
+            
+            $start_code_point = $code_point;
           }
         }
         else {
@@ -932,26 +937,17 @@ class Fn {
       }
       
       if ($add_range) {
-        $ranges->push($start_code_point);
-        $ranges->push($end_code_point);
-        
-        $start_code_point = -1;
-        $end_code_point = -1;
+        $ranges->push($range_min);
+        $ranges->push($range_max);
         $add_range = 0;
-        $range_start = 0;
-        $maybe_in_range = 0;
       }
     }
     
-    if ($end_code_point < 0) {
-      if ($maybe_in_range) {
-        $ranges->push('-');
-        $ranges->push('-');
-      }
-      else {
-        $ranges->push($start_code_point);
-        $ranges->push($start_code_point);
-      }
+    if ($start_code_point >= 0) {
+      $range_min = $start_code_point;
+      $range_max = $start_code_point;
+      $ranges->push($range_min);
+      $ranges->push($range_max);
     }
     
     return $ranges;
@@ -991,7 +987,8 @@ class Fn {
       my $replace_pos = 0;
       my $match_pattern_index = -1;
       my $match_pattern_code_point_offset = -1;
-      for (my $pattern_index = 0; $pattern_index < $pattern_ranges->length; $pattern_index += 2) {
+      my $pattern_ranges_length = $pattern_ranges->length;
+      for (my $pattern_index = 0; $pattern_index < $pattern_ranges_length ; $pattern_index += 2) {
         my $min_code_point = $pattern_ranges->get($pattern_index);
         my $max_code_point = $pattern_ranges->get($pattern_index + 1);
         
