@@ -4,7 +4,8 @@
       use SPVM 'Int';
   [Changes]
     * Removed INIT block in the SPVM::Global module. The global API is initialized at runtime when SPVM::api() is called at first.
-    
+  [Build Process Bug Fix]
+    * Fixed the bug that the version of SPVM can't be parsed in SPVM.pm file.
 0.9685 2022-01-26
   [Imcompatible Changes]
     * The default beheivior of the split method in the Fn class becomes the same as the split function in Perl.

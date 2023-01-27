@@ -10,6 +10,9 @@ use SPVM::Global;
 
 our $VERSION = '0.9685';
 
+require XSLoader;
+XSLoader::load('SPVM', $VERSION);
+
 sub import {
   my ($class, $class_name) = @_;
 
