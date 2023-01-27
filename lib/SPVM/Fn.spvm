@@ -944,10 +944,23 @@ class Fn {
     }
     
     if ($start_code_point >= 0) {
-      $range_min = $start_code_point;
-      $range_max = $start_code_point;
-      $ranges->push($range_min);
-      $ranges->push($range_max);
+      if ($in_range) {
+        $range_min = $start_code_point;
+        $range_max = $start_code_point;
+        $ranges->push($range_min);
+        $ranges->push($range_max);
+        
+        $range_min = '-';
+        $range_max = '-';
+        $ranges->push($range_min);
+        $ranges->push($range_max);
+      }
+      else {
+        $range_min = $start_code_point;
+        $range_max = $start_code_point;
+        $ranges->push($range_min);
+        $ranges->push($range_max);
+      }
     }
     
     return $ranges;
