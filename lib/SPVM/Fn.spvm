@@ -967,7 +967,7 @@ class Fn {
       die "The \$replace must be defined";
     }
     
-    my $pattern_ranges = &_parse_range($string);
+    my $pattern_ranges = &_parse_range($pattern);
     
     my $replace_ranges = &_parse_range($replace);
     

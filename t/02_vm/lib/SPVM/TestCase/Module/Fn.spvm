@@ -3687,7 +3687,7 @@ class TestCase::Module::Fn {
   }
   
   static method tr : int () {
-    
+
     {
       my $string = "a";
       my $pattern = "a";
@@ -3695,6 +3695,17 @@ class TestCase::Module::Fn {
       
       my $ret = Fn->tr($string, $pattern, $replace);
       unless ($ret eq "b") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "a";
+      my $pattern = "c";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "a") {
         return 0;
       }
     }
