@@ -267,10 +267,6 @@ sub init_api {
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
-INIT {
-  &init_api();
-}
-
 END {
   $BUILDER = undef;
   $COMPILER = undef;

@@ -21,7 +21,12 @@ sub import {
   }
 }
 
-sub api { $SPVM::Global::API }
+sub api {
+  unless ($SPVM::Global::API) {
+    SPVM::Global::init_api();
+  }
+  return $SPVM::Global::API;
+}
 
 # The following SPVM::xxx functions are deprecated. Use SPVM::api->xxx instead.
 my @deprecated_func_names = qw(

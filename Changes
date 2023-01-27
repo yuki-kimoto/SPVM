@@ -1,7 +1,10 @@
-0.9686 2022-01-26
+0.9686 2022-01-27
   [Imcompatible Changes]
     * Default loaded modules are not binded to Perl implicitly. Explicit importing is needed.
       use SPVM 'Int';
+  [Changes]
+    * Removed INIT block in the SPVM::Global module. The global API is initialized at runtime when SPVM::api() is called at first.
+    
 0.9685 2022-01-26
   [Imcompatible Changes]
     * The default beheivior of the split method in the Fn class becomes the same as the split function in Perl.
