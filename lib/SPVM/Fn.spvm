@@ -92,8 +92,8 @@ class Fn {
     return $utf8_char;
   }
   
-  static method contains : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
-    return &index($string, $substring, $offset, $length) >= 0;
+  static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int) {
+    return &index($string, $substring, $string_offset, $string_length) >= 0;
   }
   
   static method copy_string : string ($string : string) {
@@ -182,7 +182,7 @@ class Fn {
     return $value;
   }
   
-  precompile static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
+  precompile static method index : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int) {
     
     unless ($string) {
       die "The \$string must be defined";
@@ -192,17 +192,16 @@ class Fn {
       die "The \$substring must be defined";
     }
     
-    unless ($offset >= 0) {
-      die "The \$offset must be greater than or equal to 0";
+    unless ($string_offset >= 0) {
+      die "The \$string_offset must be greater than or equal to 0";
     }
     
-    my $string_length = length $string;
-    if ($length < 0) {
-      $length = $string_length - $offset;
+    if ($string_length < 0) {
+      $string_length = length $string - $string_offset;
     }
     
-    unless ($offset + $length <= $string_length) {
-      die "The \$offset + the \$length must be less than or equal to the length of the \$string";
+    unless ($string_offset + $string_length <= length $string) {
+      die "The \$string_offset + the \$string_length must be less than or equal to the length of the \$string";
     }
     
     my $substring_length = length $substring;
@@ -212,9 +211,9 @@ class Fn {
     }
     
     my $first : byte  = $substring->[0];
-    my $max : int = ($length - $substring_length);
+    my $max : int = ($string_length - $substring_length);
     
-    for (my $i = $offset; $i <= $max; $i++) {
+    for (my $i = $string_offset; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
         while (++$i <= $max && $string->[$i] != $first) {}
       }
