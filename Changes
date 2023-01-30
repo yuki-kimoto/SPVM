@@ -3,7 +3,14 @@
     * Added the equals_string_range method in the Fn class.
     
       static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) 
-    
+  [Bug Fix]
+    * Fixed the bug that the index method in the Fn class returned the wrong result.
+      {
+        my $string = "foo,bar,baz,,";
+        my $substring = ",";
+        my $offset = 8;
+        my $found_offset = Fn->index($string, $substring, $offset);
+      }
 0.9687 2022-01-30
   [New Features]
     * Added the tr method in the Fn class.

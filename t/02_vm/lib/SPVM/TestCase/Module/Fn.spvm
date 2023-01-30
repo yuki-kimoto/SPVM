@@ -1079,7 +1079,6 @@ class TestCase::Module::Fn {
   }
 
   static method index : int () {
-    
     {
       my $string = "abcde";
       my $substring = "";
@@ -1172,6 +1171,16 @@ class TestCase::Module::Fn {
       my $substring = "bcd";
       my $found_offset = Fn->index($string, $substring, 0, 3);
       unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo,bar,baz,,";
+      my $substring = ",";
+      my $offset = 8;
+      my $found_offset = Fn->index($string, $substring, $offset);
+      unless ($found_offset == 11) {
         return 0;
       }
     }

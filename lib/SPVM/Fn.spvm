@@ -211,7 +211,7 @@ class Fn {
     }
     
     my $first : byte  = $substring->[0];
-    my $max : int = ($string_length - $substring_length);
+    my $max : int = ($string_offset + $string_length - $substring_length);
     
     for (my $i = $string_offset; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
