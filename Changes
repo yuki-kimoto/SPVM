@@ -1,4 +1,4 @@
-0.9686 2022-01-30
+0.9687 2022-01-30
   [New Features]
     * Added the tr method in the Fn class.
       static method tr : string ($string : string, $pattern : string, $replace : string);
