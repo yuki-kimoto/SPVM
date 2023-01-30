@@ -3560,6 +3560,102 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method tr : int () {
+
+    {
+      my $string = "a";
+      my $pattern = "a";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "b") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "a";
+      my $pattern = "c";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "a") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "ab";
+      my $pattern = "a-b";
+      my $replace = "x-y";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "xy") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "-";
+      my $pattern = "---";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      
+      unless ($ret eq "b") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "aa";
+      my $pattern = "a";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "bb") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "";
+      my $pattern = "a";
+      my $replace = "b";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abcd";
+      my $pattern = "a-c";
+      my $replace = "x-z";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      
+      unless ($ret eq "xyzd") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "０１２３４５６７８９";
+      my $pattern = "０-９";
+      my $replace = "0-9";
+      
+      my $ret = Fn->tr($string, $pattern, $replace);
+      
+      unless ($ret eq "0123456789") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method trim : int () {
     
     # no left and right spaces
@@ -3686,99 +3782,4 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method tr : int () {
-
-    {
-      my $string = "a";
-      my $pattern = "a";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "b") {
-        return 0;
-      }
-    }
-    
-    {
-      my $string = "a";
-      my $pattern = "c";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "a") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "ab";
-      my $pattern = "a-b";
-      my $replace = "x-y";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "xy") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "-";
-      my $pattern = "---";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      
-      unless ($ret eq "b") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "aa";
-      my $pattern = "a";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "bb") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "";
-      my $pattern = "a";
-      my $replace = "b";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      unless ($ret eq "") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcd";
-      my $pattern = "a-c";
-      my $replace = "x-z";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      
-      unless ($ret eq "xyzd") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "０１２３４５６７８９";
-      my $pattern = "０-９";
-      my $replace = "0-9";
-      
-      my $ret = Fn->tr($string, $pattern, $replace);
-      
-      unless ($ret eq "0123456789") {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
 }
