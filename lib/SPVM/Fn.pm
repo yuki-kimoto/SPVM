@@ -878,18 +878,6 @@ If the C<$code_point> is the ASCII lowercase character C<a-z>, it is converted t
 
 If the C<$code_point> is not an ASCII lowercase character, return itself.
 
-=head2 trim
-
-  static method trim : string ($string : string);
-
-Removes the right and left spaces of the C<$string> and return it.
-
-The removed spaces is the same as the spaces L</"is_space"> method returns C<1>.
-
-Exceptions:
-
-The C<$string> must be defined.
-
 =head2 tr
 
   static method tr : string ($string : string, $pattern : string, $replace : string)
@@ -949,6 +937,18 @@ C<Examples:>
     my $ret = Fn->tr($string, $pattern, $replace);
   }
 }
+
+=head2 trim
+
+  static method trim : string ($string : string);
+
+Removes the right and left spaces of the C<$string> and return it.
+
+The removed spaces is the same as the spaces L</"is_space"> method returns C<1>.
+
+Exceptions:
+
+The C<$string> must be defined.
 
 =head2 uc
 
