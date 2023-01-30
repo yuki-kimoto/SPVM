@@ -283,11 +283,11 @@ If the C<$code_point> is not a Unicode scalar value, return C<undef>.
 
 =head2 contains
 
-  static method contains : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int);
+  static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);
 
 The alias for the following code using L</"index>.
 
-  my $ret = Fn->index($string, $substring, $offset, $length) >= 0;
+  my $ret = Fn->index($string, $substring, $string_offset, $string_length) >= 0;
 
 =head2 copy_string
 
@@ -324,13 +324,13 @@ If the $length is C<0>, returns C<1>.
 
 Exceptions:
 
-The $string1 must be defined. Otherwise an exception will be thrown.
+The $string1 must be defined.
 
-The $string2 must be defined. Otherwise an exception will be thrown.
+The $string2 must be defined.
 
-The $string1_offset must be greater than or equal to 0. Otherwise an exception will be thrown.
+The $string1_offset must be greater than or equal to 0.
 
-The $string2_offset must be greater than or equal to 0. Otherwise an exception will be thrown.
+The $string2_offset must be greater than or equal to 0.
 
 =head2 get_code_point
 
@@ -366,23 +366,23 @@ The C<$hex> string must contain only hex characters C<0-9a-zA-Z>.
 
 =head2 index
 
-  static method index : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int);
+  static method index : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);
 
-Searches for the substring in the range of the C<$string> from the C<$offset> to the position proceeded by the C<$length>.
+Searches for the $substring in the range of the $string from the $string_offset to the position proceeded by the $string_length.
 
-If the C<$substring> is found, return the C<$found> offset. Otherwise return C<-1>.
+If the $substring is found, returns the found offset, otherwise returns -1.
 
-If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
+If the $string_length is less than 0, the $string_length is calculated from the length of the $string and the $string_offset.
 
 Exceptions:
 
-The C<$string> must be defined.
+The $string must be defined.
 
-The C<$substring> must be defined.
+The $substring must be defined.
 
-The C<$offset> must be greater than or equal to C<0>.
+The $string_offset must be greater than or equal to 0.
 
-The C<$offset> + the C<$length> must be less than or equal to the length of the C<$string>.
+The $string_offset + the $string_length must be less than or equal to the length of the $string.
 
 =head2 init_string
 
@@ -914,26 +914,25 @@ The range must be the format C<a-z> or C<a>. If the format is C<a>, it is conver
 
 Exceptions:
 
-The \$string must be defined";
+The $string must be defined.
 
-The \$pattern must be defined";
+The $pattern must be defined.
 
-The \$replace must be defined";
+The $replace must be defined.
 
-The \$string contains a invalid Unicode code point";
+The $string contains a invalid Unicode code point.
 
-Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
+Calling the get_code_point method in the Fn class to the $string returns an error code: $code_point.
 
-The range format of the $arg_name can't be contain a invalid Unicode code point";
+The range format of the (pattern|replace) can't be contain a invalid Unicode code point.
 
+Calling the get_code_point method in the Fn class to the (pattern|replace) returns an error code: $code_point.
 
-Calling the get_code_point method in the Fn class to the $arg_name returns an error code: $code_point";
+The second character ot the range format of the (pattern|replace) must be \"-\".
 
-The second character ot the range format of the $arg_name must be \"-\"";
+The range format of the (pattern|replace) must be 1 or 3 characters.
 
-The range format of the $arg_name must be 1 or 3 characters";
-
-The code point of the ending character in the $arg_name must be greater than or equal to the code point of the begining caharater";
+The code point of the ending character in the (pattern|replace) must be greater than or equal to the code point of the begining caharater.
 
 C<Examples:>
 
