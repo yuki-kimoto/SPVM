@@ -101,7 +101,7 @@ class Fn {
   }
   
   native static method crand : int ($seed : int*);
-  
+
   native static method get_code_point : int ($string : string, $offset_ref : int*);
   
   precompile static method hex : int ($hex_string : string) {
@@ -780,6 +780,71 @@ class Fn {
     return $code_point;
   }
   
+  precompile static method tr : string ($string : string, $pattern : string, $replace : string) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    unless ($pattern) {
+      die "The \$pattern must be defined";
+    }
+    
+    unless ($replace) {
+      die "The \$replace must be defined";
+    }
+    
+    my $replace_length = length $pattern;
+    
+    my $pattern_range = &_parse_range($pattern, "$pattern");
+    
+    my $replace_range = &_parse_range($replace, "$replace");
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $buffer = StringBuffer->new;
+    while ($offset < $string_length) {
+      
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
+        }
+      }
+      
+      my $pattern_offset = 0;
+      my $match = 0;
+      my $replace_pos = 0;
+      my $match_pattern_index = -1;
+      my $match_code_point_offset = -1;
+      
+      my $min_code_point = $pattern_range->[0];
+      my $max_code_point = $pattern_range->[1];
+      
+      if ($code_point >= $min_code_point && $code_point <= $max_code_point) {
+        $match = 1;
+        $match_code_point_offset = $code_point - $min_code_point;
+      }
+      
+      if ($match) {
+        my $replace_code_point = $replace_range->[0] + $match_code_point_offset;
+        my $char = &chr($replace_code_point);
+        $buffer->push($char);
+      }
+      else {
+        my $char = &chr($code_point);
+        $buffer->push($char);
+      }
+    }
+    
+    my $ret = $buffer->to_string;
+    
+    return $ret;
+  }
+  
   precompile static method trim : string ($string : string) {
     
     unless ($string) {
@@ -928,68 +993,4 @@ class Fn {
     return [$min_code_point, $max_code_point];
   }
   
-  precompile static method tr : string ($string : string, $pattern : string, $replace : string) {
-    
-    unless ($string) {
-      die "The \$string must be defined";
-    }
-    
-    unless ($pattern) {
-      die "The \$pattern must be defined";
-    }
-    
-    unless ($replace) {
-      die "The \$replace must be defined";
-    }
-    
-    my $replace_length = length $pattern;
-    
-    my $pattern_range = &_parse_range($pattern, "$pattern");
-    
-    my $replace_range = &_parse_range($replace, "$replace");
-    
-    my $string_length = length $string;
-    my $offset = 0;
-    my $buffer = StringBuffer->new;
-    while ($offset < $string_length) {
-      
-      my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "The \$string contains a invalid Unicode code point";
-        }
-        else {
-          die "Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
-        }
-      }
-      
-      my $pattern_offset = 0;
-      my $match = 0;
-      my $replace_pos = 0;
-      my $match_pattern_index = -1;
-      my $match_code_point_offset = -1;
-      
-      my $min_code_point = $pattern_range->[0];
-      my $max_code_point = $pattern_range->[1];
-      
-      if ($code_point >= $min_code_point && $code_point <= $max_code_point) {
-        $match = 1;
-        $match_code_point_offset = $code_point - $min_code_point;
-      }
-      
-      if ($match) {
-        my $replace_code_point = $replace_range->[0] + $match_code_point_offset;
-        my $char = &chr($replace_code_point);
-        $buffer->push($char);
-      }
-      else {
-        my $char = &chr($code_point);
-        $buffer->push($char);
-      }
-    }
-    
-    my $ret = $buffer->to_string;
-    
-    return $ret;
-  }
 }
