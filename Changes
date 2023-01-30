@@ -1,3 +1,9 @@
+0.9688 2023-01-30
+  [New Features]
+    * Added the equals_string_range method in the Fn class.
+    
+      static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) 
+    
 0.9687 2022-01-30
   [New Features]
     * Added the tr method in the Fn class.

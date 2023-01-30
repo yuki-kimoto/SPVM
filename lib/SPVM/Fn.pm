@@ -314,6 +314,24 @@ Examples:
   my $crand0 = Fn->crand(\$seed);
   my $crand1 = Fn->crand(\$seed);
 
+=head2 equals_string_range
+
+  static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int);
+
+Compares $string1 + $string1_offset with $string2 + $string2_offset by the $length. If they are euqal, returns C<1>, otherwise returns C<0>.
+
+If the $length is C<0>, returns C<1>.
+
+Exceptions:
+
+The $string1 must be defined. Otherwise an exception will be thrown.
+
+The $string2 must be defined. Otherwise an exception will be thrown.
+
+The $string1_offset must be greater than or equal to 0. Otherwise an exception will be thrown.
+
+The $string2_offset must be greater than or equal to 0. Otherwise an exception will be thrown.
+
 =head2 get_code_point
 
   static method get_code_point : int ($string : string, $offset_ref : int*);

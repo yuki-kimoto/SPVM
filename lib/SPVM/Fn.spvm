@@ -102,6 +102,46 @@ class Fn {
   
   native static method crand : int ($seed : int*);
 
+  precompile static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) {
+    unless ($string1) {
+      die "The \$string1 must be defined";
+    }
+    
+    unless ($string2) {
+      die "The \$string2 must be defined";
+    }
+    
+    unless ($string1_offset >= 0) {
+      die "The \$string1_offset must be greater than or equal to 0";
+    }
+    
+    unless ($string2_offset >= 0) {
+      die "The \$string2_offset must be greater than or equal to 0";
+    }
+    
+    my $string1_length = length $string1;
+    unless ($string1_offset + $length <= $string1_length) {
+      return 0;
+    }
+    
+    my $string2_length = length $string2;
+    unless ($string1_offset + $length <= $string2_length) {
+      return 0;
+    }
+    
+    my $match = 1;
+    for (my $i = 0; $i < $length; $i++) {
+      my $char1 = $string1->[$string1_offset + $i];
+      my $char2 = $string2->[$string2_offset + $i];
+      unless ($char1 == $char2) {
+        $match = 0;
+        last;
+      }
+    }
+    
+    return $match;
+  }
+  
   native static method get_code_point : int ($string : string, $offset_ref : int*);
   
   precompile static method hex : int ($hex_string : string) {

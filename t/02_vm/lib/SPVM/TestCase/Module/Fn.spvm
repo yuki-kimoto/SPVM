@@ -708,6 +708,174 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method equals_string_range : int () {
+    
+    {
+      my $string1 = "abc";
+      my $string1_offset = 0;
+      my $string2 = "abc";
+      my $string2_offset = 0;
+      my $length = 3;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    {
+      my $string1 = "abc";
+      my $string1_offset = 0;
+      my $string2 = "ab";
+      my $string2_offset = 0;
+      my $length = 3;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+
+    {
+      my $string1 = "abc";
+      my $string1_offset = 0;
+      my $string2 = "ab";
+      my $string2_offset = 0;
+      my $length = 2;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string1 = "ab";
+      my $string1_offset = 0;
+      my $string2 = "abc";
+      my $string2_offset = 0;
+      my $length = 3;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+
+    {
+      my $string1 = "ab";
+      my $string1_offset = 0;
+      my $string2 = "abc";
+      my $string2_offset = 0;
+      my $length = 2;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    {
+      my $string1 = "ab";
+      my $string1_offset = 0;
+      my $string2 = "xy";
+      my $string2_offset = 0;
+      my $length = 0;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    {
+      my $string1 = "abc";
+      my $string1_offset = 1;
+      my $string2 = "abc";
+      my $string2_offset = 1;
+      my $length = 3;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string1 = "abc";
+      my $string1_offset = 1;
+      my $string2 = "abc";
+      my $string2_offset = 1;
+      my $length = 2;
+      my $match = Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $string1 = "abc";
+        my $string1_offset = 1;
+        my $string2 = "abc";
+        my $string2_offset = 1;
+        my $length = 2;
+        eval { Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length); };
+        if ($@) {
+          return 0;
+        }
+      }
+      {
+        my $string1 = (string)undef;
+        my $string1_offset = 1;
+        my $string2 = "abc";
+        my $string2_offset = 1;
+        my $length = 2;
+        eval { Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length); };
+        unless (Fn->contains($@, "The \$string1 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        my $string1 = "abc";
+        my $string1_offset = 1;
+        my $string2 = (string)undef;
+        my $string2_offset = 1;
+        my $length = 2;
+        eval { Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length); };
+        unless (Fn->contains($@, "The \$string2 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        my $string1 = "abc";
+        my $string1_offset = -1;
+        my $string2 = "abc";
+        my $string2_offset = 1;
+        my $length = 2;
+        eval { Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length); };
+        unless (Fn->contains($@, "The \$string1_offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      {
+        my $string1 = "abc";
+        my $string1_offset = 1;
+        my $string2 = "abc";
+        my $string2_offset = -1;
+        my $length = 2;
+        eval { Fn->equals_string_range($string1, $string1_offset, $string2, $string2_offset, $length); };
+        unless (Fn->contains($@, "The \$string2_offset must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
   static method get_code_point : int () {
     
     {
