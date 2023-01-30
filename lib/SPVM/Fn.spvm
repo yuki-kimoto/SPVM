@@ -882,25 +882,25 @@ class Fn {
   
   native static method _chr_native : string ($uchar : int);
   
-  private precompile static method _parse_range : int[] ($string : string, $type : string) {
+  private precompile static method _parse_range : int[] ($range_format : string, $arg_name : string) {
     my $range = IntList->new;
     
-    my $string_length = length $string;
+    my $range_format_length = length $range_format;
     my $offset = 0;
     my $min_code_point = -1;
     my $max_code_point = -1;
     
     my $code_points_index = 0;
-    while ($offset < $string_length) {
+    while ($offset < $range_format_length) {
       
-      my $code_point = &get_code_point($string, \$offset);
+      my $code_point = &get_code_point($range_format, \$offset);
       
       if ($code_point < 0) {
         if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "The \$string contains a invalid Unicode code point";
+          die "The range format of the $arg_name can't be contain a invalid Unicode code point";
         }
         else {
-          die "The get_code_point method in the Fn class returns an error code: $code_point";
+          die "Calling the get_code_point method in the Fn class to the $arg_name returns an error code: $code_point";
         }
       }
       
@@ -909,7 +909,7 @@ class Fn {
       }
       elsif ($code_points_index == 1) {
         unless ($code_point == '-') {
-          die "The second character must be \"-\"";
+          die "The second character ot the range format of the $arg_name must be \"-\"";
         }
       }
       elsif ($code_points_index == 2) {
@@ -924,12 +924,12 @@ class Fn {
         $max_code_point = $min_code_point;
       }
       if ($max_code_point < 0) {
-        die "The \$$type must be 1 or 3 characters";
+        die "The range format of the $arg_name must be 1 or 3 characters";
       }
     }
     
     unless ($min_code_point <= $max_code_point) {
-      die "The code point of the ending character in the \$$type must be greater than or equal to the code point of the begining caharater";
+      die "The code point of the ending character in the $arg_name must be greater than or equal to the code point of the begining caharater";
     }
     
     return [$min_code_point, $max_code_point];
@@ -942,7 +942,7 @@ class Fn {
     }
     
     unless ($pattern) {
-      die "The \$string must be defined";
+      die "The \$pattern must be defined";
     }
     
     unless ($replace) {
@@ -951,9 +951,9 @@ class Fn {
     
     my $replace_length = length $pattern;
     
-    my $pattern_range = &_parse_range($pattern, "pattern");
+    my $pattern_range = &_parse_range($pattern, "$pattern");
     
-    my $replace_range = &_parse_range($replace, "replace");
+    my $replace_range = &_parse_range($replace, "$replace");
     
     my $string_length = length $string;
     my $offset = 0;
@@ -966,7 +966,7 @@ class Fn {
           die "The \$string contains a invalid Unicode code point";
         }
         else {
-          die "The get_code_point method in the Fn class returns an error code: $code_point";
+          die "Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
         }
       }
       

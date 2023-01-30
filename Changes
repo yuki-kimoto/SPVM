@@ -1,3 +1,8 @@
+0.9686 2022-01-30
+  [New Features]
+    * Added the tr method in the Fn class.
+      static method tr : string ($string : string, $pattern : string, $replace : string);
+    
 0.9686 2022-01-27
   [Imcompatible Changes]
     * Default loaded modules are not binded to Perl implicitly. Explicit importing is needed.

@@ -3779,7 +3779,6 @@ class TestCase::Module::Fn {
       }
     }
     
-    
     return 1;
   }
 }

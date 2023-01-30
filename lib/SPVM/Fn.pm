@@ -890,6 +890,66 @@ Exceptions:
 
 The C<$string> must be defined.
 
+=head2 tr
+
+  static method tr : string ($string : string, $pattern : string, $replace : string)
+
+Replaced the range of C<$pattern> with the range of C<$replace> in a C<$string> and returns a replaced string.
+
+The range must be the format C<a-z> or C<a>. If the format is C<a>, it is converted to C<a-a>.
+
+  # The range format examples
+  "a-z"
+  "0-9"
+  "a"
+  "5"
+  "０-９"
+  "あ-ん"
+
+Exceptions:
+
+The \$string must be defined";
+
+The \$pattern must be defined";
+
+The \$replace must be defined";
+
+The \$string contains a invalid Unicode code point";
+
+Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
+
+The range format of the $arg_name can't be contain a invalid Unicode code point";
+
+
+Calling the get_code_point method in the Fn class to the $arg_name returns an error code: $code_point";
+
+The second character ot the range format of the $arg_name must be \"-\"";
+
+The range format of the $arg_name must be 1 or 3 characters";
+
+The code point of the ending character in the $arg_name must be greater than or equal to the code point of the begining caharater";
+
+C<Examples:>
+
+  {
+    my $string = "０１２３４５６７８９";
+    my $pattern = "０-９";
+    my $replace = "0-9";
+    
+    # "0123456789"
+    my $ret = Fn->tr($string, $pattern, $replace);
+  }
+  
+  {
+    my $string = "abcd";
+    my $pattern = "a-c";
+    my $replace = "x-z";
+    
+    # "xyzd"
+    my $ret = Fn->tr($string, $pattern, $replace);
+  }
+}
+
 =head2 uc
 
   static method uc : string ($string : string);
