@@ -1,3 +1,9 @@
+0.9689 2023-02-01
+  [New Features]
+    * Support the static method call in Exchange API
+      my $list = SPVM::FloatList->new([]);
+      $list->SPVM::FloatList::push(1);
+  
 0.9688 2023-01-30
   [New Features]
     * Added the equals_string_range method in the Fn class.

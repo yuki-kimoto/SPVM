@@ -1268,6 +1268,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   is($point->y, 2);
 }
 
+# Static instance method call
+{
+  {
+    my $list = SPVM::FloatList->new([]);
+    $list->SPVM::FloatList::push(1);
+    is_deeply($list->length, 1);
+  }
+}
+
 # All object is freed
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
