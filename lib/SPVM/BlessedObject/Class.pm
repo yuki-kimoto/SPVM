@@ -13,18 +13,10 @@ sub AUTOLOAD {
   
   my $method_name = $AUTOLOAD;
   
-  my $class_name;
-  if ($method_name =~ s/^SPVM::(.*):://) {
-    $class_name = $1;
-  }
+  $method_name =~ s/^SPVM:://;
+  $method_name =~ s/^BlessedObject::Class:://;
   
-  my $ret;
-  if ($class_name eq 'BlessedObject::Class') {
-    $ret = $self->api->call_method($self, $method_name, @_);
-  }
-  else {
-    $ret = $self->api->call_method($class_name, $method_name, $self, @_);
-  }
+  my $ret = $self->api->call_method($self, $method_name, @_);
   
   return $ret;
 }

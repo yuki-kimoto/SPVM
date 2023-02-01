@@ -317,7 +317,23 @@ xs_call_method(...)
     int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
     int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
     class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
-    method_id = env->get_instance_method_id(env, stack, object, method_name);
+    
+    char* found_char = strrchr(method_name, ':');
+    if (found_char) {
+      if (!(*(found_char - 1) == ':')) {
+        croak("Invalid static instance method call");
+      }
+      *(found_char - 1) = '\0';
+      const char* class_name = method_name;
+      method_name = found_char + 1;
+      
+      method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);
+      
+      *(found_char - 1) = ':';
+    }
+    else {
+      method_id = env->get_instance_method_id(env, stack, object, method_name);
+    }
     
     ST(1) = sv_method_name;
     ST(2) = sv_invocant;
@@ -325,7 +341,7 @@ xs_call_method(...)
   else {
     class_method_call = 1;
     class_name = SvPV_nolen(sv_invocant);
-    method_id = env->get_method_id(env, stack, class_name, method_name);
+    method_id = env->get_class_method_id(env, stack, class_name, method_name);
   }
   
   // Runtime
