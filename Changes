@@ -26,6 +26,12 @@
 
       Converts the $string to UTF-8 characters, and returns it.
 
+    * Added the utf8_substr method in the Fn class.
+
+      static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length = -1 : int);
+
+      Gets the substring from the $string. The extracting range of the string is from the $utf8_offset to the position proceeded by the $utf8_length, and returns it.
+
 =head2 to_utf8_chars
 
   static method to_utf8_chars : string[] ($string : string);

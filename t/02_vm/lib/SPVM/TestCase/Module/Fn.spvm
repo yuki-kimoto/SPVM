@@ -3995,4 +3995,62 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+
+  static method utf8_substr : int () {
+    
+    {
+      my $string = "あいうえお";
+      my $utf8_substring = Fn->utf8_substr($string, 0, 5);
+      unless ($utf8_substring eq "あいうえお") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "あいうえお";
+      my $utf8_substring = Fn->utf8_substr($string, 2, 3);
+      unless ($utf8_substring eq "うえお") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "あいうえお";
+      my $utf8_substring = Fn->utf8_substr($string, 2, -1);
+      unless ($utf8_substring eq "うえお") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "あいうえお";
+      my $utf8_substring = Fn->utf8_substr($string, 2);
+      unless ($utf8_substring eq "うえお") {
+        return 0;
+      }
+    }
+    {
+      eval { Fn->utf8_substr(undef, 0); };
+      unless (Fn->contains($@, "The \$string must be defined")) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { Fn->utf8_substr("あ", -1); };
+      unless (Fn->contains($@, "The \$utf8_offset must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    {
+      eval { Fn->utf8_substr("あいう", 1, 3); };
+      unless (Fn->contains($@, "The \$utf8_offset + the \$utf8_length must be less than or equal to the UTF-8 length of the \$string")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

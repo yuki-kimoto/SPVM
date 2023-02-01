@@ -1048,6 +1048,74 @@ class Fn {
     return $utf8_length;
   }
   
+
+  precompile static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length = -1 : int) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    unless ($utf8_offset >= 0) {
+      die "The \$utf8_offset must be greater than or equal to 0";
+    }
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $current_utf8_offset = 0;
+    my $buffer = StringBuffer->new;
+    while ($offset < $string_length) {
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "An unexpected exception is thrown";
+        }
+      }
+      
+      # -1:before, 0:range, 1:after
+      
+      my $range = 0;
+      if ($current_utf8_offset < $utf8_offset) {
+        $range = -1;
+      }
+      else {
+        if ($utf8_length < 0) {
+          $range = 0;
+        }
+        else {
+          if ($current_utf8_offset < $utf8_offset + $utf8_length) {
+            $range = 0;
+          }
+          else {
+            $range = 1;
+          }
+        }
+      }
+      
+      if ($range == 0) {
+        my $utf8_char = &chr($code_point);
+        $buffer->push($utf8_char);
+      }
+      elsif ($range == 1) {
+        last;
+      }
+      
+      $current_utf8_offset++;
+    }
+    
+    if ($utf8_length >= 0) {
+      unless ($utf8_offset + $utf8_length <= $current_utf8_offset) {
+        die "The \$utf8_offset + the \$utf8_length must be less than or equal to the UTF-8 length of the \$string";
+      }
+    }
+    
+    my $substring = $buffer->to_string;
+    
+    return $substring;
+  }
+
   native static method _chr_native : string ($uchar : int);
   
   private precompile static method _parse_range : int[] ($range_format : string, $arg_name : string) {

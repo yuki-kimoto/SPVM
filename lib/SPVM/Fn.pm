@@ -784,9 +784,9 @@ The $limit can't be C<0>.
 
   static method substr : string ($string : string, $offset : int, $length = -1 : int);
 
-Gets the substring from the $string. The extracting range of the string is from the $offset to the position proceeded by the $length.
+Gets the substring from the $string. The extracting range of the string is from the $offset to the position proceeded by the $length, and returns it.
 
-If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the $string and the $offset.
 
 =head2 to_code_points
 
@@ -1032,3 +1032,24 @@ Examples:
 
   # 3
   my $utf8_length = Fn->utf8_length("あいう");
+
+=head2 utf8_substr
+
+  static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length = -1 : int);
+
+Gets the substring from the $string. The extracting range of the string is from the $utf8_offset to the position proceeded by the $utf8_length, and returns it.
+
+If the length is less than C<0>, the length to the end of the string is calculated from the length of the $string and the $utf8_offset.
+
+Exceptions:
+
+The $string must be defined.
+
+The $string contains a invalid Unicode code point.
+
+The $utf8_offset + the $utf8_length must be less than or equal to the UTF-8 length of the $string.
+
+Examples:
+
+  # "いえ"
+  my $utf8_substr = Fn->utf8_substr("あいうえ", 1, 2);
