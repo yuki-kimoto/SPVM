@@ -131,6 +131,7 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->shorten_null_char);
     ok(SPVM::TestCase::Module::Fn->split);
     ok(SPVM::TestCase::Module::Fn->substr);
+    ok(SPVM::TestCase::Module::Fn->to_code_points);
     ok(SPVM::TestCase::Module::Fn->to_double);
     ok(SPVM::TestCase::Module::Fn->to_float);
     ok(SPVM::TestCase::Module::Fn->to_int);

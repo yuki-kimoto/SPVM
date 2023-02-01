@@ -13,6 +13,12 @@
 
         # 3
         my $utf8_length = Fn->utf8_length("あいう");
+        
+    * Added the to_code_points method in the Fn class.
+
+      static method to_code_points : int[] ($string : string)
+
+      Converts the $string to the Unicode code points, and returns it.
 
   [Exception Message Fix]
     * Fixed the exception message of the call_method in the SPVM::ExchangeAPI class.

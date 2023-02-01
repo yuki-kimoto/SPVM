@@ -775,6 +775,34 @@ class Fn {
     
     return $substring;
   }
+
+  precompile static method to_code_points : int[] ($string : string) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $utf8_length = 0;
+    my $code_points_list = IntList->new;
+    while ($offset < $string_length) {
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "An unexpected exception is thrown";
+        }
+      }
+      $code_points_list->push($code_point);
+    }
+    
+    my $code_points = $code_points_list->to_array;
+    
+    return $code_points;
+  }
   
   native static method to_double : double ($string : string);
   

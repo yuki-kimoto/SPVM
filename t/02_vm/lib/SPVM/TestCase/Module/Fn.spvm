@@ -3293,6 +3293,18 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method to_code_points : int () {
+    {
+      my $string = "あいうa";
+      my $code_points = Fn->to_code_points($string);
+      unless (Array->equals_int($code_points, [12354, 12356, 12358, 97])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method to_double : int () {
     # 10 digit minimal and return type is int
     {

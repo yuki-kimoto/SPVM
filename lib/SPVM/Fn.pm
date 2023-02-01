@@ -788,6 +788,18 @@ Gets the substring from the C<$string>. The extracting range of the string is fr
 
 If the length is less than C<0>, the length to the end of the string is calculated from the length of the string and the offset.
 
+=head2 to_code_points
+
+  static method to_code_points : int[] ($string : string)
+
+Converts the $string to the Unicode code points, and returns it.
+
+Exceptions:
+
+The $string must be defined.
+
+The $string contains a invalid Unicode code point.
+
 =head2 to_double
 
   static method to_double : double ($string : string);
@@ -993,6 +1005,8 @@ The C<$string> must be defined.
 Gets the length as a UTF-8 string from the $string, and returns it.
 
 Exceptions:
+
+The $string must be defined.
 
 The $string contains a invalid Unicode code point.
 
