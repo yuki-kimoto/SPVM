@@ -3958,5 +3958,16 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-  
+
+  static method utf8_length : int () {
+    {
+      my $string = "あいうa";
+      my $utf8_length = Fn->utf8_length($string);
+      unless ($utf8_length == 4) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

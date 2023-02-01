@@ -932,8 +932,6 @@ The second character ot the range format of the (pattern|replace) must be \"-\".
 
 The range format of the (pattern|replace) must be 1 or 3 characters.
 
-The code point of the ending character in the (pattern|replace) must be greater than or equal to the code point of the begining caharater.
-
 C<Examples:>
 
   {
@@ -986,3 +984,19 @@ If the first character of the C<$string> is an ASCII lowercase characters C<a-z>
 Exceptions:
 
 The C<$string> must be defined.
+
+
+=head2 utf8_length
+
+  static method utf8_length : int ($string : string)
+
+Gets the length as a UTF-8 string from the $string, and returns it.
+
+Exceptions:
+
+The $string contains a invalid Unicode code point.
+
+Examples:
+
+  # 3
+  my $utf8_length = Fn->utf8_length("あいう");

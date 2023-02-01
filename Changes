@@ -3,6 +3,17 @@
     * Support the static method call in Exchange API
       my $list = SPVM::FloatList->new([]);
       $list->SPVM::FloatList::push(1);
+    * Added the utf8_length method in the Fn class.
+
+      static method utf8_length : int ($string : string)
+
+      Gets the length as a UTF-8 string from the $string, and returns it.
+
+      Examples:
+
+        # 3
+        my $utf8_length = Fn->utf8_length("あいう");
+
   [Exception Message Fix]
     * Fixed the exception message of the call_method in the SPVM::ExchangeAPI class.
       [Before]

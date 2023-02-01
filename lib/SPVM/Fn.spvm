@@ -838,7 +838,7 @@ class Fn {
           die "The \$string contains a invalid Unicode code point";
         }
         else {
-          die "Calling the get_code_point method in the Fn class to the \$string returns an error code: $code_point";
+          die "An unexpected exception is thrown";
         }
       }
       
@@ -963,6 +963,31 @@ class Fn {
     Fn->memcpy($new_string, 1, $string, 1, $length - 1);
     
     return $new_string;
+  }
+  
+  precompile static method utf8_length : int ($string : string) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $utf8_length = 0;
+    while ($offset < $string_length) {
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "An unexpected exception is thrown";
+        }
+      }
+      $utf8_length++;
+    }
+    
+    return $utf8_length;
   }
   
   native static method _chr_native : string ($uchar : int);
