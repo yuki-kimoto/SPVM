@@ -32,4 +32,4 @@ The value.
 
   static method new : Double ($value : double);
 
-Creates a new L<Double|SPVM::Double> object with a C<double> C<$value>.
+Creates a new L<Double|SPVM::Double> object with a C<double> $value.

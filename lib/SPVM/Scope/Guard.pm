@@ -55,13 +55,13 @@ Gets and sets C<dismiss> field. See the L</"DESTROY"> method about the behavior.
 
 Creates a new C<Scope::Guard> object and returns it.
 
-The C<$handler> is set to the L</"handler"> field.
+The $handler is set to the L</"handler"> field.
 
-The C<$handler> is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
+The $handler is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
 
 Exceptions:
 
-The C<$handler> must be defined.
+The $handler must be defined.
 
 =head1 Instance Methods
 

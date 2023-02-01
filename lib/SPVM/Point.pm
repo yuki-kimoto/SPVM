@@ -59,7 +59,7 @@ C<y>.
 
   static method new : Point ($x = 0 : int, $y = 0 : int);
 
-Create a new C<Point> object with C<$x> and C<$y>.
+Create a new C<Point> object with $x and $y.
 
 =head1 Instance Methods
 

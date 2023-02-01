@@ -32,4 +32,4 @@ The value.
 
   static method new : Byte ($value : int);
 
-Creates a new L<Byte|SPVM::Byte> object with a C<byte> C<$value>.
+Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value.

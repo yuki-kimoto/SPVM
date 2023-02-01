@@ -2785,7 +2785,7 @@ If the type of the class variable is the L<byte type|/"byte Type"> or the L<shor
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is C<$FOO>, its reader name is C<FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is $FOO, its reader name is C<FOO>.
 
 Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable reader.
 
@@ -2812,7 +2812,7 @@ If the type of the class variable is the L<byte type|/"byte Type"> or the L<shor
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is C<$FOO>, its writer name is C<SET_FOO>.
+It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is $FOO, its writer name is C<SET_FOO>.
 
 Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable writer.
 

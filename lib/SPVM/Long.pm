@@ -32,4 +32,4 @@ The value.
 
   static method new : Long ($value : long);
 
-Creates a new L<Long|SPVM::Long> object with a C<long> C<$value>.
+Creates a new L<Long|SPVM::Long> object with a C<long> $value.

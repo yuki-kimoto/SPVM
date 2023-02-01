@@ -27,6 +27,9 @@
       [After]
       The 1th argument of the "push" method in the "IntList" class must be a number
       
+  [Doc Simplification]
+    * Argument names are not wraped by <code></code> tag.
+    
 0.9688 2023-01-30
   [New Features]
     * Added the equals_string_range method in the Fn class.

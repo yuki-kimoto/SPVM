@@ -39,7 +39,7 @@ This method is the same as C<time> function of C<Linux>.
 
   static method localtime : Time::Info ($time : long);
 
-Converts an epoch C<$time> to the L<Time::Info|SPVM::Time::Info> object that is local time.
+Converts an epoch $time to the L<Time::Info|SPVM::Time::Info> object that is local time.
 
 This method is the same as C<localtime> function of C<Linux>.
 
@@ -49,7 +49,7 @@ This method is the same as C<localtime> function of C<Linux>.
 
   static method gmtime : Time::Info ($time : long);
 
-Converts an epoch C<$time> to the L<Time::Info|SPVM::Time::Info> object that is C<UTC>.
+Converts an epoch $time to the L<Time::Info|SPVM::Time::Info> object that is C<UTC>.
 
 This method is the same as C<gmtime> function of C<Linux>.
 

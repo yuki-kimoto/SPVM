@@ -51,7 +51,7 @@ C<z>.
 
   static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int);
 
-Creates a new C<Point3D> object with C<$x>, C<$y>, C<$z>.
+Creates a new C<Point3D> object with $x, $y, $z.
 
 =head1 Instance Methods
 

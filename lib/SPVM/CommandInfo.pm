@@ -22,7 +22,7 @@ C<CommandInfo> is a L<SPVM> class.
 
   static method PROGRAM_NAME : string ();
 
-Gets the program name. This is same as Perl C<$0>.
+Gets the program name. This is same as Perl $0.
 
 =head2 ARGV
 
