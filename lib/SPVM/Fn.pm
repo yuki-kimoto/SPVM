@@ -908,6 +908,25 @@ If the $code_point is the ASCII lowercase character C<a-z>, it is converted to t
 
 If the $code_point is not an ASCII lowercase character, return itself.
 
+=head2 to_utf8_chars
+
+  static method to_utf8_chars : string[] ($string : string);
+
+Converts the $string to UTF-8 characters, and returns it.
+
+Exceptions:
+
+The $string must be defined.
+
+The $string contains a invalid Unicode code point.
+
+Examples:
+
+  my $string = "あいうa";
+  
+  # ["あ", "い", "う", "a"]
+  my $utf8_chars = Fn->to_utf8_chars($string);
+
 =head2 tr
 
   static method tr : string ($string : string, $pattern : string, $replace : string)

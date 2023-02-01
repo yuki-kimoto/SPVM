@@ -3293,11 +3293,11 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method to_code_points : int () {
+  static method to_utf8_chars : int () {
     {
       my $string = "あいうa";
-      my $code_points = Fn->to_code_points($string);
-      unless (Array->equals_int($code_points, [12354, 12356, 12358, 97])) {
+      my $utf8_chars = Fn->to_utf8_chars($string);
+      unless (Array->equals_string($utf8_chars, ["あ", "い", "う", "a"])) {
         return 0;
       }
     }
@@ -3744,6 +3744,19 @@ class TestCase::Module::Fn {
     
     unless ($ok) {
       return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method to_code_points : int () {
+   
+    {
+      my $string = "あいうa";
+      my $code_points = Fn->to_code_points($string);
+      unless (Array->equals_int($code_points, [12354, 12356, 12358, 97])) {
+        return 0;
+      }
     }
     
     return 1;

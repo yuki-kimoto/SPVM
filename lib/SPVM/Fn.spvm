@@ -835,6 +835,36 @@ class Fn {
     return $code_point;
   }
   
+  precompile static method to_utf8_chars : string[] ($string : string) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    my $string_length = length $string;
+    my $offset = 0;
+    my $utf8_length = 0;
+    my $utf8_chars_list = StringList->new;
+    while ($offset < $string_length) {
+      my $code_point = &get_code_point($string, \$offset);
+      if ($code_point < 0) {
+        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
+          die "The \$string contains a invalid Unicode code point";
+        }
+        else {
+          die "An unexpected exception is thrown";
+        }
+      }
+      my $utf8_char = &chr($code_point);
+    
+      $utf8_chars_list->push($utf8_char);
+    }
+    
+    my $utf8_chars = $utf8_chars_list->to_array;
+    
+    return $utf8_chars;
+  }
+  
   precompile static method tr : string ($string : string, $pattern : string, $replace : string) {
     
     unless ($string) {

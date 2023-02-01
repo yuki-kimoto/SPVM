@@ -20,6 +20,18 @@
 
       Converts the $string to the Unicode code points, and returns it.
 
+    * Added the to_utf8_chars method in the Fn class.
+
+      static method to_utf8_chars : string[] ($string : string);
+
+      Converts the $string to UTF-8 characters, and returns it.
+
+=head2 to_utf8_chars
+
+  static method to_utf8_chars : string[] ($string : string);
+
+Converts the $string to UTF-8 characters, and returns it.
+
   [Exception Message Fix]
     * Fixed the exception message of the call_method in the SPVM::ExchangeAPI class.
       [Before]
