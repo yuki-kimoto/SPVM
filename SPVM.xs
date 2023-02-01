@@ -395,7 +395,7 @@ xs_call_method(...)
       break;
     }
     
-    int32_t args_index_nth = args_index + 1;
+    int32_t args_index_nth = args_index + (spvm_args_base - 2);
     
     // Get value from Perl argument native_stack
     SV* sv_value = ST(spvm_args_base + args_index);

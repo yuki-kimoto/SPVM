@@ -3,7 +3,13 @@
     * Support the static method call in Exchange API
       my $list = SPVM::FloatList->new([]);
       $list->SPVM::FloatList::push(1);
-  
+  [Exception Message Fix]
+    * Fixed the exception message of the call_method in the SPVM::ExchangeAPI class.
+      [Before]
+      The 2th argument of the "push" method in the "IntList" class must be a number
+      [After]
+      The 1th argument of the "push" method in the "IntList" class must be a number
+      
 0.9688 2023-01-30
   [New Features]
     * Added the equals_string_range method in the Fn class.

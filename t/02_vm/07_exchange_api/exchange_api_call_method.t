@@ -1277,6 +1277,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# Invalid argument type
+{
+  {
+    my $list = SPVM::IntList->new([]);
+    eval { $list->push(undef) };
+    like($@, qr|The 1th argument of the "push" method in the "IntList" class must be a number|);
+  }
+  {
+    eval { SPVM::IntList->new(1) };
+    like($@, qr|The 1th argument of the "new" method in the "IntList" class must be a SPVM::BlessedObject::Array object|);
+  }
+}
+
 # All object is freed
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
