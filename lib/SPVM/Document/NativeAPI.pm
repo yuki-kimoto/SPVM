@@ -1330,17 +1330,17 @@ Examples:
 
 Creates a C<sprintf> formatted message with file name and line number and set it to the exception.
 
-Last two arguments are file name and line number.
+Last three arguments are the function name, the file name, and the line number.
 
 Returns value is always 1;
 
 Examples:
 
-  return env->die(env, stack, "Value must be %d", 3, __FILE__, __LINE__);
+  return env->die(env, stack, "Value must be %d", 3, __func__, __FILE__, __LINE__);
 
 =head2 new_object_by_name
 
-  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
+  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<new_object> function, but you can specify class name directly.
 
@@ -1349,12 +1349,12 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 new_pointer_by_name
 
-  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
+  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 The same as the L</"new_pointer_object_by_name">, but this is deprecagted and will be removed.
 
@@ -1362,7 +1362,7 @@ The same as the L</"new_pointer_object_by_name">, but this is deprecagted and wi
 
   void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int8_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_byte> function, but you can specify field name directly.
 
@@ -1371,14 +1371,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_short_by_name
 
   void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int16_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_short> function, but you can specify field name directly.
 
@@ -1387,14 +1387,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_short_by_name(env, stack, object, "short_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_short_by_name(env, stack, object, "short_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_int_by_name
 
   void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int32_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_int> function, but you can specify field name directly.
 
@@ -1403,14 +1403,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_int_by_name(env, stack, object, "int_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_int_by_name(env, stack, object, "int_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_long_by_name
 
   void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int64_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_long> function, but you can specify field name directly.
 
@@ -1419,14 +1419,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_long_by_name(env, stack, object, "long_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_long_by_name(env, stack, object, "long_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_float_by_name
 
   void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, float value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_float> function, but you can specify field name directly.
 
@@ -1435,14 +1435,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_float_by_name(env, stack, object, "float_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_float_by_name(env, stack, object, "float_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_double_by_name
 
   void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, double value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_double> function, but you can specify field name directly.
 
@@ -1451,14 +1451,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_double_by_name(env, stack, object, "double_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_double_by_name(env, stack, object, "double_value", 13, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_object_by_name
 
   void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, void* value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_field_object> function, but you can specify field name directly.
 
@@ -1467,14 +1467,14 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &e, __FILE__, __LINE__);
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_byte_by_name
 
   int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_byte> function, but you can specify field name directly.
 
@@ -1483,14 +1483,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &e, __FILE__, __LINE__);
+  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_short_by_name
 
   int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_short> function, but you can specify field name directly.
 
@@ -1499,14 +1499,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &e, __FILE__, __LINE__);
+  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_int_by_name
 
   int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_int> function, but you can specify field name directly.
 
@@ -1515,14 +1515,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &e, __FILE__, __LINE__);
+  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_long_by_name
 
   int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_long> function, but you can specify field name directly.
 
@@ -1531,14 +1531,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &e, __FILE__, __LINE__);
+  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_float_by_name
 
   float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_float> function, but you can specify field name directly.
 
@@ -1547,14 +1547,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &e, __FILE__, __LINE__);
+  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_double_by_name
 
   double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_double> function, but you can specify field name directly.
 
@@ -1563,14 +1563,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &e, __FILE__, __LINE__);
+  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_object_by_name
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_field_object> function, but you can specify field name directly.
 
@@ -1579,14 +1579,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_byte_by_name
 
   void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int8_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_byte> function, but you can specify the class name directly.
 
@@ -1595,14 +1595,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_short_by_name
 
   void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int16_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_short> function, but you can specify the class name directly.
 
@@ -1611,14 +1611,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_int_by_name
 
   void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, int32_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_int> function, but you can specify the class name directly.
 
@@ -1627,14 +1627,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_long_by_name
 
   void (*set_class_var_long_by_name)(SPVM_ENV* env
     const char* class_name, const char* class_var_name, int64_t value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_long> function, but you can specify the class name directly.
 
@@ -1643,14 +1643,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_float_by_name
 
   void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, float value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_float> function, but you can specify the class name directly.
 
@@ -1659,14 +1659,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_double_by_name
 
   void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, double value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_double> function, but you can specify the class name directly.
 
@@ -1675,14 +1675,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_class_var_object_by_name
 
   void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name, void* value,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_object> function, but you can specify the class name directly.
 
@@ -1691,14 +1691,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
+  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_byte_by_name
 
   int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_byte> function, but you can specify the class name directly.
 
@@ -1707,14 +1707,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_short_by_name
 
   int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_short> function, but you can specify the class name directly.
 
@@ -1723,14 +1723,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
+  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_int_by_name
 
   int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_int> function, but you can specify the class name directly.
 
@@ -1739,14 +1739,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_long_by_name
 
   int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_long> function, but you can specify the class name directly.
 
@@ -1755,14 +1755,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
+  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_float_by_name
 
   float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_float> function, but you can specify the class name directly.
 
@@ -1771,14 +1771,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
+  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_double_by_name
 
   double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_double> function, but you can specify the class name directly.
 
@@ -1787,14 +1787,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
 
   int32_t e;
-  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
+  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_class_var_object_by_name
 
   void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* class_var_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_object> function, but you can specify the class name directly.
 
@@ -1803,14 +1803,14 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 Examples:
   
   int32_t e;
-  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &e, __FILE__, __LINE__);
+  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 call_class_method_by_name
 
   int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* method_name, int32_t args_stack_length,
-    const char* file, int32_t line);
+    const char* func_name, const char* file, int32_t line);
 
 This is same as C<call_method> function, but you can specify the class name and method name directly.
 
@@ -1820,7 +1820,7 @@ Examples:
   {
     int32_t args_stack_length = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, __FILE__, __LINE__);
+    int32_t error = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, __func__, __FILE__, __LINE__);
     if (error) {
       return error;
     }
@@ -1831,13 +1831,13 @@ Examples:
 
   int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* method_name, int32_t args_stack_length,
-    const char* file, int32_t line);
+    const char* func_name, const char* file, int32_t line);
 
 =head2 get_field_string_chars_by_name
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* file, int32_t line);
+    int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Examples:
 
@@ -2093,7 +2093,7 @@ The argv must be a C<string[]> object. Otherwise return non-zero value.
 
 =head2 get_class_id_by_name
 
-  int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* file, int32_t line);
+  int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Gets the class id by the class name.
 
@@ -2155,14 +2155,14 @@ Examples:
 
 =head2 new_pointer_object_by_name
 
-  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* file, int32_t line);
+  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as L</"new_pointer"> function, but you can specify class name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
   int32_t e;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
+  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 is_class
@@ -2189,7 +2189,7 @@ The same as the L</"strerror"> function, but return a C<string> object.
 
 =head2 get_basic_type_id_by_name
 
-  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* file, int32_t line);
+  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Gets the basic_type id by the basic_type name.
 
@@ -2219,7 +2219,7 @@ Examples:
 
   int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* class_name, const char* method_name, int32_t args_stack_length,
-    const char* file, int32_t line);
+    const char* func_name, const char* file, int32_t line);
 
 Calls a instance method by the class name and the method name.
 
@@ -2229,7 +2229,7 @@ Examples:
   {
     int32_t args_stack_length = 1;
     stack[0].oval = obj_point;
-    int32_t error = env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, __FILE__, __LINE__);
+    int32_t error = env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, __func__, __FILE__, __LINE__);
     if (error) {
       return error;
     }

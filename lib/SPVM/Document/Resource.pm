@@ -164,7 +164,7 @@ C<zlib.h> can be included because L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib
     gzFile gz_fh = gzopen(file, "rb");
     
     if (gz_fh == NULL){
-      return env->die(env, stack, "Can't open file \"%s\"\n", file);
+      return env->die(env, stack, "Can't open file \"%s\"\n", __func__, file, __LINE__);
     }
     
     char buffer[256] = {0};

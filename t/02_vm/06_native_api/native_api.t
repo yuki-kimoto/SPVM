@@ -147,6 +147,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   
   eval { SPVM::TestCase::NativeAPI->native_call_class_method_by_name_exception; };
   ok($@);
+  like($@, qr|SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception at TestCase/NativeAPI\.c line \d+|);
 }
 
 # env->call_instance_method_static_by_name

@@ -10,7 +10,7 @@ int32_t SPVM__Stack__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* obj_my_env = env->get_field_object_by_name(env, stack, obj_self, "env", &e, FILE_NAME, __LINE__);
+  void* obj_my_env = env->get_field_object_by_name(env, stack, obj_self, "env", &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);

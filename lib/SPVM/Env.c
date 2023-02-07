@@ -48,10 +48,10 @@ int32_t SPVM__Env__build_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_VALUE* my_stack = my_env->new_stack(my_env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Stack", my_stack, &e, FILE_NAME, __LINE__);
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Stack", my_stack, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
-  env->set_field_object_by_name(env, stack, obj_self, "env", obj_my_env, &e, FILE_NAME, __LINE__);
+  env->set_field_object_by_name(env, stack, obj_self, "env", obj_my_env, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_self;

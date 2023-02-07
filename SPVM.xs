@@ -2338,7 +2338,7 @@ xs_new_address_object(...)
   
   void* address = (void*)(intptr_t)SvIV(sv_address);
   
-  void* obj_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, FILE_NAME, __LINE__);
+  void* obj_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, __func__, FILE_NAME, __LINE__);
   if (e) {
     croak("Can't create the Address object");
   }

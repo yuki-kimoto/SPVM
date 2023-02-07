@@ -72,7 +72,7 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
   void* address = env->api->runtime->get_native_method_address(runtime, method_id);
   
   // Native address
-  void* obj_address = env->new_pointer_object_by_name(env, stack, "Native::Address", address, &e, FILE_NAME, __LINE__);
+  void* obj_address = env->new_pointer_object_by_name(env, stack, "Native::Address", address, &e, __func__, FILE_NAME, __LINE__);
   
   stack[0].oval = obj_address;
   
@@ -132,7 +132,7 @@ int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
   void* address = env->api->runtime->get_precompile_method_address(runtime, method_id);
   
   // Native address
-  void* obj_address = env->new_pointer_object_by_name(env, stack, "Native::Address", address, &e, FILE_NAME, __LINE__);
+  void* obj_address = env->new_pointer_object_by_name(env, stack, "Native::Address", address, &e, __func__, FILE_NAME, __LINE__);
   
   stack[0].oval = obj_address;
   
@@ -543,10 +543,10 @@ int32_t SPVM__Runtime__build_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Initialize env
   my_env->init_env(my_env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &e, FILE_NAME, __LINE__);
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
-  env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &e, FILE_NAME, __LINE__);
+  env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_self;

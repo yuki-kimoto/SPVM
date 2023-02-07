@@ -11,7 +11,7 @@ int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Create compiler
   void* compiler = env->api->compiler->new_object();
   
-  void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &e, FILE_NAME, __LINE__);
+  void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_self;
@@ -85,7 +85,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Build runtime
   env->api->runtime->build(runtime, runtime_codes);
 
-  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, FILE_NAME, __LINE__);
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = obj_runtime;

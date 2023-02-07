@@ -466,7 +466,7 @@ L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (method_id < 0) { return env->die(env, stack, "Can't find method id", "Foo/Bar.c", __LINE__); }
+  if (method_id < 0) { return env->die(env, stack, "Can't find method id", __func__, "Foo/Bar.c", __LINE__); }
 
 Set the SPVM method argument to stack before calling the method.
 
@@ -530,7 +530,7 @@ If no exception message is set, a default exception message will be set.
 
 Usually, L<die|"die"">  is defined to make it easier to use, so it is better to use this.
 
-  return env->die("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
+  return env->die("Error. Values must be %d and %d", 3, 5, __func__, "Foo/Bar.c", __LINE__);
 
 L<die|"die""> can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
 
