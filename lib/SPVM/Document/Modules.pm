@@ -122,46 +122,42 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =over 2
 
-=item * L<JSON|SPVM::JSON> - JSON
+=item * L<Cwd|SPVM::Cwd>
 
-=item * L<Math|SPVM::Math> - Math functions
+=item * L<Digest::MD5|SPVM::Digest::MD5>
 
-=item * L<Regex|SPVM::Regex> - Regular Expression
+=item * L<Digest::SHA|SPVM::Digest::SHA>
 
-=item * L<Unicode|SPVM::Unicode> - Unicode Utilities
+=item * L<Errno|SPVM::Errno>
 
-=item * L<MIME::Base64|SPVM::MIME::Base64> - Base 64
+=item * L<Math|SPVM::Math>
 
-=item * L<Time::Local|SPVM::Time::Local> - Time Reverse Manipulation
+=item * L<MIME::Base64|SPVM::MIME::Base64>
 
-=item * L<SPVM::Errno> - Error Number
+=item * L<IO|SPVM::IO>
 
-=item * L<SPVM::Resource::Re2::V2022_06_01> - Resource of Google RE2 release 2022-06-01.
+=item * L<JSON|SPVM::JSON>
 
-=item * L<SPVM::Resource::Zlib::V1_2_11> - zlib v1.2.11 Resource
+=item * L<Regex|SPVM::Regex>
 
-=item * L<SPVM::Cwd> - get pathname of current working directory
+=item * L<Resource::Re2::V2022_06_01|SPVM::Resource::Re2::V2022_06_01>
 
-=item * L<SPVM::IO> - File IO, Socket, Select/Polling.
+=item * L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>
 
-=item * L<SPVM::Digest::MD5> - SPVM interface to the MD5 Algorithm
+=item * L<Sys|SPVM::Sys>
 
-=item * L<SPVM::Digest::SHA> - SPVM extension for SHA-1/224/256/384/512
+=item * L<Sys::FileTest|SPVM::Sys::FileTest>
 
-=item * L<SPVM::Sys> - System Calls
+=item * L<Sys::IO|SPVM::Sys::IO>
 
-=item * L<SPVM::Sys::IO> - System Calls for File IO
+=item * L<Sys::Process|SPVM::Sys::Process>
 
-=item * L<SPVM::Sys::FileTest> - File Test
+=item * L<Sys::Socket|SPVM::Sys::Socket>
 
-=item * L<SPVM::Sys::Socket> - System Calls for Sockect
+=item * L<Sys::User|SPVM::Sys::User>
 
-=item * L<SPVM::Sys::User> - System Calls for User Manipulation
+=item * L<Time::Local|SPVM::Time::Local>
 
-=item * L<SPVM::Sys::Process> - System Calls for Process
+=item * L<Unicode|SPVM::Unicode>
 
 =back
-
-=head2 Resource Modules
-
-See L<SPVM::Document::Resource|/"Resource Modules">.
