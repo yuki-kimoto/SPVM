@@ -1,4 +1,4 @@
-0.9690 2023-02-07
+0.9690 2023-02-08
   [Test Improvement]
     * Use __func__ in the tests of Native API.
   [Exception Message Imprvement]
