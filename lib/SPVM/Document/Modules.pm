@@ -130,17 +130,35 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<Errno|SPVM::Errno>
 
+=item * L<File::Basename|SPVM::File::Basename>
+
+=item * L<File::Spec|SPVM::File::Spec>
+
+=item * L<File::Spec|SPVM::File::Spec>
+
+=item * L<FindBin|SPVM::FindBin>
+
+=item * L<IO|SPVM::IO>
+
+=item * L<IO::File|SPVM::IO::File>
+
+=item * L<IO::Socket::INET|SPVM::IO::Socket::INET>
+
+=item * L<IO::Select|SPVM::IO::Select>
+
+=item * L<JSON|SPVM::JSON>
+
 =item * L<Math|SPVM::Math>
 
 =item * L<MIME::Base64|SPVM::MIME::Base64>
 
-=item * L<IO|SPVM::IO>
-
-=item * L<JSON|SPVM::JSON>
+=item * L<MIME::QuotedPrint|SPVM::MIME::QuotedPrint>
 
 =item * L<Regex|SPVM::Regex>
 
 =item * L<Resource::Re2::V2022_06_01|SPVM::Resource::Re2::V2022_06_01>
+
+=item * L<Resource::SocketUtil|SPVM::Resource::SocketUtil>
 
 =item * L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>
 
@@ -150,9 +168,19 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<Sys::IO|SPVM::Sys::IO>
 
+=item * L<Sys::Ioctl|SPVM::Sys::Ioctl>
+
+=item * L<Sys::Poll|SPVM::Sys::Poll>
+
 =item * L<Sys::Process|SPVM::Sys::Process>
 
+=item * L<Sys::Select|SPVM::Sys::Select>
+
+=item * L<Sys::Signal|SPVM::Sys::Signal>
+
 =item * L<Sys::Socket|SPVM::Sys::Socket>
+
+=item * L<Sys::Time|SPVM::Sys::Time>
 
 =item * L<Sys::User|SPVM::Sys::User>
 
