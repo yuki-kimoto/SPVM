@@ -300,7 +300,7 @@ C<SPVM::$class_name> is the C<$class_name> class in L<SPVM> language.
 =head1 Usage
 
   use $class_name;
-  
+
 =head1 Fields
 
 
