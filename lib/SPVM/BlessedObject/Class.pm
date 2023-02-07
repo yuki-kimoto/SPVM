@@ -2,6 +2,7 @@ package SPVM::BlessedObject::Class;
 
 use strict;
 use warnings;
+use Carp;
 
 use base 'SPVM::BlessedObject';
 
@@ -12,6 +13,14 @@ sub AUTOLOAD {
   my $self = shift;
   
   my $method_name = $AUTOLOAD;
+  
+  unless (ref $self) {
+    my $class_name = $self;
+    $class_name =~ s/^SPVM:://;
+    $method_name =~ s/^.*:://;
+    
+    Carp::confess("The \"$method_name\" method in the \"$class_name\" class is not defined");
+  }
   
   $method_name =~ s/^SPVM:://;
   $method_name =~ s/^BlessedObject::Class:://;

@@ -1065,6 +1065,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# Call not defined method
+{
+  eval { SPVM::Int->not_defined_method };
+  like($@, qr|The "not_defined_method" method in the "Int" class is not defined|);
+}
+
 # TODO
 
 =pod
