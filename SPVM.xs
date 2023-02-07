@@ -155,7 +155,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    *sv_error = sv_2mortal(newSVpvf("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
     return NULL;
   }
   
@@ -169,7 +169,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   if (basic_type_id < 0) {
-    *sv_error = sv_2mortal(newSVpvf("The \"%s\" basic type is not found at %s line %d\n", basic_type_name, FILE_NAME, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__));
     return NULL;
   }
   
@@ -211,7 +211,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
           sv_field_value = *sv_field_value_ptr;
         }
         else {
-          *sv_error = sv_2mortal(newSVpvf("The \"%s\" field of the %dth element must be defined at %s line %d\n", mulnum_field_name, index + 1, FILE_NAME, __LINE__));
+          *sv_error = sv_2mortal(newSVpvf("The \"%s\" field of the %dth element must be defined\n    %s at %s line %d\n", mulnum_field_name, index + 1, __func__, FILE_NAME, __LINE__));
           return NULL;
         }
 
@@ -247,7 +247,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
       }
     }
     else {
-      *sv_error = sv_2mortal(newSVpvf("The element must be a hash reference at %s line %d\n", FILE_NAME, __LINE__));
+      *sv_error = sv_2mortal(newSVpvf("The element must be a hash reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
       return NULL;
     }
   }
@@ -349,7 +349,7 @@ xs_call_method(...)
   
   // Method not found
   if (method_id < 0) {
-    croak("The \"%s\" method in the \"%s\" class is not found at %s line %d\n", method_name, class_name, FILE_NAME, __LINE__);
+    croak("The \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", method_name, class_name, __func__, FILE_NAME, __LINE__);
   }
   
   // Base index of SPVM arguments
@@ -371,10 +371,10 @@ xs_call_method(...)
   int32_t call_method_args_length = items - spvm_args_base;
   
   if (call_method_args_length < method_required_args_length) {
-    croak("Too few arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be less than %d at %s line %d\n", method_name, class_name, method_required_args_length, FILE_NAME, __LINE__);
+    croak("Too few arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be less than %d\n    %s at %s line %d\n", method_name, class_name, method_required_args_length, __func__, FILE_NAME, __LINE__);
   }
   else if (call_method_args_length > method_args_length) {
-    croak("Too many arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be more than %d at %s line %d\n", method_name, class_name, method_args_length, FILE_NAME, __LINE__);
+    croak("Too many arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be more than %d\n    %s at %s line %d\n", method_name, class_name, method_args_length, __func__, FILE_NAME, __LINE__);
   }
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal native_stack.
@@ -425,7 +425,7 @@ xs_call_method(...)
                 }
                 
                 if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 
                 SV* sv_value_deref = SvRV(sv_value);
@@ -448,7 +448,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -470,7 +470,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -492,7 +492,7 @@ xs_call_method(...)
                   is_iok_scalar_ref = 0;
                 }
                 if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -514,7 +514,7 @@ xs_call_method(...)
                   is_nok_scalar_ref = 0;
                 }
                 if (!is_nok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 float value = (float)SvNV(sv_value_deref);
@@ -536,7 +536,7 @@ xs_call_method(...)
                   is_nok_scalar_ref = 0;
                 }
                 if (!is_nok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 SV* sv_value_deref = SvRV(sv_value);
                 double value = (double)SvNV(sv_value_deref);
@@ -563,7 +563,7 @@ xs_call_method(...)
               }
             }
             if (hv_value == NULL) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference of a hash reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference of a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);
@@ -583,7 +583,7 @@ xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The %dth argument of the \"%s\" field in the \"%s\" class is not found at %s line %d\n", args_index_nth, mulnum_field_name, arg_class_name, FILE_NAME, __LINE__);
+                croak("The %dth argument of the \"%s\" field in the \"%s\" class is not found\n    %s at %s line %d\n", args_index_nth, mulnum_field_name, arg_class_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -640,7 +640,7 @@ xs_call_method(...)
               // Perl scalar to SPVM byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
@@ -650,7 +650,7 @@ xs_call_method(...)
               // Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
@@ -660,7 +660,7 @@ xs_call_method(...)
               // Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
@@ -670,7 +670,7 @@ xs_call_method(...)
               // Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
@@ -680,7 +680,7 @@ xs_call_method(...)
               // Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
@@ -690,7 +690,7 @@ xs_call_method(...)
               // Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;
@@ -735,7 +735,7 @@ xs_call_method(...)
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
               }
               else if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
@@ -744,7 +744,7 @@ xs_call_method(...)
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
               }
               else {
@@ -752,13 +752,13 @@ xs_call_method(...)
                   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
                   
                   if (!env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension)) {
-                    croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                    croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                   }
                   
                   stack[stack_index].oval = object;
                 }
                 else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
               }
             }
@@ -790,7 +790,7 @@ xs_call_method(...)
                 else {
                   int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                   const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                  croak("The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, FILE_NAME, __LINE__);
+                  croak("The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
                 }
                 
                 switch (arg_class_field_type_basic_type_id) {
@@ -832,7 +832,7 @@ xs_call_method(...)
               stack_index += arg_class_fields_length;
             }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             break;
           }
@@ -951,13 +951,13 @@ xs_call_method(...)
               if (!isa) {
                 void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
                 const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
           }
           
@@ -995,13 +995,13 @@ xs_call_method(...)
               if (!isa) {
                 void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
                 const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
           }
           
@@ -1046,7 +1046,7 @@ xs_call_method(...)
                       env->set_elem_object(env, stack, array, i, object);
                     }
                     else {
-                      croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                      croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                     }
                   }
                 }
@@ -1062,13 +1062,13 @@ xs_call_method(...)
               if (!isa) {
                 void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
                 const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
               
               stack[stack_index].oval = object;
             }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
           }
           
@@ -1114,7 +1114,7 @@ xs_call_method(...)
                   env->set_elem_object(env, stack, array, i, object);
                 }
                 else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
               }
             }
@@ -1133,13 +1133,13 @@ xs_call_method(...)
           if (!isa) {
             void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
             const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-            croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+            croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
           }
           
           stack[stack_index].oval = object;
         }
         else {
-          croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object at %s line %d\n", args_index_nth, method_name, class_name, FILE_NAME, __LINE__);
+          croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
         }
       }
       
@@ -1166,7 +1166,7 @@ xs_call_method(...)
     int32_t length = env->length(env, stack, exception);
     const char* exception_chars = env->get_chars(env, stack, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
-    croak("%s at %s line %d\n", SvPV_nolen(sv_exception), FILE_NAME, __LINE__);
+    croak("%s\n    %s at %s line %d\n", SvPV_nolen(sv_exception), __func__, FILE_NAME, __LINE__);
   }
   else {
     SV* sv_return_value = NULL;
@@ -1484,7 +1484,7 @@ xs_array_to_elems(...)
 
   // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1662,7 +1662,7 @@ xs_array_to_elems(...)
     }
   }
   else {
-    croak("The object must be an array type at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The object must be an array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
 
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
@@ -1697,7 +1697,7 @@ xs_array_to_bin(...)
 
   // Array must be a SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
 
   // Get object
@@ -1770,7 +1770,7 @@ xs_array_to_bin(...)
       }
     }
     else if (array_is_object_array) {
-      croak("The array can't be an object array at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The array can't be an object array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
       switch (basic_type_id) {
@@ -1817,7 +1817,7 @@ xs_array_to_bin(...)
     }
   }
   else {
-    croak("The object must be an array type at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The object must be an array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_bin);
@@ -1850,7 +1850,7 @@ xs_string_object_to_bin(...)
 
   // String must be a SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
-    croak("The string must be a SPVM::BlessedObject::String object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The string must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1891,7 +1891,7 @@ xs_array_length(...)
 
   // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array object at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The array must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -2175,7 +2175,7 @@ xs_new_string_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
 
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -2239,7 +2239,7 @@ xs_new_string(...)
   if (SvOK(sv_value)) {
     
     if (SvROK(sv_value)) {
-      croak("The string can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The string can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
       // Copy
@@ -2257,7 +2257,7 @@ xs_new_string(...)
     }
   }
   else {
-    croak("The string must be defined at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The string must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2288,7 +2288,7 @@ xs_new_string_from_bin(...)
   SV* sv_string;
   if (SvOK(sv_binary)) {
     if (SvROK(sv_binary)) {
-      croak("The binary can't be a reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The binary can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
       int32_t binary_length = sv_len(sv_binary);
@@ -2306,7 +2306,7 @@ xs_new_string_from_bin(...)
     }
   }
   else {
-    croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2372,7 +2372,7 @@ xs_new_byte_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2427,7 +2427,7 @@ xs_new_byte_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2482,7 +2482,7 @@ xs_new_byte_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2563,7 +2563,7 @@ xs_new_short_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2618,7 +2618,7 @@ xs_new_short_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2673,7 +2673,7 @@ xs_new_short_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2756,7 +2756,7 @@ xs_new_int_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2810,7 +2810,7 @@ xs_new_int_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2864,7 +2864,7 @@ xs_new_int_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2945,7 +2945,7 @@ xs_new_long_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -3000,7 +3000,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -3055,7 +3055,7 @@ xs_new_long_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -3136,7 +3136,7 @@ xs_new_float_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3188,7 +3188,7 @@ xs_new_float_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -3269,7 +3269,7 @@ xs_new_double_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3320,7 +3320,7 @@ xs_new_double_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -3401,7 +3401,7 @@ xs_new_string_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Element type id
@@ -3444,7 +3444,7 @@ xs_new_object_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0 at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Element type id
@@ -3486,7 +3486,7 @@ _xs_new_object_array(...)
   SV* sv_elems = ST(2);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3525,11 +3525,11 @@ _xs_new_object_array(...)
       else {
         void* obj_element_type_name = env->get_type_name(env, stack, element);
         const char* element_type_name = env->get_chars(env, stack, obj_element_type_name);
-        croak("The element must be assigned to the %s type at %s line %d\n", element_type_name, FILE_NAME, __LINE__);
+        croak("The element must be assigned to the %s type\n    %s at %s line %d\n", element_type_name, __func__, FILE_NAME, __LINE__);
       }
     }
     else {
-      croak("The element must be a SPVM::BlessedObject object at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The element must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
   }
   
@@ -3564,7 +3564,7 @@ _xs_new_muldim_array(...)
   SV* sv_elems = ST(3);
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("The elements must be an array reference at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3602,11 +3602,11 @@ _xs_new_muldim_array(...)
         env->set_elem_object(env, stack, array, index, object);
       }
       else {
-        croak("The object must be assigned to the element of the array at %s line %d\n", FILE_NAME, __LINE__);
+        croak("The object must be assigned to the element of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
       }
     }
     else {
-      croak("The element must be inherit SPVM::BlessedObject object at %s line %d\n", FILE_NAME, __LINE__);
+      croak("The element must be inherit SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
   }
   
@@ -3677,7 +3677,7 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
-    croak("The binary must be defined at %s line %d\n", FILE_NAME, __LINE__);
+    croak("The binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3692,7 +3692,7 @@ _xs_new_mulnum_array_from_bin(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   if (basic_type_id < 0) {
-    croak("The \"%s\" basic type is not found at %s line %d\n", basic_type_name, FILE_NAME, __LINE__);
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
 
   int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
@@ -3737,7 +3737,7 @@ _xs_new_mulnum_array_from_bin(...)
   }
   
   if (binary_length % (field_length * field_native_stack_length) != 0) {
-    croak("The size of the binary data is invalid at %s line %d", FILE_NAME, __LINE__);
+    croak("The size of the binary data is invalid\n    %s at %s line %d", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / field_length / field_native_stack_length;
