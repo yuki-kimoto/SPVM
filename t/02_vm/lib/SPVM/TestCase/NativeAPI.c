@@ -13,6 +13,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   (void)stack;
   
   int32_t e;
+
+  const char* func_name = __func__;
   
   void** env_array = (void**)env;
   

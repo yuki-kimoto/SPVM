@@ -27,6 +27,8 @@ int32_t SPVM__TestCase__NativeAPICpp__call_native_func(SPVM_ENV* env, SPVM_VALUE
 
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
+  
+  const char* func_name = __func__;
 
   stack[0].ival = value;
   
