@@ -807,7 +807,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     eval { $api->new_string([]) };
     like($@, qr/The string can't be a reference/);
-    like($@, qr|\QXS_SPVM__ExchangeAPI_xs_new_string at SPVM.xs line 2242|);
+    like($@, qr|XS_SPVM__ExchangeAPI_xs_new_string at SPVM\.xs line \d+|);
   }
 }
 
