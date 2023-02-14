@@ -136,6 +136,9 @@ WriteMakefile(
                 url  => 'https://github.com/yuki-kimoto/SPVM.git',
                 web  => 'https://github.com/yuki-kimoto/SPVM',
             },
+            bugtracker => {
+                web => "https://github.com/yuki-kimoto/SPVM/issues",
+            },            
         },
     },
     EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
