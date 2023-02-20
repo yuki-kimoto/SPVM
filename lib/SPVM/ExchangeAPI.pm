@@ -63,6 +63,26 @@ sub new_any_object_array {
   return $array;
 }
 
+sub new_options {
+  my ($self, $options) = @_;
+  
+  unless (ref $options eq 'HASH') {
+    confess "The options must be a hash reference";
+  }
+  
+  my $array_ref = [];
+  for my $name (keys %$options) {
+    my $obj_name = $self->new_string($name);
+    my $value = $options->{$name};
+    push @$array_ref, $obj_name, $value;
+  }
+  
+  my $type_name = 'object[]';
+  my $array = $self->new_object_array($type_name, $array_ref);
+  
+  return $array;
+}
+
 sub new_object_array {
   my ($self, $type_name, $elems) = @_;
   
@@ -487,15 +507,24 @@ The Perl binary is interpreted as 8-bit signed integers. The length of the strin
 
 If the argument is C<undef>, returns C<undef>.
 
-=head2 new_any_object_array
+=head2 new_options
 
-  my $byte_array = $api->new_any_object_array(
+  my $byte_array = $api->new_options(
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
 The alias for the following code using the L</"new_object_array"> method.
 
   my $sp_array = $api->new_object_array('object[]', $pl_array);
+
+=head2 new_options
+
+  my $options = $api->new_options({
+    x => SPVM::Int->new(1),
+    y => SPVM::Int->new(2)
+  });
+
+Creates options that type is C<object[]>.
 
 =head2 new_object_array
 

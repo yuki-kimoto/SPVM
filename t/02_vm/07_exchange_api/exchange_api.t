@@ -29,6 +29,8 @@ use SPVM 'Float';
 use SPVM 'Double';
 use SPVM 'Bool';
 
+use SPVM 'TestCase::Simple';
+
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -1069,6 +1071,31 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   eval { SPVM::Int->not_defined_method };
   like($@, qr|The "not_defined_method" method in the "Int" class is not defined|);
+}
+
+{
+  {
+    my $options = $api->new_options({
+      x => SPVM::Int->new(1),
+      y => SPVM::Int->new(2)
+    });
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 1);
+    is($simple->y, 2);
+  }
+  {
+    my $options = $api->new_options({
+    });
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 0);
+    is($simple->y, 0);
+  }
+  {
+    my $options = undef;
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 0);
+    is($simple->y, 0);
+  }
 }
 
 # TODO

@@ -1,5 +1,6 @@
 class TestCase::Simple : public {
   use TestCase::Minimal;
+  use Hash;
   
   interface Stringable;
   interface Cloneable;
@@ -70,5 +71,20 @@ class TestCase::Simple : public {
 
   method interface_shared1 : string ($num : int) {
     return "interface_shared1 $num";
+  }
+  
+  static method new_options : TestCase::Simple ($options = undef : object[]) {
+    my $options_h = Hash->new($options);
+    
+    my $x = $options_h->delete_or_default_int("x", 0);
+    
+    my $y = $options_h->delete_or_default_int("y", 0);
+    
+    my $self = new TestCase::Simple;
+    
+    $self->{x} = $x;
+    $self->{y} = $y;
+    
+    return $self;
   }
 }
