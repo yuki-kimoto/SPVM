@@ -58,9 +58,7 @@ int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) 
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
   
-  void* obj_program_name = stack[1].oval;
-  
-  int64_t base_time = stack[2].lval;
+  int64_t base_time = stack[1].lval;
   
   e = my_env->set_command_info_base_time(my_env, base_time);
   if (e) { return e; }
