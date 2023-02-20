@@ -323,6 +323,8 @@ sub create_make_rule {
   
   # Dependency c source files
   push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$class_rel_file/*";
+
+  push @deps, $spvm_file;
   
   # Dependency native module file
   if ($category eq 'native') {
@@ -330,16 +332,14 @@ sub create_make_rule {
     $config_file .= '.config';
     $config_file = "$lib_dir/$config_file";
     my $config = SPVM::Builder::Config->load_config($config_file);
+    push @deps, $config_file;
     
-    my $native_file = $noext_file;
-    my $native_file_ext = $config->ext;
-    $native_file .= ".$native_file_ext";
-    $native_file = "$lib_dir/$native_file";
-
-    push @deps, $spvm_file, $native_file, $config_file;
-  }
-  elsif ($category eq 'precompile') {
-    push @deps, $spvm_file;
+    my $native_module_file = $noext_file;
+    my $native_module_file_ext = $config->ext;
+    $native_module_file .= ".$native_module_file_ext";
+    $native_module_file = "$lib_dir/$native_module_file";
+    
+    push @deps, $native_module_file;
   }
   
   # Shared library file
