@@ -539,7 +539,7 @@ sub generate_readme_markdown_file {
   my $readme_markdown_content = <<"EOS";
 # SPVM::$class_name
 
-SPVM::$class_name is a SPVM module.
+<a href="https://metacpan.org/pod/SPVM::$class_name">SPVM::$class_name</a>
 
 EOS
   
