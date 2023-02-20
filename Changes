@@ -10,6 +10,11 @@
   [Bug Fix]
     * Fixed a bug that the SPVM::Builder::Util::API::create_make_rule_native function
       used in Makefile.PL did not add files in Foo.native/include and Foo.native/src to dependencies.
+  [Incompatible Changes]
+    * Removed the set_command_info method in the Env class.
+    * Added the set_command_info_program_name method in the Env class.
+    * Added the set_command_info_argv method in the Env class.
+    * Added the set_command_info_base_time method in the Env class.
 
 0.9691 2023-02-08
   [Incompatible Changes]

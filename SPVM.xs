@@ -4509,7 +4509,7 @@ build_env(...)
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
-set_command_info(...)
+set_command_info_program_name(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4521,19 +4521,43 @@ set_command_info(...)
   const char* program_name = SvPV_nolen(sv_program_name);
   int32_t program_name_length = strlen(program_name);
   
-  SV* sv_argv = ST(2);
-  AV* av_argv = (AV*)SvRV(sv_argv);
-  int32_t argv_length = av_len(av_argv) + 1;
-  
-  SV* sv_base_time = ST(3);
-  int64_t base_time = SvIV(sv_base_time);
-  
   {
     SPVM_VALUE* my_stack = env->new_stack(env);
     int32_t scope_id = env->enter_scope(env, my_stack);
     
     // Program name - string
     void* obj_program_name = env->new_string(env, my_stack, program_name, program_name_length);
+    
+    // Set command info
+    {
+      int32_t e;
+      e = env->set_command_info_program_name(env, obj_program_name);
+      assert(e == 0);
+    }
+    
+    env->leave_scope(env, my_stack, scope_id);
+    env->free_stack(env, my_stack);
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_command_info_argv(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  
+  SV* sv_argv = ST(1);
+  AV* av_argv = (AV*)SvRV(sv_argv);
+  int32_t argv_length = av_len(av_argv) + 1;
+  
+  {
+    SPVM_VALUE* my_stack = env->new_stack(env);
+    int32_t scope_id = env->enter_scope(env, my_stack);
     
     void* obj_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
     for (int32_t index = 0; index < argv_length; index++) {
@@ -4550,10 +4574,36 @@ set_command_info(...)
     // Set command info
     {
       int32_t e;
-      e = env->set_command_info_program_name(env, obj_program_name);
-      assert(e == 0);
       e = env->set_command_info_argv(env, obj_argv);
       assert(e == 0);
+    }
+    
+    env->leave_scope(env, my_stack, scope_id);
+    env->free_stack(env, my_stack);
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+set_command_info_base_time(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  
+  SV* sv_base_time = ST(1);
+  int64_t base_time = SvIV(sv_base_time);
+  
+  {
+    SPVM_VALUE* my_stack = env->new_stack(env);
+    int32_t scope_id = env->enter_scope(env, my_stack);
+    
+    // Set command info
+    {
+      int32_t e;
       e = env->set_command_info_base_time(env, base_time);
       assert(e == 0);
     }

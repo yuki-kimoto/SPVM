@@ -14,7 +14,7 @@ int32_t SPVM__Env__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Env__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Env__set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -25,15 +25,42 @@ int32_t SPVM__Env__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_program_name = stack[1].oval;
   
-  void* obj_argv = stack[2].oval;
-
-  int64_t base_time = stack[3].oval;
-
   e = my_env->set_command_info_program_name(my_env, obj_program_name);
   if (e) { return e; }
   
+  return 0;
+}
+
+
+int32_t SPVM__Env__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* obj_my_env = stack[0].oval;
+  SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
+  
+  void* obj_argv = stack[1].oval;
+
   e = my_env->set_command_info_argv(my_env, obj_argv);
   if (e) { return e; }
+  
+  return 0;
+}
+
+int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* obj_my_env = stack[0].oval;
+  SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
+  
+  void* obj_program_name = stack[1].oval;
+  
+  int64_t base_time = stack[2].lval;
   
   e = my_env->set_command_info_base_time(my_env, base_time);
   if (e) { return e; }
