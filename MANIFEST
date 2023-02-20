@@ -243,6 +243,8 @@ lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Fn.c
 lib/SPVM/Fn.config
+lib/SPVM/Fn.native/include/SPVM__FN.c
+lib/SPVM/Fn.native/src/SPVM__Fn.h
 lib/SPVM/Fn.pm
 lib/SPVM/Fn.spvm
 lib/SPVM/Format.c
@@ -355,6 +357,7 @@ t/00_builder/cc.t
 t/00_builder/config.t
 t/00_builder/config_exe.t
 t/00_builder/link_info.t
+t/00_builder/makefile.t
 t/00_builder/object_file_info.t
 t/00_builder/util.t
 t/01_syntax/dist.pl

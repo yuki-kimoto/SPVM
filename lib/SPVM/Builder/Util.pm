@@ -12,6 +12,7 @@ use File::Basename 'dirname';
 use File::Spec;
 use SPVM::Builder::Config;
 use Encode 'decode';
+use File::Find 'find';
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions.
@@ -328,18 +329,35 @@ sub create_make_rule {
   
   # Dependency native module file
   if ($category eq 'native') {
+    # Config
     my $config_file = $noext_file;
     $config_file .= '.config';
     $config_file = "$lib_dir/$config_file";
     my $config = SPVM::Builder::Config->load_config($config_file);
     push @deps, $config_file;
     
+    # Native module
     my $native_module_file = $noext_file;
     my $native_module_file_ext = $config->ext;
     $native_module_file .= ".$native_module_file_ext";
     $native_module_file = "$lib_dir/$native_module_file";
-    
     push @deps, $native_module_file;
+    
+    # Native include
+    my $native_include_dir = "$lib_dir/$noext_file.native/include";
+    my @native_include_files;
+    if (-d $native_include_dir) {
+      find({wanted => sub { if (-f $_) { push @native_include_files, $_ } }, no_chdir => 1}, $native_include_dir);
+    }
+    push @deps, @native_include_files;
+    
+    # Native source
+    my $native_src_dir = "$lib_dir/$noext_file.native/src";
+    my @native_src_files;
+    if (-d $native_src_dir) {
+      find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
+    }
+    push @deps, @native_src_files;
   }
   
   # Shared library file
