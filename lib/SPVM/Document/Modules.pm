@@ -132,7 +132,11 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<File::Basename|SPVM::File::Basename>
 
-=item * L<File::Spec|SPVM::File::Spec>
+=item * L<File::Copy|SPVM::File::Copy>
+
+=item * L<File::Glob|SPVM::File::Glob>
+
+=item * L<File::Path|SPVM::File::Path>
 
 =item * L<File::Spec|SPVM::File::Spec>
 

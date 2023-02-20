@@ -445,6 +445,8 @@ motiE<lt>motohiko.ave@gmail.comE<gt>
 
 =item * L<Tore Aursand|https://github.com/toreau>
 
+=item * L<greengorcer|https://github.com/greengorcer>
+
 =back
 
 =head1 Copyright & LICENSE
