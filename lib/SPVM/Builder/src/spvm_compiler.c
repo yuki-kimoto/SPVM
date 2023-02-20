@@ -120,7 +120,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_HASH_set(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
   
   // Add CommandInfo source
-  const char* spvm_command_info_module_source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  }";
+  const char* spvm_command_info_module_source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
   SPVM_HASH_set(compiler->module_source_symtable, "CommandInfo", strlen("CommandInfo"), (void*)spvm_command_info_module_source);
 
   // Add Address source
