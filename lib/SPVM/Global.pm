@@ -40,13 +40,9 @@ sub load_dynamic_libs {
         at_runtime => 1,
       );
       
-      my $get_method_names_options = $runtime->api->new_any_object_array(
-        [
-          $runtime->api->new_string($category)
-          =>
-          $runtime->api->class('Int')->new(1)
-        ]
-      );
+      my $get_method_names_options = $runtime->api->new_options({
+        $category => $runtime->api->class('Int')->new(1)
+      });
       
       my $method_names = $runtime->get_method_names($class_name, $get_method_names_options)->to_strings;
       
@@ -75,13 +71,9 @@ sub load_dynamic_libs {
 
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
-    my $get_method_names_options = $runtime->api->new_any_object_array(
-      [
-        $runtime->api->new_string($category)
-        =>
-        $runtime->api->class('Int')->new(1)
-      ]
-    );
+    my $get_method_names_options = $runtime->api->new_options({
+      $category => $runtime->api->class('Int')->new(1)
+    });
     
     for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
       next unless grep { "$_" eq $class_name } @$class_names;
