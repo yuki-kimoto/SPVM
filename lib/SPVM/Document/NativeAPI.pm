@@ -249,6 +249,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   232 strerror_string_nolen
   233 get_compile_type_name_raw
   234 get_compile_type_name
+  235 set_command_info_base_time
 
 =head2 class_vars_heap
 
@@ -2273,6 +2274,16 @@ This function does not add the returned object to the mortal stack, so use the L
   void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
 
 Gets a new C<string> object that is the compile-time type name with a basic type id, a type dimension, a type flag.
+
+=head2 set_command_info_base_time
+
+  int32_t (*set_command_info_base_time)(SPVM_ENV* env, int64_t base_time);
+
+Sets the time when the program starts. This value is got by L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME">.
+
+If it succeed, return C<0>.
+
+The program name must be a C<string> object. Otherwise return non-zero value.
 
 =head1 Compiler Native API
 

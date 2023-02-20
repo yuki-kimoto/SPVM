@@ -316,6 +316,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_strerror_string_nolen,
     SPVM_API_get_compile_type_name_raw,
     SPVM_API_get_compile_type_name,
+    SPVM_API_set_command_info_base_time,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -3920,6 +3921,20 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_OBJECT* obj_argv) {
   env->free_stack(env, my_stack);
   
   return 0;
+}
+
+int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, int64_t base_time) {
+  (void)env;
+  
+  int32_t e = 0;
+  
+  SPVM_VALUE* my_stack = env->new_stack(env);
+  
+  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_NAME", base_time, &e, __func__, __FILE__, __LINE__);
+  
+  env->free_stack(env, my_stack);
+  
+  return e;
 }
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {

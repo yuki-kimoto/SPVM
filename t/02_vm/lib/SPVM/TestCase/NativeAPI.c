@@ -253,6 +253,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->strerror_string_nolen != &env_array[232]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_compile_type_name_raw != &env_array[233]) { stack[0].ival = 0; return 0;}
   if ((void*)&env->get_compile_type_name != &env_array[234]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->set_command_info_base_time != &env_array[235]) { stack[0].ival = 0; return 0;}
 
   stack[0].ival = 1;
 

@@ -332,6 +332,7 @@ struct spvm_env {
   void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
   void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t dimension, int32_t flag);
+  int32_t (*set_command_info_base_time)(SPVM_ENV* env, int64_t base_time);
 };
 
 struct spvm_env_runtime {

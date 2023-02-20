@@ -16,16 +16,22 @@ C<CommandInfo> is a class that has command line information such as the program 
 
 C<CommandInfo> is a L<SPVM> class.
 
-=head1 Class Variable Methods
+=head1 Class Variables
 
 =head2 PROGRAM_NAME
 
-  static method PROGRAM_NAME : string ();
+  our $PROGRAM_NAME : ro string;
 
-Gets the program name. This is same as Perl $0.
+Gets the program name. This is the same as Perl C<$0>.
 
 =head2 ARGV
 
-  static method ARGV : string[] ();
+  our $ARGV : ro string[];
 
-Gets the comand line arguments. This is same as Perl C<@ARGV>.
+Gets the comand line arguments. This is the same as Perl C<@ARGV>.
+
+=head2 BASE_TIME
+
+  our $BASE_TIME : ro long;
+
+Gets the time when the program starts. This is the same as Perl C<$^T>.
