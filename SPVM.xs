@@ -371,10 +371,10 @@ xs_call_method(...)
   int32_t call_method_args_length = items - spvm_args_base;
   
   if (call_method_args_length < method_required_args_length) {
-    croak("Too few arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be less than %d\n    %s at %s line %d\n", method_name, class_name, method_required_args_length, __func__, FILE_NAME, __LINE__);
+    croak("Too few arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", method_name, class_name, __func__, FILE_NAME, __LINE__);
   }
   else if (call_method_args_length > method_args_length) {
-    croak("Too many arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be more than %d\n    %s at %s line %d\n", method_name, class_name, method_args_length, __func__, FILE_NAME, __LINE__);
+    croak("Too many arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", method_name, class_name, __func__, FILE_NAME, __LINE__);
   }
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal native_stack.

@@ -15,6 +15,14 @@
     * Added the set_command_info_program_name method in the Env class.
     * Added the set_command_info_argv method in the Env class.
     * Added the set_command_info_base_time method in the Env class.
+  [Exception Message Improvement]
+    Improved exception messages.
+    [Before]
+    -    "Too few arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be less than %d\n
+    -    "Too many arguments. The length of the arguments of the \"%s\" method in the \"%s\" class must be more than %d\n    %s at %s line %d\n
+    [After]
+    +    "Too few arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+    +    "Too many arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
 
 0.9691 2023-02-08
   [Incompatible Changes]
