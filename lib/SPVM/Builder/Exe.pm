@@ -485,6 +485,7 @@ sub create_bootstrap_header_source {
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
+#include <time.h>
 #include <assert.h>
 
 // Only used for _setmode function and _O_BINARY
@@ -590,12 +591,17 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       env->set_elem_object(env, my_stack, obj_argv, arg_index - 1, obj_arg);
     }
     
+    // Base time
+    int64_t base_time = time(NULL);
+    
     // Set command info
     {
       int32_t e;
       e = env->set_command_info_program_name(env, obj_program_name);
       assert(e == 0);
       e = env->set_command_info_argv(env, obj_argv);
+      assert(e == 0);
+      e = env->set_command_info_base_time(env, base_time);
       assert(e == 0);
     }
     // Leave scope

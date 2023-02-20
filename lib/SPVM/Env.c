@@ -27,10 +27,15 @@ int32_t SPVM__Env__set_command_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_argv = stack[2].oval;
 
+  int64_t base_time = stack[3].oval;
+
   e = my_env->set_command_info_program_name(my_env, obj_program_name);
   if (e) { return e; }
   
   e = my_env->set_command_info_argv(my_env, obj_argv);
+  if (e) { return e; }
+  
+  e = my_env->set_command_info_base_time(my_env, base_time);
   if (e) { return e; }
   
   return 0;

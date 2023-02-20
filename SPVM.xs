@@ -4525,6 +4525,9 @@ set_command_info(...)
   AV* av_argv = (AV*)SvRV(sv_argv);
   int32_t argv_length = av_len(av_argv) + 1;
   
+  SV* sv_base_time = ST(3);
+  int64_t base_time = SvIV(sv_base_time);
+  
   {
     SPVM_VALUE* my_stack = env->new_stack(env);
     int32_t scope_id = env->enter_scope(env, my_stack);
@@ -4543,13 +4546,15 @@ set_command_info(...)
       void* obj_arg = env->new_string(env, my_stack, arg, arg_length);
       env->set_elem_object(env, my_stack, obj_argv, index, obj_arg);
     }
-
+    
     // Set command info
     {
       int32_t e;
       e = env->set_command_info_program_name(env, obj_program_name);
       assert(e == 0);
       e = env->set_command_info_argv(env, obj_argv);
+      assert(e == 0);
+      e = env->set_command_info_base_time(env, base_time);
       assert(e == 0);
     }
     

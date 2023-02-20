@@ -62,7 +62,7 @@ my $dev_null = File::Spec->devnull;
     
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
     is($output, $output_expect);
     
     # Check -B option
@@ -98,7 +98,7 @@ my $dev_null = File::Spec->devnull;
 
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
     is($output, $output_expect);
   }
 
@@ -115,7 +115,7 @@ my $dev_null = File::Spec->devnull;
     
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
     is($output, $output_expect);
     
     # No precompile source
@@ -137,7 +137,7 @@ my $dev_null = File::Spec->devnull;
     
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
     is($output, $output_expect);
     
     # No precompile source
@@ -160,7 +160,7 @@ my $dev_null = File::Spec->devnull;
 
   my $output = `$execute_cmd_with_args`;
   chomp $output;
-  my $output_expect = "AAA $spvm_script 3 1 1 7 args1 args2";
+  my $output_expect = "AAA $spvm_script 3 1 1 7 args1 args2 1";
   is($output, $output_expect);
 }
 

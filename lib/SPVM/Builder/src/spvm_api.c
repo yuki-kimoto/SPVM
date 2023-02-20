@@ -3898,7 +3898,11 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_p
     e = 1;
   }
   
+  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", 123, &e, __func__, __FILE__, __LINE__);
   env->set_class_var_object_by_name(env, my_stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &e, __func__, __FILE__, __LINE__);
+  if (e) {
+    assert(0);
+  }
 
   env->free_stack(env, my_stack);
   
@@ -3917,6 +3921,9 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_OBJECT* obj_argv) {
   }
   
   env->set_class_var_object_by_name(env, my_stack, "CommandInfo", "$ARGV", obj_argv, &e, __func__, __FILE__, __LINE__);
+  if (e) {
+    assert(0);
+  }
 
   env->free_stack(env, my_stack);
   
@@ -3930,8 +3937,15 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, int64_t base_time) {
   
   SPVM_VALUE* my_stack = env->new_stack(env);
   
-  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_NAME", base_time, &e, __func__, __FILE__, __LINE__);
-  
+  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", base_time, &e, __func__, __FILE__, __LINE__);
+  if (e) {
+    assert(0);
+  }
+  int32_t ret = env->get_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", &e, __func__, __FILE__, __LINE__);
+  if (e) {
+    assert(0);
+  }
+
   env->free_stack(env, my_stack);
   
   return e;

@@ -41,7 +41,13 @@ class MyExe {
       die "Wrong";
     }
     
+    my $base_time = CommandInfo->BASE_TIME;
     
-    print "AAA $program_name $sum $ret1 $ret2 $ret3 $argv->[0] $argv->[1]\n";
+    my $base_time_ok = 0;
+    if ($base_time > 0) {
+      $base_time_ok = 1;
+    }
+    
+    print "AAA $program_name $sum $ret1 $ret2 $ret3 $argv->[0] $argv->[1] $base_time_ok\n";
   }
 }

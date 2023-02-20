@@ -120,7 +120,7 @@ sub init_runtime {
     $BUILDER_ENV = $builder_runtime->build_env;
     
     # Set command line info
-    $BUILDER_ENV->set_command_info($0, \@ARGV);
+    $BUILDER_ENV->set_command_info($0, \@ARGV, $^T);
     
     # Call INIT blocks
     $BUILDER_ENV->call_init_blocks;
@@ -250,7 +250,7 @@ sub init_api {
   
   $ENV = $RUNTIME->build_env;
   
-  $ENV->set_command_info($0, \@ARGV);
+  $ENV->set_command_info($0, \@ARGV, $^T);
   
   $ENV->call_init_blocks;
   
