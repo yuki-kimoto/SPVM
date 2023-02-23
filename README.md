@@ -42,7 +42,7 @@
 
 ## Not Released CPAN Modules
 
-* <a href="https://github.com/yuki-kimoto/SPVM-File-Temp">SPVM::File::Find</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-File-Find">SPVM::File::Find</a>
 
 ## Highly Experimental CPAN Modules
 
