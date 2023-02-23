@@ -140,6 +140,8 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<File::Spec|SPVM::File::Spec>
 
+=item * L<File::Temp|SPVM::File::Temp>
+
 =item * L<FindBin|SPVM::FindBin>
 
 =item * L<IO|SPVM::IO>
