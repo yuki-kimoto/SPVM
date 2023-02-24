@@ -22,6 +22,7 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Errno">SPVM::Errno</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-File-Basename">SPVM::File::Basename</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-File-Copy">SPVM::File::Copy</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-File-Find">SPVM::File::Find</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-File-Glob">SPVM::File::Glob</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-File-Path">SPVM::File::Path</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-File-Spec">SPVM::File::Spec</a>
@@ -42,7 +43,7 @@
 
 ## Not Released CPAN Modules
 
-* <a href="https://github.com/yuki-kimoto/SPVM-File-Find">SPVM::File::Find</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
 
 ## Highly Experimental CPAN Modules
 
