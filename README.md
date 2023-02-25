@@ -44,6 +44,7 @@
 ## Not Released CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Resource-RE2">SPVM::Resource::Re2</a>
 
 ## Highly Experimental CPAN Modules
 
