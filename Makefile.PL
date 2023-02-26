@@ -86,7 +86,9 @@ $ccflags .= ' -std=gnu99';
   if (defined $compiler_name) {
     if ($compiler_name eq 'clang') {
       if ($compiler_major_version >= 12) {
-        $ccflags .= ' -Wno-compound-token-split-by-macro';
+        if ($^O ne 'darwin') {
+          $ccflags .= ' -Wno-compound-token-split-by-macro';
+        }
       }
     }
   }
