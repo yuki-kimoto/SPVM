@@ -1,3 +1,6 @@
+0.9693 2023-03-02
+  [Document Changes]
+    * Added the link to SPVM::Resource::RE2 to "CPAN Modules" of SPVM::Document::Modules
 0.9692 2023-02-20
   [New Features]
     * Added the new_options method in the SPVM::ExchangeAPI class.
