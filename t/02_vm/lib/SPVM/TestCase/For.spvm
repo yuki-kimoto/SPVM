@@ -275,6 +275,22 @@ class TestCase::For {
         return 0;
       }
     }
+
+    # next
+    {
+      my $array = [1, 2, 3];
+      my $total = 0;
+      for my $element (@$array) {
+        if ($element == 2) {
+          next;
+        }
+        $total += $element;
+      }
+      
+      unless ($total == 4) {
+        return 0;
+      }
+    }
     
     return 1;
   }
