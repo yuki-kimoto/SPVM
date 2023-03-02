@@ -1,6 +1,8 @@
 0.9693 2023-03-02
   [Document Changes]
     * Added the link to SPVM::Resource::RE2 to "CPAN Modules" of SPVM::Document::Modules
+  [CI Fix]
+    * Fixed windows-latest workflow for CI. This is not syncronized to windows-2019.
 0.9692 2023-02-20
   [New Features]
     * Added the new_options method in the SPVM::ExchangeAPI class.

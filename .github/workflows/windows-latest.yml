@@ -17,12 +17,18 @@ jobs:
         run: perl -V
       - name: Perl config
         run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+      - name: Set PERL5LIB
+        run: echo "PERL5LIB=$HOME/mylib/lib/perl5;$HOME/mylib/lib/perl5/$(perl -MConfig -e 'print $Config{archname}')" >> $env:GITHUB_ENV
+      - name: Show PERL5LIB
+        run: echo $env:PERL5LIB
       - name: Download cpanm
-        run: perl -0777 -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(  Proto => qq(tcp),  PeerAddr => qq(cpanmin.us),  PeerPort => 80,) or die $!;print $socket join qq(\r\n),  qq(GET / HTTP/1.1),  qq(Connection:close),  qq(Host:cpanmin.us),  qq(\r\n);my $res = <$socket>;$res =~ s[^HTTP/1\.1 200 OK\r\n.*?\r\n\r\n][]s or die $res;open my $out, qq(>), qq(cpanm) or die $!;print $out $res'
+        run: perl -0777 -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(  Proto => qq(tcp),  PeerAddr => qq(cpanmin.us),  PeerPort => 80,) or die $!;print $socket join qq(\r\n),  qq(GET / HTTP/1.1),  qq(Connection:close),  qq(Host:cpanmin.us),  qq(\r\n);my $res = <$socket>;$res =~ m(^HTTP/1\.1 200 OK\r\n) or die $res;$res =~ s/.*?\r\n\r\n//s;open my $out, qq(>), qq(cpanm) or die $!;print $out $res'
       - name: cpanm installs ExtUtils::MakeMaker
         run: perl cpanm -v -n -L ~/mylib ExtUtils::MakeMaker
       - name: cpanm installs dependent modules
-        run: perl cpanm -v -n --installdeps . --configure-args="--meta"
+        run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
+      - name: Show MYMETA.json
+        run: perl -0777 -p -e 1 MYMETA.json
       - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
