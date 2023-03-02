@@ -260,6 +260,22 @@ class TestCase::For {
       }
     }
     
+    # last
+    {
+      my $array = [1, 2, 3];
+      my $total = 0;
+      for my $element (@$array) {
+        if ($element == 3) {
+          last;
+        }
+        $total += $element;
+      }
+      
+      unless ($total == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }
