@@ -119,6 +119,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|\\/)\\.git/'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bak$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.tmp$'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.tmp/'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.BAK$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.o$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bs$'));

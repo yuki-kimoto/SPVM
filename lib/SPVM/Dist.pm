@@ -498,6 +498,7 @@ sub generate_manifest_skip_file {
 (^|\/)\.git/
 \.bak$
 \.tmp$
+\.tmp/
 \.BAK$
 \.o$
 \.bs$
