@@ -2,6 +2,8 @@
 
 #include "mylib.hpp"
 
+#include <sstream>
+
 extern "C" {
 
 int32_t SPVM__TestCase__NativeAPICpp__call_cpp_func(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -11,6 +13,10 @@ int32_t SPVM__TestCase__NativeAPICpp__call_cpp_func(SPVM_ENV* env, SPVM_VALUE* s
   int32_t value = stack[0].ival;
   
   value *= 2;
+  
+  std::ostringstream str_stream;
+  
+  str_stream << "abc";
   
   stack[0].ival = value;
   
