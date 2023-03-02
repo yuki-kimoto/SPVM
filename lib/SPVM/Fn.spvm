@@ -581,10 +581,12 @@ class Fn {
     return $ret;
   }
   
-  static method rand : double ($seed : int*) {
+  static method rand : double ($seed : int*, $max = 1 : int) {
     
     # 0 <= random_number < 1
     my $random_number = (double)&crand($seed) / ((double)&RAND_MAX() + 1);
+    
+    $random_number *= $max;
     
     return $random_number;
   }

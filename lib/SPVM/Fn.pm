@@ -657,9 +657,11 @@ If the $base number is C<0>, the $exponant number can't be C<0>.
 
 =head2 rand
 
-  static method rand : double ($seed : int*);
+  static method rand : double ($seed : int*, $max = 1 : int);
 
 Gets a 64bit floating point random number that is greater than or equal to C<0> and less than C<1> using the $seed.
+
+If the $max is specified, the $max is multiplied to the return value.
 
 The seed is updated.
 

@@ -2559,6 +2559,26 @@ class TestCase::Module::Fn {
       }
     }
     
+
+    # Apper random numbers
+    {
+      my $founds_plus = new int[10];
+      my $founds_minus = new int[10];
+      my $rand = 0.0;
+      my $seed = (int)Time->time;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = Fn->rand(\$seed, 10);
+        
+        # 0-9
+        my $dig0 = (int)($rand);
+        $founds_plus->[$dig0] = 1;
+      }
+      
+      unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
