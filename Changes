@@ -12,6 +12,14 @@
       [After]
       "Too few arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
       "Too many arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+  [Compilation Error Message Improvement]
+    * Compilation error messages are changed.
+      [Before]
+        "The length of the arguments passed to the \"%s\" %s method in the \"%s\" class must be less than or equal to %d at %s line %d"
+        "The length of the arguments passed to the \"%s\" %s method in the \"%s\" class must be at least %d at %s line %d"
+      [After]
+        "Too many arguments are passed to the \"%s\" method in the \"%s\" class at %s line %d"
+        "Too few arguments are passed to the \"%s\" method in the \"%s\" class at %s line %d"
 
 0.9692 2023-02-20
   [New Features]

@@ -761,15 +761,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the "foo" class method in the "MyClass" class must be at least 1|);
+    compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the "foo" instance method in the "MyClass" class must be at least 1|);
+    compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
-    compile_not_ok($source, q|The length of the arguments passed to the "foo" instance method in the "MyClass" class must be less than or equal to 2|);
+    compile_not_ok($source, q|Too many arguments are passed to the "foo" method in the "MyClass" class|);
   }
 }
 

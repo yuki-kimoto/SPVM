@@ -2722,7 +2722,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       args_length_for_user--;
                     }
                     
-                    SPVM_COMPILER_error(compiler, "The length of the arguments passed to the \"%s\" %s method in the \"%s\" class must be less than or equal to %d at %s line %d", method_name, call_method->method->is_class_method ? "class" : "instance", op_cur->uv.call_method->method->class->name, args_length_for_user, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" class at %s line %d", method_name, op_cur->uv.call_method->method->class->name, op_cur->file, op_cur->line);
+                    
                     return;
                   }
                   
@@ -2753,7 +2754,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   required_args_length_for_user--;
                 }
                 
-                SPVM_COMPILER_error(compiler, "The length of the arguments passed to the \"%s\" %s method in the \"%s\" class must be at least %d at %s line %d", method_name, call_method->method->is_class_method ? "class" : "instance", op_cur->uv.call_method->method->class->name, required_args_length_for_user, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" class at %s line %d", method_name, op_cur->uv.call_method->method->class->name, op_cur->file, op_cur->line);
+                
                 return;
               }
               
