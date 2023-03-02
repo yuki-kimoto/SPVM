@@ -4,6 +4,15 @@
   [CI Fix]
     * Fixed windows-latest workflow for CI. This is not syncronized to windows-2019.
     * Fixed new lines from CRLF to LF of the windows-latest.yml.
+  [Exception Message Improvement]
+    * Exception messages are changed in Exchange API.
+      [Before]
+      "Too few arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+      "Too many arguments passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+      [After]
+      "Too few arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+      "Too many arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n"
+
 0.9692 2023-02-20
   [New Features]
     * Added the new_options method in the SPVM::ExchangeAPI class.
