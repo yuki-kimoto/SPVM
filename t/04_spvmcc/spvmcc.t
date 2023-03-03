@@ -13,6 +13,9 @@ use File::Spec;
 use SPVM::Builder::Util;
 
 use SPVM::Builder;
+use File::Spec;
+
+my $devnull = File::Spec->devnull;
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -36,6 +39,16 @@ my $dev_null = File::Spec->devnull;
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmcc [<options>] <class_name>/);
   }
+}
+
+# Compilation Error
+{
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --config solo/myexe.config MyExeCompileError);
+  my $status = system($spvmcc_cmd);
+  ok($status != 0);
+  
+  my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
+  like($error, qr|CompileError|);
 }
 
 {

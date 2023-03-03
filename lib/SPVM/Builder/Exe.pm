@@ -304,7 +304,7 @@ sub compile {
   );
   my $success = $compiler->compile($class_name, __FILE__, __LINE__);
   unless ($success) {
-    $builder->print_error_messages(*STDERR);
+    $compiler->print_error_messages(*STDERR);
     exit(255);
   }
   my $runtime = $compiler->build_runtime;

@@ -2,6 +2,8 @@
   [Test Improvement]
     * Added the tests of C++ libstdc++.
     * Added the tests of C++ tread.
+  [Bug Fix]
+    * Fixed the bug that the spvmcc command can't output compilation error messages.
 0.9693 2023-03-03
   [New Features]
     * Added the $max optional argument is added to the rand method in the Fn class.
