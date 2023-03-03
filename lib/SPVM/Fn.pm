@@ -281,6 +281,12 @@ Converts the $code_point to the C<UTF-8> character and return it.
 
 If the $code_point is not a Unicode scalar value, return C<undef>.
 
+=head2 chrp
+
+  static method chrp : string ($number : int);
+
+The compatible with Perl's L<chr|https://perldoc.perl.org/functions/chr> function.
+
 =head2 contains
 
   static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);

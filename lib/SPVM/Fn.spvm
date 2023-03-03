@@ -92,6 +92,25 @@ class Fn {
     return $utf8_char;
   }
   
+  static method chrp : string ($number : int) {
+    
+    my $replacement_code_point = 0xfffd;
+    my $char = (string)undef;
+    if ($number < 0) {
+      $char = &chr($replacement_code_point);
+    }
+    elsif ($number <= 255) {
+      $char = (string)[(byte)$number];
+    }
+    else {
+      $char = &_chr_native($number);
+      unless ($char) {
+        $char = &chr($replacement_code_point);
+      }
+    }
+    return $char;
+  }
+  
   static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int) {
     return &index($string, $substring, $string_offset, $string_length) >= 0;
   }

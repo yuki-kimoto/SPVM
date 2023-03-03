@@ -81,6 +81,23 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->chomp);
     ok(SPVM::TestCase::Module::Fn->chompr);
     ok(SPVM::TestCase::Module::Fn->chr);
+    # chrp
+    {
+      my $ok = 1;
+      for (my $i = -1; $i < 0xFFFF; $i++) {
+        my $chr_expected = chr($i);
+        unless ($i >= 128 && $i <= 255) {
+          utf8::encode $chr_expected;
+        }
+        unless (SPVM::Fn->chrp($i)->to_bin eq $chr_expected) {
+          $ok = 0;
+          warn "[Test Output]Number: $i";
+          last;
+        }
+      }
+      
+      ok($ok);
+    }
     ok(SPVM::TestCase::Module::Fn->contains);
     ok(SPVM::TestCase::Module::Fn->copy_string);
     ok(SPVM::TestCase::Module::Fn->crand);

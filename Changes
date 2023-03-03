@@ -1,3 +1,7 @@
+0.9695 2023-03-03
+  [New Features]
+    * Added the chrp method in the Fn class.
+    
 0.9694 2023-03-03
   [Test Improvement]
     * Added the tests of C++ libstdc++.
