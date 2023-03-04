@@ -3174,16 +3174,10 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     call_method->op_name = op_name_method;
     
     if (op_invocant->id == SPVM_OP_C_ID_VAR) {
-      op_invocant->uv.var->call_method =call_method;
+      op_invocant->uv.var->call_method = call_method;
     }
     
     SPVM_OP_insert_child(compiler, op_list_operands, op_list_operands->first, op_invocant);
-  }
-  
-  // operand is passed to method
-  SPVM_OP* op_operand = op_list_operands->first;
-  while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-    op_operand->is_passed_to_method = 1;
   }
   
   return op_call_method;

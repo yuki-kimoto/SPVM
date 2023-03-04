@@ -2521,7 +2521,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_field_access->is_lvalue = op_cur->is_lvalue;
                   op_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
-                  op_field_access->is_passed_to_method = op_cur->is_passed_to_method;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_field_access;
                   }
@@ -2543,7 +2542,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   op_class_var_access->is_lvalue = op_cur->is_lvalue;
                   op_class_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
-                  op_class_var_access->is_passed_to_method = op_cur->is_passed_to_method;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_class_var_access;
                   }

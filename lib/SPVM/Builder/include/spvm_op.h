@@ -357,7 +357,6 @@ struct spvm_op {
   int8_t moresib;
   int8_t is_lvalue;
   int8_t is_assigned_to_var;
-  int8_t is_passed_to_method;
   int8_t no_need_check;
   int8_t free_tmp_vars;
 };
