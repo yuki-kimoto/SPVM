@@ -322,7 +322,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { [$foo : int] method : void () { }; } }';
-    compile_not_ok($source, 'The capture variable "$foo" is not defined');
+    compile_not_ok($source, 'The capture variable "$foo" is not found');
   }
 }
 
@@ -742,11 +742,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
-    compile_not_ok($source, q|The variable "$var" is not defined|);
+    compile_not_ok($source, q|The variable "$var" is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { $MyClass::FOO; } }';
-    compile_not_ok($source, q|The variable "$MyClass::FOO" is not defined|);
+    compile_not_ok($source, q|The variable "$MyClass::FOO" is not found|);
   }
 }
 
@@ -808,7 +808,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The "foo" field is not defined in the "MyClass" class or its super classes|);
+    compile_not_ok($source, q|The "foo" field is not found in the "MyClass" class or its super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
@@ -889,11 +889,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" class method in the "MyClass" class|);
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" instance method in the "MyClass" class|);
+    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
@@ -925,11 +925,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" class method in the "MyClass" class is not defined|);
+    compile_not_ok($source, q|The "not_defined" method in the "MyClass" class is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
@@ -941,34 +941,34 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" class method in the "Point" class is not defined|);
+    compile_not_ok($source, q|The "not_defined" method in the "Point" class is not found|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
-    compile_not_ok($source, q|The "not_found" instance method is not defined in the "Point" class or its super classes|);
+    compile_not_ok($source, q|The "Point::not_found" method is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
-    compile_not_ok($source, q|The "new" method is defined in the "Int" class, but this method is not an instance method|);
+    compile_not_ok($source, q|The "new" method in the "Int" class is found, but this is not an instance method|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->foo; } }',
       'class MyClass2 extends MyClass : public { static method foo : void () {} }',
     ];
-    compile_not_ok($source, q|The "foo" method is defined in the "MyClass2" class, but this method is not an instance method|);
+    compile_not_ok($source, q|The "foo" method in the "MyClass2" class is found, but this is not an instance method|);
   }
   {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }';
-    compile_not_ok($source, q|The method of the super class can't be called from the interface type|);
+    compile_not_ok($source, q|The "SUPER::clear" method is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" instance method is not defined in the "Int" class or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class or its super classes|);
   }
   {
     my $source = [
@@ -976,7 +976,7 @@ use Test::More;
       'class MySockaddrIn extends MySockaddr : public;',
       'class MySockaddr : public;',
     ];
-    compile_not_ok($source, q|The "port" instance method is not defined in the "MySockaddrIn" class or its super classes|);
+    compile_not_ok($source, q|The "port" method is not found in the "MySockaddrIn" class or its super classes|);
   }
 }
 # Multi-Numeric Type
@@ -1081,22 +1081,22 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; }';
-    compile_not_ok($source, q|The "MyClass" class or its super class must have the "to_string" method that is defined as a required method in the "Stringable" interface|);
+    compile_not_ok($source, q|The "MyClass" class or its super classes must have the "to_string" method that is defined as a required method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the required arguments of the "to_string" method in the "MyClass" class or its super class must be equal to the length of the required arguments of the "to_string" method in the "Stringable" interface|);
+    compile_not_ok($source, q|The length of the required arguments of the "to_string" method in the "MyClass" class or its super classes must be equal to the length of the required arguments of the "to_string" method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The "to_string" method in the "MyClass" class or its super class must an instance method because the "to_string" method is defined as an instance method in the "Stringable" interface|);
+    compile_not_ok($source, q|The "to_string" method in the "MyClass" class or its super classes must an instance method because the "to_string" method is defined as an instance method in the "Stringable" interface|);
   }
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
       'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
     ];
-    compile_not_ok($source, q|The type of the 2th argument of the "foo" method in the "MyClass" class or its super class must be equal to the type of the 2th argument of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The type of the 2th argument of the "foo" method in the "MyClass" class or its super classes must be equal to the type of the 2th argument of the "foo" method in the "MyInterface" interface|);
   }
   {
     my $source = [
@@ -1110,7 +1110,7 @@ use Test::More;
       'class MyClass { interface MyInterface; method foo : object () {} }',
       'class MyInterface : interface_t { required method foo : MyClass  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super classes must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
   }
   {
     my $source = [
@@ -1124,7 +1124,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
       'class MyInterface : interface_t { required method foo : Point3D  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super classes must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
   }
 
   {
@@ -1132,7 +1132,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super class must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class or its super classes must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the "MyInterface" interface|);
   }
   {
     {
@@ -1151,7 +1151,7 @@ use Test::More;
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
       ];
-      compile_not_ok($source, qr|The length of the required arguments of the "foo" method in the "MyClass" class or its super class must be equal to the length of the required arguments of the "foo" method in the "MyClass::Interface" interface|);
+      compile_not_ok($source, qr|The length of the required arguments of the "foo" method in the "MyClass" class or its super classes must be equal to the length of the required arguments of the "foo" method in the "MyClass::Interface" interface|);
     }
   }
   {
@@ -1171,7 +1171,7 @@ use Test::More;
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 = 0 : int); }',
       ];
-      compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class or its super class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
+      compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class or its super classes must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
     }
   }
 }

@@ -1,6 +1,10 @@
 0.9695 2023-03-05
+  [Incomaptible Changes]
+    * The instance method is always resolved in the runtime from the instance type.
   [Code Cleanup]
     * Removed unused is_passed_to_method member variable in the struct spvm_op.
+  [Compilation Error Message Changes]
+    * Compilation error messages of calling method is changed.
 0.9694 2023-03-03
   [Test Improvement]
     * Added the tests of C++ libstdc++.

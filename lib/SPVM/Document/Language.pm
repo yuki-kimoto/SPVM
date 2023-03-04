@@ -8960,11 +8960,13 @@ Examples:
 
 A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
 
-  Object->MethodName(ARGS1, ARGS2, ...);
+  Instance->MethodName(ARGS1, ARGS2, ...);
 
 If the number of arguments does not correct, a compilation error will occur.
 
 If the types of arguments have no type compatible, a compilation error will occur.
+
+The called method is resolved from the type of the instance.
 
 Examples:
   
