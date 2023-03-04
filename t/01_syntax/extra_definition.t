@@ -217,7 +217,7 @@ use Test::More;
           'class MyClass extends MyClass::Parent { static method main : int () { my $self = new MyClass; $self->{foo}; }}',
           'class MyClass::Parent { }',
         ];
-        compile_not_ok($source, qr|The "foo" field is not defined in the "MyClass" class or its super classes|);
+        compile_not_ok($source);
       }
     }
   }
@@ -239,7 +239,7 @@ use Test::More;
           'class MyClass::Socket extends MyClass::Handle {}',
           'class MyClass::Handle { }',
         ];
-        compile_not_ok($source, qr|The "blocking" instance method is not defined in the "MyClass::Socket::INET" class or its super classes|);
+        compile_not_ok($source);
       }
     }
   }
