@@ -5285,10 +5285,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       return;
     }
   }
-
+  
+  // Check required method
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    // Check the class has interface methods
     for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
       SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
       assert(interface);
@@ -5301,6 +5301,16 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The \"%s\" class or its super classes must have the \"%s\" method that is defined as a required method in the \"%s\" interface at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
         return;
       }
+    }
+  }
+  
+  // Check method compatibility
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    // Check the class has interface methods
+    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
+      assert(interface);
       
       for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
         SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
