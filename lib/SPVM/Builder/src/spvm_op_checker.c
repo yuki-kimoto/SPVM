@@ -5307,18 +5307,18 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   // Check method compatibility
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    // Check the class has interface methods
-    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
-      assert(interface);
+    for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
       
-      for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
-        SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
+      // Check the class has interface methods
+      for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
+        SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
+        assert(interface);
         
-        for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-          SPVM_METHOD* method = SPVM_OP_CHECKER_search_method_in_current_and_super_classes(compiler, class, interface_method->name);
+        for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
+          SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
           
-          if (method) {
+          if (strcmp(method->name, interface_method->name) == 0) {
             
             if (method->is_class_method) {
               SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class or its super classes must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" interface at %s line %d", method->name, class->name, interface_method->name, interface->name, class->op_class->file, class->op_class->line);
