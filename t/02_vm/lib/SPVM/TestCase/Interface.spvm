@@ -146,7 +146,6 @@ class TestCase::Interface {
       }
     }
     
-    # Point::Interface
     {
       my $pointable : TestCase::PointInterface = Point->new(1, 2);
       unless ($pointable->x == 1) {

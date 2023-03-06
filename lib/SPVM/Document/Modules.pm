@@ -86,8 +86,6 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<Point3D|SPVM::Point3D>
 
-=item * L<Point::Interface|SPVM::Point::Interface>
-
 =item * L<Runtime|SPVM::Runtime>
 
 =item * L<Scope::Guard|SPVM::Scope::Guard>
