@@ -1223,6 +1223,13 @@ use Test::More;
     ];
     compile_ok($source);
   }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { method x : int ($args : int) { die "Not Implemented"; } }',
+      'class MyClass2 { method x : int ($args : int) { return 1;} }',
+    ];
+    compile_ok($source);
+  }
 }
 
 # Extra
