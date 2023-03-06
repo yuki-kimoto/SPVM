@@ -1216,6 +1216,13 @@ use Test::More;
     ];
     compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass3" class|);
   }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { static method new : MyClass ($args : int) {} }',
+      'class MyClass2 { static method new : MyClass2 ($args : long) {} }',
+    ];
+    compile_ok($source);
+  }
 }
 
 # Extra

@@ -5260,71 +5260,73 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
             
             if (strcmp(method->name, interface_method->name) == 0) {
-              
-              if (method->is_class_method && !interface_method->is_class_method) {
-                SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                return;
-              }
-              
-              // Check the equality of the arguments
-              SPVM_LIST* method_var_decls = method->var_decls;
-              
-              SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
-              
-              if (!(method->required_args_length == interface_method->required_args_length)) {
-                SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                return;
-              }
-
-              if (!(method->args_length >= interface_method->args_length)) {
-                SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                return;
-              }
-              
-              for (int32_t arg_index = 1; arg_index < interface_method->args_length; arg_index++) {
-                SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
-                SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
-                
-                SPVM_TYPE* method_var_decl_type = method_var_decl->type;
-                SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
-                
-                if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+              if (method->is_class_method) {
+                if (!interface_method->is_class_method) {
+                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
                   return;
                 }
               }
-              
-              // Check the assignability of the return value
-              SPVM_TYPE* method_return_type = method->return_type;
-              SPVM_TYPE* interface_method_return_type = interface_method->return_type;
-              
-              int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
-              int32_t interface_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag);
-              
-              if (method_return_type_is_void && interface_method_return_type_is_void) {
-                // OK
-              }
               else {
-                SPVM_CONSTANT* src_constant = NULL;
-                int32_t need_implicite_conversion = 0;
-                int32_t narrowing_conversion_error = 0;
-                int32_t mutable_invalid = 0;
-                int32_t assignability = SPVM_TYPE_can_assign(
-                  compiler,
-                  interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
-                  method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                  src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
-                );
+                // Check the equality of the arguments
+                SPVM_LIST* method_var_decls = method->var_decls;
                 
-                if (assignability) {
-                  if (need_implicite_conversion) {
-                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
+                
+                if (!(method->required_args_length == interface_method->required_args_length)) {
+                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  return;
+                }
+
+                if (!(method->args_length >= interface_method->args_length)) {
+                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  return;
+                }
+                
+                for (int32_t arg_index = 1; arg_index < interface_method->args_length; arg_index++) {
+                  SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
+                  SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
+                  
+                  SPVM_TYPE* method_var_decl_type = method_var_decl->type;
+                  SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
+                  
+                  if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
+                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
                     return;
                   }
                 }
+                
+                // Check the assignability of the return value
+                SPVM_TYPE* method_return_type = method->return_type;
+                SPVM_TYPE* interface_method_return_type = interface_method->return_type;
+                
+                int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
+                int32_t interface_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag);
+                
+                if (method_return_type_is_void && interface_method_return_type_is_void) {
+                  // OK
+                }
                 else {
-                  SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                  return;
+                  SPVM_CONSTANT* src_constant = NULL;
+                  int32_t need_implicite_conversion = 0;
+                  int32_t narrowing_conversion_error = 0;
+                  int32_t mutable_invalid = 0;
+                  int32_t assignability = SPVM_TYPE_can_assign(
+                    compiler,
+                    interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
+                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
+                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                  );
+                  
+                  if (assignability) {
+                    if (need_implicite_conversion) {
+                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                      return;
+                    }
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                    return;
+                  }
                 }
               }
             }
