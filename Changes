@@ -1,6 +1,7 @@
 0.9695 2023-03-05
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.
+    * A child class must have the method that has the compatiblity of the same name method of its super class if it exists.
   [Code Cleanup]
     * Removed unused is_passed_to_method member variable in the struct spvm_op.
   [Compilation Error Message Changes]
