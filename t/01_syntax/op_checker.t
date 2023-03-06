@@ -1201,6 +1201,21 @@ use Test::More;
     ];
     compile_not_ok($source, qr|The field in the "MyClass" class with the same name as the "x" field in the parent class cannot be defined|);
   }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
+      'class MyClass2 { method x : int () {} }',
+    ];
+    compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass2" class|);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
+      'class MyClass2 extends MyClass3 { }',
+      'class MyClass3 { method x : int () {} }',
+    ];
+    compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass3" class|);
+  }
 }
 
 # Extra
