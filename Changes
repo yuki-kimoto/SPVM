@@ -2,6 +2,8 @@
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.
     * A child class must have the method that has the compatiblity of the same name method of its super class if it exists.
+    * Removed the Point::Interface class.
+    * Removed has_interfaces method in the Point class.
   [Code Cleanup]
     * Removed unused is_passed_to_method member variable in the struct spvm_op.
   [Compilation Error Message Changes]

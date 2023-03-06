@@ -12,9 +12,6 @@ class Point3D extends Point {
     return $self;
   }
   
-  # Instance methods
-  method has_interfaces : int () { return 1; }
-  
   protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
     $self->SUPER::init($x, $y);
     $self->{z} = $z;

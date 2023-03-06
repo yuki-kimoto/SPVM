@@ -2,7 +2,6 @@ class Point {
   # Interfaces
   interface Stringable;
   interface Cloneable;
-  interface Point::Interface;
   
   # Fields
   has x : rw protected int;
@@ -23,8 +22,6 @@ class Point {
     $self->{y} = $y;
   }
   
-  method has_interfaces : int () { return 1; }
-
   method clear : void () {
     $self->{x} = 0;
     $self->{y} = 0;

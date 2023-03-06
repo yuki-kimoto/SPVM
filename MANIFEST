@@ -268,8 +268,6 @@ lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
 lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
-lib/SPVM/Point/Interface.pm
-lib/SPVM/Point/Interface.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
 lib/SPVM/Runtime.c
@@ -805,6 +803,7 @@ t/04_spvmcc/lib/SPVM/MyExe.spvm
 t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.config
 t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.spvm
 t/04_spvmcc/lib/SPVM/MyExe/Precompile.spvm
+t/04_spvmcc/lib/SPVM/MyExeCompileError.spvm
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.config
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h

@@ -31,10 +31,6 @@ C<Point3D> is a class for a point 3D.
 
 L<Point|SPVM::Point> is the super class of C<Point3D>.
 
-=head1 Interfaces
-
-C<Point3D> inherits the interfaces of L<Point|SPVM::Point/"Interfaces">.
-
 =head1 Fields
 
 C<Point3D> inherits the fields of L<Point|SPVM::Point/"Fields">.

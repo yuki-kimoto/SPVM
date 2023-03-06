@@ -35,8 +35,6 @@ C<Point> class has the following interfaces.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
-=item * L<Cloneable|SPVM::Point::Interface>
-
 =back
 
 =head1 Fields
@@ -68,12 +66,6 @@ Create a new C<Point> object with $x and $y.
   protected method init : Point ($x = 0 : int, $y = 0 : int)
 
 Initializes L</"x"> and L</"y">.
-
-=head2 has_interfaces
-
-  method has_interfaces : int ();
-
-Returns C<1>.
 
 =head2 clear
 
