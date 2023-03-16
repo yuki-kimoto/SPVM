@@ -79,6 +79,22 @@ SPVM_ENV* SPVM_API_new_env_raw() {
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap

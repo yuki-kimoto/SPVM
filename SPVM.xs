@@ -1672,6 +1672,45 @@ xs_array_to_elems(...)
 }
 
 SV*
+xs_dump(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_object = ST(1);
+  
+  // Array must be a SPVM::BlessedObject or SPVM::BlessedObject
+  if (!(SvROK(sv_object) && sv_derived_from(sv_object, "SPVM::BlessedObject"))) {
+    croak("The object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
+  // Get object
+  void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
+  
+  void* obj_dump = env->dump(env, stack, object);
+  
+  const char* dump = env->get_chars(env, obj_dump);
+  
+  SV* sv_dump = sv_2mortal(newSvPV(dump));
+  
+  XPUSHs(sv_dump);
+  XSRETURN(1);
+}
+
+SV*
 xs_array_to_bin(...)
   PPCODE:
 {

@@ -1098,6 +1098,20 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# dump
+{
+  my $point = SPVM::Point->new(100, 200, 300);
+  
+  my $dump = $api->dump($point);
+  
+  like($dump, qr|x|);
+  like($dump, qr|y|);
+  like($dump, qr|z|);
+  like($dump, qr|100|);
+  like($dump, qr|200|);
+  like($dump, qr|300|);
+}
+
 # TODO
 
 =pod
