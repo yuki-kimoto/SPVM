@@ -1694,7 +1694,7 @@ xs_dump(...)
   
   // Array must be a SPVM::BlessedObject or SPVM::BlessedObject
   if (!(SvROK(sv_object) && sv_derived_from(sv_object, "SPVM::BlessedObject"))) {
-    croak("The object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $spvm_object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -1702,9 +1702,10 @@ xs_dump(...)
   
   void* obj_dump = env->dump(env, stack, object);
   
-  const char* dump = env->get_chars(env, obj_dump);
+  const char* dump = env->get_chars(env, stack, obj_dump);
+  int32_t dump_length = env->length(env, stack, obj_dump);
   
-  SV* sv_dump = sv_2mortal(newSvPV(dump));
+  SV* sv_dump = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_dump, "SPVM::BlessedObject::String");
   
   XPUSHs(sv_dump);
   XSRETURN(1);

@@ -398,12 +398,12 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   SPVM_OBJECT* str = SPVM_API_dump_raw(env, stack, object);
   
   SPVM_API_push_mortal(env, stack, str);
-
+  
   return str;
 }
 
 SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-
+  
   SPVM_RUNTIME* runtime = env->runtime;
   
   int32_t depth = 0;

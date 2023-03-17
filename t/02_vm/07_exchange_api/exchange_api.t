@@ -1100,16 +1100,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # dump
 {
-  my $point = SPVM::Point->new(100, 200, 300);
+  my $point = SPVM::Point->new(100, 200);
   
   my $dump = $api->dump($point);
   
+  is(ref $dump, "SPVM::BlessedObject::String");
+  
   like($dump, qr|x|);
   like($dump, qr|y|);
-  like($dump, qr|z|);
   like($dump, qr|100|);
   like($dump, qr|200|);
-  like($dump, qr|300|);
 }
 
 # TODO

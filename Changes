@@ -1,3 +1,7 @@
+0.9696 2023-03-17
+  [New Features]
+    * Added the dump method in the SPVM::ExchangeAPI class.
+    
 0.9695 2023-03-05
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.
