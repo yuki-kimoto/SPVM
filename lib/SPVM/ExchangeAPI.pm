@@ -414,7 +414,6 @@ Examples:
   my $string = "あいう";
   my $spvm_array = $api->new_byte_array_from_bin($string);
 
-
 =head2 new_byte_array_from_string
 
   my $spvm_array = $api->new_byte_array_from_string($string);
@@ -821,9 +820,9 @@ Examples:
 
 The same as L</"new_string">.
 
-=head2 new_options
+=head2 new_any_object_array
 
-  my $byte_array = $api->new_options(
+  my $byte_array = $api->new_any_object_array(
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
