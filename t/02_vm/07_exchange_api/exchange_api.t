@@ -389,6 +389,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $sp_values = $api->new_byte_array_from_bin(encode('UTF-8', "あ"));
       ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($sp_values));
     }
+    
+    # Exceptions
+    {
+      eval { $api->new_byte_array_from_bin(undef); };
+      like($@, qr|The \$binary must be defined|);
+    }
   }
   
   # new_short_array_from_bin
