@@ -729,8 +729,7 @@ xs_call_method(...)
             stack_index++;
             break;
           }
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-          {
+          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT: {
             void* spvm_value;
             if (!SvOK(sv_value)) {
               spvm_value = NULL;
@@ -749,23 +748,23 @@ xs_call_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
           {
+            void* spvm_value;
             if (!SvOK(sv_value)) {
-              stack[stack_index].oval = NULL;
+              spvm_value = NULL;
             }
             else {
               if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
-                void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+                spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
                 
-                if (!env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension)) {
+                if (!env->isa(env, stack, spvm_value, arg_basic_type_id, arg_type_dimension)) {
                   croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
-                
-                stack[stack_index].oval = object;
               }
               else {
-                croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-              }
+                croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);           }
             }
+            stack[stack_index].oval = spvm_value;
+            
             stack_index++;
             break;
           }
