@@ -614,27 +614,40 @@ Examples:
 
   my $ret = $api->get_exception();
 
-Gets the exception in the current call stack as L<SPVM::BlessedObject::String> object.
+Returns the exception in the current thread stack.
+
+Return Type:
+
+L<SPVM::BlessedObject::String>|undef
 
 =head2 set_exception
 
   $api->set_exception($message);
 
-Sets an exception in the current call stack.
+Sets an exception in the current thread stack.
 
-The argument must be a Perl string, a L<SPVM::BlessedObject::String> object or C<undef>. Otherwise an exception will occur.
+Argument Types:
+
+$message : L<SPVM::BlessedObject::String>|undef
+
+Exceptions:
+
+The $message must be a SPVM::BlessedObject::String object.
 
 Examples:
 
   $api->set_exception($api->new_string("abc"));
-  $api->set_exception("abc");
   $api->set_exception(undef);
 
 =head2 get_memory_blocks_count
 
-  my $count = $api->get_memory_blocks_count();
+  my $ret = $api->get_memory_blocks_count();
 
 Returns the count of memory blocks on the execution environment.
+
+Return Type:
+
+number
 
 Examples:
 
@@ -653,21 +666,67 @@ Examples:
 
 =head2 call_method
   
-  # Call an class method
-  my $ret = $api->call_method($class_name, $method_name, @args);
-  
-  # Call an instance method
   my $ret = $api->call_method($invocant, $method_name, @args);
 
-Calls an class method or an instance method with arguments and return the return value.
+Calls a class method or an instance method. If the $invocant is a string, a class method is called. If the $invocant is a L<SPVM::BlessedObject::Class>, an instance method is called.
 
-If the count of arguments is less than the count of the arguments of the method, an exception will occur.
+The @args are converted by the rule of L</"Argument Conversion">.
 
-If the count of arguments is more than the count of the arguments of the method, an exception will occur.
-
-The arguments are converted by the rule of L</"Argument Conversion">.
+The $method_name allows static method name such as C<Foo::bar>.
 
 The return value is converted by the rule of L</"Return Value Conversion">.
+
+Argument Types:
+
+$invocant : string|L<SPVM::BlessedObject>
+
+$method_name : string
+
+@args : the list of the L<SPVM::BlessedObject> object of the argument types of the method (See also L</"Argument Conversion">)
+
+Return Type:
+
+L<SPVM::BlessedObject> of the return type of the method (See also L</"Return Value Conversion">)
+
+Exceptions:
+
+The exception message thrown by SPVM.
+
+The $invocant must be a SPVM::BlessedObject::Class object
+
+The static method call must be valid.
+
+The \"%s\" method in the \"%s\" class is not found.
+
+Too few arguments are passed to the \"%s\" method in the \"%s\" class.
+
+Too many arguments are passed to the \"%s\" method in the \"%s\" class.
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference of a hash reference
+
+The %dth argument of the \"%s\" field in the \"%s\" class is not found
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a number
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object
+
+The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference
+
+The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class
+
+The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object
 
 Examples:
 
@@ -677,7 +736,10 @@ Examples:
   # Instance method call
   $api->call_method($obj_int, "set_value", 5);
   my $value = $api->call_method($obj_int, "value");
-
+  
+  # Call static instance method
+  $api->call_method($object, "Foo::value");
+  
 =head2 class
 
   my $ret = $api->class($class_name);

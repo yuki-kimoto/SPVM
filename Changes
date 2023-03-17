@@ -1,7 +1,8 @@
 0.9696 2023-03-17
   [New Features]
     * Added the dump method in the SPVM::ExchangeAPI class.
-    
+  [Document Fix]
+    * Fixed the doc. The set_exception method in the SPVM::ExchangeAPI can't receive a string.
 0.9695 2023-03-05
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.

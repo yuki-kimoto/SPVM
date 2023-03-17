@@ -290,7 +290,7 @@ xs_call_method(...)
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
     if (!sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class")) {
-      croak("The invocant must be a SPVM::BlessedObject::Class object");
+      croak("The $invocant must be a SPVM::BlessedObject::Class object");
     }
     
     HV* hv_invocant = (HV*)SvRV(sv_invocant);
@@ -321,7 +321,7 @@ xs_call_method(...)
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
       if (!(*(found_char - 1) == ':')) {
-        croak("Invalid static instance method call");
+        croak("The static method call must be valid");
       }
       *(found_char - 1) = '\0';
       const char* class_name = method_name;
@@ -3899,7 +3899,7 @@ _xs_set_exception(...)
   
   if (SvOK(sv_exception)) {
     if (!(sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String"))) {
-      croak("The exception must be a SPVM::BlessedObject::String object");
+      croak("The $message must be a SPVM::BlessedObject::String object");
     }
     void* exception = SPVM_XS_UTIL_get_object(aTHX_ sv_exception);
     env->set_exception(env, stack, exception);
