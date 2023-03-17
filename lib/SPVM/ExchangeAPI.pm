@@ -394,7 +394,7 @@ Examples:
 
 Converts a Perl binary to a SPVM C<byte> array and returns it.
 
-The Perl binary is interpreted as 8-bit signed integers. The length of the array is calcurated from the Perl binary.
+The Perl binary is interpreted as 8-bit signed integer. The length of the array is calcurated from the Perl binary.
 
 Argument Types:
 
@@ -482,7 +482,7 @@ Examples:
 
 Converts a Perl binary to a SPVM C<short> array and returns it.
 
-The Perl binary is interpreted as 16-bit signed integers. The length of the array is calcurated from the Perl binary.
+The Perl binary is interpreted as 16-bit signed integer. The length of the array is calcurated from the Perl binary.
 
 Argument Types:
 
@@ -556,7 +556,7 @@ Examples:
 
 Converts a Perl binary to a SPVM C<int> array and returns it.
 
-The Perl binary is interpreted as 32-bit signed integers. The length of the array is calcurated from the Perl binary.
+The Perl binary is interpreted as 32-bit signed integer. The length of the array is calcurated from the Perl binary.
 
 Argument Types:
 
@@ -630,7 +630,7 @@ Examples:
 
 Converts a Perl binary to a SPVM C<long> array and returns it.
 
-The Perl binary is interpreted as 64-bit signed integers. The length of the array is calcurated from the Perl binary.
+The Perl binary is interpreted as 64-bit signed integer. The length of the array is calcurated from the Perl binary.
 
 Argument Types:
 
@@ -757,7 +757,7 @@ Creates a SPVM C<double> array with the $length.
 
 Argument Types:
 
-$length : L<doubleeger|/"doubleeger">
+$length : L<integer|/"integer">
 
 Return Type:
 
@@ -812,7 +812,7 @@ If the argument is C<undef>, returns C<undef>.
 
 Converts a Perl binary to a L<SPVM::BlessedObject::String>.
 
-The Perl binary is interpreted as 8-bit signed integers. The length of the string is calcurated from the Perl binary.
+The Perl binary is interpreted as 8-bit signed integer. The length of the string is calcurated from the Perl binary.
 
 If the argument is C<undef>, returns C<undef>.
 
