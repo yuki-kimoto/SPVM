@@ -797,7 +797,7 @@ L<SPVM::BlessedObject::String>
 
 Exceptions:
 
-The $binary must be defined.
+The $string can't be a reference.
 
 Examples:
 

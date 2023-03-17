@@ -8,7 +8,6 @@
     * Improved the new_string method in the SPVM::ExchangeAPI class.
     * Improved the new_string_from_bin method in the SPVM::ExchangeAPI class.
   [Incompatible Changes]
-    * The new_byte_array_from_bin and new_byte_array_from_string throws an exception when the argument is undef.
     * The new_string method in the SPVM::ExchangeAPI can receive undef.
 0.9695 2023-03-05
   [Incomaptible Changes]

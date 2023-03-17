@@ -2343,7 +2343,7 @@ xs_new_string_from_bin(...)
     }
   }
   else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    sv_string = &PL_sv_undef;
   }
   
   XPUSHs(sv_string);
@@ -2568,7 +2568,7 @@ xs_new_byte_array_from_bin(...)
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    sv_array = &PL_sv_undef;
   }
   
   XPUSHs(sv_array);
