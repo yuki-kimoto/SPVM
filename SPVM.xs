@@ -1693,8 +1693,10 @@ xs_dump(...)
   SV* sv_object = ST(1);
   
   // Array must be a SPVM::BlessedObject or SPVM::BlessedObject
-  if (!(SvROK(sv_object) && sv_derived_from(sv_object, "SPVM::BlessedObject"))) {
-    croak("The $spvm_object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  if (SvOK(sv_object)) {
+    if (!(SvROK(sv_object) && sv_derived_from(sv_object, "SPVM::BlessedObject"))) {
+      croak("The $object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
   }
   
   // Get object

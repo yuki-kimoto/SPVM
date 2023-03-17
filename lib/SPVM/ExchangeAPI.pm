@@ -612,15 +612,19 @@ Examples:
 
 =head2 get_exception
 
-  my $exception = $api->get_exception();
+  my $ret = $api->get_exception();
 
 Gets the exception in the current call stack as L<SPVM::BlessedObject::String> object.
 
 =head2 set_exception
 
+  $api->set_exception($message);
+
 Sets an exception in the current call stack.
 
 The argument must be a Perl string, a L<SPVM::BlessedObject::String> object or C<undef>. Otherwise an exception will occur.
+
+Examples:
 
   $api->set_exception($api->new_string("abc"));
   $api->set_exception("abc");
@@ -630,7 +634,7 @@ The argument must be a Perl string, a L<SPVM::BlessedObject::String> object or C
 
   my $count = $api->get_memory_blocks_count();
 
-Gets the count of memory blocks on the execution environment.
+Returns the count of memory blocks on the execution environment.
 
 Examples:
 
@@ -651,7 +655,7 @@ Examples:
   
   # Call an class method
   my $ret = $api->call_method($class_name, $method_name, @args);
-
+  
   # Call an instance method
   my $ret = $api->call_method($invocant, $method_name, @args);
 
@@ -676,23 +680,32 @@ Examples:
 
 =head2 class
 
-  my $class = $api->class('Int');
+  my $ret = $api->class($class_name);
 
-Creates a new L<SPVM::ExchangeAPI::Class> object.
+Creates a new L<SPVM::ExchangeAPI::Class> object with the $class_name and returns it.
 
 Examples:
-
-  $api->class('Int')->new(1);
+  
+  my $class = $api->class('Int');
+  my $spvm_object = $class->new(1);
 
 =head2 dump
 
-  my $ret = $api->dump($spvm_object);
+  my $ret = $api->dump($object);
 
-Generates the string by dumping a SPVM object using the L<dump|SPVM::Document::Language/"dump"> operator and returns it.
+Generates the string by dumping a SPVM object using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
+
+Argument Types:
+
+$object : L<SPVM::BlessedObject>
+
+Return Type:
+
+L<SPVM::BlessedObject::String>
 
 Exceptions:
 
-The $spvm_object must be a SPVM::BlessedObject object.
+The $object must be a SPVM::BlessedObject object.
 
 =head1 Argument Conversion
 
