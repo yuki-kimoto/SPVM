@@ -315,7 +315,7 @@ Perl number scalar.
 
 =head2 integer
 
-Perl number scalar that is exepcted to an integer value.
+Perl number scalar that is exepected to be an integer value.
 
 =head2 string
 
@@ -323,7 +323,7 @@ Perl string scalar.
 
 =head2 binary
 
-Perl string scalar that is exepcted to a packed data.
+Perl string scalar that is exepected to be a packed data.
 
 =head2 array_ref
 
@@ -351,11 +351,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
@@ -439,11 +439,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
@@ -513,11 +513,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
@@ -587,11 +587,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
@@ -661,11 +661,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
@@ -735,11 +735,11 @@ If the $array is C<undef>, returns C<undef>.
 
 Argument Types:
 
-$array : L<array_ref|/"array_ref">|L<undef|/"undef">
+$array : L<array_ref|/"array_ref">
 
 Return Type:
 
-L<SPVM::BlessedObject::Array>|L<undef|/"undef">
+L<SPVM::BlessedObject::Array>
 
 Exceptions:
 
