@@ -697,7 +697,7 @@ Generates the string by dumping a SPVM object using the L<dump|SPVM::Document::L
 
 Argument Types:
 
-$object : L<SPVM::BlessedObject>
+$object : L<SPVM::BlessedObject>|undef
 
 Return Type:
 
