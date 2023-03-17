@@ -705,11 +705,11 @@ xs_call_method(...)
           }
           // Perl SPVM::BlessedObject::Class to SPVM class
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
-            void* obj_string;
+            void* spvm_value;
             
             if (SvOK(sv_value)) {
-              if (sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-                obj_string = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+              if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
+                spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
               }
               else if (SvROK(sv_value)) {
                 croak("The %dth argument of the \"%s\" method in the \"%s\" class can't be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
@@ -717,48 +717,53 @@ xs_call_method(...)
               else {
                 STRLEN length;
                 const char* chars = SvPV(sv_value, length);
-                obj_string = env->new_string_raw(env, stack, chars, (int32_t)length);
+                spvm_value = env->new_string_raw(env, stack, chars, (int32_t)length);
               }
             }
             else {
-              obj_string = NULL;
+              spvm_value = NULL;
             }
             
-            stack[stack_index].oval = obj_string;
+            stack[stack_index].oval = spvm_value;
+            
+            stack_index++;
+            break;
+          }
+          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+          {
+            void* spvm_value;
+            if (!SvOK(sv_value)) {
+              spvm_value = NULL;
+            }
+            else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+              spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+            }
+            else {
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            }
+            stack[stack_index].oval = spvm_value;
             
             stack_index++;
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-          case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
           {
             if (!SvOK(sv_value)) {
               stack[stack_index].oval = NULL;
             }
             else {
-              if (arg_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
-                if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                  void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                  stack[stack_index].oval = object;
+              if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
+                void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+                
+                if (!env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension)) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
-                else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
+                
+                stack[stack_index].oval = object;
               }
               else {
-                if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
-                  void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                  
-                  if (!env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension)) {
-                    croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                  }
-                  
-                  stack[stack_index].oval = object;
-                }
-                else {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
+                croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
             }
             stack_index++;
