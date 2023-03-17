@@ -313,23 +313,84 @@ An stack.
 
 =back
 
+=head1 Types
+
+Types used in this document.
+
+=head2 number
+
+Perl number scalar.
+
+=head2 integer
+
+Perl number scalar that is exepcted to an integer value.
+
+=head2 string
+
+Perl string scalar.
+
+=head2 array_ref
+
+Perl array reference
+
+=head2 hash_ref
+
+Perl hash reference.
+
+=head2 undef
+
+Perl undef.
+
 =head1 Instance Methods
 
 =head2 new_byte_array
   
+  my $ret = $api->new_byte_array($array);
+
+Converts a Perl array reference to a SPVM C<byte> array and returns it.
+
+L</"Argument Conversion"> is applied to each element.
+
+If the $array is C<undef>, returns C<undef>.
+
+Argument Types:
+
+$array : array_ref|undef
+
+Return Type:
+
+L<SPVM::BlessedObject::Array>|undef
+
+Exceptions:
+
+The $array must be an array reference.
+
+Examples:
+
   my $sp_nums = $api->new_byte_array([1, 2, 3]);
-
-Converts a Perl numeric array reference to a L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type and returns it.
-
-If the argument is C<undef>, returns C<undef>.
 
 =head2 new_byte_array_len
 
+  my $ret = $api->new_byte_array_len($length);
+
+Creates a SPVM C<byte> array with the $length.
+
+Argument Types:
+
+$length : integer
+
+Return Type:
+
+L<SPVM::BlessedObject::Array>
+
+Exceptions:
+
+The $length must be greater than or equal to 0.
+
+Examples:
+  
+  my $length = 10;
   my $sp_nums = $api->new_byte_array_len($length);
-
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<byte[]> type with the length.
-
-The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
 =head2 new_byte_array_from_bin
 
@@ -366,7 +427,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_short_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<short[]> type with the length.
+Creates a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<short[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -393,7 +454,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_int_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<int[]> type with the length.
+Creates a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<int[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -420,7 +481,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_long_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<long[]> type with the length.
+Creates a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<long[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -447,7 +508,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_float_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<float[]> type with the length.
+Creates a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<float[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 
@@ -474,7 +535,7 @@ If the argument is C<undef>, returns C<undef>.
 
   my $sp_nums = $api->new_double_array_len($length);
 
-Create a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<double[]> type with the length.
+Creates a new L<SPVM::BlessedObject::Array> object that has the value of the SPVM C<double[]> type with the length.
 
 The length must be greater than or equal to C<0>. Otherwise an exception will occur.
 

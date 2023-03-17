@@ -2414,7 +2414,7 @@ xs_new_byte_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2524,7 +2524,7 @@ xs_new_byte_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
