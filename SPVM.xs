@@ -1037,10 +1037,9 @@ xs_call_method(...)
                   }
                   else {
                     if (!SvROK(sv_elem)) {
-                      SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
-                      const char* chars = SvPV_nolen(sv_elem_copy);
-                      int32_t length = SvCUR(sv_elem_copy);
-                      void* string = env->new_string(env, stack, chars, length);
+                      STRLEN length;
+                      const char* chars = SvPV(sv_elem, length);
+                      void* string = env->new_string(env, stack, chars, (int32_t)length);
                       SV* sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
                       sv_elem = sv_string;
                     }
@@ -1105,10 +1104,9 @@ xs_call_method(...)
               }
               else {
                 if (!SvROK(sv_elem)) {
-                  SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
-                  const char* chars = SvPV_nolen(sv_elem_copy);
-                  int32_t length = SvCUR(sv_elem_copy);
-                  void* string = env->new_string(env, stack, chars, length);
+                  STRLEN length;
+                  const char* chars = SvPV(sv_elem, length);
+                  void* string = env->new_string(env, stack, chars, (int32_t)length);
                   SV* sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
                   sv_elem = sv_string;
                 }
