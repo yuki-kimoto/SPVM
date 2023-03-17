@@ -783,11 +783,25 @@ Examples:
 
 =head2 new_string
 
+  my $spvm_string = $api->new_string($string);
+
+Converts a Perl string to a SPVM string using the convertion of L</"double[] Argument"> and returns it.
+
+Argument Types:
+
+$string : L<string|/"string">
+
+Return Type:
+
+L<SPVM::BlessedObject::String>
+
+Exceptions:
+
+The $binary must be defined.
+
+Examples:
+
   my $spvm_string = $api->new_string("あいう");
-
-Converts a Perl string to a L<SPVM::BlessedObject::String> object. Any decoding is not performed.
-
-If the argument is C<undef>, returns C<undef>.
 
 =head2 new_string_from_bin
 
@@ -1115,30 +1129,24 @@ A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvN
 
 =head2 string Argument
 
-If the SPVM argument type is C<string>, the Perl scalar is converted by the following rules.
+If the SPVM argument type is C<string>, the Perl scalar is converted by the following rule.
 
-If any of the following rules does not match, an exception will occur.
+If the Perl scalar is C<undef>, it is converted to SPVM C<undef>.
 
-If the SPVM argument type is C<string>, the Perl non-ref scalar is converted to L<SPVM::BlessedObject::String> object.
+Else if the Perl scalar is a L<SPVM::BlessedObject::String> object, no conversion is performed.
 
-The non-ref scalar value is assumed to a Perl decoded string, and is converted to UTF-8 bytes.
+Else if the Perl scalar is a reference, an exception will be thrown.
 
-If the non-ref scalar value is Perl C<undef>, it is converted to Perl C<undef>.
+Else the Perl scalar is converted to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>.
 
-And the following L</"Perl SPVM::BlessedObject::String to SPVM String"> conversion is contined.
+The SPVM string is converted to a L<SPVM::BlessedObject::String> object.
 
 Examples:
 
   # Converts a Perl scalar to string type
   SPVM::MyClass->foo("あいう");
-
-Perl can have SPVM string itself as L<SPVM::BlessedObject::String> object. This object is created by such as L</"new_string">, L</"new_string_from_bin">, or got as a return value of SPVM method.
-
-If the value is Perl C<undef>, it is converted to SPVM C<undef>
-
-  # Converts a Perl scalar to string type
-  my $string = $api->new_string("あいう");
-  SPVM::MyClass->foo($string);
+  
+  SPVM::MyClass->foo(undef);
 
 =head2 Class Argument
 
@@ -1602,7 +1610,7 @@ Examples:
 
 =head1 Return Value Conversion
 
-A SPVM return value is converted to a Perl value by the following rules.
+A SPVM return value is converted to a Perl value by the following rule.
 
 =head2 void Return Value
 

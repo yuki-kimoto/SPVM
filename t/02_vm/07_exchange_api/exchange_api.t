@@ -467,13 +467,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_string_from_bin - undef
   {
     eval { $api->new_string_from_bin(undef) };
-    like($@, qr/The binary must be defined/);
+    like($@, qr/The \$binary must be defined/);
   }
 
   # new_string_from_bin - reference
   {
     eval { $api->new_string_from_bin([]) };
-    like($@, qr/The binary can't be a reference/);
+    like($@, qr/The \$binary can't be a reference/);
   }
 }
 
@@ -807,14 +807,14 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # new_string - undef
   {
-    eval { $api->new_string(undef) };
-    like($@, qr/The string must be defined/);
+    my $sp_string = $api->new_string(undef);
+    ok(!defined $sp_string);
   }
 
   # new_string - reference
   {
     eval { $api->new_string([]) };
-    like($@, qr/The string can't be a reference/);
+    like($@, qr/The \$string can't be a reference/);
     like($@, qr|XS_SPVM__ExchangeAPI_xs_new_string at SPVM\.xs line \d+|);
   }
 }

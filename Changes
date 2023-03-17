@@ -3,8 +3,13 @@
     * Added the dump method in the SPVM::ExchangeAPI class.
   [Document Fix]
     * Fixed the doc. The set_exception method in the SPVM::ExchangeAPI can't receive a string.
+    * Fixed the doc of the converson of the string Argument in SPVM::ExchangeAPI. Explicite using SvPV for conversion.
+  [Exception Message Improvement]
+    * Improved the new_string method in the SPVM::ExchangeAPI class.
+    * Improved the new_string_from_bin method in the SPVM::ExchangeAPI class.
   [Incompatible Changes]
     * The new_byte_array_from_bin and new_byte_array_from_string throws an exception when the argument is undef.
+    * The new_string method in the SPVM::ExchangeAPI can receive undef.
 0.9695 2023-03-05
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.

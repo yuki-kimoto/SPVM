@@ -1892,7 +1892,7 @@ xs_string_object_to_bin(...)
 
   // String must be a SPVM::BlessedObject::String or SPVM::BlessedObject::String
   if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
-    croak("The string must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $string must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Get object
@@ -2231,13 +2231,10 @@ xs_new_string_array(...)
       SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
       SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
       if (SvOK(sv_str_value)) {
-        // Copy
-        SV* sv_str_value_copy = sv_2mortal(newSVsv(sv_str_value));
+        STRLEN length;
+        const char* chars = SvPV(sv_str_value, length);
         
-        int32_t length = sv_len(sv_str_value_copy);
-        const char* chars = SvPV_nolen(sv_str_value_copy);
-        
-        void* string = env->new_string_raw(env, stack, chars, length);
+        void* string = env->new_string_raw(env, stack, chars, (int32_t)length);
         env->set_elem_object(env, stack, array, i, string);
       }
       else {
@@ -2279,27 +2276,23 @@ xs_new_string(...)
   
   SV* sv_string;
   if (SvOK(sv_value)) {
-    
-    if (SvROK(sv_value)) {
-      croak("The string can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    if (sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
+      sv_string = sv_value;
+    }
+    else if (SvROK(sv_value)) {
+      croak("The $string can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
-      // Copy
-      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+      STRLEN length = -1;
+      const char* value = SvPV(sv_value, length);
       
-      // Encode to UTF-8
-      
-      int32_t length = sv_len(sv_value_tmp);
-      
-      const char* value = SvPV_nolen(sv_value_tmp);
-      
-      void* string = env->new_string(env, stack, value, length);
+      void* string = env->new_string(env, stack, value, (int32_t)length);
       
       sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
     }
   }
   else {
-    croak("The string must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    sv_string = &PL_sv_undef;
   }
   
   XPUSHs(sv_string);
@@ -2330,25 +2323,24 @@ xs_new_string_from_bin(...)
   SV* sv_string;
   if (SvOK(sv_binary)) {
     if (SvROK(sv_binary)) {
-      croak("The binary can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $binary can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
-      int32_t binary_length = sv_len(sv_binary);
-      int32_t string_length = binary_length;
-      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+      STRLEN length;
+      int8_t* binary = (int8_t*)SvPV(sv_binary, length);
       
       // New string
-      void* string = env->new_string(env, stack, (const char*)binary, string_length);
+      void* string = env->new_string(env, stack, (const char*)binary, (int32_t)length);
 
       const char* chars = env->get_chars(env, stack, string);
-      memcpy((char*)chars, binary, string_length);
+      memcpy((char*)chars, binary, length);
       
       // New sv string
       sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
     }
   }
   else {
-    croak("The binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2560,15 +2552,14 @@ xs_new_byte_array_from_bin(...)
   
   SV* sv_array;
   if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length;
-    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+    STRLEN length;
+    int8_t* binary = (int8_t*)SvPV(sv_binary, length);
     
     // New array
-    void* array = env->new_byte_array(env, stack, array_length);
+    void* array = env->new_byte_array(env, stack, (int32_t)length);
 
     int8_t* elems = env->get_elems_byte(env, stack, array);
-    memcpy(elems, binary, array_length);
+    memcpy(elems, binary, length);
     
     // New sv array
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
@@ -3719,7 +3710,7 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_binary = ST(2);
   
   if (!SvOK(sv_binary)) {
-    croak("The binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
