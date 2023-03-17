@@ -785,11 +785,11 @@ Examples:
 
   my $spvm_string = $api->new_string($string);
 
-Converts a Perl string to a SPVM string using the convertion of L</"double[] Argument"> and returns it.
+Converts a Perl string to a SPVM string using the convertion of L</"string Argument"> and returns it as a L<SPVM::BlessedObject::String> object.
 
 Argument Types:
 
-$string : L<string|/"string">
+$string : L<string|/"string">|L<SPVM::BlessedObject::String>
 
 Return Type:
 
@@ -1133,17 +1133,16 @@ If the SPVM argument type is C<string>, the Perl scalar is converted by the foll
 
 If the Perl scalar is C<undef>, it is converted to SPVM C<undef>.
 
-Else if the Perl scalar is a L<SPVM::BlessedObject::String> object, no conversion is performed.
+Else if the Perl scalar is a L<SPVM::BlessedObject::String> object, it is converted to the owned SPVM string.
 
 Else if the Perl scalar is a reference, an exception will be thrown.
 
-Else the Perl scalar is converted to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>.
-
-The SPVM string is converted to a L<SPVM::BlessedObject::String> object.
+Othwerwise the Perl scalar is converted to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>.
 
 Examples:
 
-  # Converts a Perl scalar to string type
+  SPVM::MyClass->foo($api->new_string("あいう"));
+
   SPVM::MyClass->foo("あいう");
   
   SPVM::MyClass->foo(undef);
