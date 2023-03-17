@@ -331,11 +331,7 @@ Perl array reference
 
 =head2 hash_ref
 
-Perl hash reference.
-
-=head2 undef
-
-Perl undef.
+Perl hash reference
 
 =head1 Instance Methods
 
@@ -343,11 +339,7 @@ Perl undef.
   
   my $ret = $api->new_byte_array($array);
 
-Converts a Perl array reference to a SPVM C<byte> array and returns it.
-
-L</"Argument Conversion"> is applied to each element.
-
-If the $array is C<undef>, returns C<undef>.
+Converts a Perl array reference to a SPVM C<byte> array using the convertion of L</"byte[] Argument"> and returns it.
 
 Argument Types:
 
@@ -431,11 +423,7 @@ Examples:
   
   my $ret = $api->new_short_array($array);
 
-Converts a Perl array reference to a SPVM C<short> array and returns it.
-
-L</"Argument Conversion"> is applied to each element.
-
-If the $array is C<undef>, returns C<undef>.
+Converts a Perl array reference to a SPVM C<short> array using the convertion of L</"short[] Argument"> and returns it.
 
 Argument Types:
 
@@ -505,11 +493,7 @@ Examples:
   
   my $ret = $api->new_int_array($array);
 
-Converts a Perl array reference to a SPVM C<int> array and returns it.
-
-L</"Argument Conversion"> is applied to each element.
-
-If the $array is C<undef>, returns C<undef>.
+Converts a Perl array reference to a SPVM C<int> array using the convertion of L</"int[] Argument"> and returns it.
 
 Argument Types:
 
@@ -579,7 +563,7 @@ Examples:
   
   my $ret = $api->new_long_array($array);
 
-Converts a Perl array reference to a SPVM C<long> array and returns it.
+Converts a Perl array reference to a SPVM C<long> array using the convertion of L</"long[] Argument"> and returns it.
 
 L</"Argument Conversion"> is applied to each element.
 
@@ -653,7 +637,7 @@ Examples:
   
   my $ret = $api->new_float_array($array);
 
-Converts a Perl array reference to a SPVM C<float> array and returns it.
+Converts a Perl array reference to a SPVM C<float> array using the convertion of L</"float[] Argument"> and returns it.
 
 L</"Argument Conversion"> is applied to each element.
 
@@ -727,7 +711,7 @@ Examples:
   
   my $ret = $api->new_double_array($array);
 
-Converts a Perl array reference to a SPVM C<double> array and returns it.
+Converts a Perl array reference to a SPVM C<double> array using the convertion of L</"double[] Argument"> and returns it.
 
 L</"Argument Conversion"> is applied to each element.
 
