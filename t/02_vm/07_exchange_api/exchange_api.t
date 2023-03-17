@@ -390,10 +390,9 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($sp_values));
     }
     
-    # Exceptions
     {
-      eval { $api->new_byte_array_from_bin(undef); };
-      like($@, qr|The \$binary must be defined|);
+      my $sp_values = $api->new_byte_array_from_bin(undef);
+      ok(!defined $sp_values);
     }
   }
   
@@ -466,14 +465,14 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # new_string_from_bin - undef
   {
-    eval { $api->new_string_from_bin(undef) };
-    like($@, qr/The \$binary must be defined/);
+    my $sp_string = $api->new_string_from_bin(undef);
+    ok(!defined $sp_string);
   }
 
   # new_string_from_bin - reference
   {
     eval { $api->new_string_from_bin([]) };
-    like($@, qr/The \$binary can't be a reference/);
+    like($@, qr/The \$string can't be a reference/);
   }
 }
 

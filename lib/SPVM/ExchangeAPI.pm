@@ -209,6 +209,8 @@ sub class {
   return $class;
 }
 
+sub new_string_from_bin { shift->new_string(@_) }
+
 # other functions is implemented in SPVM.xs
 
 sub new_byte_array { my $ret; eval { $ret =  &xs_new_byte_array(@_) }; if ($@) { confess $@ } $ret}
@@ -239,7 +241,6 @@ sub string_object_to_string { my $ret; eval { $ret =  &xs_string_object_to_strin
 sub get_memory_blocks_count { my $ret; eval { $ret =  &xs_get_memory_blocks_count(@_) }; if ($@) { confess $@ } $ret}
 sub call_method { my $ret; eval { $ret =  &xs_call_method(@_) }; if ($@) { confess $@ } $ret}
 sub new_string { my $ret; eval { $ret =  &xs_new_string(@_) }; if ($@) { confess $@ } $ret}
-sub new_string_from_bin { my $ret; eval { $ret =  &xs_new_string_from_bin(@_) }; if ($@) { confess $@ } $ret}
 sub string_object_to_bin { my $ret; eval { $ret =  &xs_string_object_to_bin(@_) }; if ($@) { confess $@ } $ret}
 sub array_length { my $ret; eval { $ret =  &xs_array_length(@_) }; if ($@) { confess $@ } $ret}
 sub array_to_elems { my $ret; eval { $ret =  &xs_array_to_elems(@_) }; if ($@) { confess $@ } $ret}
@@ -388,6 +389,8 @@ Converts a Perl binary to a SPVM C<byte> array and returns it.
 
 The Perl binary is interpreted as 8-bit signed integer. The length of the array is calcurated from the Perl binary.
 
+If the argument is C<undef>, returns C<undef>.
+
 Argument Types:
 
 $binary : L<binary|/"binary">
@@ -405,19 +408,18 @@ Examples:
   my $binary = pack('c*', 97, 98, 99);
   my $spvm_array = $api->new_byte_array_from_bin($binary);
 
+  my $string = "abc";
+  my $spvm_array = $api->new_byte_array_from_bin($string);
+  
+  my $string = "あいう";
+  my $spvm_array = $api->new_byte_array_from_bin($string);
+
+
 =head2 new_byte_array_from_string
 
   my $spvm_array = $api->new_byte_array_from_string($string);
 
 The same as the L</"new_byte_array_from_bin"> method.
-
-Examples:
-
-  my $string = pack("abc");
-  my $spvm_array = $api->new_byte_array_from_bin($string);
-  
-  my $string = pack("あいう");
-  my $spvm_array = $api->new_byte_array_from_bin($string);
 
 =head2 new_short_array
   
@@ -471,6 +473,8 @@ Examples:
 Converts a Perl binary to a SPVM C<short> array and returns it.
 
 The Perl binary is interpreted as 16-bit signed integer. The length of the array is calcurated from the Perl binary.
+
+If the argument is C<undef>, returns C<undef>.
 
 Argument Types:
 
@@ -541,6 +545,8 @@ Examples:
 Converts a Perl binary to a SPVM C<int> array and returns it.
 
 The Perl binary is interpreted as 32-bit signed integer. The length of the array is calcurated from the Perl binary.
+
+If the argument is C<undef>, returns C<undef>.
 
 Argument Types:
 
@@ -616,6 +622,8 @@ Converts a Perl binary to a SPVM C<long> array and returns it.
 
 The Perl binary is interpreted as 64-bit signed integer. The length of the array is calcurated from the Perl binary.
 
+If the argument is C<undef>, returns C<undef>.
+
 Argument Types:
 
 $binary : L<binary|/"binary">
@@ -689,6 +697,8 @@ Examples:
 Converts a Perl binary to a SPVM C<float> array and returns it.
 
 The Perl binary is interpretted as 32-bit floating point. The length of the array is calcurated from the Perl binary.
+
+If the argument is C<undef>, returns C<undef>.
 
 Argument Types:
 
@@ -764,6 +774,8 @@ Converts a Perl binary to a SPVM C<double> array and returns it.
 
 The Perl binary is interpretted as 64-bit floating point. The length of the array is calcurated from the Perl binary.
 
+If the argument is C<undef>, returns C<undef>.
+
 Argument Types:
 
 $binary : L<binary|/"binary">
@@ -805,14 +817,9 @@ Examples:
 
 =head2 new_string_from_bin
 
-  my $binary = pack('c3', 97, 98, 99);
-  my $spvm_string = $api->new_string_from_bin($binary);
+  my $spvm_string = $api->new_string($binary);
 
-Converts a Perl binary to a L<SPVM::BlessedObject::String>.
-
-The Perl binary is interpreted as 8-bit signed integer. The length of the string is calcurated from the Perl binary.
-
-If the argument is C<undef>, returns C<undef>.
+The same as L</"new_string">.
 
 =head2 new_options
 

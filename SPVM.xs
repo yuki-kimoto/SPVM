@@ -2303,54 +2303,6 @@ xs_new_string(...)
 }
 
 SV*
-xs_new_string_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_binary = ST(1);
-  
-  SV* sv_string;
-  if (SvOK(sv_binary)) {
-    if (SvROK(sv_binary)) {
-      croak("The $binary can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    else {
-      STRLEN length;
-      int8_t* binary = (int8_t*)SvPV(sv_binary, length);
-      
-      // New string
-      void* string = env->new_string(env, stack, (const char*)binary, (int32_t)length);
-
-      const char* chars = env->get_chars(env, stack, string);
-      memcpy((char*)chars, binary, length);
-      
-      // New sv string
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    sv_string = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
 xs_new_address_object(...)
   PPCODE:
 {
