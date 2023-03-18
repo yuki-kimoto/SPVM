@@ -717,7 +717,8 @@ xs_call_method(...)
               else {
                 STRLEN length;
                 const char* chars = SvPV(sv_value, length);
-                spvm_value = env->new_string_raw(env, stack, chars, (int32_t)length);
+                spvm_value = env->new_string(env, stack, chars, (int32_t)length);
+                SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_value, "SPVM::BlessedObject::String");
               }
             }
             else {
@@ -2235,7 +2236,8 @@ xs_new_string_array(...)
         STRLEN length;
         const char* chars = SvPV(sv_str_value, length);
         
-        void* string = env->new_string_raw(env, stack, chars, (int32_t)length);
+        void* string = env->new_string(env, stack, chars, (int32_t)length);
+        SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
         env->set_elem_object(env, stack, array, i, string);
       }
       else {
