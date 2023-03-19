@@ -43,7 +43,6 @@ sub new {
 }
 
 # Instance Methods
-sub new_byte_array_from_string { shift->new_byte_array_from_bin(@_) }
 
 sub new_any_object_array {
   my ($self, $array_ref) = @_;
@@ -413,12 +412,6 @@ Examples:
   
   my $string = "あいう";
   my $spvm_array = $api->new_byte_array_from_bin($string);
-
-=head2 new_byte_array_from_string
-
-  my $spvm_array = $api->new_byte_array_from_string($string);
-
-The same as the L</"new_byte_array_from_bin"> method.
 
 =head2 new_short_array
   

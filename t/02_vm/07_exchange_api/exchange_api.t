@@ -394,6 +394,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $sp_values = $api->new_byte_array_from_bin(undef);
       ok(!defined $sp_values);
     }
+    {
+      my $sp_values = $api->new_byte_array_from_bin("\xFF\xFE");
+      is($sp_values->[0], -1);
+      is($sp_values->[1], -2);
+    }
   }
   
   # new_short_array_from_bin
@@ -429,22 +434,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     my $binary = pack('d*', 97, 98, $DOUBLE_PRECICE);
     my $sp_values = $api->new_double_array_from_bin($binary);
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($sp_values));
-  }
-}
-
-# Convert a Perl string to a SPVM array
-{
-  # new_byte_array_from_string
-  {
-    {
-      my $sp_values = $api->new_byte_array_from_string("あいう");
-      ok(SPVM::TestCase::ExchangeAPI->new_byte_array_from_string($sp_values));
-    }
-    {
-      my $sp_values = $api->new_byte_array_from_string("\xFF\xFE");
-      is($sp_values->[0], -1);
-      is($sp_values->[1], -2);
-    }
   }
 }
 
