@@ -31,55 +31,6 @@ sub api {
   return $SPVM::Global::API;
 }
 
-# The following SPVM::xxx functions are deprecated. Use SPVM::api->xxx instead.
-my @deprecated_func_names = qw(
-  new_byte_array
-  new_byte_array_unsigne
-  new_byte_array_len
-  new_byte_array_from_bin
-  new_byte_array_from_string
-  new_short_array
-  new_short_array_unsigned
-  new_short_array_len
-  new_short_array_from_bin
-  new_int_array
-  new_int_array_unsigned
-  new_int_array_len
-  new_int_array_from_bin
-  new_long_array
-  new_long_array_unsigned
-  new_long_array_len
-  new_long_array_from_bin
-  new_float_array
-  new_float_array_len
-  new_float_array_from_bin
-  new_double_array
-  new_double_array_len
-  new_double_array_from_bin
-  new_string
-  new_string_from_bin
-  new_object_array
-  new_object_array_len
-  new_any_object_array
-  new_mulnum_array
-  new_mulnum_array_from_bin
-  new_string_array
-  new_string_array_len
-  get_exception
-  set_exception
-  get_memory_blocks_count
-  call_method
-  new_address_object
-);
-
-for my $func_name (@deprecated_func_names) {
-  no strict 'refs';
-  *{"$func_name"} = sub {
-    # cluck "The SPVM::$func_name function is deprecated";
-    SPVM::api()->$func_name(@_);
-  };
-}
-
 1;
 
 =encoding utf8
@@ -347,57 +298,6 @@ Print debug messages of L<SPVM::Builder::CC> to stderr.
 =head2 SPVM_CC_FORCE
 
 Force the compilation and the link of L<SPVM::Builder::CC>.
-
-=head1 Deprecation
-
-The following SPVM::xxx functions are deprecated. These functions will be removed in the future. Use the methods in the L<SPVM::ExchangeAPI> directly.
-
-  new_byte_array
-  new_byte_array_unsigne
-  new_byte_array_len
-  new_byte_array_from_bin
-  new_byte_array_from_string
-  new_short_array
-  new_short_array_unsigned
-  new_short_array_len
-  new_short_array_from_bin
-  new_int_array
-  new_int_array_unsigned
-  new_int_array_len
-  new_int_array_from_bin
-  new_long_array
-  new_long_array_unsigned
-  new_long_array_len
-  new_long_array_from_bin
-  new_float_array
-  new_float_array_len
-  new_float_array_from_bin
-  new_double_array
-  new_double_array_len
-  new_double_array_from_bin
-  new_string
-  new_string_from_bin
-  new_object_array
-  new_object_array_len
-  new_any_object_array
-  new_mulnum_array
-  new_mulnum_array_from_bin
-  new_string_array
-  new_string_array_len
-  get_exception
-  set_exception
-  get_memory_blocks_count
-  call_method
-  new_address_object
-
-How to rewrite the code:
-  
-  # Before
-  my $int_array = SPVM::new_int_array([1, 2, 3]);
-  
-  # After
-  my $api = SPVM::api();
-  my $int_array = $api->new_int_array([1, 2, 3]);
 
 =head1 Repository
 
