@@ -53,7 +53,9 @@
       -  set_exception
       -  get_memory_blocks_count
       -  call_method
-      -  new_address_object    
+      -  new_address_object
+    * Removed deprecated pointer_t class descriptor. This is now used as pointer descriptor.
+   
 0.9695 2023-03-05
   [Incomaptible Changes]
     * The instance method is always resolved in the runtime from the instance type.

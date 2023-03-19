@@ -453,12 +453,4 @@ use Test::More;
   }
 }
 
-# pointer_t
-{
-  {
-    my $source = q|class MyClass : pointer_t { }|;
-    compile_ok($source);
-  }
-}
-
 done_testing;

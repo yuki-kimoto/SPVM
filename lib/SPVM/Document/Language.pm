@@ -299,7 +299,6 @@ The list of keywords:
   public
   precompile
   pointer
-  pointer_t
   ref
   refcnt
   remui
@@ -2271,14 +2270,6 @@ The list of class attributes.
     </td>
     <td>
       The class is a <a href="#Pointer-Class">pointer class</a>.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>pointer_t</b>
-    </td>
-    <td>
-      The same as pointer_t, but this is deprecated and will be removed</a>.
     </td>
   </tr>
   <tr>
