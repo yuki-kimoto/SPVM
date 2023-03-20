@@ -208,8 +208,6 @@ sub class {
   return $class;
 }
 
-sub new_string_from_bin { shift->new_string(@_) }
-
 # other functions is implemented in SPVM.xs
 
 sub new_byte_array { my $ret; eval { $ret =  &xs_new_byte_array(@_) }; if ($@) { confess $@ } $ret}
@@ -805,13 +803,9 @@ The $string can't be a reference.
 
 Examples:
 
+  my $spvm_string = $api->new_string("abc");
+
   my $spvm_string = $api->new_string("あいう");
-
-=head2 new_string_from_bin
-
-  my $spvm_string = $api->new_string($binary);
-
-The same as L</"new_string">.
 
 =head2 new_any_object_array
 

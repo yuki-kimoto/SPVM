@@ -437,34 +437,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# new_string_from_bin
-{
-  # new_string_from_bin - Argument decoded string, to_string, "" overload
-  {
-    my $sp_string = $api->new_string_from_bin("abc");
-    is($sp_string->to_string, "abc");
-    is("$sp_string", "abc");
-  }
-
-  # new_string_from_bin - Empty
-  {
-    my $sp_string = $api->new_string_from_bin("");
-    is($sp_string->to_string, "");
-  }
-
-  # new_string_from_bin - undef
-  {
-    my $sp_string = $api->new_string_from_bin(undef);
-    ok(!defined $sp_string);
-  }
-
-  # new_string_from_bin - reference
-  {
-    eval { $api->new_string_from_bin([]) };
-    like($@, qr/The \$string can't be a reference/);
-  }
-}
-
 # new_mulnum_array_from_bin
 {
   # new_mulnum_array_from_bin - byte
@@ -804,6 +776,34 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     eval { $api->new_string([]) };
     like($@, qr/The \$string can't be a reference/);
     like($@, qr|XS_SPVM__ExchangeAPI_xs_new_string at SPVM\.xs line \d+|);
+  }
+  
+  # Extra
+  {
+    # new_string - Argument decoded string, to_string, "" overload
+    {
+      my $sp_string = $api->new_string("abc");
+      is($sp_string->to_string, "abc");
+      is("$sp_string", "abc");
+    }
+
+    # new_string - Empty
+    {
+      my $sp_string = $api->new_string("");
+      is($sp_string->to_string, "");
+    }
+
+    # new_string - undef
+    {
+      my $sp_string = $api->new_string(undef);
+      ok(!defined $sp_string);
+    }
+
+    # new_string - reference
+    {
+      eval { $api->new_string([]) };
+      like($@, qr/The \$string can't be a reference/);
+    }
   }
 }
 
