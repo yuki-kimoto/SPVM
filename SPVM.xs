@@ -745,7 +745,7 @@ xs_call_method(...)
               stack[stack_index].oval = spvm_string;
             }
             else if (error == 1) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class can't be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             else {
               assert(0);
@@ -1036,7 +1036,62 @@ xs_call_method(...)
           stack_index++;
           break;
         }
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
+          void* spvm_array = NULL;
+          
+          int32_t error = 0;
+          // Perl undef to SPVM undef
+          if (!SvOK(sv_value)) {
+            spvm_array = NULL;
+          }
+          // Perl array referecne of argument to SPVM array
+          else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
+            SV* sv_elems = sv_value;
+            AV* av_elems = (AV*)SvRV(sv_elems);
+            int32_t length = av_len(av_elems) + 1;
+            spvm_array = env->new_string_array(env, stack, length);
+            for (int32_t i = 0; i < length; i++) {
+              SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
+              SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
+
+              int32_t elem_error = 0;
+              void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &elem_error);
+              
+              if (elem_error == 0) {
+                env->set_elem_object(env, stack, spvm_array, i, spvm_elem);
+              }
+              else if (elem_error == 1) {
+                croak("The %dth element of the %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              }
+              else {
+                assert(0);
+              }
+            }
+            SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+          }
+          else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
+            spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+
+            int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+            int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+            
+            if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && spvm_array_type_dimension == 1)) {
+              error = 1;
+            }
+          }
+          else {
+            error = 1;
+          }
+          
+          if (error) {
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an array reference or a SPVM::BlessedObject::Array object of a string array or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+          }
+          
+          stack[stack_index].oval = spvm_array;
+          
+          stack_index++;
+          break;
+        }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
@@ -1065,7 +1120,7 @@ xs_call_method(...)
                     env->set_elem_object(env, stack, array, i, spvm_elem);
                   }
                   else if (error == 1) {
-                    croak("The %dth element of the %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", i + 1, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                    croak("The %dth element of the %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                   }
                   else {
                     assert(0);
