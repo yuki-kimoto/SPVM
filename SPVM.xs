@@ -736,7 +736,6 @@ xs_call_method(...)
             }
             break;
           }
-          // Perl SPVM::BlessedObject::Class to SPVM class
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
             int32_t error = 0;
             void* spvm_string = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &error);
@@ -763,7 +762,7 @@ xs_call_method(...)
               spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
             }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             stack[stack_index].oval = spvm_value;
             
@@ -773,21 +772,28 @@ xs_call_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
           {
+            int32_t error = 0;
             void* spvm_value;
             if (!SvOK(sv_value)) {
               spvm_value = NULL;
             }
-            else {
-              if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
-                spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                
-                if (!env->isa(env, stack, spvm_value, arg_basic_type_id, arg_type_dimension)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
+            else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
+              spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+              
+              if (!env->isa(env, stack, spvm_value, arg_basic_type_id, arg_type_dimension)) {
+                error = 1;
               }
-              else {
-                croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);           }
             }
+            else {
+              error = 1;
+            }
+            
+            if (error) {
+              void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+              const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
+            }
+            
             stack[stack_index].oval = spvm_value;
             
             stack_index++;
