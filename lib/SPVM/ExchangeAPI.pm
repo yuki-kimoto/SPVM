@@ -186,20 +186,6 @@ sub new_mulnum_array_from_bin {
   return $ret;
 }
 
-sub set_exception {
-  my ($self, $exception) = @_;
-  
-  if (defined $exception && !ref $exception) {
-    $exception = $self->new_string($exception);
-  }
-  
-  my $ret;
-  eval { $ret = $self->_xs_set_exception($exception) };
-  if ($@) { confess $@ }
-  
-  return $ret;
-}
-
 sub class {
   my ($self, $class_name) = @_;
   
@@ -234,6 +220,7 @@ sub new_float_array_len { my $ret; eval { $ret =  &xs_new_float_array_len(@_) };
 sub new_float_array_from_bin { my $ret; eval { $ret =  &xs_new_float_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
 sub new_string_array { my $ret; eval { $ret =  &xs_new_string_array(@_) }; if ($@) { confess $@ } $ret}
 sub get_exception { my $ret; eval { $ret =  &xs_get_exception(@_) }; if ($@) { confess $@ } $ret}
+sub set_exception { my $ret; eval { $ret =  &xs_set_exception(@_) }; if ($@) { confess $@ } $ret}
 sub string_object_to_string { my $ret; eval { $ret =  &xs_string_object_to_string(@_) }; if ($@) { confess $@ } $ret}
 sub get_memory_blocks_count { my $ret; eval { $ret =  &xs_get_memory_blocks_count(@_) }; if ($@) { confess $@ } $ret}
 sub call_method { my $ret; eval { $ret =  &xs_call_method(@_) }; if ($@) { confess $@ } $ret}

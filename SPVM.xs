@@ -3822,7 +3822,7 @@ xs_get_exception(...)
 }
 
 SV*
-_xs_set_exception(...)
+xs_set_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3842,16 +3842,27 @@ _xs_set_exception(...)
   
   SV* sv_exception = ST(1);
   
+  void* obj_exception;
   if (SvOK(sv_exception)) {
-    if (!(sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String"))) {
-      croak("The $message must be a SPVM::BlessedObject::String object");
+    if (sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String")) {
+      obj_exception = SPVM_XS_UTIL_get_object(aTHX_ sv_exception);
     }
-    void* exception = SPVM_XS_UTIL_get_object(aTHX_ sv_exception);
-    env->set_exception(env, stack, exception);
+    else if (SvROK(sv_exception)) {
+      croak("The $exception can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
+    else {
+      STRLEN length;
+      const char* exception = SvPV(sv_exception, length);
+      
+      obj_exception = env->new_string(env, stack, exception, (int32_t)length);
+      SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_exception, "SPVM::BlessedObject::String");
+    }
   }
   else {
-    env->set_exception(env, stack, NULL);
+    obj_exception = NULL;
   }
+  
+  env->set_exception(env, stack, obj_exception);
   
   XSRETURN(0);
 }
