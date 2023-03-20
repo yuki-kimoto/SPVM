@@ -58,7 +58,7 @@ sub new_options {
   my ($self, $options) = @_;
   
   unless (ref $options eq 'HASH') {
-    confess "The options must be a hash reference";
+    confess "The \$options must be a hash reference";
   }
   
   my $array_ref = [];
@@ -75,7 +75,7 @@ sub new_options {
 }
 
 sub new_object_array {
-  my ($self, $type_name, $elems) = @_;
+  my ($self, $type_name, $elements) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -88,29 +88,29 @@ sub new_object_array {
     }
   }
   
-  unless ($type_dimension >= 1 && $type_dimension <= 255) {
-    confess "Invalid type dimension";
-  }
   unless (defined $basic_type_name) {
-    confess "Invalid basic type name";
+    confess "The bacic type name of the \"$type_name\" can't be got";
   }
   
-  unless (defined $elems) {
+  unless ($type_dimension >= 1 && $type_dimension <= 255) {
+    confess "The dimention of the \"$type_name\" type must be greater than or equal to 1 and less than or equal to 255";
+  }
+  
+  unless (defined $elements) {
     return undef;
   }
   
-  # Check second argument
-  unless (ref $elems eq 'ARRAY') {
-    confess "The elements must be an array reference";
+  unless (ref $elements eq 'ARRAY') {
+    confess "The $elements must be an array reference";
   }
   
   my $ret;
   if ($type_dimension == 1) {
-    eval { $ret = $self->_xs_new_object_array($basic_type_name, $elems) };
+    eval { $ret = $self->_xs_new_object_array($basic_type_name, $elements) };
     if ($@) { confess $@ }
   }
   else {
-    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension - 1, $elems) };
+    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension - 1, $elements) };
     if ($@) { confess $@ }
   }
   
