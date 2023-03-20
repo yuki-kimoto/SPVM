@@ -421,7 +421,7 @@ xs_call_method(...)
   SPVM_VALUE ref_stack[256];
   int32_t ref_stack_indexes[256];
 
-  // Arguments
+  // Arguments conversion
   for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
     
     if (args_index >= call_method_args_length) {
@@ -442,6 +442,7 @@ xs_call_method(...)
     
     int32_t arg_type_is_not_ref = !(arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF);
     
+    // Argument conversion
     if (arg_type_dimension == 0) {
       if (arg_type_is_not_ref) {
         switch (arg_basic_type_category) {
@@ -454,42 +455,42 @@ xs_call_method(...)
               Perl_warn(aTHX_ "[Warning]The %dth argument of the \"%s\" method in the \"%s\" doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             switch(arg_basic_type_id) {
-              // Perl scalar to SPVM byte
+              // Argument conversion - Perl scalar to SPVM byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
                 stack_index++;
                 break;
               }
-              // Perl scalar to SPVM short
+              // Argument conversion - Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
                 stack_index++;
                 break;
               }
-              // Perl scalar to SPVM int
+              // Argument conversion - Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
                 stack_index++;
                 break;
               }
-              // Perl scalar to SPVM long
+              // Argument conversion - Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
                 stack_index++;
                 break;
               }
-              // Perl scalar to SPVM float
+              // Argument conversion - Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
                 stack_index++;
                 break;
               }
-              // Perl scalar to SPVM double
+              // Argument conversion - Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;
@@ -646,8 +647,8 @@ xs_call_method(...)
         
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
-            if (!(SvROK(sv_value))) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            if (!(SvROK(sv_value) && sv_derived_from(sv_value , "SCALAR"))) {
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             
             SV* sv_value_deref = SvRV(sv_value);
