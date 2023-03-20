@@ -230,9 +230,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_byte(\$num_byte);
         is($num_byte, $BYTE_MIN + 1);
       }
+      {
+        my $num_byte = "" . $BYTE_MIN;
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_byte(\$num_byte);
+        is($num_byte, $BYTE_MIN + 1);
+      }
       # Argument Perl reference to SPVM short reference
       {
         my $num_short = $SHORT_MIN;
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_short(\$num_short);
+        is($num_short, $SHORT_MIN + 1);
+      }
+      {
+        my $num_short = "" . $SHORT_MIN;
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_short(\$num_short);
         is($num_short, $SHORT_MIN + 1);
       }
@@ -242,9 +252,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_int(\$num_int);
         is($num_int, $INT_MIN + 1);
       }
+      {
+        my $num_int = "" . $INT_MIN;
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_int(\$num_int);
+        is($num_int, $INT_MIN + 1);
+      }
       # Argument Perl reference to SPVM long reference
       {
         my $num_long = $LONG_MIN;
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_long(\$num_long);
+        is($num_long, $LONG_MIN + 1);
+      }
+      {
+        my $num_long = "" . $LONG_MIN;
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_long(\$num_long);
         is($num_long, $LONG_MIN + 1);
       }
@@ -254,9 +274,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_float(\$num_float);
         is($num_float, POSIX::FLT_MIN() + 1);
       }
+      {
+        my $num_float = "" . POSIX::FLT_MIN();
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_float(\$num_float);
+        is($num_float, POSIX::FLT_MIN() + 1);
+      }
       # Argument Perl reference to SPVM double reference
       {
         my $num_double = POSIX::DBL_MIN();
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_double(\$num_double);
+        is($num_double, POSIX::DBL_MIN() + 1);
+      }
+      {
+        my $num_double = "" . POSIX::DBL_MIN();
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_double(\$num_double);
         is($num_double, POSIX::DBL_MIN() + 1);
       }

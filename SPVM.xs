@@ -442,24 +442,15 @@ xs_call_method(...)
     
     if (arg_type_dimension == 0) {
       if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+        args_have_ref = 1;
+        if (!SvROK(sv_value)) {
+          croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+        }
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             switch (arg_basic_type_id) {
               // Perl reference to SPVM byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                args_have_ref = 1;
-                
-                int32_t is_iok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
-                }
-                else {
-                  is_iok_scalar_ref = 0;
-                }
-                
-                if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 
                 SV* sv_value_deref = SvRV(sv_value);
                 int8_t value = (int8_t)SvIV(sv_value_deref);
@@ -472,17 +463,6 @@ xs_call_method(...)
               }
               // Perl reference to SPVM short reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                args_have_ref = 1;
-                int32_t is_iok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
-                }
-                else {
-                  is_iok_scalar_ref = 0;
-                }
-                if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 SV* sv_value_deref = SvRV(sv_value);
                 int16_t value = (int16_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].sval = value;
@@ -494,17 +474,6 @@ xs_call_method(...)
               }
               // Perl reference to SPVM int reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                args_have_ref = 1;
-                int32_t is_iok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
-                }
-                else {
-                  is_iok_scalar_ref = 0;
-                }
-                if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 SV* sv_value_deref = SvRV(sv_value);
                 int32_t value = (int32_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].ival = value;
@@ -516,17 +485,6 @@ xs_call_method(...)
               }
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                args_have_ref = 1;
-                int32_t is_iok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_iok_scalar_ref = SvIOK(SvRV(sv_value));
-                }
-                else {
-                  is_iok_scalar_ref = 0;
-                }
-                if (!is_iok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 SV* sv_value_deref = SvRV(sv_value);
                 int64_t value = (int64_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].lval = value;
@@ -538,17 +496,6 @@ xs_call_method(...)
               }
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                args_have_ref = 1;
-                int32_t is_nok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_nok_scalar_ref = SvNOK(SvRV(sv_value));
-                }
-                else {
-                  is_nok_scalar_ref = 0;
-                }
-                if (!is_nok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 SV* sv_value_deref = SvRV(sv_value);
                 float value = (float)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].fval = value;
@@ -560,17 +507,6 @@ xs_call_method(...)
               }
               // Perl reference to SPVM double reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                args_have_ref = 1;
-                int32_t is_nok_scalar_ref;
-                if (SvROK(sv_value)) {
-                  is_nok_scalar_ref = SvNOK(SvRV(sv_value));
-                }
-                else {
-                  is_nok_scalar_ref = 0;
-                }
-                if (!is_nok_scalar_ref) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                }
                 SV* sv_value_deref = SvRV(sv_value);
                 double value = (double)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].dval = value;
@@ -585,18 +521,13 @@ xs_call_method(...)
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
-            args_have_ref = 1;
             HV* hv_value = NULL;
-            if (SvOK(sv_value)) {
-              if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
-                SV* hv_value_ref = SvRV(sv_value);
-                if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-                  hv_value = (HV*)SvRV(hv_value_ref);
-                }
-              }
+            SV* hv_value_ref = SvRV(sv_value);
+            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
+              hv_value = (HV*)SvRV(hv_value_ref);
             }
             if (hv_value == NULL) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference of a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference of a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);

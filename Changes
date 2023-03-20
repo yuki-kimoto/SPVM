@@ -59,6 +59,7 @@
     * Removed the new_string_from_bin method in the SPVM::Exchange::API.
   [Bug Fix]
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric.
+    * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric reference.
     
   [Exception Message Improvement]
     * Improved exception messages in SPVM::ExchangeAPI.
