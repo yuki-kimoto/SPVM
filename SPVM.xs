@@ -563,6 +563,11 @@ xs_call_method(...)
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
+            // Perl hash reference to SPVM multi numeric type
+            if (!(SvROK(sv_value) && sv_derived_from(sv_value, "HASH"))) {
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            }
+
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, arg_class_id);
@@ -570,66 +575,60 @@ xs_call_method(...)
             int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_class_field_type_id);
             assert(arg_class_field_type_basic_type_id >= 0);
             
-            // Perl hash reference to SPVM multi numeric type
-            if (SvROK(sv_value) && sv_derived_from(sv_value, "HASH")) {
-              HV* hv_value = (HV*)SvRV(sv_value);
-              for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
-                int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
-                int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+            HV* hv_value = (HV*)SvRV(sv_value);
+            for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
+              int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
+              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
 
-                const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
-                SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-                SV* sv_field_value;
-                if (sv_field_value_ptr) {
-                  sv_field_value = *sv_field_value_ptr;
+              const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
+              SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
+              SV* sv_field_value;
+              if (sv_field_value_ptr) {
+                sv_field_value = *sv_field_value_ptr;
+              }
+              else {
+                int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
+                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
+                croak("The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
+              }
+              
+              switch (arg_class_field_type_basic_type_id) {
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                  int8_t value = (int8_t)SvIV(sv_field_value);
+                  stack[stack_index + field_index].bval = value;
+                  break;
                 }
-                else {
-                  int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
-                  const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                  croak("The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                  int16_t value = (int16_t)SvIV(sv_field_value);
+                  stack[stack_index + field_index].sval = value;
+                  break;
                 }
-                
-                switch (arg_class_field_type_basic_type_id) {
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    int8_t value = (int8_t)SvIV(sv_field_value);
-                    stack[stack_index + field_index].bval = value;
-                    break;
-                  }
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    int16_t value = (int16_t)SvIV(sv_field_value);
-                    stack[stack_index + field_index].sval = value;
-                    break;
-                  }
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    int32_t value = (int32_t)SvIV(sv_field_value);
-                    stack[stack_index + field_index].ival = value;
-                    break;
-                  }
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    int64_t value = (int64_t)SvIV(sv_field_value);
-                    stack[stack_index + field_index].lval = value;
-                    break;
-                  }
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    float value = (float)SvNV(sv_field_value);
-                    stack[stack_index + field_index].fval = value;
-                    break;
-                  }
-                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    double value = (double)SvNV(sv_field_value);
-                    stack[stack_index + field_index].dval = value;
-                    break;
-                  }
-                  default: {
-                    assert(0);
-                  }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                  int32_t value = (int32_t)SvIV(sv_field_value);
+                  stack[stack_index + field_index].ival = value;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                  int64_t value = (int64_t)SvIV(sv_field_value);
+                  stack[stack_index + field_index].lval = value;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                  float value = (float)SvNV(sv_field_value);
+                  stack[stack_index + field_index].fval = value;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                  double value = (double)SvNV(sv_field_value);
+                  stack[stack_index + field_index].dval = value;
+                  break;
+                }
+                default: {
+                  assert(0);
                 }
               }
-              stack_index += arg_class_fields_length;
             }
-            else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
+            stack_index += arg_class_fields_length;
             break;
           }
           default: {
