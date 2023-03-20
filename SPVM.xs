@@ -672,8 +672,8 @@ xs_call_method(...)
             switch(arg_basic_type_id) {
               // Perl scalar to SPVM byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
@@ -682,8 +682,8 @@ xs_call_method(...)
               }
               // Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
@@ -692,8 +692,8 @@ xs_call_method(...)
               }
               // Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
@@ -702,8 +702,8 @@ xs_call_method(...)
               }
               // Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
@@ -712,8 +712,8 @@ xs_call_method(...)
               }
               // Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
@@ -722,8 +722,8 @@ xs_call_method(...)
               }
               // Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
-                if (!(SvOK(sv_value) && SvNIOK(sv_value))) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                 }
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;

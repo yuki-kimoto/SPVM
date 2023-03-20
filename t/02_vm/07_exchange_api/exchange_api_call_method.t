@@ -108,10 +108,18 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $total = SPVM::TestCase->sum_byte(8, 3);
       is($total, 11);
     }
+    {
+      my $total = SPVM::TestCase->sum_byte("8", "3");
+      is($total, 11);
+    }
 
     # Perl scalar to SPVM short
     {
       my $total = SPVM::TestCase->sum_short(8, 3);
+      is($total, 11);
+    }
+    {
+      my $total = SPVM::TestCase->sum_short("8", "3");
       is($total, 11);
     }
 
@@ -120,11 +128,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $total = SPVM::TestCase->sum_int(8, 3);
       is($total, 11);
     }
+    {
+      my $total = SPVM::TestCase->sum_int("8", "3");
+      is($total, 11);
+    }
 
     # Perl scalar to SPVM long
     {
       {
         my $total = SPVM::TestCase->sum_long(8, 3);
+        is($total, 11);
+      }
+      {
+        my $total = SPVM::TestCase->sum_long("8", "3");
         is($total, 11);
       }
       {
@@ -138,10 +154,18 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $total = SPVM::TestCase->sum_float(0.25, 0.25);
       cmp_ok($total, '==', 0.5);
     }
+    {
+      my $total = SPVM::TestCase->sum_float("0.25", "0.25");
+      cmp_ok($total, '==', 0.5);
+    }
 
     # Perl scalar to SPVM double
     {
       my $total = SPVM::TestCase->sum_double(0.25, 0.25);
+      cmp_ok($total, '==', 0.5);
+    }
+    {
+      my $total = SPVM::TestCase->sum_double("0.25", "0.25");
       cmp_ok($total, '==', 0.5);
     }
   }
@@ -1282,7 +1306,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $list = SPVM::IntList->new([]);
     eval { $list->push(undef) };
-    like($@, qr|The 1th argument of the "push" method in the "IntList" class must be a number|);
+    like($@, qr|The 1th argument of the "push" method in the "IntList" class must be a non-reference scalar|);
   }
   {
     eval { SPVM::IntList->new(1) };

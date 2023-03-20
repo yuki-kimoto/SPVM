@@ -57,6 +57,9 @@
     * Removed deprecated pointer_t class descriptor. This is now used as pointer descriptor.
     * Removed the new_byte_array_from_string method in the SPVM::Exchange::API.
     * Removed the new_string_from_bin method in the SPVM::Exchange::API.
+  [Bug Fix]
+    * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric.
+    
   [Exception Message Improvement]
     * Improved exception messages in SPVM::ExchangeAPI.
 0.9695 2023-03-05
