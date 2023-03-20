@@ -1057,24 +1057,18 @@ xs_call_method(...)
                 for (int32_t i = 0; i < length; i++) {
                   SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
                   SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-                  if (!SvOK(sv_elem)) {
-                    env->set_elem_object(env, stack, array, i, NULL);
+
+                  int32_t error = 0;
+                  void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &error);
+                  
+                  if (error == 0) {
+                    env->set_elem_object(env, stack, array, i, spvm_elem);
+                  }
+                  else if (error == 1) {
+                    croak("The %dth element of the %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", i + 1, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
                   }
                   else {
-                    if (!SvROK(sv_elem)) {
-                      STRLEN length;
-                      const char* chars = SvPV(sv_elem, length);
-                      void* string = env->new_string(env, stack, chars, (int32_t)length);
-                      SV* sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
-                      sv_elem = sv_string;
-                    }
-                    if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
-                      void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
-                      env->set_elem_object(env, stack, array, i, object);
-                    }
-                    else {
-                      croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-                    }
+                    assert(0);
                   }
                 }
                 SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
