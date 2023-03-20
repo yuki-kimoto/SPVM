@@ -459,48 +459,43 @@ xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
                 int8_t value = (int8_t)SvIV(sv_value);
                 stack[stack_index].bval = value;
-                stack_index++;
                 break;
               }
               // Argument conversion - Perl scalar to SPVM short
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
                 int16_t value = (int16_t)SvIV(sv_value);
                 stack[stack_index].sval = value;
-                stack_index++;
                 break;
               }
               // Argument conversion - Perl scalar to SPVM int
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 int32_t value = (int32_t)SvIV(sv_value);
                 stack[stack_index].ival = value;
-                stack_index++;
                 break;
               }
               // Argument conversion - Perl scalar to SPVM long
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 int64_t value = (int64_t)SvIV(sv_value);
                 stack[stack_index].lval = value;
-                stack_index++;
                 break;
               }
               // Argument conversion - Perl scalar to SPVM float
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 float value = (float)SvNV(sv_value);
                 stack[stack_index].fval = value;
-                stack_index++;
                 break;
               }
               // Argument conversion - Perl scalar to SPVM double
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 double value = (double)SvNV(sv_value);
                 stack[stack_index].dval = value;
-                stack_index++;
                 break;
               }
               default: {
                 assert(0);
               }
             }
+            stack_index++;
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
