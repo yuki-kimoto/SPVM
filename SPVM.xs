@@ -2275,23 +2275,22 @@ xs_new_string(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_value = ST(1);
+  SV* sv_string = ST(1);
   
-  SV* sv_string;
-  if (SvOK(sv_value)) {
-    if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-      sv_string = sv_value;
+  if (SvOK(sv_string)) {
+    if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
+      // Nothing
     }
-    else if (SvROK(sv_value)) {
+    else if (SvROK(sv_string)) {
       croak("The $string can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
-      STRLEN length = -1;
-      const char* value = SvPV(sv_value, length);
+      STRLEN length;
+      const char* string = SvPV(sv_string, length);
       
-      void* string = env->new_string(env, stack, value, (int32_t)length);
+      void* obj_string = env->new_string(env, stack, string, (int32_t)length);
       
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
+      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_string, "SPVM::BlessedObject::String");
     }
   }
   else {
