@@ -112,6 +112,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $total = SPVM::TestCase->sum_byte("8", "3");
       is($total, 11);
     }
+    {
+      my $total = SPVM::TestCase->sum_byte("8ab", "3");
+      is($total, 11);
+    }
 
     # Perl scalar to SPVM short
     {
