@@ -152,6 +152,39 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   return stack;
 }
 
+void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, SV* sv_string, int32_t* error) {
+  *error = 0;
+
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  void* spvm_string;
+  
+  if (SvOK(sv_string)) {
+    if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
+      spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_string);
+    }
+    else if (SvROK(sv_string)) {
+      spvm_string = NULL;
+      *error = 1;
+    }
+    else {
+      STRLEN length;
+      const char* chars = SvPV(sv_string, length);
+      spvm_string = env->new_string(env, stack, chars, (int32_t)length);
+      SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, spvm_string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    spvm_string = NULL;
+  }
+  
+  return spvm_string;
+}
+
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
@@ -705,27 +738,18 @@ xs_call_method(...)
           }
           // Perl SPVM::BlessedObject::Class to SPVM class
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
-            void* spvm_string;
+            int32_t error = 0;
+            void* spvm_string = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &error);
             
-            if (SvOK(sv_value)) {
-              if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-                spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-              }
-              else if (SvROK(sv_value)) {
-                croak("The %dth argument of the \"%s\" method in the \"%s\" class can't be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-              }
-              else {
-                STRLEN length;
-                const char* chars = SvPV(sv_value, length);
-                spvm_string = env->new_string(env, stack, chars, (int32_t)length);
-                SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_string, "SPVM::BlessedObject::String");
-              }
+            if (error == 0) {
+              stack[stack_index].oval = spvm_string;
+            }
+            else if (error == 1) {
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class can't be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             else {
-              spvm_string = NULL;
+              assert(0);
             }
-            
-            stack[stack_index].oval = spvm_string;
             
             stack_index++;
             break;
