@@ -239,6 +239,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
         SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_byte(\$num_byte);
         is($num_byte, $BYTE_MIN + 1);
       }
+      {
+        my $num_byte = "" . $BYTE_MIN . "ab";
+        SPVM::TestCase::ExchangeAPI->call_method_numeric_ref_arg_byte(\$num_byte);
+        is($num_byte, $BYTE_MIN + 1);
+      }
       # Argument Perl reference to SPVM short reference
       {
         my $num_short = $SHORT_MIN;

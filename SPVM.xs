@@ -451,7 +451,7 @@ xs_call_method(...)
             }
             
             if (!looks_like_number(sv_value)) {
-              Perl_warn(aTHX_ "[Warning]The %dth argument of the \"%s\" method in the \"%s\" doesn't looks like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              Perl_warn(aTHX_ "[Warning]The %dth argument of the \"%s\" method in the \"%s\" doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             switch(arg_basic_type_id) {
               // Perl scalar to SPVM byte
@@ -643,92 +643,74 @@ xs_call_method(...)
       // Reference argument
       else {
         args_have_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-        }
+        
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
+            if (!(SvROK(sv_value))) {
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            }
+            
+            SV* sv_value_deref = SvRV(sv_value);
+            
+            if (!looks_like_number(sv_value_deref)) {
+              Perl_warn(aTHX_ "[Warning]The dereference value of the %dth argument of the \"%s\" method in the \"%s\" class doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            }
+        
             switch (arg_basic_type_id) {
               // Perl reference to SPVM byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                
-                SV* sv_value_deref = SvRV(sv_value);
                 int8_t value = (int8_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].bval = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
               // Perl reference to SPVM short reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                SV* sv_value_deref = SvRV(sv_value);
                 int16_t value = (int16_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].sval = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
               // Perl reference to SPVM int reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                SV* sv_value_deref = SvRV(sv_value);
                 int32_t value = (int32_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].ival = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                SV* sv_value_deref = SvRV(sv_value);
                 int64_t value = (int64_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].lval = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
               // Perl reference to SPVM long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                SV* sv_value_deref = SvRV(sv_value);
                 float value = (float)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].fval = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
               // Perl reference to SPVM double reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                SV* sv_value_deref = SvRV(sv_value);
                 double value = (double)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].dval = value;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
-                ref_stack_indexes[args_index] = ref_stack_index;
-                ref_stack_index++;
-                stack_index++;
                 break;
               }
             }
+            
+            stack[stack_index].oval = &ref_stack[ref_stack_index];
+            ref_stack_indexes[args_index] = ref_stack_index;
+            ref_stack_index++;
+            stack_index++;
+            
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
-            HV* hv_value = NULL;
-            SV* hv_value_ref = SvRV(sv_value);
-            if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              hv_value = (HV*)SvRV(hv_value_ref);
-            }
-            if (hv_value == NULL) {
+            if (!(SvROK(sv_value) && SvROK(SvRV(sv_value)) && sv_derived_from(SvRV(sv_value) , "HASH"))) {
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference of a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
+            
+            SV* hv_value_ref = SvRV(sv_value);
+            
+            HV* hv_value = (HV*)SvRV(hv_value_ref);
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, arg_class_id);
