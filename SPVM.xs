@@ -79,13 +79,13 @@ void* SPVM_XS_UTIL_get_object(pTHX_ SV* sv_data) {
 SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   
   SPVM_ENV* env;
-  if (sv_derived_from(sv_env, "SPVM::Builder::Env")) {
+  if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Env")) {
     HV* hv_env = (HV*)SvRV(sv_env);
     SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
     SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
     env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
   }
-  else if (sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
+  else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
     HV* hv_env = (HV*)SvRV(sv_env);
     
     // Stack
@@ -117,13 +117,13 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
 SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack;
-  if (sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
+  if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
     HV* hv_stack = (HV*)SvRV(sv_stack);
     SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
     SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
     stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
   }
-  else if (sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
+  else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
     HV* hv_stack = (HV*)SvRV(sv_stack);
     
     // Stack
@@ -154,7 +154,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
 
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
+  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
     *sv_error = sv_2mortal(newSVpvf("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
     return NULL;
   }
@@ -180,7 +180,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
     SV** sv_element_ptr = av_fetch(av_elems, index, 0);
     SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
 
-    if (sv_derived_from(sv_element, "HASH")) {
+    if (SvROK(sv_element) && sv_derived_from(sv_element, "HASH")) {
       
       int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
       int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
@@ -289,7 +289,7 @@ xs_call_method(...)
   int32_t class_method_call;
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
-    if (!sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class")) {
+    if (!(sv_isobject(sv_invocant) && sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class"))) {
       croak("The $invocant must be a SPVM::BlessedObject::Class object");
     }
     
@@ -779,7 +779,7 @@ xs_call_method(...)
             assert(arg_class_field_type_basic_type_id >= 0);
             
             // Perl hash reference to SPVM multi numeric type
-            if (sv_derived_from(sv_value, "HASH")) {
+            if (SvROK(sv_value) && sv_derived_from(sv_value, "HASH")) {
               HV* hv_value = (HV*)SvRV(sv_value);
               for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
                 int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
@@ -2218,7 +2218,7 @@ xs_new_string_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
 
@@ -2279,7 +2279,7 @@ xs_new_string(...)
   
   SV* sv_string;
   if (SvOK(sv_value)) {
-    if (sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
+    if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
       sv_string = sv_value;
     }
     else if (SvROK(sv_value)) {
@@ -2360,7 +2360,7 @@ xs_new_byte_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2415,7 +2415,7 @@ xs_new_byte_array_unsigned(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2550,7 +2550,7 @@ xs_new_short_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2605,7 +2605,7 @@ xs_new_short_array_unsigned(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2743,7 +2743,7 @@ xs_new_int_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2797,7 +2797,7 @@ xs_new_int_array_unsigned(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2932,7 +2932,7 @@ xs_new_long_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -2987,7 +2987,7 @@ xs_new_long_array_unsigned(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -3123,7 +3123,7 @@ xs_new_float_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -3256,7 +3256,7 @@ xs_new_double_array(...)
   
   SV* sv_array;
   if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
@@ -3473,7 +3473,7 @@ _xs_new_object_array(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_elems = ST(2);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
+  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
     croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
@@ -3551,7 +3551,7 @@ _xs_new_muldim_array(...)
   SV* sv_element_type_dimension = ST(2);
   SV* sv_elems = ST(3);
   
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
+  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
     croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
