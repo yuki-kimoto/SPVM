@@ -89,7 +89,7 @@ sub new_object_array {
   }
   
   unless (defined $basic_type_name) {
-    confess "The bacic type name of the \"$type_name\" can't be got";
+    confess "The bacic type of the \"$type_name\" type can't be got";
   }
   
   unless ($type_dimension >= 1 && $type_dimension <= 255) {
@@ -119,7 +119,7 @@ sub new_object_array {
 }
 
 sub new_mulnum_array {
-  my ($self, $type_name, $elems) = @_;
+  my ($self, $type_name, $elements) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -132,24 +132,24 @@ sub new_mulnum_array {
     }
   }
   
-  unless ($type_dimension == 1) {
-    confess "Invalid type dimension";
-  }
   unless (defined $basic_type_name) {
-    confess "Invalid basic type name";
+    confess "The bacic type of the \"$type_name\" type can't be got";
   }
-
-  unless (defined $elems) {
+  
+  unless ($type_dimension == 1) {
+    confess "The dimention of the \"$type_name\" type must be 1";
+  }
+  
+  unless (defined $elements) {
     return undef;
   }
   
-  # Check second argument
-  unless (ref $elems eq 'ARRAY') {
-    confess "The elements must be an array reference";
+  unless (ref $elements eq 'ARRAY') {
+    confess "The \$elements must be an array reference";
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $elems) };
+  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $elements) };
   if ($@) { confess $@ }
   
   return $ret;
