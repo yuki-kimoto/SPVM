@@ -1014,14 +1014,12 @@ xs_call_method(...)
     }
     else if (arg_type_dimension > 1) {
       
+      // Argument conversion -  Perl array referecne to SPVM multi-dimensional array
       int32_t error = 0;
       void* spvm_array;
-      
-      // Perl undef to SPVM undef
       if (!SvOK(sv_value)) {
         spvm_array = NULL;
       }
-      // Perl array referecne to SPVM array
       else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
         spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
         
