@@ -188,7 +188,7 @@ void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack
 void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-    *sv_error = sv_2mortal(newSVpvf("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
+    *sv_error = sv_2mortal(newSVpvf("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
     return NULL;
   }
   
@@ -2124,7 +2124,7 @@ xs_new_string_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
 
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -2329,7 +2329,7 @@ xs_new_byte_array_unsigned(...)
   void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2468,11 +2468,11 @@ xs_new_short_array(...)
   
   SV* sv_elems = ST(1);
   
-  // The same as argument conversion - byte array
+  // The same as argument conversion - short array
   void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2535,7 +2535,7 @@ xs_new_short_array_unsigned(...)
   void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2682,10 +2682,11 @@ xs_new_int_array(...)
   
   SV* sv_elems = ST(1);
   
-  SV* sv_array;
+  // The same as argument conversion - int array
+  void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2695,7 +2696,7 @@ xs_new_int_array(...)
     int32_t length = av_len(av_elems) + 1;
     
     // New array
-    void* array = env->new_int_array(env, stack, length);
+    array = env->new_int_array(env, stack, length);
     
     // Copy Perl elements to SPVM erlements
     int32_t* elems = env->get_elems_int(env, stack, array);
@@ -2704,13 +2705,16 @@ xs_new_int_array(...)
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
       elems[i] = (int32_t)SvIV(sv_value);
     }
-    
-    // New SPVM::BlessedObject::Array object
+  }
+  
+  SV* sv_array;
+  if (array) {
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
   }
+  
   XPUSHs(sv_array);
   XSRETURN(1);
 }
@@ -2736,10 +2740,11 @@ xs_new_int_array_unsigned(...)
   
   SV* sv_elems = ST(1);
   
-  SV* sv_array;
+  // The same as argument conversion - byte array, but the element is interpretted unsigned 8bit integer.
+  void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2749,22 +2754,30 @@ xs_new_int_array_unsigned(...)
     int32_t length = av_len(av_elems) + 1;
     
     // New array
-    void* array = env->new_int_array(env, stack, length);
+    array = env->new_int_array(env, stack, length);
     
     // Copy Perl elements to SPVM erlements
     int32_t* elems = env->get_elems_int(env, stack, array);
     for (int32_t i = 0; i < length; i++) {
       SV** sv_value_ptr = av_fetch(av_elems, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      
+      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      }
+      
       elems[i] = (uint32_t)SvUV(sv_value);
     }
-    
-    // New SPVM::BlessedObject::Array object
+  }
+  
+  SV* sv_array;
+  if (array) {
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
   }
+  
   XPUSHs(sv_array);
   XSRETURN(1);
 }
@@ -2830,6 +2843,11 @@ xs_new_int_array_from_bin(...)
   SV* sv_array;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
+    
+    if (!(binary_length % 4 == 0)) {
+      croak("The length of the $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
+    
     int32_t array_length = binary_length / sizeof(int32_t);
     int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
     
@@ -2843,7 +2861,7 @@ xs_new_int_array_from_bin(...)
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
-    sv_array = &PL_sv_undef;
+    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2874,7 +2892,7 @@ xs_new_long_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -2929,7 +2947,7 @@ xs_new_long_array_unsigned(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Elements
@@ -3065,7 +3083,7 @@ xs_new_float_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3198,7 +3216,7 @@ xs_new_double_array(...)
   SV* sv_array;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
@@ -3415,7 +3433,7 @@ _xs_new_object_array(...)
   SV* sv_elems = ST(2);
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-    croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3493,7 +3511,7 @@ _xs_new_muldim_array(...)
   SV* sv_elems = ST(3);
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-    croak("The elements must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   AV* av_elems = (AV*)SvRV(sv_elems);
