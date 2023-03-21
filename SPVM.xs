@@ -778,7 +778,7 @@ xs_call_method(...)
     else if (arg_type_dimension == 1) {
       switch (arg_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
-          void* spvm_array;
+          void* spvm_array = NULL;
           
           // Argument conversion -  Perl array referecne to SPVM numeric array
           if (!SvOK(sv_value)) {
@@ -888,45 +888,41 @@ xs_call_method(...)
         }
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
-          // Perl undef to SPVM undef
+          void* spvm_array = NULL;
+          
+          // Argument conversion -  Perl array referecne to SPVM multi-numeric array
           if (!SvOK(sv_value)) {
-            stack[stack_index].oval = NULL;
+            spvm_array = NULL;
+          }
+          else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
+            SV* sv_elems = sv_value;
+            AV* av_elems = (AV*)SvRV(sv_elems);
+            int32_t length = av_len(av_elems) + 1;
+            
+            SV* sv_error = NULL;
+            const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id));
+            spvm_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ env, stack, arg_basic_type_name, sv_value, &sv_error);
+            if (sv_error) {
+              croak_sv(sv_error);
+            }
+            SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+          }
+          else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
+            spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+            
+            int32_t isa = env->isa(env, stack, spvm_array, arg_basic_type_id, arg_type_dimension);
+            if (!isa) {
+              void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
+              const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
+              croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+            }
           }
           else {
-            // Argument conversion -  Perl array referecne to SPVM array
-            if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
-              
-              SV* sv_elems = sv_value;
-              AV* av_elems = (AV*)SvRV(sv_elems);
-              int32_t length = av_len(av_elems) + 1;
-              
-              SV* sv_error = NULL;
-              const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id));
-              void* array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ env, stack, arg_basic_type_name, sv_value, &sv_error);
-              if (sv_error) {
-                croak_sv(sv_error);
-              }
-              SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-              sv_value = sv_array;
-            }
-            
-            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-              void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-              
-              int32_t isa = env->isa(env, stack, object, arg_basic_type_id, arg_type_dimension);
-              if (!isa) {
-                void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
-                const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-                croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-              }
-              
-              stack[stack_index].oval = object;
-            }
-            else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an array reference or a SPVM::BlessedObject::Array object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
           }
           
+          stack[stack_index].oval = spvm_array;
+            
           stack_index++;
           break;
         }
