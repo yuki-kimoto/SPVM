@@ -915,7 +915,7 @@ xs_call_method(...)
             if (!isa) {
               void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
               const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-              croak("The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", compile_type_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be \"%s\" type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
             }
           }
           else {
