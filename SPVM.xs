@@ -903,6 +903,7 @@ xs_call_method(...)
             const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id));
             spvm_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ env, stack, arg_basic_type_name, sv_value, &sv_error);
             if (sv_error) {
+              croak("%s specified at the %dth argument of the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", SvPV_nolen(sv_error), args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               croak_sv(sv_error);
             }
             SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
