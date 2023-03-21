@@ -391,8 +391,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     
     {
-      my $sp_values = $api->new_byte_array_from_bin(undef);
-      ok(!defined $sp_values);
+      eval { my $sp_values = $api->new_byte_array_from_bin(undef); };
+      ok($@);
     }
     {
       my $sp_values = $api->new_byte_array_from_bin("\xFF\xFE");

@@ -10,7 +10,6 @@
     * Improved the new_string_from_bin method in the SPVM::ExchangeAPI class.
   [Incompatible Changes]
     * The new_string method in the SPVM::ExchangeAPI can receive undef.
-    * The new_byte_array_from_bin method in the SPVM::ExchangeAPI can receive undef.
     * The new_string_from_bin method in the SPVM::ExchangeAPI can receive undef.
     * The new_string_from_bin in the SPVM::ExchangeAPI is the same as the new_string method.
     * Removed deprecated SPVM functions. This is now used from SPVM::Exchange::API.
@@ -57,6 +56,8 @@
     * Removed deprecated pointer_t class descriptor. This is now used as pointer descriptor.
     * Removed the new_byte_array_from_string method in the SPVM::Exchange::API.
     * Removed the new_string_from_bin method in the SPVM::Exchange::API.
+    * The new_byte_array method in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_byte_array_unsigned in the SPVM::ExchangeAPI throw an exception when the element is a reference.
   [Bug Fix]
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric.
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric reference.
