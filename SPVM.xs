@@ -152,9 +152,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   return stack;
 }
 
-void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, SV* sv_string, int32_t* error) {
-  *error = 0;
-
+void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, SV* sv_string) {
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
@@ -166,10 +164,6 @@ void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack
   if (SvOK(sv_string)) {
     if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
       spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_string);
-    }
-    else if (SvROK(sv_string)) {
-      spvm_string = NULL;
-      *error = 1;
     }
     else {
       STRLEN length;
@@ -447,13 +441,6 @@ xs_call_method(...)
       if (arg_type_is_not_ref) {
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
-            if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
-            
-            if (!looks_like_number(sv_value)) {
-              Perl_warn(aTHX_ "[Warning]The %dth argument of the \"%s\" method in the \"%s\" doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
             switch(arg_basic_type_id) {
               // Argument conversion - byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
@@ -500,11 +487,7 @@ xs_call_method(...)
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
             // Argument conversion - string
-            int32_t error = 0;
-            void* spvm_string = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &error);
-            if (error) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
+            void* spvm_string = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_value);
             
             stack[stack_index].oval = spvm_string;
               
@@ -647,10 +630,6 @@ xs_call_method(...)
             
             SV* sv_value_deref = SvRV(sv_value);
             
-            if (!looks_like_number(sv_value_deref)) {
-              Perl_warn(aTHX_ "[Warning]The dereference value of the %dth argument of the \"%s\" method in the \"%s\" class doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
-        
             switch (arg_basic_type_id) {
               // Argument conversion - byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -948,17 +927,9 @@ xs_call_method(...)
               SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
 
               int32_t elem_error = 0;
-              void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &elem_error);
+              void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem);
               
-              if (elem_error == 0) {
-                env->set_elem_object(env, stack, spvm_array, i, spvm_elem);
-              }
-              else if (elem_error == 1) {
-                croak("The %dth element of the %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-              }
-              else {
-                assert(0);
-              }
+              env->set_elem_object(env, stack, spvm_array, i, spvm_elem);
             }
             SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
           }
