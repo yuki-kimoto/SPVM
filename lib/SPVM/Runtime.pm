@@ -106,7 +106,7 @@ Builds the C source code of the class that contains C<precompile> methods and re
 
 =head2 get_anon_class_names
 
-  method get_anon_class_names : string ($class_name : string);
+  method get_anon_class_names : string[] ($class_name : string);
 
 Gets the anon class names and returns it.
 
