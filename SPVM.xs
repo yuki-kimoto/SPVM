@@ -451,9 +451,6 @@ xs_call_method(...)
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             
-            if (!looks_like_number(sv_value)) {
-              Perl_warn(aTHX_ "[Warning]The %dth argument of the \"%s\" method in the \"%s\" doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
             switch(arg_basic_type_id) {
               // Argument conversion - byte
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
@@ -647,10 +644,6 @@ xs_call_method(...)
             
             SV* sv_value_deref = SvRV(sv_value);
             
-            if (!looks_like_number(sv_value_deref)) {
-              Perl_warn(aTHX_ "[Warning]The dereference value of the %dth argument of the \"%s\" method in the \"%s\" class doesn't look like a number\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-            }
-        
             switch (arg_basic_type_id) {
               // Argument conversion - byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
