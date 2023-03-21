@@ -1194,11 +1194,9 @@ xs_call_method(...)
         }
         break;
       }
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
       case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
       {
-        // Return value conversion - class or interface or any object
+        // Return value conversion - any object
         void* return_value = (void*)stack[0].oval;
         sv_return_value = NULL;
         if (return_value != NULL) {
@@ -1218,24 +1216,40 @@ xs_call_method(...)
         }
         break;
       }
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
+      {
+        // Return value conversion - class or interface
+        void* return_value = (void*)stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, stack, return_value);
+          sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
+        }
+        // undef
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+        break;
+      }
       default: {
         assert(0);
       }
     }
   }
   else if (method_return_type_dimension > 0) {
+    // Return value conversion - array
     void* return_value = (void*)stack[0].oval;
     sv_return_value = NULL;
     if (return_value != NULL) {
       env->inc_ref_count(env, stack, return_value);
       sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
     }
-    // undef
     else {
       sv_return_value = &PL_sv_undef;
     }
   }
-
+  
   // Restore reference value
   if (args_have_ref) {
     for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
@@ -1345,6 +1359,7 @@ xs_call_method(...)
       }
     }
   }
+  
   int32_t return_count;
   if (method_return_type_dimension == 0 && method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID) {
     return_count = 0;
