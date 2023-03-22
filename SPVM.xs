@@ -1483,7 +1483,7 @@ xs_call_method(...)
           {
             // Argument conversion - multi-numeric reference
             if (!(SvROK(sv_value) && SvROK(SvRV(sv_value)) && sv_derived_from(SvRV(sv_value) , "HASH"))) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference of a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a reference to a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             
             SV* hv_value_ref = SvRV(sv_value);
@@ -1507,7 +1507,7 @@ xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field in the \"%s\" class is not found specified at the %dth argument of the \"%s\" method in the \"%s\" class must be a reference of a hash reference\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                croak("The \"%s\" field in the \"%s\" class is not found specified at the %dth argument of the \"%s\" method in the \"%s\" class must be a reference to a hash reference\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -1936,7 +1936,7 @@ xs_call_method(...)
     }
   }
   
-  // Restore reference value
+  // Restore reference
   if (args_have_ref) {
     for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
@@ -1950,37 +1950,44 @@ xs_call_method(...)
       int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
       int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type_id);
       
+      // Restore reference - numeric
       if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
         int32_t ref_stack_index = ref_stack_indexes[args_index];
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             switch (arg_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+                // Restore reference - byte
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+                // Restore reference - short
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+                // Restore reference - int
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+                // Restore reference - long
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+                // Restore reference - float
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+                // Restore reference - double
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
                 break;
@@ -1991,6 +1998,7 @@ xs_call_method(...)
             }
             break;
           }
+          // Restore reference value - multi-numeric
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
@@ -2008,26 +2016,32 @@ xs_call_method(...)
               SV* sv_field_value;
               switch (arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                  // Restore reference value - multi-numeric byte
                   sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                  // Restore reference value - multi-numeric short
                   sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                  // Restore reference value - multi-numeric int
                   sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                  // Restore reference value - multi-numeric long
                   sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                  // Restore reference value - multi-numeric float
                   sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                  // Restore reference value - multi-numeric double
                   sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
                   break;
                 }
