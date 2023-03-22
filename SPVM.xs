@@ -4223,29 +4223,18 @@ xs_set_exception(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_exception = ST(1);
+  SV* sv_message = ST(1);
   
-  void* obj_exception;
-  if (SvOK(sv_exception)) {
-    if (sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String")) {
-      obj_exception = SPVM_XS_UTIL_get_object(aTHX_ sv_exception);
-    }
-    else if (SvROK(sv_exception)) {
-      croak("The $exception can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    else {
-      STRLEN length;
-      const char* exception = SvPV(sv_exception, length);
-      
-      obj_exception = env->new_string(env, stack, exception, (int32_t)length);
-      SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_exception, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    obj_exception = NULL;
+  SV* sv_error = &PL_sv_undef;
+  sv_message = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_message, &sv_error);
+  
+  if (SvOK(sv_error)) {
+    croak("The $message %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
-  env->set_exception(env, stack, obj_exception);
+  void* spvm_message = SPVM_XS_UTIL_get_object(aTHX_ sv_message);
+  
+  env->set_exception(env, stack, spvm_message);
   
   XSRETURN(0);
 }
