@@ -389,6 +389,69 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
   return sv_array;
 }
 
+SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_array, SV** sv_error) {
+  
+  *sv_error = &PL_sv_undef;
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  int32_t error_array = 0;
+  int32_t error_elem = 0;
+  if (SvOK(sv_array)) {
+    if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
+      // Nothing
+    }
+    else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
+      error_array = 1;
+    }
+    else {
+      // Elements
+      AV* av_array = (AV*)SvRV(sv_array);
+      
+      // Array length
+      int32_t length = av_len(av_array) + 1;
+      
+      // New array
+      void* obj_array = env->new_short_array(env, stack, length);
+      
+      int16_t* elems = env->get_elems_short(env, stack, obj_array);
+      for (int32_t i = 0; i < length; i++) {
+        SV** sv_elem_ptr = av_fetch(av_array, i, 0);
+        SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
+        
+        if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
+          error_elem = 1;
+          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          break;
+        }
+        elems[i] = (int16_t)SvIV(sv_elem);
+      }
+      
+      if (!error_elem) {
+        sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_array, "SPVM::BlessedObject::Array");
+      }
+    }
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  if (error_elem) {
+    // Nothing
+  }
+  else if (error_array) {
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+  }
+  
+  return sv_array;
+}
+
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
@@ -900,19 +963,18 @@ xs_call_method(...)
                 }
                 
                 spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                
                 break;
               }
               // Argument conversion - short array
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                spvm_array = env->new_short_array(env, stack, length);
-                SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-                int16_t* elems = env->get_elems_short(env, stack, spvm_array);
-                for (int32_t i = 0; i < length; i++) {
-                  SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                  SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                  elems[i] = (int16_t)SvIV(sv_value);
+                SV* sv_error = &PL_sv_undef;
+                sv_value = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+                
+                if (SvOK(sv_error)) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
                 }
+                
+                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
                 break;
               }
               // Argument conversion - int array
