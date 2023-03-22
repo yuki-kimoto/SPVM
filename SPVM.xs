@@ -530,14 +530,15 @@ xs_call_method(...)
           }
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
             // Argument conversion - string
-            int32_t error = 0;
-            void* spvm_string = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &error);
-            if (error) {
+            SV* sv_error = &PL_sv_undef;
+            sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+            if (SvOK(sv_error)) {
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
+            void* spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
             
             stack[stack_index].oval = spvm_string;
-              
+            
             stack_index++;
             break;
           }
