@@ -1379,31 +1379,37 @@ xs_call_method(...)
               
               switch (arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                  // Argument conversion - multi-numeric byte
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   stack[stack_index + field_index].bval = value;
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                  // Argument conversion - multi-numeric short
                   int16_t value = (int16_t)SvIV(sv_field_value);
                   stack[stack_index + field_index].sval = value;
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                  // Argument conversion - multi-numeric int
                   int32_t value = (int32_t)SvIV(sv_field_value);
                   stack[stack_index + field_index].ival = value;
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                  // Argument conversion - multi-numeric long
                   int64_t value = (int64_t)SvIV(sv_field_value);
                   stack[stack_index + field_index].lval = value;
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                  // Argument conversion - multi-numeric float
                   float value = (float)SvNV(sv_field_value);
                   stack[stack_index + field_index].fval = value;
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                  // Argument conversion - multi-numeric double
                   double value = (double)SvNV(sv_field_value);
                   stack[stack_index + field_index].dval = value;
                   break;
