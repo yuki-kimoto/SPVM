@@ -2101,67 +2101,6 @@ xs_array_get(...)
 }
 
 SV*
-xs_new_string_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-
-    AV* av_elems = (AV*)SvRV(sv_elems);
-
-    int32_t length = av_len(av_elems) + 1;
-
-    // New array
-    void* array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
-
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
-      if (SvOK(sv_str_value)) {
-        STRLEN length;
-        const char* chars = SvPV(sv_str_value, length);
-        
-        void* string = env->new_string(env, stack, chars, (int32_t)length);
-        SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, string, "SPVM::BlessedObject::String");
-        env->set_elem_object(env, stack, array, i, string);
-      }
-      else {
-        env->set_elem_object(env, stack, array, i, NULL);
-      }
-    }
-
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
 xs_new_string(...)
   PPCODE:
 {
@@ -2425,23 +2364,22 @@ xs_new_byte_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array = NULL;
   if (SvOK(sv_binary)) {
     STRLEN length;
     int8_t* binary = (int8_t*)SvPV(sv_binary, length);
     
     // New array
-    void* array = env->new_byte_array(env, stack, (int32_t)length);
+    array = env->new_byte_array(env, stack, (int32_t)length);
     
     int8_t* elems = env->get_elems_byte(env, stack, array);
     memcpy(elems, binary, length);
-    
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2631,7 +2569,7 @@ xs_new_short_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array = NULL;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
     
@@ -2642,20 +2580,17 @@ xs_new_short_array_from_bin(...)
     int32_t array_length = binary_length / sizeof(int16_t);
     int16_t* binary = (int16_t*)SvPV_nolen(sv_binary);
     
-    // Environment
-    
     // New array
-    void* array = env->new_short_array(env, stack, array_length);
+    array = env->new_short_array(env, stack, array_length);
 
     int16_t* elems = env->get_elems_short(env, stack, array);
     memcpy(elems, binary, array_length * sizeof(int16_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2840,7 +2775,7 @@ xs_new_int_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array = NULL;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
     
@@ -2852,17 +2787,16 @@ xs_new_int_array_from_bin(...)
     int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
     
     // New array
-    void* array = env->new_int_array(env, stack, array_length);
-
+    array = env->new_int_array(env, stack, array_length);
+    
     int32_t* elems = env->get_elems_int(env, stack, array);
     memcpy(elems, binary, array_length * sizeof(int32_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3052,7 +2986,7 @@ xs_new_long_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array = NULL;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
     
@@ -3064,17 +2998,16 @@ xs_new_long_array_from_bin(...)
     int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
     
     // New array
-    void* array = env->new_long_array(env, stack, array_length);
-
+    array = env->new_long_array(env, stack, array_length);
+    
     int64_t* elems = env->get_elems_long(env, stack, array);
     memcpy(elems, binary, array_length * sizeof(int64_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+    
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3198,7 +3131,7 @@ xs_new_float_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
     
@@ -3210,17 +3143,16 @@ xs_new_float_array_from_bin(...)
     float* binary = (float*)SvPV_nolen(sv_binary);
     
     // New array
-    void* array = env->new_float_array(env, stack, array_length);
-
+    array = env->new_float_array(env, stack, array_length);
+    
     float* elems = env->get_elems_float(env, stack, array);
     memcpy(elems, binary, array_length * sizeof(float));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3344,7 +3276,7 @@ xs_new_double_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  SV* sv_array;
+  void* array = NULL;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
     
@@ -3356,16 +3288,80 @@ xs_new_double_array_from_bin(...)
     double* binary = (double*)SvPV_nolen(sv_binary);
     
     // New array
-    void* array = env->new_double_array(env, stack, array_length);
+    array = env->new_double_array(env, stack, array_length);
 
     double* elems = env->get_elems_double(env, stack, array);
     memcpy(elems, binary, array_length * sizeof(double));
-    
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+xs_new_string_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_elems = ST(1);
+  
+  void* array;
+  if (SvOK(sv_elems)) {
+    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
+      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    array = env->new_string_array(env, stack, length);
+    
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
+
+      int32_t elem_error = 0;
+      void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &elem_error);
+      
+      if (elem_error == 0) {
+        env->set_elem_object(env, stack, array, i, spvm_elem);
+      }
+      else if (elem_error == 1) {
+        croak("The %dth element of the $array must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, __func__, FILE_NAME, __LINE__);
+      }
+      else {
+        assert(0);
+      }
+    }
+  }
+  
+  SV* sv_array;
+  if (array) {
+    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
   }
   
   XPUSHs(sv_array);

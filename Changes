@@ -76,6 +76,7 @@
     * The new_double_array method in the SPVM::ExchangeAPI throw an exception when the element is a reference.
     * The new_double_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 4.
     * The new_double_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
+    * The new_string_array method in the SPVM::ExchangeAPI throws an exception when the element is a reference.
   [Bug Fix]
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric.
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric reference.
