@@ -3247,7 +3247,8 @@ xs_new_double_array(...)
   
   SV* sv_elems = ST(1);
   
-  SV* sv_array;
+  // The same as argument conversion - double array
+  void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -3258,21 +3259,29 @@ xs_new_double_array(...)
     int32_t length = av_len(av_elems) + 1;
     
     // New array
-    void* array = env->new_double_array(env, stack, length);
+    array = env->new_double_array(env, stack, length);
 
     double* elems = env->get_elems_double(env, stack, array);
     for (int32_t i = 0; i < length; i++) {
       SV** sv_value_ptr = av_fetch(av_elems, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      
+      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      }
+      
       elems[i] = (double)SvNV(sv_value);
     }
-    
-    // sv array
+  }
+  
+  SV* sv_array;
+  if (array) {
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
   }
+  
   XPUSHs(sv_array);
   XSRETURN(1);
 }
@@ -3338,6 +3347,11 @@ xs_new_double_array_from_bin(...)
   SV* sv_array;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
+    
+    if (!(binary_length % 8 == 0)) {
+      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
+    
     int32_t array_length = binary_length / sizeof(double);
     double* binary = (double*)SvPV_nolen(sv_binary);
     
@@ -3351,7 +3365,7 @@ xs_new_double_array_from_bin(...)
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
-    sv_array = &PL_sv_undef;
+    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
