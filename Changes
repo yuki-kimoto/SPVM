@@ -74,7 +74,7 @@
     * The new_float_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 4.
     * The new_float_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
     * The new_double_array method in the SPVM::ExchangeAPI throw an exception when the element is a reference.
-    * The new_double_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 4.
+    * The new_double_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 8.
     * The new_double_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
     * The new_string_array method in the SPVM::ExchangeAPI throws an exception when the element is a reference.
   [Bug Fix]
