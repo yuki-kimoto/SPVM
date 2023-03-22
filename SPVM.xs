@@ -2531,7 +2531,7 @@ xs_new_short_array_unsigned(...)
   
   SV* sv_elems = ST(1);
   
-  // The same as argument conversion - byte array, but the element is interpretted unsigned 8bit integer.
+  // The same as argument conversion - short array, but the element is interpretted unsigned 16bit integer.
   void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
@@ -2740,7 +2740,7 @@ xs_new_int_array_unsigned(...)
   
   SV* sv_elems = ST(1);
   
-  // The same as argument conversion - byte array, but the element is interpretted unsigned 8bit integer.
+  // The same as argument conversion - int array, but the element is interpretted unsigned 32bit integer.
   void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
@@ -2845,7 +2845,7 @@ xs_new_int_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 4 == 0)) {
-      croak("The length of the $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(int32_t);
@@ -2889,7 +2889,8 @@ xs_new_long_array(...)
   
   SV* sv_elems = ST(1);
   
-  SV* sv_array;
+  // The same as argument conversion - long array
+  void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -2902,17 +2903,24 @@ xs_new_long_array(...)
     int32_t length = av_len(av_elems) + 1;
     
     // New array
-    void* array = env->new_long_array(env, stack, length);
+    array = env->new_long_array(env, stack, length);
     
     // Copy Perl elements to SPVM elements
     int64_t* elems = env->get_elems_long(env, stack, array);
     for (int32_t i = 0; i < length; i++) {
       SV** sv_value_ptr = av_fetch(av_elems, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      
+      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      }
+      
       elems[i] = (int64_t)SvIV(sv_value);
     }
-    
-    // New SPVM::BlessedObject::Array object
+  }
+  
+  SV* sv_array;
+  if (array) {
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
@@ -2944,7 +2952,8 @@ xs_new_long_array_unsigned(...)
   
   SV* sv_elems = ST(1);
   
-  SV* sv_array;
+  // The same as argument conversion - long array, but the element is interpretted unsigned 64bit integer.
+  void* array = NULL;
   if (SvOK(sv_elems)) {
     if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
       croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -2957,17 +2966,24 @@ xs_new_long_array_unsigned(...)
     int32_t length = av_len(av_elems) + 1;
     
     // New array
-    void* array = env->new_long_array(env, stack, length);
+    array = env->new_long_array(env, stack, length);
     
     // Copy Perl elements to SPVM elements
     int64_t* elems = env->get_elems_long(env, stack, array);
     for (int32_t i = 0; i < length; i++) {
       SV** sv_value_ptr = av_fetch(av_elems, i, 0);
       SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      
+      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
+        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      }
+      
       elems[i] = (uint64_t)SvUV(sv_value);
     }
-    
-    // New SPVM::BlessedObject::Array object
+  }
+  
+  SV* sv_array;
+  if (array) {
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
@@ -3039,6 +3055,11 @@ xs_new_long_array_from_bin(...)
   SV* sv_array;
   if (SvOK(sv_binary)) {
     int32_t binary_length = sv_len(sv_binary);
+    
+    if (!(binary_length % 8 == 0)) {
+      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    }
+    
     int32_t array_length = binary_length / sizeof(int64_t);
     int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
     
@@ -3052,7 +3073,7 @@ xs_new_long_array_from_bin(...)
     sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
   }
   else {
-    sv_array = &PL_sv_undef;
+    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);

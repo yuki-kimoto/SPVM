@@ -63,6 +63,16 @@
     * The new_short_array_from_bin in the SPVM::ExchangeAPI throw an exception when the element is a reference.
     * The new_short_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 2.
     * The new_short_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
+    * The new_int_array method in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_int_array_unsigned in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_int_array_from_bin in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_int_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 4.
+    * The new_int_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
+    * The new_long_array method in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_long_array_unsigned in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_long_array_from_bin in the SPVM::ExchangeAPI throw an exception when the element is a reference.
+    * The new_long_array_from_bin in the SPVM::ExchangeAPI throw an exception when the binary is not divisible by 8.
+    * The new_long_array_from_bin in the SPVM::ExchangeAPI throw an exception when the array is undef.
   [Bug Fix]
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric.
     * Fixed the bugs that exchange API call_method can't receive string number such as "8" if the type is numeric reference.
