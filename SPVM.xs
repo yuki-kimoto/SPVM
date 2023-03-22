@@ -892,14 +892,15 @@ xs_call_method(...)
             switch (arg_basic_type_id) {
               // Argument conversion - byte array
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                spvm_array = env->new_byte_array(env, stack, length);
-                SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-                int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
-                for (int32_t i = 0; i < length; i++) {
-                  SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                  SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                  elems[i] = (int8_t)SvIV(sv_value);
+                SV* sv_error = &PL_sv_undef;
+                sv_value = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+                
+                if (SvOK(sv_error)) {
+                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
                 }
+                
+                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+                
                 break;
               }
               // Argument conversion - short array
