@@ -2820,44 +2820,13 @@ xs_new_short_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  // The same as argument conversion - short array
-  void* array = NULL;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    array = env->new_short_array(env, stack, length);
-    
-    // Copy Perl elements to SPVM elements
-    int16_t* elems = env->get_elems_short(env, stack, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      
-      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-      }
-      
-      elems[i] = (int16_t)SvIV(sv_value);
-    }
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  SV* sv_array;
-  if (array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3031,39 +3000,13 @@ xs_new_int_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  // The same as argument conversion - int array
-  void* array = NULL;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    array = env->new_int_array(env, stack, length);
-    
-    // Copy Perl elements to SPVM erlements
-    int32_t* elems = env->get_elems_int(env, stack, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int32_t)SvIV(sv_value);
-    }
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  SV* sv_array;
-  if (array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3237,44 +3180,13 @@ xs_new_long_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  // The same as argument conversion - long array
-  void* array = NULL;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    array = env->new_long_array(env, stack, length);
-    
-    // Copy Perl elements to SPVM elements
-    int64_t* elems = env->get_elems_long(env, stack, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      
-      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-      }
-      
-      elems[i] = (int64_t)SvIV(sv_value);
-    }
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  SV* sv_array;
-  if (array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3448,41 +3360,13 @@ xs_new_float_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  // The same as argument conversion - float array
-  void* array = NULL;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    array = env->new_float_array(env, stack, length);
-
-    float* elems = env->get_elems_float(env, stack, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      
-      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-      }
-      
-      elems[i] = (float)SvNV(sv_value);
-    }
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  SV* sv_array;
-  if (array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3593,41 +3477,13 @@ xs_new_double_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  // The same as argument conversion - double array
-  void* array = NULL;
-  if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    array = env->new_double_array(env, stack, length);
-
-    double* elems = env->get_elems_double(env, stack, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      
-      if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-        croak("The element of the $array must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-      }
-      
-      elems[i] = (double)SvNV(sv_value);
-    }
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  SV* sv_array;
-  if (array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
