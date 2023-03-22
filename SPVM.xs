@@ -1514,7 +1514,7 @@ xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field in the \"%s\" class is not found specified at the %dth argument of the \"%s\" method in the \"%s\" class must be a reference to a hash reference\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                croak("The \"%s\" field of the \"%s\" class sepcified in the %dth argument of the \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
