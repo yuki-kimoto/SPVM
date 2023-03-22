@@ -3324,11 +3324,12 @@ xs_new_string_array(...)
   
   SV* sv_elems = ST(1);
   
-  void* array;
+  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
+    croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* array = NULL;
   if (SvOK(sv_elems)) {
-    if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-      croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
     
     AV* av_elems = (AV*)SvRV(sv_elems);
     
