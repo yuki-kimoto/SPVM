@@ -300,12 +300,13 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
+  int32_t error = 0;
   if (SvOK(sv_string)) {
     if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
       // Nothing
     }
     else if (SvROK(sv_string)) {
-      *sv_error = sv_2mortal(newSVpvf("The $string can't be a reference"));
+      error = 1;
     }
     else {
       STRLEN length = -1;
@@ -316,6 +317,10 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   }
   else {
     sv_string = &PL_sv_undef;
+  }
+  
+  if (error) {
+    *sv_error = sv_2mortal(newSVpvf("must be a non-reference scalar or a SPVM::BlessedObject::String object or undef"));
   }
   
   return sv_string;
@@ -533,7 +538,7 @@ xs_call_method(...)
             SV* sv_error = &PL_sv_undef;
             sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
             if (SvOK(sv_error)) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
             }
             void* spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
             
@@ -2159,7 +2164,7 @@ xs_new_string(...)
   sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_string, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $string %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -3367,7 +3372,7 @@ xs_new_string_array(...)
       sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error);
       
       if (SvOK(sv_error)) {
-        croak("The %dth element of the $array must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, __func__, FILE_NAME, __LINE__);
+        croak("The %dth element of the $array %s\n    %s at %s line %d\n", i + 1, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
       }
       
       void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);

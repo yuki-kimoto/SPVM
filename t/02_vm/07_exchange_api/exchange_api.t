@@ -774,7 +774,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_string - reference
   {
     eval { $api->new_string([]) };
-    like($@, qr/The \$string can't be a reference/);
+    like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
     like($@, qr|XS_SPVM__ExchangeAPI_xs_new_string at SPVM\.xs line \d+|);
   }
   
@@ -802,7 +802,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # new_string - reference
     {
       eval { $api->new_string([]) };
-      like($@, qr/The \$string can't be a reference/);
+      like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
     }
   }
 }
