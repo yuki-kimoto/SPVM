@@ -185,14 +185,14 @@ void* SPVM_XS_UTIL_convert_arg_string(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack
   return spvm_string;
 }
 
-void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
+void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_array, SV** sv_error) {
   
-  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
     *sv_error = sv_2mortal(newSVpvf("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
     return NULL;
   }
   
-  AV* av_elems = (AV*)SvRV(sv_elems);
+  AV* av_elems = (AV*)SvRV(sv_array);
   
   int32_t length = av_len(av_elems) + 1;
   
@@ -280,7 +280,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
       }
     }
     else {
-      *sv_error = sv_2mortal(newSVpvf("The element must be a hash reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
+      *sv_error = sv_2mortal(newSVpvf("The $array %dth element must be a hash reference\n    %s at %s line %d\n", index + 1, __func__, FILE_NAME, __LINE__));
       return NULL;
     }
   }
