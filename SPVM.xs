@@ -3362,18 +3362,15 @@ xs_new_string_array(...)
       SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
       SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
 
-      int32_t elem_error = 0;
-      void* spvm_elem = SPVM_XS_UTIL_convert_arg_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &elem_error);
+      SV* sv_error = &PL_sv_undef;
+      sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error);
       
-      if (elem_error == 0) {
-        env->set_elem_object(env, stack, array, i, spvm_elem);
-      }
-      else if (elem_error == 1) {
+      if (SvOK(sv_error)) {
         croak("The %dth element of the $array must be a non-reference scalar or a SPVM::BlessedObject::String object or undef\n    %s at %s line %d\n", i + 1, __func__, FILE_NAME, __LINE__);
       }
-      else {
-        assert(0);
-      }
+      
+      void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
+      env->set_elem_object(env, stack, array, i, spvm_elem);
     }
   }
   
