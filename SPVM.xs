@@ -288,6 +288,39 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
   return array;
 }
 
+SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_string, SV** sv_error) {
+  
+  *sv_error = &PL_sv_undef;
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  if (SvOK(sv_string)) {
+    if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
+      // Nothing
+    }
+    else if (SvROK(sv_string)) {
+      *sv_error = sv_2mortal(newSVpvf("The $string can't be a reference"));
+    }
+    else {
+      STRLEN length = -1;
+      const char* string = SvPV(sv_string, length);
+      void* obj_string = env->new_string(env, stack, string, (int32_t)length);
+      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    sv_string = &PL_sv_undef;
+  }
+  
+  return sv_string;
+}
+
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
@@ -2121,24 +2154,11 @@ xs_new_string(...)
   
   SV* sv_string = ST(1);
   
-  if (SvOK(sv_string)) {
-    if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
-      // Nothing
-    }
-    else if (SvROK(sv_string)) {
-      croak("The $string can't be a reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    else {
-      STRLEN length;
-      const char* string = SvPV(sv_string, length);
-      
-      void* obj_string = env->new_string(env, stack, string, (int32_t)length);
-      
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, obj_string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    sv_string = &PL_sv_undef;
+  SV* sv_error = &PL_sv_undef;
+  sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_string, &sv_error);
+  
+  if (SvOK(sv_error)) {
+    croak("%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
