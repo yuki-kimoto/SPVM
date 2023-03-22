@@ -342,7 +342,12 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -383,7 +388,7 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef"));
   }
   
   return sv_array;
@@ -406,7 +411,12 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -447,7 +457,7 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the short[] or undef"));
   }
   
   return sv_array;
@@ -469,7 +479,12 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -510,7 +525,7 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the int[] or undef"));
   }
   
   return sv_array;
@@ -532,7 +547,12 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -573,7 +593,7 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the long[] or undef"));
   }
   
   return sv_array;
@@ -595,7 +615,12 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -636,7 +661,7 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the float[] or undef"));
   }
   
   return sv_array;
@@ -658,7 +683,12 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      // Nothing
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE && spvm_array_type_dimension == 1)) {
+        error_array = 1;
+      }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
       error_array = 1;
@@ -699,7 +729,7 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object or undef"));
+    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the double[] or undef"));
   }
   
   return sv_array;
