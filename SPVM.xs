@@ -1351,7 +1351,7 @@ xs_call_method(...)
             if (!(SvROK(sv_value) && sv_derived_from(sv_value, "HASH"))) {
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
-
+            
             int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, arg_class_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, arg_class_id);
@@ -1363,7 +1363,7 @@ xs_call_method(...)
             for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
               int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
               int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
-
+              
               const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
               SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
               SV* sv_field_value;
@@ -1373,7 +1373,8 @@ xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field specified in the %dth argument is not defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
+                croak("The \"%s\" field of the \"%s\" class sepcified in the %dth argument of the \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+
               }
               
               switch (arg_class_field_type_basic_type_id) {
@@ -1941,10 +1942,9 @@ xs_call_method(...)
     for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
+      // Argument type
       int32_t arg_id = method_args_base_id + args_index;
       int32_t arg_type_id = env->api->runtime->get_arg_type_id(env->runtime, arg_id);
-      
-      // Convert to runtime type
       int32_t arg_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_type_id);
       int32_t arg_type_dimension = env->api->runtime->get_type_dimension(env->runtime, arg_type_id);
       int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
@@ -2060,6 +2060,7 @@ xs_call_method(...)
     }
   }
   
+  // Count of return value
   int32_t return_count;
   if (method_return_type_dimension == 0 && method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID) {
     return_count = 0;
