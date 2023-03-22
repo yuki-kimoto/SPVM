@@ -1373,7 +1373,7 @@ xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
+                croak("The \"%s\" field specified in the %dth argument is not defined in the \"%s\" class\n    %s at %s line %d\n", mulnum_field_name, args_index_nth, arg_class_name, __func__, FILE_NAME, __LINE__);
               }
               
               switch (arg_class_field_type_basic_type_id) {
