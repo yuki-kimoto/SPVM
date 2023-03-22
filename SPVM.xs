@@ -1194,108 +1194,50 @@ xs_call_method(...)
     }
     else if (arg_type_dimension == 1) {
       switch (arg_basic_type_category) {
+        // Argument conversion - numeric array
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
-          // Argument conversion - numeric array
-          void* spvm_array = NULL;
-          if (!SvOK(sv_value)) {
-            spvm_array = NULL;
-          }
-          else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
-            SV* sv_elems = sv_value;
-            AV* av_elems = (AV*)SvRV(sv_elems);
-            int32_t length = av_len(av_elems) + 1;
-            
-            switch (arg_basic_type_id) {
-              // Argument conversion - byte array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              // Argument conversion - short array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              // Argument conversion - int array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              // Argument conversion - long array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              // Argument conversion - float array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              // Argument conversion - double array
-              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                SV* sv_error = &PL_sv_undef;
-                sv_value = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
-                
-                if (SvOK(sv_error)) {
-                  croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-                }
-                
-                spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-                break;
-              }
-              default: {
-                assert(0);
-              }
+          SV* sv_error = &PL_sv_undef;
+          switch (arg_basic_type_id) {
+            // Argument conversion - byte array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+              sv_value = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            // Argument conversion - short array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+              sv_value = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            // Argument conversion - int array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+              sv_value = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            // Argument conversion - long array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+              sv_value = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            // Argument conversion - float array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+              sv_value = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            // Argument conversion - double array
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+              sv_value = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              break;
+            }
+            default: {
+              assert(0);
             }
           }
-          else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-            spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-            
-            int32_t isa = env->isa(env, stack, spvm_array, arg_basic_type_id, arg_type_dimension);
-            if (!isa) {
-              void* obj_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
-              const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be the \"%s\" type \n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
-            }
+          
+          if (SvOK(sv_error)) {
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
           }
-          else {
-            croak("The %dth argument of the \"%s\" method in the \"%s\" class must be an array reference or a SPVM::BlessedObject::Array object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-          }
+          
+          void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
           
           stack[stack_index].oval = spvm_array;
           
