@@ -301,8 +301,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_pointer_object_raw,
     SPVM_API_new_pointer_object,
     SPVM_API_new_pointer_object_by_name,
-    NULL,
-    NULL,
+    SPVM_API_get_elem_string,
+    SPVM_API_set_elem_string,
     NULL,
     NULL,
     SPVM_API_is_class,
@@ -2959,12 +2959,24 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   return object;
 }
 
-void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* oval) {
+void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* object) {
   (void)env;
   
   void* object_address = &((void**)((intptr_t)array + env->object_header_size))[index];
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, oval);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, object);
+}
+
+SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
+  (void)env;
+  
+  return SPVM_API_get_elem_object(env, stack, array, index);
+}
+
+void SPVM_API_set_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* string) {
+  (void)env;
+  
+  SPVM_API_set_elem_object(env, stack, array, index, string);
 }
 
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

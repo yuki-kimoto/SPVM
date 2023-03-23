@@ -918,7 +918,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
           break;
         }
         void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
-        env->set_elem_object(env, stack, spvm_array, i, spvm_elem);
+        env->set_elem_string(env, stack, spvm_array, i, spvm_elem);
       }
       
       if (!error_elem) {
@@ -2304,7 +2304,7 @@ xs_array_to_elems(...)
     else if (array_is_object_array) {
       if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
-          void* object = env->get_elem_object(env, stack, spvm_array, i);
+          void* object = env->get_elem_string(env, stack, spvm_array, i);
           
           SV* sv_value;
           if (object != NULL) {
@@ -4968,7 +4968,7 @@ set_command_info_argv(...)
       int32_t arg_length = strlen(arg);
       
       void* spvm_arg = env->new_string(env, my_stack, arg, arg_length);
-      env->set_elem_object(env, my_stack, spvm_argv, index, spvm_arg);
+      env->set_elem_string(env, my_stack, spvm_argv, index, spvm_arg);
     }
     
     // Set command info

@@ -1,4 +1,19 @@
 0.9696 2023-03-23
+  [New Features]
+    * Added the following Native APIs.
+    
+      =head2 get_elem_string
+
+        void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
+
+      The same as L</"get_elem_object">.
+
+      =head2 set_elem_string
+
+        void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);
+
+      The same as L</"set_elem_object">.
+    
   [Incompatible Changes]
     * Changed the following native API implementation. This breaks binary compatibility. 
 

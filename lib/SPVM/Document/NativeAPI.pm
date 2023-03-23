@@ -218,8 +218,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   201 new_pointer_object_raw
   202 new_pointer_object
   203 new_pointer_object_by_name
-  204 reserved204
-  205 reserved205
+  204 get_elem_string
+  205 set_elem_string
   206 reserved206
   207 reserved207
   208 is_class
@@ -775,7 +775,7 @@ Examples:
 
 =head2 set_elem_object
 
-  void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* value);
+  void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* object);
 
 If you specify an array of object type and methodscript and element objects, the element object is assigned to the corresponding methodscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
 
@@ -2165,6 +2165,18 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
   int32_t e;
   void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
+
+=head2 get_elem_string
+
+  void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
+
+The same as L</"get_elem_object">.
+
+=head2 set_elem_string
+
+  void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);
+
+The same as L</"set_elem_object">.
 
 =head2 is_class
 

@@ -161,7 +161,7 @@ struct spvm_env {
   float* (*get_elems_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   double* (*get_elems_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   void* (*get_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
-  void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* value);
+  void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* object);
   int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
   int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
   int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
@@ -301,8 +301,8 @@ struct spvm_env {
   void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
   void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
   void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
-  void* reserved204;
-  void* reserved205;
+  void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
+  void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);
   void* reserved206;
   void* reserved207;
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
