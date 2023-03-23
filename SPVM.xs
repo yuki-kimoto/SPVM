@@ -184,7 +184,7 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   }
   
   if (error) {
-    *sv_error = sv_2mortal(newSVpvf("must be a non-reference scalar or a SPVM::BlessedObject::String object or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be a non-reference scalar or a SPVM::BlessedObject::String object or undef"));
   }
   
   return sv_string;
@@ -233,7 +233,7 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (int8_t)SvIV(sv_elem);
@@ -252,7 +252,7 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef"));
   }
   
   return sv_array;
@@ -301,7 +301,7 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (uint8_t)SvUV(sv_elem);
@@ -320,7 +320,7 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef"));
   }
   
   return sv_array;
@@ -369,7 +369,7 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (int16_t)SvIV(sv_elem);
@@ -388,7 +388,7 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the short[] or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the short[] or undef"));
   }
   
   return sv_array;
@@ -437,7 +437,7 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (uint16_t)SvUV(sv_elem);
@@ -456,7 +456,7 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef"));
   }
   
   return sv_array;
@@ -505,7 +505,7 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (int32_t)SvIV(sv_elem);
@@ -524,7 +524,7 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the int[] or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the int[] or undef"));
   }
   
   return sv_array;
@@ -573,7 +573,7 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_st
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (uint32_t)SvUV(sv_elem);
@@ -592,7 +592,7 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_st
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef"));
   }
   
   return sv_array;
@@ -641,7 +641,7 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (int64_t)SvIV(sv_elem);
@@ -660,7 +660,7 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the long[] or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the long[] or undef"));
   }
   
   return sv_array;
@@ -709,7 +709,7 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (uint64_t)SvUV(sv_elem);
@@ -728,7 +728,7 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef"));
   }
   
   return sv_array;
@@ -777,7 +777,7 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (float)SvNV(sv_elem);
@@ -796,7 +796,7 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the float[] or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the float[] or undef"));
   }
   
   return sv_array;
@@ -845,7 +845,7 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         
         if (!(SvOK(sv_elem) && !SvROK(sv_elem))) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf(" %dth element must be a non-reference scalar", i + 1));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
         elems[i] = (double)SvNV(sv_elem);
@@ -864,7 +864,7 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the double[] or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the double[] or undef"));
   }
   
   return sv_array;
@@ -914,7 +914,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         
         if (SvOK(sv_error_elem)) {
           error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf("%dth element %s", i + 1, SvPV_nolen(sv_error_elem)));
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element %s", i + 1, SvPV_nolen(sv_error_elem)));
           break;
         }
         void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
@@ -934,7 +934,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
     // Nothing
   }
   else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf("must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef"));
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef"));
   }
   
   return sv_array;
@@ -1283,7 +1283,7 @@ xs_call_method(...)
             SV* sv_error = &PL_sv_undef;
             sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
             if (SvOK(sv_error)) {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
             }
             void* spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
             
@@ -1607,7 +1607,7 @@ xs_call_method(...)
           }
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
@@ -1639,7 +1639,7 @@ xs_call_method(...)
           sv_value = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of the \"%s\" method in the \"%s\" class %s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
@@ -2810,7 +2810,7 @@ xs_new_string(...)
   sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_string, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $string %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $string%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2877,7 +2877,7 @@ xs_new_byte_array(...)
   sv_array = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2909,7 +2909,7 @@ xs_new_byte_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_byte_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3020,7 +3020,7 @@ xs_new_short_array(...)
   sv_array = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3052,7 +3052,7 @@ xs_new_short_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_short_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3169,7 +3169,7 @@ xs_new_int_array(...)
   sv_array = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3201,7 +3201,7 @@ xs_new_int_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_int_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3318,7 +3318,7 @@ xs_new_long_array(...)
   sv_array = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3350,7 +3350,7 @@ xs_new_long_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_long_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3467,7 +3467,7 @@ xs_new_float_array(...)
   sv_array = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3584,7 +3584,7 @@ xs_new_double_array(...)
   sv_array = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3719,7 +3719,7 @@ xs_new_string_array(...)
       sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error);
       
       if (SvOK(sv_error)) {
-        croak("The %dth element of the $array %s\n    %s at %s line %d\n", i + 1, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+        croak("The %dth element of the $array%s\n    %s at %s line %d\n", i + 1, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
       }
       
       void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
@@ -4221,7 +4221,7 @@ xs_set_exception(...)
   sv_message = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_message, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $message %s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("The $message%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   void* spvm_message = SPVM_XS_UTIL_get_object(aTHX_ sv_message);
