@@ -965,10 +965,10 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
   void* array = env->new_mulnum_array(env, stack, basic_type_id, length);
 
   for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    SV** sv_elem_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
 
-    if (SvROK(sv_element) && sv_derived_from(sv_element, "HASH")) {
+    if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
       
       int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
       int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
@@ -979,7 +979,7 @@ void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, cons
 
       void* elems = (void*)env->get_elems_int(env, stack, array);
       
-      HV* hv_value = (HV*)SvRV(sv_element);
+      HV* hv_value = (HV*)SvRV(sv_elem);
       int32_t fields_length = class_fields_length;
       // Field exists check
       int32_t hash_keys_length = 0;
@@ -2086,7 +2086,7 @@ xs_array_to_elems(...)
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
-    int32_t element_type_dimension = dimension - 1;
+    int32_t elem_type_dimension = dimension - 1;
     
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, array);
     int32_t array_is_object_array = env->is_object_array(env, stack, array);
@@ -2181,9 +2181,9 @@ xs_array_to_elems(...)
           }
           else {
             env->inc_ref_count(env, stack, value);
-            int32_t element_type_is_array_type = element_type_dimension > 0;
+            int32_t elem_type_is_array_type = elem_type_dimension > 0;
             SV* sv_value;
-            if (element_type_is_array_type) {
+            if (elem_type_is_array_type) {
               sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
             }
             else {
@@ -2341,7 +2341,7 @@ xs_array_to_bin(...)
   
   SV* sv_bin;
   if (is_array_type) {
-    int32_t element_type_dimension = dimension - 1;
+    int32_t elem_type_dimension = dimension - 1;
 
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, array);
     int32_t array_is_object_array = env->is_object_array(env, stack, array);
@@ -2583,9 +2583,9 @@ xs_array_set(...)
         int8_t value = (int8_t)SvIV(sv_value);
         
         // Set element
-        int8_t* elements = env->get_elems_byte(env, stack, array);
+        int8_t* elems = env->get_elems_byte(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         
         break;
       }
@@ -2594,9 +2594,9 @@ xs_array_set(...)
         int16_t value = (int16_t)SvIV(sv_value);
         
         // Set element
-        int16_t* elements = env->get_elems_short(env, stack, array);
+        int16_t* elems = env->get_elems_short(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
@@ -2604,9 +2604,9 @@ xs_array_set(...)
         int32_t value = (int32_t)SvIV(sv_value);
         
         // Set element
-        int32_t* elements = env->get_elems_int(env, stack, array);
+        int32_t* elems = env->get_elems_int(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
@@ -2614,9 +2614,9 @@ xs_array_set(...)
         int64_t value = (int64_t)SvIV(sv_value);
         
         // Set element
-        int64_t* elements = env->get_elems_long(env, stack, array);
+        int64_t* elems = env->get_elems_long(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
@@ -2624,9 +2624,9 @@ xs_array_set(...)
         float value = (float)SvNV(sv_value);
         
         // Set element
-        float* elements = env->get_elems_float(env, stack, array);
+        float* elems = env->get_elems_float(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
@@ -2634,9 +2634,9 @@ xs_array_set(...)
         double value = (double)SvNV(sv_value);
         
         // Set element
-        double* elements = env->get_elems_double(env, stack, array);
+        double* elems = env->get_elems_double(env, stack, array);
         
-        elements[index] = value;
+        elems[index] = value;
         break;
       }
       default: {
@@ -2706,43 +2706,43 @@ xs_array_get(...)
     switch (basic_type_id) {
       case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
         // Get element
-        int8_t* elements = env->get_elems_byte(env, stack, array);
-        int8_t value = elements[index];
+        int8_t* elems = env->get_elems_byte(env, stack, array);
+        int8_t value = elems[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
         // Get element
-        int16_t* elements = env->get_elems_short(env, stack, array);
-        int16_t value = elements[index];
+        int16_t* elems = env->get_elems_short(env, stack, array);
+        int16_t value = elems[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
         // Get element
-        int32_t* elements = env->get_elems_int(env, stack, array);
-        int32_t value = elements[index];
+        int32_t* elems = env->get_elems_int(env, stack, array);
+        int32_t value = elems[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
         // Get element
-        int64_t* elements = env->get_elems_long(env, stack, array);
-        int64_t value = elements[index];
+        int64_t* elems = env->get_elems_long(env, stack, array);
+        int64_t value = elems[index];
         sv_value = sv_2mortal(newSViv(value));
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
         // Get element
-        float* elements = env->get_elems_float(env, stack, array);
-        float value = elements[index];
+        float* elems = env->get_elems_float(env, stack, array);
+        float value = elems[index];
         sv_value = sv_2mortal(newSVnv(value));
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
         // Get element
-        double* elements = env->get_elems_double(env, stack, array);
-        double value = elements[index];
+        double* elems = env->get_elems_double(env, stack, array);
+        double value = elems[index];
         sv_value = sv_2mortal(newSVnv(value));
         break;
       }
@@ -2761,7 +2761,7 @@ xs_array_get(...)
     void* runtime = env->runtime;
     
     // Element dimension
-    int32_t element_dimension = env->get_object_type_dimension(env, stack, array) - 1;
+    int32_t elem_dimension = env->get_object_type_dimension(env, stack, array) - 1;
     
     // Index
     void* value = env->get_elem_object(env, stack, array, index);
@@ -2769,10 +2769,10 @@ xs_array_get(...)
       env->inc_ref_count(env, stack, value);
     }
     
-    if (element_dimension == 0) {
+    if (elem_dimension == 0) {
       sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, value, "SPVM::BlessedObject::Class");
     }
-    else if (element_dimension > 0) {
+    else if (elem_dimension > 0) {
       sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
     }
   }
@@ -3864,26 +3864,26 @@ _xs_new_object_array(...)
 
   int32_t array_basic_type_id  = env->get_object_basic_type_id(env, stack, array);
   int32_t array_type_dimension = env->get_object_type_dimension(env, stack, array);
-  int32_t element_type_dimension = array_type_dimension - 1;
+  int32_t elem_type_dimension = array_type_dimension - 1;
 
   for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    SV** sv_elem_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
     
-    if (!SvOK(sv_element)) {
+    if (!SvOK(sv_elem)) {
       env->set_elem_object(env, stack, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
-      void* element = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
+    else if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject")) {
+      void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
 
-      int32_t elem_isa = env->elem_isa(env, stack, array, element);
+      int32_t elem_isa = env->elem_isa(env, stack, array, elem);
       if (elem_isa) {
-        env->set_elem_object(env, stack, array, index, element);
+        env->set_elem_object(env, stack, array, index, elem);
       }
       else {
-        void* obj_element_type_name = env->get_type_name(env, stack, element);
-        const char* element_type_name = env->get_chars(env, stack, obj_element_type_name);
-        croak("The element must be assigned to the %s type\n    %s at %s line %d\n", element_type_name, __func__, FILE_NAME, __LINE__);
+        void* obj_elem_type_name = env->get_type_name(env, stack, elem);
+        const char* elem_type_name = env->get_chars(env, stack, obj_elem_type_name);
+        croak("The element must be assigned to the %s type\n    %s at %s line %d\n", elem_type_name, __func__, FILE_NAME, __LINE__);
       }
     }
     else {
@@ -3918,7 +3918,7 @@ _xs_new_muldim_array(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(1);
-  SV* sv_element_type_dimension = ST(2);
+  SV* sv_elem_type_dimension = ST(2);
   SV* sv_elems = ST(3);
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
@@ -3932,7 +3932,7 @@ _xs_new_muldim_array(...)
   // Runtime
   void* runtime = env->runtime;
 
-  int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
+  int32_t elem_type_dimension = (int32_t)SvIV(sv_elem_type_dimension);
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3941,19 +3941,19 @@ _xs_new_muldim_array(...)
   assert(basic_type_id >= 0);
   
   // New array
-  void* array = env->new_muldim_array(env, stack, basic_type_id, element_type_dimension, length);
+  void* array = env->new_muldim_array(env, stack, basic_type_id, elem_type_dimension, length);
   
   int32_t array_basic_type_id = env->get_object_basic_type_id(env, stack, array);
 
   for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    SV** sv_elem_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
     
-    if (!SvOK(sv_element)) {
+    if (!SvOK(sv_elem)) {
       env->set_elem_object(env, stack, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
-      void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_element);
+    else if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject")) {
+      void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
       
       int32_t elem_isa = env->elem_isa(env, stack, array, object);
       if (elem_isa) {
