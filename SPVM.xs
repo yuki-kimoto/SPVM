@@ -1844,32 +1844,15 @@ xs_call_method(...)
     else if (arg_type_dimension > 1) {
       
       // Argument conversion - multi-dimensional array
-      int32_t error = 0;
-      void* spvm_array;
-      if (!SvOK(sv_value)) {
-        spvm_array = NULL;
-      }
-      else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-        spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-        
-        int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
-        int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-        
-        int32_t isa = env->isa(env, stack, spvm_array, arg_basic_type_id, arg_type_dimension);
-        if (!isa) {
-          error = 1;
-        }
-      }
-      else {
-        error = 1;
+      SV* sv_error = &PL_sv_undef;
+      
+      sv_value = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, arg_type_dimension, sv_value, &sv_error);
+      
+      if (SvOK(sv_error)) {
+        croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
       }
       
-      if (error) {
-        void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
-        const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
-
-        croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
-      }
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
       
       stack[stack_index].oval = spvm_array;
       
