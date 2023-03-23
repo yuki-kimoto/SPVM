@@ -110,8 +110,7 @@ sub new_object_array {
     if ($@) { confess $@ }
   }
   else {
-    my $elem_type_dimension = $type_dimension - 1;
-    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $elem_type_dimension, $array) };
+    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
     if ($@) { confess $@ }
   }
   

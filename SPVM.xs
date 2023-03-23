@@ -3886,7 +3886,7 @@ _xs_new_muldim_array(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(1);
-  SV* sv_elem_type_dimension = ST(2);
+  SV* sv_type_dimension = ST(2);
   SV* sv_elems = ST(3);
   
   if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
@@ -3900,7 +3900,8 @@ _xs_new_muldim_array(...)
   // Runtime
   void* runtime = env->runtime;
 
-  int32_t elem_type_dimension = (int32_t)SvIV(sv_elem_type_dimension);
+  int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
+  int32_t elem_type_dimension = type_dimension - 1;
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
