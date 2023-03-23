@@ -75,7 +75,7 @@ sub new_options {
 }
 
 sub new_object_array {
-  my ($self, $type_name, $elements) = @_;
+  my ($self, $type_name, $array) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -96,22 +96,22 @@ sub new_object_array {
     confess "The dimention of the \"$type_name\" type must be greater than or equal to 1 and less than or equal to 255";
   }
   
-  unless (defined $elements) {
+  unless (defined $array) {
     return undef;
   }
   
-  unless (ref $elements eq 'ARRAY') {
-    confess "The $elements must be an array reference";
+  unless (ref $array eq 'ARRAY') {
+    confess "The $array must be an array reference";
   }
   
   my $ret;
   if ($type_dimension == 1) {
-    eval { $ret = $self->_xs_new_object_array($basic_type_name, $elements) };
+    eval { $ret = $self->_xs_new_object_array($basic_type_name, $array) };
     if ($@) { confess $@ }
   }
   else {
-    my $element_type_dimension = $type_dimension - 1;
-    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $element_type_dimension, $elements) };
+    my $elem_type_dimension = $type_dimension - 1;
+    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $elem_type_dimension, $array) };
     if ($@) { confess $@ }
   }
   
@@ -119,7 +119,7 @@ sub new_object_array {
 }
 
 sub new_mulnum_array {
-  my ($self, $type_name, $elements) = @_;
+  my ($self, $type_name, $array) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -140,23 +140,23 @@ sub new_mulnum_array {
     confess "The dimention of the \"$type_name\" type must be 1";
   }
   
-  unless (defined $elements) {
+  unless (defined $array) {
     return undef;
   }
   
-  unless (ref $elements eq 'ARRAY') {
-    confess "The \$elements must be an array reference";
+  unless (ref $array eq 'ARRAY') {
+    confess "The \$array must be an array reference";
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $elements) };
+  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $array) };
   if ($@) { confess $@ }
   
   return $ret;
 }
 
 sub new_mulnum_array_from_bin {
-  my ($self, $type_name, $elems) = @_;
+  my ($self, $type_name, $binary) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
@@ -176,12 +176,12 @@ sub new_mulnum_array_from_bin {
     confess "Invalid basic type name";
   }
 
-  unless (defined $elems) {
+  unless (defined $binary) {
     return undef;
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $elems) };
+  eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
   if ($@) { confess $@ }
   
   return $ret;
