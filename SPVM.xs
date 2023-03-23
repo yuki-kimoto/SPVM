@@ -4126,18 +4126,18 @@ _xs_new_mulnum_array(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(1);
-  SV* sv_elems = ST(2);
+  SV* sv_array = ST(2);
 
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   
-  SV* sv_error = NULL;
-  void* spvm_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ env, stack, basic_type_name, sv_elems, &sv_error);
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_mulnum_array_v2(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
   
-  if (sv_error) {
-    croak_sv(sv_error);
+  if (SvOK(sv_error)) {
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
-  
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
