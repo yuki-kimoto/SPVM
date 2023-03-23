@@ -4020,16 +4020,16 @@ _xs_new_mulnum_array_from_bin(...)
   if (basic_type_id < 0) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-
+  
   int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
   int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
   int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);
   
   int32_t mulnum_field_id = class_fields_base_id;
   int32_t mulnum_field_type_id = env->api->runtime->get_field_type_id(env->runtime, mulnum_field_id);
-
+  
   int32_t field_length = class_fields_length;
-
+  
   int32_t field_native_stack_length;
   int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
   switch (mulnum_field_type_basic_type_id) {
@@ -4062,8 +4062,8 @@ _xs_new_mulnum_array_from_bin(...)
     }
   }
   
-  if (binary_length % (field_length * field_native_stack_length) != 0) {
-    croak("The size of the binary data is invalid\n    %s at %s line %d", __func__, FILE_NAME, __LINE__);
+  if (binary_length % (field_native_stack_length * field_length) != 0) {
+    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, field_length, __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / field_length / field_native_stack_length;
