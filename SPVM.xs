@@ -940,110 +940,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   return sv_array;
 }
 
-void* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, SV* sv_array, SV** sv_error) {
-  
-  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
-    *sv_error = sv_2mortal(newSVpvf("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__));
-    return NULL;
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_array);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Runtime
-  void* runtime = env->runtime;
-  
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  
-  if (basic_type_id < 0) {
-    *sv_error = sv_2mortal(newSVpvf("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__));
-    return NULL;
-  }
-  
-  // New array
-  void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, length);
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_elem_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-
-    if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
-      
-      int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
-      int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
-      int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);
-      
-      int32_t mulnum_field_id = class_fields_base_id;
-      int32_t mulnum_field_type_id = env->api->runtime->get_field_type_id(env->runtime, mulnum_field_id);
-
-      void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
-      
-      HV* hv_value = (HV*)SvRV(sv_elem);
-      int32_t fields_length = class_fields_length;
-      // Field exists check
-      int32_t hash_keys_length = 0;
-      while (hv_iternext(hv_value)) {
-        hash_keys_length++;
-      }
-      
-      for (int32_t field_index = 0; field_index < class_fields_length; field_index++) {
-        int32_t mulnum_field_id = class_fields_base_id + field_index;
-        int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
-        
-        const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
-        
-        SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
-        SV* sv_field_value;
-        if (sv_field_value_ptr) {
-          sv_field_value = *sv_field_value_ptr;
-        }
-        else {
-          *sv_error = sv_2mortal(newSVpvf("The \"%s\" field of the %dth element must be defined\n    %s at %s line %d\n", mulnum_field_name, index + 1, __func__, FILE_NAME, __LINE__));
-          return NULL;
-        }
-
-        int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
-        switch (mulnum_field_type_basic_type_id) {
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-            ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-            ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-            ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-            ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-            ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
-            break;
-          }
-          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-            ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
-            break;
-          }
-          default:
-            assert(0);
-        }
-      }
-    }
-    else {
-      *sv_error = sv_2mortal(newSVpvf("The $array %dth element must be a hash reference\n    %s at %s line %d\n", index + 1, __func__, FILE_NAME, __LINE__));
-      return NULL;
-    }
-  }
-  
-  return spvm_array;
-}
-
-SV* SPVM_XS_UTIL_new_mulnum_array_v2(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -1723,7 +1620,7 @@ xs_call_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
           SV* sv_error = &PL_sv_undef;
-          sv_value = SPVM_XS_UTIL_new_mulnum_array_v2(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -4109,7 +4006,7 @@ _xs_new_mulnum_array(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_mulnum_array_v2(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
