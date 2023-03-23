@@ -3809,15 +3809,15 @@ _xs_new_object_array(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_basic_type_name = ST(1);
-  SV* sv_elems = ST(2);
+  SV* sv_array = ST(2);
   
-  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
     croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  AV* av_elems = (AV*)SvRV(sv_elems);
+  AV* av_elems = (AV*)SvRV(sv_array);
   
   int32_t length = av_len(av_elems) + 1;
   
@@ -3860,7 +3860,7 @@ _xs_new_object_array(...)
   }
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3887,13 +3887,13 @@ _xs_new_muldim_array(...)
   
   SV* sv_basic_type_name = ST(1);
   SV* sv_type_dimension = ST(2);
-  SV* sv_elems = ST(3);
+  SV* sv_array = ST(3);
   
-  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
     croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  AV* av_elems = (AV*)SvRV(sv_elems);
+  AV* av_elems = (AV*)SvRV(sv_array);
   
   int32_t length = av_len(av_elems) + 1;
   
@@ -3937,7 +3937,7 @@ _xs_new_muldim_array(...)
   }
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
