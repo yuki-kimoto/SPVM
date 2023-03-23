@@ -582,19 +582,19 @@ Examples:
 
 =head2 new_muldim_array_raw
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
 
-Creates a new multi dimension array by specifying the basic type ID, the type dimension of the element, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
+Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to C<255>.
 
 =head2 new_muldim_array
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
 
 The same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
 
 Examples:
 
-  // new Int[][][100]
+  // Creates 2-dimensional array - The same as "new Int[][100]".
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* multi_array = env->new_muldim_array(env, stack, basic_type_id, 2, 100);
 

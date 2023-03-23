@@ -3901,7 +3901,6 @@ _xs_new_muldim_array(...)
   void* runtime = env->runtime;
 
   int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
-  int32_t elem_type_dimension = type_dimension - 1;
 
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3910,7 +3909,7 @@ _xs_new_muldim_array(...)
   assert(basic_type_id >= 0);
   
   // New array
-  void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, elem_type_dimension, length);
+  void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
   
   int32_t array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
 

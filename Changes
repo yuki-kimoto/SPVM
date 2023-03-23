@@ -1,3 +1,21 @@
+0.9696 2023-03-23
+  [Incompatible Changes]
+    * Changed the following native API implementation. This breaks binary compatibility. 
+
+       =head2 new_muldim_array_raw
+
+      -  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+      -Creates a new multi dimension array by specifying the basic type ID, the type dimension of the element, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
+
+      +  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
+
+      +Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to C<255>.
+
+       =head2 new_muldim_array
+
+      -  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+      +  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
+
 0.9696 2023-03-22
   [New Features]
     * Added the dump method in the SPVM::ExchangeAPI class.

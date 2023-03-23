@@ -305,7 +305,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_var_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* method_name;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t element_dimension;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
 
@@ -1899,14 +1898,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t basic_type_id = opcode->operand1;
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t element_dimension = opcode->operand3;
+        int32_t type_dimension = opcode->operand3;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  element_dimension = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, element_dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, "  type_dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
@@ -1920,7 +1919,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  if (!error) {\n"
                                               "    SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, element_dimension, length, &error);\n"
+        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type_id, type_dimension, length, &error);\n"
                                               "  }\n");
         
         break;

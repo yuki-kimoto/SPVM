@@ -2478,10 +2478,10 @@ SPVM_OBJECT* SPVM_API_new_string_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_muldim_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+SPVM_OBJECT* SPVM_API_new_muldim_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_new_muldim_array_raw(env, stack, basic_type_id, element_dimension, length);
+  SPVM_OBJECT* object = SPVM_API_new_muldim_array_raw(env, stack, basic_type_id, type_dimension, length);
   
   SPVM_API_push_mortal(env, stack, object);
   
@@ -2755,10 +2755,10 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length) {
   (void)env;
   
-  if (element_dimension < 1) {
+  if (type_dimension < 2) {
     return NULL;
   }
   else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
@@ -2774,7 +2774,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   }
   
   object->basic_type_id = basic_type_id;
-  object->type_dimension = element_dimension + 1;
+  object->type_dimension = type_dimension;
   
   // Set array length
   object->length = length;
