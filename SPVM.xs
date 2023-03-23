@@ -3735,13 +3735,8 @@ xs_new_string_array_len(...)
     croak("The length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  // Element type id
-  const char* basic_type_name = "string";
-  
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  
   // New array
-  void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
+  void* spvm_array = env->new_string_array(env, stack, length);
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
