@@ -403,7 +403,7 @@ sub new {
   unless (defined $self->output_type) {
     $self->output_type('dynamic_lib');
   }
-
+  
   # dynamic_lib_ldflags
   unless (defined $self->{dynamic_lib_ldflags}) {
     $self->dynamic_lib_ldflags([]);
@@ -412,16 +412,12 @@ sub new {
       my @dynamic_lib_ldflags;
       
       # Dynamic link options
-      if ($^O eq 'MSWin32') {
-        push @dynamic_lib_ldflags, '-mdll', '-s';
-      }
-      else {
-        push @dynamic_lib_ldflags, '-shared';
-      }
+      push @dynamic_lib_ldflags, '-shared';
+        
       $self->dynamic_lib_ldflags(\@dynamic_lib_ldflags);
     }
   }
-
+  
   # ldflags
   unless (defined $self->{ldflags}) {
     $self->ldflags([]);
