@@ -1738,23 +1738,15 @@ xs_call_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
         {
           // Argument conversion - array of class or interface or any object
-          void* spvm_array = NULL;
-          if (!SvOK(sv_value)) {
-            spvm_array = NULL;
+          SV* sv_error = &PL_sv_undef;
+          
+          sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, sv_value, &sv_error);
+          
+          if (SvOK(sv_error)) {
+            croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", args_index_nth, method_name, class_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
           }
-          else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
-            spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
-            
-            int32_t isa = env->isa(env, stack, spvm_array, arg_basic_type_id, arg_type_dimension);
-            if (!isa) {
-              void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_id, arg_type_dimension, arg_type_flag);
-              const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be assigned to the \"%s\" type\n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
-            }
-          }
-          else {
-            croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
-          }
+          
+          void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
           
           stack[stack_index].oval = spvm_array;
           
