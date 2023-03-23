@@ -251,6 +251,14 @@ use Test::More;
     ];
     compile_not_ok($source, qr|The variable "\$sepfoo" is not found|);
   }
+
+  # Segmentation fault https://github.com/yuki-kimoto/SPVM/issues/303, but Segmentation fault doesn't occur by this code.
+  {
+    my $source = [
+      'class MyClass { use Point; static method main : int () { Point->not_found; } }',
+    ];
+    compile_not_ok($source, qr|The "not_found" method in the "Point" class is not found|);
+  }
 }
 
 done_testing;
