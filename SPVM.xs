@@ -3861,7 +3861,9 @@ xs_new_object_array_len(...)
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  assert(basic_type_id >= 0);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
   
   // New array
   void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
@@ -3895,56 +3897,18 @@ _xs_new_object_array(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_array = ST(2);
   
-  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
-    croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
-  
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  AV* av_array = (AV*)SvRV(sv_array);
-  
-  int32_t length = av_len(av_array) + 1;
-  
-  // Runtime
-  void* runtime = env->runtime;
-  
- int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  assert(basic_type_id >= 0);
-  
-  // New array
-  void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
-
-  int32_t array_basic_type_id  = env->get_object_basic_type_id(env, stack, spvm_array);
-  int32_t array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-  int32_t elem_type_dimension = array_type_dimension - 1;
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_elem_ptr = av_fetch(av_array, index, 0);
-    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-    
-    if (!SvOK(sv_elem)) {
-      env->set_elem_object(env, stack, spvm_array, index, NULL);
-    }
-    else if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject")) {
-      void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
-
-      int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
-      if (elem_isa) {
-        env->set_elem_object(env, stack, spvm_array, index, elem);
-      }
-      else {
-        void* spvm_elem_type_name = env->get_type_name(env, stack, elem);
-        const char* elem_type_name = env->get_chars(env, stack, spvm_elem_type_name);
-        croak("The element must be assigned to the %s type\n    %s at %s line %d\n", elem_type_name, __func__, FILE_NAME, __LINE__);
-      }
-    }
-    else {
-      croak("The element must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
-  // New sv array
-  sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
+  
+  if (SvOK(sv_error)) {
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3989,8 +3953,10 @@ _xs_new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
- int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  assert(basic_type_id >= 0);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
   
   // New array
   void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
@@ -4052,6 +4018,9 @@ _xs_new_mulnum_array(...)
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
 
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
   
   SV* sv_error = &PL_sv_undef;
   sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
@@ -4100,7 +4069,6 @@ _xs_new_mulnum_array_from_bin(...)
   void* runtime = env->runtime;
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  
   if (basic_type_id < 0) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
