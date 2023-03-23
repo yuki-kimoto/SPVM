@@ -940,7 +940,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, int32_t type_dimension, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -957,6 +957,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      int32_t type_dimension = 1;
       if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
         error_array = 1;
       }
@@ -1023,8 +1024,87 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
-  return SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, 1, sv_array, sv_error);
+SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, int32_t type_dimension, SV* sv_array, SV** sv_error) {
+  
+  *sv_error = &PL_sv_undef;
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  int32_t error_array = 0;
+  int32_t error_elem = 0;
+  if (SvOK(sv_array)) {
+    if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
+      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
+      if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
+        error_array = 1;
+      }
+    }
+    else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
+      error_array = 1;
+    }
+    else {
+      // Elements
+      AV* av_array = (AV*)SvRV(sv_array);
+      
+      // Array length
+      int32_t length = av_len(av_array) + 1;
+      
+      // New array
+      void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
+      
+      for (int32_t index = 0; index < length; index++) {
+        SV** sv_elem_ptr = av_fetch(av_array, index, 0);
+        SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
+        
+        if (!SvOK(sv_elem)) {
+          env->set_elem_object(env, stack, spvm_array, index, NULL);
+        }
+        else if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject")) {
+          void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
+          
+          int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
+          if (elem_isa) {
+            env->set_elem_object(env, stack, spvm_array, index, elem);
+          }
+          else {
+            void* spvm_elem_type_name = env->get_type_name(env, stack, elem);
+            const char* elem_type_name = env->get_chars(env, stack, spvm_elem_type_name);
+            *sv_error = sv_2mortal(newSVpvf("'s %dth element must be the \"%s\" assignable type", index + 1, elem_type_name));
+            error_elem = 1;
+            break;
+          }
+        }
+        else {
+            *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a SPVM::BlessedObject or undef", index + 1));
+            error_elem = 1;
+            break;
+        }
+      }
+      
+      if (!error_elem) {
+        sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      }
+    }
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  if (error_elem) {
+    // Nothing
+  }
+  else if (error_array) {
+    const char* array_type_name = env->get_compile_type_name(env, stack, basic_type_id, type_dimension, 0);
+    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the %s assignable type or undef", array_type_name));
+  }
+  
+  return sv_array;
 }
 
 SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
