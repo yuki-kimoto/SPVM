@@ -104,9 +104,9 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
     SV* sv_native_blessed_object_env = sv_native_blessed_object_env_ptr ? *sv_native_blessed_object_env_ptr : &PL_sv_undef;
     SPVM_ENV* blessed_object_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_blessed_object_env)));
 
-    SV** sv_spvm_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
-    SV* sv_spvm_env = sv_spvm_env_ptr ? *sv_spvm_env_ptr : &PL_sv_undef;
-    void* spvm_env = INT2PTR(void*, SvIV(SvRV(sv_spvm_env)));
+    SV** sv_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
+    SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+    void* spvm_env = INT2PTR(void*, SvIV(SvRV(sv_env)));
     
     env = blessed_object_env->get_pointer(blessed_object_env, blessed_object_stack, spvm_env);
   }
@@ -142,9 +142,9 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
     SV* sv_native_blessed_object_env = sv_native_blessed_object_env_ptr ? *sv_native_blessed_object_env_ptr : &PL_sv_undef;
     SPVM_ENV* blessed_object_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_blessed_object_env)));
 
-    SV** sv_spvm_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-    SV* sv_spvm_stack = sv_spvm_stack_ptr ? *sv_spvm_stack_ptr : &PL_sv_undef;
-    void* spvm_stack = INT2PTR(void*, SvIV(SvRV(sv_spvm_stack)));
+    SV** sv_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
+    SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+    void* spvm_stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
     
     stack = blessed_object_env->get_pointer(blessed_object_env, blessed_object_stack, spvm_stack);
   }
@@ -2842,9 +2842,9 @@ xs_new_address_object(...)
   if (e) {
     croak("Can't create the Address object");
   }
-  SV* sv_spvm_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
+  sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
   
-  XPUSHs(sv_spvm_address);
+  XPUSHs(sv_address);
   XSRETURN(1);
 }
 
@@ -4744,8 +4744,8 @@ get_runtime_codes(...)
   SV* sv_runtime_codes = sv_2mortal(newRV_inc((SV*)av_runtime_codes));
   for (int32_t i = 0; i < runtime_codes_length; i++) {
     int32_t spvm_32bit_code = runtime_codes[i];
-    SV* sv_spvm_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
-    av_push(av_runtime_codes, SvREFCNT_inc(sv_spvm_32bit_code));
+    SV* sv_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
+    av_push(av_runtime_codes, SvREFCNT_inc(sv_32bit_code));
   }
 
   // Free native_env
