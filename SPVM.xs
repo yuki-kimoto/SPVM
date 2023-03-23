@@ -4145,46 +4145,47 @@ _xs_new_mulnum_array_from_bin(...)
 
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
+  int32_t copy_length = field_length * array_length * field_native_stack_length;
   switch (mulnum_field_type_basic_type_id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
       int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
       int16_t* elems = env->get_elems_short(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
       int32_t* elems = env->get_elems_int(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
       int64_t* elems = env->get_elems_long(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
       float* elems = env->get_elems_float(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
       double* elems = env->get_elems_double(env, stack, spvm_array);
       if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_native_stack_length);
+        memcpy(elems, binary, copy_length);
       }
       break;
     }
