@@ -3695,44 +3695,13 @@ xs_new_string_array(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_elems = ST(1);
+  SV* sv_array = ST(1);
   
-  if (!(SvROK(sv_elems) && sv_derived_from(sv_elems, "ARRAY"))) {
-    croak("The $array must be an array reference\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
-  void* spvm_array = NULL;
-  if (SvOK(sv_elems)) {
-    
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    spvm_array = env->new_string_array(env, stack, length);
-    
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-
-      SV* sv_error = &PL_sv_undef;
-      sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error);
-      
-      if (SvOK(sv_error)) {
-        croak("The %dth element of the $array%s\n    %s at %s line %d\n", i + 1, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-      }
-      
-      void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
-      env->set_elem_object(env, stack, spvm_array, i, spvm_elem);
-    }
-  }
-  
-  SV* sv_array;
-  if (spvm_array) {
-    sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
+  if (SvOK(sv_error)) {
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
