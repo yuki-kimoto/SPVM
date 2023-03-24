@@ -3719,18 +3719,14 @@ _xs_length(...)
   
   // Runtime
   void* runtime = env->runtime;
-
-  // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
-  if (!(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
+  
+  assert(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"));
   
   // Get object
   void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
   
   int32_t length = env->length(env, stack, spvm_array);
-
-
+  
   SV* sv_length = sv_2mortal(newSViv(length));
   
   XPUSHs(sv_length);
@@ -3763,20 +3759,19 @@ _xs_to_elems(...)
   
   // Runtime
   void* runtime = env->runtime;
-
-  // Array must be a SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
-  if (!(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
+  
+  assert(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"));
   
   // Get object
   void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
   
   int32_t length = env->length(env, stack, spvm_array);
-
+  
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
+  
+  assert(is_array_type);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
@@ -3784,7 +3779,7 @@ _xs_to_elems(...)
     
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, spvm_array);
     int32_t array_is_object_array = env->is_object_array(env, stack, spvm_array);
-
+    
     if (array_is_mulnum_array) {
       
       for (int32_t index = 0; index < length; index++) {
@@ -3794,7 +3789,7 @@ _xs_to_elems(...)
         
         int32_t mulnum_field_id = class_fields_base_id;
         int32_t mulnum_field_type_id = env->api->runtime->get_field_type_id(env->runtime, mulnum_field_id);
-
+        
         void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
@@ -3802,9 +3797,9 @@ _xs_to_elems(...)
         for (int32_t field_index = 0; field_index < class_fields_length; field_index++) {
           int32_t mulnum_field_id = class_fields_base_id + field_index;
           int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
-
+          
           const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
-
+          
           SV* sv_field_value;
           int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
           switch (mulnum_field_type_basic_type_id) {
@@ -3943,9 +3938,6 @@ _xs_to_elems(...)
       }
     }
   }
-  else {
-    croak("The object must be an array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
 
   SV* sv_values = sv_2mortal(newRV_inc((SV*)av_values));
   
@@ -3979,38 +3971,36 @@ _xs_to_bin(...)
   
   // Runtime
   void* runtime = env->runtime;
-
-  // Array must be a SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
-  if (!(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"))) {
-    croak("The array must be a SPVM::BlessedObject::Array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
-
+  
+  assert(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::Array"));
+  
   // Get object
   void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
   
   int32_t length = env->length(env, stack, spvm_array);
-
+  
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
+  assert(is_array_type);
   
   SV* sv_bin;
   if (is_array_type) {
     int32_t elem_type_dimension = dimension - 1;
-
+    
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, spvm_array);
     int32_t array_is_object_array = env->is_object_array(env, stack, spvm_array);
-
+    
     if (array_is_mulnum_array) {
       int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
       int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
       int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);
-
+      
       int32_t mulnum_field_id = class_fields_base_id;
       int32_t mulnum_field_type_id = env->api->runtime->get_field_type_id(env->runtime, mulnum_field_id);
-
+      
       int32_t field_length = class_fields_length;
-
+      
       int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
       switch (mulnum_field_type_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -4055,7 +4045,7 @@ _xs_to_bin(...)
       }
     }
     else if (array_is_object_array) {
-      croak("The array can't be an object array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The object array can't be converted to a binary\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
       switch (basic_type_id) {
@@ -4100,9 +4090,6 @@ _xs_to_bin(...)
         }
       }
     }
-  }
-  else {
-    croak("The object must be an array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_bin);
