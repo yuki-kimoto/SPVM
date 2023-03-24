@@ -20,7 +20,7 @@ use SPVM::ExchangeAPI;
 sub length {
   my $self = shift;
   
-  return $self->api->array_length($self);
+  return $self->_xs_length;
 }
 
 sub to_elems {

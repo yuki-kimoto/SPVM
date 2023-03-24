@@ -224,7 +224,6 @@ sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { 
 sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess $@ } $ret}
 sub call_method { my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess $@ } $ret}
 sub new_string { my $ret; eval { $ret =  &_xs_new_string(@_) }; if ($@) { confess $@ } $ret}
-sub array_length { my $ret; eval { $ret =  &_xs_array_length(@_) }; if ($@) { confess $@ } $ret}
 sub array_to_elems { my $ret; eval { $ret =  &_xs_array_to_elems(@_) }; if ($@) { confess $@ } $ret}
 sub array_to_bin { my $ret; eval { $ret =  &_xs_array_to_bin(@_) }; if ($@) { confess $@ } $ret}
 sub array_set { my $ret; eval { $ret =  &_xs_array_set(@_) }; if ($@) { confess $@ } $ret}

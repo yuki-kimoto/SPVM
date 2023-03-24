@@ -30,8 +30,10 @@
 
       -  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
       +  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
-    * Removed the undocumented string_object_to_string and string_object_to_bin in the SPVM::ExchangeAPI method
+    * Removed the undocumented string_object_to_string and string_object_to_bin methods in the SPVM::ExchangeAPI method
       and added a private _xs_to_bin method to SPVM::BlessedObject::String.
+    * Removed the undocumented array_length method in the SPVM::ExchangeAPI method
+      and added a private _xs_length method to SPVM::BlessedObject::Array
     
   [Document Improvement]
     * Improved the doc of the SPVM::BlessedObject::String.
