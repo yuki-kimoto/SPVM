@@ -51,20 +51,20 @@ sub to_bins {
 
 sub to_bin {
   my $self = shift;
-
-  $self->__api->array_to_bin($self);
+  
+  return $self->_xs_to_bin;
 }
 
 sub set {
   my $self = shift;
   
-  $self->__api->array_set($self, @_);
+  $self->_xs_set(@_);
 }
 
 sub get {
   my $self = shift;
   
-  $self->__api->array_get($self, @_);
+  return $self->_xs_get(@_);
 }
 
 1;

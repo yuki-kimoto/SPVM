@@ -37,6 +37,12 @@
     * Renamed the undocumented api method in the SPVM::BlessedObject method to __api.
     * Removed the undocumented array_to_elems method in the SPVM::ExchangeAPI method
       and added a private _xs_to_elems method to SPVM::BlessedObject::Array
+    * Removed the undocumented array_to_bin method in the SPVM::ExchangeAPI method
+      and added a private _xs_to_bin method to SPVM::BlessedObject::Array
+    * Removed the undocumented array_set method in the SPVM::ExchangeAPI method
+      and added a private _xs_set method to SPVM::BlessedObject::Array
+    * Removed the undocumented array_get method in the SPVM::ExchangeAPI method
+      and added a private _xs_get method to SPVM::BlessedObject::Array
     
   [Document Improvement]
     * Improved the doc of the SPVM::BlessedObject::String.
