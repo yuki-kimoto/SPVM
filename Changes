@@ -56,7 +56,8 @@
     * Improved the exception messages of the SPVM::BlessedObject::String.
     * Improved the exception messages of the SPVM::BlessedObject::Class.
     * Improved the exception messages of the SPVM::BlessedObject::Array.
-    
+  [Bug Fix]
+    * Fixed the range checking bug of the set and get methods in the SPVM::BlessedObject::Array.
 0.9696 2023-03-22
   [New Features]
     * Added the dump method in the SPVM::ExchangeAPI class.

@@ -100,6 +100,8 @@ Converts a SPVM array to a binary and returns it.
 
 This binary is unpacked by L<unpack|https://perldoc.perl.org/functions/unpack> function.
 
+If the array is an object array, an excetion will be thrown.
+
 Examples:
 
   # byte[]

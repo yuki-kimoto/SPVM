@@ -4125,7 +4125,7 @@ _xs_set(...)
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
-
+  
   // Array
   void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
   
@@ -4133,13 +4133,13 @@ _xs_set(...)
   int32_t length = env->length(env, stack, spvm_array);
   
   // Check range
-  if (!(index >= 0 || index < length)) {
-    croak("The index must be more than or equal to 0 and less than the length");
+  if (!(index >= 0 && index < length)) {
+    croak("The $index must be greatr than or equal to 0 and less than the length of the array");
   }
-
+  
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
-
+  
   if (dimension == 1) {
     switch (basic_type_id) {
       case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -4261,8 +4261,8 @@ _xs_get(...)
   int32_t length = env->length(env, stack, spvm_array);
   
   // Check range
-  if (!(index >= 0 || index < length)) {
-    croak("The index must be more than or equal to 0 and less than the length");
+  if (!(index >= 0 && index < length)) {
+    croak("The $index must be greater than or equal to 0 and less than the length of the array");
   }
 
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
@@ -4320,9 +4320,6 @@ _xs_get(...)
   }
   else if (dimension > 1) {
     is_object = 1;
-  }
-  else {
-    assert(0);
   }
   
   if (is_object) {
