@@ -1310,6 +1310,16 @@ xs_call_method(...)
       const char* class_name = method_name;
       method_name = found_char + 1;
       
+      int32_t static_call_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
+      if (static_call_basic_type_id < 0) {
+        croak("The \"%s\" class is not found\n    %s at %s line %d\n", class_name, __func__, FILE_NAME, __LINE__);
+      }
+      
+      int32_t isa = env->isa(env, stack, object, static_call_basic_type_id, 0);
+      if (!isa) {
+        croak("The invocant must be assinged to the \"%s\" class\n    %s at %s line %d\n", class_name, __func__, FILE_NAME, __LINE__);
+      }
+      
       method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);
       
       *(found_char - 1) = ':';

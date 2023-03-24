@@ -21,6 +21,7 @@ use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 use SPVM 'TestCase::Minimal';
 use SPVM 'Point';
+use SPVM 'Point3D';
 use SPVM 'Byte';
 use SPVM 'Short';
 use SPVM 'Int';
@@ -1061,12 +1062,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# Call not defined method
-{
-  eval { SPVM::Int->not_defined_method };
-  like($@, qr|The "not_defined_method" method in the "Int" class is not defined|);
-}
-
 {
   {
     my $options = $api->new_options({
@@ -1120,6 +1115,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     eval { $api->dump("string"); };
     
     like($@, qr|The \$object must be a SPVM::BlessedObject object|);
+  }
+}
+
+# Binding SPVM class to Perl class
+{
+  # Calls a non-defined method
+  {
+    eval { SPVM::Int->not_defined_method };
+    like($@, qr|The "not_defined_method" method in the "Int" class is not found|);
   }
 }
 
@@ -1198,6 +1202,96 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       {
         my $blessed_object_string = $api->new_string("あいう");
         is("$blessed_object_string", "あいう");
+      }
+    }
+  }
+}
+
+# SPVM::BlessedObject::Class
+{
+  # AUTOLOAD
+  {
+    # Calls an instance method - Point
+    {
+      {
+        my $point = SPVM::Point->new(1, 2);
+        my $x = $point->x;
+        my $y = $point->y;
+        
+        is($x, 1);
+        is($y, 2);
+      }
+      
+      {
+        my $point = SPVM::Point->new(1, 2);
+        $point->set_x(4);
+        my $x = $point->x;
+        is($x, 4);
+      }
+      
+      {
+        my $point = SPVM::Point->new(1, 2);
+        $point->clear;
+        my $x = $point->x;
+        my $y = $point->y;
+        is($x, 0);
+        is($y, 0);
+      }
+    }
+    
+    # Calls an instance method - Point3D
+    {
+      {
+        my $point = SPVM::Point3D->new(1, 2, 3);
+        my $x = $point->x;
+        my $y = $point->y;
+        my $z = $point->z;
+        
+        is($x, 1);
+        is($y, 2);
+        is($z, 3);
+      }
+      
+      {
+        my $point = SPVM::Point3D->new(1, 2, 3);
+        $point->clear;
+        my $x = $point->x;
+        my $y = $point->y;
+        my $z = $point->z;
+        is($x, 0);
+        is($y, 0);
+        is($z, 0);
+      }
+    }
+    
+    # Calls an instance method statically - Point3D
+    {
+      {
+        my $point = SPVM::Point3D->new(1, 2, 3);
+        $point->SPVM::Point::clear;
+        my $x = $point->x;
+        my $y = $point->y;
+        my $z = $point->z;
+        is($x, 0);
+        is($y, 0);
+        is($z, 3);
+      }
+    }
+    
+    # Exceptions
+    {
+      # Invocant assinable
+      {
+        my $point = SPVM::Point3D->new(1, 2, 3);
+        eval { $point->SPVM::Int::value; };
+        like($@, qr|The invocant must be assinged to the "Int" class|);
+      }
+      
+      # Method not found
+      {
+        my $point = SPVM::Point->new(1, 2);
+        eval { $point->not_found; };
+        like($@, qr|The "not_found" method in the "Point" class is not found|);
       }
     }
   }
