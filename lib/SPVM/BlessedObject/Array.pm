@@ -26,7 +26,7 @@ sub length {
 sub to_elems {
   my $self = shift;
   
-  return $self->api->array_to_elems($self);
+  return $self->__api->array_to_elems($self);
 }
 
 sub to_strings {
@@ -52,19 +52,19 @@ sub to_bins {
 sub to_bin {
   my $self = shift;
 
-  $self->api->array_to_bin($self);
+  $self->__api->array_to_bin($self);
 }
 
 sub set {
   my $self = shift;
   
-  $self->api->array_set($self, @_);
+  $self->__api->array_set($self, @_);
 }
 
 sub get {
   my $self = shift;
   
-  $self->api->array_get($self, @_);
+  $self->__api->array_get($self, @_);
 }
 
 1;

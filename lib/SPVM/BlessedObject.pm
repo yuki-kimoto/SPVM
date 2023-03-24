@@ -3,14 +3,14 @@ package SPVM::BlessedObject;
 use strict;
 use warnings;
 
-sub api {
+sub __api {
   my $self = shift;
   if (@_) {
-    $self->{api} = $_[0];
+    $self->{__api} = $_[0];
     return $self;
   }
   else {
-    return $self->{api};
+    return $self->{__api};
   }
 }
 

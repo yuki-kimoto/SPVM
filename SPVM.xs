@@ -49,7 +49,7 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stac
   SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
 
   (void)hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
-  (void)hv_store(hv_data, "api", strlen("api"), SvREFCNT_inc(sv_api), 0);
+  (void)hv_store(hv_data, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
   (void)hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   (void)hv_store(hv_data, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
 
@@ -4240,7 +4240,7 @@ DESTROY(...)
   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
 
   // API
-  SV** sv_api_ptr = hv_fetch(hv_object, "api", strlen("api"), 0);
+  SV** sv_api_ptr = hv_fetch(hv_object, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
 
@@ -4274,7 +4274,7 @@ _xs_to_bin(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "api", strlen("api"), 0);
+  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
   
@@ -4314,7 +4314,7 @@ _xs_length(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "api", strlen("api"), 0);
+  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
   
@@ -4365,7 +4365,7 @@ get_class_name(...)
   void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_object);
 
   // API
-  SV** sv_api_ptr = hv_fetch(hv_object, "api", strlen("api"), 0);
+  SV** sv_api_ptr = hv_fetch(hv_object, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
 

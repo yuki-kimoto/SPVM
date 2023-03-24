@@ -40,8 +40,8 @@ sub load_dynamic_libs {
         at_runtime => 1,
       );
       
-      my $get_method_names_options = $runtime->api->new_options({
-        $category => $runtime->api->class('Int')->new(1)
+      my $get_method_names_options = $runtime->__api->new_options({
+        $category => $runtime->__api->class('Int')->new(1)
       });
       
       my $method_names = $runtime->get_method_names($class_name, $get_method_names_options)->to_strings;
@@ -71,8 +71,8 @@ sub load_dynamic_libs {
 
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
-    my $get_method_names_options = $runtime->api->new_options({
-      $category => $runtime->api->class('Int')->new(1)
+    my $get_method_names_options = $runtime->__api->new_options({
+      $category => $runtime->__api->class('Int')->new(1)
     });
     
     for my $class_name (keys %{$dynamic_lib_files->{$category}}) {
@@ -86,10 +86,10 @@ sub load_dynamic_libs {
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($class_name, $method_name, $runtime->api->new_address_object($cfunc_address));
+          $runtime->set_native_method_address($class_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($class_name, $method_name, $runtime->api->new_address_object($cfunc_address));
+          $runtime->set_precompile_method_address($class_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
       }
     }

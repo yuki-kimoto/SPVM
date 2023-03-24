@@ -34,6 +34,7 @@
       and added a private _xs_to_bin method to SPVM::BlessedObject::String.
     * Removed the undocumented array_length method in the SPVM::ExchangeAPI method
       and added a private _xs_length method to SPVM::BlessedObject::Array
+    * Renamed the undocumented api method in the SPVM::BlessedObject method to __api.
     
   [Document Improvement]
     * Improved the doc of the SPVM::BlessedObject::String.

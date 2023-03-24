@@ -29,7 +29,7 @@ sub AUTOLOAD {
   # For an instance method call
   $method_name =~ s/^BlessedObject::Class:://;
   
-  my $ret = $self->api->call_method($self, $method_name, @_);
+  my $ret = $self->__api->call_method($self, $method_name, @_);
   
   return $ret;
 }
