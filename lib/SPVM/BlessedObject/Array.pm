@@ -121,10 +121,10 @@ This binary is unpacked by L<unpack|https://perldoc.perl.org/functions/unpack> f
 
 Examples:
 
-  # int[]
+  # byte[]
   my @elems = unpack 'c*', $binary;
   
-  # int[]
+  # short[]
   my @elems = unpack 's*', $binary;
   
   # int[]

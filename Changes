@@ -33,12 +33,15 @@
   [Document Improvement]
     * Improved the doc of the SPVM::BlessedObject::String.
     * Improved the doc of the SPVM::BlessedObject::Class.
+    * Improved the doc of the SPVM::BlessedObject::Array.
   [Test Improvement]
     * Improved the tests of the SPVM::BlessedObject::String.
     * Improved the tests of the SPVM::BlessedObject::Class.
+    * Improved the tests of the SPVM::BlessedObject::Array.
   [Exception Message Improvement]
     * Improved the exception messages of the SPVM::BlessedObject::String.
     * Improved the exception messages of the SPVM::BlessedObject::Class.
+    * Improved the exception messages of the SPVM::BlessedObject::Array.
     
 0.9696 2023-03-22
   [New Features]

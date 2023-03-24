@@ -56,86 +56,6 @@ my $api = SPVM::api();
 # Start objects count
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
-# to_elems
-{
-  # to_elems
-  {
-    # to_elems - byte[]
-    {
-      my $sp_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
-    }
-    # to_elems - short[]
-    {
-      my $sp_values = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
-    }
-    
-    # to_elems - int[]
-    {
-      my $sp_values = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
-    }
-    # to_elems - long[]
-    {
-      my $sp_values = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
-    }
-    # to_elems - float[]
-    {
-      my $sp_values = $api->new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
-    }
-    # to_elems - double[]
-    {
-      my $sp_values = $api->new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
-      my $values = $sp_values->to_elems;
-      is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
-    }
-    # to_elems - string[]
-    {
-      my $sp_values = $api->new_string_array(["あ", "い"]);
-      my $values = $sp_values->to_elems;
-      is(ref $values->[0], "SPVM::BlessedObject::String");
-      is($values->[0], "あ");
-      is($values->[1], "い");
-      is(scalar @$values, 2);
-    }
-    # to_strings - string[]
-    {
-      my $sp_values = $api->new_object_array('Point[]', [SPVM::Point->new(1, 2), SPVM::Point->new(3, 4)]);
-      my $values = $sp_values->to_strings;
-      is($values->[0], "(1,2)");
-      is($values->[1], "(3,4)");
-      is(scalar @$values, 2);
-    }
-    # to_strings - string[]
-    {
-      my $sp_values = $api->new_string_array(["あ", "い"]);
-      my $values = $sp_values->to_strings;
-      ok(!ref $values->[0]);
-      ok(utf8::is_utf8($values->[0]));
-      is($values->[0], "あ");
-      is($values->[1], "い");
-      is(scalar @$values, 2);
-    }
-    # to_bins - string[]
-    {
-      my $sp_values = $api->new_string_array(["あ", "い"]);
-      my $values = $sp_values->to_bins;
-      ok(!ref $values->[0]);
-      ok(!utf8::is_utf8($values->[0]));
-      is($values->[0], Encode::encode('UTF-8', "あ"));
-      is($values->[1], Encode::encode('UTF-8', "い"));
-      is(scalar @$values, 2);
-    }
-  }
-}
 # Convert a scalar value to SPVM numeric object
 {
 
@@ -896,52 +816,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
   }
     
-  # to_bin(
-  {
-    {
-      my $sp_values = $api->new_byte_array([1, 2, $BYTE_MAX]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('c3', $binary);
-      is_deeply(\@values, [1, 2, $BYTE_MAX]);
-    }
-    {
-      my $sp_values = $api->new_short_array([1, 2, $SHORT_MAX]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('s3', $binary);
-      is_deeply(\@values, [1, 2, $SHORT_MAX]);
-    }
-    {
-      my $sp_values = $api->new_int_array([1, 2, $INT_MAX]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('l3', $binary);
-      is_deeply(\@values, [1, 2, $INT_MAX]);
-    }
-    {
-      my $sp_values = $api->new_long_array([1, 2, $LONG_MAX]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('q3', $binary);
-      is_deeply(\@values, [1, 2, $LONG_MAX]);
-    }
-    {
-      my $sp_values = $api->new_float_array([1, 2, $FLOAT_PRECICE]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('f3', $binary);
-      is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
-    }
-    {
-      my $sp_values = $api->new_double_array([1, 2, $DOUBLE_PRECICE]);
-      my $binary = $sp_values->to_bin;
-      
-      my @values = unpack('d3', $binary);
-      is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
-    }
-  }
-
   # middle size array
   {
     my $length = 1_000_000;
@@ -970,61 +844,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $sp_values = $api->new_float_array_from_bin($binary);
       is($sp_values->length, $length);
     }
-  }
-}
-
-# SPVM::BlessedObject::Array
-{
-  # get and set
-  {
-    {
-      my $sp_values = $api->new_byte_array([0, 0]);
-      $sp_values->set(1, $BYTE_MAX);
-      is_deeply($sp_values->to_elems, [0, $BYTE_MAX]);
-      my $value = $sp_values->get(1);
-      is($value, $BYTE_MAX);
-    }
-    {
-      my $sp_values = $api->new_short_array([0, 0]);
-      $sp_values->set(1, $SHORT_MAX);
-      is_deeply($sp_values->to_elems, [0, $SHORT_MAX]);
-      my $value = $sp_values->get(1);
-      is($value, $SHORT_MAX);
-    }
-    {
-      my $sp_values = $api->new_int_array([0, 0]);
-      $sp_values->set(1, $INT_MAX);
-      is_deeply($sp_values->to_elems, [0, $INT_MAX]);
-      my $value = $sp_values->get(1);
-      is($value, $INT_MAX);
-    }
-    {
-      my $sp_values = $api->new_long_array([0, 0]);
-      $sp_values->set(1, $LONG_MAX);
-      is_deeply($sp_values->to_elems, [0, $LONG_MAX]);
-      my $value = $sp_values->get(1);
-      is($value, $LONG_MAX);
-    }
-    {
-      my $sp_values = $api->new_float_array([0, 0]);
-      $sp_values->set(1, $FLOAT_PRECICE);
-      is_deeply($sp_values->to_elems, [0, $FLOAT_PRECICE]);
-      my $value = $sp_values->get(1);
-      is($value, $FLOAT_PRECICE);
-    }
-    {
-      my $sp_values = $api->new_double_array([0, 0]);
-      $sp_values->set(1, $DOUBLE_PRECICE);
-      is_deeply($sp_values->to_elems, [0, $DOUBLE_PRECICE]);
-      my $value = $sp_values->get(1);
-      is($value, $DOUBLE_PRECICE);
-    }
-  }
-  
-  # overload fallback
-  {
-    my $sp_values = $api->new_double_array([0, 0]);
-    like("$sp_values", qr/PVM::BlessedObject::Array/);
   }
 }
 
@@ -1211,6 +1030,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   # AUTOLOAD
   {
+    # Creates a SPVM::BlessedObject::Class object
+    {
+      my $blessed_object_class = SPVM::Point->new(1, 2);
+      is(ref $blessed_object_class, "SPVM::BlessedObject::Class");
+    }
+    
     # Calls an instance method - Point
     {
       {
@@ -1293,6 +1118,207 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
         eval { $point->not_found; };
         like($@, qr|The "not_found" method in the "Point" class is not found|);
       }
+    }
+  }
+}
+
+# SPVM::BlessedObject::Array
+{
+  # Creates a SPVM::BlessedObject::Array object
+  {
+    my $blessed_object_array = my $sp_values = $api->new_int_array([0, 0]);
+    is(ref $blessed_object_array, "SPVM::BlessedObject::Array");
+  }
+  
+  # get and set
+  {
+    {
+      my $sp_values = $api->new_byte_array([0, 0]);
+      $sp_values->set(1, $BYTE_MAX);
+      is_deeply($sp_values->to_elems, [0, $BYTE_MAX]);
+      my $value = $sp_values->get(1);
+      is($value, $BYTE_MAX);
+    }
+    {
+      my $sp_values = $api->new_short_array([0, 0]);
+      $sp_values->set(1, $SHORT_MAX);
+      is_deeply($sp_values->to_elems, [0, $SHORT_MAX]);
+      my $value = $sp_values->get(1);
+      is($value, $SHORT_MAX);
+    }
+    {
+      my $sp_values = $api->new_int_array([0, 0]);
+      $sp_values->set(1, $INT_MAX);
+      is_deeply($sp_values->to_elems, [0, $INT_MAX]);
+      my $value = $sp_values->get(1);
+      is($value, $INT_MAX);
+    }
+    {
+      my $sp_values = $api->new_long_array([0, 0]);
+      $sp_values->set(1, $LONG_MAX);
+      is_deeply($sp_values->to_elems, [0, $LONG_MAX]);
+      my $value = $sp_values->get(1);
+      is($value, $LONG_MAX);
+    }
+    {
+      my $sp_values = $api->new_float_array([0, 0]);
+      $sp_values->set(1, $FLOAT_PRECICE);
+      is_deeply($sp_values->to_elems, [0, $FLOAT_PRECICE]);
+      my $value = $sp_values->get(1);
+      is($value, $FLOAT_PRECICE);
+    }
+    {
+      my $sp_values = $api->new_double_array([0, 0]);
+      $sp_values->set(1, $DOUBLE_PRECICE);
+      is_deeply($sp_values->to_elems, [0, $DOUBLE_PRECICE]);
+      my $value = $sp_values->get(1);
+      is($value, $DOUBLE_PRECICE);
+    }
+  }
+  
+  # overload fallback
+  {
+    my $sp_values = $api->new_double_array([0, 0]);
+    like("$sp_values", qr/SPVM::BlessedObject::Array/);
+  }
+  
+  # to_elems
+  {
+    # to_elems - byte[]
+    {
+      my $sp_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    # to_elems - short[]
+    {
+      my $sp_values = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+    }
+    
+    # to_elems - int[]
+    {
+      my $sp_values = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+    }
+    # to_elems - long[]
+    {
+      my $sp_values = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+    }
+    # to_elems - float[]
+    {
+      my $sp_values = $api->new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+    }
+    # to_elems - double[]
+    {
+      my $sp_values = $api->new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
+      my $values = $sp_values->to_elems;
+      is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+    }
+    # to_elems - string[]
+    {
+      my $sp_values = $api->new_string_array(["あ", "い"]);
+      my $values = $sp_values->to_elems;
+      is(ref $values->[0], "SPVM::BlessedObject::String");
+      is($values->[0], "あ");
+      is($values->[1], "い");
+      is(scalar @$values, 2);
+    }
+  }
+  
+  # to_bin
+  {
+    {
+      my $sp_values = $api->new_byte_array([1, 2, $BYTE_MAX]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('c3', $binary);
+      is_deeply(\@values, [1, 2, $BYTE_MAX]);
+    }
+    {
+      my $sp_values = $api->new_short_array([1, 2, $SHORT_MAX]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('s3', $binary);
+      is_deeply(\@values, [1, 2, $SHORT_MAX]);
+    }
+    {
+      my $sp_values = $api->new_int_array([1, 2, $INT_MAX]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('l3', $binary);
+      is_deeply(\@values, [1, 2, $INT_MAX]);
+    }
+    {
+      my $sp_values = $api->new_long_array([1, 2, $LONG_MAX]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('q3', $binary);
+      is_deeply(\@values, [1, 2, $LONG_MAX]);
+    }
+    {
+      my $sp_values = $api->new_float_array([1, 2, $FLOAT_PRECICE]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('f3', $binary);
+      is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
+    }
+    {
+      my $sp_values = $api->new_double_array([1, 2, $DOUBLE_PRECICE]);
+      my $binary = $sp_values->to_bin;
+      
+      my @values = unpack('d3', $binary);
+      is_deeply(\@values, [1, 2, $DOUBLE_PRECICE]);
+    }
+  }
+  
+  # to_strings
+  {
+    # to_strings - string[]
+    {
+      my $sp_values = $api->new_object_array('Point[]', [SPVM::Point->new(1, 2), SPVM::Point->new(3, 4)]);
+      my $values = $sp_values->to_strings;
+      is($values->[0], "(1,2)");
+      is($values->[1], "(3,4)");
+      is(scalar @$values, 2);
+    }
+    # to_strings - string[]
+    {
+      my $sp_values = $api->new_string_array(["あ", "い"]);
+      my $values = $sp_values->to_strings;
+      ok(!ref $values->[0]);
+      ok(utf8::is_utf8($values->[0]));
+      is($values->[0], "あ");
+      is($values->[1], "い");
+      is(scalar @$values, 2);
+    }
+  }
+  
+  # to_bins
+  {
+    # to_bins - string[]
+    {
+      my $sp_values = $api->new_string_array(["あ", "い"]);
+      my $values = $sp_values->to_bins;
+      ok(!ref $values->[0]);
+      ok(!utf8::is_utf8($values->[0]));
+      {
+        my $expected = "あ";
+        utf8::encode($expected);
+        is($values->[0], $expected);
+      }
+      {
+        my $expected = "い";
+        utf8::encode($expected);
+        is($values->[1], $expected);
+      }
+      is(scalar @$values, 2);
     }
   }
 }
