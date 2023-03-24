@@ -4121,7 +4121,7 @@ _xs_set(...)
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_index = ST(1);
-  SV* sv_value = ST(2);
+  SV* sv_elem = ST(2);
   
   // Index
   int32_t index = (int32_t)SvIV(sv_index);
@@ -4144,79 +4144,79 @@ _xs_set(...)
     switch (basic_type_id) {
       case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
         // Value
-        int8_t value = (int8_t)SvIV(sv_value);
+        int8_t elem = (int8_t)SvIV(sv_elem);
         
         // Set element
         int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
         // Value
-        int16_t value = (int16_t)SvIV(sv_value);
+        int16_t elem = (int16_t)SvIV(sv_elem);
         
         // Set element
         int16_t* elems = env->get_elems_short(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
         // Value
-        int32_t value = (int32_t)SvIV(sv_value);
+        int32_t elem = (int32_t)SvIV(sv_elem);
         
         // Set element
         int32_t* elems = env->get_elems_int(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
         // Value
-        int64_t value = (int64_t)SvIV(sv_value);
+        int64_t elem = (int64_t)SvIV(sv_elem);
         
         // Set element
         int64_t* elems = env->get_elems_long(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
         // Value
-        float value = (float)SvNV(sv_value);
+        float elem = (float)SvNV(sv_elem);
         
         // Set element
         float* elems = env->get_elems_float(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         break;
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
         // Value
-        double value = (double)SvNV(sv_value);
+        double elem = (double)SvNV(sv_elem);
         
         // Set element
         double* elems = env->get_elems_double(env, stack, spvm_array);
         
-        elems[index] = value;
+        elems[index] = elem;
         break;
       }
       default: {
         // Get object
-        void* value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+        void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
         
-        env->set_elem_object(env, stack, spvm_array, index, value);
+        env->set_elem_object(env, stack, spvm_array, index, elem);
       }
     }
   }
   else if (dimension > 1) {
     
     // Get object
-    void* value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
+    void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
     
-    env->set_elem_object(env, stack, spvm_array, index, value);
+    env->set_elem_object(env, stack, spvm_array, index, elem);
   }
   else {
     assert(0);
