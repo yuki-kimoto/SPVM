@@ -4138,9 +4138,9 @@ _xs_set(...)
   }
   
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
-  int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
+  int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
-  if (dimension == 1) {
+  if (type_dimension == 1) {
     switch (basic_type_id) {
       case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
         // Value
@@ -4211,7 +4211,7 @@ _xs_set(...)
       }
     }
   }
-  else if (dimension > 1) {
+  else if (type_dimension > 1) {
     
     // Get object
     void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
