@@ -1273,7 +1273,7 @@ _xs_call_method(...)
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
     if (!(sv_isobject(sv_invocant) && sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class"))) {
-      croak("The $invocant must be a SPVM::BlessedObject::Class object");
+      croak("The $invocant must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     HV* hv_invocant = (HV*)SvRV(sv_invocant);
@@ -1284,7 +1284,7 @@ _xs_call_method(...)
     SPVM_ENV* object_env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
     
     if (!(object_env == env)) {
-      croak("The env of the argument is differnt from the env of the invocant");
+      croak("The env of the argument is differnt from the env of the invocant\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     // Stack
@@ -1293,7 +1293,7 @@ _xs_call_method(...)
     SPVM_VALUE* object_stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
     
     if (!(object_stack == stack)) {
-      croak("The stack of the argument is differnt from the stack of the invocant");
+      croak("The stack of the argument is differnt from the stack of the invocant\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_invocant);
@@ -1304,7 +1304,7 @@ _xs_call_method(...)
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
       if (!(*(found_char - 1) == ':')) {
-        croak("The static method call must be valid");
+        croak("The static method call must be valid\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
       }
       *(found_char - 1) = '\0';
       const char* class_name = method_name;
@@ -4134,7 +4134,7 @@ _xs_set(...)
   
   // Check range
   if (!(index >= 0 && index < length)) {
-    croak("The $index must be greatr than or equal to 0 and less than the length of the array");
+    croak("The $index must be greatr than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
@@ -4218,7 +4218,7 @@ _xs_set(...)
     
     int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
     if (!elem_isa) {
-      croak("The $elem must be assigned to the element of the array");
+      croak("The $elem must be assigned to the element of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     env->set_elem_object(env, stack, spvm_array, index, elem);
@@ -4267,7 +4267,7 @@ _xs_get(...)
   
   // Check range
   if (!(index >= 0 && index < length)) {
-    croak("The $index must be greater than or equal to 0 and less than the length of the array");
+    croak("The $index must be greater than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
