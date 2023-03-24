@@ -2611,47 +2611,6 @@ _xs_array_to_bin(...)
 }
 
 SV*
-_xs_string_object_to_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_string = ST(1);
-  
-  // Runtime
-  void* runtime = env->runtime;
-
-  // String must be a SPVM::BlessedObject::String or SPVM::BlessedObject::String
-  if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
-    croak("The $string must be a SPVM::BlessedObject::String object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
-  
-  // Get object
-  void* string = SPVM_XS_UTIL_get_object(aTHX_ sv_string);
-  
-  int32_t length = env->length(env, stack, string);
-  const char* chars = env->get_chars(env, stack, string);
-
-  SV* sv_return_value = sv_2mortal(newSVpv(chars, length));
-
-  XPUSHs(sv_return_value);
-  XSRETURN(1);
-}
-
-SV*
 _xs_array_length(...)
   PPCODE:
 {
@@ -4342,6 +4301,46 @@ DESTROY(...)
   env->dec_ref_count(env, stack, object);
   
   XSRETURN(0);
+}
+
+MODULE = SPVM::BlessedObject::String		PACKAGE = SPVM::BlessedObject::String
+
+SV*
+_xs_to_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // API
+  SV** sv_api_ptr = hv_fetch(hv_self, "api", strlen("api"), 0);
+  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
+  HV* hv_api = (HV*)SvRV(sv_api);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  assert(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject::String"));
+  
+  // Get object
+  void* spvm_string = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
+  
+  int32_t length = env->length(env, stack, spvm_string);
+  const char* chars = env->get_chars(env, stack, spvm_string);
+  
+  SV* sv_return_value = sv_2mortal(newSVpv(chars, length));
+  
+  XPUSHs(sv_return_value);
+  XSRETURN(1);
 }
 
 MODULE = SPVM::BlessedObject::Class		PACKAGE = SPVM::BlessedObject::Class
