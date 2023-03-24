@@ -19,7 +19,7 @@ sub to_string {
   my $success = utf8::decode($string);
   
   unless ($success) {
-    confess "This string can't be decoded to Perl string";
+    confess "The SPVM::BlessedObject::String object can't be decoded to Perl string";
   }
   
   return $string;
@@ -37,45 +37,46 @@ sub to_bin {
 
 =head1 Name
 
-SPVM::BlessedObject::String - String based blessed object
+SPVM::BlessedObject::String - SPVM string
 
-=head2 DESCRIPTION
+=head1 Description
 
-SPVM::BlessedObject::String is array based blessed object.
-
-This object contains SPVM array object.
+The object of the C<SPVM::BlessedObject::String> class holds a SPVM string.
 
 =head1 Usage
 
-  # Convert to Perl decoded String
-  my $string = $spvm_string->to_string;
+  my $string = $blessed_object_string->to_string;
   
-=head1 Methods
+  my $binary = $blessed_object_string->to_bin;
+
+=head1 Instance Methods
 
 =head2 to_string
 
-  my $string = $spvm_string->to_string;
+  my $string = $blessed_object_string->to_string;
 
-Return the string as Perl decoded String. If the docoding fails, an exception will thrown.
+Returns a string decoded to Perl string using L<utf8::decode|https://metacpan.org/pod/utf8>.
+
+If the docoding fails, an exception will be thrown.
 
 =head2 to_bin
 
-  my $string = $spvm_string->to_bin;
+  my $binary = $blessed_object_string->to_bin;
 
-Return the string value as bytes.
+Returns a string as a binary.
 
 =head1 Operators
 
-L<SPVM::BlessedObject::String> overloads the following operators.
+Overloads the following operators.
 
 =head2 bool
 
-  my $bool = !!$url;
-  
+  my $bool = !!$blessed_object_string;
+
 Always true.
 
 =head2 stringify
 
-  my $str = "$url";
-  
-Alias for L</"to_string">.
+  my $string = "$blessed_object_string";
+
+The alias for L</"to_string">.

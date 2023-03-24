@@ -1123,6 +1123,86 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# SPVM::BlessedObject::String
+{
+  # Creates a SPVM::BlessedObject::String object
+  {
+    my $blessed_object_string = $api->new_string("abc");
+    is(ref $blessed_object_string, "SPVM::BlessedObject::String");
+  }
+  
+  # Instance Methods
+  {
+    # to_bin
+    {
+      {
+        my $blessed_object_string = $api->new_string("abc");
+        my $binary = $blessed_object_string->to_bin;
+        is($binary, "abc");
+      }
+      {
+        my $blessed_object_string = $api->new_string("あいう");
+        my $binary = $blessed_object_string->to_bin;
+        ok(!utf8::is_utf8($binary));
+        
+        {
+          my $expected = "あいう";
+          utf8::encode($expected);
+          is($binary, $expected);
+        }
+      }
+      {
+        my $blessed_object_string = $api->new_string("\xFF\xFE");
+        my $binary = $blessed_object_string->to_bin;
+        is($binary, "\xFF\xFE");
+      }
+    }
+    # to_string
+    {
+      {
+        my $blessed_object_string = $api->new_string("abc");
+        my $string = $blessed_object_string->to_string;
+        is($string, "abc");
+      }
+      {
+        my $blessed_object_string = $api->new_string("あいう");
+        my $string = $blessed_object_string->to_string;
+        ok(utf8::is_utf8($string));
+        
+        {
+          is($string, "あいう");
+        }
+      }
+      {
+        my $blessed_object_string = $api->new_string("\xFF\xFE");
+        eval { $blessed_object_string->to_string; };
+        like($@, qr|The SPVM::BlessedObject::String object can't be decoded to Perl string|);
+      }
+    }
+  }
+  
+  # Operators
+  {
+    # overload bool
+    {
+      my $blessed_object_string = $api->new_string("0");
+      ok(!!$blessed_object_string);
+    }
+    # overload "" (stringify)
+    {
+      {
+        my $blessed_object_string = $api->new_string("0");
+        is("$blessed_object_string", "0");
+      }
+      
+      {
+        my $blessed_object_string = $api->new_string("あいう");
+        is("$blessed_object_string", "あいう");
+      }
+    }
+  }
+}
+
 # TODO
 
 =pod
