@@ -14,7 +14,7 @@ use SPVM::ExchangeAPI;
 sub to_string {
   my $self = shift;
   
-  my $string = $self->_xs_to_bin;
+  my $string = $self->to_bin;
   
   my $success = utf8::decode($string);
   
@@ -25,13 +25,7 @@ sub to_string {
   return $string;
 }
 
-sub to_bin {
-  my $self = shift;
-  
-  my $binary = $self->_xs_to_bin;
-  
-  return $binary;
-}
+sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess $@ } $ret; }
 
 1;
 
