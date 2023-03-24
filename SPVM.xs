@@ -4216,6 +4216,11 @@ _xs_set(...)
     // Get object
     void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
     
+    int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
+    if (!elem_isa) {
+      croak("The $elem must be assigned to the element of the array");
+    }
+    
     env->set_elem_object(env, stack, spvm_array, index, elem);
   }
   else {

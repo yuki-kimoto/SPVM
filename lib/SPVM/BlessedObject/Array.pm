@@ -76,13 +76,13 @@ The object of the C<SPVM::BlessedObject::Array> class holds a SPVM array.
 
 =head2 get
 
-  my $elem = $blessed_object_array->get(2);
+  my $elem = $blessed_object_array->get($index);
 
 Returns an element of the array with the index.
 
 =head2 set
 
-  $blessed_object_array->set(2 => 5);
+  $blessed_object_array->set($index, $elem);
 
 Sets an element of the array with the index.
 

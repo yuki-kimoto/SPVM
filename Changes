@@ -58,6 +58,7 @@
     * Improved the exception messages of the SPVM::BlessedObject::Array.
   [Bug Fix]
     * Fixed the range checking bug of the set and get methods in the SPVM::BlessedObject::Array.
+    * Fixed the bug that the set method in the SPVM::BlessedObject::Array can be set non-assignable element.
 0.9696 2023-03-22
   [New Features]
     * Added the dump method in the SPVM::ExchangeAPI class.
