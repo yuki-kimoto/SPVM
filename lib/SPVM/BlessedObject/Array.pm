@@ -2,6 +2,7 @@ package SPVM::BlessedObject::Array;
 
 use strict;
 use warnings;
+use Carp 'confess';
 
 use base 'SPVM::BlessedObject';
 
@@ -17,17 +18,9 @@ use overload fallback => 1;
 
 use SPVM::ExchangeAPI;
 
-sub length {
-  my $self = shift;
-  
-  return $self->_xs_length;
-}
+sub length { my $ret; eval { $ret =  shift->_xs_length(@_) }; if ($@) { confess $@ } $ret; }
 
-sub to_elems {
-  my $self = shift;
-  
-  return $self->_xs_to_elems($self);
-}
+sub to_elems { my $ret; eval { $ret =  shift->_xs_to_elems(@_) }; if ($@) { confess $@ } $ret; }
 
 sub to_strings {
   my $self = shift;
@@ -49,23 +42,11 @@ sub to_bins {
   return $binaries;
 }
 
-sub to_bin {
-  my $self = shift;
-  
-  return $self->_xs_to_bin;
-}
+sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess $@ } $ret; }
 
-sub set {
-  my $self = shift;
-  
-  $self->_xs_set(@_);
-}
+sub set { my $ret; eval { $ret =  shift->_xs_set(@_) }; if ($@) { confess $@ } $ret; }
 
-sub get {
-  my $self = shift;
-  
-  return $self->_xs_get(@_);
-}
+sub get { my $ret; eval { $ret =  shift->_xs_get(@_) }; if ($@) { confess $@ } $ret; }
 
 1;
 
