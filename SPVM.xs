@@ -3984,7 +3984,7 @@ _xs_to_bin(...)
   int32_t is_array_type = dimension > 0;
   assert(is_array_type);
   
-  SV* sv_bin;
+  SV* sv_binary;
   if (is_array_type) {
     int32_t elem_type_dimension = dimension - 1;
     
@@ -4006,37 +4006,37 @@ _xs_to_bin(...)
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 2));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 2));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
           break;
         }
         default: {
@@ -4052,37 +4052,37 @@ _xs_to_bin(...)
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 2));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length * 2));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length * 8));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, stack, spvm_array);
           
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, length * 8));
           break;
         }
         default: {
@@ -4092,7 +4092,7 @@ _xs_to_bin(...)
     }
   }
   
-  XPUSHs(sv_bin);
+  XPUSHs(sv_binary);
   XSRETURN(1);
 }
 
