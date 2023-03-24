@@ -18,10 +18,29 @@ sub __api {
 
 =head1 Name
 
-SPVM::BlessedObject - Blessed object base class
+SPVM::BlessedObject - SPVM object
 
 =head1 Description
 
-SPVM::BlessedObject is blessed object base class.
+The object of the C<SPVM::BlessedObject> class holds a SPVM object.
 
-Current subclasses is L<SPVM::BlessedObject::Array> and L<SPVM::BlessedObject::Class>.
+=head1 Instance Methods
+
+=head2 __api
+
+  my $api = $self->__api;
+  $self->__api($api);
+
+Gets and sets a L<SPVM::ExchangeAPI> object.
+
+=head1 Well Known Child Classes
+
+=over 2
+
+=item * L<SPVM::BlessedObject::String>
+
+=item * L<SPVM::BlessedObject::Array>
+
+=item * L<SPVM::BlessedObject::Class>
+
+=back
