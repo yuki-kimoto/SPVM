@@ -497,7 +497,9 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_any_object_array($spvm_oarray));
     
     my $oarray_out = $spvm_oarray->to_elems;
+    
     is($oarray_out->[0]->get_x_int, 1);
+    
     is($oarray_out->[1]->get_x_int, 2);
   }
   # element byte array

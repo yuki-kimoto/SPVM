@@ -26,7 +26,7 @@ sub length {
 sub to_elems {
   my $self = shift;
   
-  return $self->__api->array_to_elems($self);
+  return $self->_xs_to_elems($self);
 }
 
 sub to_strings {
