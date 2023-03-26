@@ -149,6 +149,8 @@
       method get_anon_class_names : string[] ($class_name : string);
   [Changes]
     * Added a warning when non-number-like value is passed to numeric argument in Excahnge API call_method.
+    * Added an exception to the new_options method in the SPVM::ExchangeAPI class.
+      The value of the $options must be a SPVM::BlessedObject object
   [Exception Message Improvement]
     * Improved exception messages in SPVM::ExchangeAPI.
 0.9695 2023-03-05
