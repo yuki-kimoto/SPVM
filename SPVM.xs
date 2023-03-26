@@ -2625,7 +2625,7 @@ _xs_new_short_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 2 == 0)) {
-      croak("The $length of the $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(int16_t);
@@ -2774,7 +2774,7 @@ _xs_new_int_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 4 == 0)) {
-      croak("The $length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(int32_t);
@@ -2923,7 +2923,7 @@ _xs_new_long_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 8 == 0)) {
-      croak("The $length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(int64_t);
@@ -3040,7 +3040,7 @@ _xs_new_float_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 4 == 0)) {
-      croak("The $length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(float);
@@ -3157,7 +3157,7 @@ _xs_new_double_array_from_bin(...)
     int32_t binary_length = sv_len(sv_binary);
     
     if (!(binary_length % 8 == 0)) {
-      croak("The $length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     int32_t array_length = binary_length / sizeof(double);
@@ -3497,7 +3497,7 @@ _xs_new_mulnum_array_from_bin(...)
   }
   
   if (binary_length % (field_native_stack_length * field_length) != 0) {
-    croak("The $length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, field_length, __func__, FILE_NAME, __LINE__);
+    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, field_length, __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / field_length / field_native_stack_length;
