@@ -91,11 +91,11 @@ sub new_object_array {
   }
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the \"$type_name\" type can't be got";
+    confess "The bacic type of the \$type_name type is not found";
   }
   
   unless ($type_dimension >= 1 && $type_dimension <= 255) {
-    confess "The dimention of the \"$type_name\" type must be greater than or equal to 1 and less than or equal to 255";
+    confess "The dimension of the \$type_name type must be greater than or equal to 1 and less than or equal to 255";
   }
   
   unless (defined $array) {
@@ -138,7 +138,7 @@ sub new_mulnum_array {
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimention of the \"$type_name\" type must be 1";
+    confess "The dimension of the \"$type_name\" type must be 1";
   }
   
   unless (defined $array) {
@@ -605,33 +605,46 @@ The alias for the following code using the L</"new_object_array"> method.
 
 =head2 new_options
 
+  my $spvm_any_object_array = $api->new_options($options_hash_ref);
+
+Converts a Perl hash reference specified by the $options_hash_ref to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+
+Each key of the $options_hash_ref is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
+
+The value of the $options_hash_ref must be a L<SPVM::BlessedObject> object. Otherwise an exception will be thrown.
+
+The $options must be a hash reference. Otherwise an exception will be thrown.
+
+Examples:
+
   my $options = $api->new_options({
     x => SPVM::Int->new(1),
     y => SPVM::Int->new(2)
   });
 
-Creates options that type is C<object[]>.
-
-The $options must be a hash reference. Otherwise an exception will be thrown.
-
 =head2 new_object_array
 
-  my $byte_array = $api->new_object_array(
-    "SPVM::Byte[]",
-    [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
-  );
+  my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts a Perl array reference to a SPVM L<SPVM::BlessedObject::Array> object that has the value of a object array type and returns it.
+Converts a Perl array reference specified by the $array to a SPVM value of the type specified by the $type, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The first argument is a SPVM array type name. If the type doesn't exist, an exception will occur.
+If the $array is C<undef>, it is converted to SPVM C<undef>.
 
-The second argument is a Perl array reference. Each element must be a L<SPVM::BlessedObject> object or C<undef>. Otherwise an exception will occur.
+If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is assignable, returns itself, othewise an exception will be thrown.
+
+If the $array is an array reference except for an array reference, an exception will be thrown.
+
+If the bacic type of the $type_name type is not found, an exception will be thrown.
+
+The dimension of the $type_name must be greater than or equal to 1 and less than or equal to 255. Otherwise an exception will be thrown.
+
+The assignability of the element to the element type of the $type is checked. If it is not assignable, an exception will be thrown.
 
 Examples:
 
   my $object1 = $api->new_int_array([1, 2, 3]);
   my $object2 = $api->new_int_array([4, 5, 6]);
-  my $objects = $api->new_object_array("int[][]",[$object1, $object2]);
+  my $objects = $api->new_object_array("int[][]", [$object1, $object2]);
 
 =head2 new_mulnum_array
 
