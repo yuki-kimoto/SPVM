@@ -190,6 +190,51 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   return sv_string;
 }
 
+SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_address, SV** sv_error) {
+  
+  int32_t e = 0;
+  
+  *sv_error = &PL_sv_undef;
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  int32_t error = 0;
+  if (SvOK(sv_address)) {
+    if (sv_isobject(sv_address) && sv_derived_from(sv_address, "SPVM::BlessedObject::Class")) {
+      void* spvm_address = SPVM_XS_UTIL_get_object(aTHX_ sv_address);
+      int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS;
+      int32_t type_dimension = 1;
+      if (!env->isa(env, stack, spvm_address, basic_type_id, type_dimension)) {
+        error = 1;
+      }
+    }
+    else if (SvROK(sv_address)) {
+      error = 1;
+    }
+    else {
+      void* address = (void*)(intptr_t)SvIV(sv_address);
+      void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, __func__, FILE_NAME, __LINE__);
+      assert(e);
+      sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
+    }
+  }
+  else {
+    sv_address = &PL_sv_undef;
+  }
+  
+  if (error) {
+    *sv_error = sv_2mortal(newSVpvf(" must be a non-reference scalar or a SPVM::BlessedObject::Class object of the Address class or undef"));
+  }
+  
+  return sv_address;
+}
+
 SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
@@ -2299,13 +2344,12 @@ _xs_new_address_object(...)
   
   SV* sv_address = ST(1);
   
-  void* address = (void*)(intptr_t)SvIV(sv_address);
+  SV* sv_error = &PL_sv_undef;
+  sv_address = SPVM_XS_UTIL_new_address_object(aTHX_ sv_self, sv_env, sv_stack, sv_address, &sv_error);
   
-  void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, __func__, FILE_NAME, __LINE__);
-  if (e) {
-    croak("Can't create the Address object");
+  if (SvOK(sv_error)) {
+    croak("The $address%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
-  sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
   
   XPUSHs(sv_address);
   XSRETURN(1);
