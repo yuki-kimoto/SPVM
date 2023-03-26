@@ -295,7 +295,7 @@ C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> objec
   
   my $ret = $api->new_byte_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<byte> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a Perl array reference specified by the $array to a SPVM C<byte> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Each element is converted by the conversion of L</"byte Argument/">.
 
@@ -313,7 +313,7 @@ Examples:
 
   my $ret = $api->new_byte_array_len($length);
 
-Creates a SPVM C<byte> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<byte> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -326,7 +326,7 @@ Examples:
 
   my $spvm_array = $api->new_byte_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<byte> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<byte> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 8-bit signed integer. The length of the array is calcurated from the $binary.
 
@@ -347,7 +347,7 @@ Examples:
   
   my $ret = $api->new_short_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<short> array and returns the object that converts it to L<SPVM::BlessedObject::Array>. Each element is converted by the conversion of L</"short Argument/">.
+Converts a Perl array reference specified by the $array to a SPVM C<short> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"short Argument/">.
 
 If the $array is C<undef>, returns C<undef>.
 
@@ -363,7 +363,7 @@ Examples:
 
   my $ret = $api->new_short_array_len($length);
 
-Creates a SPVM C<short> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<short> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -376,7 +376,7 @@ Examples:
 
   my $spvm_array = $api->new_short_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<short> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<short> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 16-bit signed integer. The length of the array is calcurated from the $binary.
 
@@ -393,7 +393,7 @@ Examples:
   
   my $ret = $api->new_int_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<int> array and returns the object that converts it to L<SPVM::BlessedObject::Array>. Each element is converted by the conversion of L</"int Argument/">.
+Converts a Perl array reference specified by the $array to a SPVM C<int> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"int Argument/">.
 
 If the $array is C<undef>, returns C<undef>.
 
@@ -409,7 +409,7 @@ Examples:
 
   my $ret = $api->new_int_array_len($length);
 
-Creates a SPVM C<int> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<int> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -422,7 +422,7 @@ Examples:
 
   my $spvm_array = $api->new_int_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<int> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<int> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 32-bit signed integer. The length of the array is calcurated from the $binary.
 
@@ -439,7 +439,7 @@ Examples:
   
   my $ret = $api->new_long_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<long> array and returns the object that converts it to L<SPVM::BlessedObject::Array>. Each element is converted by the conversion of L</"long Argument/">.
+Converts a Perl array reference specified by the $array to a SPVM C<long> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"long Argument/">.
 
 If the $array is C<undef>, returns C<undef>.
 
@@ -455,7 +455,7 @@ Examples:
 
   my $ret = $api->new_long_array_len($length);
 
-Creates a SPVM C<byte> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<byte> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -468,7 +468,7 @@ Examples:
 
   my $spvm_array = $api->new_long_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<long> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<long> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 64-bit signed integer. The length of the array is calcurated from the $binary.
 
@@ -485,7 +485,7 @@ Examples:
   
   my $ret = $api->new_float_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<float> array and returns the object that converts it to L<SPVM::BlessedObject::Array>. Each element is converted by the conversion of L</"float Argument/">.
+Converts a Perl array reference specified by the $array to a SPVM C<float> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"float Argument/">.
 
 If the $array is C<undef>, returns C<undef>.
 
@@ -501,7 +501,7 @@ Examples:
 
   my $ret = $api->new_float_array_len($length);
 
-Creates a SPVM C<byte> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<byte> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -514,7 +514,7 @@ Examples:
 
   my $spvm_array = $api->new_float_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<float> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<float> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 32-bit floating point. The length of the array is calcurated from the $binary.
 
@@ -531,7 +531,7 @@ Examples:
   
   my $ret = $api->new_double_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<double> array and returns the object that converts it to L<SPVM::BlessedObject::Array>. Each element is converted by the conversion of L</"double Argument/">.
+Converts a Perl array reference specified by the $array to a SPVM C<double> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"double Argument/">.
 
 If the $array is C<undef>, returns C<undef>.
 
@@ -547,7 +547,7 @@ Examples:
 
   my $ret = $api->new_double_array_len($length);
 
-Creates a SPVM C<byte> array with the $length and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Creates a SPVM C<byte> array with the $length and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The $length must be greater than or equal to 0. Otherwise an exception will be thrown.
 
@@ -560,7 +560,7 @@ Examples:
 
   my $spvm_array = $api->new_double_array_from_bin($binary);
 
-Converts a binary date specifed by the $binary to a SPVM C<double> array and returns the object that converts it to L<SPVM::BlessedObject::Array>.
+Converts a binary date specifed by the $binary to a SPVM C<double> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 The binary data is interpreted as 64-bit floating point. The length of the array is calcurated from the $binary.
 
@@ -577,19 +577,13 @@ Examples:
 
   my $spvm_string = $api->new_string($string);
 
-Converts a Perl string to a SPVM string using the convertion of L</"string Argument"> and returns it as a L<SPVM::BlessedObject::String> object.
+Converts a Perl scalar specified by the $string to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>, and returns the object that converts it to a L<SPVM::BlessedObject::String> object.
 
-Argument Types:
+If the $string is C<undef>, it is converted to SPVM C<undef>.
 
-$string : L<string|/"string">|L<SPVM::BlessedObject::String>
+The $string can't be a reference. If so, an exception will be thrown.
 
-Return Type:
-
-L<SPVM::BlessedObject::String>
-
-Exceptions:
-
-The $string can't be a reference.
+If the $string is a L<SPVM::BlessedObject::String> object, the assignability to the C<string> type is checked. If it is assignable, returns itself, othewise an exception will be thrown.
 
 Examples:
 
@@ -615,6 +609,8 @@ The alias for the following code using the L</"new_object_array"> method.
   });
 
 Creates options that type is C<object[]>.
+
+The $options must be a hash reference. Otherwise an exception will be thrown.
 
 =head2 new_object_array
 
