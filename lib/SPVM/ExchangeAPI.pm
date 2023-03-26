@@ -68,8 +68,7 @@ sub new_options {
     push @$array_ref, $obj_name, $value;
   }
   
-  my $type_name = 'object[]';
-  my $array = $self->new_object_array($type_name, $array_ref);
+  my $array = $self->new_any_object_array($array_ref);
   
   return $array;
 }
