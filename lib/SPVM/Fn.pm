@@ -261,7 +261,7 @@ Removes C<\r\n> or C<\n> at the end of the $string.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 chompr
 
@@ -271,7 +271,7 @@ Copies the $string and removes C<\r\n> or C<\n> at the end of the copied string 
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 chr
 
@@ -324,13 +324,13 @@ If the $length is C<0>, returns C<1>.
 
 Exceptions:
 
-The $string1 must be defined.
+The $string1 must be defined. Otherwize an exception is thrown.
 
-The $string2 must be defined.
+The $string2 must be defined. Otherwize an exception is thrown.
 
-The $string1_offset must be greater than or equal to 0.
+The $string1_offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
-The $string2_offset must be greater than or equal to 0.
+The $string2_offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head2 get_code_point
 
@@ -346,9 +346,9 @@ If the C<UTF-8> character is invalid, return the value of L</"GET_CODE_POINT_ERR
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $offset must be greater than or equal to C<0>.
+The $offset must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 =head2 hex
 
@@ -358,11 +358,11 @@ Converts the $hex_string to the C<int> value and return it.
 
 Exceptions:
 
-The $hex string must be defined.
+The $hex string must be defined. Otherwize an exception is thrown.
 
-The length of the $hex string must be C<1> to C<8>.
+The length of the $hex string must be C<1> to C<8>. Otherwize an exception is thrown.
 
-The $hex string must contain only hex characters C<0-9a-zA-Z>.
+The $hex string must contain only hex characters C<0-9a-zA-Z>. Otherwize an exception is thrown.
 
 =head2 index
 
@@ -376,13 +376,13 @@ If the $string_length is less than 0, the $string_length is calculated from the 
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $substring must be defined.
+The $substring must be defined. Otherwize an exception is thrown.
 
-The $string_offset must be greater than or equal to 0.
+The $string_offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
-The $string_offset + the $string_length must be less than or equal to the length of the $string.
+The $string_offset + the $string_length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
 
 =head2 init_string
 
@@ -394,7 +394,7 @@ If the $length is less than C<0>, the $length is set to the length of the $strin
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 The $offset + the $length must be less than or equal to the length of the $string.
 
@@ -548,9 +548,9 @@ Concatenates the $strings with the $separater and return it.
 
 Exceptions:
 
-The $strings must be defined.
+The $strings must be defined. Otherwize an exception is thrown.
 
-The $separator must be defined.
+The $separator must be defined. Otherwize an exception is thrown.
 
 =head2 labs
 
@@ -566,7 +566,7 @@ Converts the ASCII uppercase characters C<A-Z> in the $string to the correspondi
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 lcfirst
 
@@ -576,7 +576,7 @@ If the first character of the $string is an ASCII uppercase character C<A-Z>, it
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 look_code_point
 
@@ -600,21 +600,21 @@ If the range of the $source and the range of the $dest overlap, the result is B<
 
 Exceptions:
 
-The $dest must be defined.
+The $dest must be defined. Otherwize an exception is thrown.
 
-The type of the $dest must be the C<string> type, the numeric array type, or the multi-numeric array type.
+The type of the $dest must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwize an exception is thrown.
 
-The $source must be defined.
+The $source must be defined. Otherwize an exception is thrown.
 
-The type of the $source must be the C<string> type, the numeric array type, or the multi-numeric array type.
+The type of the $source must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwize an exception is thrown.
 
-The $dest must not be a read-only string.
+The $dest must not be a read-only string. If so, an exception is thrown.
 
-The $length must be greater than or equal to C<0>.
+The $length must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest.
+The $dest_offset + the $length must be less than or equal to the length of the $dest. Otherwize an exception is thrown.
 
-The $source_offset + the $length must be less than or equal to the length of the $source.
+The $source_offset + the $length must be less than or equal to the length of the $source. Otherwize an exception is thrown.
 
 =head2 memmove
 
@@ -639,7 +639,7 @@ Calculates the exponentiation from the $base number and the $exponant number.
 
 Exceptions:
 
-The $exponant number must be greater than or equal to C<0>.
+The $exponant number must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 If the $base number is C<0>, the $exponant number can't be C<0>.
 
@@ -651,7 +651,7 @@ Calculates the exponentiation from the $base number and the $exponant number.
 
 Exceptions:
 
-The $exponant number must be greater than or equal to C<0>.
+The $exponant number must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 If the $base number is C<0>, the $exponant number can't be C<0>.
 
@@ -682,7 +682,7 @@ Concatenates the $string the number of times specified in the $count and return 
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 The $repeat count must be greater than or equal to C<0>.
 
@@ -699,7 +699,7 @@ Replaces all characters specified by the second argument in the $string with the
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 rindex
 
@@ -713,13 +713,13 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $substring must be defined.
+The $substring must be defined. Otherwize an exception is thrown.
 
-The $offset must be greater than or equal to C<0>.
+The $offset must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
-The $offset + the $length must be less than or equal to the length of the $string.
+The $offset + the $length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
 
 =head2 sizeof_native_int
 
@@ -745,7 +745,7 @@ Exceptions:
 
 The $string must be defined.
 
-The $length must be greater than or equal to C<0>.
+The $length must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 =head2 shorten_null_char
 
@@ -757,7 +757,7 @@ If null characters is not found, do nothing.
 
 Exceptions:
 
-The $string must be defined. 
+The $string must be defined.  Otherwize an exception is thrown.
 
 B<Example:>
   
@@ -776,11 +776,11 @@ If the $limit is greater than than C<0>, the limit becomes the length of the max
 
 Exceptions:
 
-The $separator must be defined.
+The $separator must be defined. Otherwize an exception is thrown.
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $limit can't be C<0>.
+The $limit can't be C<0>. Otherwize an exception is thrown.
 
 =head2 substr
 
@@ -798,9 +798,9 @@ Converts the $string to the Unicode code points, and returns it.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string contains a invalid Unicode code point.
+The $string contains an invalid Unicode code point. Otherwize an exception is thrown.
 
 =head2 to_double
 
@@ -810,11 +810,11 @@ Converts the $string to the C<double> value using C<strtod> in C<C language>.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string must be the string that can be parsed as a double number.
+The $string must be the string that can be parsed as a double number. Otherwize an exception is thrown.
 
-The $string must be a double number in the $correct range.
+The $string must be a double number in the $correct range. Otherwize an exception is thrown.
 
 Examples:
 
@@ -829,11 +829,11 @@ Converts the $string to the C<double> value using C<strtof> in C<C language>.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string must be the string that can be parsed as a float number.
+The $string must be the string that can be parsed as a float number. Otherwize an exception is thrown.
 
-The $string must be a float number in the $correct range.
+The $string must be a float number in the $correct range. Otherwize an exception is thrown.
 
 Examples:
 
@@ -854,11 +854,11 @@ Converts the $string to the C<int> value with $digit using C<strtol> in C<C lang
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string must be the string that can be parsed as an int number.
+The $string must be the string that can be parsed as an int number. Otherwize an exception is thrown.
 
-The $string must be an int number in the $correct range.
+The $string must be an int number in the $correct range. Otherwize an exception is thrown.
 
 Examples:
 
@@ -881,13 +881,13 @@ Converts the $string to the C<long> value with $digit using C<strtoll> in C<C la
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $digit must be one of C<2>, C<8>, C<10>, or C<16>.
+The $digit must be one of C<2>, C<8>, C<10>, or C<16>. Otherwize an exception is thrown.
 
-The $string must be the string that can be parsed as a long number.
+The $string must be the string that can be parsed as a long number. Otherwize an exception is thrown.
 
-The $string must be a long number in the $correct range.
+The $string must be a long number in the $correct range. Otherwize an exception is thrown.
 
 Examples:
 
@@ -918,9 +918,9 @@ Converts the $string to UTF-8 characters, and returns it.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string contains a invalid Unicode code point.
+The $string contains an invalid Unicode code point. Otherwize an exception is thrown.
 
 Examples:
 
@@ -947,23 +947,21 @@ The range must be the format C<a-z> or C<a>. If the format is C<a>, it is conver
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $pattern must be defined.
+The $pattern must be defined. Otherwize an exception is thrown.
 
-The $replace must be defined.
+The $replace must be defined. Otherwize an exception is thrown.
 
-The $string contains a invalid Unicode code point.
+If the $string contains an invalid Unicode code point, an exception is thrown.
 
-Calling the get_code_point method in the Fn class to the $string returns an error code: $code_point.
+The range format of the (pattern|replace) can't be contain an invalid Unicode code point. If so, an exception is thrown. If so, an exception is thrown.
 
-The range format of the (pattern|replace) can't be contain a invalid Unicode code point.
+The second character ot the range format of the (pattern|replace) must be \"-\". Otherwize an exception is thrown.
 
-Calling the get_code_point method in the Fn class to the (pattern|replace) returns an error code: $code_point.
+The range format of the (pattern|replace) must be 1 or 3 characters. Otherwize an exception is thrown.
 
-The second character ot the range format of the (pattern|replace) must be \"-\".
-
-The range format of the (pattern|replace) must be 1 or 3 characters.
+The exceptions of the L<"/get_code_point"> method can be thrown.
 
 C<Examples:>
 
@@ -996,7 +994,7 @@ The removed spaces is the same as the spaces L</"is_space"> method returns C<1>.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 uc
 
@@ -1006,7 +1004,7 @@ Converts the ASCII lowercase characters C<a-z> in the $string to the correspondi
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 ucfirst
 
@@ -1016,7 +1014,7 @@ If the first character of the $string is an ASCII lowercase characters C<a-z>, i
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
 =head2 utf8_length
 
@@ -1026,9 +1024,9 @@ Gets the length as a UTF-8 string from the $string, and returns it.
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string contains a invalid Unicode code point.
+If the $string contains an invalid Unicode code point, an exception is thrown.
 
 Examples:
 
@@ -1045,11 +1043,11 @@ If the length is less than C<0>, the length to the end of the string is calculat
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $string contains a invalid Unicode code point.
+If the $string contains an invalid Unicode code point, an exception is thrown.
 
-The $utf8_offset + the $utf8_length must be less than or equal to the UTF-8 length of the $string.
+The $utf8_offset + the $utf8_length must be less than or equal to the UTF-8 length of the $string. Otherwize an exception is thrown.
 
 Examples:
 
