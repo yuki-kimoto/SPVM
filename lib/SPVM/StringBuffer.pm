@@ -81,7 +81,7 @@ If the $length is greater than the $capacity, the $capacity is set to the $lengt
 
 Exceptions:
 
-The $length must be greater than or equal to C<0>.
+The $length must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 =head1 Instance Methods
 
@@ -93,11 +93,11 @@ Adds a $string from the $offset to the position proceeded by the $length after t
 
 Exceptions:
 
-The $string must be defined.
+The $string must be defined. Otherwize an exception is thrown.
 
-The $offset must be greater than or equal to 0.
+The $offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
-The $offset + $length must be less than or equal to the length of the $string.
+The $offset + $length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
 
 =head2 push_char
 
@@ -113,9 +113,9 @@ Replace the characters of the range specified by the $offset and the $length in 
 
 Exceptions:
 
-The $offset must be greater than or equal to C<0>.
+The $offset must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
-The $offset + the $length must be less than or equal to the length of the string buffer.
+The $offset + the $length must be less than or equal to the length of the string buffer. Otherwize an exception is thrown.
 
 =head2 reserve
 
@@ -129,7 +129,7 @@ Note that L</"value"> is replaced with the new value and the value of the origin
 
 Exceptions:
 
-The $new_capacity must be greater than or equal to C<0>.
+The $new_capacity must be greater than or equal to C<0>. Otherwize an exception is thrown.
 
 =head2 to_string
 
