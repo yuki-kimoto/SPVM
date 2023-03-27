@@ -6252,7 +6252,7 @@ The runtime assignability is the assignability at runtime.
 
 The L<isa operator|/"isa Operator"> checks the L<runtime assignability/"Runtime Assignability">
 
-The runtime assignability is false, an exception will be thrown.
+The runtime assignability is false, an exception is thrown.
 
 If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"Undefined Type">, the runtime assignability is true.
 
@@ -7915,7 +7915,7 @@ The character just after the last character is C<\0>. The string created by the 
 
 The return type is the L<string type|/"string Type">.
 
-The length specified by the C<OPERAND> must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The length specified by the C<OPERAND> must be greater than or equal to C<0>. Otherwise an exception is thrown.
 
 Examples:
   
@@ -8270,9 +8270,9 @@ The getting array element returns the element that is specifed by the index.
 
 The return type is the type of the element.
 
-The array must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception is thrown.
 
-The index must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an exception is thrown.
 
 Examples:
 
@@ -8301,9 +8301,9 @@ The right operand must be L<assigned|/"Assignability"> to the element of the arr
 
 The setting array element returns the value of the element that is set.
 
-The array must be defined. Otherwise an exception will be thrown.
+The array must be defined. Otherwise an exception is thrown.
 
-The index must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The index must be greater than or equal to C<0>. Otherwise an exception is thrown.
 
 If the right operand is an L<object type|/"Object Type">, the reference count of the object is incremented by C<1>.
 
@@ -8352,7 +8352,7 @@ The length must be an L<integer type within int|/"Integer Type Within int">. Oth
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
 
-The length must be greater than or equal to C<0>. Otherwise an exception will be thrown.
+The length must be greater than or equal to C<0>. Otherwise an exception is thrown.
 
 All elements of the array are initialized by the L<initial value|/"Initial Value">.
 
@@ -8829,7 +8829,7 @@ You can specify the error message to the C<OPERAND>.
 
 The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
-If an exception will be thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code C<255>.
 
 The stack traces constain the class names, the method names, the file names and the line numbers.
 

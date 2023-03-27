@@ -51,7 +51,7 @@ The object of the C<SPVM::BlessedObject::String> class holds a SPVM string.
 
 Returns a string decoded to Perl string using L<utf8::decode|https://metacpan.org/pod/utf8>.
 
-If the docoding fails, an exception will be thrown.
+If the docoding fails, an exception is thrown.
 
 =head2 to_bin
 

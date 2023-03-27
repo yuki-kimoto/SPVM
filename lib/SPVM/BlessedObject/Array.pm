@@ -86,7 +86,7 @@ Returns an element of the array with the index.
 
 Sets an element of the array with the index.
 
-If the $elem can't be assigned to the element of the array, an exception will be thrown.
+If the $elem can't be assigned to the element of the array, an exception is thrown.
 
 =head2 to_elems
 
@@ -102,7 +102,7 @@ Converts a SPVM array to a binary and returns it.
 
 This binary is unpacked by L<unpack|https://perldoc.perl.org/functions/unpack> function.
 
-If the array is an object array, an excetion will be thrown.
+If the array is an object array, an excetion is thrown.
 
 Examples:
 
