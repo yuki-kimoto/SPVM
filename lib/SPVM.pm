@@ -219,7 +219,7 @@ SPVM Exchange APIs is functions to convert between Perl data structures and SPVM
 
 =head2 Native Module
 
-The native module is the module that is implemented by native language such as C<C language> or C<C++>.
+The native module is the module that is implemented by native language such as the C language or C<C++>.
 
 =over 2
 
@@ -229,7 +229,7 @@ The native module is the module that is implemented by native language such as C
 
 =head2 Native APIs
 
-SPVM native APIs are public APIs that are used in native language sources such as C<C language> or C<C++>.
+SPVM native APIs are public APIs that are used in native language sources such as the C language or C<C++>.
 
 =over 2
 
@@ -239,7 +239,7 @@ SPVM native APIs are public APIs that are used in native language sources such a
 
 =head2 Resource
 
-A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as C<C language> or C<C++>.
+A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
 
 =over 2
 

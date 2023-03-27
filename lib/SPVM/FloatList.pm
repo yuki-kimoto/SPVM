@@ -59,7 +59,7 @@ C<FloatList> is a dynamic C<float> array.
 
 =head2 DEFAULT_CAPACITY
 
-The default capacity. The value is C<4>.
+The default capacity. The value is 4.
 
 =head1 Fields
 
@@ -92,7 +92,7 @@ The elements of the list. This is the internally used array, but it can be manip
 
 Create a new C<FloatList> object using L</"new_len">.
 
-The passed length to L</"new_len"> is the length of the array. If the array is C<undef>, the length is C<0>.
+The passed length to L</"new_len"> is the length of the array. If the array is undef, the length is 0.
 
 The elements of the array are copied to the values of the the created array.
 
@@ -107,13 +107,13 @@ Examples:
 
 Creates a new C<FloatList> object with the $length and the $capacity.
 
-If the $capacity is less than C<0>, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If the $capacity is less than 0, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
 
 If the $length is greater than the $capacity, the $capacity is set to the $length.
 
 Exceptions:
 
-The $length must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $length must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head1 Instance Methods
 
@@ -125,7 +125,7 @@ Gets the element of the position of the $index.
 
 Exceptions:
 
-The $index must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $index must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $index must be less than the length of the $list.
 
@@ -137,7 +137,7 @@ Inserts an $element to the position of the $index.
 
 Exceptions:
 
-The $index must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $index must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $index must be less than or equal to the length of the $list. Otherwize an exception is thrown.
 
@@ -149,7 +149,7 @@ Removes the last element and return it.
 
 Exceptions:
 
-The length of the $list must be greater than C<0>. Otherwize an exception is thrown.
+The length of the $list must be greater than 0. Otherwize an exception is thrown.
 
 =head2 push
   
@@ -165,7 +165,7 @@ Removes the element at the position of the $index and return it.
 
 Exceptions:
 
-The $index must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $index must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $index must be less than the length of the $list.
 
@@ -177,9 +177,9 @@ Replaces the elements of the range specified by the $offset and the $lenght with
 
 Exceptions:
 
-The $offset must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
-The $remove_length must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $remove_length must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $offset + the $removing lenght must be less than or equal to the length of the $list. Otherwize an exception is thrown.
 
@@ -195,7 +195,7 @@ Note that L</"values"> is replaced with the new values and the values of the ori
 
 Exceptions:
 
-The $new_capacity must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $new_capacity must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head2 resize
 
@@ -205,7 +205,7 @@ Resize the list with the $new_length.
 
 Exceptions:
 
-The $new_length must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $new_length must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head2 set
 
@@ -215,7 +215,7 @@ Sets the $element at the position of the $index.
 
 Exceptions:
 
-The $index must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $index must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $index must be less than the length of the $list. Otherwize an exception is thrown.
 
@@ -239,7 +239,7 @@ Removes the first element and return it.
 
 Exceptions:
 
-The length of the $list must be greater than C<0>. Otherwize an exception is thrown.
+The length of the $list must be greater than 0. Otherwize an exception is thrown.
 
 =head2 to_array
 

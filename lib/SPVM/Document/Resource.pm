@@ -4,7 +4,7 @@ SPVM::Document::Resource - How to write the resource module
 
 =head1 Resource
 
-A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as C<C language> or C<C++>.
+A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
 
 A resource doesn't has the native module file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
 

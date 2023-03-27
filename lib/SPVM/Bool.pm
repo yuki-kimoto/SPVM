@@ -46,9 +46,9 @@ A false singleton. This is created by INIT block when the program start.
 
 Returns a C<int> value.
 
-If L<Bool|SPVM::Bool> object express true, this method return C<1>.
+If L<Bool|SPVM::Bool> object express true, this method return 1.
 
-If L<Bool|SPVM::Bool> object express false, this method return C<1>.
+If L<Bool|SPVM::Bool> object express false, this method return 1.
 
 =head1 Bool Context
 

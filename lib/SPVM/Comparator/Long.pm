@@ -26,4 +26,4 @@ L<Comparator::Long|SPVM::Comparator::Long> is the interface type for the long co
 
 This method must receive two values that types are C<long> and return the following value.
 
-If the first argument is greater than the second argument, returns C<1>. If the first argument is lower than the second argument, returns C<-1>. If the first argument is equal to the second argument, returns C<0>.
+If the first argument is greater than the second argument, returns 1. If the first argument is lower than the second argument, returns -1. If the first argument is equal to the second argument, returns 0.

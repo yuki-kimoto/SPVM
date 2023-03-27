@@ -63,7 +63,7 @@ Initializes L</"x">, L</"y">, and L</"z">.
 
   method clear : void ();
 
-Sets L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to C<0>.
+Sets L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to 0.
 
 =head2 clone
 

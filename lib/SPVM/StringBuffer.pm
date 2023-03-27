@@ -32,7 +32,7 @@ String buffer.
 
 =head2 DEFAULT_CAPACITY
 
-The default capacity. The value is C<4>.
+The default capacity. The value is 4.
 
 =head1 Fields
 
@@ -65,7 +65,7 @@ The value. This is the internally used string, but it can be manipulated directl
 
 Creates a new C<StringBuffer> object using L</"new_len">.
 
-The passed $length to L</"new_len"> is the length of the $string. If the string is C<undef>, it is C<0>.
+The passed $length to L</"new_len"> is the length of the $string. If the string is undef, it is 0.
 
 The $string is copied to the value of the the created string buffer.
 
@@ -75,13 +75,13 @@ The $string is copied to the value of the the created string buffer.
 
 Creates a new C<StringBuffer> object with the $length and the $capacity.
 
-If the $capacity is less than C<0>, the $capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If the $capacity is less than 0, the $capacity is set to the value of L</"DEFAULT_CAPACITY">.
 
 If the $length is greater than the $capacity, the $capacity is set to the $length.
 
 Exceptions:
 
-The $length must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $length must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head1 Instance Methods
 
@@ -113,7 +113,7 @@ Replace the characters of the range specified by the $offset and the $length in 
 
 Exceptions:
 
-The $offset must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $offset + the $length must be less than or equal to the length of the string buffer. Otherwize an exception is thrown.
 
@@ -129,7 +129,7 @@ Note that L</"value"> is replaced with the new value and the value of the origin
 
 Exceptions:
 
-The $new_capacity must be greater than or equal to C<0>. Otherwize an exception is thrown.
+The $new_capacity must be greater than or equal to 0. Otherwize an exception is thrown.
 
 =head2 to_string
 

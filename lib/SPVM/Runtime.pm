@@ -114,7 +114,7 @@ Gets the anon class names and returns it.
 
   method get_method_is_class_method : int ($class_name : string, $method_name : string);
 
-Checks if the method is a class method. If it is so, returns C<1>, otherwise returns C<0>.
+Checks if the method is a class method. If it is so, returns 1, otherwise returns 0.
 
 =head2 build_precompile_method_source
 

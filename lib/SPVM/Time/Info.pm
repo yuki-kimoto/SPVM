@@ -41,7 +41,7 @@ SPVM::Time::Info - struct tm in C language
 
 =head1 Description
 
-C<Time::Info> represents C<struct tm> of C<C language>.
+C<Time::Info> represents C<struct tm> of the C language.
 
 See L<ctime(3) - Linux man page|https://linux.die.net/man/3/ctime> about C<struct tm> in Linux.
 

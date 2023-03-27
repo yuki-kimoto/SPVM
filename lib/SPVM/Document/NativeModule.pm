@@ -4,7 +4,7 @@ SPVM::Document::NativeModule - How to write the native module
 
 =head1 Description
 
-The native module is the module that is implemented by native language such as C<C language> or C<C++>.
+The native module is the module that is implemented by native language such as the C language or C<C++>.
 
 =head1 Native Method Declaration
 
@@ -138,7 +138,7 @@ I show some examples of native config files.
 
 =head1 Native Module
 
-A native module is written by a native language such as C<C language>, C<C++>, or the language that the rule of function call is the same as C<C language>. 
+A native module is written by a native language such as the C language, C<C++>, or the language that the rule of function call is the same as the C language. 
 
 =head2 Native Module File Extension
 
@@ -146,7 +146,7 @@ The file extension of the native module is defined L<ext|SPVM::Builder::Config/"
 
   $config->ext('cpp');
 
-Generally the extension of C<C language> is C<c>, the extension of C<C++> is C<cpp>, the extension of C<CUDA/nvcc> is C<cu>.
+Generally the extension of the C language is C<c>, the extension of C<C++> is C<cpp>, the extension of C<CUDA/nvcc> is C<cu>.
 
 Put the config file in the same directory as the SPVM module.
 
@@ -227,7 +227,7 @@ In the above example, SPVM native method takes two arguments that type is C<int>
 
 =head2 Native Function Return Value
 
-The type of return value of native function is C<int32_t>. If the method succeeds, the method must return C<1>.  If the method fails, the method must return C<0>.
+The type of return value of native function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
 
 Note that this is B<not> the return value of the SPVM native method, such as the total value in the above example.
 

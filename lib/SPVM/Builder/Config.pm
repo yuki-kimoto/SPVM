@@ -787,7 +787,7 @@ C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 Get and set the extension of the SPVM native source.
 
-The default is C<undef>.
+The default is undef.
 
 Examples:
   
@@ -972,9 +972,9 @@ The default is C<-O2>.
   my $force = $config->force;
   $config->force($force);
 
-Get and set the flag to force compiles and links without caching. The default is C<undef>.
+Get and set the flag to force compiles and links without caching. The default is undef.
 
-C<undef> means forcing is not determined by config.
+undef means forcing is not determined by config.
 
 =head2 before_compile
 
@@ -1018,7 +1018,7 @@ Examples:
 
 Get and set the flag if the compiler and the linker output the results.
 
-The default is C<undef>. C<undef> means quietness is not determined by config.
+The default is undef. undef means quietness is not determined by config.
 
 =head2 file
 
@@ -1027,7 +1027,7 @@ The default is C<undef>. C<undef> means quietness is not determined by config.
 
 Get and set the config file path.
 
-The default is C<1>.
+The default is 1.
 
 =head2 file_optional
 
@@ -1036,7 +1036,7 @@ The default is C<1>.
 
 Get and set the value that indicates L<file|/"file"> field is needed for C<new|/"new"> method.
 
-The default is C<0>.
+The default is 0.
 
 =head2 output_type
 

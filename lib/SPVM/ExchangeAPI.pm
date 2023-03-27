@@ -301,7 +301,7 @@ Converts a Perl array reference specified by the $array to a SPVM C<byte> array 
 
 Each element is converted by the conversion of L</"byte Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -351,7 +351,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM C<short> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"short Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -397,7 +397,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM C<int> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"int Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -443,7 +443,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM C<long> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"long Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -489,7 +489,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM C<float> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"float Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -535,7 +535,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM C<double> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"double Argument/">.
 
-If the $array is C<undef>, returns C<undef>.
+If the $array is undef, returns undef.
 
 If the $array is a reference except for an array reference, an exception is thrown.
 
@@ -581,7 +581,7 @@ Examples:
 
 Converts a Perl scalar specified by the $string to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>, and returns the object that converts it to a L<SPVM::BlessedObject::String> object.
 
-If the $string is C<undef>, it is converted to SPVM C<undef>.
+If the $string is undef, it is converted to SPVM undef.
 
 The $string can't be a reference. If so, an exception is thrown.
 
@@ -628,7 +628,7 @@ Examples:
 
 Converts a Perl array reference specified by the $array to a SPVM value of the type specified by the $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-If the $array is C<undef>, it is converted to SPVM C<undef>.
+If the $array is undef, it is converted to SPVM undef.
 
 If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is assignable, returns itself, othewise an exception is thrown.
 
@@ -731,7 +731,7 @@ Examples:
 
 Returns the exception of the current thread variables as a L<SPVM::BlessedObject::String> object.
 
-If the exception is not set, C<undef> is returned.
+If the exception is not set, undef is returned.
 
 =head2 set_exception
 
@@ -870,7 +870,7 @@ The arguments in the L</"call_method"> are converted to the values of SPVM in th
 
 If the SPVM argument type is C<byte>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<byte> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<byte> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in the C language.
 
   (int8_t)SvIV(perl_scalar)
 
@@ -878,7 +878,7 @@ A Perl scalar is converted to a value of the SPVM C<byte> type using the L<SvIV|
 
 If the SPVM argument type is C<short>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<short> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<short> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in the C language.
   
   (int16_t)SvIV(perl_scalar)
 
@@ -886,7 +886,7 @@ A Perl scalar is converted to a value of the SPVM C<short> type using the L<SvIV
 
 If the SPVM argument type is C<int>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<int> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<int> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in the C language.
 
   (int32_t)SvIV(perl_scalar)
 
@@ -894,7 +894,7 @@ A Perl scalar is converted to a value of the SPVM C<int> type using the L<SvIV|h
 
 If the SPVM argument type is C<long>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<long> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<long> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in the C language.
 
   (int64_t)SvIV(perl_scalar)
 
@@ -902,7 +902,7 @@ A Perl scalar is converted to a value of the SPVM C<long> type using the L<SvIV|
 
 If the SPVM argument type is C<float>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<float> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<float> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in the C language.
 
   (float)SvNV(perl_scalar)
 
@@ -910,7 +910,7 @@ A Perl scalar is converted to a value of the SPVM C<float> type using the L<SvNV
 
 If the SPVM argument type is C<double>, the following coversion is performed.
 
-A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in C<C Language>.
+A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in the C language.
 
   (double)SvNV(perl_scalar)
 
@@ -918,7 +918,7 @@ A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvN
 
 If the SPVM argument type is C<string>, the Perl scalar is converted by the following rule.
 
-If the Perl scalar is C<undef>, it is converted to SPVM C<undef>.
+If the Perl scalar is undef, it is converted to SPVM undef.
 
 Else if the Perl scalar is a L<SPVM::BlessedObject::String> object, it is converted to the owned SPVM string.
 
@@ -940,7 +940,7 @@ No conversion occurs.
 
 Perl can have SPVM class object itself as a object which inherits L<SPVM::BlessedObject::Class>. This object is created by a contructor such as SPVM::Int->new, SPVM::MyClassClass->new.
 
-If the value is Perl C<undef>, it is converted to SPVM C<undef>.
+If the value is Perl undef, it is converted to SPVM undef.
 
 If class name is different, an exception will occur.
 
@@ -954,7 +954,7 @@ Examples:
 
 Perl can have SPVM object itself as a L<SPVM::BlessedObject> object. This object is created by a contructor or functions of exchange API such as SPVM::Int->new, SPVM::MyClassClass->new, $api->new_int_array.
 
-If the value is Perl C<undef>, it is converted to SPVM C<undef>.
+If the value is Perl undef, it is converted to SPVM undef.
 
 Examples:
 
@@ -968,7 +968,7 @@ Examples:
 
 If the SPVM argument type is C<byte[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<byte[]> type.
 
@@ -983,7 +983,7 @@ Examples:
 
 If the SPVM argument type is C<short[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<short[]> type.
 
@@ -998,11 +998,11 @@ Examples:
 
 If the SPVM argument type is C<int[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<int[]> type.
 
-Each element is converted to a value of the C<int> type by the conversion of L</"int Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element is converted to a value of the C<int> type by the conversion of L</"int Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1013,11 +1013,11 @@ Examples:
 
 If the SPVM argument type is C<int[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<long[]> type.
 
-Each element is converted to a value of the C<long> type by the conversion of L</"long Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element is converted to a value of the C<long> type by the conversion of L</"long Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1028,11 +1028,11 @@ Examples:
 
 If the SPVM argument type is C<float[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<float[]> type.
 
-Each element is converted to a value of the C<float> type by the conversion of L</"float Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element is converted to a value of the C<float> type by the conversion of L</"float Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1043,11 +1043,11 @@ Examples:
 
 If the SPVM argument type is C<double[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<double[]> type.
 
-Each element is converted to a value of the C<double> type by the conversion of L</"double Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element is converted to a value of the C<double> type by the conversion of L</"double Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1058,11 +1058,11 @@ Examples:
 
 If the SPVM argument type is C<string[]>, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of the C<string[]> type.
 
-Each element is converted to C<string> value by the conversion of L</"string Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element is converted to C<string> value by the conversion of L</"string Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1073,11 +1073,11 @@ Examples:
 
 If the SPVM argument type is a multi-numeric Array, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of of a multi-numeric type.
 
-Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl C<undef> is coverted to SPVM C<undef>.
+Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Argument">. Perl undef is coverted to SPVM undef.
 
 Examples:
 
@@ -1088,7 +1088,7 @@ Examples:
 
 If the SPVM argument type is a other array type of the above, a Perl value is converted by the following rule.
 
-Perl C<undef> is coverted to SPVM C<undef>.
+Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> of the corresponding array type.
 
@@ -1402,7 +1402,7 @@ A SPVM return value is converted to a Perl value by the following rule.
 
 If the SPVM return type is the void type, the following conversion is performed.
 
-SPVM void return value is converted to Perl C<undef>.
+SPVM void return value is converted to Perl undef.
 
 =head2 byte Return Value
 
@@ -1444,7 +1444,7 @@ The SPVM double value is converted to a Perl scalar using the L<newSVnv|https://
 
 If the SPVM return type is the string type, the following conversion is performed.
 
-If SPVM return value is C<undef>, it is converted to Perl C<undef>.
+If SPVM return value is undef, it is converted to Perl undef.
 
 Otherwise a SPVM string is converted to a Perl L<SPVM::BlessedObject::String> object.
 
@@ -1460,7 +1460,7 @@ Each numeric field is converted by the rules of L</"byte Return Value">, L</"sho
 
 If the SPVM return type is an array type, the following conversion is performed.
 
-If SPVM return value is C<undef>, it is converted to Perl C<undef>.
+If SPVM return value is undef, it is converted to Perl undef.
 
 Otherwise a SPVM array is converted to a Perl L<SPVM::BlessedObject::Array> object. 
 
@@ -1468,6 +1468,6 @@ Otherwise a SPVM array is converted to a Perl L<SPVM::BlessedObject::Array> obje
 
 If the SPVM return type is a class type, the following conversion is performed.
 
-If SPVM return value is C<undef>, it is converted to Perl C<undef>.
+If SPVM return value is undef, it is converted to Perl undef.
 
 Otherwise a SPVM object is converted to a Perl L<SPVM::BlessedObject::Class> object.

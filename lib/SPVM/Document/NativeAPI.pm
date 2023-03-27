@@ -6,7 +6,7 @@ SPVM::Document::NativeAPI - SPVM Native APIs
 
 The SPVM native APIs are public APIs that are used in native language sources such as C<C/C++>.
 
-The native APIs are writen in C<C language>, but the languages that have compatibility of C<C language> such as <C++>, C<CUDA/nvcc> can call the native APIs.
+The native APIs are writen in the C language, but the languages that have compatibility of the C language such as <C++>, C<CUDA/nvcc> can call the native APIs.
 
 The native APIs is used when L<native methods|SPVM::Document::NativeModule> are implemented.
 
@@ -584,7 +584,7 @@ Examples:
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
 
-Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to C<255>.
+Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
@@ -1201,9 +1201,9 @@ Given an object and a base type ID and a type dimension, returns a nonzero value
 
   int32_t (*is_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a object array, returns C<1>, otherwise returns C<0>.
+If the object is a object array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 get_object_basic_type_id
 
@@ -1255,7 +1255,7 @@ Specifying the address of the object releases the weak reference to the object.
 
 Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
-The count of the memory block that is managed by the environment is incremented by C<1>.
+The count of the memory block that is managed by the environment is incremented by 1.
 
 =head2 free_memory_block
 
@@ -1263,7 +1263,7 @@ The count of the memory block that is managed by the environment is incremented 
 
 Frees the memory block that is managed by the environment.
 
-The count of the memory block that is managed by the environment is decremented by C<1>.
+The count of the memory block that is managed by the environment is decremented by 1.
 
 =head2 get_memory_blocks_count
 
@@ -1898,39 +1898,39 @@ Make the string read-only.
 
   void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)
 
-If the string is read-only, returns C<1>, otherwise returns C<0>.
+If the string is read-only, returns 1, otherwise returns 0.
 
 =head2 is_array
 
   int32_t (*is_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is an array, returns C<1>, otherwise returns C<0>.
+If the object is an array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 is_string
 
   int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a string, returns C<1>, otherwise returns C<0>.
+If the object is a string, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 is_numeric_array
 
   int32_t (*is_numeric_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a numeric array, returns C<1>, otherwise returns C<0>.
+If the object is a numeric array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 is_mulnum_array
 
   int32_t (*is_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a multi numeric array, returns C<1>, otherwise returns C<0>.
+If the object is a multi numeric array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 get_elem_size
 
@@ -1948,7 +1948,7 @@ The given array must be the object that is an array type.
 
 If the given array is L<NULL>, returns C<NULL>.
 
-If the given length is lower than C<0>, returns C<NULL>.
+If the given length is lower than 0, returns C<NULL>.
 
 =head2 copy
 
@@ -1968,7 +1968,7 @@ If the string is null, does nothing.
 
 If the given length is greater than the length of the string, does nothing.
 
-If the given length is lower than C<0>, the given length become C<0>.
+If the given length is lower than 0, the given length become 0.
 
 The charaters of the after the given length are filled with C<\0>.
 
@@ -2024,7 +2024,7 @@ Call C<INIT> blocks.
 
 Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
-The count of the memory block that is managed by the environment is incremented by C<1>.
+The count of the memory block that is managed by the environment is incremented by 1.
 
 This is the same as L</"alloc_memory_block_zero">. This is more understandable name that memories are managed by the environment.
 
@@ -2034,7 +2034,7 @@ This is the same as L</"alloc_memory_block_zero">. This is more understandable n
 
 Frees the memory block that is managed by the environment.
 
-The count of the memory block that is managed by the environment is decremented by C<1>.
+The count of the memory block that is managed by the environment is decremented by 1.
 
 This is the same as L</"free_memory_block">. This is more understandable name that memories are managed by the environment.
 
@@ -2052,9 +2052,9 @@ This is the same as L</"get_memory_blocks_count">. This is more understandable n
 
 Creates a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
 
-The count of the memory block that is managed by the stack is incremented by C<1>.
+The count of the memory block that is managed by the stack is incremented by 1.
 
-The count of the memory block that is managed by the environment is incremented by C<1>.
+The count of the memory block that is managed by the environment is incremented by 1.
 
 =head2 free_memory_stack
 
@@ -2062,9 +2062,9 @@ The count of the memory block that is managed by the environment is incremented 
 
 Frees the memory block that is managed by the environment.
 
-The count of the memory block that is managed by the stack is decremented by C<1>.
+The count of the memory block that is managed by the stack is decremented by 1.
 
-The count of the memory block that is managed by the environment is decremented by C<1>.
+The count of the memory block that is managed by the environment is decremented by 1.
 
 =head2 get_memory_blocks_count_stack
 
@@ -2078,7 +2078,7 @@ Returns the count of the memory blocks on the stack.
 
 Sets the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
 
-If it succeed, return C<0>.
+If it succeed, return 0.
 
 The program name must be a C<string> object. Otherwise return non-zero value.
 
@@ -2088,7 +2088,7 @@ The program name must be a C<string> object. Otherwise return non-zero value.
 
 Sets the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
 
-If it succeed, return C<0>.
+If it succeed, return 0.
 
 The argv must be a C<string[]> object. Otherwise return non-zero value.
 
@@ -2098,15 +2098,15 @@ The argv must be a C<string[]> object. Otherwise return non-zero value.
 
 Gets the class id by the class name.
 
-If the class is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
+If the class is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
 =head2 strerror
 
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
-Gets the value of C<strerror> of C<C language> on thread-safely.
+Gets the value of C<strerror> of the C language on thread-safely.
 
-If the length is C<0>, the length is set to C<64>.
+If the length is 0, the length is set to 64.
 
 =head2 new_string_array
 
@@ -2182,17 +2182,17 @@ The same as L</"set_elem_object">.
 
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a instance of a class, returns C<1>, otherwise returns C<0>.
+If the object is a instance of a class, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 is_pointer_class
 
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a instance of a pointer class, returns C<1>, otherwise returns C<0>.
+If the object is a instance of a pointer class, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns C<0>.
+If the object is C<NULL>, returns 0.
 
 =head2 strerror_string
 
@@ -2206,7 +2206,7 @@ The same as the L</"strerror"> function, but return a C<string> object.
 
 Gets the basic_type id by the basic_type name.
 
-If the basic_type is not loaded, The C<error> is set to C<1>. Otherwise set to C<0>.
+If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
 =head2 get_field_id_static
 
@@ -2265,13 +2265,13 @@ Examples:
 
   const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
 
-The same as L</"strerror"> given the length to C<0>.
+The same as L</"strerror"> given the length to 0.
 
 =head2 strerror_string_nolen
 
   void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
 
-The same as L</"strerror_string"> given the length to C<0>.
+The same as L</"strerror_string"> given the length to 0.
 
 =head2 get_compile_type_name_raw
 
@@ -2293,7 +2293,7 @@ Gets a new C<string> object that is the compile-time type name with a basic type
 
 Sets the time when the program starts. This value is got by L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME">.
 
-If it succeed, return C<0>.
+If it succeed, return 0.
 
 The program name must be a C<string> object. Otherwise return non-zero value.
 
@@ -2353,7 +2353,7 @@ The basic type is unknown.
 
 =head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
 
-The basic type ID of C<undef> type.
+The basic type ID of undef type.
 
 =head3 SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
 
