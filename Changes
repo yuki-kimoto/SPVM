@@ -48,10 +48,12 @@
     * Improved the doc of the SPVM::BlessedObject::String.
     * Improved the doc of the SPVM::BlessedObject::Class.
     * Improved the doc of the SPVM::BlessedObject::Array.
+    * Improved the doc of ExchangeAPI.
   [Test Improvement]
     * Improved the tests of the SPVM::BlessedObject::String.
     * Improved the tests of the SPVM::BlessedObject::Class.
     * Improved the tests of the SPVM::BlessedObject::Array.
+    * Improved the tests of ExchangeAPI.
   [Exception Message Improvement]
     * Improved the exception messages of the SPVM::BlessedObject::String.
     * Improved the exception messages of the SPVM::BlessedObject::Class.
