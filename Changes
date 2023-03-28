@@ -1,6 +1,10 @@
 0.9698 2023-03-28
+  [New Features]
+    * Added the new_muldim_array method in the SPVM::ExchangeAPI class.
   [Document Fix]
-    * Fixed the doc of the call_method in the SPVM::ExchangeAPI class.
+    * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
+  [Incompatible Changes]
+    * Don't support multi-dimensional array creation in the new_object_array method in the SPVM::ExchangeAPI class. Use the new_muldim_array method instead.
 0.9697 2023-03-23
   [New Features]
     * Added the following Native APIs.

@@ -506,7 +506,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_byte_array([1, 2, 3]);
     my $object2 = $api->new_byte_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("byte[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("byte[][]", [$object1, $object2]);
 
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_byte_array($oarray));
     
@@ -519,7 +519,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_short_array([1, 2, 3]);
     my $object2 = $api->new_short_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("short[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("short[][]", [$object1, $object2]);
 
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_short_array($oarray));
     
@@ -533,7 +533,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_int_array([1, 2, 3]);
     my $object2 = $api->new_int_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("int[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("int[][]", [$object1, $object2]);
 
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_int_array($oarray));
     
@@ -547,7 +547,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_long_array([1, 2, 3]);
     my $object2 = $api->new_long_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("long[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("long[][]", [$object1, $object2]);
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_long_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
@@ -560,7 +560,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_float_array([1, 2, 3]);
     my $object2 = $api->new_float_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("float[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("float[][]", [$object1, $object2]);
 
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_float_array($oarray));
     
@@ -574,7 +574,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $object1 = $api->new_double_array([1, 2, 3]);
     my $object2 = $api->new_double_array([4, 5, 6]);
-    my $oarray = $api->new_object_array("double[][]", [$object1, $object2]);
+    my $oarray = $api->new_muldim_array("double[][]", [$object1, $object2]);
     
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_double_array($oarray));
     

@@ -91,11 +91,11 @@ sub new_object_array {
   }
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the \$type_name type is not found";
+    confess "The bacic type of the type \$type_name is not found";
   }
   
-  unless ($type_dimension >= 1 && $type_dimension <= 255) {
-    confess "The dimension of the \$type_name type must be greater than or equal to 1 and less than or equal to 255";
+  unless ($type_dimension >= 1) {
+    confess "The dimension of the type \$type_name must be 1";
   }
   
   unless (defined $array) {
@@ -107,14 +107,45 @@ sub new_object_array {
   }
   
   my $ret;
-  if ($type_dimension == 1) {
-    eval { $ret = $self->_xs_new_object_array($basic_type_name, $array) };
-    if ($@) { confess $@ }
+  eval { $ret = $self->_xs_new_object_array($basic_type_name, $array) };
+  if ($@) { confess $@ }
+  
+  return $ret;
+}
+
+sub new_muldim_array {
+  my ($self, $type_name, $array) = @_;
+  
+  my $basic_type_name;
+  my $type_dimension = 0;
+  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
+    $basic_type_name = $1;
+    my $type_dimension_part = $2;
+    
+    while ($type_dimension_part =~ /\[/g) {
+      $type_dimension++;
+    }
   }
-  else {
-    eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
-    if ($@) { confess $@ }
+  
+  unless (defined $basic_type_name) {
+    confess "The bacic type of the type \$type_name is not found";
   }
+  
+  unless ($type_dimension >= 2 && $type_dimension <= 255) {
+    confess "The dimension of the type \$type_name must be greater than or equal to 1 and less than or equal to 255";
+  }
+  
+  unless (defined $array) {
+    return undef;
+  }
+  
+  unless (ref $array eq 'ARRAY') {
+    confess "The $array must be an array reference";
+  }
+  
+  my $ret;
+  eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
+  if ($@) { confess $@ }
   
   return $ret;
 }
@@ -134,11 +165,11 @@ sub new_mulnum_array {
   }
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the \$type_name type is not found";
+    confess "The bacic type of the type \$type_name is not found";
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the \$type_name type must be 1";
+    confess "The dimension of the type \$type_name must be 1";
   }
   
   unless (defined $array) {
@@ -171,10 +202,10 @@ sub new_mulnum_array_from_bin {
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the \$type_name type must be 1";
+    confess "The dimension of the type \$type_name must be 1";
   }
   unless (defined $basic_type_name) {
-    confess "The bacic type of the \$type_name type is not found";
+    confess "The bacic type of the type \$type_name is not found";
   }
 
   unless (defined $binary) {
@@ -708,7 +739,7 @@ Examples:
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts the Perl array reference $array to a value of the SPVM type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference $array to a value of the SPVM array(1-dimensional) type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 If the $array is undef, it is converted to SPVM undef.
 
@@ -720,17 +751,45 @@ If the $array is a reference other than the array reference, an exception is thr
 
 If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
 
-If the bacic type of the $type_name type is not found, an exception is thrown.
+If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be greater than or equal to 1 and less than or equal to 255. Otherwise an exception is thrown.
+The dimension of the $type_name must be 1. Otherwise an exception is thrown.
 
-The assignability of the element to the element type of the $type is checked. If it is not assignable, an exception is thrown.
+The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
+
+Examples:
+  
+  my $point1 = SPVM::Point->new;
+  my $point2 = SPVM::Point->new;
+  my $objects = $api->new_object_array("Point[]", [$point1, $point2]);
+
+=head2 new_muldim_array
+
+  my $spvm_object_array = $api->new_muldim_array($type_name, $array);
+
+Converts the Perl array reference $array to a value of the SPVM multi-dimensional array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+
+If the $array is undef, it is converted to SPVM undef.
+
+If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+
+Exceptions:
+
+If the $array is a reference other than the array reference, an exception is thrown.
+
+If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
+
+If the bacic type of the type $type_name is not found, an exception is thrown.
+
+The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+
+The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
 
 Examples:
 
   my $object1 = $api->new_int_array([1, 2, 3]);
   my $object2 = $api->new_int_array([4, 5, 6]);
-  my $objects = $api->new_object_array("int[][]", [$object1, $object2]);
+  my $objects = $api->new_muldim_array("int[][]", [$object1, $object2]);
 
 =head2 new_mulnum_array
 
@@ -745,9 +804,9 @@ Exceptions:
 
 All fields of the element type of the $type_name must be defined. Otherwise an exception is thrown.
 
-If the bacic type of the $type_name type is not found, an exception is thrown.
+If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name type must be 1. Otherwise an exception is thrown.
+The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
 The $array must be an array reference. Otherwise an exception is thrown.
 
@@ -768,9 +827,9 @@ Converts the binary data $binary to a SPVM multi-numeric array type $type_name, 
 
 Exceptions:
 
-If the bacic type of the $type_name type is not found, an exception is thrown.
+If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name type must be 1. Otherwise an exception is thrown.
+The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
 The $binary must be an array reference. Otherwise an exception is thrown.
 
@@ -1477,6 +1536,30 @@ Examples:
   # Converts a Perl array reference to the string[] type
   SPVM::MyClass->foo(["あい", "うえ", "お"]);
 
+=head3 Any Object Array Type Argument
+
+A Perl array reference(or undef) is converted to a value of the C<object[]> type by the L</"new_object_array"> method.
+
+Exceptions:
+
+Exceptions thrown by the L</"new_object_array"> method are thrown.
+
+=head3 Class Array Type Argument
+
+A Perl array reference(or undef) is converted to a value of the class type by the L</"new_object_array"> method.
+
+Exceptions:
+
+Exceptions thrown by the L</"new_object_array"> method are thrown.
+
+=head3 Interface Array Type Argument
+
+A Perl array reference(or undef) is converted to a value of the interface type by the L</"new_object_array"> method.
+
+Exceptions:
+
+Exceptions thrown by the L</"new_object_array"> method are thrown.
+
 =head3 Multi-Numeric Array Type Argument
 
 A Perl array reference(or undef) is converted to a value of the multi-numeric array type by the L</"new_mulnum_array"> method.
@@ -1492,9 +1575,11 @@ Examples:
 
 =head3 Multi-Dimensional Array Type Argument
 
-Perl undef is coverted to SPVM undef.
+A Perl array reference(or undef) is converted to a value of the C<object[]> type by the L</"new_muldim_array"> method.
 
-A Perl array reference is converted to a L<SPVM::BlessedObject::Array> of the corresponding array type.
+Exceptions:
+
+Exceptions thrown by the L</"new_muldim_array"> method are thrown.
 
 =head1 Return Value Conversion
 
