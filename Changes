@@ -1,6 +1,8 @@
 0.9698 2023-03-28
   [New Features]
     * Added the new_muldim_array method in the SPVM::ExchangeAPI class.
+    * Added the SPVM::ExchangeAPI::Error class.
+    * Added the new_error method in the the SPVM::ExchangeAPI class.
   [Document Fix]
     * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
   [Incompatible Changes]

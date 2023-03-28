@@ -238,6 +238,7 @@ lib/SPVM/Error/NotSupported.pm
 lib/SPVM/Error/System.pm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/ExchangeAPI/Class.pm
+lib/SPVM/ExchangeAPI/Error.pm
 lib/SPVM/Float.pm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm

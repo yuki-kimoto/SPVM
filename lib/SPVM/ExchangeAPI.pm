@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use SPVM::ExchangeAPI::Class;
+use SPVM::ExchangeAPI::Error;
 use Carp 'confess';
 
 # Fields
@@ -225,6 +226,14 @@ sub class {
   my $class = SPVM::ExchangeAPI::Class->__new(__class_name => $class_name, __api => $self);
   
   return $class;
+}
+
+sub new_error {
+  my ($self) = @_;
+  
+  my $error = SPVM::ExchangeAPI::Error->new(code => 0);
+  
+  return $error;
 }
 
 # other functions is implemented in SPVM.xs
@@ -939,6 +948,14 @@ Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Docum
 Exceptions:
 
 The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
+
+=head2 error
+
+  my $error = $api->new_error;
+
+Creates a new L<SPVM::ExchangeAPI::Error> object, and returns it.
+
+The error code is set to 0.
 
 =head2 call_method
   

@@ -1325,6 +1325,29 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# class
+{
+  my $obj_int = $api->class("Int")->new(1);
+  isa_ok($obj_int, "SPVM::BlessedObject");
+  my $value = $obj_int->value;
+  is($value, 1);
+}
+
+# error
+{
+  my $error = $api->new_error;
+  ok(ref $error, "SPVM::ExchangeAPI::Error");
+  
+  # Default
+  is($error->code, 0);
+  
+  # set
+  $error->code(2);
+  
+  # get
+  is($error->code, 2);
+}
+
 # TODO
 
 =pod
