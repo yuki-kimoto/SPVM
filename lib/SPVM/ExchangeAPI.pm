@@ -1617,7 +1617,7 @@ A value of the SPVM double type is converted to a Perl scalar using the L<newSVn
 
 If the SPVM return value is undef, it is converted to Perl undef.
 
-If not, it is converted to a L<SPVM::BlessedObject::String> object.
+Otherwise it is converted to a L<SPVM::BlessedObject::String> object.
 
 =head2 Multi-Numeric Type Return Value
 
