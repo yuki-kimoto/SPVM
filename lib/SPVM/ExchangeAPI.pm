@@ -1625,14 +1625,30 @@ The value of the SPVM multi-numeric type is converted to a Perl hash reference t
 
 Each field value is converted by the conversion of L</"byte Type Return Value">, L</"short Type Return Value">, L</"int Type Return Value">, L</"long Type Return Value">, L</"float Type Return Value">, L</"double Type Return Value"> according to the multi-numeric type.
 
-=head2 Array Type Return Value
+=head2 Any Object Type Return Value
 
 If the SPVM return value is undef, it is converted to Perl undef.
 
-If not, it is converted to a L<SPVM::BlessedObject::Array> object. 
+If the type of the return value is an array type, it is converted to a L<SPVM::BlessedObject::Array> object.
+
+If the type of the return value is an string type, it is converted to a L<SPVM::BlessedObject::String> object.
+
+Otherwise it is converted to a L<SPVM::BlessedObject::Class> object.
 
 =head2 Class Type Return Value
 
 If the SPVM return value is undef, it is converted to Perl undef.
 
-If not, it is converted to a L<SPVM::BlessedObject::Class> object.
+Otherwise it is converted to a L<SPVM::BlessedObject::Class> object.
+
+=head2 Interface Type Return Value
+
+If the SPVM return value is undef, it is converted to Perl undef.
+
+Otherwise it is converted to a L<SPVM::BlessedObject::Class> object.
+
+=head2 Array Type Return Value
+
+If the SPVM return value is undef, it is converted to Perl undef.
+
+Otherwise it is converted to a L<SPVM::BlessedObject::Array> object. 
