@@ -767,6 +767,25 @@ Examples:
     die"Memroy leak";
   }
 
+=head2 class
+
+  my $class = $api->class($class_name);
+
+Creates a new L<SPVM::ExchangeAPI::Class> object with the $class_name and returns it.
+
+Examples:
+  
+  my $class = $api->class('Int');
+  my $spvm_object = $class->new(1);
+
+=head2 dump
+
+  my $dump = $api->dump($object);
+
+Converts the SPVM object specified by the $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
+
+The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
+
 =head2 call_method
   
   my $ret = $api->call_method($invocant, $method_name, @args);
@@ -842,25 +861,6 @@ Examples:
   
   # Call static instance method
   $api->call_method($object, "Foo::value");
-  
-=head2 class
-
-  my $class = $api->class($class_name);
-
-Creates a new L<SPVM::ExchangeAPI::Class> object with the $class_name and returns it.
-
-Examples:
-  
-  my $class = $api->class('Int');
-  my $spvm_object = $class->new(1);
-
-=head2 dump
-
-  my $dump = $api->dump($object);
-
-Converts the SPVM object specified by the $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
-
-The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
 
 =head1 Argument Conversion
 
