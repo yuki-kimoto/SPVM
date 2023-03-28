@@ -58,12 +58,12 @@ The object of the C<SPVM::BlessedObject::Class> class holds an instance of a SPV
 =head2 AUTOLOAD
   
   # Instance method call
-  my $ret = $blessed_object_class->foo($args0, $args1, $args2);
+  my $ret = $blessed_object_class->foo(@args);
   
   # Static instance method call
-  my $ret = $blessed_object_class->SPVM::MyClass::foo($args0, $args1, $args2);
+  my $ret = $blessed_object_class->SPVM::MyClass::foo(@args);
 
-Calls a SPVM instance method with the arguments and returns the return value.
+Calls a SPVM instance method using L<SPVM::ExchangeAPI/"call_method"> with the arguments, and returns the return value.
 
 The static instance method call is allowed.
 

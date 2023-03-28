@@ -862,6 +862,17 @@ Examples:
   # Call static instance method
   $api->call_method($object, "Foo::value");
 
+Easy Ways:
+
+Calling class methods can be made easier using the L<SPVM class loading|SPVM/"Loading Module"> feature.
+
+  use SPVM 'Int';
+  my $int_object = Int->new(4);
+
+Instance method calls can be made easier using L<SPVM::BlessedObject::Class>.
+
+  my $value = $int_object->value;
+
 =head1 Argument Conversion
 
 The arguments in the L</"call_method"> are converted to the values of SPVM in the following rules.
