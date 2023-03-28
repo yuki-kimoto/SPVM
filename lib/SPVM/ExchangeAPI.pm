@@ -297,7 +297,7 @@ C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> objec
   
   my $spvm_array = $api->new_byte_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<byte> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference $array to a SPVM C<byte> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Each element is converted by the conversion of L</"byte Argument/">.
 
@@ -349,7 +349,7 @@ Examples:
   
   my $spvm_array = $api->new_short_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<short> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"short Argument/">.
+Converts the Perl array reference $array to a SPVM C<short> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"short Argument/">.
 
 If the $array is undef, returns undef.
 
@@ -395,7 +395,7 @@ Examples:
   
   my $spvm_array = $api->new_int_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<int> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"int Argument/">.
+Converts the Perl array reference $array to a SPVM C<int> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"int Argument/">.
 
 If the $array is undef, returns undef.
 
@@ -441,7 +441,7 @@ Examples:
   
   my $spvm_array = $api->new_long_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<long> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"long Argument/">.
+Converts the Perl array reference $array to a SPVM C<long> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"long Argument/">.
 
 If the $array is undef, returns undef.
 
@@ -487,7 +487,7 @@ Examples:
   
   my $spvm_array = $api->new_float_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<float> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"float Argument/">.
+Converts the Perl array reference $array to a SPVM C<float> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"float Argument/">.
 
 If the $array is undef, returns undef.
 
@@ -533,7 +533,7 @@ Examples:
   
   my $spvm_array = $api->new_double_array($array);
 
-Converts a Perl array reference specified by the $array to a SPVM C<double> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"double Argument/">.
+Converts the Perl array reference $array to a SPVM C<double> array and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"double Argument/">.
 
 If the $array is undef, returns undef.
 
@@ -579,7 +579,7 @@ Examples:
 
   my $spvm_string = $api->new_string($string);
 
-Converts a Perl scalar specified by the $string to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>, and returns the object that converts it to a L<SPVM::BlessedObject::String> object.
+Converts the Perl scalar $string to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>, and returns the object that converts it to a L<SPVM::BlessedObject::String> object.
 
 If the $string is undef, it is converted to SPVM undef.
 
@@ -607,7 +607,7 @@ The alias for the following code using the L</"new_object_array"> method.
 
   my $spvm_any_object_array = $api->new_options($options_hash_ref);
 
-Converts a Perl hash reference specified by the $options_hash_ref to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl hash reference $options_hash_ref to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Each key of the $options_hash_ref is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
 
@@ -626,7 +626,7 @@ Examples:
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts a Perl array reference specified by the $array to a SPVM value of the type specified by the $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference $array to a SPVM value of the type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 If the $array is undef, it is converted to SPVM undef.
 
@@ -650,7 +650,7 @@ Examples:
 
   my $spvm_mulnum_array = $api->new_mulnum_array($type_name, $array);
 
-Converts a Perl array reference of hash references specified by the $array to a SPVM multi-numeric array specified by the $type_name and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference of hash references $array to the SPVM multi-numeric array type $type_name and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Each element of the $array must be a hash reference. Otherwise an exception is thrown.
 
@@ -677,7 +677,7 @@ Examples:
 
   my $spvm_mulnum_array = $api->new_mulnum_array_from_bin($type_name, $binary);
 
-Converts a binary data specified by the $binary to a SPVM multi-numeric array specified by the $type_name and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the binary data $binary to a SPVM multi-numeric array type $type_name and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 If the bacic type of the $type_name type is not found, an exception is thrown.
 
@@ -782,7 +782,7 @@ Examples:
 
   my $dump = $api->dump($object);
 
-Converts the SPVM object specified by the $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
+Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
 
 The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
 
