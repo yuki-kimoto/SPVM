@@ -626,7 +626,7 @@ Examples:
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts the Perl array reference $array to a SPVM value of the type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference $array to a value of the SPVM type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 If the $array is undef, it is converted to SPVM undef.
 
@@ -961,6 +961,8 @@ The argument must be a SPVM::BlessedObject::Class object of a Z assignable type 
 
 Converts a hash reference containing field names and its values of the multi-numeric byte type to a value of the multi-numeric byte type.
 
+Each field value is coverted by the conversion of L</"byte Type Argument">.
+
 Exceptions:
 
 The argument must be a hash reference. Otherwise an exception is thrown.
@@ -975,6 +977,8 @@ Examples:
 =head3 Multi-Numeric short Type Argument
 
 Converts a hash reference containing field names and its values of the multi-numeric short type to a value of the multi-numeric short type.
+
+Each field value is coverted by the conversion of L</"short Type Argument">.
 
 Exceptions:
 
@@ -991,6 +995,8 @@ Examples:
 
 Converts a hash reference containing field names and its values of the multi-numeric int type to a value of the multi-numeric int type.
 
+Each field value is coverted by the conversion of L</"int Type Argument">.
+
 Exceptions:
 
 The argument must be a hash reference. Otherwise an exception is thrown.
@@ -1005,6 +1011,8 @@ Examples:
 =head3 Multi-Numeric long Type Argument
 
 Converts a hash reference containing field names and its values of the multi-numeric long type to a value of the multi-numeric long type.
+
+Each field value is coverted by the conversion of L</"long Type Argument">.
 
 Exceptions:
 
@@ -1021,6 +1029,8 @@ Examples:
 
 Converts a hash reference containing field names and its values of the multi-numeric float type to a value of the multi-numeric float type.
 
+Each field value is coverted by the conversion of L</"float Type Argument">.
+
 Exceptions:
 
 The argument must be a hash reference. Otherwise an exception is thrown.
@@ -1036,6 +1046,8 @@ Examples:
 
 Converts a hash reference containing field names and its values of the multi-numeric double type to a value of the multi-numeric double type.
 
+Each field value is coverted by the conversion of L</"double Type Argument">.
+
 Exceptions:
 
 The argument must be a hash reference. Otherwise an exception is thrown.
@@ -1046,6 +1058,238 @@ Examples:
 
   # Converts a Perl hash reference to MyClassPoint_2d type
   SPVM::MyClass->foo({x => 1.2, y => 2.3});
+
+=head2 Numeric Reference Type Argument
+
+=head3 byte Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM byte reference type.
+
+The referenced value is converted to a value of the SPVM C<byte> type by the conversion of L</"byte Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"byte Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to byte* type
+  my $value = 23;
+  SPVM::MyClass->foo(\$value);
+
+=head3 short Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM short reference type.
+
+The referenced value is converted to a value of the SPVM C<short> type by the conversion of L</"short Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"short Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to short* type
+  my $value = 23;
+  SPVM::MyClass->foo(\$value);
+
+=head3 int Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM int reference type.
+
+The referenced value is converted to a value of the SPVM C<int> type by the conversion of L</"int Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"int Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to int* type
+  my $value = 23;
+  SPVM::MyClass->foo(\$value);
+
+=head3 long Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM long reference type.
+
+The referenced value is converted to a value of the SPVM C<long> type by the conversion of L</"long Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"long Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to long* type
+  my $value = 23;
+  SPVM::MyClass->foo(\$value);
+
+=head3 float Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM float reference type.
+
+The referenced value is converted to a value of the SPVM C<float> type by the conversion of L</"float Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"float Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to float* type
+  my $value = 23.5;
+  SPVM::MyClass->foo(\$value);
+
+=head3 double Reference Type Argument
+
+A Perl reference is converted to a value of the SPVM double reference type.
+
+The referenced value is converted to a value of the SPVM C<double> type by the conversion of L</"double Type Argument">.
+
+After returning from the SPVM method, the referenced value is converted to a Perl scalar by the conversion of L</"double Type Return Value">
+
+Exceptions:
+
+The argument must be a scalar reference. Otherwise an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference to double* type
+  my $value = 23.5;
+  SPVM::MyClass->foo(\$value);
+
+=head2 Multi-Numeric Reference Type Argument
+
+=head3 Multi-Numeric byte Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<byte> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<byte> type by the conversion of L</"byte Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"byte Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to MyClassPoint_2b* type
+  my $value = {x => 1, y => 2};
+  SPVM::MyClass->foo(\$value);
+
+=head3 Multi-Numeric short Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<short> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<short> type by the conversion of L</"short Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"short Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to MyClassPoint_2s* type
+  my $value = {x => 1, y => 2};
+  SPVM::MyClass->foo(\$value);
+
+=head3 Multi-Numeric int Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<int> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<int> type by the conversion of L</"int Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"int Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2i* type
+  my $value = {x => 1, y => 2};
+  SPVM::MyClass->foo(\$value);
+
+=head3 Multi-Numeric long Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<long> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<long> type by the conversion of L</"long Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"long Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2l* type
+  my $value = {x => 1, y => 2};
+  SPVM::MyClass->foo(\$value);
+
+=head3 Multi-Numeric float Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<float> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<float> type by the conversion of L</"float Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"float Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2f* type
+  my $value = {x => 1,2, y => 2.3};
+  SPVM::MyClass->foo(\$value);
+
+=head3 Multi-Numeric double Reference Type Argument
+
+A Perl reference is converted to a SPVM multi-numeric C<double> reference type.
+
+The reference must be a scalar reference of a hash reference. Otherwise an exception is thrown.
+
+Each value of the hash is converted to a value of the C<double> type by the conversion of L</"double Type Argument">.
+
+Each hash value set by SPVM is converted to a Perl number by the conversion of L</"double Type Return Value">.
+
+Exceptions:
+
+If a field is not found, an exception is thrown.
+
+Examples:
+
+  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2d* type
+  my $value = {x => 1.2, y => 2.3};
+  SPVM::MyClass->foo(\$value);
 
 =head2 Array Type Argument
 
@@ -1158,214 +1402,6 @@ Examples:
 Perl undef is coverted to SPVM undef.
 
 A Perl array reference is converted to a L<SPVM::BlessedObject::Array> of the corresponding array type.
-
-=head2 Numeric Reference Type Argument
-
-=head3 byte Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the byte reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<byte> type by the conversion of L</"byte Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"byte Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to byte* type
-  my $value = 23;
-  SPVM::MyClass->foo(\$value);
-
-=head3 short Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the short reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<short> type by the conversion of L</"short Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"short Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to short* type
-  my $value = 23;
-  SPVM::MyClass->foo(\$value);
-
-=head3 int Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the int reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<int> type by the conversion of L</"int Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"int Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to int* type
-  my $value = 23;
-  SPVM::MyClass->foo(\$value);
-
-=head3 long Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the long reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<long> type by the conversion of L</"long Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"long Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to long* type
-  my $value = 23;
-  SPVM::MyClass->foo(\$value);
-
-=head3 float Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the float reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<float> type by the conversion of L</"float Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"float Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to float* type
-  my $value = 23.5;
-  SPVM::MyClass->foo(\$value);
-
-=head3 double Reference Type Argument
-
-A Perl reference is converted to a SPVM value of the double reference type.
-
-The value must be a scalar reference of a non-reference scalar. Otherwise an exception will occur.
-
-The value is converted to a SPVM value of the C<double> type by the conversion of L</"double Type Argument">.
-
-The value set by SPVM is converted to a Perl scalar by the conversion of L</"double Type Return Value">
-
-Examples:
-
-  # Converts a Perl scalar reference to double* type
-  my $value = 23.5;
-  SPVM::MyClass->foo(\$value);
-
-=head2 Multi-Numeric Reference Type Argument
-
-=head3 Multi-Numeric byte Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<byte> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<byte> type by the conversion of L</"byte Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"byte Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to MyClassPoint_2b* type
-  my $value = {x => 1, y => 2};
-  SPVM::MyClass->foo(\$value);
-
-=head3 Multi-Numeric short Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<short> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<short> type by the conversion of L</"short Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"short Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to MyClassPoint_2s* type
-  my $value = {x => 1, y => 2};
-  SPVM::MyClass->foo(\$value);
-
-=head3 Multi-Numeric int Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<int> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<int> type by the conversion of L</"int Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"int Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2i* type
-  my $value = {x => 1, y => 2};
-  SPVM::MyClass->foo(\$value);
-
-=head3 Multi-Numeric long Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<long> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<long> type by the conversion of L</"long Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"long Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2l* type
-  my $value = {x => 1, y => 2};
-  SPVM::MyClass->foo(\$value);
-
-=head3 Multi-Numeric float Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<float> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<float> type by the conversion of L</"float Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"float Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2f* type
-  my $value = {x => 1,2, y => 2.3};
-  SPVM::MyClass->foo(\$value);
-
-=head3 Multi-Numeric double Reference Type Argument
-
-A Perl reference is converted to a SPVM multi-numeric C<double> reference type.
-
-The reference must be a scalar reference of a hash reference. Otherwise an exception will occur.
-
-Each value of the hash is converted to a value of the C<double> type by the conversion of L</"double Type Argument">.
-
-Each hash value set by SPVM is converted to a Perl number by the conversion of L</"double Type Return Value">.
-
-If a field is not specified, an exception will occur.
-
-Examples:
-
-  # Converts a Perl scalar reference of a hash reference to SPVM MyClassPoint_2d* type
-  my $value = {x => 1.2, y => 2.3};
-  SPVM::MyClass->foo(\$value);
 
 =head1 Return Value Conversion
 
