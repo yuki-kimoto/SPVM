@@ -841,55 +841,67 @@ Instance method calls can be made easier using L<SPVM::BlessedObject::Class>.
 
 =head1 Argument Conversion
 
-The arguments in the L</"call_method"> are converted to the values of SPVM in the following rules.
+Each argument passed to the L</"call_method"> method are converted to a SPVM value according to the type before it passed to a SPVM method.
 
 =head2 byte Argument
 
-If the SPVM argument type is C<byte>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<byte> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<byte> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in the C language.
 
   (int8_t)SvIV(perl_scalar)
 
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
+
 =head2 short Argument
 
-If the SPVM argument type is C<short>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<short> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<short> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in the C language.
   
   (int16_t)SvIV(perl_scalar)
 
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
+
 =head2 int Argument
 
-If the SPVM argument type is C<int>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<int> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<int> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in the C language.
 
   (int32_t)SvIV(perl_scalar)
 
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
+
 =head2 long Argument
 
-If the SPVM argument type is C<long>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<long> type using the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<long> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in the C language.
 
   (int64_t)SvIV(perl_scalar)
 
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
+
 =head2 float Argument
 
-If the SPVM argument type is C<float>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<float> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in the C language.
+A Perl scalar is converted to a value of the SPVM C<float> type by the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in the C language.
 
   (float)SvNV(perl_scalar)
 
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
+
 =head2 double Argument
 
-If the SPVM argument type is C<double>, the following coversion is performed.
-
-A Perl scalar is converted to a value of the SPVM C<double> type using the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in the C language.
+A Perl scalar is converted to a value of the SPVM C<double> type by the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in the C language.
 
   (double)SvNV(perl_scalar)
+
+Exceptions:
+
+The nth argument of the X method in the Y class must be a non-reference scalar. Otherwise an exception is thrown.
 
 =head2 string Argument
 
