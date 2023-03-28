@@ -1575,7 +1575,7 @@ Examples:
 
 =head3 Multi-Dimensional Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<object[]> type by the L</"new_muldim_array"> method.
+A Perl array reference(or undef) is converted to a value of the multi-dimensional array type by the L</"new_muldim_array"> method.
 
 Exceptions:
 
@@ -1583,78 +1583,56 @@ Exceptions thrown by the L</"new_muldim_array"> method are thrown.
 
 =head1 Return Value Conversion
 
-A SPVM return value is converted to a Perl value by the following rule.
+A SPVM return value is converted to a Perl value according to the SPVM type.
 
 =head2 void Type Return Value
 
-If the SPVM return type is the void type, the following conversion is performed.
-
-SPVM void return value is converted to Perl undef.
+The SPVM void return value is converted to Perl undef.
 
 =head2 byte Type Return Value
 
-If the SPVM return type is the long type, the following conversion is performed.
-
-The SPVM byte value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM byte type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 short Type Return Value
 
-If the SPVM return type is the long type, the following conversion is performed.
-
-The SPVM short value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM short type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 int Type Return Value
 
-If the SPVM return type is the int type, the following conversion is performed.
-
-The SPVM float value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 long Type Return Value
 
-If the SPVM return type is the long type, the following conversion is performed.
-
-The SPVM float value is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 float Type Return Value
 
-If the SPVM return type is the float type, the following conversion is performed.
-
-The SPVM float value is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 double Type Return Value
 
-If the SPVM return type is the double type, the following conversion is performed.
-
-The SPVM double value is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+A value of the SPVM double type is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 string Type Return Value
 
-If the SPVM return type is the string type, the following conversion is performed.
+If the SPVM return value is undef, it is converted to Perl undef.
 
-If SPVM return value is undef, it is converted to Perl undef.
-
-Otherwise a SPVM string is converted to a Perl L<SPVM::BlessedObject::String> object.
+If not, it is converted to a L<SPVM::BlessedObject::String> object.
 
 =head2 Multi-Numeric Type Return Value
 
-If the SPVM return type is an multi-numeric type, the following conversion is performed.
+The value of the SPVM multi-numeric type is converted to a Perl hash reference that has the field names of the multi-numeric type as the keys.
 
-The SPVM multi-numeric value is converted to Perl hash reference that has the field names of the multi-numeric type as the keys.
-
-Each numeric field is converted by the rules of L</"byte Type Return Value">, L</"short Type Return Value">, L</"int Type Return Value">, L</"long Type Return Value">, L</"float Type Return Value">, L</"double Type Return Value">.
+Each field value is converted by the conversion of L</"byte Type Return Value">, L</"short Type Return Value">, L</"int Type Return Value">, L</"long Type Return Value">, L</"float Type Return Value">, L</"double Type Return Value"> according to the multi-numeric type.
 
 =head2 Array Type Return Value
 
-If the SPVM return type is an array type, the following conversion is performed.
+If the SPVM return value is undef, it is converted to Perl undef.
 
-If SPVM return value is undef, it is converted to Perl undef.
-
-Otherwise a SPVM array is converted to a Perl L<SPVM::BlessedObject::Array> object. 
+If not, it is converted to a L<SPVM::BlessedObject::Array> object. 
 
 =head2 Class Type Return Value
 
-If the SPVM return type is a class type, the following conversion is performed.
+If the SPVM return value is undef, it is converted to Perl undef.
 
-If SPVM return value is undef, it is converted to Perl undef.
-
-Otherwise a SPVM object is converted to a Perl L<SPVM::BlessedObject::Class> object.
+If not, it is converted to a L<SPVM::BlessedObject::Class> object.
