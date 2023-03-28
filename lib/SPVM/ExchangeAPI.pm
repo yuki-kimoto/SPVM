@@ -792,65 +792,29 @@ The $object must be a SPVM::BlessedObject object. Otherwise an exception is thro
   
   my $ret = $api->call_method($invocant, $method_name, @args);
 
-Calls a class method or an instance method. If the $invocant is a string, a class method is called. If the $invocant is a L<SPVM::BlessedObject::Class>, an instance method is called.
+Calls a class method or an instance method. If the invocant $invocant is a string, a class method is called. If the invocant $invocant is a L<SPVM::BlessedObject::Class>, an instance method is called.
 
-The @args are converted by the rule of L</"Argument Conversion">.
+Each of the arguments @args are converted by the rule of L</"Argument Conversion">.
 
-The $method_name allows static method name such as C<Foo::bar>.
+The method name $method_name allows a static method name such as C<Foo::bar>.
 
 The return value is converted by the rule of L</"Return Value Conversion">.
 
-Argument Types:
-
-$invocant : string|L<SPVM::BlessedObject>
-
-$method_name : string
-
-@args : the list of the L<SPVM::BlessedObject> object of the argument types of the method (See also L</"Argument Conversion">)
-
-Return Type:
-
-L<SPVM::BlessedObject> of the return type of the method (See also L</"Return Value Conversion">)
-
 Exceptions:
 
-The exception message thrown by SPVM.
+If the $invocant is a SPVM::BlessedObject, the $invocant must be a SPVM::BlessedObject::Class object. Otherwise an exception is thrown.
 
-The $invocant must be a SPVM::BlessedObject::Class object
+The static method call must be valid. Otherwise an exception is thrown.
 
-The static method call must be valid.
+If the X method in the Y class is not found, an exception is thrown.
 
-The \"%s\" method in the \"%s\" class is not found.
+If too few arguments are passed to the X method in the Y class, an exception is thrown.
 
-Too few arguments are passed to the \"%s\" method in the \"%s\" class.
+If too many arguments are passed to the X method in the Y class, an exception is thrown.
 
-Too many arguments are passed to the \"%s\" method in the \"%s\" class.
+If the L<argument conversion/"Argument Conversion"> fails, an exception is thrown.
 
-The %dth argument of the \"%s\" method in the \"%s\" class must be an interger reference
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a floating-point reference
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a scalar reference of a hash reference
-
-The %dth argument of the \"%s\" field in the \"%s\" class is not found
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a number
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::String object
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be assinged to the argument type
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object
-
-The \"%s\" field in the %dth argument must be defined. The field is defined in the \"%s\" class
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference
-
-The object must be assigned to the %s type of the %dth argument of the \"%s\" method in the \"%s\" class
-
-The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Array object
+If the calling method throws an exception, the exception is thrown.
 
 Examples:
 
