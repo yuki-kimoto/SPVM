@@ -771,7 +771,7 @@ Examples:
 
   my $class = $api->class($class_name);
 
-Creates a new L<SPVM::ExchangeAPI::Class> object with the $class_name and returns it.
+Creates a new L<SPVM::ExchangeAPI::Class> object with the class name $class_name, and returns it.
 
 Examples:
   
@@ -782,7 +782,9 @@ Examples:
 
   my $dump = $api->dump($object);
 
-Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator and returns it.
+Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator, and returns it.
+
+Exceptions:
 
 The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
 
