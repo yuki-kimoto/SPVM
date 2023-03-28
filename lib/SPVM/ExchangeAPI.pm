@@ -1479,11 +1479,11 @@ Examples:
 
 =head3 Multi-Numeric Array Type Argument
 
-Perl undef is coverted to SPVM undef.
+A Perl array reference(or undef) is converted to a value of the multi-numeric array type by the L</"new_mulnum_array"> method.
 
-A Perl array reference is converted to a L<SPVM::BlessedObject::Array> object of of a multi-numeric type.
+Exceptions:
 
-Each element which is a hash reference is converted to multi-numeric type by the conversion of L</"Multi-Numeric Type Argument">. Perl undef is coverted to SPVM undef.
+Exceptions thrown by the L</"new_mulnum_array"> method are thrown.
 
 Examples:
 
