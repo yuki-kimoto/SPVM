@@ -1926,9 +1926,9 @@ _xs_call_method(...)
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t excetpion_flag = excetpion_flag = env->call_method(env, stack, method_id, args_native_stack_length);
+  int32_t error = env->call_method(env, stack, method_id, args_native_stack_length);
   
-  if (excetpion_flag) {
+  if (error) {
     void* exception = env->get_exception(env, stack);
     int32_t length = env->length(env, stack, exception);
     const char* exception_chars = env->get_chars(env, stack, exception);
