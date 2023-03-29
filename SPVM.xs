@@ -3266,6 +3266,45 @@ _xs_new_string_array_len(...)
 }
 
 SV*
+_xs_new_object_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_array = ST(2);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
+  
+  SV* sv_error = &PL_sv_undef;
+  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
+  
+  if (SvOK(sv_error)) {
+    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 _xs_new_object_array_len(...)
   PPCODE:
 {
@@ -3306,45 +3345,6 @@ _xs_new_object_array_len(...)
   
   // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_xs_new_object_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
-  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_array = ST(2);
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  if (basic_type_id < 0) {
-    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
-  }
-  
-  SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
-  
-  if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
-  }
   
   XPUSHs(sv_array);
   XSRETURN(1);
