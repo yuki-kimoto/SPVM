@@ -425,9 +425,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<short[]> type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -481,9 +479,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<int[]> type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -531,9 +527,9 @@ Converts the Perl array reference $array to a SPVM long array, and returns the o
 
 If the $array is undef, returns undef.
 
-If the $array is a reference other than the array reference, an exception is thrown.
+Exceptions:
 
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<long[]> type is checked. If it is assignable, returns itself, otherwise an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -587,9 +583,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<float[]> type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -639,15 +633,7 @@ Each element is converted by the conversion of L</"double Type Argument">.
 
 Exceptions:
 
-If the $array is undef, returns undef.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
-
-Exceptions:
-
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<double[]> type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
