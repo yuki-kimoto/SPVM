@@ -136,14 +136,6 @@ sub new_muldim_array {
     confess "The dimension of the type \$type_name must be greater than or equal to 1 and less than or equal to 255";
   }
   
-  unless (defined $array) {
-    return undef;
-  }
-  
-  unless (ref $array eq 'ARRAY') {
-    confess "The $array must be an array reference";
-  }
-  
   my $ret;
   eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
   if ($@) { confess $@ }
