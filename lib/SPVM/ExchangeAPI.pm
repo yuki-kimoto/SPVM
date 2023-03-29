@@ -885,6 +885,25 @@ Examples:
   my $object2 = $api->new_int_array([4, 5, 6]);
   my $objects = $api->new_muldim_array("int[][]", [$object1, $object2]);
 
+=head2 new_muldim_array_len
+
+  my $spvm_array = $api->new_muldim_array_len($type_name, $length);
+
+Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+
+Exceptions:
+
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+If the bacic type of the type $type_name is not found, an exception is thrown.
+
+The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+
+Examples:
+  
+  my $length = 10;
+  my $spvm_array = $api->new_muldim_array("int[][]", $length);
+
 =head2 new_mulnum_array
 
   my $spvm_mulnum_array = $api->new_mulnum_array($type_name, $array);

@@ -3622,6 +3622,51 @@ _xs_new_muldim_array(...)
 }
 
 SV*
+_xs_new_muldim_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_type_dimension = ST(2);
+  SV* sv_length = ST(3);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
+  
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 _xs_get_exception(...)
   PPCODE:
 {
