@@ -56,6 +56,69 @@ my $api = SPVM::api();
 # Start objects count
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
+# new_string
+{
+  # new_string - Argument decoded string, to_string, "" overload
+  {
+    my $spvm_string = $api->new_string("あいう");
+    is($spvm_string->to_string, "あいう");
+    is("$spvm_string", "あいう");
+  }
+
+  # new_string - Number
+  {
+    my $spvm_string = $api->new_string(23);
+    is($spvm_string->to_string, 23);
+  }
+
+  # new_string - Empty
+  {
+    my $spvm_string = $api->new_string("");
+    is($spvm_string->to_string, "");
+  }
+
+  # new_string - undef
+  {
+    my $spvm_string = $api->new_string(undef);
+    ok(!defined $spvm_string);
+  }
+
+  # new_string - reference
+  {
+    eval { $api->new_string([]) };
+    like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
+    like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
+  }
+  
+  # Extra
+  {
+    # new_string - Argument decoded string, to_string, "" overload
+    {
+      my $spvm_string = $api->new_string("abc");
+      is($spvm_string->to_string, "abc");
+      is("$spvm_string", "abc");
+    }
+
+    # new_string - Empty
+    {
+      my $spvm_string = $api->new_string("");
+      is($spvm_string->to_string, "");
+    }
+
+    # new_string - undef
+    {
+      my $spvm_string = $api->new_string(undef);
+      ok(!defined $spvm_string);
+    }
+
+    # new_string - reference
+    {
+      eval { $api->new_string([]) };
+      like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
+    }
+  }
+}
+
 # Convert a scalar value to SPVM numeric object
 {
 
@@ -664,69 +727,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_double($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
-  }
-}
-
-# new_string
-{
-  # new_string - Argument decoded string, to_string, "" overload
-  {
-    my $spvm_string = $api->new_string("あいう");
-    is($spvm_string->to_string, "あいう");
-    is("$spvm_string", "あいう");
-  }
-
-  # new_string - Number
-  {
-    my $spvm_string = $api->new_string(23);
-    is($spvm_string->to_string, 23);
-  }
-
-  # new_string - Empty
-  {
-    my $spvm_string = $api->new_string("");
-    is($spvm_string->to_string, "");
-  }
-
-  # new_string - undef
-  {
-    my $spvm_string = $api->new_string(undef);
-    ok(!defined $spvm_string);
-  }
-
-  # new_string - reference
-  {
-    eval { $api->new_string([]) };
-    like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
-    like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
-  }
-  
-  # Extra
-  {
-    # new_string - Argument decoded string, to_string, "" overload
-    {
-      my $spvm_string = $api->new_string("abc");
-      is($spvm_string->to_string, "abc");
-      is("$spvm_string", "abc");
-    }
-
-    # new_string - Empty
-    {
-      my $spvm_string = $api->new_string("");
-      is($spvm_string->to_string, "");
-    }
-
-    # new_string - undef
-    {
-      my $spvm_string = $api->new_string(undef);
-      ok(!defined $spvm_string);
-    }
-
-    # new_string - reference
-    {
-      eval { $api->new_string([]) };
-      like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
-    }
   }
 }
 
