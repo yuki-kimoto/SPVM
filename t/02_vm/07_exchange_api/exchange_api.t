@@ -656,30 +656,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# length
-{
-  {
-    my $spvm_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-    my $length = $spvm_values->length;
-    is($length, 3);
-  }
-  {
-    my $spvm_values = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-    my $length = $spvm_values->length;
-    is($length, 3);
-  }
-  {
-    my $spvm_values = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
-    my $length = $spvm_values->length;
-    is($length, 3);
-  }
-  {
-    my $spvm_values = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
-    my $length = $spvm_values->length;
-    is($length, 3);
-  }
-}
-
 # get_exception
 {
   # exception - string
@@ -723,13 +699,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     $api->set_exception(undef);
     ok(SPVM::TestCase::ExchangeAPI->set_exception_undef);
   }
-}
-
-# ref SPVM object
-{
-  my $minimal = SPVM::TestCase::Minimal->new;
-  
-  is(ref $minimal, 'SPVM::BlessedObject::Class');
 }
 
 # new_options
@@ -953,6 +922,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       like("$minimal", qr/SPVM::BlessedObject::Class/);
     }
     
+    # ref SPVM object
+    {
+      my $minimal = SPVM::TestCase::Minimal->new;
+      
+      is(ref $minimal, 'SPVM::BlessedObject::Class');
+    }
+    
     # Exceptions
     {
       # Invocant assinable
@@ -980,6 +956,30 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     is(ref $blessed_object_array, "SPVM::BlessedObject::Array");
   }
   
+  # length
+  {
+    {
+      my $spvm_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $length = $spvm_values->length;
+      is($length, 3);
+    }
+    {
+      my $spvm_values = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $length = $spvm_values->length;
+      is($length, 3);
+    }
+    {
+      my $spvm_values = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $length = $spvm_values->length;
+      is($length, 3);
+    }
+    {
+      my $spvm_values = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $length = $spvm_values->length;
+      is($length, 3);
+    }
+  }
+
   # get and set
   {
     {
