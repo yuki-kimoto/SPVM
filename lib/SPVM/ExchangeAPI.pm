@@ -236,6 +236,7 @@ sub new_float_array { my $ret; eval { $ret =  &_xs_new_float_array(@_) }; if ($@
 sub new_float_array_len { my $ret; eval { $ret =  &_xs_new_float_array_len(@_) }; if ($@) { confess $@ } $ret}
 sub new_float_array_from_bin { my $ret; eval { $ret =  &_xs_new_float_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
 sub new_string_array { my $ret; eval { $ret =  &_xs_new_string_array(@_) }; if ($@) { confess $@ } $ret}
+sub new_string_array_len { my $ret; eval { $ret =  &_xs_new_string_array_len(@_) }; if ($@) { confess $@ } $ret}
 sub dump { my $ret; eval { $ret =  &_xs_dump(@_) }; if ($@) { confess $@ } $ret}
 sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { confess $@ } $ret}
 sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess $@ } $ret}
@@ -699,6 +700,21 @@ Examples:
   my $spvm_array = $api->new_string_array(["foo", "bar", "baz"]);
   
   my $spvm_array = $api->new_string_array(["あい", "うえ", "お"]);
+
+=head2 new_string_array_len
+
+  my $spvm_array = $api->new_string_array_len($length);
+
+Creates a SPVM string array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the string[] type.
+
+Exceptions:
+
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+Examples:
+  
+  my $length = 10;
+  my $spvm_array = $api->new_string_array_len($length);
 
 =head2 new_any_object_array
 
