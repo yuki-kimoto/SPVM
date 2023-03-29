@@ -1364,6 +1364,82 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# Binding SPVM class to Perl class
+{
+  # Calls a non-defined method
+  {
+    eval { SPVM::Int->not_defined_method };
+    like($@, qr|The "not_defined_method" method in the "Int" class is not found|);
+  }
+}
+
+# Extra
+{
+  # Convert a scalar value to SPVM numeric object
+  {
+
+    # SPVM::Byte->new
+    {
+      {
+        my $spvm_value = SPVM::Byte->new(-128);
+        is($spvm_value->get_class_name, 'Byte');
+        is(ref $spvm_value, 'SPVM::BlessedObject::Class');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, -128);
+      }
+    }
+    
+    # SPVM::Short->new
+    {
+      {
+        my $spvm_value = SPVM::Short->new(-32768);
+        is($spvm_value->get_class_name, 'Short');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, -32768);
+      }
+    }
+
+    # SPVM::Int->new
+    {
+      {
+        my $spvm_value = SPVM::Int->new(-2147483648);
+        is($spvm_value->get_class_name, 'Int');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, -2147483648);
+      }
+    }
+    # SPVM::Long->new
+    {
+      {
+        my $spvm_value = SPVM::Long->new(-9223372036854775808);
+        is($spvm_value->get_class_name, 'Long');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, -9223372036854775808);
+      }
+    }
+
+    # SPVM::Float->new
+    {
+      {
+        my $spvm_value = SPVM::Float->new($FLT_MAX);
+        is($spvm_value->get_class_name, 'Float');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, $FLT_MAX);
+      }
+    }
+
+    # SPVM::Double->new
+    {
+      {
+        my $spvm_value = SPVM::Double->new($DBL_MAX);
+        is($spvm_value->get_class_name, 'Double');
+        ok($spvm_value->isa('SPVM::BlessedObject::Class'));
+        is($spvm_value->value, $DBL_MAX);
+      }
+    }
+  }
+}
+
 $api->set_exception(undef);
 
 # All object is freed
