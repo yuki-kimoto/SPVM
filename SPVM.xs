@@ -349,7 +349,7 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
-        elems[i] = (uint8_t)SvUV(sv_elem);
+        elems[i] = (int8_t)(uint8_t)SvUV(sv_elem);
       }
       
       if (!error_elem) {
@@ -485,7 +485,7 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
-        elems[i] = (uint16_t)SvUV(sv_elem);
+        elems[i] = (int16_t)(uint16_t)SvUV(sv_elem);
       }
       
       if (!error_elem) {
@@ -621,7 +621,7 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_st
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
-        elems[i] = (uint32_t)SvUV(sv_elem);
+        elems[i] = (int32_t)(uint32_t)SvUV(sv_elem);
       }
       
       if (!error_elem) {
@@ -757,7 +757,7 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
           break;
         }
-        elems[i] = (uint64_t)SvUV(sv_elem);
+        elems[i] = (int64_t)(uint64_t)SvUV(sv_elem);
       }
       
       if (!error_elem) {

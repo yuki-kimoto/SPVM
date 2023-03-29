@@ -9,6 +9,10 @@
     
   [Document Fix]
     * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
+    * Added the doc of the new_byte_array_unsigned method in the ExchangeAPI class.
+    * Added the doc of the new_short_array_unsigned method in the ExchangeAPI class.
+    * Added the doc of the new_int_array_unsigned method in the ExchangeAPI class.
+    * Added the doc of the new_long_array_unsigned method in the ExchangeAPI class.
   [Incompatible Changes]
     * Don't support multi-dimensional array creation in the new_object_array method in the SPVM::ExchangeAPI class. Use the new_muldim_array method instead.
 0.9697 2023-03-23

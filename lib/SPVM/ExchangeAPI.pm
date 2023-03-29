@@ -373,6 +373,14 @@ Examples:
 
   my $spvm_array = $api->new_byte_array([1, 2, 3]);
 
+=head2 new_byte_array_unsigned
+  
+  my $spvm_array = $api->new_byte_array_unsigned($array);
+
+The same as the L</"new_byte_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint8_t> in the C language.
+
+  (int8_t)(uint8_t)SvUV(perl_scalar);
+
 =head2 new_byte_array_len
 
   my $spvm_array= $api->new_byte_array_len($length);
@@ -431,6 +439,14 @@ Examples:
 
   my $spvm_array = $api->new_short_array([1, 2, 3]);
 
+=head2 new_short_array_unsigned
+  
+  my $spvm_array = $api->new_short_array_unsigned($array);
+
+The same as the L</"new_short_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint16_t> in the C language.
+
+  (int16_t)(uint16_t)SvUV(perl_scalar);
+
 =head2 new_short_array_len
 
   my $spvm_array = $api->new_short_array_len($length);
@@ -485,6 +501,14 @@ Examples:
 
   my $spvm_array = $api->new_int_array([1, 2, 3]);
 
+=head2 new_long_array_unsigned
+  
+  my $spvm_array = $api->new_long_array_unsigned($array);
+
+The same as the L</"new_long_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint32_t> in the C language.
+
+  (int32_t)(uint32_t)SvUV(perl_scalar);
+
 =head2 new_int_array_len
 
   my $spvm_array = $api->new_int_array_len($length);
@@ -534,6 +558,14 @@ The $array must be an array reference or a SPVM::BlessedObject::Array object of 
 Examples:
 
   my $spvm_array = $api->new_long_array([1, 2, 3]);
+
+=head2 new_long_array_unsigned
+  
+  my $spvm_array = $api->new_long_array_unsigned($array);
+
+The same as the L</"new_long_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint64_t> in the C language.
+
+  (int64_t)(uint64_t)SvUV(perl_scalar);
 
 =head2 new_long_array_len
 
