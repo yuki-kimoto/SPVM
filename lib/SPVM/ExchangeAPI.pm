@@ -162,6 +162,27 @@ sub new_mulnum_array {
   return $ret;
 }
 
+
+sub new_mulnum_array_len {
+  my ($self, $type_name, $length) = @_;
+  
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  
+  unless (defined $basic_type_name) {
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
+  }
+  
+  unless ($type_dimension == 1) {
+    confess "The dimension of the type \$type_name must be 1";
+  }
+  
+  my $ret;
+  eval { $ret = $self->_xs_new_mulnum_array_len($basic_type_name, $length) };
+  if ($@) { confess $@ }
+  
+  return $ret;
+}
+
 sub new_mulnum_array_from_bin {
   my ($self, $type_name, $binary) = @_;
   
@@ -872,6 +893,25 @@ Examples:
     {x => 6, y => 7, z => 8},
   ];
   my $spvm_mulnum_array = $api->new_mulnum_array("TestCase::Point_3i[]", $values);
+
+=head2 new_mulnum_array_len
+
+  my $spvm_array = $api->new_mulnum_array_len($type_name, $length);
+
+Creates a SPVM object array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+
+Exceptions:
+
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+If the bacic type of the type $type_name is not found, an exception is thrown.
+
+The dimension of the $type_name must be 1. Otherwise an exception is thrown.
+
+Examples:
+  
+  my $length = 10;
+  my $spvm_array = $api->new_mulnum_array("Complex_2d[]", $length);
 
 =head2 new_mulnum_array_from_bin
 
