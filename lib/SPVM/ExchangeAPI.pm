@@ -45,38 +45,6 @@ sub new {
 
 # Instance Methods
 
-sub new_any_object_array {
-  my ($self, $array_ref) = @_;
-  
-  my $type_name = 'object[]';
-  
-  my $array = $self->new_object_array($type_name, $array_ref);
-  
-  return $array;
-}
-
-sub new_options {
-  my ($self, $options) = @_;
-  
-  unless (ref $options eq 'HASH') {
-    confess "The \$options must be a hash reference";
-  }
-  
-  my $array_ref = [];
-  for my $name (keys %$options) {
-    my $obj_name = $self->new_string($name);
-    my $value = $options->{$name};
-    if (defined $value && !$value->isa('SPVM::BlessedObject')) {
-      confess "The value of the \$options must be a SPVM::BlessedObject object";
-    }
-    push @$array_ref, $obj_name, $value;
-  }
-  
-  my $array = $self->new_any_object_array($array_ref);
-  
-  return $array;
-}
-
 sub _parse_type_name {
   my ($self, $type_name) = @_;
   
@@ -112,6 +80,38 @@ sub new_object_array {
   if ($@) { confess $@ }
   
   return $ret;
+}
+
+sub new_any_object_array {
+  my ($self, $array_ref) = @_;
+  
+  my $type_name = 'object[]';
+  
+  my $array = $self->new_object_array($type_name, $array_ref);
+  
+  return $array;
+}
+
+sub new_options {
+  my ($self, $options) = @_;
+  
+  unless (ref $options eq 'HASH') {
+    confess "The \$options must be a hash reference";
+  }
+  
+  my $array_ref = [];
+  for my $name (keys %$options) {
+    my $obj_name = $self->new_string($name);
+    my $value = $options->{$name};
+    if (defined $value && !$value->isa('SPVM::BlessedObject')) {
+      confess "The value of the \$options must be a SPVM::BlessedObject object";
+    }
+    push @$array_ref, $obj_name, $value;
+  }
+  
+  my $array = $self->new_any_object_array($array_ref);
+  
+  return $array;
 }
 
 sub new_muldim_array {
