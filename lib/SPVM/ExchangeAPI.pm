@@ -68,7 +68,7 @@ sub new_object_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the type \$type_name is not found";
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
   unless ($type_dimension >= 1) {
@@ -120,7 +120,7 @@ sub new_muldim_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the type \$type_name is not found";
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
@@ -140,7 +140,7 @@ sub new_mulnum_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the type \$type_name is not found";
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
   unless ($type_dimension == 1) {
@@ -160,7 +160,7 @@ sub new_mulnum_array_from_bin {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The bacic type of the type \$type_name is not found";
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
   unless ($type_dimension == 1) {
