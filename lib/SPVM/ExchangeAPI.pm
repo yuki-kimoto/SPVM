@@ -103,11 +103,19 @@ sub new_object_array_len {
 }
 
 sub new_any_object_array {
-  my ($self, $array_ref) = @_;
+  my ($self, $array) = @_;
   
   my $type_name = 'object[]';
   
-  my $array = $self->new_object_array($type_name, $array_ref);
+  return $self->new_object_array($type_name, $array);
+}
+
+sub new_any_object_array_len {
+  my ($self, $length) = @_;
+  
+  my $type_name = 'object[]';
+  
+  my $array = $self->new_object_array_len($type_name, $length);
   
   return $array;
 }
@@ -716,37 +724,6 @@ Examples:
   my $length = 10;
   my $spvm_array = $api->new_string_array_len($length);
 
-=head2 new_any_object_array
-
-  my $byte_array = $api->new_any_object_array(
-    [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
-  );
-
-The alias for the following code using the L</"new_object_array"> method.
-
-  my $spvm_array = $api->new_object_array('object[]', $array);
-
-=head2 new_options
-
-  my $spvm_any_object_array = $api->new_options($options);
-
-Converts the Perl hash reference $options to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
-
-Each key of the $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
-
-Exceptions:
-
-The value of the $options must be a L<SPVM::BlessedObject> object. Otherwise an exception is thrown.
-
-The $options must be a hash reference. Otherwise an exception is thrown.
-
-Examples:
-
-  my $options = $api->new_options({
-    x => SPVM::Int->new(1),
-    y => SPVM::Int->new(2)
-  });
-
 =head2 new_object_array
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
@@ -793,6 +770,52 @@ Examples:
   
   my $length = 10;
   my $spvm_array = $api->new_object_array("Point[]", $length);
+
+=head2 new_any_object_array
+
+  my $byte_array = $api->new_any_object_array(
+    [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
+  );
+
+The alias for the following code using the L</"new_object_array"> method.
+
+  my $spvm_array = $api->new_object_array('object[]', $array);
+
+=head2 new_any_object_array_len
+
+  my $spvm_array = $api->new_any_object_array_len($length);
+
+Creates a SPVM object array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+
+Exceptions:
+
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+Examples:
+  
+  my $length = 10;
+  my $spvm_array = $api->new_any_object_array("Point[]", $length);
+
+=head2 new_options
+
+  my $spvm_any_object_array = $api->new_options($options);
+
+Converts the Perl hash reference $options to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+
+Each key of the $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
+
+Exceptions:
+
+The value of the $options must be a L<SPVM::BlessedObject> object. Otherwise an exception is thrown.
+
+The $options must be a hash reference. Otherwise an exception is thrown.
+
+Examples:
+
+  my $options = $api->new_options({
+    x => SPVM::Int->new(1),
+    y => SPVM::Int->new(2)
+  });
 
 =head2 new_muldim_array
 
