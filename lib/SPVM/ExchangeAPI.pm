@@ -545,7 +545,7 @@ The same as the L</"new_long_array"> method, but each element is converted by th
 
   my $spvm_array = $api->new_long_array_len($length);
 
-Creates a SPVM byte array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Creates a SPVM long array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Exceptions:
 
@@ -599,7 +599,7 @@ Examples:
 
   my $spvm_array = $api->new_float_array_len($length);
 
-Creates a SPVM byte array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Creates a SPVM float array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Exceptions:
 
@@ -649,7 +649,7 @@ Examples:
 
   my $spvm_array = $api->new_double_array_len($length);
 
-Creates a SPVM byte array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Creates a SPVM double array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Exceptions:
 
@@ -705,7 +705,7 @@ Examples:
 
   my $spvm_array = $api->new_string_array_len($length);
 
-Creates a SPVM string array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the string[] type.
+Creates a SPVM string array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Exceptions:
 
