@@ -192,10 +192,6 @@ sub new_mulnum_array_from_bin {
   unless (defined $basic_type_name) {
     confess "The bacic type of the type \$type_name is not found";
   }
-
-  unless (defined $binary) {
-    return undef;
-  }
   
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
