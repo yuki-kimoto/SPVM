@@ -142,26 +142,6 @@ sub new_options {
   return $array;
 }
 
-sub new_muldim_array {
-  my ($self, $type_name, $array) = @_;
-  
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
-  
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
-  }
-  
-  unless ($type_dimension >= 2 && $type_dimension <= 255) {
-    confess "The dimension of the type \$type_name must be greater than or equal to 1 and less than or equal to 255";
-  }
-  
-  my $ret;
-  eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
-  if ($@) { confess $@ }
-  
-  return $ret;
-}
-
 sub new_mulnum_array {
   my ($self, $type_name, $array) = @_;
   
@@ -196,6 +176,26 @@ sub new_mulnum_array_from_bin {
   }
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
+  if ($@) { confess $@ }
+  
+  return $ret;
+}
+
+sub new_muldim_array {
+  my ($self, $type_name, $array) = @_;
+  
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  
+  unless (defined $basic_type_name) {
+    confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
+  }
+  
+  unless ($type_dimension >= 2 && $type_dimension <= 255) {
+    confess "The dimension of the type \$type_name must be greater than or equal to 1 and less than or equal to 255";
+  }
+  
+  my $ret;
+  eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
   if ($@) { confess $@ }
   
   return $ret;
