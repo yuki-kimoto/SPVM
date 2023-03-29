@@ -367,9 +367,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<byte[]> type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
