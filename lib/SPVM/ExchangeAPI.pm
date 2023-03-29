@@ -345,9 +345,7 @@ If the $string is a L<SPVM::BlessedObject::String> object, returns itself.
 
 Exceptions:
 
-The $string can't be a reference. If so, an exception is thrown.
-
-If the $string is a L<SPVM::BlessedObject::String> object, the assignability to the C<string> type is checked. If it is not assignable, an exception is thrown.
+The $string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef. Otherwise an exception is thrown.
 
 Examples:
 

@@ -58,40 +58,65 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_string
 {
-  # new_string - Argument decoded string, to_string, "" overload
+  # new_string - object type
   {
-    my $spvm_string = $api->new_string("あいう");
-    is($spvm_string->to_string, "あいう");
-    is("$spvm_string", "あいう");
+    my $spvm_string = $api->new_string("abc");
+    is(ref $spvm_string, "SPVM::BlessedObject::String");
   }
-
-  # new_string - Number
+  
+  # new_string - scalar
   {
-    my $spvm_string = $api->new_string(23);
-    is($spvm_string->to_string, 23);
+    # new_string - Number
+    {
+      my $spvm_string = $api->new_string(23);
+      is($spvm_string->to_string, 23);
+    }
+    
+    # new_string - Empty
+    {
+      my $spvm_string = $api->new_string("");
+      is($spvm_string->to_string, "");
+    }
   }
-
-  # new_string - Empty
-  {
-    my $spvm_string = $api->new_string("");
-    is($spvm_string->to_string, "");
-  }
-
+  
   # new_string - undef
   {
     my $spvm_string = $api->new_string(undef);
     ok(!defined $spvm_string);
   }
 
-  # new_string - reference
+  # new_string - SPVM::BlessedObject::String
   {
-    eval { $api->new_string([]) };
-    like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
-    like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
+    my $spvm_string = $api->new_string("abc");
+    my $spvm_string2 = $api->new_string($spvm_string);
+    ok($spvm_string == $spvm_string);
+  }
+  
+  # Excetpions
+  {
+    # new_string - reference
+    {
+      eval { $api->new_string([]) };
+      like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
+      like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
+    }
+    # new_string - non-assignable
+    {
+      eval { $api->new_string($api->new_byte_array([1, 2, 3])) };
+      like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
+      like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
+    }
   }
   
   # Extra
   {
+    # new_string - Argument decoded string, to_string, "" overload
+    {
+      my $spvm_string = $api->new_string("あいう");
+      is($spvm_string->to_string, "あいう");
+      is("$spvm_string", "あいう");
+    }
+
     # new_string - Argument decoded string, to_string, "" overload
     {
       my $spvm_string = $api->new_string("abc");
