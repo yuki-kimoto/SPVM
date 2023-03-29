@@ -6,6 +6,7 @@
     * The call_method method in the SPVM::ExchangeAPI class can get the error code thrown by a SPVM method.
     
       my $ret = $api->call_method($invocant, $method_name, @args, $error);
+    * Added the new_object_array_len method in the SPVM::ExchangeAPI.
     
   [Document Fix]
     * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
