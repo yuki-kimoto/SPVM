@@ -165,14 +165,6 @@ sub new_mulnum_array {
     confess "The dimension of the type \$type_name must be 1";
   }
   
-  unless (defined $array) {
-    return undef;
-  }
-  
-  unless (ref $array eq 'ARRAY') {
-    confess "The \$array must be an array reference";
-  }
-  
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $array) };
   if ($@) { confess $@ }
