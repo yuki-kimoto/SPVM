@@ -117,16 +117,7 @@ sub new_options {
 sub new_muldim_array {
   my ($self, $type_name, $array) = @_;
   
-  my $basic_type_name;
-  my $type_dimension = 0;
-  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
-    $basic_type_name = $1;
-    my $type_dimension_part = $2;
-    
-    while ($type_dimension_part =~ /\[/g) {
-      $type_dimension++;
-    }
-  }
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
     confess "The bacic type of the type \$type_name is not found";
@@ -146,16 +137,7 @@ sub new_muldim_array {
 sub new_mulnum_array {
   my ($self, $type_name, $array) = @_;
   
-  my $basic_type_name;
-  my $type_dimension = 0;
-  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
-    $basic_type_name = $1;
-    my $type_dimension_part = $2;
-    
-    while ($type_dimension_part =~ /\[/g) {
-      $type_dimension++;
-    }
-  }
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
     confess "The bacic type of the type \$type_name is not found";
@@ -175,24 +157,15 @@ sub new_mulnum_array {
 sub new_mulnum_array_from_bin {
   my ($self, $type_name, $binary) = @_;
   
-  my $basic_type_name;
-  my $type_dimension = 0;
-  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
-    $basic_type_name = $1;
-    my $type_dimension_part = $2;
-    
-    while ($type_dimension_part =~ /\[/g) {
-      $type_dimension++;
-    }
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  
+  unless (defined $basic_type_name) {
+    confess "The bacic type of the type \$type_name is not found";
   }
   
   unless ($type_dimension == 1) {
     confess "The dimension of the type \$type_name must be 1";
   }
-  unless (defined $basic_type_name) {
-    confess "The bacic type of the type \$type_name is not found";
-  }
-  
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
   if ($@) { confess $@ }
