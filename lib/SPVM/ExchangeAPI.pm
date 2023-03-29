@@ -77,12 +77,12 @@ sub new_options {
   return $array;
 }
 
-sub new_object_array {
-  my ($self, $type_name, $array) = @_;
+sub _parse_type_name {
+  my ($self, $type_name) = @_;
   
   my $basic_type_name;
   my $type_dimension = 0;
-  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])+)$/) {
+  if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])*)$/) {
     $basic_type_name = $1;
     my $type_dimension_part = $2;
     
@@ -90,6 +90,14 @@ sub new_object_array {
       $type_dimension++;
     }
   }
+  
+  return ($basic_type_name, $type_dimension);
+}
+
+sub new_object_array {
+  my ($self, $type_name, $array) = @_;
+  
+  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
     confess "The bacic type of the type \$type_name is not found";
