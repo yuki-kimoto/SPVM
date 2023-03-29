@@ -960,6 +960,8 @@ The error code is set to 0.
 =head2 call_method
   
   my $ret = $api->call_method($invocant, $method_name, @args);
+  
+  my $ret = $api->call_method($invocant, $method_name, @args, $error);
 
 Calls a class method or an instance method. If the invocant $invocant is a string, a class method is called. If the invocant $invocant is a L<SPVM::BlessedObject::Class>, an instance method is called.
 
@@ -968,6 +970,8 @@ Each of the arguments @args are converted by the rule of L</"Argument Conversion
 The method name $method_name allows a static method name such as C<Foo::bar>.
 
 The return value is converted by the rule of L</"Return Value Conversion">.
+
+If a L<SPVM::ExchangeAPI::Error> object is passed to the last of the arguments, and if an exception is thrown from a SPVM method, the error code is set to the C<code> field of the object.
 
 Exceptions:
 

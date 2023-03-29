@@ -2,7 +2,11 @@
   [New Features]
     * Added the new_muldim_array method in the SPVM::ExchangeAPI class.
     * Added the SPVM::ExchangeAPI::Error class.
-    * Added the new_error method in the the SPVM::ExchangeAPI class.
+    * Added the new_error method in the SPVM::ExchangeAPI class.
+    * The call_method method in the SPVM::ExchangeAPI class can get the error code thrown by a SPVM method.
+    
+      my $ret = $api->call_method($invocant, $method_name, @args, $error);
+    
   [Document Fix]
     * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
   [Incompatible Changes]

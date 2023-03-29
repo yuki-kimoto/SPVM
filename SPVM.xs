@@ -1291,6 +1291,17 @@ _xs_call_method(...)
 {
   (void)RETVAL;
   
+  int32_t args_length = items;
+  
+  // SPVM::ExchangeAPI::Error
+  SV* sv_error_ret = ST(args_length - 1);
+  if (sv_isobject(sv_error_ret) && sv_derived_from(sv_error_ret, "SPVM::ExchangeAPI::Error")) {
+    args_length -= 1;
+  }
+  else {
+    sv_error_ret = &PL_sv_undef;
+  }
+  
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
@@ -1406,7 +1417,7 @@ _xs_call_method(...)
   int32_t method_return_type_id = env->api->runtime->get_method_return_type_id(env->runtime, method_id);
   
   // Check argument count
-  int32_t call_method_args_length = items - spvm_args_base;
+  int32_t call_method_args_length = args_length - spvm_args_base;
   
   if (call_method_args_length < method_required_args_length) {
     croak("Too few arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", method_name, class_name, __func__, FILE_NAME, __LINE__);
@@ -1926,9 +1937,15 @@ _xs_call_method(...)
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t error = env->call_method(env, stack, method_id, args_native_stack_length);
+  int32_t error_code_ret = env->call_method(env, stack, method_id, args_native_stack_length);
   
-  if (error) {
+  if (error_code_ret) {
+    if (SvOK(sv_error_ret)) {
+      HV* hv_error_ret = (HV*)SvRV(sv_error_ret);
+      SV* sv_error_code_ret = sv_2mortal(newSViv(error_code_ret));
+      (void)hv_store(hv_error_ret, "code", strlen("code"), SvREFCNT_inc(sv_error_code_ret), 0);
+    }
+    
     void* exception = env->get_exception(env, stack);
     int32_t length = env->length(env, stack, exception);
     const char* exception_chars = env->get_chars(env, stack, exception);

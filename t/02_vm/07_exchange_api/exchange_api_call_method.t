@@ -1345,6 +1345,27 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# Error code
+{
+  {
+    my $error = $api->new_error;
+    is($error->code, 0);
+    my $message = "Error";
+    eval { SPVM::TestCase::ExchangeAPI->die($message, $error); };
+    is($error->code, 1);
+  }
+  {
+    my $error = $api->new_error;
+    is($error->code, 0);
+    my $message = "Error";
+    my $error_code = 2;
+    eval { SPVM::TestCase::ExchangeAPI->die_with_error_code($message, $error_code, $error); };
+    is($error->code, 2);
+  }
+}
+
+$api->set_exception(undef);
+
 # All object is freed
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
