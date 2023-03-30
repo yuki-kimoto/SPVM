@@ -187,9 +187,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_byte_array_unsigned
 {
-  my $spvm_array = $api->new_byte_array_unsigned([0, $UBYTE_MAX]);
-  my $bin = $spvm_array->to_bin;
-  is_deeply([unpack 'C*', $bin], [0, $UBYTE_MAX]);
+  # new_byte_array_unsigned - Return type
+  {
+    my $spvm_array = $api->new_byte_array_unsigned([1, $UBYTE_MAX]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_byte_array_unsigned - array reference
+  {
+    my $spvm_array = $api->new_byte_array_unsigned([0, $UBYTE_MAX]);
+    my $bin = $spvm_array->to_bin;
+    is_deeply([unpack 'C*', $bin], [0, $UBYTE_MAX]);
+  }
+  
+  # new_byte_array_unsigned - undef
+  {
+    my $spvm_array = $api->new_byte_array_unsigned(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_byte_array_unsigned - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_byte_array_unsigned([1, $UBYTE_MAX]);
+    my $spvm_array2 = $api->new_byte_array_unsigned($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_byte_array_unsigned - Exceptions
+  {
+    {
+      eval { $api->new_byte_array_unsigned({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_byte_array_unsigned($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_byte_array_len
