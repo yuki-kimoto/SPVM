@@ -1068,69 +1068,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# new_mulnum_array_from_bin
-{
-  # new_mulnum_array_from_bin - byte
-  {
-    my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_byte($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-
-  # new_mulnum_array_from_bin - short
-  {
-    my $binary = pack('s9', ($SHORT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_short($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  
-  # new_mulnum_array_from_bin - int
-  {
-    my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_int($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - long
-  {
-    my $binary = pack('q9', ($LONG_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_long($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - float
-  {
-    my $binary = pack('f9', ($FLOAT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - double
-  {
-    my $binary = pack('d9', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_array));
-    my $out_bin = $spvm_array->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-
-  # new_mulnum_array_from_bin - double
-  {
-    my $binary = pack('d8', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7));
-    eval {
-      $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
-    };
-    ok($@);
-  }
-}
-
 # new_object_array
 {
   # element object array
@@ -1229,6 +1166,69 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_double($spvm_array));
     my $out_values = $spvm_array->to_elems;
     is_deeply($out_values, $values);
+  }
+}
+
+# new_mulnum_array_from_bin
+{
+  # new_mulnum_array_from_bin - byte
+  {
+    my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_byte($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+
+  # new_mulnum_array_from_bin - short
+  {
+    my $binary = pack('s9', ($SHORT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_short($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  
+  # new_mulnum_array_from_bin - int
+  {
+    my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_int($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - long
+  {
+    my $binary = pack('q9', ($LONG_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_long($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - float
+  {
+    my $binary = pack('f9', ($FLOAT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - double
+  {
+    my $binary = pack('d9', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_array));
+    my $out_bin = $spvm_array->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+
+  # new_mulnum_array_from_bin - double
+  {
+    my $binary = pack('d8', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7));
+    eval {
+      $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    };
+    ok($@);
   }
 }
 
@@ -1417,6 +1417,29 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     
     like($@, qr|The \$object must be a SPVM::BlessedObject object|);
   }
+}
+
+# class
+{
+  my $obj_int = $api->class("Int")->new(1);
+  isa_ok($obj_int, "SPVM::BlessedObject");
+  my $value = $obj_int->value;
+  is($value, 1);
+}
+
+# error
+{
+  my $error = $api->new_error;
+  ok(ref $error, "SPVM::ExchangeAPI::Error");
+  
+  # Default
+  is($error->code, 0);
+  
+  # set
+  $error->code(2);
+  
+  # get
+  is($error->code, 2);
 }
 
 # SPVM::BlessedObject
@@ -1947,29 +1970,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       is($length, 3);
     }
   }
-}
-
-# class
-{
-  my $obj_int = $api->class("Int")->new(1);
-  isa_ok($obj_int, "SPVM::BlessedObject");
-  my $value = $obj_int->value;
-  is($value, 1);
-}
-
-# error
-{
-  my $error = $api->new_error;
-  ok(ref $error, "SPVM::ExchangeAPI::Error");
-  
-  # Default
-  is($error->code, 0);
-  
-  # set
-  $error->code(2);
-  
-  # get
-  is($error->code, 2);
 }
 
 # Extra
