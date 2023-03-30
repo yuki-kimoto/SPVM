@@ -1070,21 +1070,46 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_object_array
 {
-  # element object array
+  # new_string_array - Return type
   {
-    my $object1 = SPVM::TestCase->new();
-    $object1->set_x_int(1);
-    my $object2 = SPVM::TestCase->new();
-    $object2->set_x_int(2);
-    my $spvm_oarray = $api->new_object_array("TestCase[]", [$object1, $object2]);
+    my $point1 = SPVM::Point->new(1, 2);
+    my $point2 = SPVM::Point->new(3, 4);
+    my $spvm_array = $api->new_object_array("Point[]", [$point1, $point2]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "Point[]");
+  }
+  
+  # new_string_array - array reference
+  {
+    my $point1 = SPVM::Point->new(1, 2);
+    my $point2 = SPVM::Point->new(3, 4);
+    my $spvm_array = $api->new_object_array("Point[]", [$point1, $point2]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "Point[]");
+    my $values = $spvm_array->to_elems;
     
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_any_object_array($spvm_oarray));
-    
-    my $oarray_out = $spvm_oarray->to_elems;
-    
-    is($oarray_out->[0]->get_x_int, 1);
-    
-    is($oarray_out->[1]->get_x_int, 2);
+    is($values->[0]->x, 1);
+    is($values->[0]->y, 2);
+    is($values->[1]->x, 3);
+    is($values->[1]->y, 4);
+  }
+  
+  # new_object_array - undef
+  {
+    my $spvm_array = $api->new_object_array("Point[]", undef);
+    ok(!defined $spvm_array);
+  }
+  
+  # new_string_array - Exceptions
+  {
+    {
+      eval { $api->new_object_array("Point[]", {}) };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
+    }
+    {
+      eval { $api->new_object_array("Point[]", $api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
+    }
   }
 }
 
