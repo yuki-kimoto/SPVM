@@ -739,9 +739,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the C<string[]> type is checked. If it is assignable, returns itself, otherwise an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 

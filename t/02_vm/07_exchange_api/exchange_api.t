@@ -996,6 +996,48 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# new_string_array
+{
+  # new_string_array - Return type
+  {
+    my $spvm_array = $api->new_string_array(["abc", "def", "ghi"]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "string[]");
+  }
+  
+  # new_string_array - array reference
+  {
+    my $spvm_array = $api->new_string_array(["abc", "あいう", "ghi"]);
+    my $values = $spvm_array->to_strings;
+    is_deeply($values, ["abc", "あいう", "ghi"]);
+  }
+  
+  # new_string_array - undef
+  {
+    my $spvm_array = $api->new_string_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_string_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_string_array(["abc", "あいう", "ghi"]);
+    my $spvm_array2 = $api->new_string_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_string_array - Exceptions
+  {
+    {
+      eval { $api->new_string_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_string_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef') >= 0);
+    }
+  }
+}
+
 # new_mulnum_array_from_bin
 {
   # new_mulnum_array_from_bin - byte
