@@ -285,6 +285,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     is_deeply($values, [97, 98, -1]);
   }
   
+  # new_byte_array_from_bin - Exceptions
   {
     eval { my $spvm_array = $api->new_byte_array_from_bin(undef); };
     ok(index($@, 'The $binary must be defined') >= 0);
@@ -431,9 +432,35 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_short_array_from_bin
 {
-  my $binary = pack('s*', 97, 98, $SHORT_MAX);
-  my $spvm_array = $api->new_short_array_from_bin($binary);
-  ok(SPVM::TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_array));
+  # new_short_array_from_bin - Return type
+  {
+    my $binary = pack('s*', 97, 98, $SHORT_MAX);
+    my $spvm_array = $api->new_short_array_from_bin($binary);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "short[]");
+  }
+  
+  # new_short_array_from_bin - binary signed
+  {
+    my $binary = pack('s*', 97, 98, $SHORT_MAX);
+    my $spvm_array = $api->new_short_array_from_bin($binary);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, $SHORT_MAX]);
+  }
+  
+  # new_short_array_from_bin - binary unsigned
+  {
+    my $binary = pack('S*', 97, 98, $USHORT_MAX);
+    my $spvm_array = $api->new_short_array_from_bin($binary);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, -1]);
+  }
+  
+  # new_short_array_from_bin - Exceptions
+  {
+    eval { my $spvm_array = $api->new_short_array_from_bin(undef); };
+    ok(index($@, 'The $binary must be defined') >= 0);
+  }
 }
 
 # new_int_array
