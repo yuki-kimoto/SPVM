@@ -3293,6 +3293,12 @@ _xs_new_object_array(...)
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
+  int32_t elem_type_dimension = 0;
+  int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type_id, elem_type_dimension, 0);
+  if (!is_object_array) {
+    croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
   SV* sv_error = &PL_sv_undef;
   sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
   
@@ -3325,7 +3331,7 @@ _xs_new_object_array_len(...)
   
   SV* sv_basic_type_name = ST(1);
   SV* sv_length = ST(2);
-
+  
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
@@ -3340,10 +3346,14 @@ _xs_new_object_array_len(...)
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
-  // New array
+  int32_t elem_type_dimension = 0;
+  int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type_id, elem_type_dimension, 0);
+  if (!is_object_array) {
+    croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
   void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
   
-  // New sv array
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
