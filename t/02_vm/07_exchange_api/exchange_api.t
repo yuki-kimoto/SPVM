@@ -1100,7 +1100,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     ok(!defined $spvm_array);
   }
   
-  # new_string_array - Exceptions
+  # new_object_array - Exceptions
   {
     {
       eval { $api->new_object_array("Point[]", {}) };
@@ -1120,6 +1120,50 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("byte[]", []); };
+      ok(index($@, 'The $type_name must be an object array type') >= 0);
+    }
+  }
+}
+
+# new_object_array_len
+{
+  # new_object_array_len - Return type
+  {
+    my $spvm_array = $api->new_object_array_len("Point[]", 3);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "Point[]");
+  }
+  
+  # new_object_array_len - Length 3
+  {
+    my $spvm_array = $api->new_object_array_len("Point[]", 3);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [undef, undef, undef]);
+  }
+  
+  # new_object_array_len - Length 0
+  {
+    my $spvm_array = $api->new_object_array_len("Point[]", 0);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, []);
+  }
+  
+  # new_object_array_len - Exceptions
+  {
+    {
+      eval { $api->new_object_array_len("Point[]", -1); };
+      ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    }
+    {
+      eval { $api->new_object_array_len("Point[][]", 0); };
+      ok(index($@, 'The dimension of the type $type_name must be 1') >= 0);
+    }
+    {
+      eval { $api->new_object_array_len("NotFoundClass[]", 0); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
+    {
+      eval { $api->new_object_array_len("byte[]", 0); };
       ok(index($@, 'The $type_name must be an object array type') >= 0);
     }
   }

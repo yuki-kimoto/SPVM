@@ -766,7 +766,7 @@ Examples:
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts the Perl array reference $array to a value of the SPVM array(1-dimensional) type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference $array to a value of the SPVM object array(1-dimensional) type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name type.
 
 If the $array is undef, it is converted to SPVM undef.
 
@@ -792,7 +792,7 @@ Examples:
 
   my $spvm_array = $api->new_object_array_len($type_name, $length);
 
-Creates a SPVM object array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+Creates a SPVM object array(1-dimensional) with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name type.
 
 Exceptions:
 
@@ -800,7 +800,9 @@ The $length must be greater than or equal to 0. Otherwise an exception is thrown
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be 1. Otherwise an exception is thrown.
+The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
+
+The $type_name must be an object array type. Otherwise an exception is thrown.
 
 Examples:
   
