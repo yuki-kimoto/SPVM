@@ -1070,7 +1070,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_object_array
 {
-  # new_string_array - Return type
+  # new_object_array - Return type
   {
     my $point1 = SPVM::Point->new(1, 2);
     my $point2 = SPVM::Point->new(3, 4);
@@ -1079,7 +1079,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     is($spvm_array->__get_type_name, "Point[]");
   }
   
-  # new_string_array - array reference
+  # new_object_array - array reference
   {
     my $point1 = SPVM::Point->new(1, 2);
     my $point2 = SPVM::Point->new(3, 4);
@@ -1166,6 +1166,32 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval { $api->new_object_array_len("byte[]", 0); };
       ok(index($@, 'The $type_name must be an object array type') >= 0);
     }
+  }
+}
+
+# new_any_object_array
+{
+  # new_any_object_array - Return type
+  {
+    my $point1 = SPVM::Point->new(1, 2);
+    my $point2 = SPVM::Point->new(3, 4);
+    my $spvm_array = $api->new_any_object_array([$point1, $point2]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "object[]");
+  }
+  
+  # new_any_object_array - array reference
+  {
+    my $point1 = SPVM::Point->new(1, 2);
+    my $point2 = SPVM::Point->new(3, 4);
+    my $spvm_array = $api->new_any_object_array([$point1, $point2]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    my $values = $spvm_array->to_elems;
+    
+    is($values->[0]->x, 1);
+    is($values->[0]->y, 2);
+    is($values->[1]->x, 3);
+    is($values->[1]->y, 4);
   }
 }
 
