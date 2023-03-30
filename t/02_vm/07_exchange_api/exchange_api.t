@@ -1212,6 +1212,32 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# new_options
+{
+  {
+    my $options = $api->new_options({
+      x => SPVM::Int->new(1),
+      y => SPVM::Int->new(2)
+    });
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 1);
+    is($simple->y, 2);
+  }
+  {
+    my $options = $api->new_options({
+    });
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 0);
+    is($simple->y, 0);
+  }
+  {
+    my $options = undef;
+    my $simple = SPVM::TestCase::Simple->new_options($options);
+    is($simple->x, 0);
+    is($simple->y, 0);
+  }
+}
+
 # new_mulnum_array
 {
   # new_mulnum_array - byte
@@ -1483,32 +1509,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     $api->set_exception(undef);
     ok(SPVM::TestCase::ExchangeAPI->set_exception_undef);
-  }
-}
-
-# new_options
-{
-  {
-    my $options = $api->new_options({
-      x => SPVM::Int->new(1),
-      y => SPVM::Int->new(2)
-    });
-    my $simple = SPVM::TestCase::Simple->new_options($options);
-    is($simple->x, 1);
-    is($simple->y, 2);
-  }
-  {
-    my $options = $api->new_options({
-    });
-    my $simple = SPVM::TestCase::Simple->new_options($options);
-    is($simple->x, 0);
-    is($simple->y, 0);
-  }
-  {
-    my $options = undef;
-    my $simple = SPVM::TestCase::Simple->new_options($options);
-    is($simple->x, 0);
-    is($simple->y, 0);
   }
 }
 
