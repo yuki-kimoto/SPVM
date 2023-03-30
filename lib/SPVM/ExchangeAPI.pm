@@ -774,6 +774,8 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
+If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
+
 The $array must be an array reference or a SPVM::BlessedObject::Array object of the T[] type or undef. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
@@ -795,6 +797,8 @@ Examples:
 Creates a SPVM object array(1-dimensional) with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name type.
 
 Exceptions:
+
+If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
 
 The $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
@@ -864,6 +868,8 @@ Converts the Perl array reference of a hash references $array to the SPVM multi-
 Each value of the hash reference is coverted by the conversion of L</"byte Type Argument">, L</"short Type Argument">, L</"int Type Argument">, L</"long Type Argument">, L</"float Type Argument">, L</"double Type Argument"> corresponding to the numeric type of the the element of the $type.
 
 Exceptions:
+
+If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
 
 All fields of the element type of the $type_name must be defined. Otherwise an exception is thrown.
 
