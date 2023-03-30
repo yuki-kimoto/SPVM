@@ -523,11 +523,11 @@ Examples:
 
   my $spvm_array = $api->new_int_array([1, 2, 3]);
 
-=head2 new_long_array_unsigned
+=head2 new_int_array_unsigned
   
-  my $spvm_array = $api->new_long_array_unsigned($array);
+  my $spvm_array = $api->new_int_array_unsigned($array);
 
-The same as the L</"new_long_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint32_t> in the C language.
+The same as the L</"new_int_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint32_t> in the C language.
 
   (int32_t)(uint32_t)SvUV(perl_scalar);
 
