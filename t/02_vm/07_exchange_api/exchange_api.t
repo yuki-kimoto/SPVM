@@ -396,10 +396,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_long_array
 {
-  my $spvm_array = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
-  is(ref $spvm_array, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_array->to_elems;
-  is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+  # new_long_array - Return type
+  {
+    my $spvm_array = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_long_array - array reference
+  {
+    my $spvm_array = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+  }
+  
+  # new_long_array - undef
+  {
+    my $spvm_array = $api->new_long_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_long_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
+    my $spvm_array2 = $api->new_long_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_long_array - Exceptions
+  {
+    {
+      eval { $api->new_long_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_long_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_long_array_unsigned
@@ -438,10 +471,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_float_array
 {
-  my $spvm_array = $api->new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
-  is(ref $spvm_array, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_array->to_elems;
-  is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+  # new_float_array - Return type
+  {
+    my $spvm_array = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_float_array - array reference
+  {
+    my $spvm_array = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+  }
+  
+  # new_float_array - undef
+  {
+    my $spvm_array = $api->new_float_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_float_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_array2 = $api->new_float_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_float_array - Exceptions
+  {
+    {
+      eval { $api->new_float_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_float_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_float_array_len
