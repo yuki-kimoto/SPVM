@@ -1918,18 +1918,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# TODO
-
-=pod
-
-new_object_array_len
-new_string_array_len
-
-=cut
-
 # All object is freed
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
-
 
 done_testing;
