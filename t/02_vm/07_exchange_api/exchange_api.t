@@ -1195,6 +1195,23 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# new_object_array_len
+{
+  # new_object_array_len - Return type
+  {
+    my $spvm_array = $api->new_any_object_array_len(3);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "object[]");
+  }
+  
+  # new_object_array_len - Length 3
+  {
+    my $spvm_array = $api->new_any_object_array_len(3);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [undef, undef, undef]);
+  }
+}
+
 # new_mulnum_array
 {
   # new_mulnum_array - byte
