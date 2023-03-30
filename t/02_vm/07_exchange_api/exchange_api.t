@@ -246,10 +246,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_short_array
 {
-  my $spvm_array = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-  is(ref $spvm_array, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_array->to_elems;
-  is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+  # new_short_array - Return type
+  {
+    my $spvm_array = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_short_array - array reference
+  {
+    my $spvm_array = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+  }
+  
+  # new_short_array - undef
+  {
+    my $spvm_array = $api->new_short_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_short_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+    my $spvm_array2 = $api->new_short_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_short_array - Exceptions
+  {
+    {
+      eval { $api->new_short_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_short_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_short_array_unsigned
