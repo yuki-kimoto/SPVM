@@ -146,10 +146,24 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_byte_array
 {
-  my $spvm_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-  is(ref $spvm_values, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_values->to_elems;
-  is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+  # new_byte_array - Return type
+  {
+    my $spvm_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+    is(ref $spvm_values, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_byte_array - array reference
+  {
+    my $spvm_values = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+  }
+  
+  # new_byte_array - undef
+  {
+    my $spvm_values = $api->new_byte_array(undef);
+    ok(!defined $spvm_values);
+  }
 }
 
 # new_byte_array_unsigned
