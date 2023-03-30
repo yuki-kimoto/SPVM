@@ -398,6 +398,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "int[]");
   }
   
   # new_int_array - array reference
@@ -439,6 +440,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_int_array_unsigned([1, $UINT_MAX]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "int[]");
   }
   
   # new_int_array_unsigned - array reference
@@ -507,6 +509,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_long_array([1, $LONG_MAX, $LONG_MIN]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "long[]");
   }
   
   # new_long_array - array reference
@@ -548,6 +551,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_long_array_unsigned([1, $ULONG_MAX]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "long[]");
   }
   
   # new_long_array_unsigned - array reference
@@ -616,6 +620,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "float[]");
   }
   
   # new_float_array - array reference
@@ -684,6 +689,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     my $spvm_array = $api->new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "double[]");
   }
   
   # new_double_array - array reference
