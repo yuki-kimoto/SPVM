@@ -490,7 +490,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM short array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM short array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -552,7 +552,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM int array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM int array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -610,7 +610,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM long array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM long array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -664,7 +664,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM float array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM float array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -714,7 +714,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM double array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM double array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
