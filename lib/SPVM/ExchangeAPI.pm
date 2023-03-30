@@ -424,7 +424,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM byte array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 8-bit signed integer. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -490,7 +490,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM short array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 16-bit signed integer. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -552,7 +552,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM int array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 32-bit signed integer. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -610,7 +610,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM long array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 64-bit signed integer. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -664,7 +664,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM float array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 32-bit floating point. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -714,7 +714,7 @@ Examples:
 
 Converts the binary date $binary to a SPVM double array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The binary data is interpreted as 64-bit floating point. The length of the array is calcurated from the $binary.
+The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
@@ -956,6 +956,8 @@ Examples:
   my $spvm_mulnum_array = $api->new_mulnum_array_from_bin($type_name, $binary);
 
 Converts the binary data $binary to a SPVM multi-numeric array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+
+The $binary is copied to a SPVM multi-numeric array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
 
 Exceptions:
 
