@@ -3800,6 +3800,47 @@ DESTROY(...)
   XSRETURN(0);
 }
 
+SV*
+_xs___get_type_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // API
+  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
+  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
+  HV* hv_api = (HV*)SvRV(sv_api);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  assert(SvROK(sv_self) && sv_derived_from(sv_self, "SPVM::BlessedObject"));
+  
+  // Get object
+  void* spvm_object = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
+  
+  void* spvm_type_name = env->get_type_name(env, stack, spvm_object);
+  const char* type_name = env->get_chars(env, stack, spvm_type_name);
+  int32_t type_name_length = env->length(env, stack, spvm_type_name);
+  
+  SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, spvm_type_name, "SPVM::BlessedObject::String");
+  
+  SV* sv_type_name = sv_2mortal(newSVpv(type_name, type_name_length));
+  
+  XPUSHs(sv_type_name);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::BlessedObject::String		PACKAGE = SPVM::BlessedObject::String
 
 SV*

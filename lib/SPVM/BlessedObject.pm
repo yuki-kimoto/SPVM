@@ -14,6 +14,8 @@ sub __api {
   }
 }
 
+sub __get_type_name { my $ret; eval { $ret =  shift->_xs___get_type_name(@_) }; if ($@) { confess $@ } $ret; }
+
 1;
 
 =head1 Name
@@ -32,6 +34,12 @@ The object of the C<SPVM::BlessedObject> class holds a SPVM object.
   $self->__api($api);
 
 Gets and sets a L<SPVM::ExchangeAPI> object.
+
+=head2 __get_type_name
+
+  my $type_name = $self->__get_type_name;
+
+Gets the SPVM type name of the object.
 
 =head1 Well Known Child Classes
 

@@ -1051,6 +1051,36 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
+# SPVM::BlessedObject
+{
+  # SPVM::BlessedObject - __get_type_name
+  {
+    # string
+    {
+      my $blessed_object = $api->new_string("abc");
+      isa_ok($blessed_object, "SPVM::BlessedObject");
+      my $type_name = $blessed_object->__get_type_name;
+      is($type_name, "string");
+    }
+
+    # byte[]
+    {
+      my $blessed_object = $api->new_byte_array([1, 2, 3]);
+      isa_ok($blessed_object, "SPVM::BlessedObject");
+      my $type_name = $blessed_object->__get_type_name;
+      is($type_name, "byte[]");
+    }
+
+    # Point
+    {
+      my $blessed_object = SPVM::Point->new;
+      isa_ok($blessed_object, "SPVM::BlessedObject");
+      my $type_name = $blessed_object->__get_type_name;
+      is($type_name, "Point");
+    }
+  }
+}
+
 # SPVM::BlessedObject::String
 {
   # Creates a SPVM::BlessedObject::String object

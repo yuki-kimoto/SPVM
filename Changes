@@ -8,9 +8,10 @@
       my $ret = $api->call_method($invocant, $method_name, @args, $error);
     * Added the new_object_array_len method in the SPVM::ExchangeAPI.
     * Added the new_string_array_len method in the SPVM::ExchangeAPI.
-    * Added the new_any_object_array_len in the SPVM::ExchangeAPI.
-    * Added the new_any_mulnum_array_len in the SPVM::ExchangeAPI.
-    * Added the new_any_muldim_array_len in the SPVM::ExchangeAPI.
+    * Added the new_any_object_array_len method in the SPVM::ExchangeAPI.
+    * Added the new_any_mulnum_array_len method in the SPVM::ExchangeAPI.
+    * Added the new_any_muldim_array_len method in the SPVM::ExchangeAPI.
+    * Added the __get_type_name method in the SPVM::ExchangeAPI.
   [Document Fix]
     * Fixed and improved the doc of the call_method in the SPVM::ExchangeAPI class.
     * Added the doc of the new_byte_array_unsigned method in the ExchangeAPI class.
