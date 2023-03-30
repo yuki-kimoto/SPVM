@@ -458,8 +458,17 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   
   # new_short_array_from_bin - Exceptions
   {
-    eval { my $spvm_array = $api->new_short_array_from_bin(undef); };
-    ok(index($@, 'The $binary must be defined') >= 0);
+    # undef
+    {
+      eval { $api->new_short_array_from_bin(undef); };
+      ok(index($@, 'The $binary must be defined') >= 0);
+    }
+
+    # Non-divisible
+    {
+      eval { $api->new_short_array_from_bin("abc"); };
+      ok(index($@, 'The length of the $binary must be divisible by 2') >= 0);
+    }
   }
 }
 
