@@ -44,8 +44,7 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 my $FLOAT_MIN = POSIX::FLT_MIN();
 my $DOUBLE_MIN = POSIX::DBL_MIN();
-my $FLT_MAX = POSIX::FLT_MAX();
-my $FLOAT_MAX = $FLT_MAX;
+my $FLOAT_MAX = POSIX::FLT_MAX();
 my $DOUBLE_MAX = POSIX::DBL_MAX();
 my $UBYTE_MAX = 255;
 my $USHORT_MAX = 65535;
@@ -1260,9 +1259,9 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     # to_elems - float[]
     {
-      my $spvm_array = $api->new_float_array([0.5, $FLT_MAX, $FLOAT_MIN]);
+      my $spvm_array = $api->new_float_array([0.5, $FLOAT_MAX, $FLOAT_MIN]);
       my $values = $spvm_array->to_elems;
-      is_deeply($values, [0.5, $FLT_MAX, $FLOAT_MIN]);
+      is_deeply($values, [0.5, $FLOAT_MAX, $FLOAT_MIN]);
     }
     # to_elems - double[]
     {
