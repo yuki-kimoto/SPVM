@@ -1103,6 +1103,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_object_array - Exceptions
   {
     {
+      eval { $api->new_object_array("&&&", {}); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
       eval { $api->new_object_array("Point[]", {}) };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
     }
@@ -1151,6 +1155,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_object_array_len - Exceptions
   {
     {
+      eval { $api->new_object_array_len("&&&", -1); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
       eval { $api->new_object_array_len("Point[]", -1); };
       ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
     }
@@ -1195,16 +1203,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-# new_object_array_len
+# new_any_object_array_len
 {
-  # new_object_array_len - Return type
+  # new_any_object_array_len - Return type
   {
     my $spvm_array = $api->new_any_object_array_len(3);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
     is($spvm_array->__get_type_name, "object[]");
   }
   
-  # new_object_array_len - Length 3
+  # new_any_object_array_len - Length 3
   {
     my $spvm_array = $api->new_any_object_array_len(3);
     my $values = $spvm_array->to_elems;
