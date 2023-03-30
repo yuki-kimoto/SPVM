@@ -1110,6 +1110,18 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval { $api->new_object_array("Point[]", $api->new_string("abc")); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
     }
+    {
+      eval { $api->new_object_array("Point[][]", []); };
+      ok(index($@, 'The dimension of the type $type_name must be 1') >= 0);
+    }
+    {
+      eval { $api->new_object_array("NotFoundClass[]", []); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
+    {
+      eval { $api->new_object_array("byte[]", []); };
+      ok(index($@, 'The $type_name must be an object array type') >= 0);
+    }
   }
 }
 

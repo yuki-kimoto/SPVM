@@ -71,7 +71,7 @@ sub new_object_array {
     confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
-  unless ($type_dimension >= 1) {
+  unless ($type_dimension == 1) {
     confess "The dimension of the type \$type_name must be 1";
   }
   
@@ -91,7 +91,7 @@ sub new_object_array_len {
     confess "The type name \$type_name was parsed, but the basic type name could not be extracted.";
   }
   
-  unless ($type_dimension >= 1) {
+  unless ($type_dimension == 1) {
     confess "The dimension of the type \$type_name must be 1";
   }
   
@@ -774,15 +774,13 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the T[] type or undef. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be 1. Otherwise an exception is thrown.
+The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
+The $type_name must be an object array type. Otherwise an exception is thrown.
 
 Examples:
   
