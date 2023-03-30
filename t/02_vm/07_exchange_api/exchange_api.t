@@ -619,21 +619,31 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_long_array_len
 {
+  # new_long_array_len - Return type
+  {
+    my $spvm_array = $api->new_long_array_len(3);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "long[]");
+  }
+  
+  # new_long_array_len - Length 3
   {
     my $spvm_array = $api->new_long_array_len(3);
     my $values = $spvm_array->to_elems;
     is_deeply($values, [0, 0, 0]);
   }
+  
+  # new_long_array_len - Length 0
   {
     my $spvm_array = $api->new_long_array_len(0);
     my $values = $spvm_array->to_elems;
     is_deeply($values, []);
   }
+  
+  # Exceptions
   {
-    eval {
-      my $spvm_array = $api->new_long_array_len(-1);
-    };
-    ok($@);
+    eval { $api->new_long_array_len(-1); };
+    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
   }
 }
 
