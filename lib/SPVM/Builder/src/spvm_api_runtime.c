@@ -184,6 +184,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_is_pointer,
     SPVM_API_RUNTIME_get_method_is_enum,
     SPVM_API_RUNTIME_get_type_flag,
+    SPVM_API_RUNTIME_is_object_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1286,4 +1287,34 @@ SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
 
 void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   SPVM_RUNTIME_build(runtime, runtime_codes);
+}
+
+int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag) {
+  
+  int32_t is_object_type;
+  if (type_dimension == 0) {
+    int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, basic_type_id);
+    
+    switch (basic_type_category) {
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+      {
+        is_object_type = 1;
+        break;
+      }
+      default: {
+        is_object_type = 0;
+      }
+    }
+  }
+  else if (type_dimension >= 1) {
+    is_object_type = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return is_object_type;
 }

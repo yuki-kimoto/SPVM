@@ -108,6 +108,7 @@ Runtime native APIs have its IDs.
   84 get_class_is_pointer
   85 get_method_is_enum
   86 get_type_flag
+  87 is_object_type
 
 =head1 Runtime Native APIs
 
@@ -460,4 +461,8 @@ Reserved.
 =head2 get_type_flag
 
   int32_t (*get_type_flag)(void* runtime, int32_t type_id);
+
+=head2 is_object_type
+
+  int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
 
