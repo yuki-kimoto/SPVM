@@ -261,33 +261,57 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_byte_array_from_bin
 {
-  {
-    my $spvm_array = $api->new_byte_array_from_bin("abc");
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_array));
-  }
+  # new_byte_array_from_bin - Return type
   {
     my $binary = pack('c*', 97, 98, $BYTE_MAX);
     my $spvm_array = $api->new_byte_array_from_bin($binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_array));
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "byte[]");
   }
+  
+  # new_byte_array_from_bin - binary signed
   {
     my $binary = pack('c*', 97, 98, $BYTE_MAX);
     my $spvm_array = $api->new_byte_array_from_bin($binary);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_array));
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, $BYTE_MAX]);
   }
+  
+  # new_byte_array_from_bin - binary unsigned
   {
-    my $spvm_array = $api->new_byte_array_from_bin(encode('UTF-8', "あ"));
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_array));
+    my $binary = pack('C*', 97, 98, $UBYTE_MAX);
+    my $spvm_array = $api->new_byte_array_from_bin($binary);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, -1]);
   }
   
   {
     eval { my $spvm_array = $api->new_byte_array_from_bin(undef); };
-    ok($@);
+    ok(index($@, 'The $binary must be defined') >= 0);
   }
+  
+  # Extra
   {
-    my $spvm_array = $api->new_byte_array_from_bin("\xFF\xFE");
-    is($spvm_array->[0], -1);
-    is($spvm_array->[1], -2);
+    {
+      my $binary = "abc";
+      my $spvm_array = $api->new_byte_array_from_bin("abc");
+      my $values = $spvm_array->to_elems;
+      is_deeply($values, [ord("a"), ord("b"), ord("c")]);
+    }
+    
+    {
+      my $binary = "あ";
+      utf8::encode($binary);
+      my $spvm_array = $api->new_byte_array_from_bin($binary);
+      my $binary_ret = $spvm_array->to_bin;
+      is($binary_ret, $binary);
+    }
+    
+    {
+      my $spvm_array = $api->new_byte_array_from_bin("\xFF\xFE");
+      is($spvm_array->[0], -1);
+      is($spvm_array->[1], -2);
+    }
   }
 }
 
