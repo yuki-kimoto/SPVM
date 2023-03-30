@@ -321,10 +321,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_int_array
 {
-  my $spvm_array = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
-  is(ref $spvm_array, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_array->to_elems;
-  is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+  # new_int_array - Return type
+  {
+    my $spvm_array = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_int_array - array reference
+  {
+    my $spvm_array = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+  }
+  
+  # new_int_array - undef
+  {
+    my $spvm_array = $api->new_int_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_int_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_int_array([1, $INT_MAX, $INT_MIN]);
+    my $spvm_array2 = $api->new_int_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_int_array - Exceptions
+  {
+    {
+      eval { $api->new_int_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_int_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_int_array_unsigned
