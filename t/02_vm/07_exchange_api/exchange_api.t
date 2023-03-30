@@ -42,14 +42,11 @@ my $LONG_MAX = 9223372036854775807;
 my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
-my $FLT_MIN = POSIX::FLT_MIN();
-my $FLOAT_MIN = $FLT_MIN;
-my $DBL_MIN = POSIX::DBL_MIN();
-my $DOUBLE_MIN = $DBL_MIN;
+my $FLOAT_MIN = POSIX::FLT_MIN();
+my $DOUBLE_MIN = POSIX::DBL_MIN();
 my $FLT_MAX = POSIX::FLT_MAX();
 my $FLOAT_MAX = $FLT_MAX;
-my $DBL_MAX = POSIX::DBL_MAX();
-my $DOUBLE_MAX = $DBL_MAX;
+my $DOUBLE_MAX = POSIX::DBL_MAX();
 my $UBYTE_MAX = 255;
 my $USHORT_MAX = 65535;
 my $UINT_MAX = 4294967295;
@@ -647,7 +644,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
   # new_mulnum_array_from_bin - float
   {
-    my $binary = pack('f9', ($FLT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $binary = pack('f9', ($FLOAT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
     my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_array));
     my $out_bin = $spvm_array->to_bin;
@@ -655,7 +652,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
   # new_mulnum_array_from_bin - double
   {
-    my $binary = pack('d9', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $binary = pack('d9', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
     my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
     ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_array));
     my $out_bin = $spvm_array->to_bin;
@@ -664,7 +661,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # new_mulnum_array_from_bin - double
   {
-    my $binary = pack('d8', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7));
+    my $binary = pack('d8', ($DOUBLE_MIN, 1, 2), (3, 4, 5), (6, 7));
     eval {
       $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
     };
@@ -749,7 +746,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_mulnum_array - float
   {
     my $values = [
-      {x => $FLT_MIN, y => 1, z => 2},
+      {x => $FLOAT_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
@@ -762,7 +759,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # new_mulnum_array - double
   {
     my $values = [
-      {x => $DBL_MIN, y => 1, z => 2},
+      {x => $DOUBLE_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
@@ -1263,15 +1260,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     # to_elems - float[]
     {
-      my $spvm_array = $api->new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
+      my $spvm_array = $api->new_float_array([0.5, $FLT_MAX, $FLOAT_MIN]);
       my $values = $spvm_array->to_elems;
-      is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+      is_deeply($values, [0.5, $FLT_MAX, $FLOAT_MIN]);
     }
     # to_elems - double[]
     {
-      my $spvm_array = $api->new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
+      my $spvm_array = $api->new_double_array([0.5, $DOUBLE_MAX, $DOUBLE_MIN]);
       my $values = $spvm_array->to_elems;
-      is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+      is_deeply($values, [0.5, $DOUBLE_MAX, $DOUBLE_MIN]);
     }
     # to_elems - string[]
     {
