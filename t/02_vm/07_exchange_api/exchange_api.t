@@ -463,7 +463,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval { $api->new_short_array_from_bin(undef); };
       ok(index($@, 'The $binary must be defined') >= 0);
     }
-
+    
     # Non-divisible
     {
       eval { $api->new_short_array_from_bin("abc"); };
@@ -588,9 +588,44 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_int_array_from_bin
 {
-  my $binary = pack('l*', 97, 98, $INT_MAX);
-  my $spvm_array = $api->new_int_array_from_bin($binary);
-  ok(SPVM::TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_array));
+  # new_int_array_from_bin - Return type
+  {
+    my $binary = pack('l*', 97, 98, $INT_MAX);
+    my $spvm_array = $api->new_int_array_from_bin($binary);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "int[]");
+  }
+  
+  # new_int_array_from_bin - binary signed
+  {
+    my $binary = pack('l*', 97, 98, $INT_MAX);
+    my $spvm_array = $api->new_int_array_from_bin($binary);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, $INT_MAX]);
+  }
+  
+  # new_int_array_from_bin - binary unsigned
+  {
+    my $binary = pack('L*', 97, 98, $UINT_MAX);
+    my $spvm_array = $api->new_int_array_from_bin($binary);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [97, 98, -1]);
+  }
+  
+  # new_int_array_from_bin - Exceptions
+  {
+    # undef
+    {
+      eval { $api->new_int_array_from_bin(undef); };
+      ok(index($@, 'The $binary must be defined') >= 0);
+    }
+    
+    # Non-divisible
+    {
+      eval { $api->new_int_array_from_bin("abcde"); };
+      ok(index($@, 'The length of the $binary must be divisible by 4') >= 0);
+    }
+  }
 }
 
 # new_long_array
