@@ -1666,20 +1666,9 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = object->basic_type_id;
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
-      
-      switch (object_basic_type_category) {
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-        case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-        {
-          is_object_array = 1;
-          break;
-        }
-        default: {
-          is_object_array = 0;
-        }
-      }
+      int32_t element_type_dimension = 0;
+      int32_t type_flag = 0;
+      is_object_array = SPVM_API_RUNTIME_is_object_type(env->runtime, object_basic_type_id, element_type_dimension, type_flag);
     }
     else if (object_type_dimension > 1) {
       is_object_array = 1;
