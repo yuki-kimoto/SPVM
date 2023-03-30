@@ -400,7 +400,7 @@ int32_t SPVM_API_RUNTIME_get_type_is_ref(SPVM_RUNTIME* runtime, int32_t type_id)
   
   assert(type);
   
-  int32_t is_ref = type->flag & SPVM_TYPE_C_FLAG_REF;
+  int32_t is_ref = type->flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
   
   return is_ref;
 }

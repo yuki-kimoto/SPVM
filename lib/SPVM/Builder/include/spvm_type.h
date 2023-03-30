@@ -5,11 +5,6 @@
 
 #include "spvm_typedecl.h"
 
-enum {
-  SPVM_TYPE_C_FLAG_REF = 1,
-  SPVM_TYPE_C_FLAG_MUTABLE = 2,
-};
-
 struct spvm_type {
   const char* name;
   int32_t dimension;

@@ -1879,7 +1879,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (op_operand_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_operand_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
                 SPVM_OP* op_array = op_operand_dist->first;
                 SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array);
-                int32_t is_mutable = array_type->flag & SPVM_TYPE_C_FLAG_MUTABLE;
+                int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
 
                 if(!is_mutable) {
                   SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings at %s line %d", op_operand_dist->file, op_operand_dist->line);
@@ -4412,7 +4412,7 @@ void SPVM_OP_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     }
     
     // mutable only allow string type
-    if (type->flag & SPVM_TYPE_C_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
+    if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
       SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type at %s line %d", op_type->file, op_type->line);
     }
 
