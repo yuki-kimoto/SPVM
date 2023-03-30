@@ -43,9 +43,11 @@ my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 my $FLT_MIN = POSIX::FLT_MIN();
+my $FLOAT_MIN = $FLT_MIN;
 my $DBL_MIN = POSIX::DBL_MIN();
 my $DOUBLE_MIN = $DBL_MIN;
 my $FLT_MAX = POSIX::FLT_MAX();
+my $FLOAT_MAX = $FLT_MAX;
 my $DBL_MAX = POSIX::DBL_MAX();
 my $DOUBLE_MAX = $DBL_MAX;
 my $UBYTE_MAX = 255;
@@ -475,15 +477,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   # new_float_array - Return type
   {
-    my $spvm_array = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_array = $api->new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
     is(ref $spvm_array, 'SPVM::BlessedObject::Array');
   }
   
   # new_float_array - array reference
   {
-    my $spvm_array = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_array = $api->new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
     my $values = $spvm_array->to_elems;
-    is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+    is_deeply($values, [1, $FLOAT_MAX, $FLOAT_MIN]);
   }
   
   # new_float_array - undef
@@ -494,7 +496,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # new_float_array - SPVM::BlessedObject::Array
   {
-    my $spvm_array1 = $api->new_float_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_array1 = $api->new_float_array([1, $FLOAT_MAX, $FLOAT_MIN]);
     my $spvm_array2 = $api->new_float_array($spvm_array1);
     ok($spvm_array1 == $spvm_array2);
   }
