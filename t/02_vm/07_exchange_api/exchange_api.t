@@ -164,6 +164,25 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     my $spvm_array = $api->new_byte_array(undef);
     ok(!defined $spvm_array);
   }
+
+  # new_byte_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_array2 = $api->new_byte_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_byte_array - Exceptions
+  {
+    {
+      eval { $api->new_byte_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_byte_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_byte_array_unsigned
