@@ -1214,6 +1214,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_options
 {
+  # new_options - hash reference
   {
     my $options = $api->new_options({
       x => SPVM::Int->new(1),
@@ -1223,18 +1224,40 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     is($simple->x, 1);
     is($simple->y, 2);
   }
+  
+  # new_options - empty hash reference
   {
-    my $options = $api->new_options({
-    });
+    my $options = $api->new_options({});
     my $simple = SPVM::TestCase::Simple->new_options($options);
     is($simple->x, 0);
     is($simple->y, 0);
   }
+  
+  # new_options - Exceptions
   {
-    my $options = undef;
-    my $simple = SPVM::TestCase::Simple->new_options($options);
-    is($simple->x, 0);
-    is($simple->y, 0);
+    {
+      eval { $api->new_options([]); };
+      ok(index($@, 'The $options must be a hash reference') >= 0);
+    }
+    {
+      eval { $api->new_options(undef); };
+      ok(index($@, 'The $options must be a hash reference') >= 0);
+    }
+    {
+      eval { $api->new_options({x => 1}); };
+      ok(index($@, 'The value of the $options must be a SPVM::BlessedObject object') >= 0);
+    }
+  }
+  
+  # Extra
+  {
+    # new_options - undef
+    {
+      my $options = undef;
+      my $simple = SPVM::TestCase::Simple->new_options($options);
+      is($simple->x, 0);
+      is($simple->y, 0);
+    }
   }
 }
 

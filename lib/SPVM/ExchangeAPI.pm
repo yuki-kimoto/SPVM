@@ -838,7 +838,7 @@ Examples:
 
   my $spvm_any_object_array = $api->new_options($options);
 
-Converts the Perl hash reference $options to a SPVM C<object[]> value, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl hash reference $options to a value of the SPVM C<object[]> type, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
 Each key of the $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
 
