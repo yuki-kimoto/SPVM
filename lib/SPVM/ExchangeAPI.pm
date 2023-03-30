@@ -855,60 +855,12 @@ Examples:
     y => SPVM::Int->new(2)
   });
 
-=head2 new_muldim_array
-
-  my $spvm_object_array = $api->new_muldim_array($type_name, $array);
-
-Converts the Perl array reference $array to a value of the SPVM multi-dimensional array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
-
-If the $array is undef, it is converted to SPVM undef.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
-
-Exceptions:
-
-If the $array is a reference other than the array reference, an exception is thrown.
-
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
-
-If the bacic type of the type $type_name is not found, an exception is thrown.
-
-The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
-
-The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
-
-Examples:
-
-  my $object1 = $api->new_int_array([1, 2, 3]);
-  my $object2 = $api->new_int_array([4, 5, 6]);
-  my $objects = $api->new_muldim_array("int[][]", [$object1, $object2]);
-
-=head2 new_muldim_array_len
-
-  my $spvm_array = $api->new_muldim_array_len($type_name, $length);
-
-Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
-
-Exceptions:
-
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
-
-If the bacic type of the type $type_name is not found, an exception is thrown.
-
-The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
-
-Examples:
-  
-  my $length = 10;
-  my $spvm_array = $api->new_muldim_array("int[][]", $length);
-
 =head2 new_mulnum_array
 
   my $spvm_mulnum_array = $api->new_mulnum_array($type_name, $array);
 
-Converts the Perl array reference of hash references $array to the SPVM multi-numeric array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+Converts the Perl array reference of a hash references $array to the SPVM multi-numeric array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-Each element of the $array must be a hash reference. Otherwise an exception is thrown.
 Each value of the hash reference is coverted by the conversion of L</"byte Type Argument">, L</"short Type Argument">, L</"int Type Argument">, L</"long Type Argument">, L</"float Type Argument">, L</"double Type Argument"> corresponding to the numeric type of the the element of the $type.
 
 Exceptions:
@@ -919,7 +871,7 @@ If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $array must be an array reference. Otherwise an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -1004,6 +956,53 @@ Examples:
     my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
     my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
   }
+
+=head2 new_muldim_array
+
+  my $spvm_object_array = $api->new_muldim_array($type_name, $array);
+
+Converts the Perl array reference $array to a value of the SPVM multi-dimensional array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
+
+If the $array is undef, it is converted to SPVM undef.
+
+If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+
+Exceptions:
+
+If the $array is a reference other than the array reference, an exception is thrown.
+
+If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
+
+If the bacic type of the type $type_name is not found, an exception is thrown.
+
+The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+
+The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
+
+Examples:
+
+  my $object1 = $api->new_int_array([1, 2, 3]);
+  my $object2 = $api->new_int_array([4, 5, 6]);
+  my $objects = $api->new_muldim_array("int[][]", [$object1, $object2]);
+
+=head2 new_muldim_array_len
+
+  my $spvm_array = $api->new_muldim_array_len($type_name, $length);
+
+Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+
+Exceptions:
+
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+If the bacic type of the type $type_name is not found, an exception is thrown.
+
+The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+
+Examples:
+  
+  my $length = 10;
+  my $spvm_array = $api->new_muldim_array("int[][]", $length);
 
 =head2 get_exception
 

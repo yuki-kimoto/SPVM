@@ -1263,6 +1263,18 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_mulnum_array
 {
+  # new_mulnum_array - Return type
+  {
+    my $values = [
+      {x => $BYTE_MIN, y => 1, z => 2},
+      {x => 3, y => 4, z => 5},
+      {x => 6, y => 7, z => 8},
+    ];
+    my $spvm_array = $api->new_mulnum_array("TestCase::Point_3b[]", $values);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "TestCase::Point_3b[]");
+  }
+  
   # new_mulnum_array - byte
   {
     my $values = [
