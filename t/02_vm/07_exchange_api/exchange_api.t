@@ -44,8 +44,10 @@ my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 my $FLT_MIN = POSIX::FLT_MIN();
 my $DBL_MIN = POSIX::DBL_MIN();
+my $DOUBLE_MIN = $DBL_MIN;
 my $FLT_MAX = POSIX::FLT_MAX();
 my $DBL_MAX = POSIX::DBL_MAX();
+my $DOUBLE_MAX = $DBL_MAX;
 my $UBYTE_MAX = 255;
 my $USHORT_MAX = 65535;
 my $UINT_MAX = 4294967295;
@@ -539,10 +541,43 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_double_array
 {
-  my $spvm_array = $api->new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
-  is(ref $spvm_array, 'SPVM::BlessedObject::Array');
-  my $values = $spvm_array->to_elems;
-  is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+  # new_double_array - Return type
+  {
+    my $spvm_array = $api->new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+  }
+  
+  # new_double_array - array reference
+  {
+    my $spvm_array = $api->new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [1, $DOUBLE_MAX, $DOUBLE_MIN]);
+  }
+  
+  # new_double_array - undef
+  {
+    my $spvm_array = $api->new_double_array(undef);
+    ok(!defined $spvm_array);
+  }
+
+  # new_double_array - SPVM::BlessedObject::Array
+  {
+    my $spvm_array1 = $api->new_double_array([1, $DOUBLE_MAX, $DOUBLE_MIN]);
+    my $spvm_array2 = $api->new_double_array($spvm_array1);
+    ok($spvm_array1 == $spvm_array2);
+  }
+  
+  # new_double_array - Exceptions
+  {
+    {
+      eval { $api->new_double_array({}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_double_array($api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef') >= 0);
+    }
+  }
 }
 
 # new_double_array_len
