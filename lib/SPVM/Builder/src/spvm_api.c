@@ -1691,7 +1691,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   else {
     is_object_array = 0;
   }
-
+  
   return is_object_array;
 }
 
@@ -2727,7 +2727,17 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
+  SPVM_OBJECT object_for_type_check;
+  object_for_type_check.basic_type_id = basic_type_id;
+  object_for_type_check.type_dimension = 1;
+  
+  int32_t is_object_array = SPVM_API_is_object_array(env, stack, &object_for_type_check);
+  
+  if (!is_object_array) {
+    return NULL;
+  }
+  
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   if (!basic_type) {
