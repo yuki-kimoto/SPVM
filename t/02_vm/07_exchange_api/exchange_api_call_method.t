@@ -1067,13 +1067,32 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # Return value conversion - any object
   {
-    # Return value conversion - any object
+    # Return value conversion - any object - class
     {
-      my $value = SPVM::TestCase::ExchangeAPI->return_any_object;
-      is($value->get_class_name, 'TestCase::Minimal');
-      isa_ok($value, 'SPVM::BlessedObject::Class');
-      is($value->x, 1);
-      is($value->y, 2);
+      my $spvm_object = SPVM::Point->new(1, 2);
+      my $spvm_object_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_object);
+      ok(ref $spvm_object_ret, "SPVM::BlessedObject::Class");
+      is($spvm_object_ret->__get_type_name, "Point");
+      is($spvm_object->x, $spvm_object_ret->x);
+      is($spvm_object->y, $spvm_object_ret->y);
+    }
+
+    # Return value conversion - any object - array
+    {
+      my $spvm_array = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $spvm_array_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_array);
+      ok(ref $spvm_array_ret, "SPVM::BlessedObject::Array");
+      is($spvm_array_ret->__get_type_name, "byte[]");
+      is_deeply($spvm_array_ret->to_elems, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    
+    # Return value conversion - any object - string
+    {
+      my $spvm_string = $api->new_string("abc");
+      my $spvm_string_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_string);
+      ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
+      is($spvm_string_ret->__get_type_name, "string");
+      is("$spvm_string", "$spvm_string_ret");
     }
 
     # Return value conversion - any object undef
@@ -1081,73 +1100,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $value = SPVM::TestCase::ExchangeAPI->return_any_object_undef;
       ok(!defined $value);
     }
-  }
-
-  # Return value conversion - array
-  {
-    # Return value conversion - numeric array
-    {
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_numeric_array;
-        my $values = $blessed_array->to_elems;
-        is_deeply($values, [1, 2, 3]);
-      }
-
-      # Return value conversion - array undef
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_numeric_array_undef;
-        ok(!defined $blessed_array);
-      }
-    }
     
-    # Return value conversion - object array
+    # Extra
     {
+      # Return value conversion - any object - class
       {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_object_array;
-        my $values = $blessed_array->to_elems;
-        is($values->[0]->x, 1);
-        is($values->[0]->y, 2);
-        is($values->[1]->x, 3);
-        is($values->[1]->y, 4);
-      }
-
-      # Return value conversion - array undef
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_object_array_undef;
-        ok(!defined $blessed_array);
-      }
-    }
-
-    # Return value conversion - any object array
-    {
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_any_object_array;
-        my $values = $blessed_array->to_elems;
-        is($values->[0]->x, 1);
-        is($values->[0]->y, 2);
-        is($values->[1]->x, 3);
-        is($values->[1]->y, 4);
-      }
-
-      # Return value conversion - array undef
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_any_object_array_undef;
-        ok(!defined $blessed_array);
-      }
-    }
-
-    # Return value conversion - mutil numeric array
-    {
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_multi_numeric_array;
-        my $values = $blessed_array->to_elems;
-        is_deeply($values, [{x => 1, y => 0, z => 0}, {x => 0, y => 0, z => 5}]);
-      }
-
-      # Return value conversion - array undef
-      {
-        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_multi_numeric_array_undef;
-        ok(!defined $blessed_array);
+        my $value = SPVM::TestCase::ExchangeAPI->return_any_object;
+        is($value->get_class_name, 'TestCase::Minimal');
+        isa_ok($value, 'SPVM::BlessedObject::Class');
+        is($value->x, 1);
+        is($value->y, 2);
       }
     }
   }
@@ -1191,15 +1153,93 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
   }
 
-  # Return value conversion - any object array
+  # Return value conversion - array
   {
-    # Return value conversion - any object array
+    # Return value conversion - numeric array
     {
-      my $values = SPVM::TestCase::ExchangeAPI->return_any_object_array->to_elems;
-      is($values->[0]->x, 1);
-      is($values->[0]->y, 2);
-      is($values->[1]->x, 3);
-      is($values->[1]->y, 4);
+      {
+        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_numeric_array;
+        my $values = $blessed_array->to_elems;
+        is_deeply($values, [1, 2, 3]);
+      }
+
+      # Return value conversion - array undef
+      {
+        my $blessed_array = SPVM::TestCase::ExchangeAPI->return_numeric_array_undef;
+        ok(!defined $blessed_array);
+      }
+    }
+      
+    # Return value conversion - object array
+    {
+      # Return value conversion - object array
+      {
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_object_array;
+          my $values = $blessed_array->to_elems;
+          is($values->[0]->x, 1);
+          is($values->[0]->y, 2);
+          is($values->[1]->x, 3);
+          is($values->[1]->y, 4);
+        }
+
+        # Return value conversion - array undef
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_object_array_undef;
+          ok(!defined $blessed_array);
+        }
+      }
+
+      # Return value conversion - any object array
+      {
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_any_object_array;
+          my $values = $blessed_array->to_elems;
+          is($values->[0]->x, 1);
+          is($values->[0]->y, 2);
+          is($values->[1]->x, 3);
+          is($values->[1]->y, 4);
+        }
+
+        # Return value conversion - array undef
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_any_object_array_undef;
+          ok(!defined $blessed_array);
+        }
+        
+        # Return value conversion - any object array
+        {
+          my $values = SPVM::TestCase::ExchangeAPI->return_any_object_array->to_elems;
+          is($values->[0]->x, 1);
+          is($values->[0]->y, 2);
+          is($values->[1]->x, 3);
+          is($values->[1]->y, 4);
+        }
+      }
+
+      # Return value conversion - mutil numeric array
+      {
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_multi_numeric_array;
+          my $values = $blessed_array->to_elems;
+          is_deeply($values, [{x => 1, y => 0, z => 0}, {x => 0, y => 0, z => 5}]);
+        }
+
+        # Return value conversion - array undef
+        {
+          my $blessed_array = SPVM::TestCase::ExchangeAPI->return_multi_numeric_array_undef;
+          ok(!defined $blessed_array);
+        }
+      }
+
+      # Return value conversion - mutil dimensional array
+      {
+        my $spvm_array = $api->new_muldim_array_len("byte[][]", 3);
+        my $spvm_array_ret = SPVM::TestCase::ExchangeAPI->return_muldim_array_only($spvm_array);
+        is(ref $spvm_array_ret, "SPVM::BlessedObject::Array");
+        is($spvm_array_ret->__get_type_name, "byte[][]");
+        is($spvm_array_ret->length, 3);
+      }
     }
   }
 }

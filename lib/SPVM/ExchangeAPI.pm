@@ -235,7 +235,7 @@ sub new_muldim_array_len {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $length) };
+  eval { $ret = $self->_xs_new_muldim_array_len($basic_type_name, $type_dimension, $length) };
   if ($@) { confess $@ }
   
   return $ret;
