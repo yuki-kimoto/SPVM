@@ -430,7 +430,7 @@ The $binary is copied to a SPVM byte array by the C<memcpy> function in the C la
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+The $binary must be a defined non-reference scalar. Otherwise an exception is thrown.
 
 Examples:
 

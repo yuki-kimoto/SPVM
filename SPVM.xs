@@ -2347,20 +2347,18 @@ _xs_new_byte_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  void* spvm_array = NULL;
-  if (SvOK(sv_binary)) {
-    STRLEN length;
-    int8_t* binary = (int8_t*)SvPV(sv_binary, length);
-    
-    // New array
-    spvm_array = env->new_byte_array(env, stack, (int32_t)length);
-    
-    int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
-    memcpy(elems, binary, length);
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
-  else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
+  
+  STRLEN length;
+  int8_t* binary = (int8_t*)SvPV(sv_binary, length);
+  
+  // New array
+  void* spvm_array = env->new_byte_array(env, stack, (int32_t)length);
+  
+  int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
+  memcpy(elems, binary, length);
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   

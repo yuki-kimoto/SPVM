@@ -281,8 +281,14 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   
   # new_byte_array_from_bin - Exceptions
   {
-    eval { my $spvm_array = $api->new_byte_array_from_bin(undef); };
-    ok(index($@, 'The $binary must be defined') >= 0);
+    {
+      eval { my $spvm_array = $api->new_byte_array_from_bin(undef); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    {
+      eval { my $spvm_array = $api->new_byte_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
   }
   
   # Extra
