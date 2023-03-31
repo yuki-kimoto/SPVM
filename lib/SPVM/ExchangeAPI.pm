@@ -6,6 +6,7 @@ use warnings;
 use SPVM::ExchangeAPI::Class;
 use SPVM::ExchangeAPI::Error;
 use Carp 'confess';
+use Scalar::Util 'blessed';
 
 # Fields
 sub env {
@@ -131,8 +132,10 @@ sub new_options {
   for my $name (keys %$options) {
     my $obj_name = $self->new_string($name);
     my $value = $options->{$name};
-    if (defined $value && !$value->isa('SPVM::BlessedObject')) {
-      confess "The value of the \$options must be a SPVM::BlessedObject object";
+    if (defined $value) {
+      unless (blessed $value && $value->isa('SPVM::BlessedObject')) {
+        confess "The value of the \$options must be a SPVM::BlessedObject object";
+      }
     }
     push @$array_ref, $obj_name, $value;
   }
