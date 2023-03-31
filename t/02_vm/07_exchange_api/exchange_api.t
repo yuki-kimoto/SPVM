@@ -461,7 +461,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_short_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be defined') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    
+    # {}
+    {
+      eval { $api->new_short_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible

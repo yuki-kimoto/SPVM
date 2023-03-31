@@ -498,7 +498,7 @@ The $binary is copied to a SPVM short array by the C<memcpy> function in the C l
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+The $binary must be a defined non-reference scalar. Otherwise an exception is thrown.
 
 The length of the $binary must be divisible by 2. Otherwise an exception is thrown.
 
