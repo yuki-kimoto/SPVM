@@ -547,11 +547,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_int_array_unsigned({}); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_int_array_unsigned($api->new_any_object_array([])); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type') >= 0);
     }
   }
 }
