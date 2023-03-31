@@ -1281,7 +1281,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $options must be a hash reference') >= 0);
     }
     {
-      eval { $api->new_options({x => 1}); };
+      $api->new_options({x => 1});
       ok(index($@, 'The value of the $options must be a SPVM::BlessedObject object') >= 0);
     }
   }
