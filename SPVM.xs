@@ -3499,6 +3499,13 @@ _xs_new_mulnum_array_from_bin(...)
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
+  int32_t elem_type_dimension = 0;
+  int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type_id);
+  int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
+  if (!is_mulnum_array) {
+    croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
   int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
   int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
   int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);

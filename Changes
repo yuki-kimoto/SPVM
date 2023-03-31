@@ -23,7 +23,9 @@
     * Don't support multi-dimensional array creation in the new_object_array method in the SPVM::ExchangeAPI class. Use the new_muldim_array method instead.
   [Bug Fix]
     * Fixed the bug that the new_object_array and new_object_array_raw Native API can recieve non object array type.
-    * Fixed the bug that the new_mulnum_array and new_object_array_raw Native API can recieve non multi-numeric array type.
+    * Fixed the bug that the new_mulnum_array in the Exchange API can recieve non multi-numeric array type.
+    * Fixed the bug that the new_mulnum_array_len in the Exchange API can recieve non multi-numeric array type.
+    * Fixed the bug that the new_mulnum_array_from_bin in the Exchange API can recieve non multi-numeric array type.
 0.9697 2023-03-23
   [New Features]
     * Added the following Native APIs.
