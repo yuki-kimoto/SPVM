@@ -2351,7 +2351,7 @@ _xs_new_byte_array_from_bin(...)
     croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  STRLEN length;
+  STRLEN length = -1;
   int8_t* binary = (int8_t*)SvPV(sv_binary, length);
   
   // New array
