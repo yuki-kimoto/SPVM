@@ -1,4 +1,4 @@
-0.9698 2023-03-28
+0.9698 2023-03-31
   [New Features]
     * Added the new_muldim_array method in the SPVM::ExchangeAPI class.
     * Added the SPVM::ExchangeAPI::Error class.
