@@ -200,18 +200,19 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t error = 0;
   if (SvOK(sv_address)) {
     if (sv_isobject(sv_address) && sv_derived_from(sv_address, "SPVM::BlessedObject::Class")) {
       void* spvm_address = SPVM_XS_UTIL_get_object(aTHX_ sv_address);
       int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS;
       int32_t type_dimension = 1;
-      if (!env->isa(env, stack, spvm_address, basic_type_id, type_dimension)) {
-        error = 1;
+      if (!env->is_type(env, stack, spvm_address, basic_type_id, type_dimension)) {
+        *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Class object, it must be the Address type"));
+        return &PL_sv_undef;
       }
     }
     else if (SvROK(sv_address)) {
-      error = 1;
+      *sv_error = sv_2mortal(newSVpvf(" can't be a reference"));
+      return &PL_sv_undef;
     }
     else {
       void* address = (void*)(intptr_t)SvIV(sv_address);
@@ -222,10 +223,6 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
   }
   else {
     sv_address = &PL_sv_undef;
-  }
-  
-  if (error) {
-    *sv_error = sv_2mortal(newSVpvf(" must be a non-reference scalar or a SPVM::BlessedObject::Class object of the Address class or undef"));
   }
   
   return sv_address;
