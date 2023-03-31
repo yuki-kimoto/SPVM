@@ -391,11 +391,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_short_array_unsigned({}); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
     }
     {
-      eval { $api->new_short_array_unsigned($api->new_string("abc")); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef') >= 0);
+      eval { $api->new_short_array_unsigned($api->new_any_object_array([])); };
+      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type') >= 0);
     }
   }
 }
@@ -508,7 +508,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
     }
     {
-      eval { $api->new_int_array($api->new_string("abc")); };
+      eval { $api->new_int_array($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
     }
   }
@@ -550,7 +550,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
     }
     {
-      eval { $api->new_int_array_unsigned($api->new_string("abc")); };
+      eval { $api->new_int_array_unsigned($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef') >= 0);
     }
   }
@@ -664,7 +664,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
     }
     {
-      eval { $api->new_long_array($api->new_string("abc")); };
+      eval { $api->new_long_array($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
     }
   }
@@ -706,7 +706,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
     }
     {
-      eval { $api->new_long_array_unsigned($api->new_string("abc")); };
+      eval { $api->new_long_array_unsigned($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
     }
   }
@@ -820,7 +820,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef') >= 0);
     }
     {
-      eval { $api->new_float_array($api->new_string("abc")); };
+      eval { $api->new_float_array($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef') >= 0);
     }
   }
@@ -926,7 +926,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef') >= 0);
     }
     {
-      eval { $api->new_double_array($api->new_string("abc")); };
+      eval { $api->new_double_array($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef') >= 0);
     }
   }
@@ -1032,7 +1032,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef') >= 0);
     }
     {
-      eval { $api->new_string_array($api->new_string("abc")); };
+      eval { $api->new_string_array($api->new_any_object_array([])); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef') >= 0);
     }
   }
