@@ -661,11 +661,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_long_array({}); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_long_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type') >= 0);
     }
   }
 }
