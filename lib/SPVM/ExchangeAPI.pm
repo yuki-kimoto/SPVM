@@ -389,7 +389,9 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the byte[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type. Otherwise an exception is thrown.
 
 Examples:
 
