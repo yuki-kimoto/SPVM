@@ -1164,18 +1164,18 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t error_array = 0;
-  int32_t error_elem = 0;
+  int32_t error = 0;
+  int32_t error_message_is_set = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
       int32_t type_dimension = 1;
       if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
-        error_array = 1;
+        error = 1;
       }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
-      error_array = 1;
+      error = 1;
     }
     else {
       AV* av_array = (AV*)SvRV(sv_array);
@@ -1225,8 +1225,10 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
               sv_field_value = *sv_field_value_ptr;
             }
             else {
+              error = 1;
               *sv_error = sv_2mortal(newSVpvf("'s %dth element's hash reference must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", index + 1, mulnum_field_name, mulnum_field_name, class_name, __func__, FILE_NAME, __LINE__));
-              return NULL;
+              error_message_is_set = 1;
+              break;
             }
             
             int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
@@ -1255,17 +1257,23 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
                 ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
                 break;
               }
-              default:
+              default: {
                 assert(0);
+              }
             }
+          }
+          if (error) {
+            break;
           }
         }
         else {
+          error = 1;
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a hash reference\n    %s at %s line %d\n", index + 1, __func__, FILE_NAME, __LINE__));
-          return NULL;
+          error_message_is_set = 1;
+          break;
         }
       }
-      if (!error_elem) {
+      if (!error) {
         sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
       }
     }
@@ -1274,12 +1282,12 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
     sv_array = &PL_sv_undef;
   }
   
-  if (error_elem) {
-    // Nothing
-  }
-  else if (error_array) {
-    const char* basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id));
-    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the %s[] type or undef", basic_type_name));
+  if (error) {
+    if (!error_message_is_set) {
+      const char* basic_type_name = env->api->runtime->get_name(env->runtime, env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id));
+      *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the %s[] type or undef", basic_type_name));
+    }
+    return &PL_sv_undef;
   }
   
   return sv_array;
@@ -3483,6 +3491,10 @@ _xs_new_mulnum_array_from_bin(...)
   
   if (!SvOK(sv_binary)) {
     croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (SvROK(sv_binary)) {
+    croak("The $binary must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);

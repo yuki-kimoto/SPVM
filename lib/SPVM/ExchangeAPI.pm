@@ -877,7 +877,7 @@ If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef. Otherwise an exception is thrown.
+The $array must be an array reference or a SPVM::BlessedObject::Array object of the T[] type or undef. Otherwise an exception is thrown.
 
 Examples:
 

@@ -1440,6 +1440,14 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_mulnum_array_from_bin
 {
+  # new_mulnum_array - Return type
+  {
+    my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_array = $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "TestCase::Point_3b[]");
+  }
+  
   # new_mulnum_array_from_bin - byte
   {
     my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
@@ -1498,6 +1506,30 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       $api->new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
     };
     ok($@);
+  }
+
+  # new_mulnum_array_from_bin - Exceptions
+  {
+    {
+      eval { $api->new_mulnum_array_from_bin("&&&", ""); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", {}); };
+      ok(index($@, 'The $binary must be a non-reference scalar') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[][]", []); };
+      ok(index($@, 'The dimension of the type $type_name must be 1') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_from_bin("NotFoundClass[]", ""); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_from_bin("byte[]", ""); };
+      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
+    }
   }
 }
 
