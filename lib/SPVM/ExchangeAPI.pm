@@ -211,7 +211,7 @@ sub new_muldim_array {
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
-    confess "The dimension of the type \$type_name must be greater than or equal to 1 and less than or equal to 255";
+    confess "The dimension of the type \$type_name must be greater than or equal to 2 and less than or equal to 255";
   }
   
   my $ret;

@@ -1568,86 +1568,117 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new_muldim_array
 {
+  # new_mulnum_array - Return type
+  {
+    my $spvm_array = $api->new_muldim_array("byte[][]", []);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "byte[][]");
+  }
+  
   # element byte array
   {
     my $object1 = $api->new_byte_array([1, 2, 3]);
     my $object2 = $api->new_byte_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("byte[][]", [$object1, $object2]);
+    my $spvm_array = $api->new_muldim_array("byte[][]", [$object1, $object2]);
 
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_byte_array($oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_byte_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    my $spvm_array_out = $spvm_array->to_elems;
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
   }
 
   # element short array
   {
     my $object1 = $api->new_short_array([1, 2, 3]);
     my $object2 = $api->new_short_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("short[][]", [$object1, $object2]);
+    my $spvm_array = $api->new_muldim_array("short[][]", [$object1, $object2]);
 
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_short_array($oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_short_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
+    my $spvm_array_out = $spvm_array->to_elems;
 
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
   }
 
   # element int array
   {
     my $object1 = $api->new_int_array([1, 2, 3]);
     my $object2 = $api->new_int_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("int[][]", [$object1, $object2]);
+    my $spvm_array = $api->new_muldim_array("int[][]", [$object1, $object2]);
 
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_int_array($oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_int_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
+    my $spvm_array_out = $spvm_array->to_elems;
 
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
   }
 
   # element long array
   {
     my $object1 = $api->new_long_array([1, 2, 3]);
     my $object2 = $api->new_long_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("long[][]", [$object1, $object2]);
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_long_array($oarray));
+    my $spvm_array = $api->new_muldim_array("long[][]", [$object1, $object2]);
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_long_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
+    my $spvm_array_out = $spvm_array->to_elems;
 
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
   }
 
   # element float array
   {
     my $object1 = $api->new_float_array([1, 2, 3]);
     my $object2 = $api->new_float_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("float[][]", [$object1, $object2]);
+    my $spvm_array = $api->new_muldim_array("float[][]", [$object1, $object2]);
 
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_float_array($oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_float_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
+    my $spvm_array_out = $spvm_array->to_elems;
 
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
   }
 
   # element double array
   {
     my $object1 = $api->new_double_array([1, 2, 3]);
     my $object2 = $api->new_double_array([4, 5, 6]);
-    my $oarray = $api->new_muldim_array("double[][]", [$object1, $object2]);
+    my $spvm_array = $api->new_muldim_array("double[][]", [$object1, $object2]);
     
-    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_double_array($oarray));
+    ok(SPVM::TestCase::ExchangeAPI->spvm_new_object_array_len_element_double_array($spvm_array));
     
-    my $oarray_out = $oarray->to_elems;
+    my $spvm_array_out = $spvm_array->to_elems;
 
-    is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
-    is_deeply($oarray_out->[1]->to_elems, [4, 5, 6]);
+    is_deeply($spvm_array_out->[0]->to_elems, [1, 2, 3]);
+    is_deeply($spvm_array_out->[1]->to_elems, [4, 5, 6]);
+  }
+
+  # new_muldim_array - Exceptions
+  {
+    {
+      eval { $api->new_muldim_array("&&&", {}); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
+      eval { $api->new_muldim_array("byte[][]", {}); };
+      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+    }
+    {
+      eval { $api->new_muldim_array("byte[][]", $api->new_any_object_array([])); };
+      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+    }
+    {
+      eval { $api->new_muldim_array("Point[]", []); };
+      ok(index($@, 'The dimension of the type $type_name must be greater than or equal to 2 and less than or equal to 255') >= 0);
+    }
+    {
+      eval { $api->new_muldim_array("NotFoundClass[][]", []); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
   }
 }
 
