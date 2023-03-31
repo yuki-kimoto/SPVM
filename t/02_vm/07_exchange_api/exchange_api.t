@@ -1385,7 +1385,55 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array("byte[]", []); };
-      ok(index($@, 'The $type_name must be an multi-numeric array type') >= 0);
+      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
+    }
+  }
+}
+
+# new_mulnum_array_len
+{
+  # new_mulnum_array_len - Return type
+  {
+    my $spvm_array = $api->new_mulnum_array_len("TestCase::Point_3b[]", 3);
+    is(ref $spvm_array, 'SPVM::BlessedObject::Array');
+    is($spvm_array->__get_type_name, "TestCase::Point_3b[]");
+  }
+  
+  # new_mulnum_array_len - Length 3
+  {
+    my $spvm_array = $api->new_mulnum_array_len("TestCase::Point_3b[]", 3);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, [{x => 0, y => 0, z => 0}, {x => 0, y => 0, z => 0}, {x => 0, y => 0, z => 0}]);
+  }
+  
+  # new_mulnum_array_len - Length 0
+  {
+    my $spvm_array = $api->new_mulnum_array_len("TestCase::Point_3b[]", 0);
+    my $values = $spvm_array->to_elems;
+    is_deeply($values, []);
+  }
+  
+  # new_mulnum_array_len - Exceptions
+  {
+    {
+      eval { $api->new_mulnum_array_len("&&&", -1); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_len("TestCase::Point_3b[]", -1); };
+      ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_len("TestCase::Point_3b[][]", 0); };
+      ok(index($@, 'The dimension of the type $type_name must be 1') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_len("NotFoundClass[]", 0); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array_len("byte[]", 0); };
+      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
     }
   }
 }
