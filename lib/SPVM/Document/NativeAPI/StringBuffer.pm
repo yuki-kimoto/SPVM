@@ -51,3 +51,9 @@ Get the bytes of the string value of the string buffer object.
   int32_t (*get_length)(void* string_buffer);
 
 Get the length of the string value of the string buffer object.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

@@ -13,3 +13,9 @@ SPVM::Error::System - System Error
 =head1 Description
 
 C<Error::System> is the error class for system errors. The class id is 2.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

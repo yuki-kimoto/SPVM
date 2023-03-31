@@ -78,3 +78,9 @@ If L</"dismiss"> is true, the handler is not executed.
 =head2 Scope::Guard
 
 C<SPVM::Scope::Guard> is a port of Perl's L<Scope::Guard> to L<SPVM>.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

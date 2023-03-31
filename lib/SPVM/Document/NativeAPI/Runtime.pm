@@ -466,3 +466,8 @@ Reserved.
 
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
 
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

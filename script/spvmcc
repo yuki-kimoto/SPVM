@@ -80,3 +80,9 @@ spvmcc - SPVM compiler to create exe file
 =head1 Description
 
 spvmcc is SPVM compiler to create executable file.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

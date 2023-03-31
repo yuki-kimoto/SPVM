@@ -58,3 +58,9 @@ This method is the same as C<gmtime> function of C<Linux>.
 =head1 See Also
 
 See L<Time::Local|SPVM::Time::Local> about C<timelocal> and C<timegm> methods.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

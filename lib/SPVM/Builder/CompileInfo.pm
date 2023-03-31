@@ -289,3 +289,9 @@ Get the string representaion of the L<compile command|/"create_compile_command">
 Examples:
 
   cc -c -O2 -Iinclude_dir -o foo.o foo.c 
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

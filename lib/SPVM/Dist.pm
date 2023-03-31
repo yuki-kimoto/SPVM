@@ -894,7 +894,11 @@ sub generate_dist {
 
 SPVM::Dist - Generating SPVM Distrubution
 
-=head2 SYNOPSYS
+=head2 Description
+
+C<SPVM::Dist> generates a SPVM Distrubution.
+
+=head2 Usage
 
   my $dist = SPVM::Dist->new(
     class_name => 'Math',
@@ -902,6 +906,8 @@ SPVM::Dist - Generating SPVM Distrubution
   
   $dist->generate_dist;
 
-=head2 DESCRIPTION
+=head1 Copyright & License
 
-C<SPVM::Dist> generates a SPVM Distrubution.
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

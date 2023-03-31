@@ -277,3 +277,13 @@ END {
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
 }
+
+=head1 Name
+
+SPVM::Global - SPVM Global Instance for Perl Interpreter
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

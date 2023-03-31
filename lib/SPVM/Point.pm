@@ -86,3 +86,9 @@ Creates a new C<Point> object that clones myself.
 Stringifies the C<Point> object as the following format.
 
   (1,2)
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

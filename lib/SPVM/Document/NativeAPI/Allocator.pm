@@ -37,3 +37,9 @@ Create a new allocator object.
   void (*free_object)(void* allocator);
 
 Free an allocator object.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

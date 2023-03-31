@@ -195,3 +195,9 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 =item * L<Unicode|SPVM::Unicode>
 
 =back
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

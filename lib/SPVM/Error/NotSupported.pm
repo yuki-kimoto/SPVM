@@ -13,3 +13,9 @@ SPVM::Error::NotSupported - Not Supported Error
 =head1 Description
 
 C<Error::NotSupported> is the error class that the system doesn't support the feature. The class id is 3.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

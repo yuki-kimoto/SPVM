@@ -732,3 +732,9 @@ SPVM::Builder::Util - Build Utilities
 =head1 Description
 
 SPVM::Builder::Util is building utilities.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

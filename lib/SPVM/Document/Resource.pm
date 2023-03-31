@@ -212,3 +212,9 @@ B<L<Resource::Zlib|SPVM::Resource::Zlib>>
 =item * L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>
 
 =back
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

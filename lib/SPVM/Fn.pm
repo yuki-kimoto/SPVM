@@ -1053,3 +1053,9 @@ Examples:
 
   # "いえ"
   my $utf8_substr = Fn->utf8_substr("あいうえ", 1, 2);
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

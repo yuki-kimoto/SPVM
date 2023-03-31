@@ -31,3 +31,9 @@ L<Cloner|SPVM::Cloner> is the interface type for the callback to clone a object.
   required method : object ($object : object);
 
 The implementation must receive a object and return the cloned object.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

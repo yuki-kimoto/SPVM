@@ -52,7 +52,6 @@ The L<build_stack|SPVM::Env/"build_stack"> method in the L<Env|SPVM::Env> class 
 
 =head1 Copyright & License
 
-Copyright 2023-2023 Yuki Kimoto, all rights reserved.
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+MIT License.

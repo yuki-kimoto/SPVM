@@ -126,3 +126,9 @@ Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocato
   void (*clear_module_dirs)(SPVM_COMPILER* compiler);
 
 Clear the module searching directories. The module searching directories are freed.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

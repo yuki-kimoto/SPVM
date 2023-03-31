@@ -69,3 +69,9 @@ This is used in Makefile.PL of your distributed module.
     
     return $make_rule;
   }
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

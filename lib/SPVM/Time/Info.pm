@@ -206,3 +206,9 @@ Sets C<tm_isdst>.
 The name of this module(C<Time::Info>) should have been C<Sys::Time::Tm> and this module should have belonged to L<Sys|SPVM::Sys> distribution.
 
 But C<Time::Info> is already used by L<Time::Local|SPVM::Time::Local> and duplicate module management causes confusion, so C<Sys::Time::Tm> is not created.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

@@ -9156,3 +9156,9 @@ C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<nativ
 You can see more examples in the following test codes.
 
 L<Examples of SPVM|https://github.com/yuki-kimoto/SPVM/tree/master/t/default/lib/SPVM/TestCase>
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

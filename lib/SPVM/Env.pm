@@ -80,7 +80,6 @@ The instance of the L<Stack|SPVM::Stack> class is build by the L</"build_stack">
 
 =head1 Copyright & License
 
-Copyright 2023-2023 Yuki Kimoto, all rights reserved.
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+MIT License.

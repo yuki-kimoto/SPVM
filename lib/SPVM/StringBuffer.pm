@@ -136,3 +136,9 @@ The $new_capacity must be greater than or equal to 0. Otherwize an exception is 
   method to_string : string ();
 
 Convert the string buffer to a string.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

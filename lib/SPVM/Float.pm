@@ -33,3 +33,9 @@ The value.
   static method new : Float ($value : float);
 
 Creates a new L<Float|SPVM::Float> object with a C<float> $value.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

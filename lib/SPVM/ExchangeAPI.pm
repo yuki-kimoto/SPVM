@@ -1824,3 +1824,9 @@ Otherwise it is converted to a L<SPVM::BlessedObject::Class> object.
 If the SPVM return value is undef, it is converted to Perl undef.
 
 Otherwise it is converted to a L<SPVM::BlessedObject::Array> object. 
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

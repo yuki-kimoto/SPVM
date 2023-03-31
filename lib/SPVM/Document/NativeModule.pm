@@ -660,3 +660,9 @@ If you want to create SPVM module that have the native module, L<spvmdist> is us
 =item * L<Examples using native methods|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
 
 =back
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

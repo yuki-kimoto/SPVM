@@ -41,3 +41,9 @@ C<Comparator> is the interface type for the object comparation callback.
 This method must receive two objects and return the following value.
 
 If the first argument is greater than the second argument, returns 1. If the first argument is lower than the second argument, returns -1. If the first argument is equal to the second argument, returns 0.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

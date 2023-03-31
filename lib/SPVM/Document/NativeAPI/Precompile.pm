@@ -65,3 +65,9 @@ Builds a precompiled class source. The content is added at the end of the buffer
   void (*build_method_source)(void* precompile, void* string_buffer, const char* class_name, const char* method_name);
 
 Builds a precompiled method source. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

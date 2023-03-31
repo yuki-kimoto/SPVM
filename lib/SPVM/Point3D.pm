@@ -79,3 +79,8 @@ Stringifies the C<Point3D> object as the following format.
 
   (1,2,3)
 
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

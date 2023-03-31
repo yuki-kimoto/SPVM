@@ -345,3 +345,9 @@ Get the string representation of the L<link command|/"create_link_command">.
 Examples:
 
   cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

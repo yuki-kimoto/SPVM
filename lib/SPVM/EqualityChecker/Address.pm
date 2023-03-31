@@ -39,3 +39,9 @@ Create a new L<EqualityChecker::Address|SPVM::EqualityChecker::Address> object.
   method : int ($object1 : object, $object2 : object);
 
 If the address of the two objects are equal, return 1, otherwise return 0.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

@@ -21,3 +21,9 @@ C<Scope::Guard::Handler> is an L<interface|SPVM::Document::Language/"Interface">
   required method : void ();
 
 The handler of L<Scope::Guard|SPVM::Scope::Guard>.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

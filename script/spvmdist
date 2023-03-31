@@ -91,3 +91,9 @@ spvmdist - Generating SPVM Distribution
 =head1 Description
 
 C<spvmdist> is the command to generate a SPVM distribution.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

@@ -88,3 +88,9 @@ Always true.
   my $object_file_name = "$object_file_info";
   
 Alias for L</"to_string">.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

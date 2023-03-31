@@ -280,3 +280,9 @@ Converts the list to an array.
   method unshift : void ($element : object);
 
 Inserts an $element at the beginning of the list.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

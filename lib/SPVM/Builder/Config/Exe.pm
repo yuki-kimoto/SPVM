@@ -102,3 +102,9 @@ Methods are inherited from L<SPVM::Builder::Config> and you can use the followin
 Create a new C<SPVM::Builder::Config::Exe> object.
 
 This is same as L<SPVM::Builder::Config/"new">, but set C<output_type> field to C<exe>.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

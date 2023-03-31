@@ -1048,3 +1048,8 @@ sub build_precompile_class_source_file {
 
 SPVM::Builder::CC - Compiler and Linker of Native Sources
 
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

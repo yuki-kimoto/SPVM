@@ -399,3 +399,9 @@ The alias for the following code using L</"sort_string">
 The alias for the following code using L</"sort_string">
 
   Sort->sort_string($array, method : int ($a : string, $b : string) { return $b cmp $a; }, $offset, $length);
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.
