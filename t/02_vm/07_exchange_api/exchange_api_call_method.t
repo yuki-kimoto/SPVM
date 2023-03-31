@@ -19,6 +19,7 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
 use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
+use SPVM 'Point';
 
 use SPVM 'Hash';
 use SPVM 'List';
@@ -432,6 +433,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
       is($spvm_string_ret->__get_type_name, "string");
       is("$spvm_string", "$spvm_string_ret");
+    }
+
+    # Argument conversion - any object - class
+    {
+      my $spvm_object = SPVM::Point->new(1, 2);
+      my $spvm_object_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_object);
+      ok(ref $spvm_object_ret, "SPVM::BlessedObject::Class");
+      is($spvm_object_ret->__get_type_name, "Point");
+      is($spvm_object->x, $spvm_object_ret->x);
+      is($spvm_object->y, $spvm_object_ret->y);
     }
   }
   
