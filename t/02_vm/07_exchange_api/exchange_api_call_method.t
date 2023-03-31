@@ -414,7 +414,28 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
   }
 
-  # Argument conversion - numeric array type
+  # Argument conversion - any object
+  {
+    # Argument conversion - any object - array
+    {
+      my $spvm_array = $api->new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $spvm_array_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_array);
+      ok(ref $spvm_array_ret, "SPVM::BlessedObject::Array");
+      is($spvm_array_ret->__get_type_name, "byte[]");
+      is_deeply($spvm_array_ret->to_elems, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    
+    # Argument conversion - any object - string
+    {
+      my $spvm_string = $api->new_string("abc");
+      my $spvm_string_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_string);
+      ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
+      is($spvm_string_ret->__get_type_name, "string");
+      is("$spvm_string", "$spvm_string_ret");
+    }
+  }
+  
+  # Argument conversion - numeric array
   {
     # Argument conversion - byte array
     {
