@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 %pure-parser
 %parse-param  { SPVM_COMPILER* compiler }
 %lex-param  { SPVM_COMPILER* compiler }

@@ -1,7 +1,3 @@
-// Copyright & License
-// Copyright 2023 Yuki Kimoto. All Rights Reserved.
-// MIT License.
-
 /* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
