@@ -623,7 +623,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_int_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be defined') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    
+    {
+      eval { $api->new_int_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
@@ -779,7 +784,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_long_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be defined') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    
+    # {}
+    {
+      eval { $api->new_long_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
@@ -885,7 +896,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_float_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be defined') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    
+    # {}
+    {
+      eval { $api->new_float_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
@@ -991,7 +1008,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_double_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be defined') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    
+    # {}
+    {
+      eval { $api->new_double_array_from_bin({}); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
@@ -1521,8 +1544,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
     }
     {
+      eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", undef); };
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+    }
+    {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", {}); };
-      ok(index($@, 'The $binary must be a non-reference scalar') >= 0);
+      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
     }
     {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[][]", []); };

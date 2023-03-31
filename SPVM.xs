@@ -2635,26 +2635,24 @@ _xs_new_int_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  void* spvm_array = NULL;
-  if (SvOK(sv_binary)) {
-    STRLEN binary_length = -1;
-    int32_t* binary = (int32_t*)SvPV(sv_binary, binary_length);
-    
-    if (!(binary_length % 4 == 0)) {
-      croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    int32_t array_length = binary_length / sizeof(int32_t);
-    
-    // New array
-    spvm_array = env->new_int_array(env, stack, array_length);
-    
-    int32_t* elems = env->get_elems_int(env, stack, spvm_array);
-    memcpy(elems, binary, array_length * sizeof(int32_t));
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
-  else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  
+  STRLEN binary_length = -1;
+  int32_t* binary = (int32_t*)SvPV(sv_binary, binary_length);
+  
+  if (!(binary_length % 4 == 0)) {
+    croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  int32_t array_length = binary_length / sizeof(int32_t);
+  
+  // New array
+  void* spvm_array = env->new_int_array(env, stack, array_length);
+  
+  int32_t* elems = env->get_elems_int(env, stack, spvm_array);
+  memcpy(elems, binary, array_length * sizeof(int32_t));
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -2784,26 +2782,24 @@ _xs_new_long_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  void* spvm_array = NULL;
-  if (SvOK(sv_binary)) {
-    STRLEN binary_length = -1;
-    int64_t* binary = (int64_t*)SvPV(sv_binary, binary_length);
-    
-    if (!(binary_length % 8 == 0)) {
-      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    int32_t array_length = binary_length / sizeof(int64_t);
-    
-    // New array
-    spvm_array = env->new_long_array(env, stack, array_length);
-    
-    int64_t* elems = env->get_elems_long(env, stack, spvm_array);
-    memcpy(elems, binary, array_length * sizeof(int64_t));
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
-  else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  
+  STRLEN binary_length = -1;
+  int64_t* binary = (int64_t*)SvPV(sv_binary, binary_length);
+  
+  if (!(binary_length % 8 == 0)) {
+    croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  int32_t array_length = binary_length / sizeof(int64_t);
+  
+  // New array
+  void* spvm_array = env->new_long_array(env, stack, array_length);
+  
+  int64_t* elems = env->get_elems_long(env, stack, spvm_array);
+  memcpy(elems, binary, array_length * sizeof(int64_t));
     
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -2901,26 +2897,24 @@ _xs_new_float_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  void* spvm_array;
-  if (SvOK(sv_binary)) {
-    STRLEN binary_length = -1;
-    float* binary = (float*)SvPV(sv_binary, binary_length);
-    
-    if (!(binary_length % 4 == 0)) {
-      croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    int32_t array_length = binary_length / sizeof(float);
-    
-    // New array
-    spvm_array = env->new_float_array(env, stack, array_length);
-    
-    float* elems = env->get_elems_float(env, stack, spvm_array);
-    memcpy(elems, binary, array_length * sizeof(float));
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
-  else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  
+  STRLEN binary_length = -1;
+  float* binary = (float*)SvPV(sv_binary, binary_length);
+  
+  if (!(binary_length % 4 == 0)) {
+    croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  int32_t array_length = binary_length / sizeof(float);
+  
+  // New array
+  void* spvm_array = env->new_float_array(env, stack, array_length);
+  
+  float* elems = env->get_elems_float(env, stack, spvm_array);
+  memcpy(elems, binary, array_length * sizeof(float));
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -3018,26 +3012,24 @@ _xs_new_double_array_from_bin(...)
   
   SV* sv_binary = ST(1);
   
-  void* spvm_array = NULL;
-  if (SvOK(sv_binary)) {
-    STRLEN binary_length = -1;
-    double* binary = (double*)SvPV(sv_binary, binary_length);
-    
-    if (!(binary_length % 8 == 0)) {
-      croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    int32_t array_length = binary_length / sizeof(double);
-    
-    // New array
-    spvm_array = env->new_double_array(env, stack, array_length);
-
-    double* elems = env->get_elems_double(env, stack, spvm_array);
-    memcpy(elems, binary, array_length * sizeof(double));
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
-  else {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  
+  STRLEN binary_length = -1;
+  double* binary = (double*)SvPV(sv_binary, binary_length);
+  
+  if (!(binary_length % 8 == 0)) {
+    croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
+  
+  int32_t array_length = binary_length / sizeof(double);
+  
+  // New array
+  void* spvm_array = env->new_double_array(env, stack, array_length);
+  
+  double* elems = env->get_elems_double(env, stack, spvm_array);
+  memcpy(elems, binary, array_length * sizeof(double));
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -3328,12 +3320,8 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_binary = ST(2);
   
-  if (!SvOK(sv_binary)) {
-    croak("The $binary must be defined\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-  }
-  
-  if (SvROK(sv_binary)) {
-    croak("The $binary must be a non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
+    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
