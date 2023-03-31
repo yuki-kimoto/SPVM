@@ -1195,6 +1195,8 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
           int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
+          int32_t class_name_id = env->api->runtime->get_class_name_id(env->runtime, class_id);
+          const char* class_name = env->api->runtime->get_constant_string_value(env->runtime, class_name_id, NULL);
           int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
           int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);
           
@@ -1223,7 +1225,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              *sv_error = sv_2mortal(newSVpvf("'s \"%s\" field of the %dth element must be defined\n    %s at %s line %d\n", mulnum_field_name, index + 1, __func__, FILE_NAME, __LINE__));
+              *sv_error = sv_2mortal(newSVpvf("'s %dth element's hash reference must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", index + 1, mulnum_field_name, mulnum_field_name, class_name, __func__, FILE_NAME, __LINE__));
               return NULL;
             }
             
@@ -1601,7 +1603,7 @@ _xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field of the \"%s\" class sepcified in the %dth argument of the \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" class must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", args_index_nth, method_name, class_name, mulnum_field_name, mulnum_field_name, arg_class_name, __func__, FILE_NAME, __LINE__);
 
               }
               
@@ -1742,7 +1744,7 @@ _xs_call_method(...)
               else {
                 int32_t arg_class_name_id = env->api->runtime->get_class_name_id(env->runtime, arg_class_id);
                 const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
-                croak("The \"%s\" field of the \"%s\" class sepcified in the %dth argument of the \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", mulnum_field_name, arg_class_name, args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" class must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", args_index_nth, method_name, class_name, mulnum_field_name, mulnum_field_name, arg_class_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
