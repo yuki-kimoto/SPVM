@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 #include "spvm_block.h"
 #include "spvm_list.h"
 #include "spvm_allocator.h"

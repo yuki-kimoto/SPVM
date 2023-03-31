@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 #ifndef SPVM_CASE_INFO_H
 #define SPVM_CASE_INFO_H
 

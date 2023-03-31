@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 #include "spvm_array_field_access.h"
 
 #include "spvm_allocator.h"

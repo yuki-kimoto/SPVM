@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 #ifndef SPVM_CLASS_VAR_ACCESS_H
 #define SPVM_CLASS_VAR_ACCESS_H
 

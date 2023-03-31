@@ -1,3 +1,7 @@
+// Copyright & License
+// Copyright 2023 Yuki Kimoto. All Rights Reserved.
+// MIT License.
+
 #ifndef SPVM_CALL_METHOD_H
 #define SPVM_CALL_METHOD_H
 
