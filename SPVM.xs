@@ -827,19 +827,19 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t error_array = 0;
-  int32_t error_elem = 0;
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
       int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
       if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && spvm_array_type_dimension == 1)) {
-        error_array = 1;
+        *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the string[] type"));
+        return &PL_sv_undef;
       }
     }
     else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
-      error_array = 1;
+      *sv_error = sv_2mortal(newSVpvf(": If it is a reference, it must be an array reference"));
+      return &PL_sv_undef;
     }
     else {
       // Elements
@@ -858,28 +858,18 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error_elem);
         
         if (SvOK(sv_error_elem)) {
-          error_elem = 1;
-          *sv_error = sv_2mortal(newSVpvf("'s %dth element %s", i + 1, SvPV_nolen(sv_error_elem)));
-          break;
+          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
+          return &PL_sv_undef;
         }
         void* spvm_elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
         env->set_elem_string(env, stack, spvm_array, i, spvm_elem);
       }
       
-      if (!error_elem) {
-        sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-      }
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
     sv_array = &PL_sv_undef;
-  }
-  
-  if (error_elem) {
-    // Nothing
-  }
-  else if (error_array) {
-    *sv_error = sv_2mortal(newSVpvf(" must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef"));
   }
   
   return sv_array;
