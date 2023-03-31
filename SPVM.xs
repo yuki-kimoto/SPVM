@@ -164,13 +164,13 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t error = 0;
   if (SvOK(sv_string)) {
     if (sv_isobject(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String")) {
       // Nothing
     }
     else if (SvROK(sv_string)) {
-      error = 1;
+      *sv_error = sv_2mortal(newSVpvf(" can't be a reference"));
+      return &PL_sv_undef;
     }
     else {
       STRLEN length = -1;
@@ -181,10 +181,6 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
   }
   else {
     sv_string = &PL_sv_undef;
-  }
-  
-  if (error) {
-    *sv_error = sv_2mortal(newSVpvf(" must be a non-reference scalar or a SPVM::BlessedObject::String object or undef"));
   }
   
   return sv_string;
