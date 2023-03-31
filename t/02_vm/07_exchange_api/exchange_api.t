@@ -97,13 +97,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     # new_string - reference
     {
-      eval { $api->new_string([]) };
+      eval { $api->new_string([]); };
       like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
     # new_string - non-assignable
     {
-      eval { $api->new_string($api->new_byte_array([1, 2, 3])) };
+      eval { $api->new_string($api->new_byte_array([1, 2, 3])); };
       like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
@@ -139,7 +139,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
     # new_string - reference
     {
-      eval { $api->new_string([]) };
+      eval { $api->new_string([]); };
       like($@, qr/The \$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef/);
     }
   }
@@ -1107,7 +1107,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
     }
     {
-      eval { $api->new_object_array("Point[]", {}) };
+      eval { $api->new_object_array("Point[]", {}); };
       ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
     }
     {
@@ -1360,6 +1360,34 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     my $out_values = $spvm_array->to_elems;
     is_deeply($out_values, $values);
   }
+  
+  # new_mulnum_array - Exceptions
+  {
+    {
+      eval { $api->new_mulnum_array("&&&", {}); };
+      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array("TestCase::Point_3b[]", {}); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the TestCase::Point_3b[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array("TestCase::Point_3b[]", $api->new_string("abc")); };
+      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the TestCase::Point_3b[] type or undef') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array("TestCase::Point_3b[][]", []); };
+      ok(index($@, 'The dimension of the type $type_name must be 1') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array("NotFoundClass[]", []); };
+      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+    }
+    {
+      eval { $api->new_mulnum_array("byte[]", []); };
+      ok(index($@, 'The $type_name must be an multi-numeric array type') >= 0);
+    }
+  }
 }
 
 # new_mulnum_array_from_bin
@@ -1529,7 +1557,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # exception - Invalid type
   {
-    eval { $api->set_exception([]) };
+    eval { $api->set_exception([]); };
     ok($@);
   }
 
