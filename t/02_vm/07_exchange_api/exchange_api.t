@@ -1108,11 +1108,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("Point[]", {}); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
+      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
     }
     {
-      eval { $api->new_object_array("Point[]", $api->new_string("abc")); };
-      ok(index($@, 'The $array must be an array reference or a SPVM::BlessedObject::Array object of the Point[] assignable type or undef') >= 0);
+      eval { $api->new_object_array("Point[]", $api->new_any_object_array([])); };
+      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
     }
     {
       eval { $api->new_object_array("Point[][]", []); };
