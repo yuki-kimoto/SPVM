@@ -457,7 +457,9 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the short[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -519,7 +521,9 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the int[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -577,7 +581,9 @@ If the $array is undef, returns undef.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the long[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -639,7 +645,9 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the float[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the float[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -689,7 +697,9 @@ Each element is converted by the conversion of L</"double Type Argument">.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the double[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the double[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -741,7 +751,9 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the string[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be the string[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -778,7 +790,9 @@ Exceptions:
 
 If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the T[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
@@ -879,7 +893,9 @@ If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $array must be an array reference or a SPVM::BlessedObject::Array object of the T[] type or undef. Otherwise an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 Examples:
 
@@ -979,7 +995,9 @@ Exceptions:
 
 If the $array is a reference other than the array reference, an exception is thrown.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, the assignability to the $type is checked. If it is not assignable, an exception is thrown.
+The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+
+The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
