@@ -57,10 +57,14 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($perl_module_file, $year));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, '[--user-name]'));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, '[--user-email]'));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'MIT License'));
   
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'MIT License'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -134,6 +138,12 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
   ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
   
+  my $perl_license_file = "$tmp_dir/SPVM-Foo/LICENSE";
+  ok(-f $perl_license_file);
+  ok(SPVM::Builder::Util::file_contains($perl_license_file, "MIT License"));
+  ok(SPVM::Builder::Util::file_contains($perl_license_file, $year));
+  ok(SPVM::Builder::Util::file_contains($perl_license_file, '[--user-name]'));
+
   chdir($save_cur_dir) or die;
 }
 
@@ -204,12 +214,15 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
+  my $today_tp = Time::Piece::localtime;
+  my $year = $today_tp->year;
+  
   my $perl_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
   ok(-f $perl_module_file);
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo::Bar::Baz;"));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, "Yuki C<"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Yuki,"));
   ok(SPVM::Builder::Util::file_contains($perl_module_file, 'yuki.com'));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Copyright (c) $year Yuki"));
   
   my $spvm_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
   ok(-f $spvm_module_file);
@@ -266,12 +279,16 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'MIT License'));
   
   my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
   ok(-f $native_module_file);
   ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, 'static const char* FILE_NAME = "Foo.c";'));
   ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($native_module_file, 'MIT License'));
 
   my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
   ok(-f $gitkeep_file_for_native_module_include_dir);

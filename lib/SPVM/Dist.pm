@@ -239,7 +239,19 @@ sub generate_spvm_module_file {
   # Class name
   my $class_name = $self->class_name;
   
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # Year
+  my $year = $self->_year;
+  
   my $spvm_module_content = <<"EOS";
+# Copyright (c) $year $user_name
+# MIT License
+
 class $class_name {
 
 }
@@ -259,8 +271,7 @@ sub generate_perl_module_file {
   my $class_name = $self->class_name;
   
   # Year
-  my $today_tp = Time::Piece::localtime;
-  my $year = $today_tp->year;
+  my $year = $self->_year;
   
   # User name
   my $user_name = $self->user_name;
@@ -323,10 +334,9 @@ $user_name C<$user_email>
 
 =head1 Copyright & License
 
-Copyright $year-$year $user_name, all rights reserved.
+Copyright (c) $year $user_name
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+MIT License
 
 EOS
 
@@ -352,8 +362,20 @@ sub generate_native_config_file {
     $new_method = 'new_cpp';
   }
   
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # Year
+  my $year = $self->_year;
+  
   # Content
   my $native_config_content = <<"EOS";
+# Copyright (c) $year $user_name
+# MIT License
+
 use strict;
 use warnings;
 use SPVM::Builder::Config;
@@ -405,7 +427,20 @@ sub generate_native_module_file {
   my $native_module_file = $class_name;
   $native_module_file =~ s/::/\//g;
   $native_module_file .= ".$native_module_ext";
+
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # Year
+  my $year = $self->_year;
+  
   my $native_module_content = <<"EOS";
+// Copyright (c) $year $user_name
+// MIT License
+
 #include "spvm_native.h"
 
 $extern_c_start
@@ -674,6 +709,51 @@ EOS
   $self->generate_file($basic_test_rel_file, $basic_test_content);
 }
 
+sub generate_license_file {
+  my ($self) = @_;
+  
+  # Class name
+  my $class_name = $self->class_name;
+  
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # Year
+  my $year = $self->_year;
+  
+  # Content
+  my $license_content = <<"EOS";
+MIT License
+
+Copyright (c) $year $user_name
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+EOS
+  
+  # Generate file
+  my $license_rel_file = 'LICENSE';
+  $self->generate_file($license_rel_file, $license_content);
+}
+
 sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
@@ -878,6 +958,9 @@ sub generate_dist {
     # Generate basic test SPVM module file
     $self->generate_basic_test_spvm_module_file;
 
+    # Generate license file
+    $self->generate_license_file;
+    
     if ($resource) {
       # Generate basic test native module file
       $self->generate_basic_test_native_module_file;
@@ -886,6 +969,16 @@ sub generate_dist {
       $self->generate_basic_test_native_config_file;
     }
   }
+}
+
+sub _year {
+  my ($self) = @_;
+  
+  # Year
+  my $today_tp = Time::Piece::localtime;
+  my $year = $today_tp->year;
+  
+  return $year;
 }
 
 1;
@@ -908,6 +1001,6 @@ C<SPVM::Dist> generates a SPVM Distrubution.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License
