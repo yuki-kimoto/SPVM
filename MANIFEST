@@ -304,6 +304,7 @@ lib/SPVM/Time/Info.c
 lib/SPVM/Time/Info.config
 lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
+LICENSE
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
