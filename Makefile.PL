@@ -115,7 +115,7 @@ my @header_files = ('ppport.h', @spvm_header_files);
 WriteMakefile(
     NAME              => 'SPVM',
     VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
-    LICENSE           => 'MIT License',
+    LICENSE           => 'MIT',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
        AUTHOR         => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
