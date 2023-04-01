@@ -16,6 +16,6 @@ C<Error::System> is the error class for system errors. The class id is 2.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

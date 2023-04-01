@@ -209,6 +209,6 @@ But C<Time::Info> is already used by L<Time::Local|SPVM::Time::Local> and duplic
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

@@ -38,6 +38,6 @@ Gets the time when the program starts. This is the same as Perl C<$^T>.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

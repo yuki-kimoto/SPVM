@@ -839,6 +839,6 @@ The $length must be greater than or equal to 0. Otherwize an exception is thrown
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

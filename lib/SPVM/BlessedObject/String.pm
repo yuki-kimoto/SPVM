@@ -77,6 +77,6 @@ The alias for L</"to_string">.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

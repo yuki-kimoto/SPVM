@@ -120,6 +120,6 @@ Calls L<call_method|SPVM::ExchangeAPI/"call_method"> method in the L<SPVM::Excha
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

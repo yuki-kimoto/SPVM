@@ -116,6 +116,6 @@ Specifier options can be written between C<%> and the character of specifier suc
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

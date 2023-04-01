@@ -61,6 +61,6 @@ See L<Time::Local|SPVM::Time::Local> about C<timelocal> and C<timegm> methods.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

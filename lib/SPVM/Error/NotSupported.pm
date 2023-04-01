@@ -16,6 +16,6 @@ C<Error::NotSupported> is the error class that the system doesn't support the fe
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

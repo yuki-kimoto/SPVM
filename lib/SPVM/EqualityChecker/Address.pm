@@ -42,6 +42,6 @@ If the address of the two objects are equal, return 1, otherwise return 0.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

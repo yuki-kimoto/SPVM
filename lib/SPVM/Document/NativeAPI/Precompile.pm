@@ -68,6 +68,6 @@ Builds a precompiled method source. The content is added at the end of the buffe
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

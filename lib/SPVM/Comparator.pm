@@ -44,6 +44,6 @@ If the first argument is greater than the second argument, returns 1. If the fir
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

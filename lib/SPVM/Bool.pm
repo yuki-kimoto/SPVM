@@ -80,6 +80,6 @@ C<true> keyword means Bool->TRUE. C<false> keyword means Bool->FALSE.
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

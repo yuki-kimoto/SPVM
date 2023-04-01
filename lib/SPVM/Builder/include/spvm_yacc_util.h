@@ -1,6 +1,5 @@
-// Copyright & License
-// Copyright 2023 Yuki Kimoto. All Rights Reserved.
-// MIT License.
+// Copyright (c) 2023 Yuki Kimoto
+// MIT License
 
 #ifndef SPVM_YACC_UTIL_H
 #define SPVM_YACC_UTIL_H

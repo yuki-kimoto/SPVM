@@ -9159,6 +9159,6 @@ L<Examples of SPVM|https://github.com/yuki-kimoto/SPVM/tree/master/t/default/lib
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License

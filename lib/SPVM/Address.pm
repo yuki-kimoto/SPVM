@@ -26,6 +26,6 @@ Creates a new L<Address|SPVM::Address> object. The address is C<NULL> of the C l
 
 =head1 Copyright & License
 
-Copyright 2023 Yuki Kimoto. All Rights Reserved.
+Copyright (c) 2023 Yuki Kimoto
 
-MIT License.
+MIT License
