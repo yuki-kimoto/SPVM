@@ -96,9 +96,6 @@ union spvm_value {
 
 
 
-
-
-
 struct spvm_env {
   void* class_vars_heap;
   void* object_header_size;
@@ -150,8 +147,8 @@ struct spvm_env {
   void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
   void* (*new_string_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
-  void* (*new_pointer_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
-  void* (*new_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+  void* reserved50;
+  void* reserved51;
   void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
   void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
@@ -223,7 +220,7 @@ struct spvm_env {
   const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);
   int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
-  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* reserved123;
   void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int8_t value, int32_t* error, const char* func_name, const char* file, int32_t line);
   void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line);
   void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t value, int32_t* error, const char* func_name, const char* file, int32_t line);

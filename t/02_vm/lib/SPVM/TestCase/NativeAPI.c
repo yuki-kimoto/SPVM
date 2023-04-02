@@ -68,8 +68,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_string_nolen != &env_array[47]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string_raw != &env_array[48]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string != &env_array[49]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_pointer_raw != &env_array[50]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_pointer != &env_array[51]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved50 != &env_array[50]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved51 != &env_array[51]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->concat_raw != &env_array[52]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->concat != &env_array[53]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_stack_trace_raw != &env_array[54]) { stack[0].ival = 0; return 0; }
@@ -141,7 +141,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_chars != &env_array[120]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->die != &env_array[121]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object_by_name != &env_array[122]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_pointer_by_name != &env_array[123]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved123 != &env_array[123]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_field_byte_by_name != &env_array[124]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_field_short_by_name != &env_array[125]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_field_int_by_name != &env_array[126]) { stack[0].ival = 0; return 0; }

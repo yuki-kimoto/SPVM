@@ -150,8 +150,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_string_nolen,
     SPVM_API_new_string_raw,
     SPVM_API_new_string,
-    SPVM_API_new_pointer_object_raw,
-    SPVM_API_new_pointer_object,
+    NULL,
+    NULL,
     SPVM_API_concat_raw,
     SPVM_API_concat,
     SPVM_API_new_stack_trace_raw,
@@ -223,7 +223,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_chars,
     SPVM_API_die,
     SPVM_API_new_object_by_name,
-    SPVM_API_new_pointer_object_by_name,
+    NULL,
     SPVM_API_set_field_byte_by_name,
     SPVM_API_set_field_short_by_name,
     SPVM_API_set_field_int_by_name,
@@ -838,7 +838,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stac
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
     return NULL;
   };
-  SPVM_OBJECT* object = env->new_pointer(env, stack, id, pointer);
+  SPVM_OBJECT* object = env->new_pointer_object(env, stack, id, pointer);
   return object;
 }
 

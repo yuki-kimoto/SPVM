@@ -64,8 +64,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   47 new_string_nolen
   48 new_string_raw
   49 new_string
-  50 new_pointer_raw
-  51 new_pointer
+  50 reserved50
+  51 reserved51
   52 concat_raw
   53 concat
   54 new_stack_trace_raw
@@ -137,7 +137,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   120 get_chars
   121 die
   122 new_object_by_name
-  123 new_pointer_by_name
+  123 reserved123
   124 set_field_byte_by_name
   125 set_field_short_by_name
   126 set_field_int_by_name
@@ -648,20 +648,6 @@ The same as C<new_string_raw>, and push the created object to the mortal stack. 
 Examples:
 
   void* str_obj = env->new_string(env, stack, "Hello \0World", 11);
-
-=head2 new_pointer_raw
-
-  void* (*new_pointer_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
-
-Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
-
-The same as the L</"new_pointer_raw">, but this is deprecagted and will be removed.
-
-=head2 new_pointer
-
-  void* (*new_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
-
-The same as the L</"new_pointer_object">, but this is deprecagted and will be removed.
 
 =head2 concat_raw
 
@@ -1352,12 +1338,6 @@ Examples:
   int32_t e;
   void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &e, __func__, __FILE__, __LINE__);
   if (e) { return e; }
-
-=head2 new_pointer_by_name
-
-  void* (*new_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
-
-The same as the L</"new_pointer_object_by_name">, but this is deprecagted and will be removed.
 
 =head2 set_field_byte_by_name
 
