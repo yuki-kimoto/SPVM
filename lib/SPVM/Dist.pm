@@ -628,7 +628,7 @@ my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME              => 'SPVM::$class_name',
   VERSION_FROM      => '$perl_module_rel_file',
-  LICENSE           => 'perl_5',
+  LICENSE           => 'mit',
   (\$] >= 5.005 ?     ## Add these new keywords supported since 5.005
     (ABSTRACT_FROM  => '$perl_module_rel_file',
      AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
