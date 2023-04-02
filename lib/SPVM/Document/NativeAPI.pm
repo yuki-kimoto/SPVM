@@ -20,7 +20,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   3 object_ref_count_offset
   4 object_basic_type_id_offset
   5 object_type_dimension_offset
-  6 object_type_category_offset
+  6 reserved6
   7 object_flag_offset
   8 object_length_offset
   9 api
