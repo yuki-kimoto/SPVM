@@ -94,15 +94,11 @@
 
 
 
-
-
-
 SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
   
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_object,
     SPVM_API_RUNTIME_free_object,
-    NULL,
     SPVM_API_RUNTIME_get_opcodes,
     SPVM_API_RUNTIME_get_opcodes_length,
     SPVM_API_RUNTIME_get_runtime_codes,
@@ -136,18 +132,15 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_id_by_index,
     SPVM_API_RUNTIME_get_class_var_id_by_name,
     SPVM_API_RUNTIME_get_class_var_name_id,
-    NULL, // reserved36
     SPVM_API_RUNTIME_get_class_var_class_id,
     SPVM_API_RUNTIME_get_field_id_by_index,
     SPVM_API_RUNTIME_get_field_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
     SPVM_API_RUNTIME_get_field_type_id,
-    NULL, // reserved42
     SPVM_API_RUNTIME_get_field_class_id,
     SPVM_API_RUNTIME_get_method_id_by_index,
     SPVM_API_RUNTIME_get_method_id_by_name,
     SPVM_API_RUNTIME_get_method_name_id,
-    NULL, // reserved47
     SPVM_API_RUNTIME_get_method_return_type_id,
     SPVM_API_RUNTIME_get_method_class_id,
     SPVM_API_RUNTIME_get_method_is_class_method,
