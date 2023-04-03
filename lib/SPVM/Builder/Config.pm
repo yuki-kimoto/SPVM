@@ -543,18 +543,6 @@ sub new_cpp17 {
   return $self;
 }
 
-sub add_ccflags {
-  my ($self, @ccflags) = @_;
-  
-  push @{$self->{ccflags}}, @ccflags;
-}
-
-sub add_include_dirs {
-  my ($self, @include_dirs) = @_;
-  
-  push @{$self->{include_dirs}}, @include_dirs;
-}
-
 sub set_std {
   my ($self, $standard) = @_;
   
@@ -566,6 +554,18 @@ sub set_std {
   $self->ccflags($ccflags);
   
   return $self;
+}
+
+sub add_ccflags {
+  my ($self, @ccflags) = @_;
+  
+  push @{$self->{ccflags}}, @ccflags;
+}
+
+sub add_include_dirs {
+  my ($self, @include_dirs) = @_;
+  
+  push @{$self->{include_dirs}}, @include_dirs;
 }
 
 sub add_ldflags {
