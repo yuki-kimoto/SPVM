@@ -254,7 +254,7 @@ sub build {
     $config = $self->create_native_config_from_module_file($module_file);
   }
   elsif ($category eq 'precompile') {
-    $config = $self->create_precompile_config($module_file);
+    $config = $self->create_default_config($module_file);
   }
   
   # Compile source file and create object files
@@ -324,7 +324,7 @@ sub create_native_config_from_module_file {
   return $config;
 }
 
-sub create_precompile_config {
+sub create_default_config {
   my ($self) = @_;
   
   my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
