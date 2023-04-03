@@ -36,11 +36,11 @@ B<SPVM/Resource/Zlib/V1_2_11.config>
     uncompr.c
     zutil.c
   );
-  $config->add_source_files(@source_files);
+  $config->add_source_file(@source_files);
    
   my @ccflags = qw(-D_GNU_SOURCE);
    
-  $config->add_ccflags(@ccflags);
+  $config->add_ccflag(@ccflags);
    
   $config;  
 

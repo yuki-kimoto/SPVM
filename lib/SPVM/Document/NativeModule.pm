@@ -99,12 +99,12 @@ I show some examples of native config files.
 
   # Compiler
   $config->cc('nvcc');
-  $config->add_ccflags(@ccldflags);
+  $config->add_ccflag(@ccldflags);
   $config->ext('cu');
 
   # Linker
   $config->ld('nvcc');
-  $config->add_ldflags('-shared', @ccldflags);
+  $config->add_ldflag('-shared', @ccldflags);
 
   $config;
 

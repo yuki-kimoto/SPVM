@@ -419,7 +419,7 @@ sub compile_source_file {
   $options_ccflags = [] unless defined $options_ccflags;
   
   if (@$options_ccflags) {
-    $config_exe->add_ccflags(@$options_ccflags);
+    $config_exe->add_ccflag(@$options_ccflags);
   }
 
   my $source_file = $options->{source_file};
