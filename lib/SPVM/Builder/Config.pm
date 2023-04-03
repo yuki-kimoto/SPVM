@@ -562,7 +562,7 @@ sub set_std {
   
   push @$ccflags, "-std=$standard";
   
-  # Add -std=foo section
+  # Adds -std=foo section
   $self->ccflags($ccflags);
   
   return $self;
@@ -764,14 +764,14 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   # Optimize with debug mode
   $config->optimize('-O0 -g');
   
-  # Add source files
+  # Adds source files
   $config->add_source_files('foo.c', 'bar.c', 'baz/baz.c');
   
-  # Use resource
+  # Uses resource
   $config->use_resource('TestCase::Resource::Zlib::V1_0_0');
   $config->use_resource('TestCase::Resource::Foo1::V1_0_0', mode => 'mode1', args => ['args1', 'args2']);
   
-  # Get resouce information
+  # Gets resouce information
   my $resource = $config->get_resource('TestCase::Resource::Zlib::V1_0_0');
 
 =head1 Description
@@ -785,7 +785,7 @@ C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
   my $ext = $config->ext;
   $config->ext($ext);
 
-Get and set the extension of the SPVM native source.
+Gets and sets the extension of the SPVM native source.
 
 The default is undef.
 
@@ -802,7 +802,7 @@ Examples:
   my $cc = $config->cc;
   $config->cc($cc);
 
-Get and set a compiler name. The default is the value of C<cc> of L<Config> module.
+Gets and sets a compiler name. The default is the value of C<cc> of L<Config> module.
 
 Examples:
   
@@ -824,14 +824,14 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Get and set header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
+Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
 
 =head2 builder_include_dir
 
   my $builder_include_dir = $config->builder_include_dir;
   $config->builder_include_dir($builder_include_dir);
 
-Get and set the header including directory of L<SPVM::Builder>.
+Gets and sets the header including directory of L<SPVM::Builder>.
 
 The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM::Buidler::Config> is loaded.
 
@@ -840,7 +840,7 @@ The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM:
   my $builder_src_dir = $config->builder_src_dir;
   $config->builder_src_dir($builder_src_dir);
 
-Get and set the source directory of L<SPVM::Builder>.
+Gets and sets the source directory of L<SPVM::Builder>.
 
 The default value is C<SPVM/Builder/src> of one up of the directory that C<SPVM::Buidler::Config> is loaded.
 
@@ -849,7 +849,7 @@ The default value is C<SPVM/Builder/src> of one up of the directory that C<SPVM:
   my $own_include_dir = $config->own_include_dir;
   $config->own_include_dir($own_include_dir);
 
-Get and set the header including directory of this module.
+Gets and sets the header including directory of this module.
 
 The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/include>.
 
@@ -858,7 +858,7 @@ The default value is the name that removing C<[.mode].config> from the L<file|/"
   my $own_src_dir = $config->own_src_dir;
   $config->own_src_dir($own_src_dir);
 
-Get and set the source directory of this module.
+Gets and sets the source directory of this module.
 
 The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/src>.
 
@@ -867,7 +867,7 @@ The default value is the name that removing C<[.mode].config> from the L<file|/"
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Get and set compiler flags.
+Gets and sets compiler flags.
 
 B<Default:>
 
@@ -882,7 +882,7 @@ B<Default:>
   my $optimize = $config->optimize;
   $config->optimize($optimize);
 
-Get and set the option for optimization of the compiler.
+Gets and sets the option for optimization of the compiler.
 
 The default is C<-O3>.
 
@@ -897,7 +897,7 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Get and get source files. The file name is the relative pass from L</"own_src_dir">.
+Gets and get source files. The file name is the relative pass from L</"own_src_dir">.
 
 Examples:
 
@@ -908,14 +908,14 @@ Examples:
   my $ld = $config->ld;
   $config->ld($ld);
 
-Get and set a linker. Default is C<ld> of L<Config> module.
+Gets and sets a linker. Default is C<ld> of L<Config> module.
 
 =head2 lib_dirs
 
   my $lib_dirs = $config->lib_dirs;
   $config->lib_dirs($lib_dirs);
 
-Get and set the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
+Gets and sets the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
 
 B<Default:>
 
@@ -932,21 +932,21 @@ Not Windows
   my $libs = $config->libs;
   $config->libs($libs);
 
-Get and set library names or L<SPVM::Builder::LibInfo> objects. These libraries are linked by L<SPVM::Builder::CC/"link"> method.
+Gets and sets library names or L<SPVM::Builder::LibInfo> objects. These libraries are linked by L<SPVM::Builder::CC/"link"> method.
 
 =head2 ldflags
 
   my ldflags = $config->ldflags;
   $config->ldflags(ldflags);
 
-Get and set linker flags. The default value is an emtpy array reference.
+Gets and sets linker flags. The default value is an emtpy array reference.
 
 =head2 dynamic_lib_ldflags
 
   my dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
   $config->dynamic_lib_ldflags(dynamic_lib_ldflags);
 
-Get and set linker flags for dynamic link.
+Gets and sets linker flags for dynamic link.
 
 B<Default:>
 
@@ -963,7 +963,7 @@ Non-Windows
   my $ld_optimize = $config->ld_optimize;
   $config->ld_optimize($ld_optimize);
 
-Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
+Gets and sets the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
 
 The default is C<-O2>.
 
@@ -972,7 +972,7 @@ The default is C<-O2>.
   my $force = $config->force;
   $config->force($force);
 
-Get and set the flag to force compiles and links without caching. The default is undef.
+Gets and sets the flag to force compiles and links without caching. The default is undef.
 
 undef means forcing is not determined by config.
 
@@ -981,7 +981,7 @@ undef means forcing is not determined by config.
   my $before_compile = $config->before_compile;
   $config->before_compile($before_compile);
 
-Get and set the callback that is executed before the compile. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::CompileInfo> object used by the compileer.
+Gets and sets the callback that is executed before the compile. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::CompileInfo> object used by the compileer.
 
 Examples:
 
@@ -998,7 +998,7 @@ Examples:
   my $before_link = $config->before_link;
   $config->before_link($before_link);
 
-Get and set the callback that is executed before the link. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
+Gets and sets the callback that is executed before the link. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
 
 Examples:
 
@@ -1016,7 +1016,7 @@ Examples:
   my $quiet = $config->quiet;
   $config->quiet($quiet);
 
-Get and set the flag if the compiler and the linker output the results.
+Gets and sets the flag if the compiler and the linker output the results.
 
 The default is undef. undef means quietness is not determined by config.
 
@@ -1025,7 +1025,7 @@ The default is undef. undef means quietness is not determined by config.
   my $file = $config->file;
   $config->file($file);
 
-Get and set the config file path.
+Gets and sets the config file path.
 
 The default is 1.
 
@@ -1034,7 +1034,7 @@ The default is 1.
   my $file_optional = $config->file_optional;
   $config->file_optional($file_optional);
 
-Get and set the value that indicates L<file|/"file"> field is needed for C<new|/"new"> method.
+Gets and sets the value that indicates L<file|/"file"> field is needed for C<new|/"new"> method.
 
 The default is 0.
 
@@ -1057,67 +1057,67 @@ L</"file"> must be specified except for the case that L</"file_optional"> is set
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Call L</"new">. After that, call L<ext('c')|/"ext">.
+Calls L</"new">. After that, call L<ext('c')|/"ext">.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
 
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('c99')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('c99')|/"set_std">.
 
 =head2 new_c11
   
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
 
-Call L</"new_c">. After that, call L<set_std('c11')|/"set_std">.
+Calls L</"new_c">. After that, call L<set_std('c11')|/"set_std">.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Call L</"new">. After that, call L<ext('cpp')|/"ext"> and set L</"cc"> to C<C++> compiler, and set L</"ld"> to C<C++> linker.
+Calls L</"new">. After that, call L<ext('cpp')|/"ext"> and set L</"cc"> to C<C++> compiler, and set L</"ld"> to C<C++> linker.
 
 =head2 new_cpp11
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Call L</"new_cpp">. After that, call L<set_std('c++11')|/"set_std">.
+Calls L</"new_cpp">. After that, call L<set_std('c++11')|/"set_std">.
 
 =head2 new_cpp14
   
   my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
 
-Call L</"new_cpp">. After that, call L<set_std('c++14')|/"set_std">.
+Calls L</"new_cpp">. After that, call L<set_std('c++14')|/"set_std">.
 
 =head2 new_cpp17
   
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
 
-Call L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
+Calls L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
 
 =head1 Instance Methods
 
@@ -1125,7 +1125,7 @@ Call L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
 
   $config->set_std($std);
 
-Add the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
+Adds the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
 
 B<Example:>
 
@@ -1135,37 +1135,37 @@ B<Example:>
 
   $config->add_ccflags(@ccflags);
 
-Add values after the last element of C<ccflags> field.
+Adds values after the last element of C<ccflags> field.
 
 =head2 add_ldflags
 
   $config->add_ldflags(@ldflags);
 
-Add values after the last element of C<ldflags> field.
+Adds values after the last element of C<ldflags> field.
 
 =head2 add_include_dirs
 
   $config->add_include_dirs(@include_dirs);
 
-Add values after the last element of C<include_dirs> field.
+Adds values after the last element of C<include_dirs> field.
 
 =head2 add_lib_dirs
 
   $config->add_lib_dirs(@lib_dirs);
 
-Add values after the last element of  C<lib_dirs> field.
+Adds values after the last element of  C<lib_dirs> field.
 
 =head2 add_source_files
 
   $config->add_source_files(@source_files);
 
-Add the values after the last element of C<source_files> field.
+Adds the values after the last element of C<source_files> field.
 
 =head2 add_libs
 
   $config->add_libs(@libs);
 
-Add library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
 
 Examples:
 
@@ -1180,7 +1180,7 @@ Examples:
 
   $config->add_static_libs(@libs);
 
-Add library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
 
 C<static> field is set to a true value.
 
@@ -1199,7 +1199,7 @@ Examples:
   $config->use_resource('Resource::Zlib::V1_0_0');
   $config->use_resource('Resource::Zlib::V1_0_0', mode => 'prod', args => ['foo', 'bar']);
 
-Use a resource. 
+Uses a resource. 
 
 The first argument is a L<SPVM::Builder::Resource> object.
 
@@ -1221,13 +1221,13 @@ If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new
 
   my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
 
-Get a resource. The resource is a L<SPVM::Builder::Resource> object.
+Gets a resource. The resource is a L<SPVM::Builder::Resource> object.
 
 =head2 get_resource_names
 
   my $resource_names = $config->get_resource_names;
 
-Get resource names.
+Gets resource names.
 
 =head1 Copyright & License
 
