@@ -185,6 +185,62 @@ sub new {
   return bless $self, $class;
 }
 
+sub build_exe_file {
+  my ($self) = @_;
+  
+  # Builder
+  my $builder = $self->builder;
+  
+  # Class name
+  my $class_name = $self->{class_name};
+  
+  # Build runtime
+  unless ($self->{finish_compile}) {
+    $self->compile;
+  }
+  
+  # Config file
+  my $module_file = $self->runtime->get_module_file($class_name);
+
+  # Object files
+  my $object_files = [];
+
+  # Compile SPVM core source files
+  my $spvm_core_object_files = $self->compile_spvm_core_source_files;
+  push @$object_files, @$spvm_core_object_files;
+  
+  my $config = $self->config;
+  
+  my $classes_object_files = $self->compile_classes;
+  push @$object_files, @$classes_object_files;
+  
+  # Create bootstrap C source
+  $self->create_bootstrap_source;
+
+  # Compile bootstrap C source
+  my $bootstrap_object_file = $self->compile_bootstrap_source_file;
+  push @$object_files, $bootstrap_object_file;
+  
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Link and generate executable file
+  my $cc_linker = SPVM::Builder::CC->new(
+    global_before_compile => $config->global_before_compile,
+    build_dir => $build_dir,
+    quiet => $self->quiet,
+    force => $self->force,
+  );
+  my $options = {
+    output_file => $self->{output_file},
+    config => $self->config,
+    category => 'native',
+  };
+
+  $cc_linker->link($class_name, $object_files, $options);
+}
+
 sub get_dependent_resources {
   my ($self) = @_;
   
@@ -311,62 +367,6 @@ sub compile {
   $self->runtime($runtime);
   
   $self->{finish_compile} = 1;
-}
-
-sub build_exe_file {
-  my ($self) = @_;
-  
-  # Builder
-  my $builder = $self->builder;
-  
-  # Class name
-  my $class_name = $self->{class_name};
-  
-  # Build runtime
-  unless ($self->{finish_compile}) {
-    $self->compile;
-  }
-  
-  # Config file
-  my $module_file = $self->runtime->get_module_file($class_name);
-
-  # Object files
-  my $object_files = [];
-
-  # Compile SPVM core source files
-  my $spvm_core_object_files = $self->compile_spvm_core_source_files;
-  push @$object_files, @$spvm_core_object_files;
-  
-  my $config = $self->config;
-  
-  my $classes_object_files = $self->compile_classes;
-  push @$object_files, @$classes_object_files;
-  
-  # Create bootstrap C source
-  $self->create_bootstrap_source;
-
-  # Compile bootstrap C source
-  my $bootstrap_object_file = $self->compile_bootstrap_source_file;
-  push @$object_files, $bootstrap_object_file;
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
-
-  # Link and generate executable file
-  my $cc_linker = SPVM::Builder::CC->new(
-    global_before_compile => $config->global_before_compile,
-    build_dir => $build_dir,
-    quiet => $self->quiet,
-    force => $self->force,
-  );
-  my $options = {
-    output_file => $self->{output_file},
-    config => $self->config,
-    category => 'native',
-  };
-
-  $cc_linker->link($class_name, $object_files, $options);
 }
 
 sub compile_classes {
