@@ -2998,40 +2998,35 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
         }
         
-        int32_t is_pointer = 0;
         if (class) {
-          if (class->is_pointer) {
-            is_pointer = 1;
+          // Call destructor
+          if (class->destructor_method_id >= 0) {
+            int32_t args_stack_length = 1;
+            SPVM_VALUE save_stack0 = stack[0];
+            void* save_exception = env->get_exception(env, stack);
+            if (save_exception) {
+              env->inc_ref_count(env, stack, save_exception);
+            }
+            
+            stack[0].oval = object;
+            int32_t error = SPVM_API_call_method(env, stack, class->destructor_method_id, args_stack_length);
+            
+            // Exception in destructor is changed to warning
+            if (error) {
+              void* exception = env->get_exception(env, stack);
+              const char* exception_chars = env->get_chars(env, stack, exception);
+              fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+            }
+            
+            // Restore stack and excetpion
+            stack[0] = save_stack0;
+            env->set_exception(env, stack, save_exception);
+            if (save_exception) {
+              env->dec_ref_count(env, stack, save_exception);
+            }
+            
+            assert(object->ref_count > 0);
           }
-        }
-        
-        // Call destructor
-        if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
-          int32_t args_stack_length = 1;
-          SPVM_VALUE save_stack0 = stack[0];
-          void* save_exception = env->get_exception(env, stack);
-          if (save_exception) {
-            env->inc_ref_count(env, stack, save_exception);
-          }
-          
-          stack[0].oval = object;
-          int32_t error = SPVM_API_call_method(env, stack, class->destructor_method_id, args_stack_length);
-          
-          // Exception in destructor is changed to warning
-          if (error) {
-            void* exception = env->get_exception(env, stack);
-            const char* exception_chars = env->get_chars(env, stack, exception);
-            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
-          }
-          
-          // Restore stack and excetpion
-          stack[0] = save_stack0;
-          env->set_exception(env, stack, save_exception);
-          if (save_exception) {
-            env->dec_ref_count(env, stack, save_exception);
-          }
-          
-          assert(object->ref_count > 0);
         }
         
         // Free object fields
