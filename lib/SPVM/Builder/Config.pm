@@ -358,7 +358,7 @@ sub new {
       push @default_ccflags, '-fPIC';
     }
     
-    $self->add_ccflags(@default_ccflags);
+    $self->add_ccflag(@default_ccflags);
   }
 
   # optimize
@@ -556,37 +556,51 @@ sub set_std {
   return $self;
 }
 
-sub add_ccflags {
+sub add_ccflags { shift->add_ccflag(@_) }
+
+sub add_include_dirs { shift->add_include_dir(@_) }
+
+sub add_ldflags { shift->add_ldflag(@_) }
+
+sub add_lib_dirs { shift->add_lib_dir(@_) }
+
+sub add_libs { shift->add_lib(@_) }
+
+sub add_static_libs { shift->add_static_lib(@_) }
+
+sub add_source_files { shift->add_source_file(@_) }
+
+sub add_ccflag {
   my ($self, @ccflags) = @_;
   
   push @{$self->{ccflags}}, @ccflags;
 }
 
-sub add_include_dirs {
+sub add_include_dir {
   my ($self, @include_dirs) = @_;
   
   push @{$self->{include_dirs}}, @include_dirs;
 }
 
-sub add_ldflags {
+sub add_ldflag {
   my ($self, @ldflags) = @_;
   
   push @{$self->{ldflags}}, @ldflags;
 }
 
-sub add_lib_dirs {
+sub add_lib_dir {
   my ($self, @lib_dirs) = @_;
   
   push @{$self->{lib_dirs}}, @lib_dirs;
 }
 
-sub add_libs {
+sub add_lib {
   my ($self, @libs) = @_;
   
   push @{$self->{libs}}, @libs;
 }
 
-sub add_static_libs {
+sub add_static_lib {
   my ($self, @libs) = @_;
   
   my @static_libs;
@@ -604,10 +618,10 @@ sub add_static_libs {
     push @static_libs, $static_lib;
   }
   
-  $self->add_libs(@static_libs);
+  $self->add_lib(@static_libs);
 }
 
-sub add_source_files {
+sub add_source_file {
   my ($self, @source_files) = @_;
   
   push @{$self->{source_files}}, @source_files;
@@ -1133,11 +1147,15 @@ B<Example:>
 
 =head2 add_ccflags
 
+(Deprecated)
+
   $config->add_ccflags(@ccflags);
 
 Adds values after the last element of C<ccflags> field.
 
 =head2 add_ldflags
+
+(Deprecated)
 
   $config->add_ldflags(@ldflags);
 
@@ -1145,11 +1163,15 @@ Adds values after the last element of C<ldflags> field.
 
 =head2 add_include_dirs
 
+(Deprecated)
+
   $config->add_include_dirs(@include_dirs);
 
 Adds values after the last element of C<include_dirs> field.
 
 =head2 add_lib_dirs
+
+(Deprecated)
 
   $config->add_lib_dirs(@lib_dirs);
 
@@ -1157,11 +1179,15 @@ Adds values after the last element of  C<lib_dirs> field.
 
 =head2 add_source_files
 
+(Deprecated)
+
   $config->add_source_files(@source_files);
 
 Adds the values after the last element of C<source_files> field.
 
 =head2 add_libs
+
+(Deprecated)
 
   $config->add_libs(@libs);
 
@@ -1178,6 +1204,8 @@ Examples:
 
 =head2 add_static_libs
 
+(Deprecated)
+
   $config->add_static_libs(@libs);
 
 Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
@@ -1189,6 +1217,68 @@ Examples:
   $config->add_static_libs('gsl');
   $config->add_static_libs('gsl', 'z');
   $config->add_static_libs(
+    SPVM::Builder::LibInfo->new(name => 'gsl'),
+    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+  );
+
+=head2 add_ccflag
+
+  $config->add_ccflag(@ccflags);
+
+Adds values after the last element of C<ccflags> field.
+
+=head2 add_ldflag
+
+  $config->add_ldflag(@ldflags);
+
+Adds values after the last element of C<ldflags> field.
+
+=head2 add_include_dir
+
+  $config->add_include_dir(@include_dirs);
+
+Adds values after the last element of C<include_dirs> field.
+
+=head2 add_lib_dir
+
+  $config->add_lib_dir(@lib_dirs);
+
+Adds values after the last element of  C<lib_dirs> field.
+
+=head2 add_source_file
+
+  $config->add_source_file(@source_files);
+
+Adds the values after the last element of C<source_files> field.
+
+=head2 add_lib
+
+  $config->add_lib(@libs);
+
+Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+
+Examples:
+
+  $config->add_lib('gsl');
+  $config->add_lib('gsl', 'z');
+  $config->add_lib(
+    SPVM::Builder::LibInfo->new(name => 'gsl'),
+    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+  );
+
+=head2 add_static_lib
+
+  $config->add_static_lib(@libs);
+
+Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+
+C<static> field is set to a true value.
+
+Examples:
+
+  $config->add_static_lib('gsl');
+  $config->add_static_lib('gsl', 'z');
+  $config->add_static_lib(
     SPVM::Builder::LibInfo->new(name => 'gsl'),
     SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
   );
