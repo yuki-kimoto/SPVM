@@ -346,12 +346,12 @@ sub build_exe_file {
     $self->build_class_sources;
     
     # Compile precompile C source_files
-    my $precompile_object_files = $self->compile_precompile_sources;
+    my $precompile_object_files = $self->compile_precompile_source_files;
     push @$object_files, @$precompile_object_files;
   }
 
   # Compile native source files
-  my $native_object_files = $self->compile_native_sources;
+  my $native_object_files = $self->compile_native_source_files;
   push @$object_files, @$native_object_files;
   
   # Create bootstrap C source
@@ -993,7 +993,7 @@ sub build_class_sources {
   }
 }
 
-sub compile_precompile_sources {
+sub compile_precompile_source_files {
   my ($self) = @_;
 
   my $config = $self->config;
@@ -1041,7 +1041,7 @@ sub compile_precompile_sources {
   return $object_files;
 }
 
-sub compile_native_sources {
+sub compile_native_source_files {
   my ($self) = @_;
 
   my $config = $self->config;
