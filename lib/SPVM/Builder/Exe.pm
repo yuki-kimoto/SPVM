@@ -448,7 +448,7 @@ sub compile_source_file {
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
     
   if ($need_generate) {
-    $builder_cc->compile_single($compile_info, $config);
+    $builder_cc->compile_source_file($compile_info, $config);
   }
   
   my $compile_info_cc = $compile_info->{cc};
@@ -1025,7 +1025,7 @@ sub compile_precompile_sources {
       mkpath $build_object_dir;
       
       my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-      my $precompile_object_files = $builder_cc_precompile->compile(
+      my $precompile_object_files = $builder_cc_precompile->compile_source_files(
         $class_name,
         {
           input_dir => $build_src_dir,
@@ -1101,7 +1101,7 @@ sub compile_native_sources {
         push @$include_dirs, $resource_include_dir;
       }
       
-      my $object_files = $builder_cc_native->compile(
+      my $object_files = $builder_cc_native->compile_source_files(
         $class_name,
         {
           input_dir => $input_dir,
