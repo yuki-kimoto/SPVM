@@ -95,9 +95,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
 
 
 
-
-
-
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -106,7 +103,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
-    (void*)NULL, // reserved6
     (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     env_api,
@@ -116,10 +112,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_isa,
     SPVM_API_elem_isa,
     NULL, // runtime
-    NULL, // reserved16
-    NULL, // reserved17
-    NULL, // reserved18
-    NULL, // reserved19
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
@@ -150,8 +142,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_string_nolen,
     SPVM_API_new_string_raw,
     SPVM_API_new_string,
-    NULL,
-    NULL,
     SPVM_API_concat_raw,
     SPVM_API_concat,
     SPVM_API_new_stack_trace_raw,
@@ -223,7 +213,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_chars,
     SPVM_API_die,
     SPVM_API_new_object_by_name,
-    NULL,
     SPVM_API_set_field_byte_by_name,
     SPVM_API_set_field_short_by_name,
     SPVM_API_set_field_int_by_name,
@@ -258,8 +247,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_free_env_prepared,
     SPVM_API_dump_raw,
     SPVM_API_dump,
-    NULL,
-    NULL,
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
     SPVM_API_cleanup_global_vars,
@@ -276,9 +263,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_copy,
     SPVM_API_shorten,
     SPVM_API_has_interface,
-    NULL,
-    NULL,
-    NULL,
     SPVM_API_print,
     SPVM_API_print_stderr,
     SPVM_API_init_env,
@@ -286,7 +270,6 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_class_id,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
-    NULL,
     SPVM_API_new_memory_env,
     SPVM_API_free_memory_env,
     SPVM_API_get_memory_blocks_count_env,
@@ -306,25 +289,8 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_new_pointer_object_by_name,
     SPVM_API_get_elem_string,
     SPVM_API_set_elem_string,
-    NULL,
-    NULL,
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     SPVM_API_strerror_string,
     SPVM_API_get_basic_type_id_by_name,
     SPVM_API_get_field_id_static,

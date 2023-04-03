@@ -24,236 +24,205 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->object_ref_count_offset != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_basic_type_id_offset != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_type_dimension_offset != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved6 != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_flag_offset != &env_array[7]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_length_offset != &env_array[8]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api != &env_array[9]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->allocator != &env_array[10]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_env_raw != &env_array[11]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_env_raw != &env_array[12]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->isa != &env_array[13]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->elem_isa != &env_array[14]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->runtime != &env_array[15]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved19 != &env_array[19]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_basic_type_id != &env_array[20]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_id != &env_array[21]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_offset != &env_array[22]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_id != &env_array[23]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_method_id != &env_array[24]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_instance_method_id != &env_array[25]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_object_raw != &env_array[26]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_object != &env_array[27]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_byte_array_raw != &env_array[28]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_byte_array != &env_array[29]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_short_array_raw != &env_array[30]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_short_array != &env_array[31]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_int_array_raw != &env_array[32]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_int_array != &env_array[33]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_long_array_raw != &env_array[34]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_long_array != &env_array[35]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_float_array_raw != &env_array[36]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_float_array != &env_array[37]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_double_array_raw != &env_array[38]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_double_array != &env_array[39]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_object_array_raw != &env_array[40]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_object_array != &env_array[41]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_muldim_array_raw != &env_array[42]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_muldim_array != &env_array[43]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_mulnum_array_raw != &env_array[44]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_mulnum_array != &env_array[45]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_string_nolen_raw != &env_array[46]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_string_nolen != &env_array[47]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_string_raw != &env_array[48]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_string != &env_array[49]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved50 != &env_array[50]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved51 != &env_array[51]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->concat_raw != &env_array[52]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->concat != &env_array[53]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_stack_trace_raw != &env_array[54]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_stack_trace != &env_array[55]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->length != &env_array[56]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_byte != &env_array[57]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_short != &env_array[58]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_int != &env_array[59]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_long != &env_array[60]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_float != &env_array[61]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elems_double != &env_array[62]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elem_object != &env_array[63]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_elem_object != &env_array[64]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_byte != &env_array[65]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_short != &env_array[66]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_int != &env_array[67]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_long != &env_array[68]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_float != &env_array[69]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_double != &env_array[70]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_object != &env_array[71]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_byte != &env_array[72]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_short != &env_array[73]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_int != &env_array[74]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_long != &env_array[75]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_float != &env_array[76]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_double != &env_array[77]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_object != &env_array[78]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_byte != &env_array[79]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_short != &env_array[80]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_int != &env_array[81]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_long != &env_array[82]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_float != &env_array[83]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_double != &env_array[84]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_object != &env_array[85]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_byte != &env_array[86]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_short != &env_array[87]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_int != &env_array[88]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_long != &env_array[89]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_float != &env_array[90]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_double != &env_array[91]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_object != &env_array[92]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_pointer != &env_array[93]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_pointer != &env_array[94]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->call_method != &env_array[95]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_exception != &env_array[96]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_exception != &env_array[97]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_ref_count != &env_array[98]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->inc_ref_count != &env_array[99]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->dec_ref_count != &env_array[100]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->enter_scope != &env_array[101]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->push_mortal != &env_array[102]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->leave_scope != &env_array[103]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->remove_mortal != &env_array[104]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_type != &env_array[105]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_object_array != &env_array[106]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_object_basic_type_id != &env_array[107]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_object_type_dimension != &env_array[108]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->weaken != &env_array[109]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->isweak != &env_array[110]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->unweaken != &env_array[111]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->alloc_memory_block_zero != &env_array[112]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_memory_block != &env_array[113]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_memory_blocks_count != &env_array[114]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_type_name_raw != &env_array[115]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_type_name != &env_array[116]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_env != &env_array[117]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_env != &env_array[118]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->memory_blocks_count != &env_array[119]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_chars != &env_array[120]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->die != &env_array[121]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_object_by_name != &env_array[122]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved123 != &env_array[123]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_byte_by_name != &env_array[124]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_short_by_name != &env_array[125]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_int_by_name != &env_array[126]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_long_by_name != &env_array[127]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_float_by_name != &env_array[128]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_double_by_name != &env_array[129]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_field_object_by_name != &env_array[130]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_byte_by_name != &env_array[131]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_short_by_name != &env_array[132]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_int_by_name != &env_array[133]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_long_by_name != &env_array[134]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_float_by_name != &env_array[135]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_double_by_name != &env_array[136]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_object_by_name != &env_array[137]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_byte_by_name != &env_array[138]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_short_by_name != &env_array[139]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_int_by_name != &env_array[140]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_long_by_name != &env_array[141]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_float_by_name != &env_array[142]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_double_by_name != &env_array[143]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_class_var_object_by_name != &env_array[144]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_byte_by_name != &env_array[145]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_short_by_name != &env_array[146]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_int_by_name != &env_array[147]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_long_by_name != &env_array[148]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_float_by_name != &env_array[149]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_double_by_name != &env_array[150]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var_object_by_name != &env_array[151]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->call_class_method_by_name != &env_array[152]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->call_instance_method_by_name != &env_array[153]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_string_chars_by_name != &env_array[154]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_env_prepared != &env_array[155]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->dump_raw != &env_array[156]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->dump != &env_array[157]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved158 != &env_array[158]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved159 != &env_array[159]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_instance_method_id_static != &env_array[160]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_bool_object_value != &env_array[161]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->cleanup_global_vars != &env_array[162]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->make_read_only != &env_array[163]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_read_only != &env_array[164]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_array != &env_array[165]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_string != &env_array[166]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_numeric_array != &env_array[167]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_mulnum_array != &env_array[168]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elem_size != &env_array[169]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_array_proto_raw != &env_array[170]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_array_proto != &env_array[171]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->copy_raw != &env_array[172]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->copy != &env_array[173]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->shorten != &env_array[174]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->has_interface != &env_array[175]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved176 != &env_array[176]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved177 != &env_array[177]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved178 != &env_array[178]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->print != &env_array[179]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->print_stderr != &env_array[180]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->init_env != &env_array[181]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->call_init_blocks != &env_array[182]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_class_id != &env_array[183]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_stack != &env_array[184]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->free_stack != &env_array[185]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved186 != &env_array[186]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_memory_env != &env_array[187]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->free_memory_env != &env_array[188]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_memory_blocks_count_env!= &env_array[189]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_memory_stack != &env_array[190]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->free_memory_stack != &env_array[191]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_memory_blocks_count_stack != &env_array[192]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_command_info_program_name != &env_array[193]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_command_info_argv != &env_array[194]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_class_id_by_name!= &env_array[195]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->strerror != &env_array[196]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_string_array != &env_array[197]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_args_stack_length != &env_array[198]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_args_stack_length != &env_array[199]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->dumpc != &env_array[200]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_object_raw != &env_array[201]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_object != &env_array[202]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->new_pointer_object_by_name != &env_array[203]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_elem_string != &env_array[204]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_elem_string != &env_array[205]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved206 != &env_array[206]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved207 != &env_array[207]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->is_class != &env_array[208]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->is_pointer_class != &env_array[209]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved210 != &env_array[210]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved211 != &env_array[211]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved212 != &env_array[212]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved213 != &env_array[213]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved214 != &env_array[214]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved215 != &env_array[215]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved216 != &env_array[216]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved217 != &env_array[217]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved218 != &env_array[218]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved219 != &env_array[219]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved220 != &env_array[220]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved221 != &env_array[221]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved222 != &env_array[222]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved223 != &env_array[223]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->reserved224 != &env_array[224]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->strerror_string != &env_array[225]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_basic_type_id_by_name != &env_array[226]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_field_id_static != &env_array[227]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->items != &env_array[228]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->call_instance_method_static_by_name != &env_array[229]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_method_id != &env_array[230]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->strerror_nolen != &env_array[231]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->strerror_string_nolen != &env_array[232]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_compile_type_name_raw != &env_array[233]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->get_compile_type_name != &env_array[234]) { stack[0].ival = 0; return 0;}
-  if ((void*)&env->set_command_info_base_time != &env_array[235]) { stack[0].ival = 0; return 0;}
+  if ((void*)&env->object_flag_offset != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->object_length_offset != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->allocator != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_env_raw != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env_raw != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->isa != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->elem_isa != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->runtime != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_basic_type_id != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_id != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_offset != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_id != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_method_id != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_instance_method_id != &env_array[20]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_object_raw != &env_array[21]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_object != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_byte_array_raw != &env_array[23]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_byte_array != &env_array[24]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_short_array_raw != &env_array[25]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_short_array != &env_array[26]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_int_array_raw != &env_array[27]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_int_array != &env_array[28]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_long_array_raw != &env_array[29]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_long_array != &env_array[30]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_float_array_raw != &env_array[31]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_float_array != &env_array[32]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_double_array_raw != &env_array[33]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_double_array != &env_array[34]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_object_array_raw != &env_array[35]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_object_array != &env_array[36]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_muldim_array_raw != &env_array[37]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_muldim_array != &env_array[38]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_mulnum_array_raw != &env_array[39]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_mulnum_array != &env_array[40]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_string_nolen_raw != &env_array[41]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_string_nolen != &env_array[42]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_string_raw != &env_array[43]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_string != &env_array[44]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->concat_raw != &env_array[45]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->concat != &env_array[46]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack_trace_raw != &env_array[47]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack_trace != &env_array[48]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->length != &env_array[49]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_byte != &env_array[50]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_short != &env_array[51]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_int != &env_array[52]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_long != &env_array[53]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_float != &env_array[54]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elems_double != &env_array[55]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elem_object != &env_array[56]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_elem_object != &env_array[57]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_byte != &env_array[58]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_short != &env_array[59]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_int != &env_array[60]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_long != &env_array[61]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_float != &env_array[62]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_double != &env_array[63]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_object != &env_array[64]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_byte != &env_array[65]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_short != &env_array[66]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_int != &env_array[67]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_long != &env_array[68]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_float != &env_array[69]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_double != &env_array[70]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_object != &env_array[71]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_byte != &env_array[72]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_short != &env_array[73]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_int != &env_array[74]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_long != &env_array[75]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_float != &env_array[76]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_double != &env_array[77]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_object != &env_array[78]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_byte != &env_array[79]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_short != &env_array[80]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_int != &env_array[81]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_long != &env_array[82]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_float != &env_array[83]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_double != &env_array[84]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_object != &env_array[85]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_pointer != &env_array[86]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_pointer != &env_array[87]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_method != &env_array[88]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_exception != &env_array[89]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_exception != &env_array[90]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_ref_count != &env_array[91]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->inc_ref_count != &env_array[92]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dec_ref_count != &env_array[93]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->enter_scope != &env_array[94]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->push_mortal != &env_array[95]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->leave_scope != &env_array[96]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->remove_mortal != &env_array[97]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_type != &env_array[98]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_object_array != &env_array[99]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_object_basic_type_id != &env_array[100]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_object_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->weaken != &env_array[102]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->isweak != &env_array[103]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->unweaken != &env_array[104]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->alloc_memory_block_zero != &env_array[105]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_memory_block != &env_array[106]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_memory_blocks_count != &env_array[107]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_type_name_raw != &env_array[108]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_type_name != &env_array[109]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_env != &env_array[110]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env != &env_array[111]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->memory_blocks_count != &env_array[112]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_chars != &env_array[113]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->die != &env_array[114]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_object_by_name != &env_array[115]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_byte_by_name != &env_array[116]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_short_by_name != &env_array[117]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_int_by_name != &env_array[118]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_long_by_name != &env_array[119]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_float_by_name != &env_array[120]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_double_by_name != &env_array[121]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_field_object_by_name != &env_array[122]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_byte_by_name != &env_array[123]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_short_by_name != &env_array[124]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_int_by_name != &env_array[125]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_long_by_name != &env_array[126]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_float_by_name != &env_array[127]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_double_by_name != &env_array[128]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_object_by_name != &env_array[129]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_byte_by_name != &env_array[130]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_short_by_name != &env_array[131]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_int_by_name != &env_array[132]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_long_by_name != &env_array[133]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_float_by_name != &env_array[134]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_double_by_name != &env_array[135]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_object_by_name != &env_array[136]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_byte_by_name != &env_array[137]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_short_by_name != &env_array[138]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_int_by_name != &env_array[139]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_long_by_name != &env_array[140]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_float_by_name != &env_array[141]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_double_by_name != &env_array[142]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_object_by_name != &env_array[143]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_class_method_by_name != &env_array[144]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_instance_method_by_name != &env_array[145]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_string_chars_by_name != &env_array[146]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env_prepared != &env_array[147]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dump_raw != &env_array[148]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dump != &env_array[149]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_instance_method_id_static != &env_array[150]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_bool_object_value != &env_array[151]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->cleanup_global_vars != &env_array[152]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->make_read_only != &env_array[153]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_read_only != &env_array[154]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_array != &env_array[155]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_string != &env_array[156]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_numeric_array != &env_array[157]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_mulnum_array != &env_array[158]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elem_size != &env_array[159]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto_raw != &env_array[160]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto != &env_array[161]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->copy_raw != &env_array[162]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->copy != &env_array[163]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->shorten != &env_array[164]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->has_interface != &env_array[165]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->print != &env_array[166]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->print_stderr != &env_array[167]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->init_env != &env_array[168]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_init_blocks != &env_array[169]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_id != &env_array[170]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack != &env_array[171]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_stack != &env_array[172]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_memory_env != &env_array[173]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_memory_env != &env_array[174]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_memory_blocks_count_env != &env_array[175]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_memory_stack != &env_array[176]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_memory_stack != &env_array[177]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_memory_blocks_count_stack != &env_array[178]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_command_info_program_name != &env_array[179]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_command_info_argv != &env_array[180]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_id_by_name != &env_array[181]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->strerror != &env_array[182]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_string_array != &env_array[183]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_args_stack_length != &env_array[184]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_args_stack_length != &env_array[185]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dumpc != &env_array[186]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_pointer_object_raw != &env_array[187]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_pointer_object != &env_array[188]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_pointer_object_by_name != &env_array[189]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elem_string != &env_array[190]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_elem_string != &env_array[191]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_class != &env_array[192]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_pointer_class != &env_array[193]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->strerror_string != &env_array[194]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_basic_type_id_by_name != &env_array[195]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_id_static != &env_array[196]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->items != &env_array[197]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_instance_method_static_by_name != &env_array[198]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_method_id != &env_array[199]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->strerror_nolen != &env_array[200]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->strerror_string_nolen != &env_array[201]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_compile_type_name_raw != &env_array[202]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_compile_type_name != &env_array[203]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_command_info_base_time != &env_array[204]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 

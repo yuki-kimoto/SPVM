@@ -103,7 +103,6 @@ struct spvm_env {
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
-  void* reserved6;
   void* object_flag_offset;
   void* object_length_offset;
   SPVM_ENV_API* api;
@@ -113,10 +112,6 @@ struct spvm_env {
   int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
-  void* reserved16;
-  void* reserved17;
-  void* reserved18;
-  void* reserved19;
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   int32_t (*get_field_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
   int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id);
@@ -147,8 +142,6 @@ struct spvm_env {
   void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
   void* (*new_string_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
-  void* reserved50;
-  void* reserved51;
   void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
   void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
@@ -220,7 +213,6 @@ struct spvm_env {
   const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);
   int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
-  void* reserved123;
   void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int8_t value, int32_t* error, const char* func_name, const char* file, int32_t line);
   void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line);
   void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t value, int32_t* error, const char* func_name, const char* file, int32_t line);
@@ -255,8 +247,6 @@ struct spvm_env {
   void (*free_env_prepared)(SPVM_ENV* env);
   void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* reserved158;
-  void* reserved159;
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);
   void (*cleanup_global_vars)(SPVM_ENV* env);
@@ -273,9 +263,6 @@ struct spvm_env {
   void* (*copy)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*shorten)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t new_length);
   int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t interface_basic_type_id);
-  void* reserved176;
-  void* reserved177;
-  void* reserved178;
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   int32_t (*init_env)(SPVM_ENV* env);
@@ -283,7 +270,6 @@ struct spvm_env {
   int32_t (*get_class_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name);
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void* reserved186;
   void* (*new_memory_env)(SPVM_ENV* env, size_t size);
   void (*free_memory_env)(SPVM_ENV* env, void* block);
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
@@ -303,25 +289,8 @@ struct spvm_env {
   void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
   void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
   void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);
-  void* reserved206;
-  void* reserved207;
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* reserved210;
-  void* reserved211;
-  void* reserved212;
-  void* reserved213;
-  void* reserved214;
-  void* reserved215;
-  void* reserved216;
-  void* reserved217;
-  void* reserved218;
-  void* reserved219;
-  void* reserved220;
-  void* reserved221;
-  void* reserved222;
-  void* reserved223;
-  void* reserved224;
   void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
   int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
