@@ -723,6 +723,13 @@ EOS
   return $method_addresses;
 }
 
+sub create_default_config {
+  
+  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  
+  return $config;
+}
+
 1;
 
 =head1 Name
