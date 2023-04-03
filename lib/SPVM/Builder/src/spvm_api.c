@@ -2825,10 +2825,10 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   if (!class) {
     return NULL;
   }
-
+  
   // Alloc body length + 1
   int32_t fields_length = class->fields_length;
-
+  
   size_t alloc_size = (size_t)env->object_header_size + class->fields_size + 1;
   
   // Create object
@@ -2839,13 +2839,8 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
-
+  
   object->length = fields_length;
-
-  // Has destructor
-  if (class->destructor_method_id >= 0) {
-    object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
-  }
   
   return object;
 }
