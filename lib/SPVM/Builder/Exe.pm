@@ -201,7 +201,7 @@ sub get_dependent_resources {
   my $build_dir = $self->builder->build_dir;
   
   # Compiler for native module
-  my $builder_cc_native = SPVM::Builder::CC->new(
+  my $builder_cc = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -238,7 +238,7 @@ sub get_dependent_resources {
           confess "\"$module_file\" module is not loaded";
         }
       }
-      my $config = $builder_cc_native->create_native_config_from_module_file($module_file);
+      my $config = $builder_cc->create_native_config_from_module_file($module_file);
       
       my $resource_names = $config->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -964,7 +964,7 @@ sub build_class_sources {
   mkpath $build_dir;
 
   # Build precompile classes
-  my $builder_cc_precompile = SPVM::Builder::CC->new(
+  my $builder_cc = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -981,7 +981,7 @@ sub build_class_sources {
       mkpath $build_src_dir;
       my $module_file = $self->runtime->get_module_file($class_name);
       my $precompile_source = $self->runtime->build_precompile_class_source($class_name);
-      $builder_cc_precompile->build_precompile_class_source_file(
+      $builder_cc->build_precompile_class_source_file(
         $class_name,
         {
           output_dir => $build_src_dir,
@@ -1005,7 +1005,7 @@ sub compile_precompile_sources {
   my $build_dir = $self->builder->build_dir;
   
   # Build precompile classes
-  my $builder_cc_precompile = SPVM::Builder::CC->new(
+  my $builder_cc = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -1025,7 +1025,7 @@ sub compile_precompile_sources {
       mkpath $build_object_dir;
       
       my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-      my $precompile_object_files = $builder_cc_precompile->compile_source_files(
+      my $precompile_object_files = $builder_cc->compile_source_files(
         $class_name,
         {
           input_dir => $build_src_dir,
@@ -1053,7 +1053,7 @@ sub compile_native_sources {
   mkpath $build_dir;
 
   # Compiler for native module
-  my $builder_cc_native = SPVM::Builder::CC->new(
+  my $builder_cc = SPVM::Builder::CC->new(
     global_before_compile => $config->global_before_compile,
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -1090,7 +1090,7 @@ sub compile_native_sources {
           confess "\"$module_file\" module is not loaded";
         }
       }
-      my $config = $builder_cc_native->create_native_config_from_module_file($module_file);
+      my $config = $builder_cc->create_native_config_from_module_file($module_file);
       
       my $include_dirs = [];
       my $exe_config = $self->config;
@@ -1101,7 +1101,7 @@ sub compile_native_sources {
         push @$include_dirs, $resource_include_dir;
       }
       
-      my $object_files = $builder_cc_native->compile_source_files(
+      my $object_files = $builder_cc->compile_source_files(
         $class_name,
         {
           input_dir => $input_dir,
