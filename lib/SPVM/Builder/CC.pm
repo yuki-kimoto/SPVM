@@ -265,7 +265,7 @@ sub build {
     category => $category,
   };
 
-  my $object_files = $self->compile($class_name, $compile_options);
+  my $object_files = $self->compile_source_files($class_name, $compile_options);
   
   # Link object files and create dynamic library
   my $link_options = {
@@ -366,7 +366,7 @@ sub detect_quiet {
   return $quiet;
 }
 
-sub compile_single {
+sub compile_source_file {
   my ($self, $compile_info, $config) = @_;
 
   # Quiet output
@@ -385,7 +385,7 @@ sub compile_single {
   }
 }
 
-sub compile {
+sub compile_source_files {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
@@ -537,7 +537,7 @@ sub compile {
       my $work_output_dir = "$output_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
-      $self->compile_single($compile_info, $config);
+      $self->compile_source_file($compile_info, $config);
     }
     
     # Object file information
@@ -929,7 +929,7 @@ sub create_link_info {
       $compile_options->{config} = $resource_config;
     }
     $compile_options->{include_dirs} = $resource_include_dirs;
-    my $object_file_infos = $builder_cc_resource->compile($resource_class_name, $compile_options);
+    my $object_file_infos = $builder_cc_resource->compile_source_files($resource_class_name, $compile_options);
     
     push @$all_object_file_infos, @$object_file_infos;
   }

@@ -406,7 +406,7 @@ sub create_source_file {
 
 sub compile_source_file {
   my ($self, $options) = @_;
-
+  
   # Config
   my $config = $self->config;
   
