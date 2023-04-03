@@ -18,14 +18,14 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
-sub global_before_compile {
+sub before_each_compile {
   my $self = shift;
   if (@_) {
-    $self->{global_before_compile} = $_[0];
+    $self->{before_each_compile} = $_[0];
     return $self;
   }
   else {
-    return $self->{global_before_compile};
+    return $self->{before_each_compile};
   }
 }
 
@@ -527,8 +527,8 @@ sub compile_source_files {
       $config->before_compile->($config, $compile_info);
     }
 
-    if (defined $self->global_before_compile) {
-      $self->global_before_compile->($config, $compile_info);
+    if (defined $self->before_each_compile) {
+      $self->before_each_compile->($config, $compile_info);
     }
 
     # Compile a source file

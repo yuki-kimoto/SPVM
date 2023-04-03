@@ -20,14 +20,14 @@ sub new {
   return $self;
 }
 
-sub global_before_compile {
+sub before_each_compile {
   my $self = shift;
   if (@_) {
-    $self->{global_before_compile} = $_[0];
+    $self->{before_each_compile} = $_[0];
     return $self;
   }
   else {
-    return $self->{global_before_compile};
+    return $self->{before_each_compile};
   }
 }
 
