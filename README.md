@@ -11,6 +11,10 @@
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeAPI">Native API</a>
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeModule">Native Module</a>
 
+## Wiki
+
+* <a href="https://github.com/yuki-kimoto/SPVM/wiki">Wiki</a>
+
 ## Standard Modules
 
 * <a href="https://metacpan.org/pod/SPVM::Document::Modules">SPVM Standard Modules</a>
