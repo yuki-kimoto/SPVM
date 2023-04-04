@@ -10,6 +10,7 @@
 * <a href="https://metacpan.org/pod/SPVM::Document::ExchangeAPI">Exchange API</a>
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeAPI">Native API</a>
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeModule">Native Module</a>
+* <a href="https://metacpan.org/pod/SPVM::Document::Resource">Resource</a>
 
 ## Wiki
 
