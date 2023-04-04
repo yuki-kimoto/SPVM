@@ -306,7 +306,7 @@ SPVM::$class_name - Short Description
 
 =head1 Description
 
-C<SPVM::$class_name> is the C<$class_name> class in L<SPVM> language.
+The C<$class_name> class of L<SPVM> has methods to do someting.
 
 =head1 Usage
 
