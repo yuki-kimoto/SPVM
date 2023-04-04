@@ -10,6 +10,11 @@
 * <a href="https://metacpan.org/pod/SPVM::Document::ExchangeAPI">Exchange API</a>
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeAPI">Native API</a>
 * <a href="https://metacpan.org/pod/SPVM::Document::NativeModule">Native Module</a>
+* <a href="https://metacpan.org/pod/SPVM::Document::Resource">Resource</a>
+
+## Wiki
+
+* <a href="https://github.com/yuki-kimoto/SPVM/wiki">Wiki</a>
 
 ## Standard Modules
 
@@ -34,10 +39,8 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-MIME-Base64">SPVM::MIME::Base64</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Regex">SPVM::Regex</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-RE2">SPVM::Resource::RE2</a>
-* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Re2-V2022_06_01">SPVM::Resource::Re2-V2022_06_01</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-SocketUtil">SPVM::Resource::SocketUtil</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-Zlib">SPVM::Resource::Zlib</a>
-* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Zlib-V1_2_11">SPVM::Resource::Zlib::V1_2_11</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Sys">SPVM::Sys</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-Local">SPVM::Time::Local</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Unicode">SPVM::Unicode</a>
