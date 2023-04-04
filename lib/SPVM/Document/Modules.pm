@@ -162,11 +162,9 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<Resource::RE2|SPVM::Resource::RE2>
 
-=item * L<Resource::Re2::V2022_06_01|SPVM::Resource::Re2::V2022_06_01>
-
 =item * L<Resource::SocketUtil|SPVM::Resource::SocketUtil>
 
-=item * L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>
+=item * L<Resource::Zlib|SPVM::Resource::Zlib>
 
 =item * L<Sys|SPVM::Sys>
 
