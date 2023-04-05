@@ -38,6 +38,7 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Math">SPVM::Math</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-MIME-Base64">SPVM::MIME::Base64</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Regex">SPVM::Regex</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Libpng">SPVM::Resource::Libpng</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-RE2">SPVM::Resource::RE2</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-SocketUtil">SPVM::Resource::SocketUtil</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-Zlib">SPVM::Resource::Zlib</a>
@@ -52,7 +53,6 @@
 ## Highly Experimental CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Numpy">SPVM::Numpy</a>
-* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Libpng">SPVM::Resource::Libpng</a>
 
 ## Examples
 
