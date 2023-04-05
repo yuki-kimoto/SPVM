@@ -160,6 +160,8 @@ The list of some CPAN modules. All CPAN modules are yet experimental status.
 
 =item * L<Regex|SPVM::Regex>
 
+=item * L<Resource::Libpng|SPVM::Resource::Libpng>
+
 =item * L<Resource::RE2|SPVM::Resource::RE2>
 
 =item * L<Resource::SocketUtil|SPVM::Resource::SocketUtil>
