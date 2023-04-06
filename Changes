@@ -1,3 +1,9 @@
+0.9702 2023-04-03
+  [Changes]
+    * Improved the exception message when native source files are compiled.
+      [After]
+        "The $source_file file can't be compiled by the following command:\n@$cc_cmd\n"
+    * Even if the compilation of a native source file failed, the command is output to STDERR.
 0.9701 2023-04-03
   [Version Number Fix]
     * This release is 0.9701.

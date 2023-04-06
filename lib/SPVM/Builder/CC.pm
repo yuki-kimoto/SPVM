@@ -378,11 +378,12 @@ sub compile_source_file {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   my $cc_cmd = $compile_info->create_compile_command;
   
-  $cbuilder->do_system(@$cc_cmd)
-    or confess "Can't compile $source_file: @$cc_cmd";
   unless ($quiet) {
     warn "@$cc_cmd\n";
   }
+  
+  $cbuilder->do_system(@$cc_cmd)
+    or confess "The $source_file file can't be compiled by the following command:\n@$cc_cmd\n";
 }
 
 sub compile_source_files {
