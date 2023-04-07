@@ -166,8 +166,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Time::Info');
     
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Compiler');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Runtime');

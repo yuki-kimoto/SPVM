@@ -1,3 +1,7 @@
+0.9703 2023-04-07
+  [Incompatible Changes]
+    * Removed SPVM::Time. Use SPVM::Sys::Time instead.
+    * Removed SPVM::Time::Info. Use SPVM::Sys::Time::Tm instead.
 0.9702 2023-04-07
   [Changes]
     * Improved the exception message when native source files are compiled.
