@@ -625,3 +625,23 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__object_to_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* object = stack[0].oval;
+  
+  int32_t int_value = (int32_t)(intptr_t)object;
+  
+  stack[0].ival = int_value;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__object_to_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* object = stack[0].oval;
+  
+  int64_t long_value = (int64_t)(intptr_t)object;
+  
+  stack[0].lval = long_value;
+  
+  return 0;
+}

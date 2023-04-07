@@ -3,6 +3,8 @@
     * Added the following methods in the Fn class.
     
       static method merge_options : object[] ($options1 : object[], $options2 : object[]);
+      static method object_to_int : int ($object : object);
+      static method object_to_long : long ($object : object);
       
     * Added the following methods in the Sort class.
     

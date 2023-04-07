@@ -1086,6 +1086,18 @@ Examples:
 
   my $merged_options = Fn->merge_options({foo => 1, bar => 2}, {baz => 5});
 
+=head2 object_to_int
+
+  native static method object_to_int : int ($object : object);
+
+Converts the address of the $object to a value of the int type, and returns it.
+
+=head2 object_to_long
+
+  native static method object_to_long : int ($object : object);
+
+Converts the address of the $object to a value of the long type, and returns it.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

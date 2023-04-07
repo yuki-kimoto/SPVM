@@ -151,6 +151,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->utf8_substr);
     
     ok(SPVM::TestCase::Module::Fn->merge_options);
+    ok(SPVM::TestCase::Module::Fn->object_to_int);
+    ok(SPVM::TestCase::Module::Fn->object_to_long);
   }
   
   # Extra

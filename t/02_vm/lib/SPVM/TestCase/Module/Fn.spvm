@@ -4193,4 +4193,50 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+
+  static method object_to_int : int () {
+    
+    {
+      my $int = Fn->object_to_int(Int->new(1));
+      unless ($int isa int) {
+        return 0;
+      }
+      if ($int == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $int = Fn->object_to_int(undef);
+      
+      unless ($int == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method object_to_long : int () {
+    
+    {
+      my $long = Fn->object_to_long(Int->new(1));
+      unless ($long isa long) {
+        return 0;
+      }
+      if ($long == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $long = Fn->object_to_long(undef);
+      unless ($long == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

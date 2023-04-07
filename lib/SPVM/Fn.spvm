@@ -1230,4 +1230,8 @@ class Fn {
     
     return $merged_options;
   }
+  
+  native static method object_to_int : int ($object : object);
+    
+  native static method object_to_long : long ($object : object);
 }
