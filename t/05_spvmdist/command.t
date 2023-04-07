@@ -279,7 +279,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'MIT License'));
   
@@ -319,7 +319,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
   my $native_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.c";
   ok(-f $native_module_file);
@@ -641,7 +641,7 @@ for my $test_index (0 .. 1) {
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
+  ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
   my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
   ok(!-f $native_module_file);
@@ -669,7 +669,7 @@ for my $test_index (0 .. 1) {
   
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_c99(file => __FILE__);'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
 
 

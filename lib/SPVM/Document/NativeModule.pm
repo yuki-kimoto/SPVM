@@ -35,7 +35,7 @@ I show some examples of native config files.
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   $config;
 
@@ -116,7 +116,7 @@ I show some examples of native config files.
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Output the commands of the compililation and link
   $config->quiet(0);
@@ -129,7 +129,7 @@ I show some examples of native config files.
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Force the compilation and the link
   $config->force(1);

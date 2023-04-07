@@ -725,7 +725,7 @@ EOS
 
 sub create_default_config {
   
-  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
   
   return $config;
 }

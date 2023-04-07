@@ -52,7 +52,7 @@ int32_t SPVM__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 // The follwoing algorithm is copied from https://github.com/python/cpython/blob/main/Python/pyhash.c
-#define Py_ssize_t ssize_t
+#define Py_ssize_t int64_t
 #  define _le64toh(x) (((uint64_t)(x) << 56) | \
                       (((uint64_t)(x) << 40) & 0xff000000000000ULL) | \
                       (((uint64_t)(x) << 24) & 0xff0000000000ULL) | \

@@ -176,7 +176,7 @@ sub new {
     }
   }
   else {
-    $config = SPVM::Builder::Config::Exe->new_gnu99(file_optional => 1);
+    $config = SPVM::Builder::Config::Exe->new_c99(file_optional => 1);
   }
   $self->{config} = $config;
   

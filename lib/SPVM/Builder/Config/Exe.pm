@@ -63,7 +63,7 @@ SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
   use SPVM::Builder::Config::Exe;
   
-  my $config = SPVM::Builder::Config::Exe->new_gnu99;
+  my $config = SPVM::Builder::Config::Exe->new_c99;
 
 =head1 Description
 

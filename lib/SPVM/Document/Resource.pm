@@ -8,7 +8,7 @@ A resource is a L<native module|SPVM::Document::NativeModule> that contains a se
 
 A resource doesn't has the native module file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
 
-Let's see the files of L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11> as an example.
+Let's see the files of L<Resource::Zlib|SPVM::Resource::Zlib> as an example.
 
 B<SPVM/Resource/Zlib/V1_2_11.config>
 
@@ -16,7 +16,7 @@ B<SPVM/Resource/Zlib/V1_2_11.config>
   use warnings;
    
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
    
   # C souce files
   my @source_files = qw(
@@ -38,7 +38,7 @@ B<SPVM/Resource/Zlib/V1_2_11.config>
   );
   $config->add_source_file(@source_files);
    
-  my @ccflags = qw(-D_GNU_SOURCE);
+  my @ccflags = '-D_LARGEFILE64_SOURCE';
    
   $config->add_ccflag(@ccflags);
    
@@ -72,26 +72,19 @@ The source files of C<zlib>.
   configure
   contrib
   crc32.c
-  crc32.h
   deflate.c
-  deflate.h
   doc
   examples
   FAQ
   gzclose.c
-  gzguts.h
   gzlib.c
   gzread.c
   gzwrite.c
   INDEX
   infback.c
   inffast.c
-  inffast.h
-  inffixed.h
   inflate.c
-  inflate.h
   inftrees.c
-  inftrees.h
   Makefile
   Makefile.in
   make_vms.com
@@ -104,35 +97,31 @@ The source files of C<zlib>.
   test
   treebuild.xml
   trees.c
-  trees.h
   uncompr.c
   watcom
   win32
-  zconf.h
   zconf.h.cmakein
   zconf.h.in
   zlib2ansi
   zlib.3
   zlib.3.pdf
-  zlib.h
   zlib.map
   zlib.pc.cmakein
   zlib.pc.in
   zutil.c
-  zutil.h
 
 =head1 Using Resource
 
-The method L<SPVM::Builder::Config/"use_resource">  loads a resource. C<MyZlib> is a L<native module|SPVM::Document::NativeModule> to use L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>.
+The method L<SPVM::Builder::Config/"use_resource">  loads a resource. C<MyZlib> is a L<native module|SPVM::Document::NativeModule> to use L<Resource::Zlib|SPVM::Resource::Zlib>.
 
 B<lib/SPVM/MyZlib.config>
 
   use strict;
   use warnings;
   
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
   
-  $config->use_resource('Resource::Zlib::V1_2_11');
+  $config->use_resource('Resource::Zlib');
   
   $config;
 
@@ -146,7 +135,7 @@ Define a native method C<test_gzopen_gzread>.
 
 B<lib/SPVM/MyZlib.c>
 
-C<zlib.h> can be included because L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11> is used.
+C<zlib.h> can be included because L<Resource::Zlib|SPVM::Resource::Zlib> is used.
 
   #include "spvm_native.h"
   
@@ -209,7 +198,7 @@ B<L<Resource::Zlib|SPVM::Resource::Zlib>>
 
 =over 2
 
-=item * L<Resource::Zlib::V1_2_11|SPVM::Resource::Zlib::V1_2_11>
+=item * L<Resource::Zlib|SPVM::Resource::Zlib>
 
 =back
 

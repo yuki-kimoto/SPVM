@@ -563,7 +563,7 @@ SPVM Native Method. This means SPVM method call C/C++ native method:
   use warnings;
   
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   $config;
 
@@ -655,7 +655,7 @@ Native Config.
   use warnings;
   
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   $config;
 

@@ -356,7 +356,7 @@ sub generate_native_config_file {
   my $native = $self->native;
   my $new_method;
   if ($native eq 'c') {
-    $new_method = 'new_gnu99';
+    $new_method = 'new_c99';
   }
   elsif ($native eq 'c++') {
     $new_method = 'new_cpp';
@@ -804,7 +804,7 @@ sub generate_basic_test_native_config_file {
   my $native = $self->native;
   my $new_method;
   if ($native eq 'c') {
-    $new_method = 'new_gnu99';
+    $new_method = 'new_c99';
   }
   elsif ($native eq 'c++') {
     $new_method = 'new_cpp';
