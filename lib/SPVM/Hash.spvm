@@ -28,11 +28,7 @@ class Hash {
     $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     
-    my $self_address = Format->sprintf("%p", $self);
-    my $seed_int32 = 0;
-    for (my $i = 0; $i < length $self_address; $i++) {
-      $seed_int32 += $self_address->[$i];
-    }
+    my $seed_int32 = Fn->object_to_int($self);
     
     $self->{seed128} = (mutable string)new_string_len 16;
     $self->build_seed128($seed_int32, $self->{seed128});
