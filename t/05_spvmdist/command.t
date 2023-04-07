@@ -635,6 +635,15 @@ for my $test_index (0 .. 1) {
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
 
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.c:"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "new_c99"));
+  ok(!SPVM::Builder::Util::file_contains($perl_module_file, 'extern "C"'));
+
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(!-f $spvm_module_file);
 
@@ -691,6 +700,15 @@ for my $test_index (0 .. 1) {
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
 
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.cpp:"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "new_cpp"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'extern "C"'));
+  
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(!-f $spvm_module_file);
 
@@ -767,6 +785,34 @@ for my $test_index (0 .. 1) {
   my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
+  
+  chdir($save_cur_dir) or die;
+}
+
+# --interface
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --interface Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
+  ok(-f $makefile_pl_file);
+
+  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_module_file);
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Foo interface"));
+  ok(SPVM::Builder::Util::file_contains($perl_module_file, "=head1 Interface Methods"));
+
+  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_module_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo : interface_t {"));
   
   chdir($save_cur_dir) or die;
 }

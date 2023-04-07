@@ -79,6 +79,17 @@ sub resource {
   }
 }
 
+sub interface {
+  my $self = shift;
+  if (@_) {
+    $self->{interface} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{interface};
+  }
+}
+
 sub only_lib_files {
   my $self = shift;
   if (@_) {
@@ -247,12 +258,19 @@ sub generate_spvm_module_file {
   
   # Year
   my $year = $self->_year;
+
+  my $interface = $self->interface;
+  
+  my $attributes = "";
+  if ($interface) {
+    $attributes = ": interface_t ";
+  }
   
   my $spvm_module_content = <<"EOS";
 # Copyright (c) $year $user_name
 # MIT License
 
-class $class_name {
+class $class_name ${attributes}{
 
 }
 EOS
@@ -291,23 +309,148 @@ sub generate_perl_module_file {
   if ($only_lib_files) {
     $version = '';
   }
+
+  my $interface = $self->interface;
+  my $resource = $self->resource;
   
-  # Content
-  my $perl_module_content = <<"EOS";
-package SPVM::$class_name;
+  # Description
+  my $description;
+  my $main_doc;
+  if ($interface) {
+    $description = "The $class_name interface of L<SPVM> has interface methods for someting.";
+    $main_doc  = <<"EOS";
+=head1 Usage
 
-$version
+  interface $class_name;
 
-1;
+=head1 Interface Methods
 
-=head1 Name
 
-SPVM::$class_name - Short Description
 
-=head1 Description
+EOS
+  }
+  elsif ($resource) {
+    $description = "The $class_name resource of L<SPVM> is a L<resouce|SPVM::Document::Resource> for someting.";
+    
+    my $native = $self->native;
+    my $new_method;
+    if ($native eq 'c') {
+      $new_method = 'new_c99';
+    }
+    elsif ($native eq 'c++') {
+      $new_method = 'new_cpp';
+    }
+    
+    my $native_module_ext;
+    if (defined $native) {
+      if ($native eq 'c') {
+        $native_module_ext = 'c';
+      }
+      elsif ($native eq 'c++') {
+        $native_module_ext = 'cpp';
+      }
+    }
+    
+    # extern C for C++
+    my $extern_c_start;
+    my $extern_c_end;
+    if ($native eq 'c++') {
+      $extern_c_start = qq(extern "C" {);
+      $extern_c_end = "}";
+    }
+    else {
+      $extern_c_start = '';
+      $extern_c_end = '';
+    }
+    
+    $main_doc  = <<"EOS";
+=head1 Usage
 
-The C<$class_name> class of L<SPVM> has methods to do someting.
+MyClass.config:
+  
+  my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
+  
+  \$config->use_resource('$class_name');
+  
+  \$config;
 
+MyClass.$native_module_ext:
+
+  #include "spvm_native.h"
+  #include "foo.h"
+  
+  $extern_c_start
+  
+  int32_t SPVM__MyClass__test(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    // Use functions in foo.h
+    
+    return 0;
+  }
+  
+  $extern_c_end
+  
+=head1 Original Product
+
+
+
+=head1 Original Product Version
+
+
+
+=head1 Language
+
+
+
+=head1 Language Specification
+
+
+
+=head1 Required Libraries
+
+
+
+=head1 Required Linker Flags
+
+
+
+=head1 Required Resources
+
+
+
+=head1 Header Files
+
+
+
+=head1 Source Files
+
+
+
+=head1 Compiler Flags
+
+
+
+=head1 How to Create Resource
+
+
+
+=head2 Donwload
+
+
+
+=head2 Extracting Source Files
+
+
+
+=head2 Extracting Header Files
+
+
+
+EOS
+  }
+  else {
+    $description = "The $class_name class of L<SPVM> has methods for someting.";
+    $main_doc  = <<"EOS";
 =head1 Usage
 
   use $class_name;
@@ -324,6 +467,27 @@ The C<$class_name> class of L<SPVM> has methods to do someting.
 
 
 
+EOS
+  }
+  
+  # Content
+  my $perl_module_content = "";
+  $perl_module_content = <<"EOS";
+package SPVM::$class_name;
+
+$version
+
+1;
+
+=head1 Name
+
+SPVM::$class_name - Short Description
+
+=head1 Description
+
+$description
+
+$main_doc
 =head1 Repository
 
 
@@ -899,7 +1063,12 @@ sub generate_dist {
   }
   
   my $native = $self->native;
+  my $interface = $self->interface;
   my $resource = $self->resource;
+  
+  if ($interface && $resource) {
+    die "The --interface option and the --resource option cannot be specified at the same time"
+  }
   
   my $class_name_rel_file = $class_name;
   $class_name_rel_file =~ s|::|/|g;
@@ -989,7 +1158,7 @@ SPVM::Dist - Generating SPVM Distrubution
 
 =head2 Description
 
-C<SPVM::Dist> generates a SPVM Distrubution.
+The SPVM::Dist class has methods to generate a SPVM Distrubution.
 
 =head2 Usage
 
