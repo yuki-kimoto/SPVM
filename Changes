@@ -1,4 +1,6 @@
 0.9703 2023-04-07
+  [Changes]
+    * Hash randomization doesn't use system time as the seed. Use the address of the Hash object.
   [Incompatible Changes]
     * Removed SPVM::Time. Use SPVM::Sys::Time instead.
     * Removed SPVM::Time::Info. Use SPVM::Sys::Time::Tm instead.

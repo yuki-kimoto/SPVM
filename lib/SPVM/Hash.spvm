@@ -7,8 +7,8 @@ class Hash {
   use Hash::Entry;
   use Fn;
   use Array;
-  use Time;
   use Sort;
+  use Format;
 
   has bucket_count : int;
   has count : ro int;
@@ -27,8 +27,13 @@ class Hash {
     $self->{bucket_count} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
-
-    my $seed_int32 = (int)(Time->time * class_id Hash);
+    
+    my $self_address = Format->sprintf("%p", $self);
+    my $seed_int32 = 0;
+    for (my $i = 0; $i < length $self_address; $i++) {
+      $seed_int32 += $self_address->[$i];
+    }
+    
     $self->{seed128} = (mutable string)new_string_len 16;
     $self->build_seed128($seed_int32, $self->{seed128});
     

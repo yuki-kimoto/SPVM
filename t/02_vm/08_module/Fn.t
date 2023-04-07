@@ -22,6 +22,8 @@ my $POSITIVE_INFINITY = 9**9**9;
 my $NaN = 9**9**9 / 9**9**9;
 my $nan_re = qr/(nan|ind)/i;
 
+my $seed = time();
+
 # Fn
 {
   # Enumerations
@@ -83,7 +85,7 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->chr);
     ok(SPVM::TestCase::Module::Fn->contains);
     ok(SPVM::TestCase::Module::Fn->copy_string);
-    ok(SPVM::TestCase::Module::Fn->crand);
+    ok(SPVM::TestCase::Module::Fn->crand($seed));
     ok(SPVM::TestCase::Module::Fn->equals_string_range);
     ok(SPVM::TestCase::Module::Fn->get_code_point);
     ok(SPVM::TestCase::Module::Fn->hex);
@@ -119,7 +121,7 @@ my $nan_re = qr/(nan|ind)/i;
     ok(SPVM::TestCase::Module::Fn->memcpy);
     ok(SPVM::TestCase::Module::Fn->memmove);
     ok(SPVM::TestCase::Module::Fn->ord);
-    ok(SPVM::TestCase::Module::Fn->rand);
+    ok(SPVM::TestCase::Module::Fn->rand($seed));
     ok(SPVM::TestCase::Module::Fn->repeat);
     ok(SPVM::TestCase::Module::Fn->replace_chars);
     ok(SPVM::TestCase::Module::Fn->rindex);

@@ -309,8 +309,8 @@ This method is thread safe.
 
 Examples:
   
-  use Time;
-  my $seed = (int)Time->time;
+  use Sys::Time;
+  my $seed = (int)Sys::Time->time;
   my $crand0 = Fn->crand(\$seed);
   my $crand1 = Fn->crand(\$seed);
 
@@ -669,8 +669,8 @@ This method is thread safe.
 
 Examples:
 
-  use Time;
-  my $seed = (int)Time->time;
+  use Sys::Time;
+  my $seed = (int)Sys::Time->time;
   my $rand0 = Fn->rand(\$seed);
   my $rand1 = Fn->rand(\$seed);
 

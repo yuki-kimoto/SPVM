@@ -108,10 +108,6 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =item * L<StringList|SPVM::StringList>
 
-=item * L<Time|SPVM::Time>
-
-=item * L<Time::Info|SPVM::Time::Info>
-
 =back
 
 =head1 CPAN Modules

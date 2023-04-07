@@ -2,10 +2,9 @@ class TestCase::Module::Fn {
   use Fn;
   use TestCase::Minimal;
   use Complex_2d;
-  use Time;
   use Array;
-  use Time::Info;
   use Point;
+  use TestCase::Pointer;
   
   static method GET_CODE_POINT_ERROR_OVER_STRING_RANGE : int () {
     
@@ -689,12 +688,11 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method crand : int () {
+  static method crand : int ($seed) {
     
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
     my $rand = 0;
-    my $seed = (int)Time->time;
     for (my $i = 0; $i < 100000; $i++) {
       $rand = Fn->crand(\$seed);
       my $dig0 = $rand % 10;
@@ -1841,7 +1839,7 @@ class TestCase::Module::Fn {
     
     # Class
     {
-      my $object = Time::Info->new;
+      my $object = TestCase::Pointer->new;
       
       unless (Fn->is_pointer_class($object)) {
         return 0;
@@ -2519,13 +2517,12 @@ class TestCase::Module::Fn {
     return 1;
   }
 
-  static method rand : int () {
+  static method rand : int ($seed : int) {
     
     # 0 <= random_number < 1
     {
       my $rand = 0.0;
       my $invalid_range = 0;
-      my $seed = (int)Time->time;
       for (my $i = 0; $i < 100000; $i++) {
         $rand = Fn->rand(\$seed);
         
@@ -2545,7 +2542,6 @@ class TestCase::Module::Fn {
       my $founds_plus = new int[10];
       my $founds_minus = new int[10];
       my $rand = 0.0;
-      my $seed = (int)Time->time;
       for (my $i = 0; $i < 100000; $i++) {
         $rand = Fn->rand(\$seed);
         
@@ -2565,7 +2561,6 @@ class TestCase::Module::Fn {
       my $founds_plus = new int[10];
       my $founds_minus = new int[10];
       my $rand = 0.0;
-      my $seed = (int)Time->time;
       for (my $i = 0; $i < 100000; $i++) {
         $rand = Fn->rand(\$seed, 10);
         
