@@ -1399,4 +1399,65 @@ class TestCase::Module::Sort {
     
     return 1;
   }
+
+  static method sort_options_asc : int () {
+    {
+      my $options = {key3 => 3, key2 => 2, key1 => 1};
+      Sort->sort_options_asc($options);
+      
+      unless ((string)$options->[0] eq "key1") {
+        return 0;
+      }
+      unless ((int)$options->[1] == 1) {
+        return 0;
+      }
+      unless ((string)$options->[2] eq "key2") {
+        return 0;
+      }
+      unless ((int)$options->[3] == 2) {
+        return 0;
+      }
+      unless ((string)$options->[4] eq "key3") {
+        return 0;
+      }
+      unless ((int)$options->[5] == 3) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Sort->sort_options_asc(undef); };
+        unless (Fn->contains($@, "The \$options must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Sort->sort_options_asc([(object)"key1" => 1, "key2"]); };
+        unless (Fn->contains($@, "The length of the \$options must be an even number")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Sort->sort_options_asc([(object)undef,  1]); };
+        unless (Fn->contains($@, "The key of the \$options must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Sort->sort_options_asc([(object)true,  1]); };
+        unless (Fn->contains($@, "The key of the \$options must be the string type")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

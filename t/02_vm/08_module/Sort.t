@@ -35,6 +35,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Sort->sort_string);
   ok(SPVM::TestCase::Module::Sort->sort_string_asc);
   ok(SPVM::TestCase::Module::Sort->sort_string_desc);
+  ok(SPVM::TestCase::Module::Sort->sort_options_asc);
 }
 
 # All object is freed

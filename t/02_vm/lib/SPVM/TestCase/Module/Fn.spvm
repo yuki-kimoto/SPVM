@@ -5,6 +5,8 @@ class TestCase::Module::Fn {
   use Array;
   use Point;
   use TestCase::Pointer;
+  use Hash;
+  use Sort;
   
   static method GET_CODE_POINT_ERROR_OVER_STRING_RANGE : int () {
     
@@ -4061,6 +4063,129 @@ class TestCase::Module::Fn {
       eval { Fn->utf8_substr("あいう", 1, 3); };
       unless (Fn->contains($@, "The \$utf8_offset + the \$utf8_length must be less than or equal to the UTF-8 length of the \$string")) {
         return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method merge_options : int () {
+    
+    {
+      my $merged_options = Fn->merge_options({key1 => 1, key2 => 2}, {key3 => "abc", key4 => "def"});
+      unless (@$merged_options == 8) {
+        return 0;
+      }
+      
+      Sort->sort_options_asc($merged_options);
+      
+      unless ($merged_options->[0]->(string) eq "key1") {
+        return 0;
+      }
+      
+      unless ($merged_options->[1]->(int) == 1) {
+        return 0;
+      }
+      unless ($merged_options->[2]->(string) eq "key2") {
+        return 0;
+      }
+      unless ($merged_options->[3]->(int) == 2) {
+        return 0;
+      }
+      unless ($merged_options->[4]->(string) eq "key3") {
+        return 0;
+      }
+      unless ($merged_options->[5]->(string) eq "abc") {
+        return 0;
+      }
+      unless ($merged_options->[6]->(string) eq "key4") {
+        return 0;
+      }
+      unless ($merged_options->[7]->(string) eq "def") {
+        return 0;
+      }
+    }
+    
+    {
+      my $merged_options = Fn->merge_options({key1 => 1, key2 => 2}, {key2 => "abc", key4 => "def"});
+      unless (@$merged_options == 6) {
+        return 0;
+      }
+      
+      Sort->sort_options_asc($merged_options);
+      
+      unless ($merged_options->[0]->(string) eq "key1") {
+        return 0;
+      }
+      
+      unless ($merged_options->[1]->(int) == 1) {
+        return 0;
+      }
+      unless ($merged_options->[2]->(string) eq "key2") {
+        return 0;
+      }
+      unless ($merged_options->[3]->(string) eq "abc") {
+        return 0;
+      }
+      unless ($merged_options->[4]->(string) eq "key4") {
+        return 0;
+      }
+      unless ($merged_options->[5]->(string) eq "def") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->merge_options(undef, {}); };
+        unless (Fn->contains($@, "The \$options1 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options({}, undef); };
+        unless (Fn->contains($@, "The \$options2 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options(["a"], {}); };
+        unless (Fn->contains($@, "The length of the \$options1 must be an even number")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options({}, ["a"]); };
+        unless (Fn->contains($@, "The length of the \$options2 must be an even number")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options([(object)undef, 1], {}); };
+        unless (Fn->contains($@, "The key of the \$options1 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options({}, [(object)undef, 1]); };
+        unless (Fn->contains($@, "The key of the \$options2 must be defined")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options([(object)1, 1], {}); };
+        unless (Fn->contains($@, "The key of the \$options1 must be the string type")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->merge_options({}, [(object)1, 1]); };
+        unless (Fn->contains($@, "The key of the \$options2 must be the string type")) {
+          return 0;
+        }
       }
     }
     

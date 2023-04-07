@@ -1,4 +1,13 @@
 0.9703 2023-04-07
+  [New Features]
+    * Added the following methods in the Fn class.
+    
+      static method merge_options : object[] ($options1 : object[], $options2 : object[]);
+      
+    * Added the following methods in the Sort class.
+    
+      static method sort_options_asc : void ($options : object[]);
+      
   [Changes]
     * Hash randomization doesn't use system time as the seed. Use the address of the Hash object.
   [Incompatible Changes]

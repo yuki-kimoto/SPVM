@@ -680,4 +680,49 @@ class Sort {
     Sort->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
+  precompile static method sort_options_asc : void ($options : object[]) {
+    unless ($options) {
+      die "The \$options must be defined";
+    }
+    
+    my $options_length = @$options;
+    unless ($options_length % 2 == 0) {
+      die "The length of the \$options must be an even number";
+    }
+    
+    my $sorted_options_h = Hash->new;
+    
+    my $key_values_list = List->new;
+    for (my $i = 0; $i < $options_length; $i += 2) {
+      unless ($options->[$i]) {
+        die "The key of the \$options must be defined";
+      }
+      
+      unless ($options->[$i] isa string) {
+        die "The key of the \$options must be the string type";
+      }
+      my $name = (string)$options->[$i];
+      my $value = $options->[$i + 1];
+      
+      $key_values_list->push({$name => $value});
+    }
+    
+    my $key_values = $key_values_list->to_array;
+    
+    Sort->sort_object($key_values, method : int ($object1 : object, $object2 : object) {
+      my $name1 = $object1->(object[])->[0]->(string);
+      my $name2 = $object2->(object[])->[0]->(string);
+      
+      return $name1 cmp $name2;
+    });
+    
+    my $index = 0;
+    for my $key_value (@$key_values) {
+      my $key = $key_value->(object[])->[0];
+      my $value = $key_value->(object[])->[1];
+      $options->[$index] = $key;
+      $options->[$index + 1] = $value;
+      $index += 2;
+    }
+  }
 }

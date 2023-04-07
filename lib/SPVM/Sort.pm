@@ -400,6 +400,26 @@ The alias for the following code using L</"sort_string">
 
   Sort->sort_string($array, method : int ($a : string, $b : string) { return $b cmp $a; }, $offset, $length);
 
+=head2 sort_options_asc
+
+  static method sort_options_asc : void ($options : object[]);
+
+Sorts the $options by the dictionaly asc order of the key.
+
+Exceptions:
+
+The $options must be defined. Otherwise an exception is thrown.
+
+The length of the $options must be an even number. Otherwise an exception is thrown.
+
+The key of the $options must be defined. Otherwise an exception is thrown.
+
+The key of the $options must be the string type. Otherwise an exception is thrown.
+
+Examples:
+
+  Sort->sort_options({key2 => 1, key3 => 2, key1 => 3});
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

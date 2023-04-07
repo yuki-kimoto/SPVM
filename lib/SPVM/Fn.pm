@@ -8,6 +8,10 @@ package SPVM::Fn;
 
 SPVM::Fn - SPVM Starndard Functions
 
+=head1 Description
+
+The Fn class of L<SPVM> has methods for numbers, strings, general utilities.
+
 =head1 Usage
 
   use Fn;
@@ -32,10 +36,6 @@ SPVM::Fn - SPVM Starndard Functions
   my $short_max = Fn->SHORT_MAX();
   my $int_max = Fn->INT_MAX();
   my $long_max = Fn->LONG_MAX();
-
-=head1 Description
-
-C<Fn> module provides SPVM Starndard Functions. C<Fn> contains number, string and array utilities.
 
 =head1 Enumerations
 
@@ -1053,6 +1053,38 @@ Examples:
 
   # "いえ"
   my $utf8_substr = Fn->utf8_substr("あいうえ", 1, 2);
+
+=head2 merge_options
+
+  static method merge_options : object[] ($options1 : object[], $options2 : object[]);
+
+Creates a new any object array merging the $options1 and the $options2, and returns it.
+
+If the $options2 contains the same key of the $options1, the key of the $options1 is overwritten by the key of $options2.
+
+Exceptions:
+
+The $options1 must be defined. Otherwise an exception is thrown.
+
+The $options2 must be defined. Otherwise an exception is thrown.
+
+The length of the $options1 must be an even number. Otherwise an exception is thrown.
+
+The length of the $options2 must be an even number. Otherwise an exception is thrown.
+
+The key of the $options1 must be defined. Otherwise an exception is thrown.
+
+The key of the $options1 must be the string type. Otherwise an exception is thrown.
+
+The key of the $options2 must be defined. Otherwise an exception is thrown.
+
+The key of the $options2 must be the string type. Otherwise an exception is thrown.
+
+Exceptions of the L<Hash|SPVM::Hash> class can be thrown.
+
+Examples:
+
+  my $merged_options = Fn->merge_options({foo => 1, bar => 2}, {baz => 5});
 
 =head1 Copyright & License
 
