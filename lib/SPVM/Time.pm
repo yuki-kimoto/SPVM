@@ -6,6 +6,12 @@ package SPVM::Time;
 
 SPVM::Time - Time Manipulation
 
+=head1 Description
+
+(Deprecated) The methods of SPVM::Time will be implemented in SPVM::Sys::Time
+
+C<Time> is a module to manipulate time.
+
 =head1 Usage
   
   use Time;
@@ -19,10 +25,6 @@ SPVM::Time - Time Manipulation
   # Convert a epoch time to the Time::Info object that is UTC
   my $time_info_utc = Time->gmtime($epoch);
   
-=head1 Description
-
-C<Time> is a module to manipulate time.
-
 =head1 Class Methods
 
 =head2 time
