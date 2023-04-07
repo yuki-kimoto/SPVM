@@ -688,7 +688,7 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method crand : int ($seed) {
+  static method crand : int ($seed : int) {
     
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
@@ -1839,7 +1839,7 @@ class TestCase::Module::Fn {
     
     # Class
     {
-      my $object = TestCase::Pointer->new;
+      my $object = TestCase::Pointer->new(3);
       
       unless (Fn->is_pointer_class($object)) {
         return 0;
