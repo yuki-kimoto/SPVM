@@ -1215,13 +1215,13 @@ If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new
 
   my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
 
-Gets a resource. The resource is a L<SPVM::Builder::Resource> object.
+Gets a resource loaded by the L/"use_resource/"> method. The resource is a L<SPVM::Builder::Resource> object.
 
 =head2 get_resource_names
 
   my $resource_names = $config->get_resource_names;
 
-Gets resource names.
+Gets resource names loaded by the L/"use_resource/"> method.
 
 =head2 get_native_include_dir
 
