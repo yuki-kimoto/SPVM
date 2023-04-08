@@ -109,40 +109,6 @@ sub include_dirs {
   }
 }
 
-sub native_include_dir {
-  my $self = shift;
-
-  my $file = $self->file;
-  
-  my $native_include_dir;
-  if (defined $file) {
-    my $native_dir = $self->remove_ext_from_config_file($file);
-    
-    $native_dir .= '.native';
-    
-    $native_include_dir = "$native_dir/include";
-  }
-  
-  return $native_include_dir;
-}
-
-sub native_src_dir {
-  my $self = shift;
-  
-  my $file = $self->file;
-  
-  my $native_src_dir;
-  if (defined $file) {
-    my $native_dir = $self->remove_ext_from_config_file($file);
-    
-    $native_dir .= '.native';
-    
-    $native_src_dir = "$native_dir/src";
-  }
-  
-  return $native_src_dir;
-}
-
 sub ld {
   my $self = shift;
   if (@_) {
@@ -704,6 +670,40 @@ sub get_resource_names {
   return \@resource_names;
 }
 
+sub get_native_include_dir {
+  my $self = shift;
+
+  my $file = $self->file;
+  
+  my $native_include_dir;
+  if (defined $file) {
+    my $native_dir = $self->remove_ext_from_config_file($file);
+    
+    $native_dir .= '.native';
+    
+    $native_include_dir = "$native_dir/include";
+  }
+  
+  return $native_include_dir;
+}
+
+sub get_native_src_dir {
+  my $self = shift;
+  
+  my $file = $self->file;
+  
+  my $native_src_dir;
+  if (defined $file) {
+    my $native_dir = $self->remove_ext_from_config_file($file);
+    
+    $native_dir .= '.native';
+    
+    $native_src_dir = "$native_dir/src";
+  }
+  
+  return $native_src_dir;
+}
+
 1;
 
 =head1 Name
@@ -796,20 +796,6 @@ Examples:
   $config->include_dirs($include_dirs);
 
 Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
-
-=head2 native_include_dir
-
-  my $native_include_dir = $config->native_include_dir;
-  $config->native_include_dir($native_include_dir);
-
-Gets the header including directory of this native module.
-
-=head2 native_src_dir
-
-  my $native_src_dir = $config->native_src_dir;
-  $config->native_src_dir($native_src_dir);
-
-Gets the source directory of this native module.
 
 =head2 ccflags
 
@@ -1241,6 +1227,18 @@ Gets a resource. The resource is a L<SPVM::Builder::Resource> object.
   my $resource_names = $config->get_resource_names;
 
 Gets resource names.
+
+=head2 get_native_include_dir
+
+  my $native_include_dir = $config->get_native_include_dir;
+
+Gets the header including directory of this native module.
+
+=head2 get_native_src_dir
+
+  my $native_src_dir = $config->get_native_src_dir;
+
+Gets the source directory of this native module.
 
 =head1 Copyright & License
 
