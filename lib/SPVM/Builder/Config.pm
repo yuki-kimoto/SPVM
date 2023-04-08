@@ -208,15 +208,10 @@ sub before_link {
   }
 }
 
-sub loaded_config_files {
+sub get_loaded_config_files {
   my $self = shift;
-  if (@_) {
-    $self->{_loaded_config_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{_loaded_config_files};
-  }
+  
+  return $self->{_loaded_config_files};
 }
 
 sub output_type {
@@ -566,7 +561,7 @@ sub load_config {
     confess "The config file must be a SPVM::Builder::Config object";
   }
   
-  push @{$config->loaded_config_files}, $config_file;
+  push @{$config->get_loaded_config_files}, $config_file;
   
   return $config;
 }
@@ -1265,6 +1260,10 @@ At first, all file extensions are removed from the config file $config_file.
 Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
 
 Last, L<"/load_config"> is called with the modified config file.
+
+=head2 get_loaded_config_files
+
+Gets the config files loaded by the L</"load_config"> method.
 
 =head1 Copyright & License
 
