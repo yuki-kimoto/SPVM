@@ -208,14 +208,14 @@ sub before_link {
   }
 }
 
-sub dependent_files {
+sub loaded_config_files {
   my $self = shift;
   if (@_) {
-    $self->{dependent_files} = $_[0];
+    $self->{loaded_config_files} = $_[0];
     return $self;
   }
   else {
-    return $self->{dependent_files};
+    return $self->{loaded_config_files};
   }
 }
 
@@ -319,8 +319,8 @@ sub new {
     $self->ld_optimize('-O2');
   }
 
-  unless (defined $self->{dependent_files}) {
-    $self->{dependent_files} = [];
+  unless (defined $self->{loaded_config_files}) {
+    $self->{loaded_config_files} = [];
   }
   
   unless (defined $self->output_type) {
@@ -566,7 +566,7 @@ sub load_config {
     confess "The config file must be a SPVM::Builder::Config object";
   }
   
-  push @{$config->dependent_files}, $config_file;
+  push @{$config->loaded_config_files}, $config_file;
   
   return $config;
 }
