@@ -439,10 +439,10 @@ sub compile_source_files {
   
   # Own resource source files
   my $own_source_files = $config->source_files;
-  my $own_src_dir = $config->own_src_dir;
+  my $native_src_dir = $config->native_src_dir;
   my $resource_src_files;
-  if (defined $own_src_dir) {
-    $resource_src_files = [map { "$own_src_dir/$_" } @$own_source_files ];
+  if (defined $native_src_dir) {
+    $resource_src_files = [map { "$native_src_dir/$_" } @$own_source_files ];
   }
   
   # Compile source files
@@ -466,7 +466,7 @@ sub compile_source_files {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
-      $object_file_base =~ s/^\Q$own_src_dir//;
+      $object_file_base =~ s/^\Q$native_src_dir//;
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
@@ -481,8 +481,8 @@ sub compile_source_files {
     {
       # Own resource header files
       my @own_header_files;
-      my $own_include_dir = $config->own_include_dir;
-      if (defined $own_include_dir && -d $own_include_dir) {
+      my $native_include_dir = $config->native_include_dir;
+      if (defined $native_include_dir && -d $native_include_dir) {
         find(
           {
             wanted => sub {
@@ -493,7 +493,7 @@ sub compile_source_files {
             },
             no_chdir => 1,
           },
-          $own_include_dir,
+          $native_include_dir,
         );
       }
       my $input_files = [$source_file, @own_header_files];
@@ -589,9 +589,9 @@ sub create_compile_command_info {
   {
 
     # Add own resource include directory
-    my $own_include_dir = $config->own_include_dir;
-    if (defined $own_include_dir) {
-      push @include_dirs, $own_include_dir;
+    my $native_include_dir = $config->native_include_dir;
+    if (defined $native_include_dir) {
+      push @include_dirs, $native_include_dir;
     }
     
     # Add resource include directories
@@ -600,7 +600,7 @@ sub create_compile_command_info {
       for my $resource_name (@$resource_names) {
         my $resource = $config->get_resource($resource_name);
         my $config = $resource->config;
-        my $resource_include_dir = $config->own_include_dir;
+        my $resource_include_dir = $config->native_include_dir;
         if (defined $resource_include_dir) {
           push @include_dirs, $resource_include_dir;
         }
@@ -892,7 +892,7 @@ sub create_link_info {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     my $resource_config = $resource->config;
-    my $resource_include_dir = $resource_config->own_include_dir;
+    my $resource_include_dir = $resource_config->native_include_dir;
     if (defined $resource_include_dir) {
       push @$resource_include_dirs, $resource_include_dir;
     }

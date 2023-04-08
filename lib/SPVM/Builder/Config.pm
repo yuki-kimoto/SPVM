@@ -109,26 +109,38 @@ sub include_dirs {
   }
 }
 
-sub own_include_dir {
+sub native_include_dir {
   my $self = shift;
-  if (@_) {
-    $self->{own_include_dir} = $_[0];
-    return $self;
+
+  my $file = $self->file;
+  
+  my $native_include_dir;
+  if (defined $file) {
+    my $native_dir = $self->remove_ext_from_config_file($file);
+    
+    $native_dir .= '.native';
+    
+    $native_include_dir = "$native_dir/include";
   }
-  else {
-    return $self->{own_include_dir};
-  }
+  
+  return $native_include_dir;
 }
 
-sub own_src_dir {
+sub native_src_dir {
   my $self = shift;
-  if (@_) {
-    $self->{own_src_dir} = $_[0];
-    return $self;
+  
+  my $file = $self->file;
+  
+  my $native_src_dir;
+  if (defined $file) {
+    my $native_dir = $self->remove_ext_from_config_file($file);
+    
+    $native_dir .= '.native';
+    
+    $native_src_dir = "$native_dir/src";
   }
-  else {
-    return $self->{own_src_dir};
-  }
+  
+  return $native_src_dir;
 }
 
 sub ld {
@@ -292,25 +304,6 @@ sub new {
     $self->include_dirs([]);
   }
 
-  # Resource directory
-  if (defined $file) {
-    my $resource_dir = $self->remove_ext_from_config_file($file);
-    
-    $resource_dir .= '.native';
-    
-    # own_include_dir
-    unless (defined $self->{own_include_dir}) {
-      my $own_include_dir = "$resource_dir/include";
-      $self->own_include_dir($own_include_dir);
-    }
-
-    # own_src_dir
-    unless (defined $self->{own_src_dir}) {
-      my $own_src_dir = "$resource_dir/src";
-      $self->own_src_dir($own_src_dir);
-    }
-  }
-  
   # ccflags
   unless (defined $self->{ccflags}) {
     $self->ccflags([]);
@@ -804,23 +797,19 @@ Examples:
 
 Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
 
-=head2 own_include_dir
+=head2 native_include_dir
 
-  my $own_include_dir = $config->own_include_dir;
-  $config->own_include_dir($own_include_dir);
+  my $native_include_dir = $config->native_include_dir;
+  $config->native_include_dir($native_include_dir);
 
-Gets and sets the header including directory of this module.
+Gets the header including directory of this native module.
 
-The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/include>.
+=head2 native_src_dir
 
-=head2 own_src_dir
+  my $native_src_dir = $config->native_src_dir;
+  $config->native_src_dir($native_src_dir);
 
-  my $own_src_dir = $config->own_src_dir;
-  $config->own_src_dir($own_src_dir);
-
-Gets and sets the source directory of this module.
-
-The default value is the name that removing C<[.mode].config> from the L<file|/"file"> and add C<.native/src>.
+Gets the source directory of this native module.
 
 =head2 ccflags
 
@@ -857,7 +846,7 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and get source files. The file name is the relative pass from L</"own_src_dir">.
+Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
 
 Examples:
 

@@ -1,7 +1,13 @@
 0.9705 2023-04-09
+  [New Features]
+    * Added the native_include_dir method in the SPVM::Builder::Config class.
+    * Added the native_src_dir method in the SPVM::Builder::Config class.
+    
   [Incompatible Canges]
     * Removed the builder_include_dir field in the SPVM::Builder::Config.
     * Removed the builder_src_dir field in the SPVM::Builder::Config.
+    * Removed the own_include_dir field in the SPVM::Builder::Config. Use native_include_dir method instead.
+    * Removed the own_src_dir field in the SPVM::Builder::Config. Use native_src_dir method instead.
     
 0.9704 2023-04-08
   [New Features]
