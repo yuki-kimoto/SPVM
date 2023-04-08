@@ -905,13 +905,15 @@ sub compile_bootstrap_source_file {
 
 sub compile_spvm_core_source_files {
   my ($self) = @_;
-
+  
   # Config
   my $config_exe = $self->config;
-
+  
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+  
   # SPVM src directory
-  my $builder_src_dir = $config_exe->builder_src_dir;
-
+  my $builder_src_dir = "$builder_dir/src";
+  
   # SPVM runtime source files
   my $no_compiler_api = $config_exe->no_compiler_api;
   my $spvm_runtime_src_base_names;
@@ -922,7 +924,7 @@ sub compile_spvm_core_source_files {
     $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   }
   my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
-
+  
   # Object dir
   my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
   mkpath $output_dir;
@@ -934,7 +936,7 @@ sub compile_spvm_core_source_files {
     my $object_file = "$output_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
-
+    
     my $no_compiler_api = $config_exe->no_compiler_api;
     my $ccflags = [];
     if ($no_compiler_api) {

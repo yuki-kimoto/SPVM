@@ -617,7 +617,9 @@ sub create_compile_command_info {
   
   my $optimize = $config->optimize;
   
-  my $builder_include_dir = $config->builder_include_dir;
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+  
+  my $builder_include_dir = "$builder_dir/include";
 
   my $compile_info = SPVM::Builder::CompileInfo->new(
     cc => $cc,
