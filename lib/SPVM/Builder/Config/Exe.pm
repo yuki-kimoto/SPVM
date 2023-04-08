@@ -17,6 +17,11 @@ sub new {
   
   $self = $self->SUPER::new(%options);
 
+  # before_each_compile_cbs
+  unless (defined $self->{before_each_compile_cbs}) {
+    $self->before_each_compile_cbs([]);
+  }
+  
   return $self;
 }
 
@@ -28,6 +33,17 @@ sub before_each_compile {
   }
   else {
     return $self->{before_each_compile};
+  }
+}
+
+sub before_each_compile_cbs {
+  my $self = shift;
+  if (@_) {
+    $self->{before_each_compile_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_each_compile_cbs};
   }
 }
 
@@ -51,6 +67,13 @@ sub no_compiler_api {
   else {
     return $self->{no_compiler_api};
   }
+}
+
+
+sub add_before_each_compile_cb {
+  my ($self, @before_each_compile_cbs) = @_;
+  
+  push @{$self->{before_each_compile_cbs}}, @before_each_compile_cbs;
 }
 
 1;
@@ -102,6 +125,12 @@ Methods are inherited from L<SPVM::Builder::Config> and you can use the followin
 Create a new C<SPVM::Builder::Config::Exe> object.
 
 This is same as L<SPVM::Builder::Config/"new">, but set C<output_type> field to C<exe>.
+
+=head2 add_before_each_compile_cb
+
+  $config->add_before_compile_cb(@before_each_compile_cbs);
+
+Adds elements after the last element of L</"before_each_compile_cbs"> field.
 
 =head1 Copyright & License
 

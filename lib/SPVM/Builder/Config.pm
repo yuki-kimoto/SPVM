@@ -175,6 +175,28 @@ sub source_files {
   }
 }
 
+sub before_compile_cbs {
+  my $self = shift;
+  if (@_) {
+    $self->{before_compile_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_compile_cbs};
+  }
+}
+
+sub before_link_cbs {
+  my $self = shift;
+  if (@_) {
+    $self->{before_link_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_link_cbs};
+  }
+}
+
 sub force {
   my $self = shift;
   if (@_) {
@@ -302,6 +324,16 @@ sub new {
   # source_files
   unless (defined $self->{source_files}) {
     $self->source_files([]);
+  }
+  
+  # before_compile_cbs
+  unless (defined $self->{before_compile_cbs}) {
+    $self->before_compile_cbs([]);
+  }
+  
+  # before_link_cbs
+  unless (defined $self->{before_link_cbs}) {
+    $self->before_link_cbs([]);
   }
   
   # libs
@@ -488,6 +520,8 @@ sub add_static_libs { shift->add_static_lib(@_) }
 
 sub add_source_files { shift->add_source_file(@_) }
 
+sub add_before_link_cbs { shift->add_before_link_cb(@_) }
+
 sub add_ccflag {
   my ($self, @ccflags) = @_;
   
@@ -543,6 +577,18 @@ sub add_source_file {
   my ($self, @source_files) = @_;
   
   push @{$self->{source_files}}, @source_files;
+}
+
+sub add_before_compile_cb {
+  my ($self, @before_compile_cbs) = @_;
+  
+  push @{$self->{before_compile_cbs}}, @before_compile_cbs;
+}
+
+sub add_before_link_cb {
+  my ($self, @before_link_cbs) = @_;
+  
+  push @{$self->{before_link_cbs}}, @before_link_cbs;
 }
 
 sub load_config {
@@ -833,6 +879,28 @@ Examples:
 
   $config->source_files(['foo.c', 'bar.c']);
 
+=head2 before_compile_cbs
+
+  my $before_compile_cbs = $config->before_compile_cbs;
+  $config->before_compile_cbs($before_compile_cbs);
+
+Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
+
+Examples:
+
+  $config->before_compile_cbs(['foo.c', 'bar.c']);
+
+=head2 before_link_cbs
+
+  my $before_link_cbs = $config->before_link_cbs;
+  $config->before_link_cbs($before_link_cbs);
+
+Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
+
+Examples:
+
+  $config->before_link_cbs(['foo.c', 'bar.c']);
+
 =head2 ld
 
   my $ld = $config->ld;
@@ -1043,7 +1111,7 @@ Calls L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
 
   $config->set_std($std);
 
-Adds the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
+Adds the value that is converted to C<-std=$std> after the last element of L</"ccflags"> field.
 
 B<Example:>
 
@@ -1055,7 +1123,7 @@ B<Example:>
 
   $config->add_ccflags(@ccflags);
 
-Adds values after the last element of C<ccflags> field.
+Adds values after the last element of L</"ccflags"> field.
 
 =head2 add_ldflags
 
@@ -1063,7 +1131,7 @@ Adds values after the last element of C<ccflags> field.
 
   $config->add_ldflags(@ldflags);
 
-Adds values after the last element of C<ldflags> field.
+Adds values after the last element of L</"ldflags"> field.
 
 =head2 add_include_dirs
 
@@ -1071,7 +1139,7 @@ Adds values after the last element of C<ldflags> field.
 
   $config->add_include_dirs(@include_dirs);
 
-Adds values after the last element of C<include_dirs> field.
+Adds values after the last element of L</"include_dirs"> field.
 
 =head2 add_lib_dirs
 
@@ -1087,7 +1155,7 @@ Adds values after the last element of  C<lib_dirs> field.
 
   $config->add_source_files(@source_files);
 
-Adds the values after the last element of C<source_files> field.
+Adds elements after the last element of L</"source_files"> field.
 
 =head2 add_libs
 
@@ -1129,19 +1197,19 @@ Examples:
 
   $config->add_ccflag(@ccflags);
 
-Adds values after the last element of C<ccflags> field.
+Adds values after the last element of L</"ccflags"> field.
 
 =head2 add_ldflag
 
   $config->add_ldflag(@ldflags);
 
-Adds values after the last element of C<ldflags> field.
+Adds values after the last element of L</"ldflags"> field.
 
 =head2 add_include_dir
 
   $config->add_include_dir(@include_dirs);
 
-Adds values after the last element of C<include_dirs> field.
+Adds values after the last element of L</"include_dirs"> field.
 
 =head2 add_lib_dir
 
@@ -1153,7 +1221,19 @@ Adds values after the last element of  C<lib_dirs> field.
 
   $config->add_source_file(@source_files);
 
-Adds the values after the last element of C<source_files> field.
+Adds elements after the last element of L</"source_files"> field.
+
+=head2 add_before_compile_cb
+
+  $config->add_before_compile_cb(@before_compile_cbs);
+
+Adds elements after the last element of L</"before_compile_cbs"> field.
+
+=head2 add_before_compile_cb
+
+  $config->add_before_link_cb(@before_link_cbs);
+
+Adds elements after the last element of L</"before_link_cbs"> field.
 
 =head2 add_lib
 
