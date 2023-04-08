@@ -211,11 +211,11 @@ sub before_link {
 sub loaded_config_files {
   my $self = shift;
   if (@_) {
-    $self->{loaded_config_files} = $_[0];
+    $self->{_loaded_config_files} = $_[0];
     return $self;
   }
   else {
-    return $self->{loaded_config_files};
+    return $self->{_loaded_config_files};
   }
 }
 
@@ -319,8 +319,8 @@ sub new {
     $self->ld_optimize('-O2');
   }
 
-  unless (defined $self->{loaded_config_files}) {
-    $self->{loaded_config_files} = [];
+  unless (defined $self->{_loaded_config_files}) {
+    $self->{_loaded_config_files} = [];
   }
   
   unless (defined $self->output_type) {

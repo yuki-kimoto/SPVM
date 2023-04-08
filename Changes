@@ -2,6 +2,7 @@
   [New Features]
     * Added the get_native_include_dir method in the SPVM::Builder::Config class.
     * Added the get_native_src_dir method in the SPVM::Builder::Config class.
+    * Added the get_loaded_config_files in the SPVM::Builder::Config class.
     * Added the load_config in the SPVM::Builder::Config class.
     * Added the load_base_config in the SPVM::Builder::Config class.
     * Added the load_mode_config in the SPVM::Builder::Config class.
