@@ -1,3 +1,8 @@
+0.9705 2023-04-09
+  [Incompatible Canges]
+    * Removed the builder_include_dir field in the SPVM::Builder::Config.
+    * Removed the builder_src_dir field in the SPVM::Builder::Config.
+    
 0.9704 2023-04-08
   [New Features]
     * Added the --interface option to the spvmdist command.

@@ -109,28 +109,6 @@ sub include_dirs {
   }
 }
 
-sub builder_include_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{builder_include_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder_include_dir};
-  }
-}
-
-sub builder_src_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{builder_src_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder_src_dir};
-  }
-}
-
 sub own_include_dir {
   my $self = shift;
   if (@_) {
@@ -309,20 +287,6 @@ sub new {
     $self->cc($Config{cc});
   }
 
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
-  
-  # builder_include_dir
-  unless (defined $self->{builder_include_dir}) {
-    my $builder_include_dir = "$builder_dir/include";
-    $self->builder_include_dir($builder_include_dir);
-  }
-
-  # builder_src_dir
-  unless (defined $self->{builder_src_dir}) {
-    my $builder_src_dir = "$builder_dir/src";
-    $self->builder_src_dir($builder_src_dir);
-  }
-  
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
@@ -839,24 +803,6 @@ Examples:
   $config->include_dirs($include_dirs);
 
 Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
-
-=head2 builder_include_dir
-
-  my $builder_include_dir = $config->builder_include_dir;
-  $config->builder_include_dir($builder_include_dir);
-
-Gets and sets the header including directory of L<SPVM::Builder>.
-
-The default value is C<SPVM/Builder/include> of one up of directory that C<SPVM::Buidler::Config> is loaded.
-
-=head2 builder_src_dir
-
-  my $builder_src_dir = $config->builder_src_dir;
-  $config->builder_src_dir($builder_src_dir);
-
-Gets and sets the source directory of L<SPVM::Builder>.
-
-The default value is C<SPVM/Builder/src> of one up of the directory that C<SPVM::Buidler::Config> is loaded.
 
 =head2 own_include_dir
 
