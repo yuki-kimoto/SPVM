@@ -506,22 +506,6 @@ sub set_std {
   return $self;
 }
 
-sub add_ccflags { shift->add_ccflag(@_) }
-
-sub add_include_dirs { shift->add_include_dir(@_) }
-
-sub add_ldflags { shift->add_ldflag(@_) }
-
-sub add_lib_dirs { shift->add_lib_dir(@_) }
-
-sub add_libs { shift->add_lib(@_) }
-
-sub add_static_libs { shift->add_static_lib(@_) }
-
-sub add_source_files { shift->add_source_file(@_) }
-
-sub add_before_link_cbs { shift->add_before_link_cb(@_) }
-
 sub add_ccflag {
   my ($self, @ccflags) = @_;
   
@@ -1116,82 +1100,6 @@ Adds the value that is converted to C<-std=$std> after the last element of L</"c
 B<Example:>
 
   $config->set_std('gnu99');
-
-=head2 add_ccflags
-
-(Deprecated)
-
-  $config->add_ccflags(@ccflags);
-
-Adds values after the last element of L</"ccflags"> field.
-
-=head2 add_ldflags
-
-(Deprecated)
-
-  $config->add_ldflags(@ldflags);
-
-Adds values after the last element of L</"ldflags"> field.
-
-=head2 add_include_dirs
-
-(Deprecated)
-
-  $config->add_include_dirs(@include_dirs);
-
-Adds values after the last element of L</"include_dirs"> field.
-
-=head2 add_lib_dirs
-
-(Deprecated)
-
-  $config->add_lib_dirs(@lib_dirs);
-
-Adds values after the last element of  C<lib_dirs> field.
-
-=head2 add_source_files
-
-(Deprecated)
-
-  $config->add_source_files(@source_files);
-
-Adds elements after the last element of L</"source_files"> field.
-
-=head2 add_libs
-
-(Deprecated)
-
-  $config->add_libs(@libs);
-
-Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
-
-Examples:
-
-  $config->add_libs('gsl');
-  $config->add_libs('gsl', 'z');
-  $config->add_libs(
-    SPVM::Builder::LibInfo->new(name => 'gsl'),
-    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
-  );
-
-=head2 add_static_libs
-
-(Deprecated)
-
-  $config->add_static_libs(@libs);
-
-Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
-
-C<static> field is set to a true value.
-
-Examples:
-
-  $config->add_static_libs('gsl');
-  $config->add_static_libs('gsl', 'z');
-  $config->add_static_libs(
-    SPVM::Builder::LibInfo->new(name => 'gsl'),
-    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
-  );
 
 =head2 add_ccflag
 

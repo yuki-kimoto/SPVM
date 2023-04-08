@@ -14,6 +14,14 @@
     * Removed the builder_src_dir field in the SPVM::Builder::Config.
     * Removed the own_include_dir field in the SPVM::Builder::Config. Use native_include_dir method instead.
     * Removed the own_src_dir field in the SPVM::Builder::Config. Use native_src_dir method instead.
+    * Removed the deprecated add_ccflags method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_include_dirs method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_ldflags method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_lib_dirs method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_libs method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_static_libs method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_source_files method in the SPVM::Builder::Config class.
+    * Removed the deprecated add_before_link_cbs method in the SPVM::Builder::Config class.
     
 0.9704 2023-04-08
   [New Features]
