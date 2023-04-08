@@ -1240,6 +1240,32 @@ Gets the header including directory of this native module.
 
 Gets the source directory of this native module.
 
+=head2 load_config
+
+  my $config = $config->load_config($config_file, @argv);
+
+Loads a config file, and returns a L<SPVM::Builder::Config> object. The argument @argv is set to the @ARGV of the config file.
+
+=head2 load_base_config
+
+  my $config = $config->load_base_config($config_file, @argv);
+
+Loads a base config file like C<Foo.config>. This method is the alias for the following method call using L</"load_mode_config">.
+
+  my $config = $config->load_mode_config($config_file, undef, @argv);
+
+=head2 load_mode_config
+
+  my $config = $config->load_mode_config($config_file, $mode, @argv);
+
+Loads a mode config file like C<Foo.mode.config>.
+
+At first, all file extensions are removed from the config file $config_file.
+
+Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
+
+Last, L<"/load_config"> is called with the modified config file.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
