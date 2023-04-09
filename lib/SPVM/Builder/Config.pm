@@ -208,28 +208,6 @@ sub force {
   }
 }
 
-sub before_compile {
-  my $self = shift;
-  if (@_) {
-    $self->{before_compile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_compile};
-  }
-}
-
-sub before_link {
-  my $self = shift;
-  if (@_) {
-    $self->{before_link} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_link};
-  }
-}
-
 sub get_loaded_config_files {
   my $self = shift;
   
@@ -868,22 +846,35 @@ Examples:
   my $before_compile_cbs = $config->before_compile_cbs;
   $config->before_compile_cbs($before_compile_cbs);
 
-Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
+Gets and sets the callbacks called before a compilation.
 
 Examples:
 
-  $config->before_compile_cbs(['foo.c', 'bar.c']);
+  $config->before_compile_cbs([sub {
+    my ($config, $compile_info) = @_;
+    
+    my $cc = $compile_info->cc;
+    
+    # Do something
+  }]);
 
 =head2 before_link_cbs
 
   my $before_link_cbs = $config->before_link_cbs;
   $config->before_link_cbs($before_link_cbs);
 
-Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
+Gets and sets the callbacks called before a link.
 
 Examples:
 
-  $config->before_link_cbs(['foo.c', 'bar.c']);
+  $config->before_link_cbs([sub {
+    my ($config, $link_info) = @_;
+    
+    my $object_file_infos = $link_info->object_file_infos;
+    
+    # Do something
+    
+  }]);
 
 =head2 ld
 
@@ -957,41 +948,6 @@ The default is C<-O2>.
 Gets and sets the flag to force compiles and links without caching. The default is undef.
 
 undef means forcing is not determined by config.
-
-=head2 before_compile
-
-  my $before_compile = $config->before_compile;
-  $config->before_compile($before_compile);
-
-Gets and sets the callback that is executed before the compile. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::CompileInfo> object used by the compileer.
-
-Examples:
-
-  $config->before_compile(sub {
-    my ($config, $compile_info) = @_;
-    
-    my $cc = $compile_info->cc;
-    
-    # Do something
-  });
-
-=head2 before_link
-
-  my $before_link = $config->before_link;
-  $config->before_link($before_link);
-
-Gets and sets the callback that is executed before the link. The callback receives C<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
-
-Examples:
-
-  $config->before_link(sub {
-    my ($config, $link_info) = @_;
-    
-    my $object_file_infos = $link_info->object_file_infos;
-    
-    # Do something
-    
-  });
 
 =head2 quiet
 

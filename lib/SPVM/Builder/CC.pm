@@ -18,14 +18,14 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
-sub before_each_compile {
+sub before_each_compile_cbs {
   my $self = shift;
   if (@_) {
-    $self->{before_each_compile} = $_[0];
+    $self->{before_each_compile_cbs} = $_[0];
     return $self;
   }
   else {
-    return $self->{before_each_compile};
+    return $self->{before_each_compile_cbs};
   }
 }
 
@@ -108,7 +108,14 @@ sub new {
     $self->{force} = 1;
   }
   
-  return bless $self, $class;
+  bless $self, $class;
+  
+  # before_each_compile_cbs
+  unless (defined $self->{before_each_compile_cbs}) {
+    $self->before_each_compile_cbs([]);
+  }
+  
+  return $self;
 }
 
 sub build_at_runtime {
@@ -524,12 +531,14 @@ sub compile_source_files {
       no_use_resource => $no_use_resource,
     });
     
-    if (defined $config->before_compile) {
-      $config->before_compile->($config, $compile_info);
+    my $before_compile_cbs = $config->before_compile_cbs;
+    for my $before_compile_cb (@$before_compile_cbs) {
+      $before_compile_cb->($config, $compile_info);
     }
-
-    if (defined $self->before_each_compile) {
-      $self->before_each_compile->($config, $compile_info);
+    
+    my $before_each_compile_cbs = $self->before_each_compile_cbs;
+    for my $before_each_compile_cb (@$before_each_compile_cbs) {
+      $before_each_compile_cb->($config, $compile_info);
     }
 
     # Compile a source file
@@ -687,9 +696,9 @@ sub link {
   my $output_file = $link_info->output_file;
   
   # Execute the callback before this link
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $before_link->($config, $link_info);
+  my $before_link_cbs = $config->before_link_cbs;
+  for my $before_link_cb (@$before_link_cbs) {
+    $before_link_cb->($config, $link_info);
   }
   
   my @object_files = map { "$_" } @{$link_info->object_file_infos};

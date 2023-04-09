@@ -25,17 +25,6 @@ sub new {
   return $self;
 }
 
-sub before_each_compile {
-  my $self = shift;
-  if (@_) {
-    $self->{before_each_compile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_each_compile};
-  }
-}
-
 sub before_each_compile_cbs {
   my $self = shift;
   if (@_) {

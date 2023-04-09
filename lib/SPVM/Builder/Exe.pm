@@ -226,7 +226,7 @@ sub build_exe_file {
   # Link and generate executable file
   my $config_exe = $self->config;
   my $cc_linker = SPVM::Builder::CC->new(
-    before_each_compile => $config_exe->before_each_compile,
+    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -257,7 +257,7 @@ sub get_dependent_resources {
   
   # Compiler for native module
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile => $config_exe->before_each_compile,
+    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -445,7 +445,7 @@ sub compile_source_file {
   
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile => $config_exe->before_each_compile,
+    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -971,7 +971,7 @@ sub compile_class_precompile_source_file {
   
   # Build precompile classes
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile => $config_exe->before_each_compile,
+    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -1027,7 +1027,7 @@ sub compile_class_native_source_files {
 
   # Compiler for native module
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile => $config_exe->before_each_compile,
+    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,

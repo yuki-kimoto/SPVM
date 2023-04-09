@@ -21,7 +21,8 @@
     * Removed the deprecated add_libs method in the SPVM::Builder::Config class.
     * Removed the deprecated add_static_libs method in the SPVM::Builder::Config class.
     * Removed the deprecated add_source_files method in the SPVM::Builder::Config class.
-    * Removed the deprecated add_before_link_cbs method in the SPVM::Builder::Config class.
+    * Removed the before_link method in the SPVM::Builder::Config class. Use add_before_link_cb instead.
+    * Removed the before_compile method in the SPVM::Builder::Config class. Use add_before_compile_cb instead.
     
 0.9704 2023-04-08
   [New Features]
