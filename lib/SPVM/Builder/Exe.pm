@@ -1058,10 +1058,10 @@ sub compile_class_native_source_files {
     my $config_class = $builder_cc->create_native_config_from_module_file($module_file);
     
     my $include_dirs = [];
-    my $exe_config = $self->config;
-    my $resource_names = $exe_config->get_resource_names;
+    my $config_exe = $self->config;
+    my $resource_names = $config_exe->get_resource_names;
     for my $resource_name (@$resource_names) {
-      my $resource = $exe_config->get_resource($resource_name);
+      my $resource = $config_exe->get_resource($resource_name);
       my $resource_include_dir = $resource->config->get_native_include_dir;
       push @$include_dirs, $resource_include_dir;
     }
