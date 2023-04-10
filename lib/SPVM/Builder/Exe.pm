@@ -1055,7 +1055,7 @@ sub compile_class_native_source_files {
         confess "\"$module_file\" module is not loaded";
       }
     }
-    my $config_class = $builder_cc->create_native_config_from_module_file($module_file);
+    my $config = $builder_cc->create_native_config_from_module_file($module_file);
     
     my $include_dirs = [];
     my $config_exe = $self->config;
@@ -1071,7 +1071,7 @@ sub compile_class_native_source_files {
       {
         input_dir => $input_dir,
         output_dir => $build_object_dir,
-        config => $config_class,
+        config => $config,
         category => 'native',
         no_use_resource => 1,
         include_dirs => $include_dirs,
