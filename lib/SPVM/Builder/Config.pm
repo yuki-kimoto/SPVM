@@ -707,6 +707,28 @@ sub get_native_src_dir {
   return $native_src_dir;
 }
 
+sub clone {
+  my ($self) = @_;
+  
+  my $clone = bless {}, ref $self;
+  
+  for my $name (%$self) {
+    my $value = $clone->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = {%$value};
+    }
+    else {
+      $clone->{$name} = $value;
+    }
+  }
+  
+  return $clone;
+}
+
 1;
 
 =head1 Name
@@ -1208,6 +1230,12 @@ Last, L<"/load_config"> is called with the modified config file.
 =head2 get_loaded_config_files
 
 Gets the config files loaded by the L</"load_config"> method.
+
+=head2 clone
+
+  my $clone = $self->clone;
+
+Clones the object, and returns it.
 
 =head1 Copyright & License
 
