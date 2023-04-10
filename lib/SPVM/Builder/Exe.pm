@@ -410,10 +410,11 @@ sub create_source_file {
 }
 
 sub compile_source_file {
-  my ($self, $options, $config) = @_;
+  my ($self, $options) = @_;
   
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
+  my $config = $options->{config};
   
   my $config_loaded_config_files = $config->get_loaded_config_files;
   my $need_generate_input_files = [$source_file, @$config_loaded_config_files];
@@ -889,8 +890,10 @@ sub compile_bootstrap_source_file {
   
   # Compile
   my $object_file_info = $self->compile_source_file({
-    source_file => $source_file, output_file => $object_file
-  }, $config);
+    source_file => $source_file,
+    output_file => $object_file,
+    config => $config,
+  });
   
   return $object_file_info;
 }
@@ -938,7 +941,8 @@ sub compile_spvm_core_source_files {
     my $object_file_info = $self->compile_source_file({
       source_file => $src_file,
       output_file => $object_file,
-    }, $config);
+      config => $config,
+    });
     push @$object_file_infos, $object_file_info;
   }
   
