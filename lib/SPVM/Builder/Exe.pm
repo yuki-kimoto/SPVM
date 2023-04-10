@@ -415,9 +415,11 @@ sub compile_source_file {
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
   my $config = $options->{config};
+  my $config_exe = $self->config;
   
+  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
   my $config_loaded_config_files = $config->get_loaded_config_files;
-  my $need_generate_input_files = [$source_file, @$config_loaded_config_files];
+  my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_exe_loaded_config_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
@@ -430,7 +432,6 @@ sub compile_source_file {
   my $build_dir = $self->builder->build_dir;
   
   # Compile command
-  my $config_exe = $self->config;
   my $builder_cc = SPVM::Builder::CC->new(
     before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
