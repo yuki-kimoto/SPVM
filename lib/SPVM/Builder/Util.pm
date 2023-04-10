@@ -734,11 +734,11 @@ sub create_default_config {
 
 =head1 Name
 
-SPVM::Builder::Util - Build Utilities
+SPVM::Builder::Util - Builder Utilities
 
 =head1 Description
 
-SPVM::Builder::Util is building utilities.
+The SPVM::Builder::Util::API module has utility functions for the SPVM builder L<SPVM::Builder>.
 
 =head1 Copyright & License
 

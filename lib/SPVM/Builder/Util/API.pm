@@ -11,41 +11,29 @@ sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompi
 
 =head1 Name
 
-SPVM::Builder::Util::API - Public APIs of the utility of SPVM Builder
-
-=head1 Usage
-    
-  # Create native make rule
-  my $native_make_rule
-    = SPVM::Builder::Util::API::create_make_rule_native('Foo');
-  
-  # Create precompile make rule
-  my $precompile_make_rule
-    = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
+SPVM::Builder::Util::API - Public Functions for SPVM Builder Utilities
 
 =head1 Description
 
-B<SPVM::Builder::Util::API> is the public APIs of the utilities of SPVM Builder. 
+The SPVM::Builder::Util::API module has public utility functions for the SPVM builder L<SPVM::Builder>.
 
-L<SPVM::Builder::Util> is a private modules of L<SPVM>.
+=head1 Usage
 
-The names and arguments of the functions are changed without warnings in the future release.
-
-However, the functions is useful to create the content of Makefile.
-
-B<SPVM::Builder::Util::API> provides the public APIs to call the functions of L<SPVM::Builder::Util>. These APIs is public and stable.
+  my $native_make_rule = SPVM::Builder::Util::API::create_make_rule_native('Foo');
+  
+  my $precompile_make_rule = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
 
 =head1 Functions
 
 =head2 create_make_rule_native
 
-Create native compile make rule.
+Creates a rule written by C<make> commands to generate a dynamic library for a class that contains native methods.
 
-This is used in Makefile.PL of your distributed module.
-  
+Examples:
+
   # Makefile.PL
   sub MY::postamble {
-
+    
     my $make_rule = '';
     
     # Native compile make rule
@@ -56,12 +44,13 @@ This is used in Makefile.PL of your distributed module.
 
 =head2 create_make_rule_precompile
 
-Create precompile make rule.
+Creates a rule written by C<make> commands to generate a dynamic library for a class that contains precompiled methods.
 
-This is used in Makefile.PL of your distributed module.
+Examples:
 
+  # Makefile.PL
   sub MY::postamble {
-
+    
     my $make_rule = '';
     
     # Precompile make rule
