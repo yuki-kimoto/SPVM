@@ -421,7 +421,7 @@ sub compile_source_file {
   if (@$options_ccflags) {
     $config_exe->add_ccflag(@$options_ccflags);
   }
-
+  
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
   my $depend_files = $options->{depend_files};
@@ -436,10 +436,9 @@ sub compile_source_file {
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });
-
-
+  
   my $builder = $self->builder;
-
+  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
@@ -450,14 +449,16 @@ sub compile_source_file {
     quiet => $self->quiet,
     force => $self->force,
   );
-  my $compile_info = $builder_cc->create_compile_command_info({config => $config_exe, output_file => $output_file, source_file => $source_file});
-    
+  my $compile_info = $builder_cc->create_compile_command_info({
+    config => $config_exe,
+    output_file => $output_file,
+    source_file => $source_file
+  });
+  
   if ($need_generate) {
     $builder_cc->compile_source_file($compile_info, $config_exe);
   }
   
-  my $compile_info_cc = $compile_info->{cc};
-  my $compile_info_ccflags = $compile_info->{ccflags};
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
     compile_info => $compile_info,
   );
