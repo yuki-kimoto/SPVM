@@ -456,7 +456,7 @@ sub compile_source_file {
   });
   
   if ($need_generate) {
-    $builder_cc->compile_source_file($compile_info, $config_exe);
+    $builder_cc->compile_source_file($compile_info);
   }
   
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
@@ -899,7 +899,9 @@ sub compile_bootstrap_source_file {
   mkdir dirname $object_file;
   
   # Compile
-  my $object_file_info = $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+  my $object_file_info = $self->compile_source_file({
+    source_file => $source_file, output_file => $object_file
+  });
   
   return $object_file_info;
 }

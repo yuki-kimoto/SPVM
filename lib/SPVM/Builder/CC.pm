@@ -374,8 +374,10 @@ sub detect_quiet {
 }
 
 sub compile_source_file {
-  my ($self, $compile_info, $config) = @_;
-
+  my ($self, $compile_info) = @_;
+  
+  my $config = $compile_info->config;
+  
   # Quiet output
   my $quiet = $self->detect_quiet($config);
   
@@ -547,7 +549,7 @@ sub compile_source_files {
       my $work_output_dir = "$output_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
-      $self->compile_source_file($compile_info, $config);
+      $self->compile_source_file($compile_info);
     }
     
     # Object file information
