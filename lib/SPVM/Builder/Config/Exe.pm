@@ -8,23 +8,7 @@ use SPVM::Builder::Util;
 
 use base 'SPVM::Builder::Config';
 
-sub new {
-  my ($self, %options) = @_;
-  
-  unless (defined $options{output_type}) {
-    $options{output_type} = 'exe';
-  }
-  
-  $self = $self->SUPER::new(%options);
-
-  # before_each_compile_cbs
-  unless (defined $self->{before_each_compile_cbs}) {
-    $self->before_each_compile_cbs([]);
-  }
-  
-  return $self;
-}
-
+# Fields
 sub before_each_compile_cbs {
   my $self = shift;
   if (@_) {
@@ -58,13 +42,6 @@ sub no_compiler_api {
   }
 }
 
-
-sub add_before_each_compile_cb {
-  my ($self, @before_each_compile_cbs) = @_;
-  
-  push @{$self->{before_each_compile_cbs}}, @before_each_compile_cbs;
-}
-
 sub config_spvm_core {
   my $self = shift;
   if (@_) {
@@ -87,6 +64,31 @@ sub config_bootstrap {
   }
 }
 
+# Class Methods
+sub new {
+  my ($self, %options) = @_;
+  
+  unless (defined $options{output_type}) {
+    $options{output_type} = 'exe';
+  }
+  
+  $self = $self->SUPER::new(%options);
+
+  # before_each_compile_cbs
+  unless (defined $self->{before_each_compile_cbs}) {
+    $self->before_each_compile_cbs([]);
+  }
+  
+  return $self;
+}
+
+# Instance Methods
+sub add_before_each_compile_cb {
+  my ($self, @before_each_compile_cbs) = @_;
+  
+  push @{$self->{before_each_compile_cbs}}, @before_each_compile_cbs;
+}
+
 1;
 
 =head1 Name
@@ -97,7 +99,7 @@ SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
   use SPVM::Builder::Config::Exe;
   
-  my $config = SPVM::Builder::Config::Exe->new_c99;
+  my $config_exe = SPVM::Builder::Config::Exe->new_c99;
 
 =head1 Description
 
