@@ -431,11 +431,14 @@ sub compile_source_file {
   
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
   );
+  
+  my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
+  $config->add_before_compile_cb(@$before_each_compile_cbs);
+  
   my $compile_info = $builder_cc->create_compile_command_info({
     config => $config,
     output_file => $output_file,
@@ -992,7 +995,7 @@ sub compile_class_precompile_source_file {
     mkpath $build_object_dir;
     
     my $config = SPVM::Builder::Util::create_default_config();
-    my $before_each_compile_cbs => $config_exe->before_each_compile_cbs;
+    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     my $precompile_object_files = $builder_cc->compile_source_files(
       $class_name,
@@ -1022,7 +1025,6 @@ sub compile_class_native_source_files {
 
   # Compiler for native module
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -1056,6 +1058,8 @@ sub compile_class_native_source_files {
       }
     }
     my $config = $builder_cc->create_native_config_from_module_file($module_file);
+    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
+    $config->add_before_compile_cb(@$before_each_compile_cbs);
     
     my $include_dirs = [];
     my $config_exe = $self->config;

@@ -18,17 +18,6 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
-sub before_each_compile_cbs {
-  my $self = shift;
-  if (@_) {
-    $self->{before_each_compile_cbs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_each_compile_cbs};
-  }
-}
-
 sub build_dir {
   my $self = shift;
   if (@_) {
@@ -109,11 +98,6 @@ sub new {
   }
   
   bless $self, $class;
-  
-  # before_each_compile_cbs
-  unless (defined $self->{before_each_compile_cbs}) {
-    $self->before_each_compile_cbs([]);
-  }
   
   return $self;
 }
@@ -538,11 +522,6 @@ sub compile_source_files {
       $before_compile_cb->($config, $compile_info);
     }
     
-    my $before_each_compile_cbs = $self->before_each_compile_cbs;
-    for my $before_each_compile_cb (@$before_each_compile_cbs) {
-      $before_each_compile_cb->($config, $compile_info);
-    }
-
     # Compile a source file
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
