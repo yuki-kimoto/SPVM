@@ -261,7 +261,7 @@ sub build {
     $config = $self->create_native_config_from_module_file($module_file);
   }
   elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Util::create_default_config($module_file);
+    $config = SPVM::Builder::Util::create_default_config();
   }
   
   # Compile source file and create object files

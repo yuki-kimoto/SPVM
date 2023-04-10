@@ -410,17 +410,7 @@ sub create_source_file {
 }
 
 sub compile_source_file {
-  my ($self, $options) = @_;
-  
-  # Config
-  my $config_exe = $self->config;
-  
-  my $options_ccflags = $options->{ccflags};
-  $options_ccflags = [] unless defined $options_ccflags;
-  
-  if (@$options_ccflags) {
-    $config_exe->add_ccflag(@$options_ccflags);
-  }
+  my ($self, $options, $config) = @_;
   
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
@@ -429,10 +419,10 @@ sub compile_source_file {
     $depend_files = [];
   }
   
-  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
-  my $need_generate_input_files = [$source_file, @$depend_files, @$config_exe_loaded_config_files];
+  my $config_loaded_config_files = $config->get_loaded_config_files;
+  my $need_generate_input_files = [$source_file, @$depend_files, @$config_loaded_config_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config_exe->force,
+    force => $self->force || $config->force,
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });
@@ -443,6 +433,7 @@ sub compile_source_file {
   my $build_dir = $self->builder->build_dir;
   
   # Compile command
+  my $config_exe = $self->config;
   my $builder_cc = SPVM::Builder::CC->new(
     before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
@@ -450,7 +441,7 @@ sub compile_source_file {
     force => $self->force,
   );
   my $compile_info = $builder_cc->create_compile_command_info({
-    config => $config_exe,
+    config => $config,
     output_file => $output_file,
     source_file => $source_file
   });
@@ -898,10 +889,12 @@ sub compile_bootstrap_source_file {
   # Create directory for object file output
   mkdir dirname $object_file;
   
+  my $config = SPVM::Builder::Util::create_default_config();
+  
   # Compile
   my $object_file_info = $self->compile_source_file({
     source_file => $source_file, output_file => $object_file
-  });
+  }, $config);
   
   return $object_file_info;
 }
@@ -932,6 +925,12 @@ sub compile_spvm_core_source_files {
   my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
   mkpath $output_dir;
   
+  # Config
+  my $config = SPVM::Builder::Util::create_default_config();
+  if ($no_compiler_api) {
+    $config->add_ccflag('-DSPVM_NO_COMPILER_API');
+  }
+  
   # Compile source files
   my $object_file_infos = [];
   for my $src_file (@spvm_core_source_files) {
@@ -940,17 +939,10 @@ sub compile_spvm_core_source_files {
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    my $no_compiler_api = $config_exe->no_compiler_api;
-    my $ccflags = [];
-    if ($no_compiler_api) {
-      push @$ccflags, '-DSPVM_NO_COMPILER_API';
-    }
-    
     my $object_file_info = $self->compile_source_file({
-      ccflags => $ccflags,
       source_file => $src_file,
       output_file => $object_file,
-    });
+    }, $config);
     push @$object_file_infos, $object_file_info;
   }
   
