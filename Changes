@@ -12,6 +12,7 @@
     * Added the clone method in the SPVM::Builder::Config class.
     * Added the config_bootstrap field in the SPVM::Builder::Config::Exe class.
     * Added the config_spvm_core field in the SPVM::Builder::Config::Exe class.
+    * Added the create_default_config function in the SPVM::Builder::Util::API module.
   [Incompatible Canges]
     * Removed the builder_include_dir field in the SPVM::Builder::Config.
     * Removed the builder_src_dir field in the SPVM::Builder::Config.

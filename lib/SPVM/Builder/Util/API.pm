@@ -5,7 +5,10 @@ use warnings;
 use SPVM::Builder::Util;
 
 sub create_make_rule_native { SPVM::Builder::Util::create_make_rule_native(@_) }
+
 sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompile(@_) }
+
+sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
 1;
 
@@ -27,7 +30,9 @@ The SPVM::Builder::Util::API module has public utility functions for the SPVM bu
 
 =head2 create_make_rule_native
 
-Creates a rule written by C<make> commands to generate a dynamic library for a class that contains native methods.
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($class_name);
+
+Creates a rule written by C<make> commands to generate a dynamic library for the class $class_name that contains native methods, and returns the rule.
 
 Examples:
 
@@ -44,7 +49,9 @@ Examples:
 
 =head2 create_make_rule_precompile
 
-Creates a rule written by C<make> commands to generate a dynamic library for a class that contains precompiled methods.
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($class_name);
+
+Creates a rule written by C<make> commands to generate a dynamic library for the class $class_name that contains precompiled methods, and returns the rule.
 
 Examples:
 
@@ -58,6 +65,16 @@ Examples:
     
     return $make_rule;
   }
+
+=head2 create_default_config
+
+  my $config = SPVM::Builder::Util::API::create_default_config();
+
+Creates a default config, and returns it. The config is a L<SPVM::Builder::Config> object.
+
+The current implementation is the following one.
+
+  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
 
 =head1 Copyright & License
 
