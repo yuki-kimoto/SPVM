@@ -965,7 +965,6 @@ sub compile_class_precompile_source_file {
   
   # Build precompile classes
   my $builder_cc = SPVM::Builder::CC->new(
-    before_each_compile_cbs => $config_exe->before_each_compile_cbs,
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
@@ -992,13 +991,15 @@ sub compile_class_precompile_source_file {
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
     
-    my $config_class = SPVM::Builder::Util::create_default_config();
+    my $config = SPVM::Builder::Util::create_default_config();
+    my $before_each_compile_cbs => $config_exe->before_each_compile_cbs;
+    $config->add_before_compile_cb(@$before_each_compile_cbs);
     my $precompile_object_files = $builder_cc->compile_source_files(
       $class_name,
       {
         input_dir => $build_src_dir,
         output_dir => $build_object_dir,
-        config => $config_class,
+        config => $config,
         category => 'precompile',
       }
     );
