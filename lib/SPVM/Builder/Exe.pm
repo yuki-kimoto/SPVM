@@ -414,13 +414,9 @@ sub compile_source_file {
   
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
-  my $depend_files = $options->{depend_files};
-  unless ($depend_files) {
-    $depend_files = [];
-  }
   
   my $config_loaded_config_files = $config->get_loaded_config_files;
-  my $need_generate_input_files = [$source_file, @$depend_files, @$config_loaded_config_files];
+  my $need_generate_input_files = [$source_file, @$config_loaded_config_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
