@@ -875,6 +875,8 @@ sub create_bootstrap_source {
 sub compile_bootstrap_source_file {
   my ($self) = @_;
   
+  my $config_exe = $self->config;
+  
   # Target class name
   my $class_name = $self->class_name;
   
@@ -888,7 +890,11 @@ sub compile_bootstrap_source_file {
   # Create directory for object file output
   mkdir dirname $object_file;
   
-  my $config = SPVM::Builder::Util::create_default_config();
+  my $config = $config_exe->config_bootstrap;
+  unless ($config) {
+    $config = SPVM::Builder::Util::create_default_config();
+  }
+  $config = $config->clone;
   
   # Compile
   my $object_file_info = $self->compile_source_file({
@@ -927,7 +933,12 @@ sub compile_spvm_core_source_files {
   mkpath $output_dir;
   
   # Config
-  my $config = SPVM::Builder::Util::create_default_config();
+  my $config = $config_exe->config_spvm_core;
+  unless ($config) {
+    $config = SPVM::Builder::Util::create_default_config();
+  }
+  $config = $config->clone;
+  
   if ($no_compiler_api) {
     $config->add_ccflag('-DSPVM_NO_COMPILER_API');
   }

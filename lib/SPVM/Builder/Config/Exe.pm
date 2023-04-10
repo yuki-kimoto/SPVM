@@ -65,6 +65,28 @@ sub add_before_each_compile_cb {
   push @{$self->{before_each_compile_cbs}}, @before_each_compile_cbs;
 }
 
+sub config_spvm_core {
+  my $self = shift;
+  if (@_) {
+    $self->{config_spvm_core} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config_spvm_core};
+  }
+}
+
+sub config_bootstrap {
+  my $self = shift;
+  if (@_) {
+    $self->{config_bootstrap} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config_bootstrap};
+  }
+}
+
 1;
 
 =head1 Name
@@ -100,6 +122,20 @@ If C<no_precompile> is a true value, precompiling is not performed.
   $config->no_compiler_api($no_compiler_api);
 
 If C<no_compiler_api> is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
+
+=head2 config_spvm_core
+
+  my $config_spvm_core = $config->config_spvm_core;
+  $config->config_spvm_core($config_spvm_core);
+
+Gets and sets the config(a L<SPVM::Builder::Config> object) for SPVM core source files.
+
+=head2 config_bootstrap
+
+  my $config_bootstrap = $config->config_bootstrap;
+  $config->config_bootstrap($config_bootstrap);
+
+Gets and sets the config(a L<SPVM::Builder::Config> object) for the bootstrap source file that contains C<main> function in the C language
 
 =head1 Methods
 

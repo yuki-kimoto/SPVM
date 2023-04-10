@@ -712,8 +712,8 @@ sub clone {
   
   my $clone = bless {}, ref $self;
   
-  for my $name (%$self) {
-    my $value = $clone->{$name};
+  for my $name (keys %$self) {
+    my $value = $self->{$name};
     
     if (ref $value eq 'ARRAY') {
       $clone->{$name} = [@$value];
