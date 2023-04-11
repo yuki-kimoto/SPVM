@@ -31,14 +31,14 @@ sub mode {
   }
 }
 
-sub args {
+sub argv {
   my $self = shift;
   if (@_) {
-    $self->{args} = $_[0];
+    $self->{argv} = $_[0];
     return $self;
   }
   else {
-    return $self->{args};
+    return $self->{argv};
   }
 }
 
@@ -72,19 +72,19 @@ sub to_string {
 
 =head1 Name
 
-SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
+SPVM::Builder::Resource - Resource
+
+=head1 Description
+
+The SPVM::Builder::Resource class has methods to manipulate a resource.
 
 =head1 Usage
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib',
-    mode => 'prod',
-    args => ['foo', 'bar'],
+    mode => 'high_performance',
+    argv => ['foo', 'bar'],
   );
-
-=head1 Description
-
-C<SPVM::Builder::Resource> is a resource that contains a set of C<C>/C<C++> source files and the headers.
 
 =head1 Fields
 
@@ -93,28 +93,28 @@ C<SPVM::Builder::Resource> is a resource that contains a set of C<C>/C<C++> sour
   my $class_name = $resource->class_name;
   $resource->class_name($class_name);
 
-Get and set the class name of the resource.
+Gets and sets the class name of the resource.
 
 =head2 mode
 
   my $mode = $resource->mode;
   $resource->mode($mode);
 
-Get and set the mode of the config file of the resource.
+Gets and sets the mode of the config file of the resource.
 
-=head2 args
+=head2 argv
 
-  my $args = $resource->args;
-  $resource->args($args);
+  my $argv = $resource->argv;
+  $resource->argv($argv);
 
-Get and set the arguments of the config file of the resource.
+Gets and sets the command line arguments C<@ARGV> of the config file of the resource.
 
 =head2 config
 
   my $config = $resource->config;
   $resource->config($config);
 
-Get and set the config of the resource. The config is a L<SPVM::Builder::Config> object.
+Gets and sets the config of the resource. The config is a L<SPVM::Builder::Config> object.
 
 =head1 Class Methods
 
@@ -123,14 +123,14 @@ Get and set the config of the resource. The config is a L<SPVM::Builder::Config>
   my $resource = SPVM::Builder::Resource->new;
   my $resource = SPVM::Builder::Resource->new(%fields);
   
-Create a L<SPVM::Builder::Resource> object.
+Creates a L<SPVM::Builder::Resource> object.
 
 Examples:
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib',
-    mode => 'prod',
-    args => ['foo', 'bar'],
+    mode => 'high_performance',
+    argv => ['foo', 'bar'],
   );
 
 =head1 Instance Methods
@@ -139,23 +139,23 @@ Examples:
 
   my $string = $resource->to_string;
 
-Get the string representation. This is the same as the value of C</"class_name">.
+Gets the string representation. This is the same as the value of L</"class_name">.
 
 =head1 Operators
 
-C<SPVM::Builder::Resource> overloads the following operators.
+Overloads the following operators.
 
 =head2 bool
 
-  my $bool = !!$object_file_info;
-  
+  my $bool = !!$resource;
+
 Always true.
 
 =head2 stringify
 
-  my $object_file_name = "$object_file_info";
-  
-Alias for L</"to_string">.
+  my $class_name = "$resource";
+
+The alias for the L</"to_string"> method.
 
 =head1 Copyright & License
 

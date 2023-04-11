@@ -321,7 +321,7 @@ sub get_required_resource_json_lines {
     my $resource = $required_resource->{resource};
     my $resource_class_name = $resource->class_name;
     my $resource_mode = $resource->mode;
-    my $resource_args = $resource->args || [];
+    my $resource_argv = $resource->argv || [];
     
     my $line = qq({class_name:"$class_name",resource_class_name:"$resource_class_name",resource_mode:);
     if (defined $resource_mode) {
@@ -330,9 +330,9 @@ sub get_required_resource_json_lines {
     else {
       $line .= 'undefined';
     }
-    $line .= ",resource_args:[";
+    $line .= ",resource_argv:[";
     
-    $line .= join(",", map { qq("$_") } @$resource_args);
+    $line .= join(",", map { qq("$_") } @$resource_argv);
     
     $line .= "]}";
     

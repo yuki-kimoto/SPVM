@@ -624,14 +624,14 @@ sub use_resource {
   
   my $resource_class_name = $resource->class_name;
   my $resource_mode = $resource->mode;
-  my $resource_args = $resource->args;
+  my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
   my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
   
   my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
   
-  my $config = $self->load_config($config_file, @$resource_args);
+  my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
   
   $resource->config($config);
@@ -767,7 +767,7 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   
   # Uses resource
   $config->use_resource('TestCase::Resource::Zlib');
-  $config->use_resource('TestCase::Resource::Foo1', mode => 'mode1', args => ['args1', 'args2']);
+  $config->use_resource('TestCase::Resource::Foo1', mode => 'mode1', argv => ['args1', 'args2']);
   
   # Gets resouce information
   my $resource = $config->get_resource('TestCase::Resource::Zlib');
@@ -1169,7 +1169,7 @@ If the options %options are given, they are used as the options of the L<SPVM::B
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib',
     mode => 'production',
-    args => ['foo', 'bar'],
+    argv => ['foo', 'bar'],
   );
   $config->use_resource($resource);
 
