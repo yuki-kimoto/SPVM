@@ -152,7 +152,7 @@ sub new {
     $build_dir = '.spvm_build';
   }
 
-  # Module searching directries
+  # Class paths
   my $class_paths = delete $self->{class_paths};
   unless (defined $class_paths) {
     $class_paths = [];
@@ -279,7 +279,7 @@ sub get_dependent_resources {
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
 
-      # Module file
+      # Class file
       my $class_file = $self->runtime->get_class_file($class_name);
       unless (defined $class_file) {
         my $config_exe_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
@@ -812,7 +812,7 @@ sub create_bootstrap_source {
   my $class_names = $self->runtime->get_class_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
-  # Module files - Input
+  # Class files - Input
   my $class_files = [];
   for my $class_name (@$class_names_without_anon) {
     my $class_file = $self->runtime->get_class_file($class_name);
@@ -1056,7 +1056,7 @@ sub compile_class_native_source_files {
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
-    # Module file
+    # Class file
     my $class_file = $self->runtime->get_class_file($class_name);
     unless (defined $class_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);

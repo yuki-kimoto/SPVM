@@ -1154,7 +1154,7 @@ Examples:
 
 Easy Ways:
 
-Calling class methods can be made easier using the L<SPVM class loading|SPVM/"Loading Module"> feature.
+Calling class methods can be made easier using the L<SPVM class loading|SPVM/"Loading Class"> feature.
 
   use SPVM 'Int';
   my $int_object = Int->new(4);

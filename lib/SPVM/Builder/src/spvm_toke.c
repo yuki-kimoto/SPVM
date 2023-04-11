@@ -433,7 +433,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 errno = 0;
               }
               
-              // Module not found
+              // Class not found
               if (!fh) {
                 if (!op_use->uv.use->is_require) {
                   int32_t classr_dirs_str_length = 0;
@@ -458,7 +458,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
               }
-              // Module found
+              // Class found
               else {
                 // Read file content
                 fseek(fh, 0, SEEK_END);

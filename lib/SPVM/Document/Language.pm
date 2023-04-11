@@ -58,7 +58,7 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be the name that the relative L<class|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative class file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
   # Valid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
@@ -2171,7 +2171,7 @@ Examples:
   
   }
 
-In a class block, L<loading classes|/"Loading Module">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
+In a class block, L<loading classes|/"Loading Class">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
 
   class Foo {
     
@@ -2207,7 +2207,7 @@ In a class block, L<loading classes|/"Loading Module">, L<class variables|/"Clas
     }
   }
 
-If more than one class is defined in a L<class|/"Module"> file, a compilation error will occur.
+If more than one class is defined in a class file, a compilation error will occur.
 
 =head2 Class Attribute
 
@@ -2333,7 +2333,7 @@ The C<allow> syntax allows the private access from the other classes.
 
 The C<allow> syntax must be defined directory under the L<class definition|/"Class Definition">.
   
-The class that is the C<OPERAND> of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
+The class that is the C<OPERAND> of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Class">.
 
 Examples:
 
@@ -2546,7 +2546,7 @@ Change C<::> to C</>. Add ".spvm" at the end.
   SPVM/Foo/Bar.spvm
   SPVM/Foo/Bar/Baz.spvm
 
-=head2 Loading Module
+=head2 Loading Class
 
 The C<use> syntax loads a class.
   
@@ -2585,7 +2585,7 @@ You can create an alias at the same time as loading a class by C<use>.
   
   use Foo::Bar as FB;
 
-=head2 Load Module Selective
+=head2 Load Class Selective
 
 In SPVM, there is an if require Statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
 
@@ -2620,7 +2620,7 @@ In the other hand, the else block exists, so a warning is issued.
     warn "Warning: Can't load Foo";
   }
 
-=head2 Default Loaded Modules
+=head2 Default Loaded Classes
 
 The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 

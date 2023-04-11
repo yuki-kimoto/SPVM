@@ -79,7 +79,7 @@ Calling SPVM methods from Perl:
 
 B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
 
-=head1 Loading Module
+=head1 Loading Class
 
 If you load SVPM class from Perl, use the following syntax.
 

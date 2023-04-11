@@ -228,7 +228,7 @@ sub build {
   
   my $category = $options->{category};
 
-  # Module file
+  # Class file
   my $class_file = $options->{class_file};
   unless (defined $class_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);

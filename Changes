@@ -27,6 +27,24 @@
     * Removed the deprecated add_source_files method in the SPVM::Builder::Config class.
     * Removed the before_link method in the SPVM::Builder::Config class. Use add_before_link_cb instead.
     * Removed the before_compile method in the SPVM::Builder::Config class. Use add_before_compile_cb instead.
+    * The all methods in SPVM product is renamed by the following rule
+      s/module_dir/class_path/g
+      s/modules/classes/g
+      s/module/class/g
+      s/Modules/Classes/g
+      s/MODULES/CLASSES/g
+      s/MODULE/CLASS/g
+      s/Module file/Class file/g
+      s/Module searching directries/Class paths/g
+      s/Module not found/Class not found/g
+      s/Module found/Class found/g
+      s#L<class\|/"Module"> file#class file#g
+      s/Loading Module/Loading Class/g
+      s/Load Module/Load Class/g
+      s/Loaded Modules/Loaded Classes/g
+      s/Module searching directries/Class paths/g
+      s/Module searching directries/Class paths/g
+      s/Module searching directries/Class paths/g
     
 0.9704 2023-04-08
   [New Features]
