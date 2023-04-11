@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
-  'I|module-dir=s' => \my @module_dirs,
+  'I|module-dir=s' => \my @class_paths,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
@@ -32,13 +32,13 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
-  my @original_module_dirs = @module_dirs;
-  push @module_dirs, map { "$_/SPVM" } @INC;
-  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_module_dirs;
+  my @original_class_paths = @class_paths;
+  push @class_paths, map { "$_/SPVM" } @INC;
+  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_class_paths;
 
   my $build_exe = SPVM::Builder::Exe->new(
     build_dir => $build_dir,
-    module_dirs => \@module_dirs,
+    class_paths => \@class_paths,
     output_file => $output_file,
     class_name => $class_name,
     quiet => $quiet,
