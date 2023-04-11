@@ -575,22 +575,10 @@ sub load_config {
 }
 
 
-sub remove_ext_from_config_file {
-  my ($self, $config_file) = @_;
-  
-  my ($config_base_name, $config_dir) = fileparse $config_file;
-  
-  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
-  
-  my $config_file_without_ext = "$config_dir$config_base_name";
-  
-  return $config_file_without_ext;
-}
-
 sub load_mode_config {
   my ($self, $config_file, $mode, @argv) = @_;
   
-  my $mode_config_file = $self->remove_ext_from_config_file($config_file);
+  my $mode_config_file = $self->_remove_ext_from_config_file($config_file);
   if (defined $mode) {
     $mode_config_file .= ".$mode";
   }
@@ -682,7 +670,7 @@ sub get_native_include_dir {
   
   my $native_include_dir;
   if (defined $file) {
-    my $native_dir = $self->remove_ext_from_config_file($file);
+    my $native_dir = $self->_remove_ext_from_config_file($file);
     
     $native_dir .= '.native';
     
@@ -699,7 +687,7 @@ sub get_native_src_dir {
   
   my $native_src_dir;
   if (defined $file) {
-    my $native_dir = $self->remove_ext_from_config_file($file);
+    my $native_dir = $self->_remove_ext_from_config_file($file);
     
     $native_dir .= '.native';
     
@@ -729,6 +717,18 @@ sub clone {
   }
   
   return $clone;
+}
+
+sub _remove_ext_from_config_file {
+  my ($self, $config_file) = @_;
+  
+  my ($config_base_name, $config_dir) = fileparse $config_file;
+  
+  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  
+  my $config_file_without_ext = "$config_dir$config_base_name";
+  
+  return $config_file_without_ext;
 }
 
 1;
