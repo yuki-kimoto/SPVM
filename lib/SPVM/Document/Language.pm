@@ -3231,7 +3231,7 @@ A native method is defined by the C<native> L<method attribute|/"Method Attribut
 
 A native method doesn't have its L<method block|/"Method Block">.
 
-About the way to write native methods, please see L<SPVM Native Module|SPVM::Document::NativeModule> and L<SPVM Native API|SPVM::Document::NativeAPI>.
+About the way to write native methods, please see L<SPVM Native Class|SPVM::Document::NativeClass> and L<SPVM Native API|SPVM::Document::NativeAPI>.
 
 =head2 Precompiled Method
 
@@ -9138,7 +9138,7 @@ C<stdin>, C<stdout>, C<stderr> in the C language is set to the binary mode on al
 
 This means the escape character of the string literal C<"\n"> is not coverted to C<"\r\n"> when it is got from C<stdin> and it is printed to C<stdout> and C<stderr>.
 
-C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native class|SPVM::Document::NativeModule>, but don't do that.
+C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native class|SPVM::Document::NativeClass>, but don't do that.
 
 =head1 See Also
 

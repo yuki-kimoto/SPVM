@@ -13,6 +13,8 @@
     * Added the config_bootstrap field in the SPVM::Builder::Config::Exe class.
     * Added the config_spvm_core field in the SPVM::Builder::Config::Exe class.
     * Added the create_default_config function in the SPVM::Builder::Util::API module.
+  [Document Changes]
+    * Renamed SPVM::Document::NativeModule to SPVM::Document::NativeClass.
   [Incompatible Canges]
     * Removed the builder_include_dir field in the SPVM::Builder::Config.
     * Removed the builder_src_dir field in the SPVM::Builder::Config.
@@ -45,6 +47,14 @@
       s/Module searching directries/Class paths/g
       s/Module searching directries/Class paths/g
       s/Module searching directries/Class paths/g
+      s/NativeModules/NativeClasses/g
+      s/Native Modules/Native Classes/g
+      s/Native modules/Native classes/g
+      s/native modules/native classes/g
+      s/NativeModule/NativeClass/g
+      s/Native Module/Native Class/g
+      s/Native module/Native class/g
+      s/native module/native class/g
     * The --module-dir option in the spvmcc command is renamed to the --class-path.
     
 0.9704 2023-04-08
