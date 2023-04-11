@@ -303,14 +303,6 @@ Force the compilation and the link of L<SPVM::Builder::CC>.
 
 L<Github|https://github.com/yuki-kimoto/SPVM>
 
-=head1 Bug Report
-
-L<GitHub Issue|https://github.com/yuki-kimoto/SPVM/issues>
-
-=head1 Support
-
-L<Github Discussions|https://github.com/yuki-kimoto/SPVM/discussions>
-
 =head1 Author
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.comE<gt>
