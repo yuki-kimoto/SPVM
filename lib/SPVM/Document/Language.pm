@@ -2546,7 +2546,7 @@ The C<use> syntax loads a class.
 
 If the class does not exist, a compilation error will occur.
 
-Modules are loaded at compile-time.
+Classes are loaded at compile-time.
 
 C<use> syntax must be defined directly under the L<class definition|/"Class Definition">.
 
@@ -2554,9 +2554,9 @@ C<use> syntax must be defined directly under the L<class definition|/"Class Defi
     use Foo;
   }
 
-=head2 Module Alias
+=head2 Class Alias
 
-C<alias> syntax create an alias name for a class name.
+The C<alias> keyword creates a alias name for a class name.
   
   # Create alias
   alias Foo::Bar as FB;
