@@ -187,10 +187,10 @@ A Perl script to call C<test_gzopen_gzread> method of C<MyZlib> class.
 L<spvmdist> command with C<--resource> option create a resource distribution.
   
   # C language resource
-  spvmdist --resource Resource::Foo::V1_0_0
+  spvmdist --resource Resource::Foo
 
   # C++ resource
-  spvmdist --resource --native c++ Resource::Foo::V1_0_0
+  spvmdist --resource --native c++ Resource::Foo
 
 =head1 Resource Modules
 

@@ -8,28 +8,28 @@ class TestCase::UseResource::Basic {
     
     {
       my $result = &mylib1_source1_func1;
-      unless ($result eq "Mylib1__V1_0_0__mylib1_source1_func1") {
+      unless ($result eq "Mylib1__mylib1_source1_func1") {
         return 0;
       }
     }
 
     {
       my $result = &mylib1_source1_func2;
-      unless ($result eq "Mylib1__V1_0_0__mylib1_source1_func2") {
+      unless ($result eq "Mylib1__mylib1_source1_func2") {
         return 0;
       }
     }
     
     {
       my $result = &mylib1_source2_func1;
-      unless ($result eq "Mylib1__V1_0_0__mylib1_source2_func1") {
+      unless ($result eq "Mylib1__mylib1_source2_func1") {
         return 0;
       }
     }
 
     {
       my $result = &mylib1_source2_func2;
-      unless ($result eq "Mylib1__V1_0_0__mylib1_source2_func2") {
+      unless ($result eq "Mylib1__mylib1_source2_func2") {
         return 0;
       }
     }

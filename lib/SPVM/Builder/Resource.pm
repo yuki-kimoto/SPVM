@@ -77,7 +77,7 @@ SPVM::Builder::Resource - Resourceurations of Compile and Link of Native Sources
 =head1 Usage
 
   my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib::V1_0_0',
+    class_name => 'Resource::Zlib',
     mode => 'prod',
     args => ['foo', 'bar'],
   );
@@ -128,7 +128,7 @@ Create a L<SPVM::Builder::Resource> object.
 Examples:
 
   my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib::V1_0_0',
+    class_name => 'Resource::Zlib',
     mode => 'prod',
     args => ['foo', 'bar'],
   );

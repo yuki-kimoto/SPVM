@@ -22,13 +22,13 @@ ok(SPVM::TestCase::UseResource::Basic->test);
   is_deeply($resource->args, ['args1', 'args2']);
   is_deeply($resource->config->{_test_base_argv}, ['args1', 'args2']);
   is_deeply($resource->config->{_test_mode1_argv}, ['args1', 'args2']);
-  like($resource->config->file, qr|t/.*?\Q/lib/SPVM/TestCase/Resource/Mylib1/V1_0_0.mode1.config|);
+  like($resource->config->file, qr|t/.*?\Q/lib/SPVM/TestCase/Resource/Mylib1.mode1.config|);
 }
 
 {
   ok(SPVM::TestCase::UseResource::Mylib2->test);
   my $config = $main::TEST_USE_RESOURCE_CONFIG;
-  is_deeply($config->get_resource_names, ['TestCase::Resource::Mylib1::V1_0_0', 'TestCase::Resource::Mylib2::V1_0_0']);
+  is_deeply($config->get_resource_names, ['TestCase::Resource::Mylib1', 'TestCase::Resource::Mylib2']);
 }
 
 # All object is freed
