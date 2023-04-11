@@ -7,6 +7,7 @@
     * Improved English syntax.
     * SPVM::Document::Tutorial::Complex is moved to "Complex - SPVM Wiki"
     * SPVM::Document::Tutorial is moved to "Tutorial - SPVM Wiki"
+    * SPVM::Document::Benchmark is moved to "Benchmark - SPVM Wiki"
       
 0.9704 2023-04-11
   [Prerequirement Changes]
