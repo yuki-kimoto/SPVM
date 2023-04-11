@@ -13,7 +13,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 my $api = SPVM::api();
 
-# Default loaded modules
+# Default loaded classes
 $api->class('Byte')->new(1);
 $api->class('Short')->new(1);
 $api->class('Int')->new(1);

@@ -27,7 +27,7 @@ sub compile_not_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_module_dir = File::Temp->newdir;
+  my $tmp_class_path = File::Temp->newdir;
     
   my $first_class_name;
   for my $source (@$sources) {
@@ -43,18 +43,18 @@ sub compile_not_ok {
       $first_class_name = $class_name;
     }
     
-    my $module_file = "$tmp_module_dir/$class_name.spvm";
-    $module_file =~ s|::|/|g;
+    my $class_file = "$tmp_class_path/$class_name.spvm";
+    $class_file =~ s|::|/|g;
     
-    mkpath dirname $module_file;
-    open my $module_fh, '>', $module_file
-      or confess "Can't open file \"$module_file\":$!";
+    mkpath dirname $class_file;
+    open my $class_fh, '>', $class_file
+      or confess "Can't open file \"$class_file\":$!";
     
-    print $module_fh $source;
-    close $module_fh;
+    print $class_fh $source;
+    close $class_fh;
   }
   
-  compile_not_ok_file($first_class_name, $error_message_re, {module_dir => "$tmp_module_dir", file => $file, line => $line});
+  compile_not_ok_file($first_class_name, $error_message_re, {class_path => "$tmp_class_path", file => $file, line => $line});
 }
 
 sub compile_not_ok_file {
@@ -64,7 +64,7 @@ sub compile_not_ok_file {
     $options = {};
   }
   
-  my $module_dir = $options->{module_dir};
+  my $class_path = $options->{class_path};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -85,12 +85,12 @@ sub compile_not_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $module_dir) {
-    unshift @{$builder->module_dirs}, $module_dir;
+  if (defined $class_path) {
+    unshift @{$builder->class_paths}, $class_path;
   }
 
   my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => $builder->module_dirs
+    class_paths => $builder->class_paths
   );
   
   my $success = $compiler->compile($class_name, $file, $line);
@@ -118,7 +118,7 @@ sub compile_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_module_dir = File::Temp->newdir;
+  my $tmp_class_path = File::Temp->newdir;
     
   my $first_class_name;
   for my $source (@$sources) {
@@ -134,18 +134,18 @@ sub compile_ok {
       $first_class_name = $class_name;
     }
     
-    my $module_file = "$tmp_module_dir/$class_name.spvm";
-    $module_file =~ s|::|/|g;
+    my $class_file = "$tmp_class_path/$class_name.spvm";
+    $class_file =~ s|::|/|g;
     
-    mkpath dirname $module_file;
-    open my $module_fh, '>', $module_file
-      or confess "Can't open file \"$module_file\":$!";
+    mkpath dirname $class_file;
+    open my $class_fh, '>', $class_file
+      or confess "Can't open file \"$class_file\":$!";
     
-    print $module_fh $source;
-    close $module_fh;
+    print $class_fh $source;
+    close $class_fh;
   }
   
-  compile_ok_file($first_class_name, {module_dir => "$tmp_module_dir", file => $file, line => $line});
+  compile_ok_file($first_class_name, {class_path => "$tmp_class_path", file => $file, line => $line});
 }
 
 sub compile_ok_file {
@@ -155,7 +155,7 @@ sub compile_ok_file {
     $options = {};
   }
   
-  my $module_dir = $options->{module_dir};
+  my $class_path = $options->{class_path};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -176,12 +176,12 @@ sub compile_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $module_dir) {
-    unshift @{$builder->module_dirs}, $module_dir;
+  if (defined $class_path) {
+    unshift @{$builder->class_paths}, $class_path;
   }
   
   my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => $builder->module_dirs
+    class_paths => $builder->class_paths
   );
   my $success = $compiler->compile($class_name, $file, $line);
   ok($success);

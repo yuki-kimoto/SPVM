@@ -323,7 +323,7 @@ int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -338,34 +338,34 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Copy class load path to builder
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
-  const char* module_file;
-  void* sv_module_file;
+  const char* class_file;
+  void* sv_class_file;
 
-  void* obj_module_file = NULL;
+  void* obj_class_file = NULL;
   if (class_id >= 0) {
-    int32_t module_rel_file_id = env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
-    int32_t module_dir_id = env->api->runtime->get_class_module_dir_id(runtime, class_id);
-    const char* module_dir = NULL;
-    const char* module_dir_sep;
-    if (module_dir_id >= 0) {
-      module_dir_sep = "/";
-      module_dir = env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
+    int32_t class_rel_file_id = env->api->runtime->get_class_class_rel_file_id(runtime, class_id);
+    int32_t class_path_id = env->api->runtime->get_class_class_path_id(runtime, class_id);
+    const char* class_path = NULL;
+    const char* class_path_sep;
+    if (class_path_id >= 0) {
+      class_path_sep = "/";
+      class_path = env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
     }
     else {
-      module_dir_sep = "";
-      module_dir = "";
+      class_path_sep = "";
+      class_path = "";
     }
-    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+    const char* class_rel_file = env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
     
-    int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
-    obj_module_file = env->new_string(env, stack, NULL, module_file_length);
-    char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
-    memcpy(module_file, module_dir, strlen(module_dir));
-    memcpy(module_file + strlen(module_dir), module_dir_sep, strlen(module_dir_sep));
-    memcpy(module_file + strlen(module_dir) + strlen(module_dir_sep), module_rel_file, strlen(module_rel_file));
+    int32_t class_file_length = strlen(class_path) + strlen(class_path_sep) + strlen(class_rel_file);
+    obj_class_file = env->new_string(env, stack, NULL, class_file_length);
+    char* class_file = (char*)env->get_chars(env, stack, obj_class_file);
+    memcpy(class_file, class_path, strlen(class_path));
+    memcpy(class_file + strlen(class_path), class_path_sep, strlen(class_path_sep));
+    memcpy(class_file + strlen(class_path) + strlen(class_path_sep), class_rel_file, strlen(class_rel_file));
   }
   
-  stack[0].oval = obj_module_file;
+  stack[0].oval = obj_class_file;
   
   return 0;
 }

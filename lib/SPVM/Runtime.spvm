@@ -43,7 +43,7 @@ class Runtime : pointer {
   
   private native method _get_method_names : string[] ($class_name : string, $native_flag : int, $precompile_flag : int, $enum_flag : int);
   
-  native method get_module_file : string ($class_name : string);
+  native method get_class_file : string ($class_name : string);
   
   native method build_precompile_class_source : string ($class_name : string);
   

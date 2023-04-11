@@ -1,12 +1,12 @@
 =head1 Name
 
-SPVM::Document::Resource - How to write the resource module
+SPVM::Document::Resource - How to write the resource class
 
 =head1 Resource
 
-A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
+A resource is a L<native class|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
 
-A resource doesn't has the native module file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
+A resource doesn't has the native class file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
 
 Let's see the files of L<Resource::Zlib|SPVM::Resource::Zlib> as an example.
 
@@ -112,7 +112,7 @@ The source files of C<zlib>.
 
 =head1 Using Resource
 
-The method L<SPVM::Builder::Config/"use_resource">  loads a resource. C<MyZlib> is a L<native module|SPVM::Document::NativeModule> to use L<Resource::Zlib|SPVM::Resource::Zlib>.
+The method L<SPVM::Builder::Config/"use_resource">  loads a resource. C<MyZlib> is a L<native class|SPVM::Document::NativeModule> to use L<Resource::Zlib|SPVM::Resource::Zlib>.
 
 B<lib/SPVM/MyZlib.config>
 

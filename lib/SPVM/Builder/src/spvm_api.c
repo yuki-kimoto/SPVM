@@ -2064,21 +2064,21 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
   const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, class->name_id, NULL);
 
-  int32_t module_dir_id = class->module_dir_id;
-  int32_t module_rel_file_id = class->module_rel_file_id;
+  int32_t class_path_id = class->class_path_id;
+  int32_t class_rel_file_id = class->class_rel_file_id;
   
-  const char* module_dir;
-  const char* module_dir_sep;
-  if (module_dir_id >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_name(runtime, module_dir_id);
-    module_dir_sep = "/";
+  const char* class_path;
+  const char* class_path_sep;
+  if (class_path_id >= 0) {
+    class_path = SPVM_API_RUNTIME_get_name(runtime, class_path_id);
+    class_path_sep = "/";
   }
   else {
-    module_dir = "";
-    module_dir_sep = "";
+    class_path = "";
+    class_path_sep = "";
   }
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_id);
+  const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
   
   // Class name and method name
   const char* new_line_part = "\n    ";
@@ -2097,9 +2097,9 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(module_dir);
-  total_length += strlen(module_dir_sep);
-  total_length += strlen(module_rel_file);
+  total_length += strlen(class_path);
+  total_length += strlen(class_path_sep);
+  total_length += strlen(class_rel_file);
 
   const char* line_part = " line ";
   char line_str[20];
@@ -2126,9 +2126,9 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     arrow_part,
     method_name,
     at_part,
-    module_dir,
-    module_dir_sep,
-    module_rel_file,
+    class_path,
+    class_path_sep,
+    class_rel_file,
     line_part,
     line
   );

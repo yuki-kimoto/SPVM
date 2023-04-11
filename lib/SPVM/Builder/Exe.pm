@@ -37,14 +37,14 @@ sub builder {
   }
 }
 
-sub module_dirs {
+sub class_paths {
   my $self = shift;
   if (@_) {
-    $self->builder->module_dirs($_[0]);
+    $self->builder->class_paths($_[0]);
     return $self;
   }
   else {
-    return $self->builder->module_dirs;
+    return $self->builder->class_paths;
   }
 }
 
@@ -153,15 +153,15 @@ sub new {
   }
 
   # Module searching directries
-  my $module_dirs = delete $self->{module_dirs};
-  unless (defined $module_dirs) {
-    $module_dirs = [];
+  my $class_paths = delete $self->{class_paths};
+  unless (defined $class_paths) {
+    $class_paths = [];
   }
   
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     build_dir => $build_dir,
-    module_dirs => $module_dirs
+    class_paths => $class_paths
   );
   
   # Config file
@@ -200,7 +200,7 @@ sub build_exe_file {
   }
   
   # Config file
-  my $module_file = $self->runtime->get_module_file($class_name);
+  my $class_file = $self->runtime->get_class_file($class_name);
 
   # Object files
   my $object_files = [];
@@ -254,7 +254,7 @@ sub get_dependent_resources {
 
   my $build_dir = $self->builder->build_dir;
   
-  # Compiler for native module
+  # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -270,28 +270,28 @@ sub get_dependent_resources {
     
     my $native_method_names = $self->runtime->get_method_names($class_name, 'native');
     if (@$native_method_names) {
-      my $native_module_file = $self->runtime->get_module_file($class_name);
-      my $native_dir = $native_module_file;
+      my $native_class_file = $self->runtime->get_class_file($class_name);
+      my $native_dir = $native_class_file;
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
+      my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_class_file, $perl_class_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
 
       # Module file
-      my $module_file = $self->runtime->get_module_file($class_name);
-      unless (defined $module_file) {
+      my $class_file = $self->runtime->get_class_file($class_name);
+      unless (defined $class_file) {
         my $config_exe_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
         if ($config_exe_file) {
-          $module_file = $config_exe_file;
-          $module_file =~ s/\.config$/\.spvm/;
+          $class_file = $config_exe_file;
+          $class_file =~ s/\.config$/\.spvm/;
         }
         else {
-          confess "\"$module_file\" module is not loaded";
+          confess "\"$class_file\" class is not loaded";
         }
       }
-      my $config_exe = $builder_cc->create_native_config_from_module_file($module_file);
+      my $config_exe = $builder_cc->create_native_config_from_class_file($class_file);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -353,7 +353,7 @@ sub compile {
   
   # Compile SPVM
   my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => $builder->module_dirs
+    class_paths => $builder->class_paths
   );
   my $success = $compiler->compile($class_name, __FILE__, __LINE__);
   unless ($success) {
@@ -813,10 +813,10 @@ sub create_bootstrap_source {
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   # Module files - Input
-  my $module_files = [];
+  my $class_files = [];
   for my $class_name (@$class_names_without_anon) {
-    my $module_file = $self->runtime->get_module_file($class_name);
-    push @$module_files, $module_file;
+    my $class_file = $self->runtime->get_class_file($class_name);
+    push @$class_files, $class_file;
   }
   
   # Source file - Output
@@ -866,7 +866,7 @@ sub create_bootstrap_source {
   
   # Create source file
   $self->create_source_file({
-    input_files => [@$module_files, __FILE__],
+    input_files => [@$class_files, __FILE__],
     output_file => $bootstrap_source_file,
     create_cb => $create_cb,
   });
@@ -912,7 +912,7 @@ sub compile_spvm_core_source_files {
   # Config
   my $config_exe = $self->config;
   
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
   
   # SPVM src directory
   my $builder_src_dir = "$builder_dir/src";
@@ -990,7 +990,7 @@ sub compile_class_precompile_source_file {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
-    my $module_file = $self->runtime->get_module_file($class_name);
+    my $class_file = $self->runtime->get_class_file($class_name);
     my $precompile_source = $self->runtime->build_precompile_class_source($class_name);
     
     $builder_cc->build_precompile_class_source_file(
@@ -998,7 +998,7 @@ sub compile_class_precompile_source_file {
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
-        module_file => $module_file,
+        class_file => $class_file,
       }
     );
     
@@ -1034,7 +1034,7 @@ sub compile_class_native_source_files {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Compiler for native module
+  # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -1047,28 +1047,28 @@ sub compile_class_native_source_files {
   
   my $native_method_names = $self->runtime->get_method_names($class_name, 'native');
   if (@$native_method_names) {
-    my $native_module_file = $self->runtime->get_module_file($class_name);
-    my $native_dir = $native_module_file;
+    my $native_class_file = $self->runtime->get_class_file($class_name);
+    my $native_dir = $native_class_file;
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
+    my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_class_file, $perl_class_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
     # Module file
-    my $module_file = $self->runtime->get_module_file($class_name);
-    unless (defined $module_file) {
+    my $class_file = $self->runtime->get_class_file($class_name);
+    unless (defined $class_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
       if ($config_file) {
-        $module_file = $config_file;
-        $module_file =~ s/\.config$/\.spvm/;
+        $class_file = $config_file;
+        $class_file =~ s/\.config$/\.spvm/;
       }
       else {
-        confess "\"$module_file\" module is not loaded";
+        confess "\"$class_file\" class is not loaded";
       }
     }
-    my $config = $builder_cc->create_native_config_from_module_file($module_file);
+    my $config = $builder_cc->create_native_config_from_class_file($class_file);
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     

@@ -157,7 +157,7 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Compiler__add_class_path(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -165,15 +165,15 @@ int32_t SPVM__Compiler__add_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* obj_module_dir = stack[1].oval;
+  void* obj_class_path = stack[1].oval;
 
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  const char* module_dir = NULL;
-  if (obj_module_dir) {
-    module_dir = env->get_chars(env, stack, obj_module_dir);
+  const char* class_path = NULL;
+  if (obj_class_path) {
+    class_path = env->get_chars(env, stack, obj_class_path);
   }
-  env->api->compiler->add_module_dir(compiler, module_dir);
+  env->api->compiler->add_class_path(compiler, class_path);
   
   return 0;
 }

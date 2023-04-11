@@ -42,8 +42,8 @@ Runtime native APIs have its IDs.
   18 get_type_is_ref
   19 get_class_id_by_name
   20 get_class_name_id
-  21 get_class_module_rel_file_id
-  22 get_class_module_dir_id
+  21 get_class_class_rel_file_id
+  22 get_class_class_path_id
   23 get_class_is_anon
   24 get_class_fields_base_id
   25 get_class_fields_length
@@ -192,13 +192,13 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
 
-=head2 get_class_module_rel_file_id
+=head2 get_class_class_rel_file_id
 
-  int32_t (*get_class_module_rel_file_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
 
-=head2 get_class_module_dir_id
+=head2 get_class_class_path_id
 
-  int32_t (*get_class_module_dir_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_class_path_id)(void* runtime, int32_t class_id);
 
 =head2 get_class_is_anon
 

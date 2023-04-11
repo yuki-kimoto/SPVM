@@ -16,7 +16,7 @@ class Compiler : pointer {
   
   native method set_start_line : void ($start_line : int);
   
-  native method add_module_dir : void ($module_dir : string);
+  native method add_class_path : void ($class_path : string);
   
   native method get_error_messages : string[] ();
 }

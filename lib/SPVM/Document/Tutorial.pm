@@ -9,7 +9,7 @@ This document is SPVM Tutorial. Describes SPVM basic grammers, how to get more p
 =head1 SPVM Installation
 
 
-SPMV Installation is described. SPVM is a programing language, but also SPVM is a CPAN module writen by Perl and C language. You can install SPVM from CPAN using cpan or cpanm command.
+SPMV Installation is described. SPVM is a programing language, but also SPVM is a CPAN class writen by Perl and C language. You can install SPVM from CPAN using cpan or cpanm command.
 
 Install SPVM using <a href="https://metacpan.org/pod/distribution/App-cpanminus/bin/cpanm">cpanm</a> if you has user Perl in user directory using <a href="https://perlbrew.pl/">perlbrew</a> or <a href="https://github.com/tokuhirom/plenv">plenv</a>.
 
@@ -24,12 +24,12 @@ Install SPVM using cpan command.
 
 
 
-=head2 What are the Advantages that SPVM programming language is a CPAN module?
+=head2 What are the Advantages that SPVM programming language is a CPAN class?
 
 
 The Advantages is that you can upgrade by simply installing SPVM from CPAN.
 
-SPVM is a programming language, but also a Perl module, and works with Perl.
+SPVM is a programming language, but also a Perl class, and works with Perl.
 
 Binary compatibility is kept in upgrading unlike Perl in this point.
 
@@ -48,10 +48,10 @@ Let's take SPVM for the first time. Then, let's improve the performance of the S
 Let's take SPVM for the first time. This is a first simple example. Let's calcurate the sum of numbers.
 
 
-=head3 Create SPVM module
+=head3 Create SPVM class
 
 
-Create SPVM module. The extension is "spvm". In this example, the name of SPVM module is "SPVM/MyMath.spvm".
+Create SPVM class. The extension is "spvm". In this example, the name of SPVM class is "SPVM/MyMath.spvm".
 
 Create "SPVM/MyMath.spvm" in the "lib" directory, and you write the following code.
 
@@ -400,16 +400,16 @@ The followings are the conventions and add current script directry's "lib" direc
 
 
 
-=head3 use SPVM module
+=head3 use SPVM class
 
 
-use SPVM module.
+use SPVM class.
 
   
   use SPVM 'MyMath';
 
 
-In this place, compilation is not done. Collect SPVM modules.
+In this place, compilation is not done. Collect SPVM classes.
 
 
 =head3 Call SPVM Method

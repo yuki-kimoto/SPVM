@@ -140,7 +140,7 @@ If C<no_compiler_api> is a true value, the source codes of the L<compiler native
 
 Gets and sets the config(a L<SPVM::Builder::Config> object) for SPVM core source files.
 
-The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> module.
+The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> class.
 
 =head2 config_bootstrap
 
@@ -149,7 +149,7 @@ The default is a config that is created by the L<create_default_config|SPVM::Bui
 
 Gets and sets the config(a L<SPVM::Builder::Config> object) for the bootstrap source file that contains C<main> function in the C language.
 
-The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> module.
+The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> class.
 
 =head1 Methods
 

@@ -17,9 +17,9 @@ struct spvm_class {
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
   const char* name;
-  const char* module_file;
-  const char* module_dir;
-  const char* module_rel_file;
+  const char* class_file;
+  const char* class_path;
+  const char* class_rel_file;
   SPVM_TYPE* type;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;

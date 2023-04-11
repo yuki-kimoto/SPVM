@@ -284,7 +284,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       ch = '"';
     }
 
-    // '\0' means end of file, so try to read next module source
+    // '\0' means end of file, so try to read next class source
     if (ch == '\0') {
       
       // End of file
@@ -302,7 +302,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       compiler->befbufptr = NULL;
       compiler->line_start_ptr = NULL;
       
-      // If there are more module, load it
+      // If there are more class, load it
       SPVM_LIST* op_use_stack = compiler->op_use_stack;
       
       while (1) {
@@ -399,23 +399,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             char* cur_file = NULL;
             
-            // Do directry module search
-            int32_t do_directry_module_search;
+            // Do directry class search
+            int32_t do_directry_class_search;
 
-            // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
-            const char* found_module_source = SPVM_HASH_get(compiler->module_source_symtable, class_name, strlen(class_name));
-            const char* module_dir = NULL;
-            if (!found_module_source) {
-              // Search module file
+            // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in class source symtable
+            const char* found_class_source = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
+            const char* class_path = NULL;
+            if (!found_class_source) {
+              // Search class file
               FILE* fh = NULL;
-              int32_t module_dirs_length = SPVM_COMPILER_get_module_dirs_length(compiler);
-              for (int32_t i = 0; i < module_dirs_length; i++) {
-                module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
+              int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
+              for (int32_t i = 0; i < class_paths_length; i++) {
+                class_path = SPVM_COMPILER_get_class_path(compiler, i);
                 
                 // File name
-                int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
+                int32_t file_name_length = (int32_t)(strlen(class_path) + 1 + strlen(cur_rel_file));
                 cur_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
-                sprintf(cur_file, "%s/%s", module_dir, cur_rel_file);
+                sprintf(cur_file, "%s/%s", class_path, cur_rel_file);
                 cur_file[file_name_length] = '\0';
                 
                 // \ is replaced to /
@@ -436,24 +436,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Module not found
               if (!fh) {
                 if (!op_use->uv.use->is_require) {
-                  int32_t moduler_dirs_str_length = 0;
-                  for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
-                    moduler_dirs_str_length += 1 + strlen(module_dir);
+                  int32_t classr_dirs_str_length = 0;
+                  for (int32_t i = 0; i < class_paths_length; i++) {
+                    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
+                    classr_dirs_str_length += 1 + strlen(class_path);
                   }
-                  char* moduler_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, moduler_dirs_str_length + 1);
-                  int32_t moduler_dirs_str_offset = 0;
-                  for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
-                    sprintf(moduler_dirs_str + moduler_dirs_str_offset, "%s", module_dir);
-                    moduler_dirs_str_offset += strlen(module_dir);
-                    if (i != module_dirs_length - 1) {
-                      moduler_dirs_str[moduler_dirs_str_offset] = ' ';
-                      moduler_dirs_str_offset++;
+                  char* classr_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, classr_dirs_str_length + 1);
+                  int32_t classr_dirs_str_offset = 0;
+                  for (int32_t i = 0; i < class_paths_length; i++) {
+                    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
+                    sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", class_path);
+                    classr_dirs_str_offset += strlen(class_path);
+                    if (i != class_paths_length - 1) {
+                      classr_dirs_str[classr_dirs_str_offset] = ' ';
+                      classr_dirs_str_offset++;
                     }
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The module file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, moduler_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }
@@ -464,37 +464,37 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
                 if (file_size < 0) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
                 char* src = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, src);
                   return 0;
                 }
                 fclose(fh);
                 src[file_size] = '\0';
                 
-                found_module_source = src;
-                SPVM_HASH_set(compiler->module_source_symtable, class_name, strlen(class_name), src);
+                found_class_source = src;
+                SPVM_HASH_set(compiler->class_source_symtable, class_name, strlen(class_name), src);
               }
             }
             
             const char* src = NULL;
             int32_t file_size = 0;
-            if (found_module_source) {
-              src = found_module_source;
+            if (found_class_source) {
+              src = found_class_source;
               file_size = strlen(src);
 
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = (char*)src;
-              compiler->cur_dir = module_dir;
+              compiler->cur_dir = class_path;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
-              // If we get current module file path, set it, otherwise set module relative file path
+              // If we get current class file path, set it, otherwise set class relative file path
               if (cur_file) {
                 compiler->cur_file = cur_file;
               }
@@ -514,7 +514,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_line = 1;
             }
             else {
-              // If module not found and the module is used in require syntax, compilation errors don't occur.
+              // If class not found and the class is used in require syntax, compilation errors don't occur.
               if (op_use->uv.use->is_require) {
                 SPVM_HASH_set(compiler->not_found_class_class_symtable, class_name, strlen(class_name), (void*)class_name);
                 continue;

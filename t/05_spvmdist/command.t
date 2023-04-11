@@ -48,23 +48,23 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, q(our $VERSION = '0.01')));
   my $today_tp = Time::Piece::localtime;
   my $year = $today_tp->year;
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, $year));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, '[--user-name]'));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, '[--user-email]'));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'Copyright'));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'MIT License'));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, $year));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, '[--user-name]'));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, '[--user-email]'));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, 'MIT License'));
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'Copyright'));
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'MIT License'));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'MIT License'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -134,10 +134,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
 
-  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
-  ok(-f $basic_test_spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
+  my $basic_test_spvm_class_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
+  ok(-f $basic_test_spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "class TestCase::Foo {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "static method test : int () {"));
   
   my $perl_license_file = "$tmp_dir/SPVM-Foo/LICENSE";
   ok(-f $perl_license_file);
@@ -164,14 +164,14 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $output = `$spvmdist_cmd`;
   like($output, qr/\[exists\]/);
   
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, q(our $VERSION = '0.01')));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, q(our $VERSION = '0.01')));
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -218,25 +218,25 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $today_tp = Time::Piece::localtime;
   my $year = $today_tp->year;
   
-  my $perl_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo::Bar::Baz;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Yuki C<"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'yuki.com'));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Copyright (c) $year Yuki"));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo::Bar::Baz;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "Yuki C<"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, 'yuki.com'));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "Copyright (c) $year Yuki"));
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo::Bar::Baz {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo::Bar::Baz {"));
   
   my $basic_test_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo::Bar::Baz';"));
 
-  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/lib/SPVM/TestCase/Foo/Bar/Baz.spvm";
-  ok(-f $basic_test_spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo::Bar::Baz {"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "static method test : int () {"));
+  my $basic_test_spvm_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/lib/SPVM/TestCase/Foo/Bar/Baz.spvm";
+  ok(-f $basic_test_spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "class TestCase::Foo::Bar::Baz {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "static method test : int () {"));
 
   chdir($save_cur_dir) or die;
 }
@@ -253,9 +253,9 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/myfoo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
+  my $perl_class_file = "$tmp_dir/myfoo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
   
   chdir($save_cur_dir) or die;
 }
@@ -283,19 +283,19 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'MIT License'));
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
-  ok(-f $native_module_file);
-  ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, 'static const char* FILE_NAME = "Foo.c";'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, 'Copyright'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, 'MIT License'));
+  my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
+  ok(-f $native_class_file);
+  ok(SPVM::Builder::Util::file_contains($native_class_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, 'static const char* FILE_NAME = "Foo.c";'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, "SPVM__Foo__foo"));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, 'Copyright'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, 'MIT License'));
 
-  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_include_dir);
+  my $gitkeep_file_for_native_class_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_include_dir);
 
-  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_src_dir);
+  my $gitkeep_file_for_native_class_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_src_dir);
 
   chdir($save_cur_dir) or die;
 }
@@ -321,17 +321,17 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.c";
-  ok(-f $native_module_file);
-  ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, 'static const char* FILE_NAME = "Foo/Bar/Baz.c";'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__Bar__Baz__foo"));
+  my $native_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.c";
+  ok(-f $native_class_file);
+  ok(SPVM::Builder::Util::file_contains($native_class_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, 'static const char* FILE_NAME = "Foo/Bar/Baz.c";'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, "SPVM__Foo__Bar__Baz__foo"));
 
-  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/include/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_include_dir);
+  my $gitkeep_file_for_native_class_include_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_include_dir);
 
-  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/src/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_src_dir);
+  my $gitkeep_file_for_native_class_src_dir = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_src_dir);
 
   chdir($save_cur_dir) or die;
 }
@@ -357,11 +357,11 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.cpp";
-  ok(-f $native_module_file);
-  ok(SPVM::Builder::Util::file_contains($native_module_file, '#include "spvm_native.h"'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, 'extern "C" {'));
-  ok(SPVM::Builder::Util::file_contains($native_module_file, "SPVM__Foo__foo"));
+  my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.cpp";
+  ok(-f $native_class_file);
+  ok(SPVM::Builder::Util::file_contains($native_class_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, 'extern "C" {'));
+  ok(SPVM::Builder::Util::file_contains($native_class_file, "SPVM__Foo__foo"));
 
   chdir($save_cur_dir) or die;
 }
@@ -385,8 +385,8 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(!-f $native_config_file);
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
-  ok(!-f $native_module_file);
+  my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
+  ok(!-f $native_class_file);
 
   chdir($save_cur_dir) or die;
 }
@@ -403,18 +403,18 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  my $perl_module_file = "$tmp_dir/mylib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(!SPVM::Builder::Util::file_contains($perl_module_file, '$VERSION'));
+  my $perl_class_file = "$tmp_dir/mylib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(!SPVM::Builder::Util::file_contains($perl_class_file, '$VERSION'));
   
-  my $spvm_module_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
+  my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
   
   my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
   ok(-f $native_config_file);
   
-  my $native_module_file = "$tmp_dir/mylib/SPVM/Foo.c";
-  ok(-f $native_module_file);
+  my $native_class_file = "$tmp_dir/mylib/SPVM/Foo.c";
+  ok(-f $native_class_file);
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(!-f $makefile_pl_file);
@@ -449,12 +449,12 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(!-f $perl_module_file);
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(!-f $perl_class_file);
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
 
   chdir($save_cur_dir) or die;
 }
@@ -471,19 +471,19 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
-  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+  SPVM::Builder::Util::spurt_binary($spvm_class_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "AAAA"));
 
   my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path --force Foo);
   system($spvmdist_cmd_fource) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
   chdir($save_cur_dir) or die;
 }
@@ -500,19 +500,19 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
-  SPVM::Builder::Util::spurt_binary($spvm_module_file, 'AAAAA');
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "AAAA"));
+  SPVM::Builder::Util::spurt_binary($spvm_class_file, 'AAAAA');
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "AAAA"));
 
   my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path -f Foo);
   system($spvmdist_cmd_fource) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
   chdir($save_cur_dir) or die;
 }
@@ -594,7 +594,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir($save_cur_dir) or die;
 }
 
-# --no-build-spvm-modules
+# --no-build-spvm-classes
 {
   my $tmp_dir = File::Temp->newdir;
   my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --native c --precompile Foo);
@@ -607,7 +607,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
     or die "Can't chdir";
   
   my $make = $Config{make};
-  my $ret = system("$^X Makefile.PL --no-build-spvm-modules");
+  my $ret = system("$^X Makefile.PL --no-build-spvm-classes");
   ok($ret == 0);
   
   ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
@@ -635,46 +635,46 @@ for my $test_index (0 .. 1) {
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
 
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "L<resouce|SPVM::Document::Resource>"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.config:"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.c:"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "new_c99"));
-  ok(!SPVM::Builder::Util::file_contains($perl_module_file, 'extern "C"'));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.c:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_c99"));
+  ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
 
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(!-f $spvm_module_file);
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(!-f $spvm_class_file);
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
-  ok(!-f $native_module_file);
+  my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
+  ok(!-f $native_class_file);
 
-  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_include_dir);
+  my $gitkeep_file_for_native_class_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_include_dir);
 
-  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_src_dir);
+  my $gitkeep_file_for_native_class_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_src_dir);
 
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
 
-  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
-  ok(-f $basic_test_spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "native static method test : int ();"));
+  my $basic_test_spvm_class_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
+  ok(-f $basic_test_spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "class TestCase::Foo {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "native static method test : int ();"));
   
-  my $basic_test_native_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.c";
-  ok(-f $basic_test_native_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, '#include "spvm_native.h"'));
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, "SPVM__TestCase__Foo__test"));
+  my $basic_test_native_class_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.c";
+  ok(-f $basic_test_native_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, "SPVM__TestCase__Foo__test"));
   
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
@@ -700,47 +700,47 @@ for my $test_index (0 .. 1) {
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
 
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "L<resouce|SPVM::Document::Resource>"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.config:"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "MyClass.cpp:"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "new_cpp"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, 'extern "C"'));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.cpp:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_cpp"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
   
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(!-f $spvm_module_file);
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(!-f $spvm_class_file);
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
-  my $native_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
-  ok(!-f $native_module_file);
+  my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
+  ok(!-f $native_class_file);
 
-  my $gitkeep_file_for_native_module_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_include_dir);
+  my $gitkeep_file_for_native_class_include_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/include/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_include_dir);
 
-  my $gitkeep_file_for_native_module_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
-  ok(-f $gitkeep_file_for_native_module_src_dir);
+  my $gitkeep_file_for_native_class_src_dir = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.native/src/.gitkeep";
+  ok(-f $gitkeep_file_for_native_class_src_dir);
 
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'BEGIN { $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build"; }'));
 
-  my $basic_test_spvm_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
-  ok(-f $basic_test_spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "class TestCase::Foo {"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_module_file, "native static method test : int ();"));
+  my $basic_test_spvm_class_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.spvm";
+  ok(-f $basic_test_spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "class TestCase::Foo {"));
+  ok(SPVM::Builder::Util::file_contains($basic_test_spvm_class_file, "native static method test : int ();"));
   
-  my $basic_test_native_module_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.cpp";
-  ok(-f $basic_test_native_module_file);
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, '#include "spvm_native.h"'));
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, 'extern "C" {'));
-  ok(SPVM::Builder::Util::file_contains($basic_test_native_module_file, "SPVM__TestCase__Foo__test"));
+  my $basic_test_native_class_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.cpp";
+  ok(-f $basic_test_native_class_file);
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, '#include "spvm_native.h"'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, 'extern "C" {'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, "SPVM__TestCase__Foo__test"));
   
   my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
   ok(-f $basic_test_native_config_file);
@@ -804,15 +804,15 @@ for my $test_index (0 .. 1) {
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
 
-  my $perl_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
-  ok(-f $perl_module_file);
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "Foo interface"));
-  ok(SPVM::Builder::Util::file_contains($perl_module_file, "=head1 Interface Methods"));
+  my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
+  ok(-f $perl_class_file);
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "Foo interface"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Interface Methods"));
 
-  my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo : interface_t {"));
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo : interface_t {"));
   
   chdir($save_cur_dir) or die;
 }
@@ -829,17 +829,17 @@ for my $test_index (0 .. 1) {
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
 
-  my $spvm_module_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
-  ok(-f $spvm_module_file);
+  my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
 
   my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
   ok(-f $native_config_file);
   
-  my $native_module_file = "$tmp_dir/mylib/SPVM/Foo.c";
-  ok(-f $native_module_file);
+  my $native_class_file = "$tmp_dir/mylib/SPVM/Foo.c";
+  ok(-f $native_class_file);
   
-  my $perl_module_file = "$tmp_dir/mylib/SPVM/Foo.pm";
-  ok(!-f $perl_module_file);
+  my $perl_class_file = "$tmp_dir/mylib/SPVM/Foo.pm";
+  ok(!-f $perl_class_file);
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(!-f $makefile_pl_file);

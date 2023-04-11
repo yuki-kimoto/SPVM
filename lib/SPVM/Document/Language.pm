@@ -58,14 +58,14 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be the name that the relative L<module|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative L<class|/"Module"> file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
-  # Valid class name in the module file "Foo/Bar/Baz.spvm"
+  # Valid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
+  # Invalid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
@@ -1045,7 +1045,7 @@ For example, C<\s> is ASCII chracters C<\s>, C<\d> is ASCII chracters <\d>.
 
 The raw escape character can be used as an escape character of the L<string literal|/"String Literal">.
 
-The raw escape character is designed to be used by regular expression modules such as L<Regex|SPVM::Regex>.
+The raw escape character is designed to be used by regular expression classes such as L<Regex|SPVM::Regex>.
 
 The list of raw escape characters.
   
@@ -2171,7 +2171,7 @@ Examples:
   
   }
 
-In a class block, L<loading modules|/"Loading Module">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
+In a class block, L<loading classes|/"Loading Module">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
 
   class Foo {
     
@@ -2183,7 +2183,7 @@ In a class block, L<loading modules|/"Loading Module">, L<class variables|/"Clas
       # ...
     }
     
-    # Loading modules
+    # Loading classes
     use Point;
     
     # Interface guarantees
@@ -2207,7 +2207,7 @@ In a class block, L<loading modules|/"Loading Module">, L<class variables|/"Clas
     }
   }
 
-If more than one class is defined in a L<module|/"Module"> file, a compilation error will occur.
+If more than one class is defined in a L<class|/"Module"> file, a compilation error will occur.
 
 =head2 Class Attribute
 
@@ -2333,7 +2333,7 @@ The C<allow> syntax allows the private access from the other classes.
 
 The C<allow> syntax must be defined directory under the L<class definition|/"Class Definition">.
   
-The module that is the C<OPERAND> of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
+The class that is the C<OPERAND> of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Module">.
 
 Examples:
 
@@ -2529,7 +2529,7 @@ This method is called by the static instance method call.
 
 =head1 Module
 
-A module means a user defined L<type/"Type"> in a module file. A module is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
+A class means a user defined L<type/"Type"> in a class file. A class is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
 
   # lib/path/SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -2548,7 +2548,7 @@ Change C<::> to C</>. Add ".spvm" at the end.
 
 =head2 Loading Module
 
-The C<use> syntax loads a module.
+The C<use> syntax loads a class.
   
   # Load a class
   use Foo;
@@ -2565,7 +2565,7 @@ C<use> syntax must be defined directly under the L<class definition|/"Class Defi
 
 =head2 Module Alias
 
-C<alias> syntax create an alias name for a module name.
+C<alias> syntax create an alias name for a class name.
   
   # Create alias
   alias Foo::Bar as FB;
@@ -2587,7 +2587,7 @@ You can create an alias at the same time as loading a class by C<use>.
 
 =head2 Load Module Selective
 
-In SPVM, there is an if require Statement that loads a module only if it exists in the module path, and if it does not exist, the block does not exist.
+In SPVM, there is an if require Statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
 
 It was designed to implement a part of features of "#ifdef" in the C language.
 
@@ -2622,7 +2622,7 @@ In the other hand, the else block exists, so a warning is issued.
 
 =head2 Default Loaded Modules
 
-The following modules are loaded by default. These modules are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
+The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
 
 =over 2
 
@@ -8569,7 +8569,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 Examples:
 
@@ -9147,7 +9147,7 @@ C<stdin>, C<stdout>, C<stderr> in the C language is set to the binary mode on al
 
 This means the escape character of the string literal C<"\n"> is not coverted to C<"\r\n"> when it is got from C<stdin> and it is printed to C<stdout> and C<stderr>.
 
-C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native module|SPVM::Document::NativeModule>, but don't do that.
+C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native class|SPVM::Document::NativeModule>, but don't do that.
 
 =head1 See Also
 

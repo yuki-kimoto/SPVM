@@ -798,7 +798,7 @@ Examples:
   my $cc = $config->cc;
   $config->cc($cc);
 
-Gets and sets a compiler name. The default is the value of C<cc> of L<Config> module.
+Gets and sets a compiler name. The default is the value of C<cc> of L<Config> class.
 
 Examples:
   
@@ -903,7 +903,7 @@ Examples:
   my $ld = $config->ld;
   $config->ld($ld);
 
-Gets and sets a linker. Default is C<ld> of L<Config> module.
+Gets and sets a linker. Default is C<ld> of L<Config> class.
 
 =head2 lib_dirs
 
@@ -1185,13 +1185,13 @@ Gets resource names loaded by the L/"use_resource/"> method.
 
   my $native_include_dir = $config->get_native_include_dir;
 
-Gets the header including directory of this native module.
+Gets the header including directory of this native class.
 
 =head2 get_native_src_dir
 
   my $native_src_dir = $config->get_native_src_dir;
 
-Gets the source directory of this native module.
+Gets the source directory of this native class.
 
 =head2 load_config
 

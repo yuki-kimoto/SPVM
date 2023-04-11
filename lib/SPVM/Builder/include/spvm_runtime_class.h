@@ -8,8 +8,8 @@
 
 struct spvm_runtime_class {
   int32_t name_id;
-  int32_t module_rel_file_id;
-  int32_t module_dir_id;
+  int32_t class_rel_file_id;
+  int32_t class_path_id;
   int32_t id;
   int32_t destructor_method_id;
   int32_t required_method_id;

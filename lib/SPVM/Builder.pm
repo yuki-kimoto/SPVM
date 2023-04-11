@@ -28,14 +28,14 @@ sub build_dir {
   }
 }
 
-sub module_dirs {
+sub class_paths {
   my $self = shift;
   if (@_) {
-    $self->{module_dirs} = $_[0];
+    $self->{class_paths} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_dirs};
+    return $self->{class_paths};
   }
 }
 
@@ -43,7 +43,7 @@ sub new {
   my $class = shift;
   
   my $self = {
-    module_dirs => [map { "$_/SPVM" } @INC],
+    class_paths => [map { "$_/SPVM" } @INC],
     @_
   };
   
@@ -57,7 +57,7 @@ sub build_dynamic_lib_dist {
   
   # Create the compiler
   my $compiler = SPVM::Builder::Compiler->new(
-    module_dirs => $self->module_dirs
+    class_paths => $self->class_paths
   );
   
   my $success = $compiler->compile($class_name, __FILE__, __LINE__);
@@ -70,13 +70,13 @@ sub build_dynamic_lib_dist {
     build_dir => $self->{build_dir},
   );
   
-  my $module_file = $runtime->get_module_file($class_name);
+  my $class_file = $runtime->get_class_file($class_name);
   my $method_names = $runtime->get_method_names($class_name, $category);
   my $anon_class_names = $runtime->get_anon_class_names($class_name);
   my $precompile_source = $runtime->build_precompile_class_source($class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
   
-  $cc->build_dist($class_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+  $cc->build_dist($class_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
 
 1;

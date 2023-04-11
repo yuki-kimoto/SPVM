@@ -4530,8 +4530,8 @@ compile(...)
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   // Include directries
-  SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
-  SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
+  SV** sv_class_paths_ptr = hv_fetch(hv_self, "class_paths", strlen("class_paths"), 0);
+  SV* sv_class_paths = sv_class_paths_ptr ? *sv_class_paths_ptr : &PL_sv_undef;
   
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4553,19 +4553,19 @@ compile(...)
   api_env->api->compiler->set_start_line(compiler, start_line);
   
   // Add include paths
-  AV* av_module_dirs;
-  if (SvOK(sv_module_dirs)) {
-    av_module_dirs = (AV*)SvRV(sv_module_dirs);
+  AV* av_class_paths;
+  if (SvOK(sv_class_paths)) {
+    av_class_paths = (AV*)SvRV(sv_class_paths);
   }
   else {
-    av_module_dirs = (AV*)sv_2mortal((SV*)newAV());
+    av_class_paths = (AV*)sv_2mortal((SV*)newAV());
   }
-  int32_t av_module_dirs_length = (int32_t)av_len(av_module_dirs) + 1;
-  for (int32_t i = 0; i < av_module_dirs_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
+  int32_t av_class_paths_length = (int32_t)av_len(av_class_paths) + 1;
+  for (int32_t i = 0; i < av_class_paths_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_class_paths, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    api_env->api->compiler->add_module_dir(compiler, include_dir);
+    api_env->api->compiler->add_class_path(compiler, include_dir);
   }
 
   // Compile SPVM
@@ -4799,7 +4799,7 @@ get_class_names(...)
 }
 
 SV*
-get_module_file(...)
+get_class_file(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4816,35 +4816,35 @@ get_module_file(...)
 
   // Copy class load path to builder
   int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
-  const char* module_file;
-  SV* sv_module_file;
+  const char* class_file;
+  SV* sv_class_file;
 
   if (class_id >= 0) {
-    int32_t module_rel_file_id = api_env->api->runtime->get_class_module_rel_file_id(runtime, class_id);
-    int32_t module_dir_id = api_env->api->runtime->get_class_module_dir_id(runtime, class_id);
-    const char* module_dir = NULL;
-    const char* module_dir_sep;
-    if (module_dir_id >= 0) {
-      module_dir_sep = "/";
-      module_dir = api_env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
+    int32_t class_rel_file_id = api_env->api->runtime->get_class_class_rel_file_id(runtime, class_id);
+    int32_t class_path_id = api_env->api->runtime->get_class_class_path_id(runtime, class_id);
+    const char* class_path = NULL;
+    const char* class_path_sep;
+    if (class_path_id >= 0) {
+      class_path_sep = "/";
+      class_path = api_env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
     }
     else {
-      module_dir_sep = "";
-      module_dir = "";
+      class_path_sep = "";
+      class_path = "";
     }
-    const char* module_rel_file = api_env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+    const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
 
-    sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
-    sv_catpv(sv_module_file, module_dir_sep);
-    sv_catpv(sv_module_file, module_rel_file);
+    sv_class_file = sv_2mortal(newSVpv(class_path, 0));
+    sv_catpv(sv_class_file, class_path_sep);
+    sv_catpv(sv_class_file, class_rel_file);
   }
   else {
-    sv_module_file = &PL_sv_undef;
+    sv_class_file = &PL_sv_undef;
   }
 
   api_env->free_env_raw(api_env);
   
-  XPUSHs(sv_module_file);
+  XPUSHs(sv_class_file);
   XSRETURN(1);
 }
 

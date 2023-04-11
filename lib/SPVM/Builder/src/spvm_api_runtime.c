@@ -118,8 +118,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_type_is_ref,
     SPVM_API_RUNTIME_get_class_id_by_name,
     SPVM_API_RUNTIME_get_class_name_id,
-    SPVM_API_RUNTIME_get_class_module_rel_file_id,
-    SPVM_API_RUNTIME_get_class_module_dir_id,
+    SPVM_API_RUNTIME_get_class_class_rel_file_id,
+    SPVM_API_RUNTIME_get_class_class_path_id,
     SPVM_API_RUNTIME_get_class_is_anon,
     SPVM_API_RUNTIME_get_class_fields_base_id,
     SPVM_API_RUNTIME_get_class_fields_length,
@@ -526,26 +526,26 @@ int32_t SPVM_API_RUNTIME_get_class_is_anon(SPVM_RUNTIME* runtime, int32_t class_
   return class_is_anon;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_module_rel_file_id(SPVM_RUNTIME* runtime, int32_t class_id) {
+int32_t SPVM_API_RUNTIME_get_class_class_rel_file_id(SPVM_RUNTIME* runtime, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
   
   assert(class);
   
-  int32_t class_module_rel_file_id = class->module_rel_file_id;
+  int32_t class_class_rel_file_id = class->class_rel_file_id;
   
-  return class_module_rel_file_id;
+  return class_class_rel_file_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_module_dir_id(SPVM_RUNTIME* runtime, int32_t class_id) {
+int32_t SPVM_API_RUNTIME_get_class_class_path_id(SPVM_RUNTIME* runtime, int32_t class_id) {
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
   
   assert(class);
   
-  int32_t class_module_dir_id = class->module_dir_id;
+  int32_t class_class_path_id = class->class_path_id;
   
-  return class_module_dir_id;
+  return class_class_path_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_fields_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {

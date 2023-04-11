@@ -109,7 +109,7 @@ sub build_at_runtime {
   $options ||= {};
   
   my $dl_func_list = $options->{dl_func_list};
-  my $module_file = $options->{module_file};
+  my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
 
   my $category = $options->{category};
@@ -137,13 +137,13 @@ sub build_at_runtime {
         output_dir => $build_src_dir,
         force => $force,
         precompile_source => $precompile_source,
-        module_file => $module_file,
+        class_file => $class_file,
       }
     );
   }
   elsif ($category eq 'native') {
-    my $module_file = $options->{module_file};
-    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
+    my $class_file = $options->{class_file};
+    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($class_file, $class_name);
   }
   
   # Object directory
@@ -161,7 +161,7 @@ sub build_at_runtime {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
-      module_file => $module_file,
+      class_file => $class_file,
       dl_func_list => $dl_func_list,
     }
   );
@@ -175,7 +175,7 @@ sub build_dist {
   $options ||= {};
 
   my $dl_func_list = $options->{dl_func_list};
-  my $module_file = $options->{module_file};
+  my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
   
   my $category = $options->{category};
@@ -193,7 +193,7 @@ sub build_dist {
         output_dir => $build_src_dir,
         force => $force,
         precompile_source => $precompile_source,
-        module_file => $module_file,
+        class_file => $class_file,
       }
     );
   }
@@ -213,7 +213,7 @@ sub build_dist {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
-      module_file => $module_file,
+      class_file => $class_file,
       dl_func_list => $dl_func_list,
     }
   );
@@ -229,21 +229,21 @@ sub build {
   my $category = $options->{category};
 
   # Module file
-  my $module_file = $options->{module_file};
-  unless (defined $module_file) {
+  my $class_file = $options->{class_file};
+  unless (defined $class_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
     if ($config_file) {
-      $module_file = $config_file;
-      $module_file =~ s/\.config$/\.spvm/;
+      $class_file = $config_file;
+      $class_file =~ s/\.config$/\.spvm/;
     }
     else {
-      confess "\"$module_file\" module is not loaded";
+      confess "\"$class_file\" class is not loaded";
     }
   }
   
   my $config;
   if ($category eq 'native') {
-    $config = $self->create_native_config_from_module_file($module_file);
+    $config = $self->create_native_config_from_class_file($class_file);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
@@ -297,11 +297,11 @@ sub get_resource_object_dir_from_class_name {
   return $resource_object_dir;
 }
 
-sub create_native_config_from_module_file {
-  my ($self, $module_file) = @_;
+sub create_native_config_from_class_file {
+  my ($self, $class_file) = @_;
   
   my $config;
-  my $config_file = $module_file;
+  my $config_file = $class_file;
   $config_file =~ s/\.spvm$/.config/;
 
   # Config file
@@ -413,21 +413,21 @@ sub compile_source_files {
   my $force = $self->detect_force($config);
 
   my $no_use_resource = $options->{no_use_resource};
-  my $ignore_native_module = $options->{ignore_native_module};
+  my $ignore_native_class = $options->{ignore_native_class};
   
-  # Native module file
-  my $native_module_file;
-  unless ($ignore_native_module) {
-    # Native module file
-    my $native_module_ext = $config->ext;
-    unless (defined $native_module_ext) {
+  # Native class file
+  my $native_class_file;
+  unless ($ignore_native_class) {
+    # Native class file
+    my $native_class_ext = $config->ext;
+    unless (defined $native_class_ext) {
       confess "Source extension is not specified";
     }
-    my $native_module_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
-    $native_module_file = "$input_dir/$native_module_rel_file";
+    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
+    $native_class_file = "$input_dir/$native_class_rel_file";
     
-    unless (-f $native_module_file) {
-      confess "Can't find source file $native_module_file";
+    unless (-f $native_class_file) {
+      confess "Can't find source file $native_class_file";
     }
   }
   
@@ -441,17 +441,17 @@ sub compile_source_files {
   
   # Compile source files
   my $object_file_infos = [];
-  my $is_native_module = 1;
-  for my $source_file ($native_module_file, @$resource_src_files) {
-    my $cur_is_native_module = $is_native_module;
-    $is_native_module = 0;
+  my $is_native_class = 1;
+  for my $source_file ($native_class_file, @$resource_src_files) {
+    my $cur_is_native_class = $is_native_class;
+    $is_native_class = 0;
     
     next unless defined $source_file;
     
     my $object_file;
     
-    # Object file of native module
-    if ($cur_is_native_module) {
+    # Object file of native class
+    if ($cur_is_native_class) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file = "$output_dir/$object_rel_file";
     }
@@ -494,12 +494,12 @@ sub compile_source_files {
       if (defined $config->file) {
         push @$input_files, $config->file;
       };
-      if ($cur_is_native_module) {
-        my $module_file = $source_file;
-        $module_file =~ s/\.[^\/\\]+$//;
-        $module_file .= '.spvm';
+      if ($cur_is_native_class) {
+        my $class_file = $source_file;
+        $class_file =~ s/\.[^\/\\]+$//;
+        $class_file .= '.spvm';
         
-        push @$input_files, $module_file;
+        push @$input_files, $class_file;
       }
       $need_generate = SPVM::Builder::Util::need_generate({
         force => $force,
@@ -608,7 +608,7 @@ sub create_compile_command_info {
   
   my $optimize = $config->optimize;
   
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_module();
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
   
   my $builder_include_dir = "$builder_dir/include";
 
@@ -659,7 +659,7 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "The \"build_dir\" field must be defined to build the native module for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config
@@ -737,7 +737,7 @@ sub link {
     if ($output_type eq 'dynamic_lib') {
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_files,
-        module_name => $link_info_class_name,
+        class_name => $link_info_class_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
         dl_func_list => $dl_func_list,
@@ -761,7 +761,7 @@ sub link {
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_files,
-        module_name => $link_info_class_name,
+        class_name => $link_info_class_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
       );
@@ -915,7 +915,7 @@ sub create_link_info {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
       no_use_resource => 1,
-      ignore_native_module => 1,
+      ignore_native_class => 1,
       config => $resource_config,
       category => $category,
     };
@@ -994,7 +994,7 @@ sub build_precompile_class_source_file {
   my ($self, $class_name, $options) = @_;
 
   my $precompile_source = $options->{precompile_source};
-  my $module_file = $options->{module_file};
+  my $class_file = $options->{class_file};
   
   # Force
   my $force = $options->{force};
@@ -1005,17 +1005,17 @@ sub build_precompile_class_source_file {
   my $source_file = "$output_dir/$source_rel_file";
   
   # Check if generating is needed
-  my $spvm_module_dir = $INC{'SPVM/Builder.pm'};
-  $spvm_module_dir =~ s/\.pm$//;
-  $spvm_module_dir .= '/src';
-  my $spvm_precompile_soruce_file = "$spvm_module_dir/spvm_precompile.c";
+  my $spvm_class_path = $INC{'SPVM/Builder.pm'};
+  $spvm_class_path =~ s/\.pm$//;
+  $spvm_class_path .= '/src';
+  my $spvm_precompile_soruce_file = "$spvm_class_path/spvm_precompile.c";
   unless (-f $spvm_precompile_soruce_file) {
     confess "Can't find $spvm_precompile_soruce_file";
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
     output_file => $source_file,
-    input_files => [$module_file, $spvm_precompile_soruce_file],
+    input_files => [$class_file, $spvm_precompile_soruce_file],
   });
   
   # Generate precompile C source file

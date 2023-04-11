@@ -14,14 +14,14 @@ sub compiler {
   }
 }
 
-sub module_dirs {
+sub class_paths {
   my $self = shift;
   if (@_) {
-    $self->{module_dirs} = $_[0];
+    $self->{class_paths} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_dirs};
+    return $self->{class_paths};
   }
 }
 

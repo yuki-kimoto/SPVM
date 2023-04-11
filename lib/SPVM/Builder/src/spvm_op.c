@@ -1871,9 +1871,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->op_class = op_class;
   class->op_extends = op_extends;
   
-  class->module_dir = compiler->cur_dir;
-  class->module_rel_file = compiler->cur_rel_file;
-  class->module_file = compiler->cur_file;
+  class->class_path = compiler->cur_dir;
+  class->class_rel_file = compiler->cur_rel_file;
+  class->class_file = compiler->cur_file;
   
   if (op_extends) {
     SPVM_OP* op_name_parent_class = op_extends->first;
@@ -1885,11 +1885,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP_build_use(compiler, op_use, op_name_parent_class, op_name_class_alias, is_require);
   }
   
-  if (class->module_dir) {
-    SPVM_CONSTANT_STRING_new(compiler, class->module_dir, strlen(class->module_dir));
+  if (class->class_path) {
+    SPVM_CONSTANT_STRING_new(compiler, class->class_path, strlen(class->class_path));
   }
-  SPVM_CONSTANT_STRING_new(compiler, class->module_rel_file, strlen(class->module_rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, class->module_file, strlen(class->module_file));
+  SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
   
   if (!op_type) {
     // Class is anon
@@ -1928,7 +1928,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (!class->is_anon) {
     assert(!islower(class_name[0]));
     
-    // If class name is different from the class name corresponding to the module file, compile error occur.
+    // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
       // If class fail load by if (require xxx) syntax, that is ok
       const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));

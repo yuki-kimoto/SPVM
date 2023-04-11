@@ -15,7 +15,7 @@ struct spvm_compiler {
   SPVM_LIST* ops;
   
   // Module searching directories
-  SPVM_LIST* module_dirs;
+  SPVM_LIST* class_paths;
 
   // Class loading stack
   SPVM_LIST* op_use_stack;
@@ -80,10 +80,10 @@ struct spvm_compiler {
   // Current class base;
   int32_t cur_class_base;
   
-  // Starting file the starting module is loaded
+  // Starting file the starting class is loaded
   const char* start_file;
   
-  // Starting line the starting module is loaded
+  // Starting line the starting class is loaded
   int32_t start_line;
   
   // Syntax error count
@@ -98,7 +98,7 @@ struct spvm_compiler {
   // String Buffer
   SPVM_STRING_BUFFER* constant_strings_buffer;
   
-  // Used module symtable
+  // Used class symtable
   SPVM_HASH* used_class_symtable;
 
   // Fail load class symtable
@@ -143,8 +143,8 @@ struct spvm_compiler {
   // Switch 
   SPVM_LIST* switch_infos;
   
-  // module source symtable
-  SPVM_HASH* module_source_symtable;
+  // class source symtable
+  SPVM_HASH* class_source_symtable;
   
   // SPVM 32bit codes
   int32_t* runtime_codes;
@@ -163,10 +163,10 @@ void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_fil
 int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 
-void SPVM_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir);
-int32_t SPVM_COMPILER_get_module_dirs_length(SPVM_COMPILER* compiler);
-const char* SPVM_COMPILER_get_module_dir(SPVM_COMPILER* compiler, int32_t index);
-void SPVM_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_add_class_path(SPVM_COMPILER* compiler, const char* class_path);
+int32_t SPVM_COMPILER_get_class_paths_length(SPVM_COMPILER* compiler);
+const char* SPVM_COMPILER_get_class_path(SPVM_COMPILER* compiler, int32_t index);
+void SPVM_COMPILER_clear_class_paths(SPVM_COMPILER* compiler);
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);

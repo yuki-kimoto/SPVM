@@ -223,10 +223,10 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # precompile method
 {
-  # Check precompile module file
+  # Check precompile class file
   {
-    my $precompile_module_file = "$build_dir/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
-    ok(-f $precompile_module_file);
+    my $precompile_class_file = "$build_dir/work/lib/SPVM/TestCase/Method.precompile.$Config{dlext}";
+    ok(-f $precompile_class_file);
   }
   
   # Call precompile method

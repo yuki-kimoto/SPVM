@@ -2380,14 +2380,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* e
   if ((void*)&env->api->compiler->get_start_line != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_file != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_start_file != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->add_module_dir != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->get_module_dirs_length != &env_array[7]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->get_module_dir != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->add_class_path != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->get_class_paths_length != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->get_class_path != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->compile != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_error_messages_length != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_error_message != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->create_runtime_codes != &env_array[12]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->clear_module_dirs != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->clear_class_paths != &env_array[13]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -2423,8 +2423,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_type_is_ref != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_id_by_name != &env_array[19]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_name_id != &env_array[20]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_module_rel_file_id != &env_array[21]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_module_dir_id != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_class_rel_file_id != &env_array[21]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_class_path_id != &env_array[22]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_is_anon != &env_array[23]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_fields_base_id != &env_array[24]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_fields_length != &env_array[25]) { stack[0].ival = 0; return 0; }

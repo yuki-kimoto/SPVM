@@ -15,7 +15,7 @@ use Encode 'decode';
 use File::Find 'find';
 
 # SPVM::Builder::Util is used from Makefile.PL
-# so this module must be wrote as pure perl script, not contain XS functions.
+# so this class must be wrote as pure perl script, not contain XS functions.
 
 sub get_spvm_core_files {
   
@@ -24,14 +24,14 @@ sub get_spvm_core_files {
     my $builder_loaded_dir = $builder_loaded_file;
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
     
-    # SPVM::Builder module files
-    my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
-    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
-      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
-      unless (-f $module_file) {
-        confess "Can't find $module_file";
+    # SPVM::Builder class files
+    my $spvm_builder_class_file_names = &get_spvm_builder_class_file_names();
+    for my $spvm_builder_class_file_name (@$spvm_builder_class_file_names) {
+      my $class_file = "$builder_loaded_dir/$spvm_builder_class_file_name";
+      unless (-f $class_file) {
+        confess "Can't find $class_file";
       }
-      push @spvm_core_files, $module_file;
+      push @spvm_core_files, $class_file;
     }
     
     # SPVM core header files
@@ -69,7 +69,7 @@ sub need_generate {
   my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
   
-  # SPVM::Builder modules
+  # SPVM::Builder classes
   my @spvm_core_files = @{&get_spvm_core_files};
   
   my $spvm_core_files_mtime_max;
@@ -209,12 +209,12 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub convert_module_file_to_dynamic_lib_file {
-  my ($module_file, $category) = @_;
+sub convert_class_file_to_dynamic_lib_file {
+  my ($class_file, $category) = @_;
   
   my $dlext = $Config{dlext};
-  $module_file =~ s/\.[^.]+$//;
-  my $dynamic_lib_category_file = $module_file;
+  $class_file =~ s/\.[^.]+$//;
+  my $dynamic_lib_category_file = $class_file;
   $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dynamic_lib_category_file;
@@ -305,8 +305,8 @@ sub create_make_rule {
   $options ||= {};
   $class_name =~ s/^SPVM:://;
   
-  my $module_base_name = $class_name;
-  $module_base_name =~ s/^.+:://;
+  my $class_base_name = $class_name;
+  $class_base_name =~ s/^.+:://;
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
@@ -327,7 +327,7 @@ sub create_make_rule {
 
   push @deps, $spvm_file;
   
-  # Dependency native module file
+  # Dependency native class file
   if ($category eq 'native') {
     # Config
     my $config_file = $noext_file;
@@ -336,12 +336,12 @@ sub create_make_rule {
     my $config = SPVM::Builder::Config->load_config($config_file);
     push @deps, $config_file;
     
-    # Native module
-    my $native_module_file = $noext_file;
-    my $native_module_file_ext = $config->ext;
-    $native_module_file .= ".$native_module_file_ext";
-    $native_module_file = "$lib_dir/$native_module_file";
-    push @deps, $native_module_file;
+    # Native class
+    my $native_class_file = $noext_file;
+    my $native_class_file_ext = $config->ext;
+    $native_class_file .= ".$native_class_file_ext";
+    $native_class_file = "$lib_dir/$native_class_file";
+    push @deps, $native_class_file;
     
     # Native include
     my $native_include_dir = "$lib_dir/$noext_file.native/include";
@@ -377,8 +377,8 @@ sub create_make_rule {
   return $make_rule;
 }
 
-sub get_spvm_builder_module_file_names {
-  my @spvm_builder_module_file_names = qw(
+sub get_spvm_builder_class_file_names {
+  my @spvm_builder_class_file_names = qw(
     SPVM/Builder/API.pm
     SPVM/Builder/CC.pm
     SPVM/Builder/CompileInfo.pm
@@ -394,7 +394,7 @@ sub get_spvm_builder_module_file_names {
     SPVM/Builder/Util.pm
   );
   
-  return \@spvm_builder_module_file_names;
+  return \@spvm_builder_class_file_names;
 }
 
 sub get_spvm_core_source_file_names {
@@ -563,7 +563,7 @@ sub get_config_file_from_class_name {
   return $config_file;
 }
 
-sub get_builder_dir_from_config_module {
+sub get_builder_dir_from_config_class {
   my $builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
   my $builder_dir = $builder_config_dir;
   $builder_dir =~ s/\/Config\.pm$//;
@@ -645,9 +645,9 @@ sub create_dl_func_list {
 }
 
 sub get_dynamic_lib_file_dist {
-  my ($module_file, $category) = @_;
+  my ($class_file, $category) = @_;
 
-  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_file, $category);
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_class_file_to_dynamic_lib_file($class_file, $category);
   
   return $dynamic_lib_file;
 }
@@ -738,7 +738,7 @@ SPVM::Builder::Util - Builder Utilities
 
 =head1 Description
 
-The SPVM::Builder::Util::API module has utility functions for the SPVM builder L<SPVM::Builder>.
+The SPVM::Builder::Util::API class has utility functions for the SPVM builder L<SPVM::Builder>.
 
 =head1 Copyright & License
 

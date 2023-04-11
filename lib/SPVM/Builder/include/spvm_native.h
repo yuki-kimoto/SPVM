@@ -326,8 +326,8 @@ struct spvm_env_runtime {
   int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
   int32_t (*get_class_id_by_name)(void* runtime, const char* class_name);
   int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
-  int32_t (*get_class_module_rel_file_id)(void* runtime, int32_t class_id);
-  int32_t (*get_class_module_dir_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_class_path_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_is_anon)(void* runtime, int32_t class_id);
   int32_t (*get_class_fields_base_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_fields_length)(void* runtime, int32_t class_id);
@@ -398,14 +398,14 @@ struct spvm_env_compiler {
   int32_t (*get_start_line)(void* compiler);
   void (*set_start_file)(void* compiler, const char* start_file);
   const char* (*get_start_file)(void* compiler);
-  void (*add_module_dir)(void* compiler, const char* module_dir);
-  int32_t (*get_module_dirs_length )(void* compiler);
-  const char* (*get_module_dir )(void* compiler, int32_t index);
+  void (*add_class_path)(void* compiler, const char* class_path);
+  int32_t (*get_class_paths_length )(void* compiler);
+  const char* (*get_class_path )(void* compiler, int32_t index);
   int32_t (*compile)(void* compiler, const char* class_name);
   int32_t (*get_error_messages_length)(void* compiler);
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
-  void (*clear_module_dirs)(void* compiler);
+  void (*clear_class_paths)(void* compiler);
 };
 
 struct spvm_env_precompile {

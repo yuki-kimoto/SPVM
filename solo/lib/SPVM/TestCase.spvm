@@ -35,7 +35,7 @@ ABCDE
 
 =head1 NAME
 
-SPVM::Test - SPVM test module
+SPVM::Test - SPVM test class
 
 =cut
 
@@ -2318,4 +2318,4 @@ SPVM::Test - SPVM test module
 
 =head1 NAME
 
-SPVM::Test - SPVM test module
+SPVM::Test - SPVM test class

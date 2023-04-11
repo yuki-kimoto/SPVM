@@ -18,7 +18,7 @@ SPVM::Builder::Util::API - Public Functions for SPVM Builder Utilities
 
 =head1 Description
 
-The SPVM::Builder::Util::API module has public utility functions for the SPVM builder L<SPVM::Builder>.
+The SPVM::Builder::Util::API class has public utility functions for the SPVM builder L<SPVM::Builder>.
 
 =head1 Usage
 

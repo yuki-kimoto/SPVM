@@ -1,14 +1,14 @@
 =head1 Name
 
-SPVM::Document::NativeModule - How to write the native module
+SPVM::Document::NativeModule - How to write the native class
 
 =head1 Description
 
-The native module is the module that is implemented by native language such as the C language or C<C++>.
+The native class is the class that is implemented by native language such as the C language or C<C++>.
 
 =head1 Native Method Declaration
 
-A native method declaration are written using the method attribute C<native> in a SPVM module file. The method can't have the block. it ends with a semicolon.
+A native method declaration are written using the method attribute C<native> in a SPVM class file. The method can't have the block. it ends with a semicolon.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -17,9 +17,9 @@ A native method declaration are written using the method attribute C<native> in 
 
 =head1 Native Config File
 
-A native config file is needed for the native module. The extension is C<config>. Put the config file in the same directory as the SPVM module.
+A native config file is needed for the native class. The extension is C<config>. Put the config file in the same directory as the SPVM class.
 
-  # Native configuration file for Foo::Bar module
+  # Native configuration file for Foo::Bar class
   SPVM/Foo/Bar.config
 
 If the native config file does not exist, an exception occurs.
@@ -138,24 +138,24 @@ I show some examples of native config files.
 
 =head1 Native Module
 
-A native module is written by a native language such as the C language, C<C++>, or the language that the rule of function call is the same as the C language. 
+A native class is written by a native language such as the C language, C<C++>, or the language that the rule of function call is the same as the C language. 
 
 =head2 Native Module File Extension
 
-The file extension of the native module is defined L<ext|SPVM::Builder::Config/"ext"> method in L<the config file|SPVM::Builder::Config>.
+The file extension of the native class is defined L<ext|SPVM::Builder::Config/"ext"> method in L<the config file|SPVM::Builder::Config>.
 
   $config->ext('cpp');
 
 Generally the extension of the C language is C<c>, the extension of C<C++> is C<cpp>, the extension of C<CUDA/nvcc> is C<cu>.
 
-Put the config file in the same directory as the SPVM module.
+Put the config file in the same directory as the SPVM class.
 
-  # Native module file for Foo::Bar module
+  # Native class file for Foo::Bar class
   SPVM/Foo/Bar.c
 
 =head2 Native Function Definition
 
-This is an example of SPVM natvie module. The config file is L<GNU99|/"GNU99 Config File">.
+This is an example of SPVM natvie class. The config file is L<GNU99|/"GNU99 Config File">.
 
   #include "spvm_native.h"
 
@@ -193,7 +193,7 @@ If the name is invalid, a compilation error occurs.
 
 =head2 Native API Header
 
-Include C<spvm_native.h> at the beginning of the natvie module. C<spvm_native.h> is the header of Native APIs. It defines L<the native APIs||/"List-of-Native-APIs"> and the data structures, such as C<SPVM_ENV>, C<SPVM_VALUE>.
+Include C<spvm_native.h> at the beginning of the natvie class. C<spvm_native.h> is the header of Native APIs. It defines L<the native APIs||/"List-of-Native-APIs"> and the data structures, such as C<SPVM_ENV>, C<SPVM_VALUE>.
 
   #include "spvm_native.h"
 
@@ -243,11 +243,11 @@ If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" direct
 
   ~/.spvm_build
 
-The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM module name is changed to ".o".
+The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM class name is changed to ".o".
 
   ~/.spvm_build/work/object/Foo/Bar.o
 
-The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM module name is changed to ".so", or etc corresponding to your os.
+The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM class name is changed to ".so", or etc corresponding to your os.
 
   # Unix/Linux
   ~/.spvm_build/work/object/Foo/Bar.so
@@ -645,7 +645,7 @@ Utilities.
 
 =head2 spvmdist
 
-If you want to create SPVM module that have the native module, L<spvmdist> is useful.
+If you want to create SPVM class that have the native class, L<spvmdist> is useful.
 
 =over 2
 

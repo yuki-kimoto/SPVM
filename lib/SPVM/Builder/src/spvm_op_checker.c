@@ -3803,7 +3803,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
-            assert(method->class->module_file);
+            assert(method->class->class_file);
             
             // Add op var_decl if need
             if (method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {

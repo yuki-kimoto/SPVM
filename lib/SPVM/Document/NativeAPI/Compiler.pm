@@ -8,7 +8,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
   void* compiler = env->api->compiler->new_object();
   
   // @INC
-  env->api->compiler->add_module_dir(compiler, "lib");
+  env->api->compiler->add_class_path(compiler, "lib");
   
   // Compile SPVM
   env->api->compiler->set_start_file(compiler, __FILE__);
@@ -20,7 +20,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 
 =head1 Description
 
-SPVM compiler native APIs are the public APIs to use compile SPVM modules.
+SPVM compiler native APIs are the public APIs to use compile SPVM classes.
 
 =head1 Ids Of Compiler Native APIs
 
@@ -32,14 +32,14 @@ Compiler native APIs have its IDs.
   3  get_start_line
   4  set_start_file
   5  get_start_file
-  6  add_module_dir
-  7  get_module_dirs_length
-  8  get_module_dir
+  6  add_class_path
+  7  get_class_paths_length
+  8  get_class_path
   9  compile
   10 get_error_messages_length
   11 get_error_message
   12 create_runtime_codes
-  13 clear_module_dirs
+  13 clear_class_paths
 
 =head1 Compiler Native APIs
 
@@ -79,21 +79,21 @@ Set the start file of the caller. C<start_file> is copied.
 
 Gets the start file of the caller.
 
-=head2 add_module_dir
+=head2 add_class_path
   
-  void (*add_module_dir)(void* compiler, const char* module_dir);
+  void (*add_class_path)(void* compiler, const char* class_path);
 
-Adds a module searching directory. C<module_dir> is copied.
+Adds a class searching directory. C<class_path> is copied.
 
-=head2 get_module_dirs_length
+=head2 get_class_paths_length
   
-  int32_t (*get_module_dirs_length)(void* compiler);
+  int32_t (*get_class_paths_length)(void* compiler);
 
-Gets the length of the module searching directories.
+Gets the length of the class searching directories.
 
-=head2 get_module_dir
+=head2 get_class_path
 
-  const char* (*get_module_dir)(void* compiler, int32_t index);
+  const char* (*get_class_path)(void* compiler, int32_t index);
 
 Gets a searching directory.
 
@@ -121,11 +121,11 @@ Gets the compiler error messages.
 
 Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocator> object and returns the address.
 
-=head2 clear_module_dirs
+=head2 clear_class_paths
   
-  void (*clear_module_dirs)(SPVM_COMPILER* compiler);
+  void (*clear_class_paths)(SPVM_COMPILER* compiler);
 
-Clear the module searching directories. The module searching directories are freed.
+Clear the class searching directories. The class searching directories are freed.
 
 =head1 Copyright & License
 

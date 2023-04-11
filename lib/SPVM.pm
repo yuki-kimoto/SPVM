@@ -81,11 +81,11 @@ B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing lang
 
 =head1 Loading Module
 
-If you load SVPM module from Perl, use the following syntax.
+If you load SVPM class from Perl, use the following syntax.
 
   use SPVM 'Foo';
 
-Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
+Suppose the following C<SPVM/Foo.spvm> is placed on a class search path.
 
   # SPVM/Foo.spvm
   class Foo {
@@ -94,11 +94,11 @@ Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
     }
   }
 
-If you load SPVM C<Foo::Bar> module, do the following.
+If you load SPVM C<Foo::Bar> class, do the following.
 
   use SPVM 'Foo::Bar';
 
-Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
+Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a class search path.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
@@ -107,11 +107,11 @@ Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
     }
   }
 
-C<use SPVM MODULE_NAME> compile the SPVM module and the dependent modules.
+C<use SPVM MODULE_NAME> compile the SPVM class and the dependent classes.
 
 Note that at this point a SPVM runtime has not yet been created.
 
-A default SPVM runtime is created the first time you call a method of SPVM module or call a function or method of the Exchange API.
+A default SPVM runtime is created the first time you call a method of SPVM class or call a function or method of the Exchange API.
 
 =head1 Class Method Call
 
@@ -121,7 +121,7 @@ Let's call SPVM class method from Perl.
 
   my $total = SPVM::Foo->sum(1, 2);
 
-The definition of C<Foo> module is the following.
+The definition of C<Foo> class is the following.
 
   # SPVM/Foo.spvm
   class Foo {
@@ -150,7 +150,7 @@ Let's call SPVM instance method from Perl.
 
   my $total = $foo->sum(1, 2);
 
-The definition of C<Foo> module is the following.
+The definition of C<Foo> class is the following.
 
   # SPVM/Foo.spvm
   class Foo {
@@ -219,7 +219,7 @@ SPVM Exchange APIs is functions to convert between Perl data structures and SPVM
 
 =head2 Native Module
 
-The native module is the module that is implemented by native language such as the C language or C<C++>.
+The native class is the class that is implemented by native language such as the C language or C<C++>.
 
 =over 2
 
@@ -239,7 +239,7 @@ SPVM native APIs are public APIs that are used in native language sources such a
 
 =head2 Resource
 
-A resource is a L<native module|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
+A resource is a L<native class|SPVM::Document::NativeModule> that contains a set of sources and headers of native language such as the C language or C<C++>.
 
 =over 2
 

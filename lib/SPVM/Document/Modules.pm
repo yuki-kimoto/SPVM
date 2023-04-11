@@ -4,7 +4,7 @@ SPVM::Document::Modules - SPVM Standard Modules
 
 =head1 Description
 
-The list of SPVM Standard Modules. All Standard modules are yet experimental status.
+The list of SPVM Standard Modules. All Standard classes are yet experimental status.
 
 =head1 Standard Modules
 
@@ -112,7 +112,7 @@ The list of SPVM Standard Modules. All Standard modules are yet experimental sta
 
 =head1 CPAN Modules
 
-The list of some CPAN modules. All CPAN modules are yet experimental status.
+The list of some CPAN classes. All CPAN classes are yet experimental status.
 
 =over 2
 

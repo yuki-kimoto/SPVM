@@ -62,7 +62,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->constant_strings_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Eternal information
-  compiler->module_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  compiler->class_paths = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -75,7 +75,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->module_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  compiler->class_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->not_found_class_class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
@@ -83,52 +83,52 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER_add_basic_types(compiler);
   
   // Add Bool source
-  const char* spvm_bool_module_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_module_source);
+  const char* spvm_bool_class_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_class_source);
   
   // Add Error source
-  const char* spvm_error_module_source = "class Error;";
-  SPVM_HASH_set(compiler->module_source_symtable, "Error", strlen("Error"), (void*)spvm_error_module_source);
+  const char* spvm_error_class_source = "class Error;";
+  SPVM_HASH_set(compiler->class_source_symtable, "Error", strlen("Error"), (void*)spvm_error_class_source);
   
   // Add Error::System source
-  const char* spvm_error_system_module_source = "class Error::System;";
-  SPVM_HASH_set(compiler->module_source_symtable, "Error::System", strlen("Error::System"), (void*)spvm_error_system_module_source);
+  const char* spvm_error_system_class_source = "class Error::System;";
+  SPVM_HASH_set(compiler->class_source_symtable, "Error::System", strlen("Error::System"), (void*)spvm_error_system_class_source);
   
   // Add Error::NotSupported source
-  const char* spvm_error_not_supported_module_source = "class Error::NotSupported;";
-  SPVM_HASH_set(compiler->module_source_symtable, "Error::NotSupported", strlen("Error::NotSupported"), (void*)spvm_error_not_supported_module_source);
+  const char* spvm_error_not_supported_class_source = "class Error::NotSupported;";
+  SPVM_HASH_set(compiler->class_source_symtable, "Error::NotSupported", strlen("Error::NotSupported"), (void*)spvm_error_not_supported_class_source);
 
   // Add Byte source
-  const char* spvm_byte_module_source = "class Byte {\n  has value : rw byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_module_source);
+  const char* spvm_byte_class_source = "class Byte {\n  has value : rw byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_class_source);
   
   // Add Short source
-  const char* spvm_short_module_source = "class Short {\n  has value : rw short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Short", strlen("Short"), (void*)spvm_short_module_source);
+  const char* spvm_short_class_source = "class Short {\n  has value : rw short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Short", strlen("Short"), (void*)spvm_short_class_source);
   
   // Add Int source
-  const char* spvm_int_module_source = "class Int {\n  has value : rw int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Int", strlen("Int"), (void*)spvm_int_module_source);
+  const char* spvm_int_class_source = "class Int {\n  has value : rw int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Int", strlen("Int"), (void*)spvm_int_class_source);
   
   // Add Long source
-  const char* spvm_long_module_source = "class Long {\n  has value : rw long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Long", strlen("Long"), (void*)spvm_long_module_source);
+  const char* spvm_long_class_source = "class Long {\n  has value : rw long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Long", strlen("Long"), (void*)spvm_long_class_source);
   
   // Add Float source
-  const char* spvm_float_module_source = "class Float {\n  has value : rw float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Float", strlen("Float"), (void*)spvm_float_module_source);
+  const char* spvm_float_class_source = "class Float {\n  has value : rw float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Float", strlen("Float"), (void*)spvm_float_class_source);
   
   // Add Double source
-  const char* spvm_double_module_source = "class Double {\n  has value : rw double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
+  const char* spvm_double_class_source = "class Double {\n  has value : rw double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Double", strlen("Double"), (void*)spvm_double_class_source);
   
   // Add CommandInfo source
-  const char* spvm_command_info_module_source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-  SPVM_HASH_set(compiler->module_source_symtable, "CommandInfo", strlen("CommandInfo"), (void*)spvm_command_info_module_source);
+  const char* spvm_command_info_class_source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
+  SPVM_HASH_set(compiler->class_source_symtable, "CommandInfo", strlen("CommandInfo"), (void*)spvm_command_info_class_source);
 
   // Add Address source
-  const char* spvm_address_module_source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-  SPVM_HASH_set(compiler->module_source_symtable, "Address", strlen("Address"), (void*)spvm_address_module_source);
+  const char* spvm_address_class_source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+  SPVM_HASH_set(compiler->class_source_symtable, "Address", strlen("Address"), (void*)spvm_address_class_source);
   
   return compiler;
 }
@@ -204,8 +204,8 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
   return new_name;
 }
 
-int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
-  // Use automatically loaded modules
+int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
+  // Use automatically loaded classes
   SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
   SPVM_COMPILER_use(compiler, "Error", "Error", 0);
   SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
@@ -256,9 +256,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
   }
   
-  SPVM_COMPILER_use_default_loaded_modules(compiler);
+  SPVM_COMPILER_use_default_loaded_classes(compiler);
    
-  // Use the module that is specified at the argument
+  // Use the class that is specified at the argument
   if (class_name) {
     SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
     class_name = class_name_string->value;
@@ -622,15 +622,15 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     runtime_class->type_id = class->type->id;
     runtime_class->id = class->id;
-    SPVM_CONSTANT_STRING* class_module_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_rel_file, strlen(class->module_rel_file));
-    runtime_class->module_rel_file_id = class_module_rel_file_string->id;
+    SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
+    runtime_class->class_rel_file_id = class_class_rel_file_string->id;
 
-    if (class->module_dir) {
-      SPVM_CONSTANT_STRING* class_module_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, class->module_dir, strlen(class->module_dir));
-      runtime_class->module_dir_id = class_module_dir_string->id;
+    if (class->class_path) {
+      SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_path, strlen(class->class_path));
+      runtime_class->class_path_id = class_class_path_string->id;
     }
     else {
-      runtime_class->module_dir_id = -1;
+      runtime_class->class_path_id = -1;
     }
     runtime_class->has_init_block = class->has_init_block;
     runtime_class->is_anon = class->is_anon;
@@ -967,7 +967,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
     SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)start_file);
   }
   
-  SPVM_COMPILER_clear_module_dirs(compiler);
+  SPVM_COMPILER_clear_class_paths(compiler);
   
   // Free allocator
   SPVM_ALLOCATOR_free(compiler->allocator);
@@ -1003,32 +1003,32 @@ void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
   compiler->start_line = start_line;
 }
 
-int32_t SPVM_COMPILER_get_module_dirs_length(SPVM_COMPILER* compiler) {
-  SPVM_LIST* module_dirs = compiler->module_dirs;
-  int32_t module_dirs_length = module_dirs->length;
-  return module_dirs_length;
+int32_t SPVM_COMPILER_get_class_paths_length(SPVM_COMPILER* compiler) {
+  SPVM_LIST* class_paths = compiler->class_paths;
+  int32_t class_paths_length = class_paths->length;
+  return class_paths_length;
 }
 
-void SPVM_COMPILER_add_module_dir(SPVM_COMPILER* compiler, const char* module_dir) {  
-  int32_t module_dir_length = strlen(module_dir);
-  char* compiler_module_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, module_dir_length + 1);
-  memcpy(compiler_module_dir, module_dir, module_dir_length);
-  SPVM_LIST_push(compiler->module_dirs, (void*)compiler_module_dir);
+void SPVM_COMPILER_add_class_path(SPVM_COMPILER* compiler, const char* class_path) {  
+  int32_t class_path_length = strlen(class_path);
+  char* compiler_class_path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, class_path_length + 1);
+  memcpy(compiler_class_path, class_path, class_path_length);
+  SPVM_LIST_push(compiler->class_paths, (void*)compiler_class_path);
 }
 
-void SPVM_COMPILER_clear_module_dirs(SPVM_COMPILER* compiler) {
-  int32_t module_dirs_length = SPVM_COMPILER_get_module_dirs_length(compiler);
+void SPVM_COMPILER_clear_class_paths(SPVM_COMPILER* compiler) {
+  int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
   
-  for (int32_t i = 0; i < module_dirs_length; i++) {
-    const char* module_dir = SPVM_COMPILER_get_module_dir(compiler, i);
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)module_dir);
-    module_dir = NULL;
+  for (int32_t i = 0; i < class_paths_length; i++) {
+    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)class_path);
+    class_path = NULL;
   }
   
-  SPVM_LIST_clear(compiler->module_dirs);
+  SPVM_LIST_clear(compiler->class_paths);
 }
 
-const char* SPVM_COMPILER_get_module_dir (SPVM_COMPILER* compiler, int32_t module_dir_id) {
-  const char* module_dir = SPVM_LIST_get(compiler->module_dirs, module_dir_id);
-  return module_dir;
+const char* SPVM_COMPILER_get_class_path (SPVM_COMPILER* compiler, int32_t class_path_id) {
+  const char* class_path = SPVM_LIST_get(compiler->class_paths, class_path_id);
+  return class_path;
 }

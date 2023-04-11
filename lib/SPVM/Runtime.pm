@@ -92,11 +92,11 @@ Get only C<enum> methods if this option is true.
 
 =back
 
-=head2 get_module_file
+=head2 get_class_file
 
-  method get_module_file : string ($class_name : string);
+  method get_class_file : string ($class_name : string);
 
-Gets the module file name and returns it.
+Gets the class file name and returns it.
 
 =head2 build_precompile_class_source
 
