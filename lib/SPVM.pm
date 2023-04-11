@@ -39,23 +39,25 @@ sub api {
 
 SPVM - SPVM Language
 
-=head1 Caution
+=head1 Description
 
-C<SPVM> is not yet 1.0 release. It is quite often changed without warnings until I feel that the implementation is good enough.
+SPVM is a statically typed programming language with the syntax of Perl.
+
+SPVM has not yet reached a stable release of version 1.0. For now, L<backward compatibility|https://github.com/yuki-kimoto/SPVM/wiki/Backward-Compatibility> of methods and features will not be kept.
 
 =head1 Usage
 
-Creating SPVM Module:
+A class of SPVM:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
     static method sum : int ($nums : int[]) {
-
+      
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
         $total += $nums->[$i];
       }
-
+      
       return $total;
     }
   }
@@ -63,105 +65,37 @@ Creating SPVM Module:
 Calling SPVM methods from Perl:
 
   # sum.pl
-  use strict;
-  use warnings;
   use FindBin;
   use lib "$FindBin::Bin/lib";
-
+  
   use SPVM 'MyMath';
-
+  
   # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
-  print "$total\n";
+=head1 Document
 
-=head1 Description
+=item * L<Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial> - SPVM Tutorial
 
-B<SPVM> (Static Perl Virtual Machine) is a perl-ish static typed programing language. SPVM provides fast calculation, fast array operations, easy C/C++ binding, and creating executable files.
+=item * L<Language Specification|SPVM::Document::Language> - SPVM Language Specification
 
-=head1 Loading Class
+=item * L<Standard Modules|SPVM::Document::Modules> - SPVM Standard Modules
 
-If you load SVPM class from Perl, use the following syntax.
+=item * L<ExchangeAPI|SPVM::Document::ExchangeAPI> - Exchange APIs
 
-  use SPVM 'Foo';
+=item * L<Native Method|SPVM::Document::NativeClass> - Native Class
 
-Suppose the following C<SPVM/Foo.spvm> is placed on a class search path.
+=item * L<Native APIs|SPVM::Document::NativeAPI> - Native APIs
 
-  # SPVM/Foo.spvm
-  class Foo {
-    static method sum : int ($x1 : int, $x2 : int) {
-      return $x1 + $x2;
-    }
-  }
+=item * L<Resource|SPVM::Document::Resource> - Resource
 
-If you load SPVM C<Foo::Bar> class, do the following.
+=item * L<spvmcc> - Creating Executable File
 
-  use SPVM 'Foo::Bar';
+=item * L<spvmdist> - Creating SPVM Distribution
 
-Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a class search path.
+=item * L<Benchmark|SPVM::Document::Benchmark> - SPVM Performance Benchmarks
 
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-    static method sum : int ($x1 : int, $x2 : int) {
-      return $x1 + $x2;
-    }
-  }
-
-C<use SPVM CLASS_NAME> compile the SPVM class and the required classes.
-
-Note that at this point a SPVM runtime has not yet been created.
-
-A default SPVM runtime is created the first time you call a method of SPVM class or call a function or method of the Exchange API.
-
-=head1 Class Method Call
-
-Let's call SPVM class method from Perl.
-
-  use SPVM 'Foo';
-
-  my $total = SPVM::Foo->sum(1, 2);
-
-The definition of C<Foo> class is the following.
-
-  # SPVM/Foo.spvm
-  class Foo {
-    static method sum : int ($x1 : int, $x2 : int) {
-      return $x1 + $x2;
-    }
-  }
-
-If the number of arguments does not match the number of arguments of the SPVM method, an exception occurs.
-
-The Perl values of the arguments are converted to the SPVM values by the rule of argument convertion.
-
-If the type is non-conforming, an exception occurs.
-
-The SPVM return value is converted to a Perl return value by the rule of return value convertion.
-
-The SPVM exception is converted to a Perl exception.
-
-=head1 Instance Method Call
-
-Let's call SPVM instance method from Perl.
-
-  use SPVM 'Foo';
-
-  my $foo = SPVM::Foo->new;
-
-  my $total = $foo->sum(1, 2);
-
-The definition of C<Foo> class is the following.
-
-  # SPVM/Foo.spvm
-  class Foo {
-    static method new : Foo () {
-      return new Foo;
-    }
-
-    method sum : int ($x1 : int, $x2 : int) (
-      return $x1 + $x2;
-    }
-  }
+=back
 
 =head1 Exchange API
 
@@ -171,111 +105,7 @@ Exchange API is APIs to convert Perl data structures to/from SPVM data structure
 
   my $api = SPVM::api();
 
-Gets the global L<SPVM::ExchangeAPI> object.
-
-=head1 Document
-
-SPVM documents.
-
-=head2 Tutorial
-
-SPVM Tutorial.
-
-=over 2
-
-=item * L<Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial>
-
-=back
-
-=head2 Language Specification
-
-SPVM Language Specification.
-
-=over 2
-
-=item * L<Language Specification|SPVM::Document::Language>
-
-=back
-
-=head2 Standard Modules
-
-SPVM Standard Modules.
-
-=over 2
-
-=item * L<Standard Modules|SPVM::Document::Modules>
-
-=back
-
-=head2 Exchange APIs
-
-SPVM Exchange APIs is functions to convert between Perl data structures and SPVM data structures.
-
-=over 2
-
-=item * L<ExchangeAPI|SPVM::Document::ExchangeAPI>
-
-=back
-
-=head2 Native Class
-
-The native class is the class that is implemented by native language such as the C language or C<C++>.
-
-=over 2
-
-=item * L<Native Method|SPVM::Document::NativeClass>
-
-=back
-
-=head2 Native APIs
-
-SPVM native APIs are public APIs that are used in native language sources such as the C language or C<C++>.
-
-=over 2
-
-=item * L<Native APIs|SPVM::Document::NativeAPI>
-
-=back
-
-=head2 Resource
-
-A resource is a L<native class|SPVM::Document::NativeClass> that contains a set of sources and headers of native language such as the C language or C<C++>.
-
-=over 2
-
-=item * L<Resource|SPVM::Document::Resource>
-
-=back
-
-=head2 Creating Executable File
-
-C<spvmcc> is the compiler and linker to create the executable file from SPVM source codes.
-
-=over 2
-
-=item * L<spvmcc>
-
-=back
-
-=head2 Creating SPVM Distribution
-
-C<spvmdist> is the command to create SPVM distribution.
-
-=over 2
-
-=item * L<spvmdist>
-
-=back
-
-=head2 Benchmark
-
-SPVM performance benchmarks.
-
-=over 2
-
-=item * L<Benchmark|SPVM::Document::Benchmark>
-
-=back
+Gets the global L<SPVM::ExchangeAPI> object for this Perl interpreter.
 
 =head1 Environment Variables
 
@@ -293,15 +123,15 @@ B<csh:>
 
 =head2 SPVM_CC_DEBUG
 
-Print debug messages of L<SPVM::Builder::CC> to stderr.
+Prints debug messages of the L<SPVM::Builder::CC> class to stderr.
 
 =head2 SPVM_CC_FORCE
 
-Force the compilation and the link of L<SPVM::Builder::CC>.
+Forces the compilation and the link by the L<SPVM::Builder::CC> class.
 
 =head1 Repository
 
-L<Github|https://github.com/yuki-kimoto/SPVM>
+L<SPVM - Github|https://github.com/yuki-kimoto/SPVM>
 
 =head1 Author
 
