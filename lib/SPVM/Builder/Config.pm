@@ -764,11 +764,11 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   $config->add_source_file('foo.c', 'bar.c', 'baz/baz.c');
   
   # Uses resource
-  $config->use_resource('TestCase::Resource::Zlib::V1_0_0');
-  $config->use_resource('TestCase::Resource::Foo1::V1_0_0', mode => 'mode1', args => ['args1', 'args2']);
+  $config->use_resource('TestCase::Resource::Zlib');
+  $config->use_resource('TestCase::Resource::Foo1', mode => 'mode1', args => ['args1', 'args2']);
   
   # Gets resouce information
-  my $resource = $config->get_resource('TestCase::Resource::Zlib::V1_0_0');
+  my $resource = $config->get_resource('TestCase::Resource::Zlib');
 
 =head1 Description
 
@@ -1155,33 +1155,25 @@ Examples:
 
 =head2 use_resource
 
-  $config->use_resource($resource);
-  $config->use_resource('Resource::Zlib::V1_0_0');
-  $config->use_resource('Resource::Zlib::V1_0_0', mode => 'prod', args => ['foo', 'bar']);
+  my $resource = $config->use_resource($resource_name);
+  my $resource = $config->use_resource($resource_name, %options);
 
-Uses a resource. 
-
-The first argument is a L<SPVM::Builder::Resource> object.
-
-If the first argument is a class name of the resource, a L<SPVM::Builder::Resource> object is created by L<SPVM::Builder::Resource|/"new"> method with C<class_name> option.
-
-  my $resource = SPVM::Builder::Resource->new(class_name => 'Resource::Zlib::V1_0_0');
+Loads a resource by the resource name $resource_name using the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class, and returns a L<SPVM::Builder::Resource> object.
+  my $resource = SPVM::Builder::Resource->new(class_name => $resource_name);
   $config->use_resource($resource);
 
-If the rest arguments are used as the options of L<SPVM::Builder::Resource|/"new"> of L<SPVM::Builder::Resource>.
+If the options %options are given, they are used as the options of the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class.
 
   my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib::V1_0_0',
-    mode => 'prod',
+    class_name => 'Resource::Zlib',
+    mode => 'production',
     args => ['foo', 'bar'],
   );
   $config->use_resource($resource);
 
-=head2 get_resource
+Examples:
 
-  my $resource = $config->get_resource('Resource::Zlib::V1_0_0');
-
-Gets a resource loaded by the L/"use_resource/"> method. The resource is a L<SPVM::Builder::Resource> object.
+  $config->use_resource('Resource::Zlib');
 
 =head2 get_resource_names
 
@@ -1221,11 +1213,11 @@ Loads a base config file like C<Foo.config>. This method is the alias for the fo
 
 Loads a mode config file like C<Foo.mode.config>.
 
-At first, all file extensions are removed from the config file $config_file.
+At first, removes the string matching the regex C<(\.[a-zA-Z0-9_-]+)?\.config$> from the name of the config file $config_file.
 
 Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
 
-Last, L<"/load_config"> is called with the modified config file.
+Last, L</"load_config"> is called with the modified name of the config file.
 
 =head2 get_loaded_config_files
 
@@ -1235,7 +1227,7 @@ Gets the config files loaded by the L</"load_config"> method.
 
   my $clone = $self->clone;
 
-Clones the object, and returns it.
+Clones the L<SPVM::Builder::Config> object, and returns it.
 
 =head1 Copyright & License
 
