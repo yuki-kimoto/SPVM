@@ -62,7 +62,7 @@ A class of SPVM:
     }
   }
 
-Calling SPVM methods from Perl:
+Calling a SPVM method from Perl:
 
   # sum.pl
   use FindBin;
@@ -73,7 +73,9 @@ Calling SPVM methods from Perl:
   # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
-=head1 Document
+=head1 Documents
+
+=over 2
 
 =item * L<Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial> - SPVM Tutorial
 
@@ -81,9 +83,9 @@ Calling SPVM methods from Perl:
 
 =item * L<Standard Modules|SPVM::Document::Modules> - SPVM Standard Modules
 
-=item * L<ExchangeAPI|SPVM::Document::ExchangeAPI> - Exchange APIs
+=item * L<ExchangeAPI|SPVM::ExchangeAPI> - Exchange APIs
 
-=item * L<Native Method|SPVM::Document::NativeClass> - Native Class
+=item * L<Native Class|SPVM::Document::NativeClass> - Native Class
 
 =item * L<Native APIs|SPVM::Document::NativeAPI> - Native APIs
 
@@ -93,13 +95,11 @@ Calling SPVM methods from Perl:
 
 =item * L<spvmdist> - Creating SPVM Distribution
 
-=item * L<Benchmark|SPVM::Document::Benchmark> - SPVM Performance Benchmarks
+=item * L<Benchmark|https://github.com/yuki-kimoto/SPVM/wiki/Benchmark> - SPVM Performance Benchmarks
 
 =back
 
-=head1 Exchange API
-
-Exchange API is APIs to convert Perl data structures to/from SPVM data structures and to call SPVM methods from Perl.
+=head1 Functions
 
 =head2 api
 
