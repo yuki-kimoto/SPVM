@@ -12,6 +12,7 @@ use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::Util;
+use SPVM::Builder::Util::API;
 use SPVM::Builder::Config;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
@@ -245,7 +246,7 @@ sub build {
     $config = $self->create_native_config_from_module_file($module_file);
   }
   elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Util::create_default_config();
+    $config = SPVM::Builder::Util::API::create_default_config();
   }
   
   # Compile source file and create object files
