@@ -892,7 +892,7 @@ sub compile_bootstrap_source_file {
   
   my $config = $config_exe->config_bootstrap;
   unless ($config) {
-    $config = SPVM::Builder::Util::API::create_default_config();
+    confess "The config_bootstrap field in the SPVM::Builder::Config class must be defined";
   }
   $config = $config->clone;
   
@@ -935,7 +935,7 @@ sub compile_spvm_core_source_files {
   # Config
   my $config = $config_exe->config_spvm_core;
   unless ($config) {
-    $config = SPVM::Builder::Util::API::create_default_config();
+    confess "The config_spvm_core field in the SPVM::Builder::Config class must be defined";
   }
   $config = $config->clone;
   
