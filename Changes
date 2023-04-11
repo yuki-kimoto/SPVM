@@ -56,7 +56,7 @@
       s/Native module/Native class/g
       s/native module/native class/g
     * The --module-dir option in the spvmcc command is renamed to the --class-path.
-    
+    * The regex that remove extention from config file is changed to (\.[^\.]+)?\.config$.
 0.9704 2023-04-08
   [New Features]
     * Added the --interface option to the spvmdist command.

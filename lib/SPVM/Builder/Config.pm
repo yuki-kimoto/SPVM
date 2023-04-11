@@ -580,7 +580,7 @@ sub remove_ext_from_config_file {
   
   my $config_file_without_ext = $config_file;
   
-  $config_file_without_ext =~ s/(\.[a-zA-Z0-9_-]+)?\.config$//;
+  $config_file_without_ext =~ s/(\.[^\.]+)?\.config$//;
   
   return $config_file_without_ext;
 }
@@ -1213,7 +1213,7 @@ Loads a base config file like C<Foo.config>. This method is the alias for the fo
 
 Loads a mode config file like C<Foo.mode.config>.
 
-At first, removes the string matching the regex C<(\.[a-zA-Z0-9_-]+)?\.config$> from the name of the config file $config_file.
+At first, removes the string matching the regex C<(\.[^\.]+)?\.config$> from the name of the config file $config_file.
 
 Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
 
