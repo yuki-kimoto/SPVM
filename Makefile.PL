@@ -144,7 +144,8 @@ WriteMakefile(
     EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
     PREREQ_PM => {
         'ExtUtils::CBuilder' => '0.280236',
-        'Time::Piece' => '1.12'
+        'Time::Piece' => '1.12',
+        'JSON::PP' => '2.27105',
     },
     TEST_REQUIRES => {
         'Test::More' => '0.92',

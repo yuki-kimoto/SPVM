@@ -1,4 +1,6 @@
 0.9705 2023-04-09
+  [Prerequirement Changes]
+    * JSON::PP 2.27105+ is required.
   [New Features]
     * Added the get_native_include_dir method in the SPVM::Builder::Config class.
     * Added the get_native_src_dir method in the SPVM::Builder::Config class.

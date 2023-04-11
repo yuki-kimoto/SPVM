@@ -11,6 +11,7 @@ use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
 use SPVM::Builder::Runtime;
+use JSON::PP;
 
 use File::Spec;
 use File::Find 'find';
@@ -323,20 +324,23 @@ sub get_required_resource_json_lines {
     my $resource_mode = $resource->mode;
     my $resource_argv = $resource->argv || [];
     
-    my $line = qq({class_name:"$class_name",resource_class_name:"$resource_class_name",resource_mode:);
+    my $line = {
+      caller_class_name => "$class_name",
+      resource => {
+        class_name => $resource_class_name,
+      }
+    };
     if (defined $resource_mode) {
-      $line .= qq("$resource_mode");
+      $line->{resource}{mode} = $resource_mode;
     }
-    else {
-      $line .= 'undefined';
+    
+    if (@$resource_argv) {
+      $line->{resource}{argv} = $resource_argv;
     }
-    $line .= ",resource_argv:[";
     
-    $line .= join(",", map { qq("$_") } @$resource_argv);
+    my $json_line = JSON::PP->new->utf8->canonical(1)->encode($line);
     
-    $line .= "]}";
-    
-    push @json_lines, $line;
+    push @json_lines, $json_line;
   }
   
   return \@json_lines;
