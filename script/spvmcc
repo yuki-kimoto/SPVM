@@ -47,7 +47,7 @@ else {
   );
   if ($print_required_resources) {
     my $lines = $build_exe->get_required_resource_json_lines;
-    print "$_\x0A" for @$lines;
+    print "$_\n" for @$lines;
   }
   else {
     $build_exe->build_exe_file;
