@@ -14,7 +14,7 @@ struct spvm_compiler {
   // OPs
   SPVM_LIST* ops;
   
-  // Module searching directories
+  // Class paths
   SPVM_LIST* class_paths;
 
   // Class loading stack

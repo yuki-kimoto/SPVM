@@ -2527,18 +2527,9 @@ This method is called by the static instance method call.
 
   $self->Stringable::call_to_string;
 
-=head1 Module
+=head2 Class File Name
 
-A class means a user defined L<type/"Type"> in a class file. A class is one of a L<class|/"Class">, an L<interface|/"Interface"> or, a L<multi-numeric type|/"Multi-Numeric Type">.
-
-  # lib/path/SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-  
-  }
-
-=head2 Module File Name
-
-Modules must be placed in the class loading path with the following file name.
+A class must be written in the following class file.
 
 Change C<::> to C</>. Add ".spvm" at the end.
 
