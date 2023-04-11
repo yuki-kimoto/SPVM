@@ -8,7 +8,7 @@ The native class is the class that is implemented by native language such as the
 
 =head1 Native Method Declaration
 
-A native method declaration are written using the method attribute C<native> in a SPVM class file. The method can't have the block. it ends with a semicolon.
+A native method declaration are written using the method attribute C<native> in a SPVM class file. The method cannnot have the block. it ends with a semicolon.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {

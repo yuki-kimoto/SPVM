@@ -47,23 +47,23 @@ use Test::More;
   }
   {
     my $source = 'class Myclass__Foo;';
-    compile_not_ok($source, qr|The class name "Myclass__Foo" can't constain "__"|);
+    compile_not_ok($source, qr|The class name "Myclass__Foo" cannnot constain "__"|);
   }
   {
     my $source = 'class Myclass::;';
-    compile_not_ok($source, qr|The class name "Myclass::" can't end with "::"|);
+    compile_not_ok($source, qr|The class name "Myclass::" cannnot end with "::"|);
   }
   {
     my $source = 'class MyClass::::Foo;';
-    compile_not_ok($source, qr|The class name "MyClass::::Foo" can't contains "::::"|);
+    compile_not_ok($source, qr|The class name "MyClass::::Foo" cannnot contains "::::"|);
   }
   {
     my $source = 'class ::MyClass;';
-    compile_not_ok($source, qr|The class name "::MyClass" can't begin with "::"|);
+    compile_not_ok($source, qr|The class name "::MyClass" cannnot begin with "::"|);
   }
   {
     my $source = 'class 6MyClass;';
-    compile_not_ok($source, qr|The class name "6MyClass" can't begin with a number|);
+    compile_not_ok($source, qr|The class name "6MyClass" cannnot begin with a number|);
   }
 }
 
@@ -81,7 +81,7 @@ use Test::More;
   {
     {
       my $source = q|class MyClass { static method main : void () { ''; } }|;
-      compile_not_ok($source, qr/The character literal can't be empty/);
+      compile_not_ok($source, qr/The character literal cannnot be empty/);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xG'; } }|;
@@ -373,27 +373,27 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $Foo::name : int; } }';
-        compile_not_ok($source, qr/The local variable "\$Foo::name" can't contain "::"/);
+        compile_not_ok($source, qr/The local variable "\$Foo::name" cannnot contain "::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo__bar : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo__bar" can't contain "__"/);
+        compile_not_ok($source, qr/The variable name "\$foo__bar" cannnot contain "__"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $::foo : int; } }';
-        compile_not_ok($source, qr/The variable name "\$::foo" can't begin with "\$::"/);
+        compile_not_ok($source, qr/The variable name "\$::foo" cannnot begin with "\$::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo:: : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo::" can't end with "::"/);
+        compile_not_ok($source, qr/The variable name "\$foo::" cannnot end with "::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo::::bar : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo::::bar" can't contain "::::"/);
+        compile_not_ok($source, qr/The variable name "\$foo::::bar" cannnot contain "::::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $3foo : int; } }';
-        compile_not_ok($source, qr/The symbol name part of the variable name "\$3foo" can't begin with a number/);
+        compile_not_ok($source, qr/The symbol name part of the variable name "\$3foo" cannnot begin with a number/);
       }
     }
     
@@ -408,32 +408,32 @@ use Test::More;
 
   # Symbol name
   {
-    # A symbol name can't conatain "__"
+    # A symbol name cannnot conatain "__"
     {
       my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" can't constain "__"/);
+      compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" cannnot constain "__"/);
     }
 
-    # A symbol name can't end with "::"
+    # A symbol name cannnot end with "::"
     {
       my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo::" can't end with "::"/);
+      compile_not_ok($source, qr/\QThe symbol name "Foo::" cannnot end with "::"/);
     }
 
-    # A symbol name can't contains "::::".
+    # A symbol name cannnot contains "::::".
     {
       my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" can't contains "::::"/);
+      compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" cannnot contains "::::"/);
     }
   }
 }
 
 # Fat comma
 {
-  # The string literal of the left operand of the fat camma can't contains "::".
+  # The string literal of the left operand of the fat camma cannnot contains "::".
   {
     my $source = 'class MyClass { static method main : void () { {Foo::Bar => 1}; } }';
-    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma can't contains "::"/);
+    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma cannnot contains "::"/);
   }
 }
 

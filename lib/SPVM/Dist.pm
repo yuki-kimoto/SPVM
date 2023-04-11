@@ -1059,7 +1059,7 @@ sub generate_dist {
   }
   
   if ($class_name =~ /-/) {
-    confess "The class name can't contain \"-\"";
+    confess "The class name cannnot contain \"-\"";
   }
   
   my $native = $self->native;

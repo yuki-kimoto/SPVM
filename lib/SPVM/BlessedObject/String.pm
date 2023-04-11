@@ -19,7 +19,7 @@ sub to_string {
   my $success = utf8::decode($string);
   
   unless ($success) {
-    confess "The SPVM::BlessedObject::String object can't be decoded to Perl string";
+    confess "The SPVM::BlessedObject::String object cannnot be decoded to Perl string";
   }
   
   return $string;

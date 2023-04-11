@@ -570,7 +570,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
                 SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
                 if (case_info->condition_value == case_info_next->condition_value) {
-                  SPVM_COMPILER_error(compiler, "The value of the case statement can't be duplicated at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                  SPVM_COMPILER_error(compiler, "The value of the case statement cannnot be duplicated at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                 }
               }
               
@@ -1238,7 +1238,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 // Numeric type
                 else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a numeric type at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a numeric type at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
                 // Object type
@@ -1246,11 +1246,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
                   
                   if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-                    SPVM_COMPILER_error(compiler, "The operand of the new operator can't be an interface type at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be an interface type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                    SPVM_COMPILER_error(compiler, "The operand of the new operator can't be a multi-numeric type at %s line %d", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a multi-numeric type at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
 
@@ -1258,7 +1258,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_CLASS* cur_class = method->class;
                     if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
                       if (!SPVM_OP_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
-                        SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class can't be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
+                        SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
                         return;
                       }
                     }
@@ -1370,17 +1370,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right type of the is_type operator can't be the any object type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               if (SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right type of the is_type operator can't be the any object array type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object array type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
 
               if (SPVM_TYPE_is_interface_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right type of the is_type operator can't be an interface type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be an interface type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -1864,7 +1864,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 assert(var_decl->type);
                 if (SPVM_TYPE_is_undef_type(compiler, var_decl->type->basic_type->id, var_decl->type->dimension, var_decl->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of \"%s\" can't be detected at %s line %d", op_operand_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  SPVM_COMPILER_error(compiler, "The type of \"%s\" cannnot be detected at %s line %d", op_operand_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
                 op_operand_dist->uv.var->is_initialized = 1;
@@ -1899,7 +1899,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Void type
               if (SPVM_TYPE_is_void_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
                 if (op_operand) {
-                  SPVM_COMPILER_error(compiler, "The void method can't return the value at %s line %d", op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The void method cannnot return the value at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2481,7 +2481,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_LIST_push(check_ast_info->my_stack, var_decl);
                 }
                 
-                // Type can't be detected
+                // Type cannnot be detected
                 if (!op_cur->is_lvalue && var_decl->type == NULL) {
                   SPVM_COMPILER_error(compiler, "The type of the variable \"%s\" must be defined at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
@@ -2591,7 +2591,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (!SPVM_OP_is_allowed(compiler, method->class, call_method->method->class)) {
                 if (!SPVM_OP_CHECKER_can_access(compiler, method->class, call_method->method->class, call_method->method->access_control_type)) {
-                  SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" class can't be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" class cannnot be called from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -3018,7 +3018,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (!op_cur->uv.class_var_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
                   if (!SPVM_OP_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class can't be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
@@ -3190,7 +3190,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (!op_cur->uv.field_access->inline_expansion) {
                 if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
                   if (!SPVM_OP_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class can't be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
@@ -4325,7 +4325,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
   const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
 
   if (SPVM_TYPE_is_void_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
-    SPVM_COMPILER_error(compiler, "The void type can't be assigned in %s at %s line %d", place, file, line);
+    SPVM_COMPILER_error(compiler, "The void type cannnot be assigned in %s at %s line %d", place, file, line);
     return NULL;
   }
 
@@ -4347,7 +4347,7 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     
   if (!assignability) {
     if (mutable_invalid) {
-      SPVM_COMPILER_error(compiler, "The non-mutable type can't be assign to a mutable type in %s at %s line %d", place, file, line);
+      SPVM_COMPILER_error(compiler, "The non-mutable type cannnot be assign to a mutable type in %s at %s line %d", place, file, line);
     }
     if (narrowing_conversion_error) {
       SPVM_COMPILER_error(compiler, "The implicite narrowing conversion from \"%s\" to \"%s\" in %s is not allowed at %s line %d", src_type_name, dist_type_name, place, file, line);
@@ -4813,9 +4813,9 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
-      // valut_t can't become class variable
+      // valut_t cannnot become class variable
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type can't used in the definition of the class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
     }
@@ -4825,10 +4825,10 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
-      // valut_t can't become field
+      // valut_t cannnot become field
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type can't used in the definition of the field at %s line %d", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field at %s line %d", field->op_field->file, field->op_field->line);
         return;
       }
     }
@@ -4883,7 +4883,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type can't be used in the optional argument at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type cannnot be used in the optional argument at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
@@ -4965,7 +4965,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The return type can't be a reference type at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
 

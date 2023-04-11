@@ -296,7 +296,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : string; my $dist : mutable string = $source; } }';
-      compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the assignment operator|);
+      compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the assignment operator|);
     }
   }
   

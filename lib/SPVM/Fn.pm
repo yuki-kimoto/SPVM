@@ -641,7 +641,7 @@ Exceptions:
 
 The $exponant number must be greater than or equal to 0. Otherwize an exception is thrown.
 
-If the $base number is 0, the $exponant number can't be 0.
+If the $base number is 0, the $exponant number cannnot be 0.
 
 =head2 powl
 
@@ -653,7 +653,7 @@ Exceptions:
 
 The $exponant number must be greater than or equal to 0. Otherwize an exception is thrown.
 
-If the $base number is 0, the $exponant number can't be 0.
+If the $base number is 0, the $exponant number cannnot be 0.
 
 =head2 rand
 
@@ -780,7 +780,7 @@ The $separator must be defined. Otherwize an exception is thrown.
 
 The $string must be defined. Otherwize an exception is thrown.
 
-The $limit can't be 0. Otherwize an exception is thrown.
+The $limit cannnot be 0. Otherwize an exception is thrown.
 
 =head2 substr
 
@@ -955,7 +955,7 @@ The $replace must be defined. Otherwize an exception is thrown.
 
 If the $string contains an invalid Unicode code point, an exception is thrown.
 
-The range format of the (pattern|replace) can't be contain an invalid Unicode code point. If so, an exception is thrown. If so, an exception is thrown.
+The range format of the (pattern|replace) cannnot be contain an invalid Unicode code point. If so, an exception is thrown. If so, an exception is thrown.
 
 The second character ot the range format of the (pattern|replace) must be \"-\". Otherwize an exception is thrown.
 

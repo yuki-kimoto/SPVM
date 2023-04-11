@@ -556,7 +556,7 @@ class Fn {
     
     if ($base == 0) {
       unless ($exponant != 0) {
-        die "If the \$base number is 0, the \$exponant number can't be 0";
+        die "If the \$base number is 0, the \$exponant number cannnot be 0";
       }
     }
     
@@ -575,7 +575,7 @@ class Fn {
     
     if ($base == 0) {
       unless ($exponant != 0) {
-        die "If the \$base number is 0, the \$exponant number can't be 0";
+        die "If the \$base number is 0, the \$exponant number cannnot be 0";
       }
     }
     
@@ -1141,7 +1141,7 @@ class Fn {
       
       if ($code_point < 0) {
         if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "The range format of the $arg_name can't be contain a invalid Unicode code point";
+          die "The range format of the $arg_name cannnot be contain a invalid Unicode code point";
         }
         else {
           die "Calling the get_code_point method in the Fn class to the $arg_name returns an error code: $code_point";

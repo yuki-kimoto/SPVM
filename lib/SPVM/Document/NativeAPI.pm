@@ -1230,7 +1230,7 @@ Creates a new environment that is ready to call methods.
 
 The number of memory blocks is shared with the original execution environment.
 
-If this method can't allocate memory for the new environment, return NULL.
+If this method cannnot allocate memory for the new environment, return NULL.
 
 Note that L</"call_init_blocks"> need to be called before calling user methods by yourself.
 

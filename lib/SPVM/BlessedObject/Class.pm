@@ -69,7 +69,7 @@ The static instance method call is allowed.
 
 If the class or the method is not found, an exception is thrown.
 
-If the invocant can't be assigned to the class of the static method call, an exception is thrown.
+If the invocant cannnot be assigned to the class of the static method call, an exception is thrown.
 
 Examples:
 

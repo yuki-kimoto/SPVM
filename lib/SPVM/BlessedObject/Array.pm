@@ -86,7 +86,7 @@ Returns an element of the array with the index.
 
 Sets an element of the array with the index.
 
-If the $elem can't be assigned to the element of the array, an exception is thrown.
+If the $elem cannnot be assigned to the element of the array, an exception is thrown.
 
 =head2 to_elems
 

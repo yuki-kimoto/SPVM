@@ -134,7 +134,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } case 1: { } } } }';
-    compile_not_ok($source, q|The value of the case statement can't be duplicated|);
+    compile_not_ok($source, q|The value of the case statement cannnot be duplicated|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } default: { } default: { } } } }';
@@ -334,11 +334,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { new int; } }';
-    compile_not_ok($source, q|The operand of the new operator can't be a numeric type|);
+    compile_not_ok($source, q|The operand of the new operator cannnot be a numeric type|);
   }
   {
     my $source = 'class MyClass { use Stringable; static method main : void () {  new Stringable; } }';
-    compile_not_ok($source, q|The operand of the new operator can't be an interface type|);
+    compile_not_ok($source, q|The operand of the new operator cannnot be an interface type|);
   }
   {
     my $source = [
@@ -349,7 +349,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private "Int" class can't be created from the current class "MyClass"|);
+    compile_not_ok($source, q|The object of the private "Int" class cannnot be created from the current class "MyClass"|);
   }
 }
 
@@ -385,15 +385,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object; } }';
-    compile_not_ok($source, q|The right type of the is_type operator can't be the any object type|);
+    compile_not_ok($source, q|The right type of the is_type operator cannnot be the any object type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object[]; } }';
-    compile_not_ok($source, q|The right type of the is_type operator can't be the any object array type|);
+    compile_not_ok($source, q|The right type of the is_type operator cannnot be the any object array type|);
   }
   {
     my $source = 'class MyClass { use Stringable; static method main : void () { Int->new(1) is_type Stringable; } }';
-    compile_not_ok($source, q|The right type of the is_type operator can't be an interface type|);
+    compile_not_ok($source, q|The right type of the is_type operator cannnot be an interface type|);
   }
 }
 
@@ -438,7 +438,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = undef; } }';
-    compile_not_ok($source, q|The type of "$var" can't be detected|);
+    compile_not_ok($source, q|The type of "$var" cannnot be detected|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
@@ -454,7 +454,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { return 1; } }';
-    compile_not_ok($source, q|The void method can't return the value|);
+    compile_not_ok($source, q|The void method cannnot return the value|);
   }
   {
     my $source = 'class MyClass { static method main : int () { return; } }';
@@ -757,7 +757,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
     ];
-    compile_not_ok($source, q|The private "foo" method of the "MyClass2" class can't be called from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "foo" method of the "MyClass2" class cannnot be called from the current class "MyClass"|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
@@ -780,7 +780,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private "$FOO" class variable of the "MyClass2" class can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "$FOO" class variable of the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
   }
 }
 
@@ -827,14 +827,14 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : private int; }'
     ];
-    compile_not_ok($source, q|The private "x" field in the "MyClass2" class can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "x" field in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : protected int; }'
     ];
-    compile_not_ok($source, q|The protected "x" field in the "MyClass2" class can't be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The protected "x" field in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
@@ -877,23 +877,23 @@ use Test::More;
 {
   {
     my $source = q|class MyClass { static method main : void () { my $ret = &main(); } }|;
-    compile_not_ok($source, q|The void type can't be assigned in the assignment operator|);
+    compile_not_ok($source, q|The void type cannnot be assigned in the assignment operator|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the assignment operator|);
+    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the assignment operator|);
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the return statement|);
+    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the return statement|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type can't be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
@@ -995,11 +995,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Complex_2d; our $FOO : Complex_2d; }';
-    compile_not_ok($source, q|The multi-numeric type can't used in the definition of the class variable|);
+    compile_not_ok($source, q|The multi-numeric type cannnot used in the definition of the class variable|);
   }
   {
     my $source = 'class MyClass { use Complex_2d; has foo : Complex_2d; }';
-    compile_not_ok($source, q|The multi-numeric type can't used in the definition of the field|);
+    compile_not_ok($source, q|The multi-numeric type cannnot used in the definition of the field|);
   }
 }
 
@@ -1015,15 +1015,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : Complex_2d) { } }';
-    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+    compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
-    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+    compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
-    compile_not_ok($source, q|The types other than the numeric type and the object type can't be used in the optional argument|);
+    compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int, $arg2 : int) { } }';
@@ -1042,7 +1042,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : int* () { } }';
-    compile_not_ok($source, q|The return type can't be a reference|);
+    compile_not_ok($source, q|The return type cannnot be a reference|);
   }
 }
 

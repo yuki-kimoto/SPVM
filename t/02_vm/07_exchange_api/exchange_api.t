@@ -98,13 +98,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # new_string - reference
     {
       eval { $api->new_string([]); };
-      like($@, qr/The \$string can't be a reference/);
+      like($@, qr/The \$string cannnot be a reference/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
     # new_string - non-assignable
     {
       eval { $api->new_string($api->new_byte_array([1, 2, 3])); };
-      like($@, qr/The \$string can't be a reference/);
+      like($@, qr/The \$string cannnot be a reference/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
   }
@@ -1908,7 +1908,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       {
         my $blessed_object_string = $api->new_string("\xFF\xFE");
         eval { $blessed_object_string->to_string; };
-        like($@, qr|The SPVM::BlessedObject::String object can't be decoded to Perl string|);
+        like($@, qr|The SPVM::BlessedObject::String object cannnot be decoded to Perl string|);
       }
     }
   }

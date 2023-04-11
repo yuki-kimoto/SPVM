@@ -87,7 +87,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass : mulnum_t { interface Stringable; }';
-    compile_not_ok($source, qr/The interface statement can't be used in the definition of the multi-numeric type/);
+    compile_not_ok($source, qr/The interface statement cannnot be used in the definition of the multi-numeric type/);
   }
 }
 
@@ -96,11 +96,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass : interface_t { our $FOO : int; }';
-    compile_not_ok($source, qr/The interface can't have class variables/);
+    compile_not_ok($source, qr/The interface cannnot have class variables/);
   }
   {
     my $source = 'class MyClass : interface_t { has foo : int; }';
-    compile_not_ok($source, qr/The interface can't have fields/);
+    compile_not_ok($source, qr/The interface cannnot have fields/);
   }
   {
     my $source = 'class MyClass : interface_t  { interface MyClass; required method foo : void (); }';
@@ -148,7 +148,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { required method foo : void () { } }';
-    compile_not_ok($source, qr/The method defined in the class can't have the method attribute "required"/);
+    compile_not_ok($source, qr/The method defined in the class cannnot have the method attribute "required"/);
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
@@ -156,7 +156,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
-    compile_not_ok($source, qr/The interface can't have multiple required methods/);
+    compile_not_ok($source, qr/The interface cannnot have multiple required methods/);
   }
   {
     my $source = 'class MyClass : interface_t { method foo : void (); }';
@@ -164,11 +164,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : mulnum_t { method foo : void () { } }';
-    compile_not_ok($source, qr/The multi-numeric type can't have methods/);
+    compile_not_ok($source, qr/The multi-numeric type cannnot have methods/);
   }
   {
     my $source = 'class MyClass : mulnum_t { our $FOO : int; }';
-    compile_not_ok($source, qr/The multi-numeric type can't have class variables/);
+    compile_not_ok($source, qr/The multi-numeric type cannnot have class variables/);
   }
   {
     my $source = 'class MyClass : mulnum_t { }';
@@ -184,7 +184,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $MyClass::FOO : int; }';
-    compile_not_ok($source, qr/The class varaible name "\$MyClass::FOO" can't contain "::"/);
+    compile_not_ok($source, qr/The class varaible name "\$MyClass::FOO" cannnot contain "::"/);
   }
 }
 
@@ -208,7 +208,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has MyClass::foo : int; }';
-    compile_not_ok($source, qr/The field name "MyClass::foo" can't contain "::"/);
+    compile_not_ok($source, qr/The field name "MyClass::foo" cannnot contain "::"/);
   }
 }
 
@@ -232,11 +232,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { method MyClass::foo : void () { } }';
-    compile_not_ok($source, qr/The method name "MyClass::foo" can't contain "::"/);
+    compile_not_ok($source, qr/The method name "MyClass::foo" cannnot contain "::"/);
   }
   {
     my $source = 'class MyClass { method INIT : void () { } }';
-    compile_not_ok($source, qr/"INIT" can't be used as a method name/);
+    compile_not_ok($source, qr/"INIT" cannnot be used as a method name/);
   }
   {
     my $source = 'class MyClass { ro method foo : void () { } }';
@@ -248,7 +248,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { native method foo : void () { } }';
-    compile_not_ok($source, qr/The native method can't have the block/);
+    compile_not_ok($source, qr/The native method cannnot have the block/);
   }
   {
     my $source = 'class MyClass { method DESTROY : int () { } }';
@@ -260,7 +260,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method DESTROY : void ($var : int) { } }';
-    compile_not_ok($source, qr/The DESTROY destructor method can't have arguments/);
+    compile_not_ok($source, qr/The DESTROY destructor method cannnot have arguments/);
   }
 }
 
@@ -284,7 +284,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $MyClass::foo; }; }';
-    compile_not_ok($source, qr/The local variable "\$MyClass::foo" can't contain "::"/);
+    compile_not_ok($source, qr/The local variable "\$MyClass::foo" cannnot contain "::"/);
   }
 }
 

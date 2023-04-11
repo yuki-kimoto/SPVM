@@ -388,7 +388,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The $dest can't be be a read-only string", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The $dest cannnot be be a read-only string", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {

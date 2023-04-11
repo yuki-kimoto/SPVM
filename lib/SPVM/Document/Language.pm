@@ -34,11 +34,11 @@ The word characters are alphabet(C<a-zA-Z>), number(0-9), and underscore(C<_>) o
 
 A symbol name is the characters that are composed of L<word characters|/"Word Character"> and C<::>.
 
-A symbol name can't contains C<__>, and can't begin with a number 0-9.
+A symbol name cannnot contains C<__>, and cannnot begin with a number 0-9.
 
-A symbol name can't begin with C<::>, and can't end with C<::>.
+A symbol name cannnot begin with C<::>, and cannnot end with C<::>.
 
-A symbol name can't contains C<::::>, and can't begin with a number 0-9.
+A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
 
   # Symbol names
   foo
@@ -2300,7 +2300,7 @@ The destructor is the L<method|/"Method"> that is called when the object is dest
 
 The name of the destructor must be C<DESTROY>.
 
-A destructor can't have its arguments.
+A destructor cannnot have its arguments.
 
 The retrun type must be L<void type|/"void Type">.
 
@@ -2411,7 +2411,7 @@ The name of the parant class must be different from the name of the class. Other
 
 The all super classes must be different from its own class. Otherwise a compilation error will occur.
 
-The field that name is the same as the field of the super class can't be defined. Otherwise a compilation error will occur.
+The field that name is the same as the field of the super class cannnot be defined. Otherwise a compilation error will occur.
 
 The parts of the definitions of the fields of the all super classes are copied to the class.
 
@@ -2496,9 +2496,9 @@ The class that has L<interface Guarantees|/"Interface Guarantee"> must have the 
   my $stringable = (Stringable)Point->new(1, 2);
   my $string = $stringable->to_string;
 
-A interface can't have L<filed definitions|/"Field Definition">.
+A interface cannnot have L<filed definitions|/"Field Definition">.
 
-A interface can't have L<class variable definitions|/"Class Variable Definition">.
+A interface cannnot have L<class variable definitions|/"Class Variable Definition">.
 
 A interface can have L<interface Guarantees|/"Interface Guarantee">.
 
@@ -2512,7 +2512,7 @@ A interface can have L<interface Guarantees|/"Interface Guarantee">.
 
 If the interface definition is invalid, a compilation error will occur.
 
-C<new> operator can't create the objects from interfaces.
+C<new> operator cannnot create the objects from interfaces.
 
 The interface can have the method implementation.
 
@@ -2710,7 +2710,7 @@ The list of class variable attributes.
       <b>private</b>
     </td>
     <td>
-      The class variable is private. The class variable can't be accessed from other classes. This is default setting.
+      The class variable is private. The class variable cannnot be accessed from other classes. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2718,7 +2718,7 @@ The list of class variable attributes.
       <b>protected</b>
     </td>
     <td>
-      The class variable is protected. The class variable can't be accessed from other classes except for the child classes.
+      The class variable is protected. The class variable cannnot be accessed from other classes except for the child classes.
     </td>
   </tr>
   <tr>
@@ -2880,7 +2880,7 @@ The list of field attributes.
       <b>private</b>
     </td>
     <td>
-      This field is private. This field can't be accessed from other class. This is default setting.
+      This field is private. This field cannnot be accessed from other class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2888,7 +2888,7 @@ The list of field attributes.
       <b>protected</b>
     </td>
     <td>
-      This field is protected. This field can't be accessed from other class except for the child classes.
+      This field is protected. This field cannnot be accessed from other class except for the child classes.
     </td>
   </tr>
   <tr>
@@ -3196,7 +3196,7 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
   </tr>
 </table>
 
-If C<native> and C<precompile> attributes can't used together.
+If C<native> and C<precompile> attributes cannnot used together.
 
 Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error will occur.
 
@@ -3722,7 +3722,7 @@ The each charcter can be get using C<-E<gt>[]>.
   my $char1 = $string->[1];
   my $char2 = $string->[2];
 
-By default, each character can't be set.
+By default, each character cannnot be set.
   
   # a compilation error.
   $string_const->[0] = 'd';
@@ -6525,7 +6525,7 @@ The value of the L<case statement|/"case Statement"> must be one of the L<charac
 
 If it is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
 
-The values of the case statements can't be duplicated. If so, a compilation error will occur.
+The values of the case statements cannnot be duplicated. If so, a compilation error will occur.
 
 If the condition matches the value of a C<case> statement, the program jumps to the beginning of the L<case block|/"case Block">.
 
@@ -6812,7 +6812,7 @@ The C<return> statement is a L<statement|/"Statement"> to return a value.
   // non-void
   return OPERAND;
 
-If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the C<OPERAND> can't exist. If so, a compilation error will occur.
+If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the C<OPERAND> cannnot exist. If so, a compilation error will occur.
 
 If the return type of the current L<method|/"Method Definition"> is the non-void type, the C<OPERAND> must exist. Otherwise a compilation error will occur.
 
@@ -7604,11 +7604,11 @@ The left operand of the is_type operator must be an object type. Otherwise a com
 
 The right type of the is_type operator must be an object type. Otherwise a compilation error will occur.
 
-The right type of the is_type operator can't be the any object type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be the any object type. If so, a compilation error will occur.
 
-The right type of the is_type operator can't be the any object array type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be the any object array type. If so, a compilation error will occur.
 
-The right type of the is_type operator can't be an interface type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be an interface type. If so, a compilation error will occur.
 
 Examples:
 
@@ -8871,7 +8871,7 @@ The C<make_read_only> operator is a L<void retruning operator|/"void Returning O
 
 The oeprand must be a L<string type|/"string Type">.
 
-Read-only strings can't be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
 
   # A string
   my $string = new_string_len 3;

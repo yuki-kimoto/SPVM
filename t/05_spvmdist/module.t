@@ -22,7 +22,7 @@ use SPVM::Dist;
     );
     
     eval { $dist->generate_dist };
-    like($@, qr/The class name can't contain \"-\"/);
+    like($@, qr/The class name cannnot contain \"-\"/);
   }
 }
 

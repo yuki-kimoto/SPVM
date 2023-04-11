@@ -2,7 +2,7 @@ class TestCase::String {
   use Fn;
   use Array;
   static method string_access : int () {
-    # Read-only strings can't be converted to mutable strings
+    # Read-only strings cannnot be converted to mutable strings
     {
       eval { (mutable string)"abc"; };
       unless ($@) {

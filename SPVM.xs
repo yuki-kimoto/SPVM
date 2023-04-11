@@ -169,7 +169,7 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
       // Nothing
     }
     else if (SvROK(sv_string)) {
-      *sv_error = sv_2mortal(newSVpvf(" can't be a reference"));
+      *sv_error = sv_2mortal(newSVpvf(" cannnot be a reference"));
       return &PL_sv_undef;
     }
     else {
@@ -211,7 +211,7 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
       }
     }
     else if (SvROK(sv_address)) {
-      *sv_error = sv_2mortal(newSVpvf(" can't be a reference"));
+      *sv_error = sv_2mortal(newSVpvf(" cannnot be a reference"));
       return &PL_sv_undef;
     }
     else {
@@ -4111,7 +4111,7 @@ _xs_to_bin(...)
       }
     }
     else if (array_is_object_array) {
-      croak("The object array can't be converted to a binary\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("The object array cannnot be converted to a binary\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     else {
       switch (basic_type_id) {

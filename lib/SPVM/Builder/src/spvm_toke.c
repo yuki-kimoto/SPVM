@@ -337,33 +337,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
             }
 
-            // A class name can't conatain "__"
+            // A class name cannnot conatain "__"
             if (strstr(class_name, "__")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
             
-            // A class name can't end with "::"
+            // A class name cannnot end with "::"
             if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't end with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
-            // A class name can't contains "::::".
+            // A class name cannnot contains "::::".
             if (strstr(class_name, "::::")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't contains \"::::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
-            // A class name can't begin with \"$::\"
+            // A class name cannnot begin with \"$::\"
             if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
-            // A class name can't begin with a number
+            // A class name cannnot begin with a number
             if (class_name_length >= 1 && isdigit(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" can't begin with a number at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
           }
@@ -1003,7 +1003,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "The character literal can't be empty at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character literal cannnot be empty at %s line %d", compiler->cur_file, compiler->cur_line);
           compiler->bufptr++;
         }
         else {
@@ -1593,29 +1593,29 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             // Check the variable name
             {
-              // A variable name can't conatain "__"
+              // A variable name cannnot conatain "__"
               if (strstr(var_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A variable name can't begin with \"$::\"
+              // A variable name cannnot begin with \"$::\"
               if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't begin with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A variable name can't end with \"::\"
+              // A variable name cannnot end with \"::\"
               if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
               
-              // A variable name \"%s\" can't contain \"::::\"
+              // A variable name \"%s\" cannnot contain \"::::\"
               if (strstr(var_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" can't contain \"::::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A variable name can't begin with a number
+              // A variable name cannnot begin with a number
               if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
-                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" can't begin with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
             }
             
@@ -2514,33 +2514,33 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             // Check the symbol name
             {
-              // A symbol name can't conatain "__"
+              // A symbol name cannnot conatain "__"
               if (strstr(symbol_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
               
-              // A symbol name can't end with "::"
+              // A symbol name cannnot end with "::"
               if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't end with \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A symbol name can't contains "::::".
+              // A symbol name cannnot contains "::::".
               if (strstr(symbol_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" can't contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
-              // A symbol name can't begin with "::"
+              // A symbol name cannnot begin with "::"
               assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
 
-              // A symbol name can't begin with a number "0-9".
+              // A symbol name cannnot begin with a number "0-9".
               assert(!isdigit(symbol_name[0]));
             }
 
             // A string literal of the left operand of the fat camma
             if (next_is_fat_camma) {
-              // The string literal of the left operand of the fat camma can't contains "::".
+              // The string literal of the left operand of the fat camma cannnot contains "::".
               if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
-                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma can't contains \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);

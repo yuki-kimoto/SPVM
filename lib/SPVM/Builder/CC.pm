@@ -377,7 +377,7 @@ sub compile_source_file {
   }
   
   $cbuilder->do_system(@$cc_cmd)
-    or confess "The $source_file file can't be compiled by the following command:\n@$cc_cmd\n";
+    or confess "The $source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
 
 sub compile_source_files {
