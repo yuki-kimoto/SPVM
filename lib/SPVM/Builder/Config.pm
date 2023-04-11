@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Config;
 use Carp 'confess';
-use File::Basename 'dirname';
+use File::Basename 'dirname', 'fileparse';
 use SPVM::Builder::Util;
 use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
@@ -578,9 +578,11 @@ sub load_config {
 sub remove_ext_from_config_file {
   my ($self, $config_file) = @_;
   
-  my $config_file_without_ext = $config_file;
+  my ($config_base_name, $config_dir) = fileparse $config_file;
   
-  $config_file_without_ext =~ s/(\.[^\.]+)?\.config$//;
+  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  
+  my $config_file_without_ext = "$config_dir$config_base_name";
   
   return $config_file_without_ext;
 }
@@ -1213,7 +1215,7 @@ Loads a base config file like C<Foo.config>. This method is the alias for the fo
 
 Loads a mode config file like C<Foo.mode.config>.
 
-At first, removes the string matching the regex C<(\.[^\.]+)?\.config$> from the name of the config file $config_file.
+At first, removes the string matching the regex C<(\.[^\.]+)?\.config$> from the base name of the config file $config_file.
 
 Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
 
