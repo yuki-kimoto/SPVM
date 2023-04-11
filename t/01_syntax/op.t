@@ -52,7 +52,7 @@ use Test::More;
 
 # Class Name
 {
-  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromModuleName', qr/The class name "ClassNameDifferntFromModuleNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromModuleName"/);
+  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The class name "ClassNameDifferntFromClassFileNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileName"/);
 }
 
 # Class Descripter

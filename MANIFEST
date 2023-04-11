@@ -378,6 +378,7 @@ t/01_syntax/lib/SPVM/CompileError/BitNot/NotIntegral.spvm
 t/01_syntax/lib/SPVM/CompileError/Bool/NotNumericObject.spvm
 t/01_syntax/lib/SPVM/CompileError/CallMethod/ClassNotFound.spvm
 t/01_syntax/lib/SPVM/CompileError/CallMethod/NotFound.spvm
+t/01_syntax/lib/SPVM/CompileError/Class/ClassNameDifferntFromClassFileName.spvm
 t/01_syntax/lib/SPVM/CompileError/Class/ClassNameDifferntFromModuleName.spvm
 t/01_syntax/lib/SPVM/CompileError/Class/classPartNameStartWithLowerCase.spvm
 t/01_syntax/lib/SPVM/CompileError/Class/NotClosed.spvm
