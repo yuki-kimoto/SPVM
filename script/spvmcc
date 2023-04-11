@@ -59,27 +59,27 @@ else {
 
 =head1 Name
 
-spvmcc - SPVM compiler to create exe file
+spvmcc - Generating Excutable File
+
+=head1 Description
+
+The spvmcc command is a SPVM compiler and linker to generate an executable file.
 
 =head1 Usage
 
   usage: spvmcc [<options>] <class_name>
     
     spvmcc -I lib/SPVM -o myapp Myapp
-
+  
   options:
-    -h, --help                     Show this message
-    -v, --version                  Show the version
-    -o, --output                   Output file name
-    -I, --class-path <directory>   Add SPVM class path
+    -h, --help                     Shows this message
+    -v, --version                  Shows the version
+    -o, --output                   The output file name
+    -I, --class-path <directory>   Adds a class path
     -B, --build-dir <directory>    Building diretory
-    -q, --quiet                    Quiet output
-    -f, --force                    Force compile and link
-    -c, --config                   Config file
-    
-=head1 Description
-
-spvmcc is SPVM compiler to create executable file.
+    -q, --quiet                    Stops the output of messages
+    -f, --force                    Forces the compile and link
+    -c, --config                   The config file
 
 =head1 Copyright & License
 
