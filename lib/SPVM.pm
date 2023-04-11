@@ -183,7 +183,7 @@ SPVM Tutorial.
 
 =over 2
 
-=item * L<Tutorial|SPVM::Document::Tutorial>
+=item * L<Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial>
 
 =back
 
