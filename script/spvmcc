@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
-  'I|module-dir=s' => \my @class_paths,
+  'I|class-path=s' => \my @class_paths,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
@@ -71,7 +71,7 @@ spvmcc - SPVM compiler to create exe file
     -h, --help                     Show this message
     -v, --version                  Show the version
     -o, --output                   Output file name
-    -I, --module-dir <directory>   Add SPVM module searching directory
+    -I, --class-path <directory>   Add SPVM class path
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
     -f, --force                    Force compile and link

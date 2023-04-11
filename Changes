@@ -45,6 +45,7 @@
       s/Module searching directries/Class paths/g
       s/Module searching directries/Class paths/g
       s/Module searching directries/Class paths/g
+    * The --module-dir option in the spvmcc command is renamed to the --class-path.
     
 0.9704 2023-04-08
   [New Features]
