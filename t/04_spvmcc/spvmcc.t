@@ -54,8 +54,8 @@ my $dev_null = File::Spec->devnull;
 {
   mkpath $exe_dir;
 
-  # --print-dependent-resources, -p
-  for my $option ('--print-dependent-resources', '-p'){
+  # --required-resources, -r
+  for my $option ('--required-resources', '-r'){
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I $test_dir/lib/SPVM --class-path t/02_vm/lib/SPVM $option MyExe);
     my @lines = `$spvmcc_cmd`;
     is($lines[0], '{class_name:"TestCase::NativeAPI2",resource_class_name:"TestCase::Resource::Mylib1",resource_mode:"mode1",resource_args:["args1","args2"]}' . "\n");

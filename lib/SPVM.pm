@@ -107,7 +107,7 @@ Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a class search path.
     }
   }
 
-C<use SPVM CLASS_NAME> compile the SPVM class and the dependent classes.
+C<use SPVM CLASS_NAME> compile the SPVM class and the required classes.
 
 Note that at this point a SPVM runtime has not yet been created.
 

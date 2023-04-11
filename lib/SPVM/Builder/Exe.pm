@@ -239,7 +239,7 @@ sub build_exe_file {
   $cc_linker->link($class_name, $object_files, $options);
 }
 
-sub get_dependent_resources {
+sub get_required_resources {
   my ($self) = @_;
   
   my $config_exe = $self->config;
@@ -248,7 +248,7 @@ sub get_dependent_resources {
     $self->compile;
   }
   
-  my $dependent_resources = [];
+  my $required_resources = [];
   
   my $builder = $self->builder;
 
@@ -302,23 +302,23 @@ sub get_dependent_resources {
           resource => $resource
         };
         
-        push @$dependent_resources, $resource_info;
+        push @$required_resources, $resource_info;
       }
     }
   }
   
-  return $dependent_resources;
+  return $required_resources;
 }
 
-sub get_dependent_resource_lines {
+sub get_required_resource_json_lines {
   my ($self) = @_;
   
-  my $dependent_resources = $self->get_dependent_resources;
+  my $required_resources = $self->get_required_resources;
   
-  my @lines;
-  for my $dependent_resource (@$dependent_resources) {
-    my $class_name = $dependent_resource->{class_name};
-    my $resource = $dependent_resource->{resource};
+  my @json_lines;
+  for my $required_resource (@$required_resources) {
+    my $class_name = $required_resource->{class_name};
+    my $resource = $required_resource->{resource};
     my $resource_class_name = $resource->class_name;
     my $resource_mode = $resource->mode;
     my $resource_args = $resource->args || [];
@@ -336,10 +336,10 @@ sub get_dependent_resource_lines {
     
     $line .= "]}";
     
-    push @lines, $line;
+    push @json_lines, $line;
   }
   
-  return \@lines;
+  return \@json_lines;
 }
 
 sub compile {
