@@ -51,17 +51,6 @@ sub object_file_infos {
   }
 }
 
-sub lib_infos {
-  my $self = shift;
-  if (@_) {
-    $self->{lib_infos} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{lib_infos};
-  }
-}
-
 # Class Methods
 sub new {
   my $class = shift;
@@ -74,10 +63,6 @@ sub new {
     $self->object_file_infos([]);
   }
 
-  unless (defined $self->lib_infos) {
-    $self->lib_infos([]);
-  }
-  
   return $self;
 }
 
