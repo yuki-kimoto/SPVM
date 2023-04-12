@@ -36,7 +36,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   
   ok($link_info->class_name, 'TestCase::NativeAPI2');
   ok($link_info->config->ld, $config->ld);
-  ok($link_info->ldflags, $config->ldflags);
+  ok($link_info->config->ldflags, $config->ldflags);
   like($link_info->output_file, qr|TestCase/NativeAPI2\.$Config{dlext}|);
   my $is_object_file_infos = 1;
   for my $object_file_info (@{$link_info->object_file_infos}) {

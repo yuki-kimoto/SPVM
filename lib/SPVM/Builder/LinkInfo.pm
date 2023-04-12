@@ -18,50 +18,6 @@ sub output_file {
   }
 }
 
-sub output_type {
-  my $self = shift;
-  if (@_) {
-    $self->{output_type} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{output_type};
-  }
-}
-
-sub ld_optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{ld_optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ld_optimize};
-  }
-}
-
-sub ldflags {
-  my $self = shift;
-  if (@_) {
-    $self->{ldflags} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ldflags};
-  }
-}
-
-sub dynamic_lib_ldflags {
-  my $self = shift;
-  if (@_) {
-    $self->{dynamic_lib_ldflags} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{dynamic_lib_ldflags};
-  }
-}
-
 sub lib_dirs {
   my $self = shift;
   if (@_) {
@@ -132,15 +88,7 @@ sub new {
   unless (defined $self->lib_infos) {
     $self->lib_infos([]);
   }
-
-  unless (defined $self->ldflags) {
-    $self->ldflags([]);
-  }
-
-  unless (defined $self->dynamic_lib_ldflags) {
-    $self->dynamic_lib_ldflags([]);
-  }
-
+  
   unless (defined $self->lib_dirs) {
     $self->lib_dirs([]);
   }
@@ -151,19 +99,21 @@ sub new {
 sub create_merged_ldflags {
   my ($self) = @_;
   
+  my $config = $self->config;
+  
   my @merged_ldflags;
   
-  if (defined $self->ld_optimize) {
-    push @merged_ldflags, split(/ +/, $self->ld_optimize);
+  if (defined $config->ld_optimize) {
+    push @merged_ldflags, split(/ +/, $config->ld_optimize);
   }
   
-  my $output_type = $self->output_type;
+  my $output_type = $config->output_type;
   if ($output_type eq 'dynamic_lib') {
-    push @merged_ldflags, @{$self->dynamic_lib_ldflags};
+    push @merged_ldflags, @{$config->dynamic_lib_ldflags};
   }
   
-  my $ldflags = $self->ldflags;
-  push @merged_ldflags, @{$self->ldflags};
+  my $ldflags = $config->ldflags;
+  push @merged_ldflags, @{$config->ldflags};
   
   my $lib_dirs = $self->lib_dirs;
   
@@ -216,40 +166,26 @@ C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by th
 
 =head1 Fields
 
+=head2 class_name
+
+  my $class_name = $link_info->class_name;
+  $link_info->class_name($class_name);
+
+Get and set the class name.
+
+=head2 config
+
+  my $config = $link_info->config;
+  $link_info->config($config);
+
+Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
+
 =head2 output_file
 
   my $output_file = $link_info->output_file;
   $link_info->output_file($output_file);
 
 Get and set the object file that is compiled.
-
-=head2 output_type
-
-  my $output_type = $link_info->output_type;
-  $link_info->output_type($output_type);
-
-Get and set the output type.
-
-=head2 ld_optimize
-
-  my $ld_optimize = $link_info->ld_optimize;
-  $link_info->ld_optimize($ld_optimize);
-
-Get and set the linker optimization option.
-
-=head2 ldflags
-
-  my $ldflags = $link_info->ldflags;
-  $link_info->ldflags($ldflags);
-
-Get and set the linker flags.  The default value is C<[]>.
-
-=head2 dynamic_lib_ldflags
-
-  my $dynamic_lib_ldflags = $link_info->dynamic_lib_ldflags;
-  $link_info->dynamic_lib_ldflags($dynamic_lib_ldflags);
-
-Get and set the linker flags for dynamic library.  The default value is C<[]>.
 
 =head2 lib_dirs
 
@@ -272,39 +208,19 @@ Get and set the object file informations to be linked. Each object file is a L<S
 
 Get and set the library informations to be linked. Each object file is a L<SPVM::Builder::LibInfo> object.
 
-=head2 class_name
-
-  my $class_name = $link_info->class_name;
-  $link_info->class_name($class_name);
-
-Get and set the class name.
-
-=head2 config
-
-  my $config = $link_info->config;
-  $link_info->config($config);
-
-Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
-
 =head1 Class Methods
 
 =head2 new
 
   my $link_info = SPVM::Builder::LinkInfo->new;
 
-=head1 Instance Methods
-
-=head2 new
-
-  my $link_info = SPVM::Builder::LinkInfo->new;
-
-Create a new C<SPVM::Builder::LinkInfo> object.
+Creates a new C<SPVM::Builder::LinkInfo> object.
 
 =head2 create_merged_ldflags
 
   my $merged_ldflags = $link_info->create_merged_ldflags;
 
-Create the merged ldflags as an array reference.
+Creates the merged ldflags as an array reference.
 
 Examples:
 
@@ -314,7 +230,7 @@ Examples:
 
   my $link_command = $link_info->create_link_command;
 
-Create the link command as an array reference.
+Creates the link command as an array reference.
 
 Examples:
 
@@ -328,7 +244,7 @@ Get the string representation of the L<link command|/"create_link_command">.
 
 Examples:
 
-  cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz
+  "cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz"
 
 =head1 Copyright & License
 

@@ -945,26 +945,16 @@ sub create_link_info {
     $output_file .= $exe_ext;
   }
 
-  # Linker flags for dynamic link
-  my $dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
-  
-  # Linker flags
-  my $ldflags = $config->ldflags;
-  
   # Optimize
   my $ld_optimize = $config->ld_optimize;
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
-    ldflags => $ldflags,
+    config => $config,
     lib_infos => $lib_infos,
     object_file_infos => $all_object_file_infos,
     output_file => $output_file,
     lib_dirs => $lib_dirs,
-    ld_optimize => $ld_optimize,
-    dynamic_lib_ldflags => $dynamic_lib_ldflags,
-    output_type => $output_type,
-    config => $config,
   );
   
   return $link_info;

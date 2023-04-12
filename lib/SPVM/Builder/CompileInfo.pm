@@ -129,6 +129,13 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
 
 Gets and sets the class name.
 
+=head2 config
+
+  my $config = $compile_info->config;
+  $compile_info->config($config);
+
+Gets and sets a L<SPVM::Builder::Config> object that is used to compile the source file.
+
 =head2 source_file
 
   my $source_file = $compile_info->source_file;
@@ -142,13 +149,6 @@ Gets and sets the source file.
   $compile_info->output_file($output_file);
 
 Gets and sets the output file.
-
-=head2 config
-
-  my $config = $compile_info->config;
-  $compile_info->config($config);
-
-Gets and sets a L<SPVM::Builder::Config> object that is used to compile the source file.
 
 =head1 Class Methods
 
