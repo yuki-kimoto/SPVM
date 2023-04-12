@@ -12,6 +12,7 @@
     * SPVM::Document::Benchmark is moved to "Benchmark - SPVM Wiki"
   [Changes]
     * Getting environment variables is normalized.
+    * Removed the unused SPVM::Compiler::Util class.
       
 0.9704 2023-04-11
   [Prerequirement Changes]

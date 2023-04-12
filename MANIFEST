@@ -60,7 +60,6 @@ lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Compiler.pm
-lib/SPVM/Builder/Compiler/Util.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Env.pm
