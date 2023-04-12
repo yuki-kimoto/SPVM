@@ -553,19 +553,6 @@ sub compile_source_files {
   return $object_file_infos;
 }
 
-sub create_compile_command {
-  my ($self, $compile_info) = @_;
-
-  my $cc = $compile_info->{cc};
-  my $merged_ccflags = $compile_info->create_merged_ccflags;
-  my $object_file = $compile_info->{object_file};
-  my $source_file = $compile_info->{source_file};
-  
-  my $cc_cmd = [$cc, '-c', @$merged_ccflags, '-o', $object_file, $source_file];
-  
-  return $cc_cmd;
-}
-
 sub create_compile_command_info {
   my ($self, $options) = @_;
 
