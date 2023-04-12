@@ -87,17 +87,6 @@ sub optimize {
   }
 }
 
-sub ld_optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{ld_optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ld_optimize};
-  }
-}
-
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -139,6 +128,17 @@ sub dynamic_lib_ldflags {
   }
   else {
     return $self->{dynamic_lib_ldflags};
+  }
+}
+
+sub ld_optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{ld_optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld_optimize};
   }
 }
 
