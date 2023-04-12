@@ -25,6 +25,8 @@
     * Removed the dynamic_lib_ldflags field in the SPVM::Builder::LinkInfo class.
     * Removed the ld_optimize field in the SPVM::Builder::LinkInfo class.
     * Removed the output_type field in the SPVM::Builder::LinkInfo class.
+    * Removed the lib_dirs field in the SPVM::Builder::LinkInfo class.
+    * Removed the lib_infos field in the SPVM::Builder::LinkInfo class.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11

@@ -105,8 +105,8 @@ sub create_merged_ldflags {
   my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;
   push @merged_ldflags, @lib_dirs_ldflags;
   
-  my $lib_infos = $self->lib_infos;
-  my @lib_ldflags = map { my $tmp = $_->to_string; $tmp } @$lib_infos;
+  my $libs = $config->libs;
+  my @lib_ldflags = map { ref $_ ? $_->to_string : $_ } @$libs;
   push @merged_ldflags, @lib_ldflags;
   
   return \@merged_ldflags;
@@ -178,13 +178,6 @@ Get and set the object file that is compiled.
   $link_info->object_file_infos($object_file_infos);
 
 Get and set the object file informations to be linked. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
-
-=head2 lib_infos
-
-  my $lib_infos = $link_info->lib_infos;
-  $link_info->lib_infos($lib_infos);
-
-Get and set the library informations to be linked. Each object file is a L<SPVM::Builder::LibInfo> object.
 
 =head1 Class Methods
 

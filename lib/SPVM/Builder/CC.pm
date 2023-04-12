@@ -787,7 +787,9 @@ sub link {
 
 sub create_link_info {
   my ($self, $class_name, $object_file_infos, $config, $options) = @_;
-
+  
+  $config = $config->clone;
+  
   my $category = $options->{category};
 
   my $all_object_file_infos = [@$object_file_infos];
@@ -856,6 +858,7 @@ sub create_link_info {
     
     push @$lib_infos, $lib_info;
   }
+  $config->libs($lib_infos);
   
   # Use resources
   my $resource_names = $config->get_resource_names;
@@ -951,7 +954,6 @@ sub create_link_info {
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     config => $config,
-    lib_infos => $lib_infos,
     object_file_infos => $all_object_file_infos,
     output_file => $output_file,
   );
