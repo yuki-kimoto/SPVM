@@ -106,11 +106,11 @@ sub create_link_command {
   my $ld = $config->ld;
   my $output_file = $self->output_file;
   my $object_file_infos = $self->object_file_infos;
-  my $object_files = [map { my $tmp = $_->to_string; $tmp } @$object_file_infos];
+  my $object_file_names = [map { $_->to_string; } @$object_file_infos];
   
   my $merged_ldflags = $self->create_merged_ldflags;
   
-  my @link_command = ($ld, '-o', $output_file, @$object_files, @$merged_ldflags);
+  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$merged_ldflags);
   
   return \@link_command;
 }

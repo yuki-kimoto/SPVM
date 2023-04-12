@@ -707,7 +707,7 @@ sub link {
     
     my $merged_ldflags = $link_info->create_merged_ldflags;
     
-    my $link_info_object_files = [map { my $tmp = $_->to_string; $tmp } @$link_info_object_file_infos];
+    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_file_infos];
 
     my @tmp_files;
     
@@ -716,7 +716,7 @@ sub link {
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       (undef, @tmp_files) = $cbuilder->link(
-        objects => $link_info_object_files,
+        objects => $link_info_object_file_names,
         class_name => $link_info_class_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
@@ -729,7 +729,7 @@ sub link {
     }
     # Create a static library
     elsif ($output_type eq 'static_lib') {
-      my @object_files = map { "$_" } @$link_info_object_files;
+      my @object_files = map { "$_" } @$link_info_object_file_names;
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
       $cbuilder->do_system(@ar_cmd)
         or confess "Can't execute command @ar_cmd";
@@ -740,7 +740,7 @@ sub link {
     # Create an executable file
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_files,
+        objects => $link_info_object_file_names,
         class_name => $link_info_class_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$merged_ldflags",
@@ -910,8 +910,6 @@ sub create_link_info {
     
     push @$all_object_file_infos, @$object_file_infos;
   }
-
-  my $all_object_files = [map { $_->to_string } @$all_object_file_infos];
 
   # Output file
   my $output_file = $options->{output_file};
