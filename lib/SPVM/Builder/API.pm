@@ -15,7 +15,7 @@ sub new {
   my $build_dir = $options{build_dir};
   
   my $builder = SPVM::Builder->new(build_dir => $build_dir);
-
+  
   $self->{builder} = $builder;
   
   return bless $self, $class;
@@ -26,73 +26,64 @@ sub build_dynamic_lib_dist_precompile {
   
   my $builder = $self->{builder};
   
-  $builder->build_dynamic_lib_dist($class_name, 'precompile');
+  $builder->build_dynamic_lib_dist_precompile($class_name);
 }
 
 sub build_dynamic_lib_dist_native {
   my ($self, $class_name) = @_;
   
   my $builder = $self->{builder};
-
-  $builder->build_dynamic_lib_dist($class_name, 'native');
+  
+  $builder->build_dynamic_lib_dist_native($class_name);
 }
 
 1;
 
 =head1 Name
 
-SPVM::Builder::API - SPVM Builder Public APIs
+SPVM::Builder::API - Defining Public Functions of SPVM::Builder
+
+=head1 Description
+
+The SPVM::Builder::API class defines the public methods of the L<SPVM::Builder> class.
 
 =head1 Usage
   
-  # Builder API
-  my $api = SPVM::Builder::API->new(
+  my $builder = SPVM::Builder::API->new(
     build_dir => '.spvm_build',
   );
   
-  $api->build_dynamic_lib_dist_precompile('MyClass');
-  $api->build_dynamic_lib_dist_native('MyClass');
-  
-=head1 Description
+  $builder->build_dynamic_lib_dist_precompile('MyClass');
+  $builder->build_dynamic_lib_dist_native('MyClass');
 
-B<SPVM::Builder::API> is the public APIs of SPVM Builder. 
-
-L<SPVM::Builder> is a private classes of L<SPVM>.
-
-The names and arguments of the methods are changed without warnings in the future release.
-
-However, the methods is useful to get the information of SPVM classes.
-
-B<SPVM::Builder::API> provides the public APIs to call the methods. These APIs is public and stable.
-
-=head1 Methods
+=head1 Class Methods
 
 =head2 new
 
-  # Builder API
-  my $api = SPVM::Builder::API->new;
+  my $builder = SPVM::Builder::API->new(%options);
 
-Create B<SPVM::Builder::API> object.
+Creates a new L<SPVM::Builder::API> object.
 
-B<Options:>
+Options:
 
 =over 2
 
-=item * build_dir
+=item * C<build_dir>
 
-Build directory.
+The building directory.
 
 =back
 
+=head1 Instance Methods
+
 =head2 build_dynamic_lib_dist_precompile
 
-  $api->build_dynamic_lib_dist_precompile($class_name)
+  $builder->build_dynamic_lib_dist_precompile($class_name)
 
-Build a precompile dymamic library and copy it to C<blib/lib>.
+Generates a dynamic library for a class $class_name that has C<precompile> methods, and copies it to the C<blib/lib> directory.
 
 =head2 build_dynamic_lib_dist_native
 
-  $api->build_dynamic_lib_dist_native($class_name)
+  $builder->build_dynamic_lib_dist_native($class_name)
 
-Build a native dynamic library and copy it into C<blib/lib>.
-
+Generates a dynamic library for a class $class_name that has C<native> methods, and copies it to the C<blib/lib> directory.

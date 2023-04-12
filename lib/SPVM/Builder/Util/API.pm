@@ -14,11 +14,11 @@ sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
 =head1 Name
 
-SPVM::Builder::Util::API - Public Functions for SPVM Builder Utilities
+SPVM::Builder::Util::API - Defining Public Functions of SPVM::Builder::Util
 
 =head1 Description
 
-The SPVM::Builder::Util::API class has public utility functions for the SPVM builder L<SPVM::Builder>.
+The SPVM::Builder::Util::API class defines the public functions of the L<SPVM::Builder::Util> class.
 
 =head1 Usage
 

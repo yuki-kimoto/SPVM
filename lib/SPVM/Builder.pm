@@ -79,17 +79,29 @@ sub build_dynamic_lib_dist {
   $cc->build_dist($class_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
 
+sub build_dynamic_lib_dist_precompile {
+  my ($self, $class_name) = @_;
+  
+  $self->build_dynamic_lib_dist($class_name, 'precompile');
+}
+
+sub build_dynamic_lib_dist_native {
+  my ($self, $class_name) = @_;
+  
+  $self->build_dynamic_lib_dist($class_name, 'native');
+}
+
 1;
 
 =encoding utf8
 
 =head1 Name
 
-SPVM::Builder - Build SPVM program
+SPVM::Builder - Build Dynamic Libraries for SPVM Distribution
 
 =head1 Description
 
-Build SPVM program. Compile SPVM source codes. Bind native and precompile methods. Generate Perl subrotuines correspoing to SPVM methods. After that, run SPVM program.
+The SPVM::Builder class has methods to build dynamic librares for a SPVM distribution.
 
 =head1 Copyright & License
 
