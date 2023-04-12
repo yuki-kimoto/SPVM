@@ -15,6 +15,7 @@
     * Removed the unused SPVM::Compiler::Util class.
   [Incompatible Changes]
     * The create_merged_ccflags method in the SPVM::Builder::CompileInfo is removed.
+    * Removed the cc field in the SPVM::Builder::CompileInfo class.
 0.9704 2023-04-11
   [Prerequirement Changes]
     * JSON::PP 2.27105+ is required.

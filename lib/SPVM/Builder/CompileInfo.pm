@@ -18,17 +18,6 @@ sub class_name {
   }
 }
 
-sub cc {
-  my $self = shift;
-  if (@_) {
-    $self->{cc} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{cc};
-  }
-}
-
 sub ccflags {
   my $self = shift;
   if (@_) {
@@ -128,8 +117,10 @@ sub new {
 # Instance Methods
 sub create_compile_command {
   my ($self) = @_;
+  
+  my $config = $self->config;
 
-  my $cc = $self->cc;
+  my $cc = $config->cc;
   my $class_name = $self->class_name;
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
@@ -191,13 +182,6 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
 
 Gets and sets the class name.
 
-=head2 cc
-
-  my $cc = $compile_info->cc;
-  $compile_info->cc($cc);
-
-Gets and sets the compiler name.
-
 =head2 ccflags
 
   my $ccflags = $compile_info->ccflags;
@@ -211,13 +195,6 @@ Gets and sets the compiler flags. This field is an array reference. The default 
   $compile_info->optimize($optimize);
 
 Gets and sets the optimize.
-
-=head2 builder_include_dir
-
-  my $builder_include_dir = $compile_info->builder_include_dir;
-  $compile_info->builder_include_dir($builder_include_dir);
-
-Gets and sets the builder include directory.
 
 =head2 include_dirs
 

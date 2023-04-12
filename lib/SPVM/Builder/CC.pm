@@ -605,9 +605,8 @@ sub create_compile_command_info {
   my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
   
   my $builder_include_dir = "$builder_dir/include";
-
+  
   my $compile_info = SPVM::Builder::CompileInfo->new(
-    cc => $cc,
     ccflags => $ccflags,
     output_file => $output_file,
     source_file => $source_file,
