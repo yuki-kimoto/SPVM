@@ -7,6 +7,28 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
+sub class_name {
+  my $self = shift;
+  if (@_) {
+    $self->{class_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{class_name};
+  }
+}
+
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
 sub output_file {
   my $self = shift;
   if (@_) {
@@ -15,17 +37,6 @@ sub output_file {
   }
   else {
     return $self->{output_file};
-  }
-}
-
-sub lib_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{lib_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{lib_dirs};
   }
 }
 
@@ -51,28 +62,6 @@ sub lib_infos {
   }
 }
 
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
 # Class Methods
 sub new {
   my $class = shift;
@@ -87,10 +76,6 @@ sub new {
 
   unless (defined $self->lib_infos) {
     $self->lib_infos([]);
-  }
-  
-  unless (defined $self->lib_dirs) {
-    $self->lib_dirs([]);
   }
   
   return $self;
@@ -115,7 +100,7 @@ sub create_merged_ldflags {
   my $ldflags = $config->ldflags;
   push @merged_ldflags, @{$config->ldflags};
   
-  my $lib_dirs = $self->lib_dirs;
+  my $lib_dirs = $config->lib_dirs;
   
   my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;
   push @merged_ldflags, @lib_dirs_ldflags;
@@ -186,13 +171,6 @@ Get and set the L<config|SPVM::Builder::Config> that is used to link the objects
   $link_info->output_file($output_file);
 
 Get and set the object file that is compiled.
-
-=head2 lib_dirs
-
-  my $lib_dirs = $link_info->lib_dirs;
-  $link_info->$link_info->lib_dirs($lib_dirs);
-
-Get and set the library directories. The default is C<[]>.
 
 =head2 object_file_infos
 

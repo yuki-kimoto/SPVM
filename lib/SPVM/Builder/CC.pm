@@ -954,7 +954,6 @@ sub create_link_info {
     lib_infos => $lib_infos,
     object_file_infos => $all_object_file_infos,
     output_file => $output_file,
-    lib_dirs => $lib_dirs,
   );
   
   return $link_info;
