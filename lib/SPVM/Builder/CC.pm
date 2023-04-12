@@ -679,7 +679,7 @@ sub link {
     # Move temporary dynamic library file to blib directory
     mkpath dirname $output_file;
     
-    my $ld = $link_info->ld;
+    my $ld = $config->ld;
     
     my $cbuilder_config = {
       ld => $ld,
@@ -701,7 +701,6 @@ sub link {
     # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
-    my $link_info_ld = $link_info->ld;
     my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_file_infos = $link_info->object_file_infos;
@@ -957,7 +956,6 @@ sub create_link_info {
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
-    ld => $ld,
     ldflags => $ldflags,
     lib_infos => $lib_infos,
     object_file_infos => $all_object_file_infos,
@@ -966,6 +964,7 @@ sub create_link_info {
     ld_optimize => $ld_optimize,
     dynamic_lib_ldflags => $dynamic_lib_ldflags,
     output_type => $output_type,
+    config => $config,
   );
   
   return $link_info;

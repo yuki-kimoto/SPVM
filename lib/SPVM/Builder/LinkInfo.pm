@@ -29,17 +29,6 @@ sub output_type {
   }
 }
 
-sub ld {
-  my $self = shift;
-  if (@_) {
-    $self->{ld} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ld};
-  }
-}
-
 sub ld_optimize {
   my $self = shift;
   if (@_) {
@@ -192,7 +181,9 @@ sub create_merged_ldflags {
 sub create_link_command {
   my ($self) = @_;
   
-  my $ld = $self->ld;
+  my $config = $self->config;
+  
+  my $ld = $config->ld;
   my $output_file = $self->output_file;
   my $object_file_infos = $self->object_file_infos;
   my $object_files = [map { my $tmp = $_->to_string; $tmp } @$object_file_infos];
@@ -238,13 +229,6 @@ Get and set the object file that is compiled.
   $link_info->output_type($output_type);
 
 Get and set the output type.
-
-=head2 ld
-
-  my $ld = $link_info->ld;
-  $link_info->ld($ld);
-
-Get and set the linker name.
 
 =head2 ld_optimize
 

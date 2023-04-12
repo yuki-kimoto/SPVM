@@ -15,9 +15,6 @@ use SPVM::Builder::LinkInfo;
   $object_file->output_type("test");
   is($object_file->output_type(), "test");
   
-  $object_file->ld("test");
-  is($object_file->ld(), "test");
-  
   $object_file->ld_optimize("test");
   is($object_file->ld_optimize(), "test");
   
