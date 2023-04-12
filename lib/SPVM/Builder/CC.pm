@@ -1039,7 +1039,11 @@ sub build_precompile_class_source_file {
 
 =head1 Name
 
-SPVM::Builder::CC - Compiler and Linker of Native Sources
+SPVM::Builder::CC - Compiling and Linking Native Class
+
+=head1 Description
+
+The SPVM::Builder::CC class has methods to compile and link a SPVM native class.
 
 =head1 Copyright & License
 
