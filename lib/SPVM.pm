@@ -99,6 +99,28 @@ Calling a SPVM method from Perl:
 
 =back
 
+=head1 use
+
+  use SPVM;
+  use SPVM 'SomeClass';
+
+Loads the L<SPVM> module.
+
+If a class name of SPVM is given as the first argument, the SPVM class is loaded and is bound to a Perl class.
+
+The bound Perl class name is prefixed with C<SPVM::>.
+
+Exceptions:
+
+If the SPVM class cannot be loaded, an exception is thrown.
+
+Examples:
+
+  use SPVM 'Int';
+  
+  my $int_object = SPVM::Int->new(3);
+  my $value = $int_object->value.
+
 =head1 Functions
 
 =head2 api
