@@ -18,17 +18,6 @@ sub class_name {
   }
 }
 
-sub ccflags {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags};
-  }
-}
-
 sub optimize {
   my $self = shift;
   if (@_) {
@@ -103,10 +92,6 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->ccflags) {
-    $self->ccflags([]);
-  }
-
   unless (defined $self->include_dirs) {
     $self->include_dirs([]);
   }
@@ -145,13 +130,15 @@ sub to_string {
 sub _create_merged_ccflags {
   my ($self) = @_;
   
+  my $config = $self->config;
+  
   my @merged_ccflags;
   
   if (defined $self->optimize) {
     push @merged_ccflags, split(/ +/, $self->optimize);
   }
   
-  push @merged_ccflags, @{$self->ccflags};
+  push @merged_ccflags, @{$config->ccflags};
 
   my $builder_include_dir = $self->builder_include_dir;
   push @merged_ccflags, "-I$builder_include_dir";
