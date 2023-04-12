@@ -600,7 +600,6 @@ sub create_compile_command_info {
   
   my $ccflags = $config->ccflags;
   
-  my $optimize = $config->optimize;
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
   
@@ -609,7 +608,6 @@ sub create_compile_command_info {
   my $compile_info = SPVM::Builder::CompileInfo->new(
     output_file => $output_file,
     source_file => $source_file,
-    optimize => $optimize,
     builder_include_dir => $builder_include_dir,
     include_dirs => \@include_dirs,
     config => $config,

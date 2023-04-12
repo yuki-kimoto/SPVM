@@ -18,17 +18,6 @@ sub class_name {
   }
 }
 
-sub optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize};
-  }
-}
-
 sub builder_include_dir {
   my $self = shift;
   if (@_) {
@@ -134,8 +123,8 @@ sub _create_merged_ccflags {
   
   my @merged_ccflags;
   
-  if (defined $self->optimize) {
-    push @merged_ccflags, split(/ +/, $self->optimize);
+  if (defined $config->optimize) {
+    push @merged_ccflags, split(/ +/, $config->optimize);
   }
   
   push @merged_ccflags, @{$config->ccflags};
@@ -168,20 +157,6 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
   $compile_info->class_name($class_name);
 
 Gets and sets the class name.
-
-=head2 ccflags
-
-  my $ccflags = $compile_info->ccflags;
-  $compile_info->ccflags($ccflags);
-
-Gets and sets the compiler flags. This field is an array reference. The default value is [].
-
-=head2 optimize
-
-  my $optimize = $compile_info->optimize;
-  $compile_info->optimize($optimize);
-
-Gets and sets the optimize.
 
 =head2 include_dirs
 
