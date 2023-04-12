@@ -90,11 +90,13 @@ sub new {
   
   my $self = {@_};
   
-  if ($ENV{SPVM_CC_DEBUG}) {
+  my $env_spvm_cc_debug = SPVM::Builder::Util::get_normalized_env('SPVM_CC_DEBUG');
+  if (defined $env_spvm_cc_debug) {
     $self->{debug} = 1;
   }
   
-  if ($ENV{SPVM_CC_FORCE}) {
+  my $env_spvm_cc_force = SPVM::Builder::Util::get_normalized_env('SPVM_CC_FORCE');
+  if (defined $env_spvm_cc_force) {
     $self->{force} = 1;
   }
   

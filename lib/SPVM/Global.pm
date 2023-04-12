@@ -99,7 +99,7 @@ sub load_dynamic_libs {
 sub init_runtime {
   unless ($RUNTIME) {
     unless ($BUILDER) {
-      my $build_dir = $ENV{SPVM_BUILD_DIR};
+      my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     }
     
@@ -216,7 +216,7 @@ sub build_class {
   my ($class_name, $file, $line) = @_;
   
   unless ($BUILDER) {
-    my $build_dir = $ENV{SPVM_BUILD_DIR};
+    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
   

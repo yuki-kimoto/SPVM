@@ -730,6 +730,18 @@ sub create_default_config {
   return $config;
 }
 
+sub get_normalized_env {
+  my ($name) = @_;
+  
+  my $value = $ENV{$name};
+  
+  if (defined $value && !length $value) {
+    $value = undef;
+  }
+  
+  return $value;
+}
+
 1;
 
 =head1 Name
