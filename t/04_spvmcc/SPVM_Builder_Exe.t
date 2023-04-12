@@ -49,13 +49,13 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
     like($link_info->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
-    my $is_object_file_infos = 1;
-    for my $object_file_info (@{$link_info->object_file_infos}) {
-      unless ($object_file_info->isa('SPVM::Builder::ObjectFileInfo')) {
-        $is_object_file_infos = 0;
+    my $is_object_files = 1;
+    for my $object_file (@{$link_info->object_files}) {
+      unless ($object_file->isa('SPVM::Builder::ObjectFileInfo')) {
+        $is_object_files = 0;
       }
     }
-    ok($is_object_file_infos);
+    ok($is_object_files);
   }
 
   {

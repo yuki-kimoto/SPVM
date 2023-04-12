@@ -15,8 +15,8 @@ use SPVM::Builder::LinkInfo;
   $object_file->config("test");
   is($object_file->config(), "test");
   
-  $object_file->object_file_infos("test");
-  is($object_file->object_file_infos(), "test");
+  $object_file->object_files("test");
+  is($object_file->object_files(), "test");
   
   $object_file->output_file("test");
   is($object_file->output_file(), "test");

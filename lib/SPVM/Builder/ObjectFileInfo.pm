@@ -54,8 +54,8 @@ Fields of B<SPVM::Builder::ObjectFileInfo>.
 
 =head2 compile_info
 
-  my $compile_info = $object_file_info->compile_info;
-  $object_file_info->compile_info($compile_info);
+  my $compile_info = $object_file->compile_info;
+  $object_file->compile_info($compile_info);
 
 Get and set the L<SPVM::Builder::CompileInfo> object.
 
@@ -63,13 +63,13 @@ Get and set the L<SPVM::Builder::CompileInfo> object.
 
 =head2 new
 
-  my $object_file_info = SPVM::Builder::ObjectFileInfo->new;
+  my $object_file = SPVM::Builder::ObjectFileInfo->new;
 
 =head1 Instance Methods
 
 =head2 to_string
 
-  my $object_file = $object_file_info->to_string;
+  my $object_file = $object_file->to_string;
 
 Get the object file name. This is same as C<$object_file->compile_info->output_file>.
 
@@ -79,13 +79,13 @@ L<SPVM::BlessedObject::String> overloads the following operators.
 
 =head2 bool
 
-  my $bool = !!$object_file_info;
+  my $bool = !!$object_file;
   
 Always true.
 
 =head2 stringify
 
-  my $object_file_name = "$object_file_info";
+  my $object_file_name = "$object_file";
   
 Alias for L</"to_string">.
 

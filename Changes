@@ -27,6 +27,7 @@
     * Removed the output_type field in the SPVM::Builder::LinkInfo class.
     * Removed the lib_dirs field in the SPVM::Builder::LinkInfo class.
     * Removed the lib_infos field in the SPVM::Builder::LinkInfo class.
+    * Renamed the object_file_infos field in the SPVM::Builder::LinkInfo class to object_files.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11

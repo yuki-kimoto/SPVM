@@ -447,7 +447,7 @@ sub compile_source_files {
   }
   
   # Compile source files
-  my $object_file_infos = [];
+  my $object_files = [];
   my $is_native_class = 1;
   for my $source_file ($native_class_file, @$resource_src_files) {
     my $cur_is_native_class = $is_native_class;
@@ -455,12 +455,12 @@ sub compile_source_files {
     
     next unless defined $source_file;
     
-    my $object_file;
+    my $object_file_name;
     
     # Object file of native class
     if ($cur_is_native_class) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
-      $object_file = "$output_dir/$object_rel_file";
+      $object_file_name = "$output_dir/$object_rel_file";
     }
     # Object file of resource source file
     else {
@@ -471,9 +471,9 @@ sub compile_source_files {
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
-      $object_file = "$output_dir/$object_rel_file/$object_file_base";
+      $object_file_name = "$output_dir/$object_rel_file/$object_file_base";
       
-      my $output_dir = dirname $object_file;
+      my $output_dir = dirname $object_file_name;
       mkpath $output_dir;
     }
     
@@ -510,7 +510,7 @@ sub compile_source_files {
       }
       $need_generate = SPVM::Builder::Util::need_generate({
         force => $force,
-        output_file => $object_file,
+        output_file => $object_file_name,
         input_files => $input_files,
       });
     }
@@ -519,7 +519,7 @@ sub compile_source_files {
     my $compile_info = $self->create_compile_command_info({
       class_name => $class_name,
       config => $config,
-      output_file => $object_file,
+      output_file => $object_file_name,
       source_file => $source_file,
       no_use_resource => $no_use_resource,
     });
@@ -533,7 +533,7 @@ sub compile_source_files {
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_output_dir = "$output_dir/$class_rel_dir";
-      mkpath dirname $object_file;
+      mkpath dirname $object_file_name;
       
       $self->compile_source_file($compile_info);
     }
@@ -541,15 +541,15 @@ sub compile_source_files {
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
-    my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+    my $object_file = SPVM::Builder::ObjectFileInfo->new(
       compile_info => $compile_info,
     );
     
     # Add object file information
-    push @$object_file_infos, $object_file_info;
+    push @$object_files, $object_file;
   }
   
-  return $object_file_infos;
+  return $object_files;
 }
 
 sub create_compile_command_info {
@@ -628,7 +628,7 @@ EOS
 }
 
 sub link {
-  my ($self, $class_name, $object_file_infos, $options) = @_;
+  my ($self, $class_name, $object_files, $options) = @_;
   
   my $dl_func_list = $options->{dl_func_list};
   
@@ -653,7 +653,7 @@ sub link {
   my $force = $self->detect_force($config);
   
   # Link information
-  my $link_info = $self->create_link_info($class_name, $object_file_infos, $config, $options);
+  my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
   
   # Output file
   my $output_file = $link_info->output_file;
@@ -664,7 +664,7 @@ sub link {
     $before_link_cb->($config, $link_info);
   }
   
-  my @object_files = map { "$_" } @{$link_info->object_file_infos};
+  my @object_files = map { "$_" } @{$link_info->object_files};
   my $input_files = [@object_files];
   if (defined $config->file) {
     push @$input_files, $config->file;
@@ -703,11 +703,11 @@ sub link {
     
     my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
-    my $link_info_object_file_infos = $link_info->object_file_infos;
+    my $link_info_object_files = $link_info->object_files;
     
     my $merged_ldflags = $link_info->create_merged_ldflags;
     
-    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_file_infos];
+    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
 
     my @tmp_files;
     
@@ -786,13 +786,13 @@ sub link {
 }
 
 sub create_link_info {
-  my ($self, $class_name, $object_file_infos, $config, $options) = @_;
+  my ($self, $class_name, $object_files, $config, $options) = @_;
   
   $config = $config->clone;
   
   my $category = $options->{category};
 
-  my $all_object_file_infos = [@$object_file_infos];
+  my $all_object_files = [@$object_files];
   
   $options ||= {};
   
@@ -906,9 +906,9 @@ sub create_link_info {
       category => $category,
     };
     
-    my $object_file_infos = $builder_cc_resource->compile_source_files($resource_class_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_source_files($resource_class_name, $compile_options);
     
-    push @$all_object_file_infos, @$object_file_infos;
+    push @$all_object_files, @$object_files;
   }
 
   # Output file
@@ -952,7 +952,7 @@ sub create_link_info {
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     config => $config,
-    object_file_infos => $all_object_file_infos,
+    object_files => $all_object_files,
     output_file => $output_file,
   );
   

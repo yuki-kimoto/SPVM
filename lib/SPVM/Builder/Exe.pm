@@ -453,11 +453,11 @@ sub compile_source_file {
     $builder_cc->compile_source_file($compile_info);
   }
   
-  my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+  my $object_file = SPVM::Builder::ObjectFileInfo->new(
     compile_info => $compile_info,
   );
   
-  return $object_file_info;
+  return $object_file;
 }
 
 sub create_bootstrap_header_source {
@@ -888,11 +888,11 @@ sub compile_bootstrap_source_file {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  my $object_file = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
+  my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
   # Create directory for object file output
-  mkdir dirname $object_file;
+  mkdir dirname $object_file_name;
   
   my $config = $config_exe->config_bootstrap;
   unless ($config) {
@@ -901,13 +901,13 @@ sub compile_bootstrap_source_file {
   $config = $config->clone;
   
   # Compile
-  my $object_file_info = $self->compile_source_file({
+  my $object_file = $self->compile_source_file({
     source_file => $source_file,
-    output_file => $object_file,
+    output_file => $object_file_name,
     config => $config,
   });
   
-  return $object_file_info;
+  return $object_file;
 }
 
 sub compile_spvm_core_source_files {
@@ -948,22 +948,22 @@ sub compile_spvm_core_source_files {
   }
   
   # Compile source files
-  my $object_file_infos = [];
+  my $object_files = [];
   for my $src_file (@spvm_core_source_files) {
     # Object file
-    my $object_file = "$output_dir/" . basename($src_file);
-    $object_file =~ s/\.c$//;
-    $object_file .= '.o';
+    my $object_file_name = "$output_dir/" . basename($src_file);
+    $object_file_name =~ s/\.c$//;
+    $object_file_name .= '.o';
     
-    my $object_file_info = $self->compile_source_file({
+    my $object_file = $self->compile_source_file({
       source_file => $src_file,
-      output_file => $object_file,
+      output_file => $object_file_name,
       config => $config,
     });
-    push @$object_file_infos, $object_file_info;
+    push @$object_files, $object_file;
   }
   
-  return $object_file_infos;
+  return $object_files;
 }
 
 sub compile_class_precompile_source_file {

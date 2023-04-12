@@ -40,14 +40,14 @@ sub output_file {
   }
 }
 
-sub object_file_infos {
+sub object_files {
   my $self = shift;
   if (@_) {
-    $self->{object_file_infos} = $_[0];
+    $self->{object_files} = $_[0];
     return $self;
   }
   else {
-    return $self->{object_file_infos};
+    return $self->{object_files};
   }
 }
 
@@ -59,8 +59,8 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->object_file_infos) {
-    $self->object_file_infos([]);
+  unless (defined $self->object_files) {
+    $self->object_files([]);
   }
 
   return $self;
@@ -105,8 +105,8 @@ sub create_link_command {
   
   my $ld = $config->ld;
   my $output_file = $self->output_file;
-  my $object_file_infos = $self->object_file_infos;
-  my $object_file_names = [map { $_->to_string; } @$object_file_infos];
+  my $object_files = $self->object_files;
+  my $object_file_names = [map { $_->to_string; } @$object_files];
   
   my $merged_ldflags = $self->create_merged_ldflags;
   
@@ -157,10 +157,10 @@ Get and set the L<config|SPVM::Builder::Config> that is used to link the objects
 
 Get and set the object file that is compiled.
 
-=head2 object_file_infos
+=head2 object_files
 
-  my $object_file_infos = $link_info->object_file_infos;
-  $link_info->object_file_infos($object_file_infos);
+  my $object_files = $link_info->object_files;
+  $link_info->object_files($object_files);
 
 Get and set the object file informations to be linked. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
 

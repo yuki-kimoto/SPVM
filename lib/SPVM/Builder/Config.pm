@@ -894,7 +894,7 @@ Examples:
   $config->before_link_cbs([sub {
     my ($config, $link_info) = @_;
     
-    my $object_file_infos = $link_info->object_file_infos;
+    my $object_files = $link_info->object_files;
     
     # Do something
     
