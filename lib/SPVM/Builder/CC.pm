@@ -95,6 +95,11 @@ sub new {
     $self->{debug} = 1;
   }
   
+  my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_CC_QUIET');
+  if (defined $env_spvm_cc_quiet) {
+    $self->{quiet} = !!$env_spvm_cc_quiet;
+  }
+  
   my $env_spvm_cc_force = SPVM::Builder::Util::get_normalized_env('SPVM_CC_FORCE');
   if (defined $env_spvm_cc_force) {
     $self->{force} = 1;

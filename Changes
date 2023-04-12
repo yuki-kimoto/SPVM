@@ -1,4 +1,6 @@
 0.9705 2023-04-12
+  [New Features]
+    * Added the SPVM_CC_QUIET environment variable.
   [Exception Messages Changes]
     * Improved English syntax.
   [Compilation Error Messages Changes]
