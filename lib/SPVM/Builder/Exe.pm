@@ -1076,14 +1076,17 @@ sub compile_class_native_source_files {
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     
-    my $include_dirs = [];
+    $config = $config->clone;
+    
+    my $resource_include_dirs = [];
     my $config_exe = $self->config;
     my $resource_names = $config_exe->get_resource_names;
     for my $resource_name (@$resource_names) {
       my $resource = $config_exe->get_resource($resource_name);
       my $resource_include_dir = $resource->config->get_native_include_dir;
-      push @$include_dirs, $resource_include_dir;
+      push @$resource_include_dirs, $resource_include_dir;
     }
+    $config->add_include_dir(@$resource_include_dirs);
     
     my $object_files = $builder_cc->compile_source_files(
       $class_name,
@@ -1093,7 +1096,6 @@ sub compile_class_native_source_files {
         config => $config,
         category => 'native',
         no_use_resource => 1,
-        include_dirs => $include_dirs,
       }
     );
     push @$all_object_files, @$object_files;

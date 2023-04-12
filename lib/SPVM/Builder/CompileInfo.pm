@@ -18,28 +18,6 @@ sub class_name {
   }
 }
 
-sub builder_include_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{builder_include_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder_include_dir};
-  }
-}
-
-sub include_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs};
-  }
-}
-
 sub source_file {
   my $self = shift;
   if (@_) {
@@ -80,10 +58,6 @@ sub new {
   my $self = {@_};
 
   bless $self, $class;
-  
-  unless (defined $self->include_dirs) {
-    $self->include_dirs([]);
-  }
   
   return $self;
 }
@@ -128,11 +102,8 @@ sub _create_merged_ccflags {
   }
   
   push @merged_ccflags, @{$config->ccflags};
-
-  my $builder_include_dir = $self->builder_include_dir;
-  push @merged_ccflags, "-I$builder_include_dir";
-
-  my $include_dirs = $self->include_dirs;
+  
+  my $include_dirs = $config->include_dirs;
   my @include_dirs_ccflags = map { "-I$_" } @$include_dirs;
   push @merged_ccflags, @include_dirs_ccflags;
   
@@ -157,13 +128,6 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
   $compile_info->class_name($class_name);
 
 Gets and sets the class name.
-
-=head2 include_dirs
-
-  my $include_dirs = $source_file->include_dirs;
-  $source_file->include_dirs($include_dirs);
-
-Gets and sets the include directories. This field is an array reference. The default is [].
 
 =head2 source_file
 
@@ -204,7 +168,7 @@ Gets the compile command as an array reference.
 
 The following one is an example of the return value.
 
-  [qw(cc -c -O2 -Iinclude_dir -o foo.o foo.c)]
+  [qw(cc -c -O2 -Ipath/include -o foo.o foo.c)]
 
 =head2 to_string
 
@@ -214,7 +178,7 @@ Calls the L<create_compile_command|/"create_compile_command"> method and joins a
 
 The following one is an example of the return value.
 
-  "cc -c -O2 -Iinclude_dir -o foo.o foo.c"
+  "cc -c -O2 -Ipath/include -o foo.o foo.c"
 
 =head1 Copyright & License
 

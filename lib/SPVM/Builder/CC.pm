@@ -521,7 +521,6 @@ sub compile_source_files {
       config => $config,
       output_file => $object_file,
       source_file => $source_file,
-      include_dirs => $options->{include_dirs},
       no_use_resource => $no_use_resource,
     });
     
@@ -591,25 +590,17 @@ sub create_compile_command_info {
         }
       }
     }
-    
-    # Add option include directories
-    if (defined $options->{include_dirs}) {
-      push @include_dirs, @{$options->{include_dirs}};
-    }
   }
   
-  my $ccflags = $config->ccflags;
-  
-  
   my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
-  
   my $builder_include_dir = "$builder_dir/include";
+  unshift @include_dirs, $builder_include_dir;
+  $config = $config->clone;
+  $config->include_dirs(\@include_dirs);
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
     output_file => $output_file,
     source_file => $source_file,
-    builder_include_dir => $builder_include_dir,
-    include_dirs => \@include_dirs,
     config => $config,
   );
   
@@ -901,6 +892,9 @@ sub create_link_info {
       $resource_class_name = $resource;
     }
     
+    $resource_config = $resource_config->clone;
+    $resource_config->add_include_dir(@$resource_include_dirs);
+    
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
@@ -909,10 +903,7 @@ sub create_link_info {
       config => $resource_config,
       category => $category,
     };
-    if ($resource_config) {
-      $compile_options->{config} = $resource_config;
-    }
-    $compile_options->{include_dirs} = $resource_include_dirs;
+    
     my $object_file_infos = $builder_cc_resource->compile_source_files($resource_class_name, $compile_options);
     
     push @$all_object_file_infos, @$object_file_infos;
