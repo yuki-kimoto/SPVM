@@ -955,7 +955,7 @@ The $replace must be defined. Otherwize an exception is thrown.
 
 If the $string contains an invalid Unicode code point, an exception is thrown.
 
-The range format of the (pattern|replace) cannnot be contain an invalid Unicode code point. If so, an exception is thrown. If so, an exception is thrown.
+The range format of the (pattern|replace) cannnot be contain an invalid Unicode code point. If it cannot, an exception is thrown. If it cannot, an exception is thrown.
 
 The second character ot the range format of the (pattern|replace) must be \"-\". Otherwize an exception is thrown.
 

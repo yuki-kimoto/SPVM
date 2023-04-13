@@ -2856,7 +2856,7 @@ The field definition needs the L<type|/"Type">. The type must be a L<numeric typ
 
 The field names must follows the rule of the L<field name|/"Field Name">. Otherwise an compilation error will occur.
 
-Field names cannot be duplicated. If so, a compilation error will occur.
+Field names cannot be duplicated. If it cannot, a compilation error will occur.
 
 L<Field attributes|/"Field Attribute"> can be specified.
 
@@ -6525,7 +6525,7 @@ The value of the L<case statement|/"case Statement"> must be one of the L<charac
 
 If it is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
 
-The values of the case statements cannnot be duplicated. If so, a compilation error will occur.
+The values of the case statements cannnot be duplicated. If it cannot, a compilation error will occur.
 
 If the condition matches the value of a C<case> statement, the program jumps to the beginning of the L<case block|/"case Block">.
 
@@ -6812,7 +6812,7 @@ The C<return> statement is a L<statement|/"Statement"> to return a value.
   // non-void
   return OPERAND;
 
-If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the C<OPERAND> cannnot exist. If so, a compilation error will occur.
+If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the C<OPERAND> cannnot exist. If it cannot, a compilation error will occur.
 
 If the return type of the current L<method|/"Method Definition"> is the non-void type, the C<OPERAND> must exist. Otherwise a compilation error will occur.
 
@@ -7604,11 +7604,11 @@ The left operand of the is_type operator must be an object type. Otherwise a com
 
 The right type of the is_type operator must be an object type. Otherwise a compilation error will occur.
 
-The right type of the is_type operator cannnot be the any object type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be the any object type. If it cannot, a compilation error will occur.
 
-The right type of the is_type operator cannnot be the any object array type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be the any object array type. If it cannot, a compilation error will occur.
 
-The right type of the is_type operator cannnot be an interface type. If so, a compilation error will occur.
+The right type of the is_type operator cannnot be an interface type. If it cannot, a compilation error will occur.
 
 Examples:
 
