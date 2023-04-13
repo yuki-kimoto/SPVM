@@ -613,12 +613,12 @@ sub load_config {
   my ($self, $config_file, @args) = @_;
 
   unless (-f $config_file) {
-    confess "Can't find config file \"$config_file\"";
+    confess "The config file \"$config_file\" must exist";
   }
   local @ARGV = @args;
   my $config = do File::Spec->rel2abs($config_file);
   if ($@) {
-    confess "Can't parse config file \"$config_file\": $@";
+    confess "The config file \"$config_file\" can't be parsed: $@";
   }
   
   unless (defined $config && $config->isa('SPVM::Builder::Config')) {

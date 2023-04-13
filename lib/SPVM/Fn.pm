@@ -608,7 +608,7 @@ The $source must be defined. Otherwize an exception is thrown.
 
 The type of the $source must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwize an exception is thrown.
 
-The $dest must not be a read-only string. If so, an exception is thrown.
+The $dest must not be a read-only string. Otherwise an exception is thrown.
 
 The $length must be greater than or equal to 0. Otherwize an exception is thrown.
 
