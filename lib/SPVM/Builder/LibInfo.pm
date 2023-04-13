@@ -87,29 +87,10 @@ sub new {
 }
 
 # Instance Methods
-sub to_string {
+sub to_string { 
   my ($self) = @_;
   
-  my $string;
-  if ($self->is_abs) {
-    if (defined $self->file) {
-      $string = $self->file;
-    }
-    else {
-      $string = "";
-    }
-  }
-  else {
-    my $name = $self->name;
-    if ($self->static) {
-      $string = $self->static_name_cb->($self, $name);
-    }
-    else {
-      $string = "-l$name";
-    }
-  }
-  
-  return $string;
+  return $self->name;
 }
 
 1;
@@ -151,9 +132,11 @@ This field has the meaning when L</"is_abs"> is set to a true value.
   my $static = $lib_info->static;
   $lib_info->static($static);
 
-Gets and sets the flag if the library is linked statically such as C<libfoo.a>.
+Gets and sets the flag whether a static library is linked.
 
-The default is a false value.
+Default:
+
+A false value.
 
 =head2 is_abs
 
@@ -185,8 +168,6 @@ Default:
 
 =head1 Class Methods
 
-The list of class methods.
-
 =head2 new
 
   my $lib_info = SPVM::Builder::LibInfo->new;
@@ -197,15 +178,11 @@ The list of class methods.
 
   my $lib = $lib_info->to_string;
 
-If L</"is_abs"> is false value and L</"static"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
-
-If L</"is_abs"> is false value and L</"static"> is true value, get the library flag that L<"/static_name_cb"> is performed to L<"/name"> such as C<-Wl,-Bstatic -lfoo -Wl,-Bdynamic>.
-
-If L</"is_abs"> is true value, get the library file path from L<"/file">.
+Returns the L</"name"> field.
 
 =head1 Operators
 
-L<SPVM::BlessedObject::String> overloads the following operators.
+Overloads the following operators.
 
 =head2 bool
 
@@ -217,7 +194,7 @@ Always true.
 
   my $lib_name = "$lib_info";
   
-Alias for L</"to_string">.
+Alias for the L</"to_string"> method.
 
 =head1 Copyright & License
 

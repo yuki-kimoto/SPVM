@@ -37,6 +37,7 @@
     * Removed the class_name field in the SPVM::Builder::LinkInfo class to the to_cmd method.
     * Renamed the file_flag field in the SPVM::Builder::LibInfo to the is_abs field.
     * Removed the config field in the SPVM::Builder::LibInfo to the is_abs field.
+    * The to_string method in the SPVM::Builder::LibInfo returned the name field.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11

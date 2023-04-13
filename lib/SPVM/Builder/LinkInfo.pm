@@ -99,8 +99,25 @@ sub create_link_command_args {
   my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;
   push @merged_ldflags, @lib_dirs_ldflags;
   
+  my @lib_ldflags;
   my $libs = $config->libs;
-  my @lib_ldflags = map { ref $_ ? $_->to_string : $_ } @$libs;
+  for my $lib (@$libs) {
+    my $lib_ldflag;
+    if (ref $lib) {
+      if ($lib->is_abs) {
+        $lib_ldflag = $lib->file;
+      }
+      else {
+        my $lib_name = $lib->name;
+        $lib_ldflag = "-l$lib_name";
+      }
+    }
+    else {
+      $lib_ldflag = $lib;
+    }
+    push @lib_ldflags, $lib_ldflag;
+  }
+  
   push @merged_ldflags, @lib_ldflags;
   
   return \@merged_ldflags;
