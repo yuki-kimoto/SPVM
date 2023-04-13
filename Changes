@@ -14,7 +14,7 @@
     * Getting environment variables is normalized.
     * Removed the unused SPVM::Compiler::Util class.
   [Incompatible Changes]
-    * The create_merged_ccflags method in the SPVM::Builder::CompileInfo is removed.
+    * The create_merged_ccflags method in the SPVM::Builder::CompileInfo is renamed to the create_compile_command_args.
     * Removed the cc field in the SPVM::Builder::CompileInfo class.
     * Removed the ccflags field in the SPVM::Builder::CompileInfo class.
     * Removed the optimize field in the SPVM::Builder::CompileInfo class.

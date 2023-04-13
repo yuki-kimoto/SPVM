@@ -73,11 +73,42 @@ sub create_compile_command {
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
-  my $merged_ccflags = $self->_create_merged_ccflags;
+  my $compile_command_args = $self->create_compile_command_args;
   
-  my @compile_command = ($cc, '-c', '-o', $output_file, @$merged_ccflags, $source_file);
+  my @compile_command = ($cc, '-c', '-o', $output_file, @$compile_command_args, $source_file);
   
   return \@compile_command;
+}
+
+sub create_compile_command_args {
+  my ($self) = @_;
+  
+  my $config = $self->config;
+  
+  my @compile_command_args;
+  
+  if (defined $config->optimize) {
+    push @compile_command_args, split(/ +/, $config->optimize);
+  }
+  
+  push @compile_command_args, @{$config->ccflags};
+  
+  # include directories
+  {
+    my @all_include_dirs;
+    
+    my $spvm_core_include_dir = $config->spvm_core_include_dir;
+    push @all_include_dirs, $spvm_core_include_dir;
+    
+    my $include_dirs = $config->include_dirs;
+    push @all_include_dirs, @$include_dirs;
+    
+    my @all_include_dirs_args = map { "-I$_" } @all_include_dirs;
+    
+    push @compile_command_args, @all_include_dirs_args;
+  }
+  
+  return \@compile_command_args;
 }
 
 # Instance methods
@@ -88,26 +119,6 @@ sub to_string {
   my $compile_command_string = "@$compile_command";
   
   return $compile_command_string;
-}
-
-sub _create_merged_ccflags {
-  my ($self) = @_;
-  
-  my $config = $self->config;
-  
-  my @merged_ccflags;
-  
-  if (defined $config->optimize) {
-    push @merged_ccflags, split(/ +/, $config->optimize);
-  }
-  
-  push @merged_ccflags, @{$config->ccflags};
-  
-  my $include_dirs = $config->include_dirs;
-  my @include_dirs_ccflags = map { "-I$_" } @$include_dirs;
-  push @merged_ccflags, @include_dirs_ccflags;
-  
-  return \@merged_ccflags;
 }
 
 1;
@@ -164,11 +175,23 @@ Creates a new L<SPVM::Builder::CompileInfo> object.
 
   my $compile_command = $compile_info->create_compile_command;
 
-Gets the compile command as an array reference.
+Creates the compilation command, and returns it. The return value is an array reference.
 
 The following one is an example of the return value.
 
-  [qw(cc -c -O2 -Ipath/include -o foo.o foo.c)]
+  [qw(cc -o foo.o -c -O2 -Ipath/include foo.c)]
+
+=head2 create_compile_command_args
+
+  my $config_args = $compile_info->create_compile_command_args;
+
+Creates the parts of the arguments of the compilation command from the information of the L</"config"> field, and returns it. The return value is an array reference.
+
+The C<-c> option, the C<-o> option and the source file name are not contained.
+
+The following one is an example of the return value.
+
+  [qw(-O2 -Ipath/include)]
 
 =head2 to_string
 
@@ -178,7 +201,7 @@ Calls the L<create_compile_command|/"create_compile_command"> method and joins a
 
 The following one is an example of the return value.
 
-  "cc -c -O2 -Ipath/include -o foo.o foo.c"
+  "cc -c -o foo.o -O2 -Ipath/include foo.c"
 
 =head1 Copyright & License
 

@@ -87,6 +87,17 @@ sub optimize {
   }
 }
 
+sub spvm_core_include_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{spvm_core_include_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{spvm_core_include_dir};
+  }
+}
+
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -260,11 +271,6 @@ sub new {
     $self->cc($Config{cc});
   }
 
-  # include_dirs
-  unless (defined $self->{include_dirs}) {
-    $self->include_dirs([]);
-  }
-
   # ccflags
   unless (defined $self->{ccflags}) {
     $self->ccflags([]);
@@ -279,6 +285,19 @@ sub new {
     $self->add_ccflag(@default_ccflags);
   }
 
+  # include_dirs
+  unless (defined $self->{include_dirs}) {
+    $self->include_dirs([]);
+  }
+
+  # spvm_core_include_dir
+  unless (defined $self->spvm_core_include_dir) {
+    my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
+    my $spvm_core_include_dir = "$builder_dir/include";
+    
+    $self->spvm_core_include_dir($spvm_core_include_dir);
+  }
+  
   # optimize
   unless (defined $self->{optimize}) {
     $self->optimize('-O3');
@@ -823,6 +842,15 @@ Examples:
   $config->include_dirs($include_dirs);
 
 Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
+
+This field is an array reference.
+
+=head2 spvm_core_include_dir
+
+  my $spvm_core_include_dir = $config->spvm_core_include_dir;
+  $config->spvm_core_include_dir($spvm_core_include_dir);
+
+Gets and sets the C<include> directory of the SPVM core. By default, this value is got from the loaded L<SPVM::Builder::Config> class.
 
 =head2 ccflags
 

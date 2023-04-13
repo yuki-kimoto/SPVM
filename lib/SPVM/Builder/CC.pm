@@ -592,9 +592,6 @@ sub create_compile_command_info {
     }
   }
   
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
-  my $builder_include_dir = "$builder_dir/include";
-  unshift @include_dirs, $builder_include_dir;
   $config = $config->clone;
   $config->include_dirs(\@include_dirs);
   
