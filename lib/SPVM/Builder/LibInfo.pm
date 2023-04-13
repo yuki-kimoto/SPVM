@@ -125,13 +125,13 @@ sub to_string {
 
 1;
 
-=head1 NAME
+=head1 Name
 
 SPVM::Builder::LibInfo - Library Information
 
-=head1 DESCRIPTION
+=head1 Description
 
-C<SPVM::Builder::LibInfo> is a library file information.
+The SPVM::Builder::LibInfo class has methods to manipulate library information.
 
 =head1 Fields
 
@@ -140,14 +140,20 @@ C<SPVM::Builder::LibInfo> is a library file information.
   my $name = $lib_info->name;
   $lib_info->name($name);
 
-Get and set the library name. C<z>, C<png>, etc.
+Gets and sets the library name.
+
+Examples:
+  
+  $lib_info->name('z');
+  
+  $lib_info->name('png');
 
 =head2 file
 
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Get and set the library file. C</path/libz.so>, C</path/libpng.a>, etc.
+Gets and sets the library file. C</path/libz.so>, C</path/libpng.a>, etc.
 
 This field has the meaning when L</"file_flag"> is set to a true value.
 
@@ -156,7 +162,7 @@ This field has the meaning when L</"file_flag"> is set to a true value.
   my $static = $lib_info->static;
   $lib_info->static($static);
 
-Get and set the flag if the library is linked statically such as C<libfoo.a>.
+Gets and sets the flag if the library is linked statically such as C<libfoo.a>.
 
 The default is a false value.
 
@@ -165,7 +171,7 @@ The default is a false value.
   my $file_flag = $lib_info->file_flag;
   $lib_info->file_flag($file_flag);
 
-Get and set the flag if the library is linked by the file path such as C<path/libfoo.so>, not the name such as C<-lfoo>.
+Gets and sets the flag if the library is linked by the file path such as C<path/libfoo.so>, not the name such as C<-lfoo>.
 
 The default is a false value.
 
@@ -174,7 +180,7 @@ The default is a false value.
   my $static_name_cb = $lib_info->static_name_cb;
   $lib_info->static_name_cb($static_name_cb);
 
-Get and set the callback for a static link name.
+Gets and sets the callback for a static link name.
 
 Default:
 
@@ -191,7 +197,7 @@ Default:
   my $config = $lib_info->config;
   $lib_info->config($config);
 
-Get and set the L<config|SPVM::Builder::Config> that is used to link this library.
+Gets and sets the L<config|SPVM::Builder::Config> that is used to link this library.
 
 =head1 Class Methods
 

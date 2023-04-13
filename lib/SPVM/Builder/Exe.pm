@@ -179,6 +179,8 @@ sub new {
   else {
     $config = SPVM::Builder::Config::Exe->new_c99(file_optional => 1);
   }
+  $config->class_name($class_name);
+  
   $self->{config} = $config;
   
   $self->{builder} = $builder;
@@ -898,7 +900,6 @@ sub compile_bootstrap_source_file {
   unless ($config) {
     confess "The config_bootstrap field in the SPVM::Builder::Config class must be defined";
   }
-  $config = $config->clone;
   
   # Compile
   my $object_file = $self->compile_source_file({
@@ -941,7 +942,6 @@ sub compile_spvm_core_source_files {
   unless ($config) {
     confess "The config_spvm_core field in the SPVM::Builder::Config class must be defined";
   }
-  $config = $config->clone;
   
   if ($no_compiler_api) {
     $config->add_ccflag('-DSPVM_NO_COMPILER_API');
@@ -1075,8 +1075,6 @@ sub compile_class_native_source_files {
     my $config = $builder_cc->create_native_config_from_class_file($class_file);
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
-    
-    $config = $config->clone;
     
     my $resource_include_dirs = [];
     my $config_exe = $self->config;

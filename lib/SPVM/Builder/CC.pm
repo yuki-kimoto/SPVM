@@ -594,7 +594,6 @@ sub create_compile_command_info {
     }
   }
   
-  $config = $config->clone;
   $config->include_dirs(\@include_dirs);
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
@@ -786,8 +785,6 @@ sub link {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config, $options) = @_;
   
-  $config = $config->clone;
-  
   my $category = $options->{category};
 
   my $all_object_files = [@$object_files];
@@ -892,7 +889,6 @@ sub create_link_info {
       $resource_class_name = $resource;
     }
     
-    $resource_config = $resource_config->clone;
     $resource_config->add_include_dir(@$resource_include_dirs);
     
     my $compile_options = {

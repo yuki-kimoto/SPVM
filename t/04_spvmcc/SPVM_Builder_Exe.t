@@ -45,7 +45,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
     
-    ok($link_info->class_name, 'TestCase::NativeAPI2');
+    ok($link_info->config->class_name, 'TestCase::NativeAPI2');
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
     like($link_info->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);

@@ -641,7 +641,6 @@ sub load_config {
   return $config;
 }
 
-
 sub load_mode_config {
   my ($self, $config_file, $mode, @argv) = @_;
   
