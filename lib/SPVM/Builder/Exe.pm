@@ -1083,7 +1083,7 @@ sub compile_class_native_source_files {
     my $resource_names = $config_exe->get_resource_names;
     for my $resource_name (@$resource_names) {
       my $resource = $config_exe->get_resource($resource_name);
-      my $resource_include_dir = $resource->config->get_native_include_dir;
+      my $resource_include_dir = $resource->config->native_include_dir;
       push @$resource_include_dirs, $resource_include_dir;
     }
     $config->add_include_dir(@$resource_include_dirs);

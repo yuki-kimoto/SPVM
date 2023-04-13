@@ -10,17 +10,6 @@ use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 
 # Fields
-sub file_optional {
-  my $self = shift;
-  if (@_) {
-    $self->{file_optional} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file_optional};
-  }
-}
-
 sub file {
   my $self = shift;
   if (@_) {
@@ -29,6 +18,17 @@ sub file {
   }
   else {
     return $self->{file};
+  }
+}
+
+sub file_optional {
+  my $self = shift;
+  if (@_) {
+    $self->{file_optional} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{file_optional};
   }
 }
 
@@ -51,6 +51,17 @@ sub quiet {
   }
   else {
     return $self->{quiet};
+  }
+}
+
+sub force {
+  my $self = shift;
+  if (@_) {
+    $self->{force} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{force};
   }
 }
 
@@ -87,6 +98,17 @@ sub optimize {
   }
 }
 
+sub include_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{include_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{include_dirs};
+  }
+}
+
 sub spvm_core_include_dir {
   my $self = shift;
   if (@_) {
@@ -98,14 +120,47 @@ sub spvm_core_include_dir {
   }
 }
 
-sub include_dirs {
+sub native_include_dir {
   my $self = shift;
   if (@_) {
-    $self->{include_dirs} = $_[0];
+    $self->{native_include_dir} = $_[0];
     return $self;
   }
   else {
-    return $self->{include_dirs};
+    return $self->{native_include_dir};
+  }
+}
+
+sub native_src_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{native_src_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_src_dir};
+  }
+}
+
+sub source_files {
+  my $self = shift;
+  if (@_) {
+    $self->{source_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{source_files};
+  }
+}
+
+sub before_compile_cbs {
+  my $self = shift;
+  if (@_) {
+    $self->{before_compile_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_compile_cbs};
   }
 }
 
@@ -175,28 +230,6 @@ sub libs {
   }
 }
 
-sub source_files {
-  my $self = shift;
-  if (@_) {
-    $self->{source_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{source_files};
-  }
-}
-
-sub before_compile_cbs {
-  my $self = shift;
-  if (@_) {
-    $self->{before_compile_cbs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_compile_cbs};
-  }
-}
-
 sub before_link_cbs {
   my $self = shift;
   if (@_) {
@@ -206,23 +239,6 @@ sub before_link_cbs {
   else {
     return $self->{before_link_cbs};
   }
-}
-
-sub force {
-  my $self = shift;
-  if (@_) {
-    $self->{force} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{force};
-  }
-}
-
-sub get_loaded_config_files {
-  my $self = shift;
-  
-  return $self->{_loaded_config_files};
 }
 
 sub output_type {
@@ -284,12 +300,17 @@ sub new {
     
     $self->add_ccflag(@default_ccflags);
   }
-
+  
+  # optimize
+  unless (defined $self->{optimize}) {
+    $self->optimize('-O3');
+  }
+  
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
   }
-
+  
   # spvm_core_include_dir
   unless (defined $self->spvm_core_include_dir) {
     my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
@@ -298,26 +319,28 @@ sub new {
     $self->spvm_core_include_dir($spvm_core_include_dir);
   }
   
-  # optimize
-  unless (defined $self->{optimize}) {
-    $self->optimize('-O3');
+  # native_include_dir
+  unless (defined $self->native_include_dir) {
+    if (defined $file) {
+      my $native_dir = $self->_remove_ext_from_config_file($file);
+      $native_dir .= '.native';
+      my $native_include_dir = "$native_dir/include";
+      
+      $self->native_include_dir($native_include_dir);
+    }
   }
   
-  # ld
-  unless (defined $self->{ld}) {
-    $self->ld($Config{ld});
+  # native_src_dir
+  unless (defined $self->native_src_dir) {
+    if (defined $file) {
+      my $native_dir = $self->_remove_ext_from_config_file($file);
+      $native_dir .= '.native';
+      my $native_src_dir = "$native_dir/src";
+      
+      $self->native_src_dir($native_src_dir);
+    }
   }
-
-  # lib_dirs
-  unless (defined $self->{lib_dirs}) {
-    $self->lib_dirs([]);
-  }
-
-  # resources
-  unless (defined $self->{resources}) {
-    $self->{resources} = {};
-  }
-
+  
   # source_files
   unless (defined $self->{source_files}) {
     $self->source_files([]);
@@ -328,29 +351,26 @@ sub new {
     $self->before_compile_cbs([]);
   }
   
-  # before_link_cbs
-  unless (defined $self->{before_link_cbs}) {
-    $self->before_link_cbs([]);
+  # resources
+  unless (defined $self->{resources}) {
+    $self->{resources} = {};
   }
   
-  # libs
-  unless (defined $self->{libs}) {
-    $self->libs([]);
+  # ld
+  unless (defined $self->{ld}) {
+    $self->ld($Config{ld});
   }
   
-  # ld_optimize
-  unless (defined $self->{ld_optimize}) {
-    $self->ld_optimize('-O2');
-  }
-
-  unless (defined $self->{_loaded_config_files}) {
-    $self->{_loaded_config_files} = [];
+  # ldflags
+  unless (defined $self->{ldflags}) {
+    $self->ldflags([]);
   }
   
+  # output_type
   unless (defined $self->output_type) {
     $self->output_type('dynamic_lib');
   }
-
+  
   # dynamic_lib_ldflags
   unless (defined $self->{dynamic_lib_ldflags}) {
     $self->dynamic_lib_ldflags([]);
@@ -368,10 +388,29 @@ sub new {
       $self->dynamic_lib_ldflags(\@dynamic_lib_ldflags);
     }
   }
+  
+  # ld_optimize
+  unless (defined $self->{ld_optimize}) {
+    $self->ld_optimize('-O2');
+  }
 
-  # ldflags
-  unless (defined $self->{ldflags}) {
-    $self->ldflags([]);
+  # lib_dirs
+  unless (defined $self->{lib_dirs}) {
+    $self->lib_dirs([]);
+  }
+  
+  # libs
+  unless (defined $self->{libs}) {
+    $self->libs([]);
+  }
+  
+  # before_link_cbs
+  unless (defined $self->{before_link_cbs}) {
+    $self->before_link_cbs([]);
+  }
+  
+  unless (defined $self->{_loaded_config_files}) {
+    $self->{_loaded_config_files} = [];
   }
   
   return $self;
@@ -382,7 +421,6 @@ sub new_c {
   
   my $self = $class->new(@_);
   
-  # NativeAPI
   $self->ext('c');
   
   return $self;
@@ -404,7 +442,7 @@ sub new_c11 {
   
   my $self = $class->new_c(@_);
   
-  # C99
+  # C11
   $self->set_std('c11');
   
   return $self;
@@ -415,7 +453,7 @@ sub new_gnu99 {
   
   my $self = $class->new_c(@_);
   
-  # C99
+  # GNU C99
   $self->set_std('gnu99');
   
   return $self;
@@ -426,7 +464,7 @@ sub new_gnu11 {
   
   my $self = $class->new_c(@_);
   
-  # C99
+  # GNU C11
   $self->set_std('gnu11');
   
   return $self;
@@ -451,7 +489,6 @@ sub new_cpp {
     $self->ld('g++');
   }
   
-  # NativeAPI
   $self->ext('cpp');
   
   return $self;
@@ -473,7 +510,7 @@ sub new_cpp14 {
   
   my $self = $class->new_cpp(@_);
   
-  # C++11
+  # C++14
   $self->set_std('c++14');
   
   return $self;
@@ -484,7 +521,7 @@ sub new_cpp17 {
   
   my $self = $class->new_cpp(@_);
   
-  # C++11
+  # C++17
   $self->set_std('c++17');
   
   return $self;
@@ -620,6 +657,12 @@ sub load_base_config {
   return $config;
 }
 
+sub get_loaded_config_files {
+  my $self = shift;
+  
+  return $self->{_loaded_config_files};
+}
+
 sub use_resource {
   my ($self, @args) = @_;
   
@@ -680,40 +723,6 @@ sub get_resource_names {
   my @resource_names = sort { $self->{resources}{$a}{index} <=> $self->{resources}{$b}{index} } keys %{$self->{resources}};
   
   return \@resource_names;
-}
-
-sub get_native_include_dir {
-  my $self = shift;
-
-  my $file = $self->file;
-  
-  my $native_include_dir;
-  if (defined $file) {
-    my $native_dir = $self->_remove_ext_from_config_file($file);
-    
-    $native_dir .= '.native';
-    
-    $native_include_dir = "$native_dir/include";
-  }
-  
-  return $native_include_dir;
-}
-
-sub get_native_src_dir {
-  my $self = shift;
-  
-  my $file = $self->file;
-  
-  my $native_src_dir;
-  if (defined $file) {
-    my $native_dir = $self->_remove_ext_from_config_file($file);
-    
-    $native_dir .= '.native';
-    
-    $native_src_dir = "$native_dir/src";
-  }
-  
-  return $native_src_dir;
 }
 
 sub clone {
@@ -850,7 +859,39 @@ This field is an array reference.
   my $spvm_core_include_dir = $config->spvm_core_include_dir;
   $config->spvm_core_include_dir($spvm_core_include_dir);
 
-Gets and sets the C<include> directory of the SPVM core. By default, this value is got from the loaded L<SPVM::Builder::Config> class.
+Gets and sets the header including directory of the SPVM core.
+
+Default Value:
+
+The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
+
+The value looks like C<path/SPVM/Builder/include>.
+
+=head2 native_include_dir
+
+  my $native_include_dir = $config->native_include_dir;
+  $config->native_include_dir($native_include_dir);
+
+Gets and sets the path of the header including directory of this native class.
+
+Default Value:
+
+If the L</"file"> field is defined, the path of the header including directory is created from the L</"file"> field.
+
+The value looks like C<path/Foo.native/include>.
+
+=head2 native_src_dir
+
+  my $native_src_dir = $config->native_src_dir;
+  $config->native_src_dir($native_src_dir);
+
+Gets and sets the path of the source directory of this native class.
+
+Default Value:
+
+If the L</"file"> field is defined, the path of the source directory is created from the L</"file"> field.
+
+The value looks like C<path/Foo.native/src>.
 
 =head2 ccflags
 
@@ -1210,18 +1251,6 @@ Examples:
   my $resource_names = $config->get_resource_names;
 
 Gets resource names loaded by the L/"use_resource/"> method.
-
-=head2 get_native_include_dir
-
-  my $native_include_dir = $config->get_native_include_dir;
-
-Gets the header including directory of this native class.
-
-=head2 get_native_src_dir
-
-  my $native_src_dir = $config->get_native_src_dir;
-
-Gets the source directory of this native class.
 
 =head2 load_config
 
