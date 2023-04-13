@@ -85,9 +85,9 @@ sub create_compile_command_args {
   {
     my @all_include_dirs;
     
-    # include directories
-    my $include_dirs = $config->include_dirs;
-    push @all_include_dirs, @$include_dirs;
+    # SPVM core native directory
+    my $spvm_core_include_dir = $config->spvm_core_include_dir;
+    push @all_include_dirs, $spvm_core_include_dir;
     
     # Native include directory
     my $native_include_dir = $config->native_include_dir;
@@ -109,9 +109,9 @@ sub create_compile_command_args {
       }
     }
     
-    # SPVM core native directory
-    my $spvm_core_include_dir = $config->spvm_core_include_dir;
-    push @all_include_dirs, $spvm_core_include_dir;
+    # include directories
+    my $include_dirs = $config->include_dirs;
+    push @all_include_dirs, @$include_dirs;
     
     my @all_include_dirs_args = map { "-I$_" } @all_include_dirs;
     
