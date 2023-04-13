@@ -807,11 +807,11 @@ sub create_link_info {
     # Library is linked by file path
     my $static;
     my $lib_name;
-    my $file_flag;
+    my $is_abs;
     if (ref $lib) {
       $static = $lib->static;
       $lib_name = $lib->name;
-      $file_flag = $lib->file_flag;
+      $is_abs = $lib->is_abs;
       $lib_info = $lib;
     }
     else {
@@ -821,7 +821,7 @@ sub create_link_info {
     }
     $lib_info->config($config);
     
-    if ($file_flag) {
+    if ($is_abs) {
       my $found_lib_file;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;

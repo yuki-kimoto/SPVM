@@ -42,14 +42,14 @@ sub static {
   }
 }
 
-sub file_flag {
+sub is_abs {
   my $self = shift;
   if (@_) {
-    $self->{file_flag} = $_[0];
+    $self->{is_abs} = $_[0];
     return $self;
   }
   else {
-    return $self->{file_flag};
+    return $self->{is_abs};
   }
 }
 
@@ -102,7 +102,7 @@ sub to_string {
   my ($self) = @_;
   
   my $string;
-  if ($self->file_flag) {
+  if ($self->is_abs) {
     if (defined $self->file) {
       $string = $self->file;
     }
@@ -155,7 +155,7 @@ Examples:
 
 Gets and sets the library file. C</path/libz.so>, C</path/libpng.a>, etc.
 
-This field has the meaning when L</"file_flag"> is set to a true value.
+This field has the meaning when L</"is_abs"> is set to a true value.
 
 =head2 static
 
@@ -166,14 +166,16 @@ Gets and sets the flag if the library is linked statically such as C<libfoo.a>.
 
 The default is a false value.
 
-=head2 file_flag
+=head2 is_abs
 
-  my $file_flag = $lib_info->file_flag;
-  $lib_info->file_flag($file_flag);
+  my $is_abs = $lib_info->is_abs;
+  $lib_info->is_abs($is_abs);
 
-Gets and sets the flag if the library is linked by the file path such as C<path/libfoo.so>, not the name such as C<-lfoo>.
+If the C<is_abs> is true, the library is linked by the library name like C<-lfoo>.
 
-The default is a false value.
+If it is false, the library is linked by the absolute path of the library like C</path/libfoo.so>.
+
+If this field is C<undef>, whether the library is linked by the library name or the absolute path is automatically decided.
 
 =head2 static_name_cb
 
@@ -213,11 +215,11 @@ The list of class methods.
 
   my $lib = $lib_info->to_string;
 
-If L</"file_flag"> is false value and L</"static"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
+If L</"is_abs"> is false value and L</"static"> is false value, get the library flag such as C<-lfoo> from L<"/name">.
 
-If L</"file_flag"> is false value and L</"static"> is true value, get the library flag that L<"/static_name_cb"> is performed to L<"/name"> such as C<-Wl,-Bstatic -lfoo -Wl,-Bdynamic>.
+If L</"is_abs"> is false value and L</"static"> is true value, get the library flag that L<"/static_name_cb"> is performed to L<"/name"> such as C<-Wl,-Bstatic -lfoo -Wl,-Bdynamic>.
 
-If L</"file_flag"> is true value, get the library file path from L<"/file">.
+If L</"is_abs"> is true value, get the library file path from L<"/file">.
 
 =head1 Operators
 

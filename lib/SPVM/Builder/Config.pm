@@ -871,7 +871,7 @@ This field is an array reference.
 
 Gets and sets the header including directory of the SPVM core.
 
-Default Value:
+Default:
 
 The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
 
@@ -884,7 +884,7 @@ The value looks like C<path/SPVM/Builder/include>.
 
 Gets and sets the path of the header including directory of this native class.
 
-Default Value:
+Default:
 
 If the L</"file"> field is defined, the path of the header including directory is created from the L</"file"> field.
 
@@ -897,7 +897,7 @@ The value looks like C<path/Foo.native/include>.
 
 Gets and sets the path of the source directory of this native class.
 
-Default Value:
+Default:
 
 If the L</"file"> field is defined, the path of the source directory is created from the L</"file"> field.
 
@@ -910,7 +910,7 @@ The value looks like C<path/Foo.native/src>.
 
 Gets and sets compiler flags.
 
-B<Default:>
+Default:
 
   # $Config{cccdlflags} has -fPIC.
   ['-fPIC']
@@ -984,7 +984,11 @@ Examples:
   my $ld = $config->ld;
   $config->ld($ld);
 
-Gets and sets a linker. Default is C<ld> of L<Config> class.
+Gets and sets a linker.
+
+Default:
+
+The C<ld> of L<Config> class.
 
 =head2 lib_dirs
 
@@ -993,7 +997,7 @@ Gets and sets a linker. Default is C<ld> of L<Config> class.
 
 Gets and sets the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
 
-B<Default:>
+Default:
 
 Windows
   
@@ -1024,7 +1028,7 @@ Gets and sets linker flags. The default value is an emtpy array reference.
 
 Gets and sets linker flags for dynamic link.
 
-B<Default:>
+Default:
 
 Windows
 
