@@ -9,9 +9,6 @@ use SPVM::Builder::LinkInfo;
   my $object_file = SPVM::Builder::LinkInfo->new;
   is(ref $object_file, 'SPVM::Builder::LinkInfo');
   
-  $object_file->class_name("test");
-  is($object_file->class_name(), "test");
-  
   $object_file->config("test");
   is($object_file->config(), "test");
   

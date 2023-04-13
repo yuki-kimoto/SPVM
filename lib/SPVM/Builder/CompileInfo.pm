@@ -7,17 +7,6 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
 sub source_file {
   my $self = shift;
   if (@_) {
@@ -69,7 +58,6 @@ sub create_compile_command {
   my $config = $self->config;
 
   my $cc = $config->cc;
-  my $class_name = $self->class_name;
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
@@ -132,13 +120,6 @@ SPVM::Builder::CompileInfo - Compilation Information
 The SPVM::Builder::CompileInfo class has methods to manipulate compilation information.
 
 =head1 Fields
-
-=head2 class_name
-
-  my $class_name = $compile_info->class_name;
-  $compile_info->class_name($class_name);
-
-Gets and sets the class name.
 
 =head2 config
 

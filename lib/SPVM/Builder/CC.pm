@@ -256,6 +256,8 @@ sub build {
     $config = SPVM::Builder::Util::API::create_default_config();
   }
   
+  $config->class_name($class_name);
+  
   # Compile source file and create object files
   my $compile_options = {
     input_dir => $options->{compile_input_dir},
@@ -698,7 +700,6 @@ sub link {
     # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
-    my $link_info_class_name = $link_info->class_name;
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_files = $link_info->object_files;
     
@@ -714,7 +715,7 @@ sub link {
     if ($output_type eq 'dynamic_lib') {
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
-        class_name => $link_info_class_name,
+        class_name => $class_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
         dl_func_list => $dl_func_list,
@@ -738,7 +739,7 @@ sub link {
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_file_names,
-        class_name => $link_info_class_name,
+        class_name => $class_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
       );

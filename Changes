@@ -1,6 +1,7 @@
 0.9705 2023-04-12
   [New Features]
     * Added the SPVM_CC_QUIET environment variable.
+    * Added the class_name field in the SPVM::Builder::Config class.
   [Exception Messages Changes]
     * Improved English syntax.
   [Compilation Error Messages Changes]
@@ -33,6 +34,7 @@
     * Renamed the create_merged_ldflags method in the SPVM::Builder::LinkInfo class to the create_link_command_args method.
     * Renamed the to_string method in the SPVM::Builder::LinkInfo class to the to_cmd method.
     * Renamed the to_string method in the SPVM::Builder::CompileInfo class to the to_cmd method.
+    * Removed the class_name field in the SPVM::Builder::LinkInfo class to the to_cmd method.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11

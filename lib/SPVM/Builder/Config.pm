@@ -10,6 +10,17 @@ use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 
 # Fields
+sub class_name {
+  my $self = shift;
+  if (@_) {
+    $self->{class_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{class_name};
+  }
+}
+
 sub file {
   my $self = shift;
   if (@_) {
@@ -1050,6 +1061,13 @@ undef means forcing is not determined by config.
 Gets and sets the flag if the compiler and the linker output the results.
 
 The default is undef. undef means quietness is not determined by config.
+
+=head2 class_name
+
+  my $class_name = $config->class_name;
+  $config->class_name($class_name);
+
+Gets and sets the name of the class to use this config.
 
 =head2 file
 

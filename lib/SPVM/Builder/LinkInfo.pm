@@ -7,17 +7,6 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
 sub config {
   my $self = shift;
   if (@_) {
@@ -135,13 +124,6 @@ SPVM::Builder::LinkInfo - Link Information
 The SPVM::Builder::LinkInfo class has methods to manipulate link information.
 
 =head1 Fields
-
-=head2 class_name
-
-  my $class_name = $link_info->class_name;
-  $link_info->class_name($class_name);
-
-Gets and sets the class name.
 
 =head2 config
 
