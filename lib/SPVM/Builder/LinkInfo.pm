@@ -68,7 +68,9 @@ sub create_link_command {
   
   my $link_command_args = $self->create_link_command_args;
   
-  my @link_command = ($ld, '-o', $output_file, @$link_command_args, @$object_file_names);
+  # Note: Arguments of the link command(these contain -l flags) must be
+  # after object file names for resolving symbol names properly
+  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$link_command_args);
   
   return \@link_command;
 }
@@ -166,7 +168,7 @@ Creates a link command, and returns it. The return value is an array reference.
 
 The following one is an example of the return value.
 
-  [qw(cc -o dylib.so -shared -O2 -Llibdir -lz foo.o bar.o)]
+  [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
 
 =head2 create_link_command_args
 
@@ -188,7 +190,7 @@ Calls the L<create_link_command|/"create_link_command"> method and joins all ele
 
 The following one is an example of the return value.
 
-  "cc -o dylib.so -shared -O2 -Llibdir -lz foo.o bar.o"
+  "cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz"
 
 =head1 Copyright & License
 
