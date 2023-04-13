@@ -145,7 +145,7 @@ Gets and sets the class name.
   my $config = $compile_info->config;
   $compile_info->config($config);
 
-Gets and sets a L<SPVM::Builder::Config> object that is used to compile the source file.
+Gets and sets a L<SPVM::Builder::Config> object used to compile the source file.
 
 =head2 source_file
 

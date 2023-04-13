@@ -148,7 +148,7 @@ Gets and sets the class name.
   my $config = $link_info->config;
   $link_info->config($config);
 
-Gets and sets the L<config|SPVM::Builder::Config> that is used to link the objects.
+Gets and sets a L<SPVM::Builder::Config> object used to link the object files.
 
 =head2 output_file
 
@@ -162,9 +162,9 @@ Gets and sets the output file.
   my $object_files = $link_info->object_files;
   $link_info->object_files($object_files);
 
-Gets and sets the object files. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
+Gets and sets the object files.
 
-This field is an array reference.
+This field is an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
 =head1 Class Methods
 
@@ -180,7 +180,7 @@ Creates a new C<SPVM::Builder::LinkInfo> object.
 
   my $link_command = $link_info->create_link_command;
 
-Creates the link command as an array reference.
+Creates a link command, and returns it. The return value is an array reference.
 
 The following one is an example of the return value.
 
