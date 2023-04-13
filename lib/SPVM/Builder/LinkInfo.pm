@@ -103,18 +103,12 @@ sub create_link_command_args {
   my $libs = $config->libs;
   for my $lib (@$libs) {
     my $lib_ldflag;
-    if (ref $lib) {
-      if ($lib->is_abs) {
-        $lib_ldflag = $lib->file;
-      }
-      else {
-        my $lib_name = $lib->name;
-        $lib_ldflag = "-l$lib_name";
-      }
+    
+    unless (ref $lib) {
+      $lib = SPVM::Builder::LibInfo->new(name => $lib);
     }
-    else {
-      $lib_ldflag = $lib;
-    }
+    
+    $lib_ldflag = $lib->to_arg;
     push @lib_ldflags, $lib_ldflag;
   }
   

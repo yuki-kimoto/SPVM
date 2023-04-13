@@ -53,14 +53,14 @@ sub is_abs {
   }
 }
 
-sub static_name_cb {
+sub static_option_cb {
   my $self = shift;
   if (@_) {
-    $self->{static_name_cb} = $_[0];
+    $self->{static_option_cb} = $_[0];
     return $self;
   }
   else {
-    return $self->{static_name_cb};
+    return $self->{static_option_cb};
   }
 }
 
@@ -72,15 +72,15 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->static_name_cb) {
-    my $default_static_name_cb = sub {
+  unless (defined $self->static_option_cb) {
+    my $default_static_option_cb = sub {
       my ($self, $name) = @_;
       
       $name = "-Wl,-Bstatic -l$name -Wl,-Bdynamic";
       
       return $name;
     };
-    $self->static_name_cb($default_static_name_cb);
+    $self->static_option_cb($default_static_option_cb);
   }
   
   return $self;
@@ -91,6 +91,32 @@ sub to_string {
   my ($self) = @_;
   
   return $self->name;
+}
+
+sub to_arg {
+  my ($self) = @_;
+  
+  my $link_command_arg;
+  
+  if ($self->is_abs) {
+    if (defined $self->file) {
+      $link_command_arg = $self->file;
+    }
+    else {
+      $link_command_arg = "";
+    }
+  }
+  else {
+    my $name = $self->name;
+    if ($self->static) {
+      $link_command_arg = $self->static_option_cb->($self, $name);
+    }
+    else {
+      $link_command_arg = "-l$name";
+    }
+  }
+  
+  return $link_command_arg;
 }
 
 1;
@@ -123,9 +149,7 @@ Examples:
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Gets and sets the library file. C</path/libz.so>, C</path/libpng.a>, etc.
-
-This field has the meaning when L</"is_abs"> is set to a true value.
+Gets and sets the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>, etc.
 
 =head2 static
 
@@ -149,12 +173,12 @@ If it is false, the library is linked by the absolute path of the library like C
 
 If this field is C<undef>, whether the library is linked by the library name or the absolute path is automatically decided.
 
-=head2 static_name_cb
+=head2 static_option_cb
 
-  my $static_name_cb = $lib_info->static_name_cb;
-  $lib_info->static_name_cb($static_name_cb);
+  my $static_option_cb = $lib_info->static_option_cb;
+  $lib_info->static_option_cb($static_option_cb);
 
-Gets and sets the callback for a static link name.
+Gets and sets the callback to create a linker option to link a static library.
 
 Default:
 
@@ -173,6 +197,19 @@ Default:
   my $lib_info = SPVM::Builder::LibInfo->new;
 
 =head1 Instance Methods
+
+=head2 to_arg
+
+  my $link_command_arg = $lib_info->to_arg;
+
+Creates an argument of the link command from the L</"is_abs"> field and L</"static"> field, and returns it.
+
+The following one is an example of the return value.
+  
+  -lfoo
+  -Wl,-Bstatic -lfoo -Wl,-Bdynamic
+  /path/foo.so
+  /path/foo.a
 
 =head2 to_string
 

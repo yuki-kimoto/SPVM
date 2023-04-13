@@ -2,6 +2,7 @@
   [New Features]
     * Added the SPVM_CC_QUIET environment variable.
     * Added the class_name field in the SPVM::Builder::Config class.
+    * Added the to_arg method in the SPVM::Builder::LibInfo class.
   [Exception Messages Changes]
     * Improved English syntax.
   [Compilation Error Messages Changes]
@@ -38,6 +39,7 @@
     * Renamed the file_flag field in the SPVM::Builder::LibInfo to the is_abs field.
     * Removed the config field in the SPVM::Builder::LibInfo to the is_abs field.
     * The to_string method in the SPVM::Builder::LibInfo returned the name field.
+    * Renamed the static_name_cb in the SPVM::Builder::LibInfo class to the static_option_cb method.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11
