@@ -715,6 +715,17 @@ sub use_resource {
   return $resource;
 }
 
+sub disable_resource {
+  my $self = shift;
+  if (@_) {
+    $self->{disable_resource} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{disable_resource};
+  }
+}
+
 sub get_resource {
   my ($self, $resource_class_name) = @_;
   
@@ -1093,7 +1104,14 @@ The default is 0.
 =head2 output_type
 
   my $output_type = $config->output_type;
-  $config->output_type($type);
+  $config->output_type($output_type);
+
+=head2 disable_resource
+
+  my $disable_resource = $config->disable_resource;
+  $config->disable_resource($disable_resource);
+
+Gets and sets the flag to disable all resources loaded by the L</"use_resource"> method.
 
 =head1 Class Methods
 

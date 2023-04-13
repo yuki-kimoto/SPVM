@@ -1086,6 +1086,7 @@ sub compile_class_native_source_files {
     }
     $config->add_include_dir(@$resource_include_dirs);
     
+    $config->disable_resource(1);
     my $object_files = $builder_cc->compile_source_files(
       $class_name,
       {
@@ -1093,7 +1094,6 @@ sub compile_class_native_source_files {
         output_dir => $build_object_dir,
         config => $config,
         category => 'native',
-        no_use_resource => 1,
       }
     );
     push @$all_object_files, @$object_files;

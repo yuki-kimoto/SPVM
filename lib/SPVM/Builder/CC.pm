@@ -421,7 +421,6 @@ sub compile_source_files {
   # Force compile
   my $force = $self->detect_force($config);
 
-  my $no_use_resource = $options->{no_use_resource};
   my $ignore_native_class = $options->{ignore_native_class};
   
   # Native class file
@@ -523,7 +522,6 @@ sub compile_source_files {
       config => $config,
       output_file => $object_file_name,
       source_file => $source_file,
-      no_use_resource => $no_use_resource,
     });
     
     my $before_compile_cbs = $config->before_compile_cbs;
@@ -570,7 +568,7 @@ sub create_compile_command_info {
   my $cc = $config->cc;
   
   # Include directories
-  my $no_use_resource = $options->{no_use_resource};
+  my $disable_resource = $config->disable_resource;
   my @include_dirs = @{$config->include_dirs};
   {
 
@@ -581,7 +579,7 @@ sub create_compile_command_info {
     }
     
     # Add resource include directories
-    unless ($options->{no_use_resource}) {
+    unless ($disable_resource) {
       my $resource_names = $config->get_resource_names;
       for my $resource_name (@$resource_names) {
         my $resource = $config->get_resource($resource_name);
@@ -890,10 +888,10 @@ sub create_link_info {
     
     $resource_config->add_include_dir(@$resource_include_dirs);
     
+    $resource_config->disable_resource(1);
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      no_use_resource => 1,
       ignore_native_class => 1,
       config => $resource_config,
       category => $category,
