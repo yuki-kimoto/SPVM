@@ -702,7 +702,7 @@ sub link {
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_files = $link_info->object_files;
     
-    my $merged_ldflags = $link_info->create_merged_ldflags;
+    my $link_command_args = $link_info->create_link_command_args;
     
     my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
 
@@ -716,7 +716,7 @@ sub link {
         objects => $link_info_object_file_names,
         class_name => $link_info_class_name,
         lib_file => $link_info_output_file,
-        extra_linker_flags => "@$merged_ldflags",
+        extra_linker_flags => "@$link_command_args",
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
@@ -740,7 +740,7 @@ sub link {
         objects => $link_info_object_file_names,
         class_name => $link_info_class_name,
         exe_file => $link_info_output_file,
-        extra_linker_flags => "@$merged_ldflags",
+        extra_linker_flags => "@$link_command_args",
       );
       unless ($quiet) {
         my $link_command = $link_info->to_string;

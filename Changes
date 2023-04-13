@@ -30,6 +30,7 @@
     * Renamed the object_file_infos field in the SPVM::Builder::LinkInfo class to object_files.
     * Removed the get_native_include_dir method in the SPVM::Builder::Config class and added the native_include_dir field in the SPVM::Builder::Config class.
     * Removed the get_native_src_dir method in the SPVM::Builder::Config class and added the native_src_dir field in the SPVM::Builder::Config class.
+    * Renamed the create_merged_ldflags method in the SPVM::Builder::LinkInfo class to the create_link_command_args method.
   [Bug Fix]
     * Fixed the bug that the config field in the SPVM::Builder::LinkInfo class is not set.
 0.9704 2023-04-11

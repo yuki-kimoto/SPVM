@@ -66,7 +66,25 @@ sub new {
   return $self;
 }
 
-sub create_merged_ldflags {
+# Instance Methods
+sub create_link_command {
+  my ($self) = @_;
+  
+  my $config = $self->config;
+  
+  my $ld = $config->ld;
+  my $output_file = $self->output_file;
+  my $object_files = $self->object_files;
+  my $object_file_names = [map { $_->to_string; } @$object_files];
+  
+  my $link_command_args = $self->create_link_command_args;
+  
+  my @link_command = ($ld, '-o', $output_file, @$link_command_args, @$object_file_names);
+  
+  return \@link_command;
+}
+
+sub create_link_command_args {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -97,24 +115,6 @@ sub create_merged_ldflags {
   return \@merged_ldflags;
 }
 
-# Instance Methods
-sub create_link_command {
-  my ($self) = @_;
-  
-  my $config = $self->config;
-  
-  my $ld = $config->ld;
-  my $output_file = $self->output_file;
-  my $object_files = $self->object_files;
-  my $object_file_names = [map { $_->to_string; } @$object_files];
-  
-  my $merged_ldflags = $self->create_merged_ldflags;
-  
-  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$merged_ldflags);
-  
-  return \@link_command;
-}
-
 sub to_string {
   my ($self) = @_;
 
@@ -132,7 +132,7 @@ SPVM::Builder::LinkInfo - Link Information
 
 =head1 Description
 
-C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by the linker.
+The SPVM::Builder::LinkInfo class has methods to manipulate link information.
 
 =head1 Fields
 
@@ -141,28 +141,30 @@ C<SPVM::Builder::LinkInfo> is a link information. This infromation is used by th
   my $class_name = $link_info->class_name;
   $link_info->class_name($class_name);
 
-Get and set the class name.
+Gets and sets the class name.
 
 =head2 config
 
   my $config = $link_info->config;
   $link_info->config($config);
 
-Get and set the L<config|SPVM::Builder::Config> that is used to link the objects.
+Gets and sets the L<config|SPVM::Builder::Config> that is used to link the objects.
 
 =head2 output_file
 
   my $output_file = $link_info->output_file;
   $link_info->output_file($output_file);
 
-Get and set the object file that is compiled.
+Gets and sets the output file.
 
 =head2 object_files
 
   my $object_files = $link_info->object_files;
   $link_info->object_files($object_files);
 
-Get and set the object file informations to be linked. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
+Gets and sets the object files. Each object file is a L<SPVM::Builder::ObjectFileInfo> object.
+
+This field is an array reference.
 
 =head1 Class Methods
 
@@ -172,15 +174,7 @@ Get and set the object file informations to be linked. Each object file is a L<S
 
 Creates a new C<SPVM::Builder::LinkInfo> object.
 
-=head2 create_merged_ldflags
-
-  my $merged_ldflags = $link_info->create_merged_ldflags;
-
-Creates the merged ldflags as an array reference.
-
-Examples:
-
-  [qw(-shared -O2 -Llibdir -lz)]
+=head1 Instance Methods
 
 =head2 create_link_command
 
@@ -188,19 +182,31 @@ Examples:
 
 Creates the link command as an array reference.
 
-Examples:
+The following one is an example of the return value.
 
-  [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
+  [qw(cc -o dylib.so -shared -O2 -Llibdir -lz foo.o bar.o)]
+
+=head2 create_link_command_args
+
+  my $link_command_args = $link_info->create_link_command_args;
+
+Creates the parts of the arguments of the link command from the information of the L</"config"> field, and returns it. The return value is an array reference.
+
+The C<-o> option and the object file names are not contained.
+
+The following one is an example of the return value.
+
+  [qw(-shared -O2 -Llibdir -lz)]
 
 =head2 to_string
 
   my $string = $link_info->to_string;
 
-Get the string representation of the L<link command|/"create_link_command">.
+Calls the L<create_link_command|/"create_link_command"> method and joins all elements of the returned array reference with a space, and returns it.
 
-Examples:
+The following one is an example of the return value.
 
-  "cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz"
+  "cc -o dylib.so -shared -O2 -Llibdir -lz foo.o bar.o"
 
 =head1 Copyright & License
 
