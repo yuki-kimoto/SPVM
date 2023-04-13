@@ -1106,6 +1106,12 @@ The default is 0.
   my $output_type = $config->output_type;
   $config->output_type($output_type);
 
+Gets and sets the output type of the linker. C<"dynamic_lib">, C<"static_lib"> and C<"exe"> are available.
+
+Default:
+
+"dynamic_lib"
+
 =head2 disable_resource
 
   my $disable_resource = $config->disable_resource;
