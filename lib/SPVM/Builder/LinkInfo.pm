@@ -115,7 +115,7 @@ sub create_link_command_args {
   return \@merged_ldflags;
 }
 
-sub to_string {
+sub to_cmd {
   my ($self) = @_;
 
   my $link_command = $self->create_link_command;;
@@ -198,9 +198,9 @@ The following one is an example of the return value.
 
   [qw(-shared -O2 -Llibdir -lz)]
 
-=head2 to_string
+=head2 to_cmd
 
-  my $string = $link_info->to_string;
+  my $link_command_string = $link_info->to_cmd;
 
 Calls the L<create_link_command|/"create_link_command"> method and joins all elements of the returned array reference with a space, and returns it.
 

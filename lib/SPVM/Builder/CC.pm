@@ -720,7 +720,7 @@ sub link {
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
-        my $link_command = $link_info->to_string;
+        my $link_command = $link_info->to_cmd;
         warn "$link_command\n";
       }
     }
@@ -743,7 +743,7 @@ sub link {
         extra_linker_flags => "@$link_command_args",
       );
       unless ($quiet) {
-        my $link_command = $link_info->to_string;
+        my $link_command = $link_info->to_cmd;
         warn "$link_command\n";
       }
     }
