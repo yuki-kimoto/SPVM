@@ -517,12 +517,11 @@ sub compile_source_files {
     }
     
     # Compile-information
-    my $compile_info = $self->create_compile_command_info({
-      class_name => $class_name,
-      config => $config,
+    my $compile_info = SPVM::Builder::CompileInfo->new(
       output_file => $object_file_name,
       source_file => $source_file,
-    });
+      config => $config,
+    );
     
     my $before_compile_cbs = $config->before_compile_cbs;
     for my $before_compile_cb (@$before_compile_cbs) {
@@ -550,26 +549,6 @@ sub compile_source_files {
   }
   
   return $object_files;
-}
-
-sub create_compile_command_info {
-  my ($self, $options) = @_;
-
-  unless ($options) {
-    $options = {};
-  }
-  
-  my $config = $options->{config};
-  my $output_file = $options->{output_file};
-  my $source_file = $options->{source_file};
-  
-  my $compile_info = SPVM::Builder::CompileInfo->new(
-    output_file => $output_file,
-    source_file => $source_file,
-    config => $config,
-  );
-  
-  return $compile_info;
 }
 
 sub _error_message_find_config {

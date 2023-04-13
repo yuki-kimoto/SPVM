@@ -445,11 +445,11 @@ sub compile_source_file {
   my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
   $config->add_before_compile_cb(@$before_each_compile_cbs);
   
-  my $compile_info = $builder_cc->create_compile_command_info({
-    config => $config,
+  my $compile_info = SPVM::Builder::CompileInfo->new(
     output_file => $output_file,
-    source_file => $source_file
-  });
+    source_file => $source_file,
+    config => $config,
+  );
   
   if ($need_generate) {
     $builder_cc->compile_source_file($compile_info);
