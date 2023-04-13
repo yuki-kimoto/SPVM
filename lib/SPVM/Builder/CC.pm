@@ -819,7 +819,6 @@ sub create_link_info {
       $lib_info = SPVM::Builder::LibInfo->new;
       $lib_info->name($lib_name);
     }
-    $lib_info->config($config);
     
     if ($is_abs) {
       my $found_lib_file;

@@ -53,17 +53,6 @@ sub is_abs {
   }
 }
 
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
 sub static_name_cb {
   my $self = shift;
   if (@_) {
@@ -193,13 +182,6 @@ Default:
     
     return $name;
   };
-
-=head2 config
-
-  my $config = $lib_info->config;
-  $lib_info->config($config);
-
-Gets and sets the L<config|SPVM::Builder::Config> that is used to link this library.
 
 =head1 Class Methods
 
