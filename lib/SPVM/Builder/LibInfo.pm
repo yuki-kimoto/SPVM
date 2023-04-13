@@ -87,12 +87,6 @@ sub new {
 }
 
 # Instance Methods
-sub to_string { 
-  my ($self) = @_;
-  
-  return $self->name;
-}
-
 sub to_arg {
   my ($self) = @_;
   
@@ -117,6 +111,12 @@ sub to_arg {
   }
   
   return $link_command_arg;
+}
+
+sub to_string { 
+  my ($self) = @_;
+  
+  return $self->name;
 }
 
 1;
@@ -149,7 +149,7 @@ Examples:
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Gets and sets the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>, etc.
+Gets and sets the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
 
 =head2 static
 
@@ -167,11 +167,13 @@ A false value.
   my $is_abs = $lib_info->is_abs;
   $lib_info->is_abs($is_abs);
 
-If the C<is_abs> is true, the library is linked by the library name like C<-lfoo>.
+If the C<is_abs> is a true value, the library is linked by the library name like C<-lfoo>.
 
-If it is false, the library is linked by the absolute path of the library like C</path/libfoo.so>.
+If it is a false value, the library is linked by the absolute path of the library like C</path/libfoo.so>.
 
-If this field is C<undef>, whether the library is linked by the library name or the absolute path is automatically decided.
+Default:
+
+A false value.
 
 =head2 static_option_cb
 
@@ -204,7 +206,7 @@ Default:
 
 Creates an argument of the link command from the L</"is_abs"> field and L</"static"> field, and returns it.
 
-The following one is an example of the return value.
+The following ones are examples of the return value.
   
   -lfoo
   -Wl,-Bstatic -lfoo -Wl,-Bdynamic
@@ -213,7 +215,7 @@ The following one is an example of the return value.
 
 =head2 to_string
 
-  my $lib = $lib_info->to_string;
+  my $lib_name = $lib_info->to_string;
 
 Returns the L</"name"> field.
 
@@ -224,13 +226,13 @@ Overloads the following operators.
 =head2 bool
 
   my $bool = !!$lib_info;
-  
+
 Always true.
 
 =head2 stringify
 
   my $lib_name = "$lib_info";
-  
+
 Alias for the L</"to_string"> method.
 
 =head1 Copyright & License
