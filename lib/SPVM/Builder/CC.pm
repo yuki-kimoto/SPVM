@@ -559,40 +559,9 @@ sub create_compile_command_info {
     $options = {};
   }
   
-  my $class_name = $options->{class_name};
-  
   my $config = $options->{config};
   my $output_file = $options->{output_file};
   my $source_file = $options->{source_file};
-  
-  my $cc = $config->cc;
-  
-  # Include directories
-  my $disable_resource = $config->disable_resource;
-  my @include_dirs = @{$config->include_dirs};
-  {
-
-    # Add own resource include directory
-    my $native_include_dir = $config->native_include_dir;
-    if (defined $native_include_dir) {
-      push @include_dirs, $native_include_dir;
-    }
-    
-    # Add resource include directories
-    unless ($disable_resource) {
-      my $resource_names = $config->get_resource_names;
-      for my $resource_name (@$resource_names) {
-        my $resource = $config->get_resource($resource_name);
-        my $config = $resource->config;
-        my $resource_include_dir = $config->native_include_dir;
-        if (defined $resource_include_dir) {
-          push @include_dirs, $resource_include_dir;
-        }
-      }
-    }
-  }
-  
-  $config->include_dirs(\@include_dirs);
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
     output_file => $output_file,

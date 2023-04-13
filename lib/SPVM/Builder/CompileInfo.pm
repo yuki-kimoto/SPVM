@@ -85,11 +85,33 @@ sub create_compile_command_args {
   {
     my @all_include_dirs;
     
-    my $spvm_core_include_dir = $config->spvm_core_include_dir;
-    push @all_include_dirs, $spvm_core_include_dir;
-    
+    # include directories
     my $include_dirs = $config->include_dirs;
     push @all_include_dirs, @$include_dirs;
+    
+    # Native include directory
+    my $native_include_dir = $config->native_include_dir;
+    if (defined $native_include_dir) {
+      push @all_include_dirs, $native_include_dir;
+    }
+    
+    # Resource include directories
+    my $disable_resource = $config->disable_resource;
+    unless ($disable_resource) {
+      my $resource_names = $config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $config->get_resource($resource_name);
+        my $config = $resource->config;
+        my $resource_include_dir = $config->native_include_dir;
+        if (defined $resource_include_dir) {
+          push @all_include_dirs, $resource_include_dir;
+        }
+      }
+    }
+    
+    # SPVM core native directory
+    my $spvm_core_include_dir = $config->spvm_core_include_dir;
+    push @all_include_dirs, $spvm_core_include_dir;
     
     my @all_include_dirs_args = map { "-I$_" } @all_include_dirs;
     
