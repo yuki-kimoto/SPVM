@@ -136,6 +136,11 @@ SPVM::Builder::LinkInfo - Link Information
 
 The SPVM::Builder::LinkInfo class has methods to manipulate link information.
 
+=head1 Usage
+
+  my $link_info = SPVM::Builder::LinkInfo->new(%fields);
+  my $link_command_string = $link_info->to_cmd;
+
 =head1 Fields
 
 =head2 config
