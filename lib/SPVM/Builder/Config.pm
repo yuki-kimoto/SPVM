@@ -586,13 +586,13 @@ sub add_static_lib {
   for my $lib (@libs) {
     my $static_lib;
     if (ref $lib eq 'SPVM::Builder::LibInfo') {
-      $static_lib = $lib->static(1);
+      $static_lib = $lib->is_static(1);
     }
     else {
       my $lib_name = $lib;
       $static_lib = SPVM::Builder::LibInfo->new;
       $static_lib->name($lib_name);
-      $static_lib->static(1);
+      $static_lib->is_static(1);
     }
     push @static_libs, $static_lib;
   }

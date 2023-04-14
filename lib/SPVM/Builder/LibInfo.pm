@@ -31,14 +31,14 @@ sub file {
   }
 }
 
-sub static {
+sub is_static {
   my $self = shift;
   if (@_) {
-    $self->{static} = $_[0];
+    $self->{is_static} = $_[0];
     return $self;
   }
   else {
-    return $self->{static};
+    return $self->{is_static};
   }
 }
 
@@ -72,8 +72,8 @@ sub new {
 
   bless $self, $class;
 
-  unless (defined $self->static) {
-    $self->static(0);
+  unless (defined $self->is_static) {
+    $self->is_static(0);
   }
   
   unless (defined $self->is_abs) {
@@ -110,7 +110,7 @@ sub to_arg {
   }
   else {
     my $name = $self->name;
-    if ($self->static) {
+    if ($self->is_static) {
       $link_command_arg = $self->static_option_cb->($self, $name);
     }
     else {
@@ -164,10 +164,10 @@ Examples:
 
 Gets and sets the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
 
-=head2 static
+=head2 is_static
 
-  my $static = $lib_info->static;
-  $lib_info->static($static);
+  my $is_static = $lib_info->is_static;
+  $lib_info->is_static($is_static);
 
 Gets and sets the flag whether a static library is linked.
 
@@ -209,7 +209,7 @@ undef
 
 undef
 
-=item * L</"static">
+=item * L</"is_static">
 
 0
 
@@ -235,7 +235,7 @@ undef
 
   my $link_command_arg = $lib_info->to_arg;
 
-Creates an argument of the link command from the L</"is_abs"> field and L</"static"> field, and returns it.
+Creates an argument of the link command from the L</"is_abs"> field and L</"is_static"> field, and returns it.
 
 The following ones are examples of the return value.
   
