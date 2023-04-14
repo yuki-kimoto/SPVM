@@ -165,54 +165,6 @@ sub build_at_runtime {
   return $build_file;
 }
 
-sub build_dist {
-  my ($self, $class_name, $options) = @_;
-  
-  $options ||= {};
-
-  my $dl_func_list = $options->{dl_func_list};
-  my $class_file = $options->{class_file};
-  my $precompile_source = $options->{precompile_source};
-  
-  my $category = $options->{category};
-  
-  my $build_dir = $self->build_dir;
-  my $build_src_dir;
-  if ($category eq 'precompile') {
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
-    mkpath $build_src_dir;
-    
-    $self->build_precompile_class_source_file(
-      $class_name,
-      {
-        output_dir => $build_src_dir,
-        precompile_source => $precompile_source,
-        class_file => $class_file,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    $build_src_dir = 'lib';
-  }
-
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
-  mkpath $build_object_dir;
-  
-  my $build_lib_dir = 'blib/lib';
-  
-  $self->build(
-    $class_name,
-    {
-      compile_input_dir => $build_src_dir,
-      compile_output_dir => $build_object_dir,
-      link_output_dir => $build_lib_dir,
-      category => $category,
-      class_file => $class_file,
-      dl_func_list => $dl_func_list,
-    }
-  );
-}
-
 sub build {
   my ($self, $class_name, $options) = @_;
 
