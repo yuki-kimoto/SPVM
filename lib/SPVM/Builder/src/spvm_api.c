@@ -2530,7 +2530,7 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const cha
   return object;
 }
 
-int32_t SPVM_API_get_filed_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t SPVM_API_get_field_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
 
   int32_t value = *(int32_t*)((intptr_t)object + env->object_header_size);
   
@@ -2540,7 +2540,7 @@ int32_t SPVM_API_get_filed_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
   (void)env;
 
-  int32_t value = SPVM_API_get_filed_first_int(env, bool_object);
+  int32_t value = SPVM_API_get_field_first_int(env, bool_object);
   
   return value;
 }

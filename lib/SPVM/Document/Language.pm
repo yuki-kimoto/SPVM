@@ -2496,7 +2496,7 @@ The class that has L<interface Guarantees|/"Interface Guarantee"> must have the 
   my $stringable = (Stringable)Point->new(1, 2);
   my $string = $stringable->to_string;
 
-A interface cannnot have L<filed definitions|/"Field Definition">.
+A interface cannnot have L<field definitions|/"Field Definition">.
 
 A interface cannnot have L<class variable definitions|/"Class Variable Definition">.
 

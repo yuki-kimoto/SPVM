@@ -24,7 +24,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Field name
 {
-  ok(SPVM::TestCase::Field->get_and_set_filed_same_name_as_keyword);
+  ok(SPVM::TestCase::Field->get_and_set_field_same_name_as_keyword);
 }
 
 # Field access
