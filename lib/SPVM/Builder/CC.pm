@@ -128,13 +128,10 @@ sub build_at_runtime {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
-    my $force = $self->detect_force;
-    
     $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
-        force => $force,
         precompile_source => $precompile_source,
         class_file => $class_file,
       }
@@ -185,13 +182,10 @@ sub build_dist {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
-    my $force = $self->detect_force;
-    
     $self->build_precompile_class_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,
-        force => $force,
         precompile_source => $precompile_source,
         class_file => $class_file,
       }
@@ -367,8 +361,8 @@ sub build_precompile_class_source_file {
   my $class_file = $options->{class_file};
   
   # Force
-  my $force = $options->{force};
-  
+  my $force = $self->detect_force;
+
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
