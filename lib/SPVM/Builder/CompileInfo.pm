@@ -128,7 +128,7 @@ sub create_compile_command_args {
 }
 
 # Instance methods
-sub to_string {
+sub to_cmd {
   my ($self) = @_;
 
   my $compile_command = $self->create_compile_command;
