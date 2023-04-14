@@ -115,10 +115,7 @@ sub build_dist {
   
   my $build_lib_dir = 'blib/lib';
   
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-  );
-  $cc->build(
+  $self->build(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -197,11 +194,7 @@ sub build_at_runtime {
   my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
   mkpath $build_lib_dir;
   
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    at_runtime => 1,
-  );
-  my $build_file = $cc->build(
+  my $build_file = $self->build(
     $class_name,
     {
       compile_input_dir => $build_src_dir,
@@ -210,10 +203,77 @@ sub build_at_runtime {
       category => $category,
       class_file => $class_file,
       dl_func_list => $dl_func_list,
+      at_runtime => 1,
     }
   );
   
   return $build_file;
+}
+
+sub build {
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $build_dir = $self->build_dir;
+  
+  my $at_runtime = $options->{at_runtime};
+  my $cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    at_runtime => $at_runtime,
+  );
+  
+  my $dl_func_list = $options->{dl_func_list};
+  
+  my $category = $options->{category};
+  
+  # Class file
+  my $class_file = $options->{class_file};
+  unless (defined $class_file) {
+    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+    if ($config_file) {
+      $class_file = $config_file;
+      $class_file =~ s/\.config$/\.spvm/;
+    }
+    else {
+      confess "\"$class_file\" class is not loaded";
+    }
+  }
+  
+  my $config;
+  if ($category eq 'native') {
+    $config = $cc->create_native_config_from_class_file($class_file);
+  }
+  elsif ($category eq 'precompile') {
+    $config = SPVM::Builder::Util::API::create_default_config();
+  }
+  
+  $config->class_name($class_name);
+  
+  # Compile source file and create object files
+  my $compile_options = {
+    input_dir => $options->{compile_input_dir},
+    output_dir => $options->{compile_output_dir},
+    config => $config,
+    category => $category,
+  };
+
+  my $object_files = $cc->compile_source_files($class_name, $compile_options);
+  
+  # Link object files and create dynamic library
+  my $link_options = {
+    output_dir => $options->{link_output_dir},
+    config => $config,
+    category => $category,
+    dl_func_list => $dl_func_list,
+  };
+  my $output_file = $cc->link(
+    $class_name,
+    $object_files,
+    $link_options
+  );
+  
+  return $output_file;
 }
 
 1;

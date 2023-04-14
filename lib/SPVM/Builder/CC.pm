@@ -102,64 +102,6 @@ sub new {
 }
 
 # Instance Methods
-sub build {
-  my ($self, $class_name, $options) = @_;
-
-  $options ||= {};
-
-  my $dl_func_list = $options->{dl_func_list};
-  
-  my $category = $options->{category};
-
-  # Class file
-  my $class_file = $options->{class_file};
-  unless (defined $class_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
-    if ($config_file) {
-      $class_file = $config_file;
-      $class_file =~ s/\.config$/\.spvm/;
-    }
-    else {
-      confess "\"$class_file\" class is not loaded";
-    }
-  }
-  
-  my $config;
-  if ($category eq 'native') {
-    $config = $self->create_native_config_from_class_file($class_file);
-  }
-  elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Util::API::create_default_config();
-  }
-  
-  $config->class_name($class_name);
-  
-  # Compile source file and create object files
-  my $compile_options = {
-    input_dir => $options->{compile_input_dir},
-    output_dir => $options->{compile_output_dir},
-    config => $config,
-    category => $category,
-  };
-
-  my $object_files = $self->compile_source_files($class_name, $compile_options);
-  
-  # Link object files and create dynamic library
-  my $link_options = {
-    output_dir => $options->{link_output_dir},
-    config => $config,
-    category => $category,
-    dl_func_list => $dl_func_list,
-  };
-  my $output_file = $self->link(
-    $class_name,
-    $object_files,
-    $link_options
-  );
-  
-  return $output_file;
-}
-
 sub resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
 
