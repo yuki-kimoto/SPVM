@@ -35,11 +35,6 @@ sub load_dynamic_libs {
     
     for my $category ('precompile', 'native') {
 
-      my $cc = SPVM::Builder::CC->new(
-        build_dir => $BUILDER->build_dir,
-        at_runtime => 1,
-      );
-      
       my $get_method_names_options = $runtime->__api->new_options({
         $category => $runtime->__api->class('Int')->new(1)
       });
@@ -59,6 +54,11 @@ sub load_dynamic_libs {
           my $anon_class_names = $runtime->get_anon_class_names($class_name)->to_strings;
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_class_source($class_name)->to_string;
+          
+          my $cc = SPVM::Builder::CC->new(
+            build_dir => $BUILDER->build_dir,
+            at_runtime => 1,
+          );
           $dynamic_lib_file = $cc->build_at_runtime($class_name, {class_file => $class_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
         
