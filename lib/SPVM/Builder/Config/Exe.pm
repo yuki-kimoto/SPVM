@@ -67,24 +67,32 @@ sub config_bootstrap {
 
 # Class Methods
 sub new {
-  my ($self, %options) = @_;
-  
-  unless (defined $options{output_type}) {
-    $options{output_type} = 'exe';
+  my ($self, %fields) = @_;
+
+  unless (defined $fields{output_type}) {
+    $fields{output_type} = 'exe';
   }
   
-  $self = $self->SUPER::new(%options);
+  $self = $self->SUPER::new(%fields);
   
-  unless (defined $self->{before_each_compile_cbs}) {
+  unless (defined $self->before_each_compile_cbs) {
     $self->before_each_compile_cbs([]);
   }
   
-  unless (defined $self->{config_spvm_core}) {
-    $self->{config_spvm_core} = SPVM::Builder::Util::API::create_default_config();
+  unless (defined $self->no_precompile) {
+    $self->no_precompile(0);
   }
   
-  unless (defined $self->{config_bootstrap}) {
-    $self->{config_bootstrap} = SPVM::Builder::Util::API::create_default_config();
+  unless (defined $self->no_compiler_api) {
+    $self->no_compiler_api(0);
+  }
+  
+  unless (defined $self->config_spvm_core) {
+    $self->config_spvm_core(SPVM::Builder::Util::API::create_default_config());
+  }
+  
+  unless (defined $self->config_bootstrap) {
+    $self->config_bootstrap(SPVM::Builder::Util::API::create_default_config());
   }
   
   return $self;
@@ -103,73 +111,109 @@ sub add_before_each_compile_cb {
 
 SPVM::Builder::Config::Exe - Configurations of creating excutable files.
 
+=head1 Description
+
+The SPVM::Builder::Config::Exe class has methods to manipulate a config to generate an excutable file using L<spvmcc>.
+
 =head1 Usage
 
   use SPVM::Builder::Config::Exe;
   
   my $config_exe = SPVM::Builder::Config::Exe->new_c99;
 
-=head1 Description
+=head1 Inheritance
 
-SPVM::Builder::Config::Exe is configuration of creating excutable files of L<spvmcc>.
+=over 2
+
+=item * L<SPVM::Builder::Config>
+
+=back
 
 =head1 Fields
 
-Fields of B<SPVM::Builder::Config::Exe>.
-
-Fields are inherited from L<SPVM::Builder::Config> and you can use the following fields.
-
 =head2 no_precompile
 
-  my $no_precompile = $config->no_precompile;
-  $config->no_precompile($no_precompile);
+  my $no_precompile = $config_exe->no_precompile;
+  $config_exe->no_precompile($no_precompile);
 
-If C<no_precompile> is a true value, precompiling is not performed.
+Gets and sets the C<no_precompile> field.
+
+If this field is a true value, precompiling is not performed.
 
 =head2 no_compiler_api
 
-  my $no_compiler_api = $config->no_compiler_api;
-  $config->no_compiler_api($no_compiler_api);
+  my $no_compiler_api = $config_exe->no_compiler_api;
+  $config_exe->no_compiler_api($no_compiler_api);
 
-If C<no_compiler_api> is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
+Gets and sets the C<no_precompile> field.
+
+If this field is a true value, the source codes of the L<compiler native APIs|SPVM::Document::NativeAPI::Compiler> and the L<precompile native APIs|SPVM::Document::NativeAPI::Precompile> is not linked.
 
 =head2 config_spvm_core
 
-  my $config_spvm_core = $config->config_spvm_core;
-  $config->config_spvm_core($config_spvm_core);
+  my $config_exe_spvm_core = $config_exe->config_spvm_core;
+  $config_exe->config_spvm_core($config_exe_spvm_core);
 
-Gets and sets the config(a L<SPVM::Builder::Config> object) for SPVM core source files.
+Gets and sets the C<config_spvm_core> field.
 
-The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> class.
+This field is a L<SPVM::Builder::Config> object for SPVM core source files.
 
 =head2 config_bootstrap
 
-  my $config_bootstrap = $config->config_bootstrap;
-  $config->config_bootstrap($config_bootstrap);
+  my $config_exe_bootstrap = $config_exe->config_bootstrap;
+  $config_exe->config_bootstrap($config_exe_bootstrap);
 
-Gets and sets the config(a L<SPVM::Builder::Config> object) for the bootstrap source file that contains C<main> function in the C language.
+Gets and sets the C<config_bootstrap> field.
 
-The default is a config that is created by the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function in the L<SPVM::Builder::Util::API> class.
+This field is a L<SPVM::Builder::Config> object for the bootstrap source file that contains C<main> function in the C language for the executable file.
 
 =head1 Methods
 
-Methods of B<SPVM::Builder::Config::Exe>.
-
-Methods are inherited from L<SPVM::Builder::Config> and you can use the following methods.
-
 =head2 new
 
-  my $config = SPVM::Builder::Config::Exe->new;
+  my $config_exe = SPVM::Builder::Config::Exe->new(%fields);
 
-Create a new C<SPVM::Builder::Config::Exe> object.
+Create a new C<SPVM::Builder::Config::Exe> object with L</"Fields">.
 
-This is same as L<SPVM::Builder::Config/"new">, but set C<output_type> field to C<exe>.
+This method calls the C<new> method of the L<super class|/"Inheritance"> before the own operations of this method.
+
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"output_type">
+
+"exe"
+
+=item * L</"before_each_compile_cbs">
+
+[]
+
+=item * L</"no_precompile">
+
+0
+
+=item * L</"no_compiler_api">
+
+0
+
+=item * L</"config_spvm_core">
+
+The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of the L<SPVM::Builder::Util::API> class.
+
+=item * L</"config_bootstrap">
+
+The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of the L<SPVM::Builder::Util::API> class.
+
+=back
 
 =head2 add_before_each_compile_cb
 
-  $config->add_before_compile_cb(@before_each_compile_cbs);
+  $config_exe->add_before_compile_cb(@before_each_compile_cbs);
 
-Adds elements after the last element of L</"before_each_compile_cbs"> field.
+Adds elements after the last element of the L</"before_each_compile_cbs"> field.
 
 =head1 Copyright & License
 
