@@ -153,21 +153,27 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
   my $config = $compile_info->config;
   $compile_info->config($config);
 
-Gets and sets a L<SPVM::Builder::Config> object used to compile the source file.
+Gets and sets the C<config> field.
+
+This is a L<SPVM::Builder::Config> object used to compile the source file.
 
 =head2 source_file
 
   my $source_file = $compile_info->source_file;
   $compile_info->source_file($source_file);
 
-Gets and sets a source file.
+Gets and sets the C<source_file> field.
+
+This field is a source file.
 
 =head2 output_file
 
   my $output_file = $compile_info->output_file;
   $compile_info->output_file($output_file);
 
-Gets and sets an output file.
+Gets and sets the C<output_file> field.
+
+This field is an output file.
 
 =head1 Class Methods
 
