@@ -140,6 +140,75 @@ sub build_dynamic_lib_dist_native {
   $self->build_dynamic_lib_dist($class_name, 'native');
 }
 
+sub build_at_runtime {
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $build_dir = $self->build_dir;
+  
+  my $cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    at_runtime => 1,
+  );
+  
+  my $dl_func_list = $options->{dl_func_list};
+  my $class_file = $options->{class_file};
+  my $precompile_source = $options->{precompile_source};
+
+  my $category = $options->{category};
+  
+  # Build directory
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+  }
+  
+  # Source directory
+  my $build_src_dir;
+  if ($category eq 'precompile') {
+    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
+    mkpath $build_src_dir;
+    
+    $cc->build_precompile_class_source_file(
+      $class_name,
+      {
+        output_dir => $build_src_dir,
+        precompile_source => $precompile_source,
+        class_file => $class_file,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    my $class_file = $options->{class_file};
+    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($class_file, $class_name);
+  }
+  
+  # Object directory
+  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  mkpath $build_object_dir;
+  
+  # Lib directory
+  my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+  mkpath $build_lib_dir;
+  
+  my $build_file = $cc->build(
+    $class_name,
+    {
+      compile_input_dir => $build_src_dir,
+      compile_output_dir => $build_object_dir,
+      link_output_dir => $build_lib_dir,
+      category => $category,
+      class_file => $class_file,
+      dl_func_list => $dl_func_list,
+    }
+  );
+  
+  return $build_file;
+}
+
 1;
 
 =encoding utf8

@@ -55,11 +55,7 @@ sub load_dynamic_libs {
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_class_source($class_name)->to_string;
           
-          my $cc = SPVM::Builder::CC->new(
-            build_dir => $BUILDER->build_dir,
-            at_runtime => 1,
-          );
-          $dynamic_lib_file = $cc->build_at_runtime($class_name, {class_file => $class_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+          $dynamic_lib_file = $BUILDER->build_at_runtime($class_name, {class_file => $class_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
         
         if (-f $dynamic_lib_file) {
