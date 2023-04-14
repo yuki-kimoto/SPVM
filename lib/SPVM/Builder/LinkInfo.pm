@@ -165,9 +165,29 @@ This field is an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
 =head2 new
 
-  my $link_info = SPVM::Builder::LinkInfo->new;
+  my $link_info = SPVM::Builder::LinkInfo->new(%fields);
 
-Creates a new C<SPVM::Builder::LinkInfo> object.
+Creates a new C<SPVM::Builder::LinkInfo> object with L</"Fields">.
+
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"config">
+
+undef
+
+=item * L</"output_file">
+
+undef
+
+=item * L</"object_files">
+
+[]
+
+=back
 
 =head1 Instance Methods
 
