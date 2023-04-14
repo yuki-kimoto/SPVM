@@ -242,7 +242,7 @@ sub build {
   
   my $config;
   if ($category eq 'native') {
-    $config = $cc->create_native_config_from_class_file($class_file);
+    $config = $self->create_native_config_from_class_file($class_file);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
@@ -274,6 +274,45 @@ sub build {
   );
   
   return $output_file;
+}
+
+sub create_native_config_from_class_file {
+  my ($self, $class_file) = @_;
+  
+  my $config;
+  my $config_file = $class_file;
+  $config_file =~ s/\.spvm$/.config/;
+
+  # Config file
+  if (-f $config_file) {
+    $config = SPVM::Builder::Config->load_config($config_file);
+  }
+  else {
+    my $error = $self->_error_message_find_config($config_file);
+    confess $error;
+  }
+  
+  return $config;
+}
+
+sub _error_message_find_config {
+  my ($self, $config_file) = @_;
+  
+  my $error = <<"EOS";
+Can't find the native config file \"$config_file\".
+
+The config file must contain at least the following code.
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$config = SPVM::Builder::Config->new_c99(file => __FILE__);
+
+\$config;
+----------------------------------------------
+EOS
+  
 }
 
 1;

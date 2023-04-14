@@ -294,7 +294,7 @@ sub get_required_resources {
           confess "\"$class_file\" class is not loaded";
         }
       }
-      my $config_exe = $builder_cc->create_native_config_from_class_file($class_file);
+      my $config_exe = $builder->create_native_config_from_class_file($class_file);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -1072,7 +1072,7 @@ sub compile_class_native_source_files {
         confess "\"$class_file\" class is not loaded";
       }
     }
-    my $config = $builder_cc->create_native_config_from_class_file($class_file);
+    my $config = $builder->create_native_config_from_class_file($class_file);
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     
