@@ -125,7 +125,7 @@ sub build_at_runtime {
   # Source directory
   my $build_src_dir;
   if ($category eq 'precompile') {
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->build_dir);
+    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
@@ -146,11 +146,11 @@ sub build_at_runtime {
   }
   
   # Object directory
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir);
+  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
   # Lib directory
-  my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($self->build_dir);
+  my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
   mkpath $build_lib_dir;
   
   my $build_file = $self->build(
@@ -179,9 +179,10 @@ sub build_dist {
   
   my $category = $options->{category};
   
+  my $build_dir = $self->build_dir;
   my $build_src_dir;
   if ($category eq 'precompile') {
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->build_dir);
+    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
     my $force = $self->detect_force;
@@ -200,7 +201,7 @@ sub build_dist {
     $build_src_dir = 'lib';
   }
 
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir);
+  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
   my $build_lib_dir = 'blib/lib';
