@@ -149,7 +149,9 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information.
   my $name = $lib_info->name;
   $lib_info->name($name);
 
-Gets and sets the library name.
+Gets and sets the C<name> field.
+
+This field is a library name.
 
 Examples:
   
@@ -162,30 +164,38 @@ Examples:
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Gets and sets the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
+Gets and sets the C<file> field.
+
+This field is the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
 
 =head2 is_static
 
   my $is_static = $lib_info->is_static;
   $lib_info->is_static($is_static);
 
-Gets and sets the flag whether a static library is linked.
+Gets and sets the C<is_static> field.
+
+If this field is a true value, a static library is linked.
 
 =head2 is_abs
 
   my $is_abs = $lib_info->is_abs;
   $lib_info->is_abs($is_abs);
 
-If the C<is_abs> is a true value, the library is linked by the library name like C<-lfoo>.
+Gets and sets the C<is_abs> field.
 
-If it is a false value, the library is linked by the absolute path of the library like C</path/libfoo.so>.
+If this field is a true value, the library is linked by the library name like C<-lfoo>.
+
+Otherwise the library is linked by the absolute path of the library like C</path/libfoo.so>.
 
 =head2 static_option_cb
 
   my $static_option_cb = $lib_info->static_option_cb;
   $lib_info->static_option_cb($static_option_cb);
 
-Gets and sets the callback to create a linker option to link a static library.
+Gets and sets the C<static_option_cb> field.
+
+This field is the callback to create a linker option to link a static library.
 
 =head1 Class Methods
 
