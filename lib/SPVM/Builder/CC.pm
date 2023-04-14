@@ -19,6 +19,7 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Resource;
 
+# Fields
 sub build_dir {
   my $self = shift;
   if (@_) {
@@ -74,6 +75,7 @@ sub debug {
   }
 }
 
+# Class Methods
 sub new {
   my $class = shift;
   
@@ -99,6 +101,7 @@ sub new {
   return $self;
 }
 
+# Instance Methods
 sub build_at_runtime {
   my ($self, $class_name, $options) = @_;
   
@@ -356,6 +359,44 @@ sub detect_quiet {
   return $quiet;
 }
 
+sub build_precompile_class_source_file {
+  my ($self, $class_name, $options) = @_;
+
+  my $precompile_source = $options->{precompile_source};
+  my $class_file = $options->{class_file};
+  
+  # Force
+  my $force = $options->{force};
+  
+  # Output - Precompile C source file
+  my $output_dir = $options->{output_dir};
+  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+  my $source_file = "$output_dir/$source_rel_file";
+  
+  # Check if generating is needed
+  my $spvm_class_path = $INC{'SPVM/Builder.pm'};
+  $spvm_class_path =~ s/\.pm$//;
+  $spvm_class_path .= '/src';
+  my $spvm_precompile_soruce_file = "$spvm_class_path/spvm_precompile.c";
+  unless (-f $spvm_precompile_soruce_file) {
+    confess "Can't find $spvm_precompile_soruce_file";
+  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    force => $force,
+    output_file => $source_file,
+    input_files => [$class_file, $spvm_precompile_soruce_file],
+  });
+  
+  # Generate precompile C source file
+  if ($need_generate) {
+    mkpath dirname $source_file;
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
+    print $fh $precompile_source;
+    close $fh;
+  }
+}
+
 sub compile_source_file {
   my ($self, $compile_info) = @_;
   
@@ -540,183 +581,6 @@ sub compile_source_files {
   return $object_files;
 }
 
-sub _error_message_find_config {
-  my ($self, $config_file) = @_;
-  
-  my $error = <<"EOS";
-Can't find the native config file \"$config_file\".
-
-The config file must contain at least the following code.
-----------------------------------------------
-use strict;
-use warnings;
-
-use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new_c99(file => __FILE__);
-
-\$config;
-----------------------------------------------
-EOS
-  
-}
-
-sub link {
-  my ($self, $class_name, $object_files, $options) = @_;
-  
-  my $dl_func_list = $options->{dl_func_list};
-  
-  my $category = $options->{category};
-  
-  # Build directory
-  my $build_dir = $self->build_dir;
-  if (defined $build_dir) {
-    mkpath $build_dir;
-  }
-  else {
-    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
-  }
-  
-  # Config
-  my $config = $options->{config};
-  unless ($config) {
-    confess "Need config option";
-  }
-
-  # Force link
-  my $force = $self->detect_force($config);
-  
-  # Link information
-  my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
-  
-  # Output file
-  my $output_file = $link_info->output_file;
-  
-  # Execute the callback before this link
-  my $before_link_cbs = $config->before_link_cbs;
-  for my $before_link_cb (@$before_link_cbs) {
-    $before_link_cb->($config, $link_info);
-  }
-  
-  my @object_files = map { "$_" } @{$link_info->object_files};
-  my $input_files = [@object_files];
-  if (defined $config->file) {
-    push @$input_files, $config->file;
-  }
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $force,
-    output_file => $output_file,
-    input_files => $input_files,
-  });
-  
-  if ($need_generate) {
-    # Move temporary dynamic library file to blib directory
-    mkpath dirname $output_file;
-    
-    my $ld = $config->ld;
-    
-    my $cbuilder_config = {
-      ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      
-      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
-    };
-
-    # Quiet output
-    my $quiet = $self->detect_quiet($config);
-
-    # ExtUtils::CBuilder object
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-    
-    my $link_info_output_file = $link_info->output_file;
-    my $link_info_object_files = $link_info->object_files;
-    
-    my $link_command_args = $link_info->create_link_command_args;
-    
-    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
-
-    my @tmp_files;
-    
-    my $output_type = $config->output_type;
-    
-    # Create a dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      (undef, @tmp_files) = $cbuilder->link(
-        objects => $link_info_object_file_names,
-        class_name => $class_name,
-        lib_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
-        dl_func_list => $dl_func_list,
-      );
-      unless ($quiet) {
-        my $link_command = $link_info->to_cmd;
-        warn "$link_command\n";
-      }
-    }
-    # Create a static library
-    elsif ($output_type eq 'static_lib') {
-      my @object_files = map { "$_" } @$link_info_object_file_names;
-      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@ar_cmd)
-        or confess "Can't execute command @ar_cmd";
-      unless ($quiet) {
-        warn "@ar_cmd\n";
-      }
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      (undef, @tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_file_names,
-        class_name => $class_name,
-        exe_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
-      );
-      unless ($quiet) {
-        my $link_command = $link_info->to_cmd;
-        warn "$link_command\n";
-      }
-    }
-    else {
-      confess "Unknown output_type \"$output_type\"";
-    }
-
-    if ($self->debug) {
-      if ($^O eq 'MSWin32') {
-        my $def_file;
-        my $lds_file;
-        for my $tmp_file (@tmp_files) {
-          # Remove double quote
-          $tmp_file =~ s/^"//;
-          $tmp_file =~ s/"$//;
-
-          if ($tmp_file =~ /\.def$/) {
-            $def_file = $tmp_file;
-            $lds_file = $def_file;
-            $lds_file =~ s/\.def$/.lds/;
-            last;
-          }
-        }
-        if (defined $def_file && -f $def_file) {
-          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          warn "[$def_file]\n$def_content\n";
-        }
-        if (defined $lds_file && -f $lds_file) {
-          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          warn "[$lds_file]\n$lds_content\n";
-        }
-      }
-    }
-  }
-  
-  return $output_file;
-}
-
 sub create_link_info {
   my ($self, $class_name, $object_files, $config, $options) = @_;
   
@@ -887,49 +751,188 @@ sub create_link_info {
   return $link_info;
 }
 
-sub build_precompile_class_source_file {
-  my ($self, $class_name, $options) = @_;
+sub link {
+  my ($self, $class_name, $object_files, $options) = @_;
+  
+  my $dl_func_list = $options->{dl_func_list};
+  
+  my $category = $options->{category};
+  
+  # Build directory
+  my $build_dir = $self->build_dir;
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+  }
+  
+  # Config
+  my $config = $options->{config};
+  unless ($config) {
+    confess "Need config option";
+  }
 
-  my $precompile_source = $options->{precompile_source};
-  my $class_file = $options->{class_file};
+  # Force link
+  my $force = $self->detect_force($config);
   
-  # Force
-  my $force = $options->{force};
+  # Link information
+  my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
   
-  # Output - Precompile C source file
-  my $output_dir = $options->{output_dir};
-  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-  my $source_file = "$output_dir/$source_rel_file";
+  # Output file
+  my $output_file = $link_info->output_file;
   
-  # Check if generating is needed
-  my $spvm_class_path = $INC{'SPVM/Builder.pm'};
-  $spvm_class_path =~ s/\.pm$//;
-  $spvm_class_path .= '/src';
-  my $spvm_precompile_soruce_file = "$spvm_class_path/spvm_precompile.c";
-  unless (-f $spvm_precompile_soruce_file) {
-    confess "Can't find $spvm_precompile_soruce_file";
+  # Execute the callback before this link
+  my $before_link_cbs = $config->before_link_cbs;
+  for my $before_link_cb (@$before_link_cbs) {
+    $before_link_cb->($config, $link_info);
+  }
+  
+  my @object_files = map { "$_" } @{$link_info->object_files};
+  my $input_files = [@object_files];
+  if (defined $config->file) {
+    push @$input_files, $config->file;
   }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
-    output_file => $source_file,
-    input_files => [$class_file, $spvm_precompile_soruce_file],
+    output_file => $output_file,
+    input_files => $input_files,
   });
   
-  # Generate precompile C source file
   if ($need_generate) {
-    mkpath dirname $source_file;
-    open my $fh, '>', $source_file
-      or die "Can't create $source_file";
-    print $fh $precompile_source;
-    close $fh;
+    # Move temporary dynamic library file to blib directory
+    mkpath dirname $output_file;
+    
+    my $ld = $config->ld;
+    
+    my $cbuilder_config = {
+      ld => $ld,
+      lddlflags => '',
+      shrpenv => '',
+      libpth => '',
+      libperl => '',
+      
+      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+      # Linker Script File(.lds) when "perllibs" is empty string.
+      # This is syntax error in Linker Script File(.lds)
+      # For the reason, libm is linked which seems to have no effect.
+      perllibs => '-lm',
+    };
+
+    # Quiet output
+    my $quiet = $self->detect_quiet($config);
+
+    # ExtUtils::CBuilder object
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+    
+    my $link_info_output_file = $link_info->output_file;
+    my $link_info_object_files = $link_info->object_files;
+    
+    my $link_command_args = $link_info->create_link_command_args;
+    
+    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
+
+    my @tmp_files;
+    
+    my $output_type = $config->output_type;
+    
+    # Create a dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      (undef, @tmp_files) = $cbuilder->link(
+        objects => $link_info_object_file_names,
+        class_name => $class_name,
+        lib_file => $link_info_output_file,
+        extra_linker_flags => "@$link_command_args",
+        dl_func_list => $dl_func_list,
+      );
+      unless ($quiet) {
+        my $link_command = $link_info->to_cmd;
+        warn "$link_command\n";
+      }
+    }
+    # Create a static library
+    elsif ($output_type eq 'static_lib') {
+      my @object_files = map { "$_" } @$link_info_object_file_names;
+      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
+      $cbuilder->do_system(@ar_cmd)
+        or confess "Can't execute command @ar_cmd";
+      unless ($quiet) {
+        warn "@ar_cmd\n";
+      }
+    }
+    # Create an executable file
+    elsif ($output_type eq 'exe') {
+      (undef, @tmp_files) = $cbuilder->link_executable(
+        objects => $link_info_object_file_names,
+        class_name => $class_name,
+        exe_file => $link_info_output_file,
+        extra_linker_flags => "@$link_command_args",
+      );
+      unless ($quiet) {
+        my $link_command = $link_info->to_cmd;
+        warn "$link_command\n";
+      }
+    }
+    else {
+      confess "Unknown output_type \"$output_type\"";
+    }
+
+    if ($self->debug) {
+      if ($^O eq 'MSWin32') {
+        my $def_file;
+        my $lds_file;
+        for my $tmp_file (@tmp_files) {
+          # Remove double quote
+          $tmp_file =~ s/^"//;
+          $tmp_file =~ s/"$//;
+
+          if ($tmp_file =~ /\.def$/) {
+            $def_file = $tmp_file;
+            $lds_file = $def_file;
+            $lds_file =~ s/\.def$/.lds/;
+            last;
+          }
+        }
+        if (defined $def_file && -f $def_file) {
+          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
+          warn "[$def_file]\n$def_content\n";
+        }
+        if (defined $lds_file && -f $lds_file) {
+          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
+          warn "[$lds_file]\n$lds_content\n";
+        }
+      }
+    }
   }
+  
+  return $output_file;
+}
+
+sub _error_message_find_config {
+  my ($self, $config_file) = @_;
+  
+  my $error = <<"EOS";
+Can't find the native config file \"$config_file\".
+
+The config file must contain at least the following code.
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$config = SPVM::Builder::Config->new_c99(file => __FILE__);
+
+\$config;
+----------------------------------------------
+EOS
+  
 }
 
 1;
 
 =head1 Name
 
-SPVM::Builder::CC - Compiling and Linking Native Class
+SPVM::Builder::CC - Compilation and Link of Native Class
 
 =head1 Description
 

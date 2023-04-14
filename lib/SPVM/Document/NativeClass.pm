@@ -55,12 +55,10 @@ I show some examples of native config files.
   # C11 Config File
   use strict;
   use warnings;
-
+  
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
-
-  $config->set_std('c11');
-
+  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
+  
   $config;
 
 =head2 C++ Config File
@@ -79,12 +77,10 @@ I show some examples of native config files.
   # C++11 Config File
   use strict;
   use warnings;
-
+  
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
-
-  $config->set_std('c++11');
-
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+  
   $config;
 
 =head2 CUDA/nvcc Config File

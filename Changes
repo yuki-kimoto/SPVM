@@ -1,6 +1,8 @@
 0.9706 2023-04-13
   [New Features]
     * Added the disable_resource field in the SPVM::Builder::Config class.
+  [Incompatible Changes]
+    * Removed the set_std method in the SPVM::Builder::Config and added the std field.
 0.9705 2023-04-13
   [New Features]
     * Added the SPVM_CC_QUIET environment variable.

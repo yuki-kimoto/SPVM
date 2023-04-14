@@ -75,8 +75,14 @@ sub create_compile_command_args {
   
   my @compile_command_args;
   
-  if (defined $config->optimize) {
-    push @compile_command_args, split(/ +/, $config->optimize);
+  my $std = $config->std;
+  if (defined $std) {
+    push @compile_command_args, "-std=$std";
+  }
+  
+  my $optimize = $config->optimize;
+  if (defined $optimize) {
+    push @compile_command_args, split(/ +/, $optimize);
   }
   
   push @compile_command_args, @{$config->ccflags};

@@ -98,6 +98,17 @@ sub ccflags {
   }
 }
 
+sub std {
+  my $self = shift;
+  if (@_) {
+    $self->{std} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{std};
+  }
+}
+
 sub optimize {
   my $self = shift;
   if (@_) {
@@ -443,7 +454,7 @@ sub new_c99 {
   my $self = $class->new_c(@_);
   
   # C99
-  $self->set_std('c99');
+  $self->std('c99');
   
   return $self;
 }
@@ -454,7 +465,7 @@ sub new_c11 {
   my $self = $class->new_c(@_);
   
   # C11
-  $self->set_std('c11');
+  $self->std('c11');
   
   return $self;
 }
@@ -465,7 +476,7 @@ sub new_gnu99 {
   my $self = $class->new_c(@_);
   
   # GNU C99
-  $self->set_std('gnu99');
+  $self->std('gnu99');
   
   return $self;
 }
@@ -476,7 +487,7 @@ sub new_gnu11 {
   my $self = $class->new_c(@_);
   
   # GNU C11
-  $self->set_std('gnu11');
+  $self->std('gnu11');
   
   return $self;
 }
@@ -511,7 +522,7 @@ sub new_cpp11 {
   my $self = $class->new_cpp(@_);
   
   # C++11
-  $self->set_std('c++11');
+  $self->std('c++11');
   
   return $self;
 }
@@ -522,7 +533,7 @@ sub new_cpp14 {
   my $self = $class->new_cpp(@_);
   
   # C++14
-  $self->set_std('c++14');
+  $self->std('c++14');
   
   return $self;
 }
@@ -533,20 +544,7 @@ sub new_cpp17 {
   my $self = $class->new_cpp(@_);
   
   # C++17
-  $self->set_std('c++17');
-  
-  return $self;
-}
-
-sub set_std {
-  my ($self, $standard) = @_;
-  
-  my $ccflags = $self->ccflags;
-  
-  push @$ccflags, "-std=$standard";
-  
-  # Adds -std=foo section
-  $self->ccflags($ccflags);
+  $self->std('c++17');
   
   return $self;
 }
@@ -929,6 +927,21 @@ Default:
   # Other
   []
 
+=head2 std
+
+  my $std = $config->std;
+  $config->std($std);
+
+Gets and sets the value for C<-std> option of the compiler.
+
+Examples:
+
+  $config->std('c99');
+  $config->std('gnu99');
+  $config->std('cpp');
+  $config->std('cpp11');
+  $config->std('cpp17');
+
 =head2 optimize
 
   my $optimize = $config->optimize;
@@ -1123,77 +1136,73 @@ Gets and sets the flag to disable all resources loaded by the L</"use_resource">
 
 =head2 new
 
+  my $config = SPVM::Builder::Config->new(%fields);
+
+Create a C<SPVM::Builder::Config> object with L<fields|/"Fields">.
+
+Exceptions:
+
+If the L</"file_optional"> field is not set to a true value, the L</"file"> field must be passed. Otherwise an exception is thrown.
+
+Examples:
+
   my $config = SPVM::Builder::Config->new(file => __FILE__);
-
-Create a C<SPVM::Builder::Config> object.
-
-L</"file"> must be specified except for the case that L</"file_optional"> is set to a true value.
 
 =head2 new_c
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Calls L</"new">. After that, call L<ext('c')|/"ext">.
+Calls the L</"new"> method and sets th L</"ext"> field to C<c>.
 
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-Calls L</"new_c">. After that, call L<set_std('c99')|/"set_std">.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<c99>.
 
 =head2 new_c11
   
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
 
-Calls L</"new_c">. After that, call L<set_std('c11')|/"set_std">.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<c11>.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Calls L</"new_c">. After that, call L<set_std('gnu99')|/"set_std">.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu99>.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Calls L</"new_c">. After that, call L<set_std('gnu11')|/"set_std">.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu11>.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Calls L</"new">. After that, call L<ext('cpp')|/"ext"> and set L</"cc"> to C<C++> compiler, and set L</"ld"> to C<C++> linker.
+Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to C<C++> compiler and sets the L</"ld"> field to C<C++> linker.
 
 =head2 new_cpp11
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Calls L</"new_cpp">. After that, call L<set_std('c++11')|/"set_std">.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++11>.
 
 =head2 new_cpp14
   
   my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
 
-Calls L</"new_cpp">. After that, call L<set_std('c++14')|/"set_std">.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++14>.
 
 =head2 new_cpp17
   
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
 
-Calls L</"new_cpp">. After that, call L<set_std('c++17')|/"set_std">.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>.
 
 =head1 Instance Methods
-
-=head2 set_std
-
-  $config->set_std($std);
-
-Adds the value that is converted to C<-std=$std> after the last element of L</"ccflags"> field.
-
-B<Example:>
-
-  $config->set_std('gnu99');
 
 =head2 add_ccflag
 
