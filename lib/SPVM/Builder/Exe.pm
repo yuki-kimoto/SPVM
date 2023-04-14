@@ -455,7 +455,9 @@ sub compile_source_file {
     $builder_cc->compile_source_file($compile_info);
   }
   
+  my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(
+    file => $object_file_name,
     compile_info => $compile_info,
   );
   

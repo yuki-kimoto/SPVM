@@ -8,7 +8,18 @@ use File::Basename 'dirname';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
-# Field methods
+# Fields
+sub file {
+  my $self = shift;
+  if (@_) {
+    $self->{file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{file};
+  }
+}
+
 sub compile_info {
   my $self = shift;
   if (@_) {
@@ -25,7 +36,7 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
-
+  
   bless $self, $class;
   
   return $self;
@@ -35,59 +46,80 @@ sub new {
 sub to_string {
   my ($self) = @_;
   
-  return $self->compile_info->output_file;
+  return $self->file;
 }
 
 1;
 
 =head1 Name
 
-SPVM::Builder::ObjectFileInfo - Object file information
+SPVM::Builder::ObjectFileInfo - Object File Information
 
 =head1 Description
 
-B<SPVM::Builder::ObjectFileInfo> is a object file information.
+The SPVM::Builder::ObjectFileInfo class has methods to manipulate information of an object file.
 
 =head1 Fields
 
-Fields of B<SPVM::Builder::ObjectFileInfo>.
+=head2 file
+
+  my $file = $object_file_info->file;
+  $object_file_info->file($file);
+
+Gets and sets the file name of an object file.
 
 =head2 compile_info
 
-  my $compile_info = $object_file->compile_info;
-  $object_file->compile_info($compile_info);
+  my $compile_info = $object_file_info->compile_info;
+  $object_file_info->compile_info($compile_info);
 
-Get and set the L<SPVM::Builder::CompileInfo> object.
+Gets and sets a L<SPVM::Builder::CompileInfo> object.
 
 =head1 Class Methods
 
 =head2 new
 
-  my $object_file = SPVM::Builder::ObjectFileInfo->new;
+  my $object_file_info = SPVM::Builder::ObjectFileInfo->new(%fields);
+
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"file">
+
+undef
+
+=item * L</"compile_info">
+
+undef
+
+=back
 
 =head1 Instance Methods
 
 =head2 to_string
 
-  my $object_file = $object_file->to_string;
+  my $object_file_info = $object_file_info->to_string;
 
-Get the object file name. This is same as C<$object_file->compile_info->output_file>.
+Returns the L</"file"> field.
 
 =head1 Operators
 
-L<SPVM::BlessedObject::String> overloads the following operators.
+Overloads the following operators.
 
 =head2 bool
 
-  my $bool = !!$object_file;
-  
+  my $bool = !!$object_file_info;
+
 Always true.
 
 =head2 stringify
 
-  my $object_file_name = "$object_file";
-  
-Alias for L</"to_string">.
+  my $object_file_info_name = "$object_file_info";
+
+Alias for the L</"to_string"> method.
 
 =head1 Copyright & License
 

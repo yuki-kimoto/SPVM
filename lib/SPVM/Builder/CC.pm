@@ -378,6 +378,7 @@ sub compile_source_files {
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
     my $object_file = SPVM::Builder::ObjectFileInfo->new(
+      file => $object_file_name,
       compile_info => $compile_info,
     );
     
