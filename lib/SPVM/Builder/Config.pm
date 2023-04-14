@@ -821,7 +821,7 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
 =head1 Description
 
-C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
+The SPVM::Builder::Config class has methods to manipulate a config to compile source files and generate a dynamic link.
 
 =head1 Fields
 
@@ -830,9 +830,9 @@ C<SPVM::Builder::Config> is configuration of c/c++ compile and link.
   my $ext = $config->ext;
   $config->ext($ext);
 
-Gets and sets the extension of the SPVM native source.
+Gets and sets the C<ext> field.
 
-The default is undef.
+This field is the extension of a native class.
 
 Examples:
   
@@ -847,7 +847,11 @@ Examples:
   my $cc = $config->cc;
   $config->cc($cc);
 
-Gets and sets a compiler name. The default is the value of C<cc> of L<Config> class.
+Gets and sets the C<cc> field.
+
+This field is a compiler name.
+
+The default is the value of C<cc> of L<Config> class.
 
 Examples:
   
@@ -869,16 +873,20 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Gets and sets header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
+Gets and sets the C<include_dirs> field.
 
-This field is an array reference.
+This field is an array reference of including directories of the compiler.
+
+This is same as C<-I> option of C<gcc>. 
 
 =head2 spvm_core_include_dir
 
   my $spvm_core_include_dir = $config->spvm_core_include_dir;
   $config->spvm_core_include_dir($spvm_core_include_dir);
 
-Gets and sets the header including directory of the SPVM core.
+Gets and sets the C<spvm_core_include_dir> field.
+
+This is the header including directory of the SPVM core.
 
 Default:
 
@@ -891,7 +899,9 @@ The value looks like C<path/SPVM/Builder/include>.
   my $native_include_dir = $config->native_include_dir;
   $config->native_include_dir($native_include_dir);
 
-Gets and sets the path of the header including directory of this native class.
+Gets and sets the C<native_include_dir> field.
+
+This field is the path of the header including directory of this native class.
 
 Default:
 
@@ -904,7 +914,9 @@ The value looks like C<path/Foo.native/include>.
   my $native_src_dir = $config->native_src_dir;
   $config->native_src_dir($native_src_dir);
 
-Gets and sets the path of the source directory of this native class.
+Gets and sets the C<native_src_dir> field.
+
+This field is the path of the source directory of this native class.
 
 Default:
 
@@ -917,7 +929,9 @@ The value looks like C<path/Foo.native/src>.
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Gets and sets compiler flags.
+Gets and sets the C<ccflags> field.
+
+This field is an array reference that contains compiler flags.
 
 Default:
 
@@ -932,7 +946,9 @@ Default:
   my $std = $config->std;
   $config->std($std);
 
-Gets and sets the value for C<-std> option of the compiler.
+Gets and sets the C<std> field.
+
+This field is the value for C<-std> option of the compiler.
 
 Examples:
 
@@ -947,7 +963,9 @@ Examples:
   my $optimize = $config->optimize;
   $config->optimize($optimize);
 
-Gets and sets the option for optimization of the compiler.
+Gets and sets the C<optimize> field.
+
+This field is the option for optimization of the compiler.
 
 The default is C<-O3>.
 
@@ -962,7 +980,11 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets source files. The file name is the relative pass from L</"native_src_dir">.
+Gets and sets the C<source_files> field.
+
+This field is a array reference that contains source files.
+
+The file name is the relative pass from L</"native_src_dir">.
 
 Examples:
 
@@ -973,7 +995,9 @@ Examples:
   my $before_compile_cbs = $config->before_compile_cbs;
   $config->before_compile_cbs($before_compile_cbs);
 
-Gets and sets the callbacks called before a compilation.
+Gets and sets the C<before_compile_cbs> field.
+
+This field is an array reference that contains the callbacks called before a compilation.
 
 Examples:
 
@@ -990,7 +1014,9 @@ Examples:
   my $before_link_cbs = $config->before_link_cbs;
   $config->before_link_cbs($before_link_cbs);
 
-Gets and sets the callbacks called before a link.
+Gets and sets the C<before_link_cbs> field.
+
+This field is an array reference that contains the callbacks called before a link.
 
 Examples:
 
@@ -1008,7 +1034,9 @@ Examples:
   my $ld = $config->ld;
   $config->ld($ld);
 
-Gets and sets a linker.
+Gets and sets the C<ld> field.
+
+This field is a linker name.
 
 Default:
 
@@ -1019,7 +1047,9 @@ The C<ld> of L<Config> class.
   my $lib_dirs = $config->lib_dirs;
   $config->lib_dirs($lib_dirs);
 
-Gets and sets the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
+Gets and sets the C<lib_dirs> field.
+
+This field is an array reference that contains the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
 
 Default:
 
@@ -1036,21 +1066,27 @@ Not Windows
   my $libs = $config->libs;
   $config->libs($libs);
 
-Gets and sets library names or L<SPVM::Builder::LibInfo> objects. These libraries are linked by L<SPVM::Builder::CC/"link"> method.
+Gets and sets the C<libs> field.
+
+This field is an array reference that contains library names or L<SPVM::Builder::LibInfo> objects. These libraries are linked by L<SPVM::Builder::CC/"link"> method.
 
 =head2 ldflags
 
   my ldflags = $config->ldflags;
   $config->ldflags(ldflags);
 
-Gets and sets linker flags. The default value is an emtpy array reference.
+Gets and sets the C<ldflags> field.
+
+This field is an array reference that contains linker flags. The default value is an emtpy array reference.
 
 =head2 dynamic_lib_ldflags
 
   my dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
   $config->dynamic_lib_ldflags(dynamic_lib_ldflags);
 
-Gets and sets linker flags for dynamic link.
+Gets and sets the C<dynamic_lib_ldflags> field.
+
+This field is an array reference that contains linker flags for dynamic link.
 
 Default:
 
@@ -1067,16 +1103,26 @@ Non-Windows
   my $ld_optimize = $config->ld_optimize;
   $config->ld_optimize($ld_optimize);
 
-Gets and sets the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
+Gets and sets the C<ld_optimize> field.
+
+This field is the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
 
 The default is C<-O2>.
+
+Examples:
+
+  $config->ld_optimize("-O2");
 
 =head2 force
 
   my $force = $config->force;
   $config->force($force);
 
-Gets and sets the flag to force compiles and links without caching. The default is undef.
+Gets and sets the C<force> field.
+
+If this field is a true value, the compilation and link is forced without caching.
+
+The default is undef.
 
 undef means forcing is not determined by config.
 
@@ -1085,7 +1131,9 @@ undef means forcing is not determined by config.
   my $quiet = $config->quiet;
   $config->quiet($quiet);
 
-Gets and sets the flag if the compiler and the linker output the results.
+Gets and sets the C<quiet> field.
+
+If this field is a true value, the messages of the compiler and linker is output.
 
 The default is undef. undef means quietness is not determined by config.
 
@@ -1094,14 +1142,18 @@ The default is undef. undef means quietness is not determined by config.
   my $class_name = $config->class_name;
   $config->class_name($class_name);
 
-Gets and sets the name of the class to use this config.
+Gets and sets the C<class_name> field.
+
+This field is the class to use this config.
 
 =head2 file
 
   my $file = $config->file;
   $config->file($file);
 
-Gets and sets the config file path.
+Gets and sets the C<file> field.
+
+This field is the path of the config file.
 
 The default is 1.
 
@@ -1110,7 +1162,9 @@ The default is 1.
   my $file_optional = $config->file_optional;
   $config->file_optional($file_optional);
 
-Gets and sets the value that indicates L<file|/"file"> field is needed for C<new|/"new"> method.
+Gets and sets the C<file_optional> field.
+
+If this field is false and the file that is given by the L<file|/"file"> field is not found, an exception is thrown.
 
 The default is 0.
 
@@ -1119,7 +1173,9 @@ The default is 0.
   my $output_type = $config->output_type;
   $config->output_type($output_type);
 
-Gets and sets the output type of the linker. C<"dynamic_lib">, C<"static_lib"> and C<"exe"> are available.
+Gets and sets the C<output_type> field.
+
+This field is the output type of the linker. C<"dynamic_lib">, C<"static_lib"> and C<"exe"> are available.
 
 Default:
 
@@ -1130,7 +1186,9 @@ Default:
   my $disable_resource = $config->disable_resource;
   $config->disable_resource($disable_resource);
 
-Gets and sets the flag to disable all resources loaded by the L</"use_resource"> method.
+Gets and sets the C<disable_resource> field.
+
+If this value is true, All resources loaded by the L</"use_resource"> method is disabled.
 
 =head1 Class Methods
 
