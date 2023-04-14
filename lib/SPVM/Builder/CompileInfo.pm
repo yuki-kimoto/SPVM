@@ -127,7 +127,6 @@ sub create_compile_command_args {
   return \@compile_command_args;
 }
 
-# Instance methods
 sub to_cmd {
   my ($self) = @_;
 
@@ -161,22 +160,42 @@ Gets and sets a L<SPVM::Builder::Config> object used to compile the source file.
   my $source_file = $compile_info->source_file;
   $compile_info->source_file($source_file);
 
-Gets and sets the source file.
+Gets and sets a source file.
 
 =head2 output_file
 
   my $output_file = $compile_info->output_file;
   $compile_info->output_file($output_file);
 
-Gets and sets the output file.
+Gets and sets an output file.
 
 =head1 Class Methods
 
 =head2 new
 
-  my $compile_info = SPVM::Builder::CompileInfo->new;
+  my $compile_info = SPVM::Builder::CompileInfo->new(%fields);
 
-Creates a new L<SPVM::Builder::CompileInfo> object.
+Creates a new L<SPVM::Builder::CompileInfo> object with L</"Fields">.
+
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"source_file">
+
+undef
+
+=item * L</"output_file">
+
+undef
+
+=item * L</"config">
+
+undef
+
+=back
 
 =head1 Instance Methods
 
@@ -184,7 +203,9 @@ Creates a new L<SPVM::Builder::CompileInfo> object.
 
   my $compile_command = $compile_info->create_compile_command;
 
-Creates the compilation command, and returns it. The return value is an array reference.
+Creates the compilation command, and returns it.
+
+The return value is an array reference.
 
 The following one is an example of the return value.
 
