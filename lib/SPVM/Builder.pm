@@ -82,10 +82,6 @@ sub build_dist {
   
   my $build_dir = $self->build_dir;
   
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-  );
-  
   my $dl_func_list = $options->{dl_func_list};
   my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
@@ -96,6 +92,10 @@ sub build_dist {
   if ($category eq 'precompile') {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
+    
+    my $cc = SPVM::Builder::CC->new(
+      build_dir => $build_dir,
+    );
     
     $cc->build_precompile_class_source_file(
       $class_name,
@@ -115,6 +115,9 @@ sub build_dist {
   
   my $build_lib_dir = 'blib/lib';
   
+  my $cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+  );
   $cc->build(
     $class_name,
     {
@@ -147,11 +150,6 @@ sub build_at_runtime {
   
   my $build_dir = $self->build_dir;
   
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    at_runtime => 1,
-  );
-  
   my $dl_func_list = $options->{dl_func_list};
   my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
@@ -171,6 +169,11 @@ sub build_at_runtime {
   if ($category eq 'precompile') {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
+    
+    my $cc = SPVM::Builder::CC->new(
+      build_dir => $build_dir,
+      at_runtime => 1,
+    );
     
     $cc->build_precompile_class_source_file(
       $class_name,
@@ -194,6 +197,10 @@ sub build_at_runtime {
   my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
   mkpath $build_lib_dir;
   
+  my $cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    at_runtime => 1,
+  );
   my $build_file = $cc->build(
     $class_name,
     {
