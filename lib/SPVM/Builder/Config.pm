@@ -98,6 +98,17 @@ sub ccflags {
   }
 }
 
+sub dynamic_lib_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_lib_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib_ccflags};
+  }
+}
+
 sub std {
   my $self = shift;
   if (@_) {
@@ -297,15 +308,20 @@ sub new {
   # ccflags
   unless (defined $self->{ccflags}) {
     $self->ccflags([]);
+  }
+  
+  # dynamic_lib_ccflags
+  unless (defined $self->{dynamic_lib_ccflags}) {
+    $self->dynamic_lib_ccflags([]);
     
-    my @default_ccflags;
+    my @default_dynamic_lib_ccflags;
     
     # If dynamic link libraries must link position independent codes, add -fPIC option.
     if ($Config{cccdlflags} =~ /-fPIC\b/) {
-      push @default_ccflags, '-fPIC';
+      push @default_dynamic_lib_ccflags, '-fPIC';
     }
     
-    $self->add_ccflag(@default_ccflags);
+    $self->add_ccflag(@default_dynamic_lib_ccflags);
   }
   
   # optimize
@@ -901,6 +917,15 @@ Gets and sets the C<ccflags> field.
 
 This field is an array reference that contains compiler flags.
 
+=head2 dynamic_lib_ccflags
+
+  my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
+  $config->dynamic_lib_ccflags($dynamic_lib_ccflags);
+
+Gets and sets the C<dynamic_lib_ccflags> field.
+
+This field is an array reference that contains compiler flags for information when the linker generates a dynamic link.
+
 =head2 std
 
   my $std = $config->std;
@@ -1183,6 +1208,10 @@ undef
 The C<$Config{cc}> of the L<Config> class.
 
 =item * L</"ccflags">
+
+[]
+
+=item * L</"dynamic_lib_ccflags">
 
 If C<$Config{cccdlflags}> contains C<-fPIC>, the following value is its default value.
 

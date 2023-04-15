@@ -87,6 +87,12 @@ sub create_compile_command_args {
   
   push @compile_command_args, @{$config->ccflags};
   
+  my $output_type = $config->output_type;
+  
+  if ($output_type eq 'dynamic_lib') {
+    push @compile_command_args, @{$config->dynamic_lib_ccflags};
+  }
+  
   # include directories
   {
     my @all_include_dirs;

@@ -5,6 +5,7 @@
   [New Features]
     * Added the disable_resource field in the SPVM::Builder::Config class.
     * Added the file field in the SPVM::Builder::ObjectFileInfo class.
+    * Added the dynamic_lib_ccflags field in the SPVM::Builder::Config class and ccflags default is [].
   [Incompatible Changes]
     * Removed the set_std method in the SPVM::Builder::Config and added the std field.
     * Renamed the static field in the SPVM::Builder::LibInfo to the is_static field.
