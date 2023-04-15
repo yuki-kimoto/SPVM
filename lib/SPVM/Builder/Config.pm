@@ -274,7 +274,7 @@ sub output_type {
   }
 }
 
-# Methods
+# Class Methods
 sub new {
   my $class = shift;
   
@@ -289,21 +289,6 @@ sub new {
     confess "\"file\" option must be specified";
   }
   
-  # quiet
-  unless (defined $self->{quiet}) {
-    $self->quiet(undef);
-  }
-
-  # force
-  unless (defined $self->{force}) {
-    $self->force(undef);
-  }
-  
-  # ext
-  unless (defined $self->{ext}) {
-    $self->ext(undef);
-  }
-
   # cc
   unless (defined $self->{cc}) {
     $self->cc($Config{cc});
@@ -415,7 +400,7 @@ sub new {
   unless (defined $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
   }
-
+  
   # lib_dirs
   unless (defined $self->{lib_dirs}) {
     $self->lib_dirs([]);
@@ -549,6 +534,7 @@ sub new_cpp17 {
   return $self;
 }
 
+# Instance Methods
 sub add_ccflag {
   my ($self, @ccflags) = @_;
   
@@ -888,12 +874,6 @@ Gets and sets the C<spvm_core_include_dir> field.
 
 This is the header including directory of the SPVM core.
 
-Default:
-
-The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
-
-The value looks like C<path/SPVM/Builder/include>.
-
 =head2 native_include_dir
 
   my $native_include_dir = $config->native_include_dir;
@@ -902,12 +882,6 @@ The value looks like C<path/SPVM/Builder/include>.
 Gets and sets the C<native_include_dir> field.
 
 This field is the path of the header including directory of this native class.
-
-Default:
-
-If the L</"file"> field is defined, the path of the header including directory is created from the L</"file"> field.
-
-The value looks like C<path/Foo.native/include>.
 
 =head2 native_src_dir
 
@@ -918,12 +892,6 @@ Gets and sets the C<native_src_dir> field.
 
 This field is the path of the source directory of this native class.
 
-Default:
-
-If the L</"file"> field is defined, the path of the source directory is created from the L</"file"> field.
-
-The value looks like C<path/Foo.native/src>.
-
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
@@ -932,14 +900,6 @@ The value looks like C<path/Foo.native/src>.
 Gets and sets the C<ccflags> field.
 
 This field is an array reference that contains compiler flags.
-
-Default:
-
-  # $Config{cccdlflags} has -fPIC.
-  ['-fPIC']
-  
-  # Other
-  []
 
 =head2 std
 
@@ -1038,10 +998,6 @@ Gets and sets the C<ld> field.
 
 This field is a linker name.
 
-Default:
-
-The C<ld> of L<Config> class.
-
 =head2 lib_dirs
 
   my $lib_dirs = $config->lib_dirs;
@@ -1050,16 +1006,6 @@ The C<ld> of L<Config> class.
 Gets and sets the C<lib_dirs> field.
 
 This field is an array reference that contains the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
-
-Default:
-
-Windows
-  
-  The directory that perlxxx.dll exists
-  
-Not Windows
-
-  empty list
 
 =head2 libs
 
@@ -1201,6 +1147,132 @@ Create a C<SPVM::Builder::Config> object with L<fields|/"Fields">.
 Exceptions:
 
 If the L</"file_optional"> field is not set to a true value, the L</"file"> field must be passed. Otherwise an exception is thrown.
+
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"class_name">
+
+undef
+
+=item * L</"file">
+
+undef
+
+=item * L</"file_optional">
+
+0
+
+=item * L</"ext">
+
+undef
+
+=item * L</"quiet">
+
+
+
+=item * L</"force">
+
+
+
+=item * L</"cc">
+
+The C<$Config{cc}> of the L<Config> class.
+
+=item * L</"ccflags">
+
+If C<$Config{cccdlflags}> contains C<-fPIC>, the following value is its default value.
+
+["-fPIC"]
+
+Otherwise the following value is its default value.
+
+[]
+
+=item * L</"std">
+
+undef
+
+=item * L</"optimize">
+
+"-O3"
+
+=item * L</"include_dirs">
+
+[]
+
+=item * L</"spvm_core_include_dir">
+
+The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
+
+The value looks like C<path/SPVM/Builder/include>.
+
+=item * L</"native_include_dir">
+
+If the L</"file"> field is defined, the path of the header including directory is created from the L</"file"> field.
+
+The value looks like C<path/Foo.native/include>.
+
+=item * L</"native_src_dir">
+
+If the L</"file"> field is defined, the path of the source directory is created from the L</"file"> field.
+
+The value looks like C<path/Foo.native/src>.
+
+=item * L</"source_files">
+
+[]
+
+=item * L</"before_compile_cbs">
+
+[]
+
+=item * L</"ld">
+
+The C<$Config{ld}> of the L<Config> class.
+
+=item * L</"ldflags">
+
+=item * L</"dynamic_lib_ldflags">
+
+If the L</"output_type"> field is C<dynamic_lib>, the following value is its default value.
+
+Windows:
+
+["-mdll", "-s"]
+  
+Other OSs:
+
+['-shared']
+
+If the L</"output_type"> field is not defined, the following value is its default value.
+
+[]
+
+=item * L</"ld_optimize">
+
+"-O2"
+
+=item * L</"lib_dirs">
+
+[]
+
+=item * L</"libs">
+
+[]
+
+=item * L</"before_link_cbs">
+
+[]
+
+=item * L</"output_type">
+
+"dynamic_lib"
+
+=back
 
 Examples:
 

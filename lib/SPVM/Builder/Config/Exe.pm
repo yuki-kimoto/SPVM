@@ -7,6 +7,7 @@ use Carp 'confess';
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 
+# Inheritance
 use base 'SPVM::Builder::Config';
 
 # Fields
