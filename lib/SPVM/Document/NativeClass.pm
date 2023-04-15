@@ -1,229 +1,198 @@
 =head1 Name
 
-SPVM::Document::NativeClass - How to write the native class
+SPVM::Document::NativeClass - Document of Native Class
 
 =head1 Description
 
-The native class is the class that is implemented by native language such as the C language or C<C++>.
+A native class is the class that is implemented by a native language such as the C language or C++.
 
-=head1 Native Method Declaration
+=head1 Native Method Definition
 
-A native method declaration are written using the method attribute C<native> in a SPVM class file. The method cannnot have the block. it ends with a semicolon.
+A native method is defined by the C<native> method attribute in a SPVM class file. It ends with a semicolon. The method cannnot have the block. 
 
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
+  # SPVM/MyClass.spvm
+  class MyClass {
     native static method sum : int ($num1 : int, $num2 : int);
   }
 
 =head1 Native Config File
 
-A native config file is needed for the native class. The extension is C<config>. Put the config file in the same directory as the SPVM class.
+A native config file is needed for a native class. The name of the config file is the SPVM class file extension replaced by the C<.config>.
 
-  # Native configuration file for Foo::Bar class
-  SPVM/Foo/Bar.config
+  # Native config file
+  SPVM/MyClass.config
 
 If the native config file does not exist, an exception occurs.
 
-Native config files are writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object. Otherwise an exception will occur.
+A native config file is writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object. Otherwise an exception is thrown.
 
-I show some examples of native config files.
+Examples:
 
-=head2 GNU99 Config File
+C99:
 
-  # GNU99 Config File
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-
-  $config;
-
-=head2 C99 Config File
-
-  # C99 Config File
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-
-  $config;
-
-=head2 C11 Config File
-
-  # C11 Config File
-  use strict;
-  use warnings;
   
-  use SPVM::Builder::Config;
+  $config;
+
+C11:
+
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
   
   $config;
 
-=head2 C++ Config File
+GNU C99:
 
-  # C++ Config File
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
-
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  
   $config;
 
-=head2 C++11 Config File
+C++:
 
-  # C++11 Config File
-  use strict;
-  use warnings;
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
   
-  use SPVM::Builder::Config;
+  $config;
+
+C++11:
+
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
   $config;
 
-=head2 CUDA/nvcc Config File
-
-  use strict;
-  use warnings;
+CUDA/nvcc:
 
   my $config = SPVM::Builder::Config->new(file => __FILE__);
-
+  
   # Compiler and Linker common
   my @ccldflags = qw(--compiler-options '-fPIC');
-
+  
   # Compiler
   $config->cc('nvcc');
   $config->add_ccflag(@ccldflags);
   $config->ext('cu');
-
+  
   # Linker
   $config->ld('nvcc');
   $config->add_ldflag('-shared', @ccldflags);
-
+  
   $config;
 
-=head2 Config Setting
+Outputting messages of the compiler and the linker:
 
-=head3 Output the commands of the compililation and the link
-
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-  # Output the commands of the compililation and link
   $config->quiet(0);
 
   $config;
 
-=head3 Force the compilation and the link
+Forcing the compilation and the link:
 
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-
-  # Force the compilation and the link
+  
   $config->force(1);
-
+  
   $config;
 
 =head1 Native Class
 
-A native class is written by a native language such as the C language, C<C++>, or the language that the rule of function call is the same as the C language. 
+A native class is the class that is implemented by a native language such as the C language or C++.
+
+The name of the native class file is the SPVM class file extension replaced by the L<extension of the native class|/"Native Class File Extension">.
+
+  SPVM/MyClass.c
 
 =head2 Native Class File Extension
 
-The file extension of the native class is defined L<ext|SPVM::Builder::Config/"ext"> method in L<the config file|SPVM::Builder::Config>.
+The file extension of a native class is defined in the config using the L<ext|SPVM::Builder::Config/"ext"> field.
 
+Examples:
+
+  $config->ext('c');
+  
   $config->ext('cpp');
-
-Generally the extension of the C language is C<c>, the extension of C<C++> is C<cpp>, the extension of C<CUDA/nvcc> is C<cu>.
-
-Put the config file in the same directory as the SPVM class.
-
-  # Native class file for Foo::Bar class
-  SPVM/Foo/Bar.c
-
-=head2 Native Function Definition
+  
+  $config->ext('cc');
+  
+  $config->ext('cu');
+  
+=head2 Native Implementation Function
 
 This is an example of SPVM natvie class. The config file is L<GNU99|/"GNU99 Config File">.
-
+  
+  // SPVM/MyClass.c
+  
   #include "spvm_native.h"
-
-  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
+  
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
     int32_t num1 = stack[0].ival;
     int32_t num2 = stakc[1].ival;
-
+    
     int32_t total = num1 + num2;
-
+    
     stack[0].ival = total;
-
+    
     return 0;
   }
 
-=head2 Native Function Name
+=head3 Native Implementation Function Name
 
-A SPVM native method have a native function.
+A native implementation function must have a name created with the following steps.
 
-Native funtions have the rule of the names. For example, the name is C<SPVM__Foo__Bar__sum>.
+=over 2
 
-  SPVM__Foo__Bar__sum
+=item * 1. C<::> in the SPVM class name is replaced with C<__>.
 
-This name is write by the following rules.
+=item * 2. C<SPVM__> is added at the beginning.
 
-The function name starts with C<SPVM__>.
+=item * 3. The name of the native method is added at the end.
 
-Followed by the class name "Foo__Bar", that is replaced C<::> with C<__>.
+=back
 
-Followed by C<__>.
+If the name of a native implementation function is invalid, an exception is thrown.
 
-Followed by the method name "sum".
+Examples:
 
-If the name is invalid, a compilation error occurs.
+MyClass:
 
-=head2 Native API Header
+  class MyClass {
+    native method foo : void ();
+  }
+  
+  SPVM__MyCLass__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  }
+  
+Foo::Bar:
 
-Include C<spvm_native.h> at the beginning of the natvie class. C<spvm_native.h> is the header of Native APIs. It defines L<the native APIs||/"List-of-Native-APIs"> and the data structures, such as C<SPVM_ENV>, C<SPVM_VALUE>.
+  class Foo::Bar {
+    native method foo : void ();
+  }
+  
+  SPVM__Foo__Bar__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  }
+  
+=head3 Native API Header
 
   #include "spvm_native.h"
 
-=head2 Native Function Arguments
+The included header file C<spvm_native.h> is the header file of L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-A native function has two arguments.
+=head3 Native Implementation Function Arguments
 
-The first argument is C<env> that type is C<SPVM_ENV*>. This has the information of the runtime environment.
+A native implementation function has two arguments.
 
-The second argument is C<stack> that type is C<SPVM_VALUE*>. This is used for getting the values of the arguments and setting the return value.
+The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<execution environment|Execution Environment>.
 
-  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<execution stack|Execution Stack>.
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   }
 
-In the above example, SPVM native method takes two arguments that type is C<int>. It calculates the sum of the tow values, and returns the total value.
+=head2 Native Implementation Function Return Value
 
-  #include "spvm_native.h"
-
-  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    int32_t num1 = stack[0].ival;
-    int32_t num2 = stakc[1].ival;
-
-    int32_t total = num1 + num2;
-
-    stack[0].ival = total;
-
-    return 0;
-  }
-
-=head2 Native Function Return Value
-
-The type of return value of native function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
+The type of return value of native implementation function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
 
 Note that this is B<not> the return value of the SPVM native method, such as the total value in the above example.
 
@@ -241,15 +210,15 @@ If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" direct
 
 The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM class name is changed to ".o".
 
-  ~/.spvm_build/work/object/Foo/Bar.o
+  ~/.spvm_build/work/object/MyClass.o
 
 The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM class name is changed to ".so", or etc corresponding to your os.
 
   # Unix/Linux
-  ~/.spvm_build/work/object/Foo/Bar.so
+  ~/.spvm_build/work/object/MyClass.so
 
   # Windows
-  ~/.spvm_build/work/object/Foo/Bar.dll
+  ~/.spvm_build/work/object/MyClass.dll
 
 =head1 Execution Environment
 
@@ -259,7 +228,7 @@ The object of the C<SPVM_ENV*> type is an execution environement.
 
 This object is passed as the first argument of a Native API.
 
-  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   }
 
@@ -271,12 +240,12 @@ To free this object, use the L<free_env|SPVM::Document::NativeAPI/"free_env"> me
 
   my_env->free_env(my_env);
 
-=head1 Call Stack
+=head1 Execution Stack
 
-The call stack is the second argument of the definition of the Native Method. This is called stack. Stack is used getting arguments and return the value.
+An execution stack is passed to the second argument of the definition of the native method.. Stack is used getting arguments and return the value.
 
-  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
   }
 
 SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
@@ -292,7 +261,23 @@ For example, to get the value of the second argument(1th) of long type, write as
 For example, to return a value of double type, write as follows.
 
   stack[0].dval = 0.5;
-  
+
+Examples:
+
+  #include "spvm_native.h"
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    int32_t num1 = stack[0].ival;
+    int32_t num2 = stakc[1].ival;
+    
+    int32_t total = num1 + num2;
+    
+    stack[0].ival = total;
+    
+    return 0;
+  }
+
 =head1 Getting Argument
 
 =head2 Getting byte Type Argument
@@ -455,14 +440,14 @@ L<get_class_method_id|"get_class_method_id"> get a method id of a class method.
 L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance method.
 
   // Get method id of class method
-  int32_t method_id = env->get_class_method_id(env, "Foo", "sum", "int(int,int)");
+  int32_t method_id = env->get_class_method_id(env, "MyClass", "sum", "int(int,int)");
 
   // Get method id of instance method
   int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(int,int)");
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (method_id < 0) { return env->die(env, stack, "Can't find method id", __func__, "Foo/Bar.c", __LINE__); }
+  if (method_id < 0) { return env->die(env, stack, "Can't find method id", __func__, "MyClass.c", __LINE__); }
 
 Set the SPVM method argument to stack before calling the method.
 
@@ -483,7 +468,7 @@ The return value of the method is stored in the first element of the stack.
 
 Native method are entirely enclosed in scope.
 
-Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Method ends. When the reference count reaches 0, it is released.
+Objects added to the mortal stack will automatically have their reference count decremented by 1 when the native method ends. When the reference count reaches 0, it is released.
 
 Use push_mortal to add objects to the mortal stack.
 
@@ -507,7 +492,7 @@ Information about the mortal stack is stored in env.
 
 =head1 Exception
 
-In the Native Method, it is the return value that indicates whether an exception has occurred.
+In the native method, it is the return value that indicates whether an exception has occurred.
 
   return 0;
 
@@ -526,7 +511,7 @@ If no exception message is set, a default exception message will be set.
 
 Usually, L<die|"die"">  is defined to make it easier to use, so it is better to use this.
 
-  return env->die("Error. Values must be %d and %d", 3, 5, __func__, "Foo/Bar.c", __LINE__);
+  return env->die("Error. Values must be %d and %d", 3, 5, __func__, "MyClass.c", __LINE__);
 
 L<die|"die""> can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
 
