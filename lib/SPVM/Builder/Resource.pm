@@ -58,8 +58,14 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
-
-  return bless $self, ref $class || $class;
+  
+  bless $self, ref $class || $class;
+  
+  unless ($self->argv) {
+    $self->argv([]);
+  }
+  
+  return $self;
 }
 
 sub to_string {
@@ -93,45 +99,68 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
   my $class_name = $resource->class_name;
   $resource->class_name($class_name);
 
-Gets and sets the class name of the resource.
+Gets and sets the C<class_name> field.
+
+This field is a class name of a resource.
 
 =head2 mode
 
   my $mode = $resource->mode;
   $resource->mode($mode);
 
-Gets and sets the mode of the config file of the resource.
+Gets and sets the C<mode> field.
+
+This field is a mode of a config file of a resource.
 
 =head2 argv
 
   my $argv = $resource->argv;
   $resource->argv($argv);
 
-Gets and sets the command line arguments C<@ARGV> of the config file of the resource.
+Gets and sets the C<mode> field.
+
+This field is an array reference that contains command line arguments C<@ARGV> of a config file of a resource.
 
 =head2 config
 
   my $config = $resource->config;
   $resource->config($config);
 
-Gets and sets the config of the resource. The config is a L<SPVM::Builder::Config> object.
+Gets and sets the C<config> field.
+
+This field is a a L<SPVM::Builder::Config> object for a resource.
 
 =head1 Class Methods
 
 =head2 new
 
-  my $resource = SPVM::Builder::Resource->new;
   my $resource = SPVM::Builder::Resource->new(%fields);
-  
-Creates a L<SPVM::Builder::Resource> object.
 
-Examples:
+Creates a L<SPVM::Builder::Resource> object with L</"Fields">.
 
-  my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib',
-    mode => 'high_performance',
-    argv => ['foo', 'bar'],
-  );
+Default Field Values:
+
+If a field is not defined, the field is set to the following default value.
+
+=over 2
+
+=item * L</"class_name">
+
+undef
+
+=item * L</"mode">
+
+undef
+
+=item * L</"argv">
+
+[]
+
+=item * L</"config">
+
+undef
+
+=back
 
 =head1 Instance Methods
 
@@ -139,7 +168,7 @@ Examples:
 
   my $string = $resource->to_string;
 
-Gets the string representation. This is the same as the value of L</"class_name">.
+Returns the L</"class_name"> field.
 
 =head1 Operators
 
