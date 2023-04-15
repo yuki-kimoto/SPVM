@@ -312,16 +312,12 @@ sub new {
   
   # dynamic_lib_ccflags
   unless (defined $self->{dynamic_lib_ccflags}) {
-    $self->dynamic_lib_ccflags([]);
-    
-    my @default_dynamic_lib_ccflags;
-    
-    # If dynamic link libraries must link position independent codes, add -fPIC option.
     if ($Config{cccdlflags} =~ /-fPIC\b/) {
-      push @default_dynamic_lib_ccflags, '-fPIC';
+      $self->dynamic_lib_ccflags(['-fPIC']);
     }
-    
-    $self->add_ccflag(@default_dynamic_lib_ccflags);
+    else {
+      $self->dynamic_lib_ccflags([]);
+    }
   }
   
   # optimize
@@ -396,19 +392,11 @@ sub new {
   
   # dynamic_lib_ldflags
   unless (defined $self->{dynamic_lib_ldflags}) {
-    $self->dynamic_lib_ldflags([]);
-    
-    if ($self->output_type eq 'dynamic_lib') {
-      my @dynamic_lib_ldflags;
-      
-      # Dynamic link options
-      if ($^O eq 'MSWin32') {
-        push @dynamic_lib_ldflags, '-mdll', '-s';
-      }
-      else {
-        push @dynamic_lib_ldflags, '-shared';
-      }
-      $self->dynamic_lib_ldflags(\@dynamic_lib_ldflags);
+    if ($^O eq 'MSWin32') {
+      $self->dynamic_lib_ldflags(['-mdll', '-s']);
+    }
+    else {
+      $self->dynamic_lib_ldflags(['-shared']);
     }
   }
   
@@ -784,7 +772,11 @@ sub _remove_ext_from_config_file {
 
 =head1 Name
 
-SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
+The SPVM::Builder::Config - Config of Compiler and Linker
+
+=head1 Description
+
+The SPVM::Builder::Config class has methods to manipulate a config to compile source files and generate a dynamic link.
 
 =head1 Usage
 
@@ -793,16 +785,16 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   # Create a config
   my $config = SPVM::Builder::Config->new(file => __FILE__);
   
-  # Create a SPVM::Builder::Config object with "C99"
+  # C99
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
   
-  # Create a SPVM::Builder::Config object with "GNU99"
+  # GNU C99
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
   
-  # Create a SPVM::Builder::Config object as "C++"
+  # C++
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
   
-  # Create a SPVM::Builder::Config object with "C++11" standard of "C++"
+  # C++11
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
   # Optimize
@@ -820,10 +812,6 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
   
   # Gets resouce information
   my $resource = $config->get_resource('TestCase::Resource::Zlib');
-
-=head1 Description
-
-The SPVM::Builder::Config class has methods to manipulate a config to compile source files and generate a dynamic link.
 
 =head1 Fields
 
@@ -852,8 +840,6 @@ Examples:
 Gets and sets the C<cc> field.
 
 This field is a compiler name.
-
-The default is the value of C<cc> of L<Config> class.
 
 Examples:
   
@@ -952,8 +938,6 @@ Gets and sets the C<optimize> field.
 
 This field is the option for optimization of the compiler.
 
-The default is C<-O3>.
-
 Examples:
 
   $config->optimize('-O3');
@@ -1048,7 +1032,7 @@ This field is an array reference that contains library names or L<SPVM::Builder:
 
 Gets and sets the C<ldflags> field.
 
-This field is an array reference that contains linker flags. The default value is an emtpy array reference.
+This field is an array reference that contains linker flags.
 
 =head2 dynamic_lib_ldflags
 
@@ -1057,17 +1041,7 @@ This field is an array reference that contains linker flags. The default value i
 
 Gets and sets the C<dynamic_lib_ldflags> field.
 
-This field is an array reference that contains linker flags for dynamic link.
-
-Default:
-
-Windows
-
-  ['-mdll', '-s']
-  
-Non-Windows
-
-  ['-shared']
+This field is an array reference that contains linker flags for a dynamic link.
 
 =head2 ld_optimize
 
@@ -1078,11 +1052,9 @@ Gets and sets the C<ld_optimize> field.
 
 This field is the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
 
-The default is C<-O2>.
-
 Examples:
 
-  $config->ld_optimize("-O2");
+  $config->ld_optimize("-O3");
 
 =head2 force
 
@@ -1093,10 +1065,6 @@ Gets and sets the C<force> field.
 
 If this field is a true value, the compilation and link is forced without caching.
 
-The default is undef.
-
-undef means forcing is not determined by config.
-
 =head2 quiet
 
   my $quiet = $config->quiet;
@@ -1105,8 +1073,6 @@ undef means forcing is not determined by config.
 Gets and sets the C<quiet> field.
 
 If this field is a true value, the messages of the compiler and linker is output.
-
-The default is undef. undef means quietness is not determined by config.
 
 =head2 class_name
 
@@ -1126,8 +1092,6 @@ Gets and sets the C<file> field.
 
 This field is the path of the config file.
 
-The default is 1.
-
 =head2 file_optional
 
   my $file_optional = $config->file_optional;
@@ -1136,8 +1100,6 @@ The default is 1.
 Gets and sets the C<file_optional> field.
 
 If this field is false and the file that is given by the L<file|/"file"> field is not found, an exception is thrown.
-
-The default is 0.
 
 =head2 output_type
 
@@ -1267,8 +1229,6 @@ The C<$Config{ld}> of the L<Config> class.
 
 =item * L</"dynamic_lib_ldflags">
 
-If the L</"output_type"> field is C<dynamic_lib>, the following value is its default value.
-
 Windows:
 
 ["-mdll", "-s"]
@@ -1276,10 +1236,6 @@ Windows:
 Other OSs:
 
 ['-shared']
-
-If the L</"output_type"> field is not defined, the following value is its default value.
-
-[]
 
 =item * L</"ld_optimize">
 
