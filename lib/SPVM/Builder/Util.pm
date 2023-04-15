@@ -750,7 +750,7 @@ SPVM::Builder::Util - Builder Utilities
 
 =head1 Description
 
-The SPVM::Builder::Util::API class has utility functions for the SPVM builder L<SPVM::Builder>.
+The SPVM::Builder::Util class has utility functions for the L<SPVM::Builder> class.
 
 =head1 Copyright & License
 
