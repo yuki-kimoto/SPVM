@@ -1063,7 +1063,11 @@ Examples:
 
 Gets and sets the C<force> field.
 
-If this field is a true value, the compilation and link is forced without caching.
+If this field is a true value, the compilation and link are forced without caching.
+
+If this field is a false value, they are not forced.
+
+If this field is undef, whether they are forced or not is determined by other conditions.
 
 =head2 quiet
 
@@ -1072,7 +1076,11 @@ If this field is a true value, the compilation and link is forced without cachin
 
 Gets and sets the C<quiet> field.
 
-If this field is a true value, the messages of the compiler and linker is output.
+If this field is a true value, messages of the compiler and linker are output.
+
+If this field is a false value, the messages are not output.
+
+If this field is undef, whether the messages are output or not is determined by other conditions.
 
 =head2 class_name
 
@@ -1159,11 +1167,11 @@ undef
 
 =item * L</"quiet">
 
-
+undef
 
 =item * L</"force">
 
-
+undef
 
 =item * L</"cc">
 
