@@ -1,4 +1,4 @@
-0.9706 2023-04-13
+0.9706 2023-04-17
   [Concept Changes]
     * Call Stack is renamed to Excution Stack
       because this is a not call stack.
@@ -10,6 +10,7 @@
     * Removed the set_std method in the SPVM::Builder::Config and added the std field.
     * Renamed the static field in the SPVM::Builder::LibInfo to the is_static field.
     * The to_string method in the SPVM::Builder::ObjectFileInfo gets to return the file field.
+    * Changed the beheivior of the quiet field in the SPVM::Builder::Config. A negative value means detecting quiet, not undef.
   [Bug Fix]
     * Fixed the bug that the to_string method in the SPVM::Builder::CompileInfo is not renamed to the to_cmd method.
   [Document Improvement]
