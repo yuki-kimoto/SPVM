@@ -152,19 +152,19 @@ Examples:
 
 =head2 SPVM_CC_DEBUG
 
-If the C<SPVM_CC_DEBUG> environement variable is a true value, debug messages from the L<SPVM::Builder::CC> class are printed to stderr.
+If the C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
 
 =head2 SPVM_CC_QUIET
 
-If the C<SPVM_CC_QUIET> environement variable is a true value, the messages from the compiler and linker used by the L<SPVM::Builder::CC> class are not output.
+If the C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
 
-If it is defined and a false value, the messages are output.
+If it is defined and a false value of Perl, the messages are printed.
 
 This setting has a higher priority than the L<quiet|SPVM::Builder::Config/"quiet"> field of the L<SPVM::Builder::Config> class.
 
 =head2 SPVM_CC_FORCE
 
-If the C<SPVM_CC_FORCE> environement variable is a true value, the compilation and link by the L<SPVM::Builder::CC> class are forced.
+If the C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
 
 This setting has a higher priority than the L<force|SPVM::Builder::Config/"force"> field of the L<SPVM::Builder::Config> class.
 

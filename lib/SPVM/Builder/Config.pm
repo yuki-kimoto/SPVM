@@ -831,7 +831,7 @@ Examples:
   
   # Foo/Bar.cpp
   $config->ext('cpp');
-  
+
 =head2 cc
 
   my $cc = $config->cc;
@@ -970,13 +970,13 @@ This field is an array reference that contains the callbacks called before a com
 
 Examples:
 
-  $config->before_compile_cbs([sub {
+  $config->add_before_compile_cb(sub {
     my ($config, $compile_info) = @_;
     
     my $cc = $compile_info->cc;
     
     # Do something
-  }]);
+  });
 
 =head2 before_link_cbs
 
@@ -989,14 +989,14 @@ This field is an array reference that contains the callbacks called before a lin
 
 Examples:
 
-  $config->before_link_cbs([sub {
+  $config->add_before_link_cb(sub {
     my ($config, $link_info) = @_;
     
     my $object_files = $link_info->object_files;
     
     # Do something
     
-  }]);
+  });
 
 =head2 ld
 
@@ -1117,10 +1117,6 @@ If this field is false and the file that is given by the L<file|/"file"> field i
 Gets and sets the C<output_type> field.
 
 This field is the output type of the linker. C<"dynamic_lib">, C<"static_lib"> and C<"exe"> are available.
-
-Default:
-
-"dynamic_lib"
 
 =head2 disable_resource
 
@@ -1305,7 +1301,11 @@ Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu11>.
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to C<C++> compiler and sets the L</"ld"> field to C<C++> linker.
+Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker.
+
+If C<$Config{gccversion}> of the L<Config> class matches the regex C</\bclang\b/i>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>.
+
+Otherwise the L</"cc"> field and the L</"ld"> field are set to set to C<g++>.
 
 =head2 new_cpp11
   
