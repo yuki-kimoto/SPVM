@@ -78,6 +78,8 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|my %configure_and_runtime_requires = ('SPVM' => |));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
@@ -225,9 +227,14 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($perl_class_file, 'yuki.com'));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "Copyright (c) $year Yuki"));
   
-  my $spvm_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM//Foo/Bar/Baz.spvm";
+  my $spvm_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.spvm";
   ok(-f $spvm_class_file);
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo::Bar::Baz {"));
+
+  my $makefile_pl_file = "$tmp_dir/SPVM-Foo-Bar-Baz/Makefile.PL";
+  ok(-f $makefile_pl_file);
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'Yuki'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'yuki.com'));
   
   my $basic_test_file = "$tmp_dir/SPVM-Foo-Bar-Baz/t/basic.t";
   ok(-f $basic_test_file);

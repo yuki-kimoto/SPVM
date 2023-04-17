@@ -766,6 +766,18 @@ sub generate_makefile_pl_file {
   my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
   
+  # User name
+  my $user_name = $self->user_name;
+  unless (defined $user_name) {
+    $user_name = '[--user-name]'
+  }
+  
+  # User email
+  my $user_email = $self->user_email;
+  unless (defined $user_email) {
+    $user_email = '[--user-email]'
+  }
+  
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
 use 5.008_007;
@@ -795,7 +807,7 @@ WriteMakefile(
   LICENSE           => 'mit',
   (\$] >= 5.005 ?     ## Add these new keywords supported since 5.005
     (ABSTRACT_FROM  => '$perl_class_rel_file',
-     AUTHOR         => 'USER_NAME<USER_MAIL>') : ()),
+     AUTHOR         => '$user_name<$user_email>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build']},
   META_MERGE => {
