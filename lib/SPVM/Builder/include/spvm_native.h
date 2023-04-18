@@ -389,6 +389,7 @@ struct spvm_env_runtime {
   int32_t (*get_method_is_enum)(void* runtime, int32_t method_id);
   int32_t (*get_type_flag)(void* runtime, int32_t type_id);
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
+  int32_t (*get_class_version_id)(void* runtime, int32_t class_id);
 };
 
 struct spvm_env_compiler {

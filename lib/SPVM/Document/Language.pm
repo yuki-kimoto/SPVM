@@ -2209,6 +2209,81 @@ In a class block, L<loading classes|/"Loading Class">, L<class variables|/"Class
 
 If more than one class is defined in a class file, a compilation error occurs.
 
+=head2 Version Declaration
+
+The C<version> keyword declares the version of the class.
+
+  version VERSION_STRING;
+
+The operand VERSION_STRING is a version string.
+
+The version string is a version of a class such as C<"1.001003">.
+
+This is the string type.
+
+This is composed of numbers C<0-9> and a floating point C<.>.
+
+This can contain C<_>.
+
+If the version has already been declared, a compilation error occurs.
+
+This is normalized by the following way.
+
+=over 2
+
+=item * All C<_> is removed.
+
+=back
+
+After the nomalization, the following checks are performed.
+
+A version number must begin with a number. Otherwise a compilation error occurs.
+
+A version number must end with a number. Otherwise a compilation error occurs.
+
+A character in a version number must be a number or C<.>. Otherwise a compilation error occurs.
+
+The number of C<.> in a version number must be less than or equal to 1. Otherwise a compilation error occurs.
+
+The length of characters after C<.> in a version number must be divisible by 3. Otherwise a compilation error occurs.
+
+After the checking, this is normalized by the following way.
+
+=over 2
+
+=item * Tailing C<000> or C<.> is removed. This is repeated while tailing C<000> or C<.> is found.
+
+=back
+
+The normalized version string is saved to the version information of the class.
+
+Examples:
+  
+  class Foo {
+    version "1";
+  }
+  
+  class Foo {
+    
+    version "1.000"; # Normalized to "1"
+  }
+  
+  class Foo {
+    version "1.001";
+  }
+  
+  class Foo {
+    version "1.001003";
+  }
+  
+  class Foo {
+    version "1.001000"; # Normalized to "1.001"
+  }
+  
+  class Foo {
+    version "1.001003_001"; # Normalized to "1.001003001"
+  }
+
 =head2 Class Attribute
 
 The list of class attributes.
@@ -2852,9 +2927,9 @@ The field is defined directly under the L<class block|/"Class Block">.
     has name : string;
   }
 
-The field definition needs the L<type|/"Type">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise an compilation error will occur.
+The field definition needs the L<type|/"Type">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
-The field names must follows the rule of the L<field name|/"Field Name">. Otherwise an compilation error will occur.
+The field names must follows the rule of the L<field name|/"Field Name">. Otherwise a compilation error occurs.
 
 Field names cannot be duplicated. If it cannot, a compilation error occurs.
 
@@ -4389,7 +4464,7 @@ The array type is the L<type|Type> for the L<array|/"Array">. The array type is 
   # 3 dimensional array
   int[][][]
 
-The maximam value of dimesions is 255. Otherwise an compilation error will occur.
+The maximam value of dimesions is 255. Otherwise a compilation error occurs.
 
 The array type is an L<object type|/"Object Type">.
 
@@ -6517,7 +6592,7 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
     }
   }
 
-The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
+The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the condition.
 
@@ -8253,7 +8328,7 @@ The getting array element is an L<operator|/"Operator"> to get the element of th
 
 The array must be the L<array type|/"Array Type">.
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
@@ -8284,7 +8359,7 @@ The setting array element is an L<operator|/"Operator"> to set the element of th
 
 The array must be the L<array type|/"Array Type">.
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
@@ -8339,7 +8414,7 @@ The creating array is an L<operator|/"Operator"> to create an array using the L<
 
 The type must be a L<basic type|/"Basic Type">.
 
-The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation occur will occur.
+The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
 
