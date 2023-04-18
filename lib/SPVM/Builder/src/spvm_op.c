@@ -2036,6 +2036,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Version string normalization
         int32_t version_string_normalized_length = 0;
         char* version_string_normalized = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, version_string_length + 1);
+        
         {
           // Skip _
           for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
@@ -2106,6 +2107,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         if (is_valid_version_string) {
+          SPVM_CONSTANT_STRING_new(compiler, version_string_normalized, version_string_normalized_length);
           class->version = version_string_normalized;
         }
       }
