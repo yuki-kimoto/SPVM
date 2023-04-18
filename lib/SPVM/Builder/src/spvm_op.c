@@ -2023,12 +2023,68 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       // version declaration
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
+        if (class->version) {
+          SPVM_COMPILER_error(compiler, "The version has already been declared at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
         SPVM_OP* op_version_string = op_decl->first;
         SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
         const char* version_string = version_string_constant->value.oval;
         int32_t version_string_length = version_string_constant->string_length;
         
+        if (!isdigit(version_string[0])) {
+          SPVM_COMPILER_error(compiler, "A version number must begin with a number at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
         
+        if (!isdigit(version_string[version_string_length - 1])) {
+          SPVM_COMPILER_error(compiler, "A version number must end with a number at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        int32_t dot_count = 0;
+        int32_t digits_after_dot = 0;
+        char* version_string_normalize = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, version_string_length + 1);
+        int32_t version_string_normalize_length = 0;
+        int32_t error = 0;
+        for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
+          char ch = version_string[version_string_index];
+          if (ch == '_') {
+            continue;
+          }
+          else {
+            if (!(ch == '.' || isdigit(ch))) {
+              SPVM_COMPILER_error(compiler, "A character in a version number must be a number or \".\" at %s line %d", op_decl->file, op_decl->line);
+              error = 1;
+              break;
+            }
+            
+            if (ch == '.') {
+              dot_count++;
+              if (!(dot_count <= 1)) {
+                SPVM_COMPILER_error(compiler, "The number of \".\" in a version number must be less than or equal to 1 at %s line %d", op_decl->file, op_decl->line);
+                error = 1;
+                break;
+              }
+            }
+            
+            if (dot_count > 0 && isdigit(ch)) {
+              digits_after_dot++;
+            }
+            
+            version_string_normalize[version_string_normalize_length++] = ch;
+          }
+        }
+        if (error) {
+          break;
+        }
+        
+        if (!(digits_after_dot % 3 == 0)) {
+          SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version number must be divisible by 3 at %s line %d", op_decl->file, op_decl->line);
+        }
+        
+        class->version = version_string_normalize;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {

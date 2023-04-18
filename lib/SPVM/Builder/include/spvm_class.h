@@ -20,6 +20,7 @@ struct spvm_class {
   const char* class_file;
   const char* class_path;
   const char* class_rel_file;
+  const char* version;
   SPVM_TYPE* type;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
