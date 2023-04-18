@@ -2221,7 +2221,7 @@ The version string is a version of a class such as C<"1.001003">.
 
 This is the string type.
 
-This is composed of numbers C<0-9> and a floating point C<.>.
+This is composed of numbers C<0-9> and C<.>. 
 
 This can contain C<_>.
 
@@ -2234,6 +2234,8 @@ This is normalized by the following way.
 =item * All C<_> is removed.
 
 =back
+
+The normalized version string can be parsed as a floating point number.
 
 After the nomalization, the following checks are performed.
 
