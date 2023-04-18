@@ -2023,6 +2023,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       // version declaration
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
+        SPVM_OP* op_version_string = op_decl->first;
+        SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
+        const char* version_string = version_string_constant->value.oval;
+        int32_t version_string_length = version_string_constant->string_length;
+        
         
       }
       // use statement
