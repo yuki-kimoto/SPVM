@@ -308,6 +308,54 @@ use Test::More;
   }
 }
 
+# Version Declaration
+{
+  {
+    my $source = 'class MyClass { version "1.001"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "1"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "10000"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "123456789.123456789_123"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "1.001"; version "1.001";}';
+    compile_not_ok($source, qr|The version has already been declared|);
+  }
+  {
+    my $source = 'class MyClass { version ".001"; }';
+    compile_not_ok($source, qr|A version number must begin with a number|);
+  }
+  {
+    my $source = 'class MyClass { version "1."; }';
+    compile_not_ok($source, qr|A version number must end with a number|);
+  }
+  {
+    my $source = 'class MyClass { version "1.0a0"; }';
+    compile_not_ok($source, qr|A character in a version number must be a number or "\."|);
+  }
+  {
+    my $source = 'class MyClass { version "1.001.001"; }';
+    compile_not_ok($source, qr|The number of "." in a version number must be less than or equal to 1|);
+  }
+  {
+    my $source = 'class MyClass { version "1.00101"; }';
+    compile_not_ok($source, qr|The length of characters after "." in a version number must be divisible by 3|);
+  }
+  {
+    my $source = 'class MyClass { version "1.0011"; }';
+    compile_not_ok($source, qr|The length of characters after "." in a version number must be divisible by 3|);
+  }
+}
+
 # Extra
 {
   {

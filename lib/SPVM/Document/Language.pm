@@ -2237,13 +2237,13 @@ This is normalized by the following way.
 
 After the nomalization, the following checks are performed.
 
-A version number must begin with a number. Otherwise a compilation error occurs.
-
-A version number must end with a number. Otherwise a compilation error occurs.
-
 A character in a version number must be a number or C<.>. Otherwise a compilation error occurs.
 
 The number of C<.> in a version number must be less than or equal to 1. Otherwise a compilation error occurs.
+
+A version number must begin with a number. Otherwise a compilation error occurs.
+
+A version number must end with a number. Otherwise a compilation error occurs.
 
 The length of characters after C<.> in a version number must be divisible by 3. Otherwise a compilation error occurs.
 
@@ -2256,11 +2256,15 @@ Examples:
   }
   
   class Foo {
+    version "20080903";
+  }
+  
+  class Foo {
     version "1.001";
   }
   
   class Foo {
-    version "1.001003";
+    version "10.001003";
   }
   
   class Foo {
