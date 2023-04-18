@@ -1,4 +1,6 @@
 class TestCase {
+  version "1.001003";
+  
   use TestCase::EnumA;
   use TestCase::EnumB;
   use TestCase::EnumC;

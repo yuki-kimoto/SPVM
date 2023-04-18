@@ -23,7 +23,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-%token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR ITEMS
+%token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR ITEMS VERSION_DECL
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -31,7 +31,7 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classes classes class class_block
+%type <opval> opt_classes classes class class_block version_decl
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg has use require alias our
@@ -174,7 +174,8 @@ declarations
   | declaration
 
 declaration
-  : has
+  : version_decl
+  | has
   | method
   | enumeration
   | our
@@ -199,7 +200,13 @@ init_block
 
       $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, $2, NULL, NULL, 1, 0);
     }
-    
+
+version_decl
+  : VERSION_DECL CONSTANT ';'
+    {
+      $$ = SPVM_OP_build_version_decl(compiler, $1, $2);
+    }
+
 use
   : USE class_name ';'
     {

@@ -252,6 +252,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "set_error_code",
     "error",
     "items",
+    "version",
   };
   
   return id_names;
@@ -2020,8 +2021,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP* op_decls = op_block->first;
     SPVM_OP* op_decl = op_decls->first;
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      // use declarations
-      if (op_decl->id == SPVM_OP_C_ID_USE) {
+      // version declaration
+      if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
+        
+      }
+      // use statement
+      else if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
         
         // Class alias
@@ -2541,6 +2546,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
 
   return op_class;
+}
+
+SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version_decl, SPVM_OP* op_version_number_string) {
+  
+  SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_number_string);
+  
+  return op_version_decl;
 }
 
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
