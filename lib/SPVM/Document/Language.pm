@@ -2247,14 +2247,6 @@ The number of C<.> in a version number must be less than or equal to 1. Otherwis
 
 The length of characters after C<.> in a version number must be divisible by 3. Otherwise a compilation error occurs.
 
-After the checking, this is normalized by the following way.
-
-=over 2
-
-=item * Tailing C<000> or C<.> is removed. This is repeated while tailing C<000> or C<.> is found.
-
-=back
-
 The normalized version string is saved to the version information of the class.
 
 Examples:
@@ -2264,20 +2256,11 @@ Examples:
   }
   
   class Foo {
-    
-    version "1.000"; # Normalized to "1"
-  }
-  
-  class Foo {
     version "1.001";
   }
   
   class Foo {
     version "1.001003";
-  }
-  
-  class Foo {
-    version "1.001000"; # Normalized to "1.001"
   }
   
   class Foo {

@@ -2033,11 +2033,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         const char* version_string = version_string_constant->value.oval;
         int32_t version_string_length = version_string_constant->string_length;
         
-        // Version string normalization 1
+        // Version string normalization - Remove "_"
         int32_t version_string_normalized_length = 0;
         char* version_string_normalized = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, version_string_length + 1);
         {
-          // Skip _
           for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
             char ch = version_string[version_string_index];
             if (!(ch == '_')) {
@@ -2095,23 +2094,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
         }
         
-        // Version string normalization 2
-        // Remove traling zeros and "."
-        while (version_string_normalized_length > 3
-          && version_string_normalized[version_string_normalized_length - 1] == '0'
-          && version_string_normalized[version_string_normalized_length - 2] == '0'
-          && version_string_normalized[version_string_normalized_length - 3] == '0')
-        {
-          version_string_normalized[version_string_normalized_length - 3] = '\0';
-          version_string_normalized_length -= 3;
-        }
-        
-        if (version_string_normalized[version_string_normalized_length - 1] == '.') {
-          version_string_normalized[version_string_normalized_length - 1] = '\0';
-          version_string_normalized_length--;
-        }
-        
         if (is_valid_version_string) {
+          // Assertion: Check the version string is parsed as a double value
+          char* end;
+          strtod(version_string_normalized, &end);
+          assert(*end == '\0');
+          
           SPVM_CONSTANT_STRING_new(compiler, version_string_normalized, version_string_normalized_length);
           class->version = version_string_normalized;
         }
