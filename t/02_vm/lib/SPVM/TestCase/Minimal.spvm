@@ -1,5 +1,6 @@
 class TestCase::Minimal : public {
-
+  version "1.001";
+  
   interface Stringable;
   interface Cloneable;
 

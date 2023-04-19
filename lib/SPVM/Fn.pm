@@ -1088,15 +1088,31 @@ Examples:
 
 =head2 object_to_int
 
-  native static method object_to_int : int ($object : object);
+  static method object_to_int : int ($object : object);
 
 Converts the address of the $object to a value of the int type, and returns it.
 
-=head2 object_to_long
+=head2 get_version_string
 
-  native static method object_to_long : int ($object : object);
+  static method get_version_string : string ($class_name : string);
 
-Converts the address of the $object to a value of the long type, and returns it.
+Returns the version string of the class $class_name.
+
+Exceptions:
+
+The $class_name must be defined. Otherwise an exception is thrown.
+
+The class specified by the $class_name must be loaded. Otherwise an exception is thrown.
+
+=head2 get_version_number
+
+  static method get_version_number : double ($class_name : string)
+
+Calls the L</"get_version_string"> method, and the return value is converted to a floating point number using the L</"to_double"> method, and returns it.
+
+Exceptions:
+
+Exceptions of the L</"get_version_string"> method can be thrown.
 
 =head1 Copyright & License
 

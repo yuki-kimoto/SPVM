@@ -1,4 +1,6 @@
 class TestCase::Simple : public {
+  version "1.001_009000";
+  
   use TestCase::Minimal;
   use Hash;
   

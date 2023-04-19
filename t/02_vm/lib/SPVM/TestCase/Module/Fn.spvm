@@ -1,6 +1,8 @@
 class TestCase::Module::Fn {
   use Fn;
   use TestCase::Minimal;
+  use TestCase::Simple;
+  use TestCase::Empty;
   use Complex_2d;
   use Array;
   use Point;
@@ -4239,4 +4241,66 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_version_string : int () {
+    
+    {
+      my $version_string = Fn->get_version_string("TestCase::Minimal");
+      unless ($version_string eq "1.001") {
+        return 0;
+      }
+    }
+    
+    {
+      my $version_string = Fn->get_version_string("TestCase::Simple");
+      unless ($version_string eq "1.001009000") {
+        return 0;
+      }
+    }
+    
+    {
+      my $version_string = Fn->get_version_string("TestCase::Empty");
+      if ($version_string) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->get_version_string(undef); };
+        unless (Fn->contains($@, "The \$class_name must be defined")) {
+          return 0;
+        }
+      }
+      {
+        eval { Fn->get_version_string("NotFoundClass"); };
+        unless (Fn->contains($@, "The class specified by the \$class_name must be loaded")) {
+          return 0;
+        }
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method get_version_number : int () {
+    
+    {
+      my $version_number = Fn->get_version_number("TestCase::Minimal");
+      unless ($version_number == 1.001) {
+        return 0;
+      }
+    }
+    
+    {
+      my $version_number = Fn->get_version_number("TestCase::Simple");
+      unless ($version_number == 1.001009) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

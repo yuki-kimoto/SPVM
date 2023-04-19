@@ -153,6 +153,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->merge_options);
     ok(SPVM::TestCase::Module::Fn->object_to_int);
     ok(SPVM::TestCase::Module::Fn->object_to_long);
+    ok(SPVM::TestCase::Module::Fn->get_version_string);
+    ok(SPVM::TestCase::Module::Fn->get_version_number);
   }
   
   # Extra

@@ -1232,6 +1232,16 @@ class Fn {
   }
   
   native static method object_to_int : int ($object : object);
-    
+  
   native static method object_to_long : long ($object : object);
+  
+  native static method get_version_string : string ($class_name : string);
+  
+  static method get_version_number : double ($class_name : string) {
+    my $version_string = &get_version_string($class_name);
+    
+    my $version_number = &to_double($version_string);
+    
+    return $version_number;
+  }
 }
