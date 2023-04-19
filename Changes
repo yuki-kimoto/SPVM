@@ -1,4 +1,4 @@
-0.9707 2023-04-18
+0.9707 2023-04-19
   [New Features]
     * Added the version declaration syntax.
       class Foo {
