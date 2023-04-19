@@ -265,13 +265,20 @@ sub generate_spvm_class_file {
   if ($interface) {
     $attributes = ": interface_t ";
   }
+
+  my $version_decl = 'version "0.001_001";';
+  
+  my $only_lib_files = $self->only_lib_files;
+  if ($only_lib_files) {
+    $version_decl = '';
+  }
   
   my $spvm_class_content = <<"EOS";
 # Copyright (c) $year $user_name
 # MIT License
 
 class $class_name ${attributes}{
-
+  $version_decl
 }
 EOS
   
@@ -301,13 +308,6 @@ sub generate_perl_class_file {
   my $user_email = $self->user_email;
   unless (defined $user_email) {
     $user_email = '[--user-email]'
-  }
-
-  my $version = "our \$VERSION = '0.01';";
-  
-  my $only_lib_files = $self->only_lib_files;
-  if ($only_lib_files) {
-    $version = '';
   }
 
   my $interface = $self->interface;
@@ -474,8 +474,6 @@ EOS
   my $perl_class_content = "";
   $perl_class_content = <<"EOS";
 package SPVM::$class_name;
-
-$version
 
 1;
 
@@ -765,6 +763,9 @@ sub generate_makefile_pl_file {
 
   my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
+
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
   # User name
   my $user_name = $self->user_name;
@@ -777,6 +778,23 @@ sub generate_makefile_pl_file {
   unless (defined $user_email) {
     $user_email = '[--user-email]'
   }
+
+  my $sub_get_version_string = <<'EOS';
+sub get_version_string {
+  my ($spvm_class_file) = @_;
+  
+  open my $spvm_class_fh, '<', $spvm_class_file
+    or die "Can't open the file \"$spvm_class_file\": $!";
+  local $/;
+  my $content = <$spvm_class_fh>;
+  my $version_string;
+  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
+    $version_string = $1;
+  }
+  
+  return $version_string;
+}
+EOS
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
@@ -800,14 +818,16 @@ unless (\$meta) {
   # Do something such as environment check.
 }
 
+my \$version_string = &get_version_string('$spvm_class_rel_file');
+
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
-  NAME              => 'SPVM::$class_name',
-  VERSION_FROM      => '$perl_class_rel_file',
-  LICENSE           => 'mit',
-  (\$] >= 5.005 ?     ## Add these new keywords supported since 5.005
-    (ABSTRACT_FROM  => '$perl_class_rel_file',
-     AUTHOR         => '$user_name<$user_email>') : ()),
+  NAME => 'SPVM::$class_name',
+  VERSION => \$version_string,
+  LICENSE => 'mit',
+  (\$] >= 5.005 ?
+    (ABSTRACT_FROM => '$perl_class_rel_file',
+     AUTHOR => '$user_name<$user_email>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build']},
   META_MERGE => {
@@ -848,6 +868,8 @@ sub MY::postamble {
   
   return \$make_rule;
 }
+
+$sub_get_version_string
 
 1;
 EOS
@@ -1090,9 +1112,7 @@ sub generate_dist {
   $self->generate_dir($output_dir);
   
   # Generate SPVM class file
-  unless ($resource) {
-    $self->generate_spvm_class_file;
-  }
+  $self->generate_spvm_class_file;
   
   # Generate Perl class file
   my $no_pm_file = $self->no_pm_file;

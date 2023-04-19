@@ -51,7 +51,6 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, q(our $VERSION = '0.01')));
   my $today_tp = Time::Piece::localtime;
   my $year = $today_tp->year;
   ok(SPVM::Builder::Util::file_contains($perl_class_file, $year));
@@ -65,6 +64,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'MIT License'));
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'version "0.001_001";'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -80,6 +80,8 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'get_version_string'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION => $version_string'));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
@@ -169,11 +171,11 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, q(our $VERSION = '0.01')));
   
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'version "0.001_001";'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -412,10 +414,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 
   my $perl_class_file = "$tmp_dir/mylib/SPVM/Foo.pm";
   ok(-f $perl_class_file);
-  ok(!SPVM::Builder::Util::file_contains($perl_class_file, '$VERSION'));
   
   my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
+  ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'version'));
   
   my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -551,9 +553,13 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
-
+  
   ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
   ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001_001"));
   
   chdir($save_cur_dir) or die;
 }
@@ -652,7 +658,7 @@ for my $test_index (0 .. 1) {
   ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
 
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(!-f $spvm_class_file);
+  ok(-f $spvm_class_file);
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -717,7 +723,7 @@ for my $test_index (0 .. 1) {
   ok(SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
   
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
-  ok(!-f $spvm_class_file);
+  ok(-f $spvm_class_file);
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
