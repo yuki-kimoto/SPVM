@@ -672,3 +672,14 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_spvm_version(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  const char* spvm_version = env->get_spvm_version(env, stack);
+  
+  void* obj_spvm_version = env->new_string(env, stack, spvm_version, strlen(spvm_version));
+  
+  stack[0].oval = obj_spvm_version;
+  
+  return 0;
+}

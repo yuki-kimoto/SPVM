@@ -302,6 +302,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_compile_type_name_raw,
     SPVM_API_get_compile_type_name,
     SPVM_API_set_command_info_base_time,
+    SPVM_API_get_spvm_version,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4130,5 +4131,7 @@ int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method
 
 const char* SPVM_API_get_spvm_version(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return SPVM_VERSION;
+  const char* spvm_version = SPVM_VERSION;
+  
+  return spvm_version;
 }

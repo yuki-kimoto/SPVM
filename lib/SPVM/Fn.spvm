@@ -1244,4 +1244,6 @@ class Fn {
     
     return $version_number;
   }
+  
+  native static method get_spvm_version : string ();
 }
