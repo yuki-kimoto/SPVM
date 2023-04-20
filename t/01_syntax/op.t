@@ -159,8 +159,12 @@ use Test::More;
     compile_not_ok($source, qr/The interface cannnot have multiple required methods/);
   }
   {
+    my $source = 'class MyClass : interface_t {}';
+    compile_ok($source);
+  }
+  {
     my $source = 'class MyClass : interface_t { method foo : void (); }';
-    compile_not_ok($source, qr/The interface must have a required method/);
+    compile_ok($source);
   }
   {
     my $source = 'class MyClass : mulnum_t { method foo : void () { } }';

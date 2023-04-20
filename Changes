@@ -2,6 +2,8 @@
   [Document Changes]
     * "Reader" is renamed to "Getter Method"
     * "Writer" is renamed to "Setter Method"
+  [Changes]
+    * An interface doesn't need to have a required method.
 0.9707 2023-04-19
   [New Features]
     * Added the version declaration syntax.

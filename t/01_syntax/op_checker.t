@@ -1071,6 +1071,10 @@ use Test::More;
     my $source = 'class MyClass extends Point : pointer { }';
     compile_ok($source);
   }
+  {
+    my $source = 'class MyClass : interface_t { method foo : void (); }';
+    compile_ok($source);
+  }
 }
 
 # interface Statement

@@ -2602,14 +2602,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    // interface_t
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-      if (!class->required_method) {
-        SPVM_COMPILER_error(compiler, "The interface must have a required method at %s line %d", op_class->file, op_class->line);
-      }
-    }
     // mulnum_t
-    else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       if (class->methods->length > 0) {
         SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods at %s line %d", op_class->file, op_class->line);
       }
