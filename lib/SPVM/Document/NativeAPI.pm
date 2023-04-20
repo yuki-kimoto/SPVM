@@ -219,6 +219,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   202 get_compile_type_name_raw
   203 get_compile_type_name
   204 set_command_info_base_time
+  205 get_spvm_version
 
 =head2 class_vars_heap
 
@@ -2221,6 +2222,12 @@ Sets the time when the program starts. This value is got by L<CommandInfo->BASE_
 If it succeed, return 0.
 
 The program name must be a C<string> object. Otherwise return non-zero value.
+
+=head2 get_spvm_version
+
+  const char* (*get_spvm_version)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the version of the SPVM language.
 
 =head1 Compiler Native API
 

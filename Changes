@@ -1,4 +1,9 @@
 0.9708 2023-04-19
+  [New Features]
+    * Added the following Native APIs.
+    
+      const char* (*get_spvm_version)(SPVM_ENV* env, SPVM_VALUE* stack);
+    
   [Document Changes]
     * "Reader" is renamed to "Getter Method"
     * "Writer" is renamed to "Setter Method"

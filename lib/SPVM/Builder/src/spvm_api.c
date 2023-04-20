@@ -4127,3 +4127,8 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
 int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
   return SPVM_VM_call_method(env, stack, method_id, args_stack_length);
 }
+
+const char* SPVM_API_get_spvm_version(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_VERSION;
+}

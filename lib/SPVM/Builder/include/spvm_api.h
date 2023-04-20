@@ -4,6 +4,8 @@
 #ifndef SPVM_API_H
 #define SPVM_API_H
 
+#define SPVM_VERSION "0.971001"
+
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
@@ -16,6 +18,12 @@ enum {
   STACK_INDEX_ARGS_STACK_LENGTH = 506,
   STACK_INDEX_CALL_DEPTH = 505,
 };
+
+/*
+  Version
+*/
+
+const char* SPVM_API_get_spvm_version(SPVM_ENV* env, SPVM_VALUE* stack);
 
 /*
   Environment APIs
