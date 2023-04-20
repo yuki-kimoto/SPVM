@@ -3725,14 +3725,14 @@ The C<default> block is a L<scope block|/"Scope Block">.
 The C<INIT> block is a L<block|/"Block"> to be executed just after the program starts.
 
   INIT {
-  
+    
   }
 
 The C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
 
   class Foo {
     INIT {
-  
+      
     }
   }
 
@@ -3745,9 +3745,10 @@ Zero or more L<statements|/"Statement"> can be written in a C<INIT> block.
 
 The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
 
-Each class can have its C<INIT> block.
+Each class can have a C<INIT> block.
 
 The execution order of C<INIT> blocks is not guaranteed.
+Using fields, class variables, methods of other classes is dangerous because INIT blocks may not have been executed yet.
 
 Examples:
 
@@ -3755,12 +3756,16 @@ Examples:
     use Point;
     
     our $NUM : int;
+    our $STRING : string;
     our $POINT : Point;
     
     # INIT block
     INIT {
       $NUM = 3;
-      $POINT = Point->new;
+      $STRING = "abc";
+      
+      # This is dangerous because the INIT block of the Point class may not have been executed.
+      $POINT = Point->new(1, 2);
     }
   }
 
