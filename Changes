@@ -1,14 +1,3 @@
-0.971002 2023-04-21
-  [Incompatible Changes and Performane degration]
-    * Inline expansions of get/set field, get/set class variable, new method, constant method are disabled, so performance degration occurs.
-      This is for easiness of thread-safetiness implementation and improving binary compatibility.
-      The inline expansion of enumeration value is only performed.
-    * Wrongly working code is not worked.
-    
-      if ($foo->set_x(3)) {
-        
-      }
-    
 0.971001 2023-04-21
   [New Features]
     * Added the following Native APIs.
@@ -28,6 +17,15 @@
   [Versioning Changes]
     * The versioning rule is changed from 0.XXYY to 0.XXXYYY.
     * The version of SPVM is got from lib/SPVM/Builder/include/spvm_api.h
+  [Incompatible Changes and Performane degration]
+    * Inline expansions of get/set field, get/set class variable, new method, constant method are disabled, so performance degration occurs.
+      This is for easiness of thread-safetiness implementation and improving binary compatibility.
+      The inline expansion of enumeration value is only performed.
+    * Wrongly working code is not worked.
+    
+      if ($foo->set_x(3)) {
+        
+      }
 0.9707 2023-04-19
   [New Features]
     * Added the version declaration syntax.
