@@ -3303,15 +3303,6 @@ And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
-=head2 Constant Method
-
-A constant method is a method which return type is a L<numeric type|/"Numeric Type"> and returns a constant value.
-
-  static method FOO : int () { return 5; }
-  static method FOO : long () { return 5L; }
-  static method FOO : float () { return 5.0f; }
-  static method FOO : double () { return 5.0; }
-
 =head1 Enumeration
 
 The enumeration is the syntx to defines constant values of the L<int type|/"int Type">.
