@@ -755,7 +755,7 @@ sub get_spvm_version_string {
     $version_string = $1;
   }
   
-  unless ($version_string) {
+  unless (defined $version_string) {
     die "The version string can't be find in the $spvm_api_header_file file";
   }
   
