@@ -792,6 +792,10 @@ sub get_version_string {
     $version_string = $1;
   }
   
+  unless (defined $version_string) {
+    die "The version string can't be find in the $spvm_class_file file";
+  }
+  
   return $version_string;
 }
 EOS
