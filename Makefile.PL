@@ -112,11 +112,9 @@ my @csource_files = ('SPVM.c', @spvm_csource_files);
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
-my $spvm_version_string = &get_spvm_version_string('lib/SPVM/Builder/include/spvm_api.h');
-
 WriteMakefile(
   NAME => 'SPVM',
-  VERSION => $spvm_version_string,
+  VERSION_FROM => 'lib/SPVM.pm',
   LICENSE => 'mit',
   ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
     (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module

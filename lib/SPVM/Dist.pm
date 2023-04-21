@@ -470,10 +470,19 @@ EOS
 EOS
   }
   
+  my $version_decl = 'our $VERSION = "0.001_001";';
+  
+  my $only_lib_files = $self->only_lib_files;
+  if ($only_lib_files) {
+    $version_decl = '';
+  }
+  
   # Content
   my $perl_class_content = "";
   $perl_class_content = <<"EOS";
 package SPVM::$class_name;
+
+$version_decl
 
 1;
 
@@ -778,27 +787,6 @@ sub generate_makefile_pl_file {
   unless (defined $user_email) {
     $user_email = '[--user-email]'
   }
-
-  my $sub_get_version_string = <<'EOS';
-sub get_version_string {
-  my ($spvm_class_file) = @_;
-  
-  open my $spvm_class_fh, '<', $spvm_class_file
-    or die "Can't open the file \"$spvm_class_file\": $!";
-  local $/;
-  my $content = <$spvm_class_fh>;
-  my $version_string;
-  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
-    $version_string = $1;
-  }
-  
-  unless (defined $version_string) {
-    die "The version string can't be find in the $spvm_class_file file";
-  }
-  
-  return $version_string;
-}
-EOS
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
@@ -822,12 +810,10 @@ unless (\$meta) {
   # Do something such as environment check.
 }
 
-my \$version_string = &get_version_string('$spvm_class_rel_file');
-
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME => 'SPVM::$class_name',
-  VERSION => \$version_string,
+  VERSION_FROM => '$perl_class_rel_file',
   LICENSE => 'mit',
   (\$] >= 5.005 ?
     (ABSTRACT_FROM => '$perl_class_rel_file',
@@ -873,8 +859,6 @@ sub MY::postamble {
   return \$make_rule;
 }
 
-$sub_get_version_string
-
 1;
 EOS
 
@@ -889,6 +873,29 @@ sub generate_basic_test_file {
   # Class name
   my $class_name = $self->class_name;
   
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
+  
+  my $sub_get_version_string = <<'EOS';
+sub get_version_string {
+  my ($spvm_class_file) = @_;
+  
+  open my $spvm_class_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
+  local $/;
+  my $content = <$spvm_class_fh>;
+  my $version_string;
+  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
+    $version_string = $1;
+  }
+
+  unless (defined $version_string) {
+    die "The version string can't be find in the $spvm_class_file file";
+  }
+  
+  return $version_string;
+}
+EOS
+
   # Content
   my $basic_test_content = <<"EOS";
 use Test::More;
@@ -899,9 +906,21 @@ use FindBin;
 use lib "\$FindBin::Bin/lib";
 BEGIN { \$ENV{SPVM_BUILD_DIR} = "\$FindBin::Bin/.spvm_build"; }
 
+use SPVM::Builder::Util::API;
+
+use SPVM::$class_name;
+use SPVM '$class_name';
 use SPVM 'TestCase::$class_name';
 
 ok(SPVM::TestCase::$class_name->test);
+
+# Version
+{
+  my \$version_string = &get_version_string("$spvm_class_rel_file");
+  is(\$SPVM::${class_name}::VERSION, \$version_string);
+}
+
+$sub_get_version_string;
 
 done_testing;
 EOS

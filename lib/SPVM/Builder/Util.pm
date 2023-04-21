@@ -742,6 +742,24 @@ sub get_normalized_env {
   return $value;
 }
 
+sub get_version_string {
+  my ($spvm_class_file) = @_;
+  
+  open my $spvm_class_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
+  local $/;
+  my $content = <$spvm_class_fh>;
+  my $version_string;
+  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
+    $version_string = $1;
+  }
+
+  unless (defined $version_string) {
+    confess "The version string can't be find in the $spvm_class_file file";
+  }
+  
+  return $version_string;
+}
+
 sub get_spvm_version_string {
   
   my $builder_dir = &get_builder_dir_from_config_class;
@@ -756,7 +774,7 @@ sub get_spvm_version_string {
   }
   
   unless (defined $version_string) {
-    die "The version string can't be find in the $spvm_api_header_file file";
+    confess "The version string can't be find in the $spvm_api_header_file file";
   }
   
   return $version_string;

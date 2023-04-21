@@ -80,8 +80,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'get_version_string'));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION => $version_string'));
+  
+  # VERSION_FROM must be included in Makefile.PL to resolve CPAN module dependencies.
+  # VERSION is not sufficient.
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION_FROM'));
   
   my $readme_markdown_file = "$tmp_dir/SPVM-Foo/README.md";
   ok(-f $readme_markdown_file);
