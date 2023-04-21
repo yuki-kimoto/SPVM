@@ -6172,13 +6172,13 @@ The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the v
 
 The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Type"> to the value of the corresponding L<numeric type|/"Numeric Type">.
 
-=head2 Bool Conversion
+=head2 Boolean Conversion
 
-The bool conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
+The boolean conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the C<OPERAND> of the bool conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error occurs.
+The type of the C<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error occurs.
 
-The bool conversion returns the following value corresponding to the type of the condional operand.
+The boolean conversion returns the following value corresponding to the type of the condional operand.
 
 If the type is the L<int type|/"int Type">, return the value.
 
@@ -6387,7 +6387,7 @@ The C<if> statement is a L<statement|/"Statement"> for conditional branch.
   
   }
 
-First, The L<bool conversion|/"Bool Conversion"> is performed on the condition.
+First, The L<boolean conversion|/"Boolean Conversion"> is performed on the condition.
 
 Next, if the condition is not 0, the execution position jumps to the beginning of the L<if block|/"if Block">. Otherwise jumps to the end of the L<if block|/"if Block">.
 
@@ -6428,7 +6428,7 @@ The C<elsif> statement is a L<statement|/"Statement"> for conditional branch use
 
 If the C<condition 1> doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
 
-Next, The L<bool conversion|/"Bool Conversion"> is performed on the C<condition 2>.
+Next, The L<boolean conversion|/"Boolean Conversion"> is performed on the C<condition 2>.
 
 Next, if the C<condition 2> is not 0, the execution position jumps to the beginning of the L<elsif block|/"elsif Block">. Otherwise jumps to the end of the L<elsif block|/"elsif Block">
 
@@ -6733,7 +6733,7 @@ The C<while> statement is a L<statement|/"Statement"> for loop.
   
   }
 
-First, The L<bool conversion|/"Bool Conversion"> is performed on the condition.
+First, The L<boolean conversion|/"Boolean Conversion"> is performed on the condition.
 
 Next, If the condition is 0, the program jumps to the end of the L<while block|/"while Block">. Otherwise the program goes to the beginning of the L<while block|/"while Block">.
 
@@ -7764,9 +7764,9 @@ The left operand and the right operand must be an L<operator|/"Operator">.
 
 The return type of the logical AND operator is the L<int type|/"int Type">.
 
-Thg logical AND operator performs the L<bool conversion|/"Bool Conversion"> to the left operand. If the evaluated value is 0, return 0. Otherwise proceed to the evaluation of the right operand.
+Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is 0, return 0. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<bool conversion|/"Bool Conversion"> to the right operand. If the evaluated value is 0, return 0. Otherwise return the evaluated value.
+It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is 0, return 0. Otherwise return the evaluated value.
 
 =head3 Logical OR Operator
 
@@ -7776,9 +7776,9 @@ The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical OR operator is the L<int type|/"int Type">.
 
-Thg logical OR operator performs the L<bool conversion|/"Bool Conversion"> to the left operand. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
+Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<bool conversion|/"Bool Conversion"> to the right operand. If the evaluated value is not 0, return the evaluated value. Otherwise return 0.
+It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is not 0, return the evaluated value. Otherwise return 0.
 
 =head3 Logical NOT Operator
 
@@ -7788,7 +7788,7 @@ The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical NOT operator is the L<int type|/"int Type">.
 
-Thg logical NOT operator performs the L<bool conversion|/"Bool Conversion"> to the C<OPERAND>. If the evaluated value is 0, returns 1. Otherwise return 0.
+Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to the C<OPERAND>. If the evaluated value is 0, returns 1. Otherwise return 0.
 
 =head2 String Concatenation Operator
 
