@@ -5,14 +5,10 @@ use warnings;
 
 use Carp 'cluck';
 
-use SPVM::Builder;
 use SPVM::Global;
-use SPVM::Builder::Config;
 
-our $VERSION;
-BEGIN {
-  $VERSION = SPVM::Builder::Util::get_spvm_version_string;
-}
+our $VERSION = "0.971002";
+$VERSION =~ s/_//g;
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
