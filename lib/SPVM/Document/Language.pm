@@ -450,7 +450,7 @@ POD has no meaning in source codes.
 
 A literal is the way to write a constant value in source codes.
 
-Literals are L<numeric literals|/"Numeric Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+Literals are L<numeric literals|/"Numeric Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal">.
 
 =head2 Numeric Literal
 
@@ -1138,32 +1138,6 @@ The hexadecimal numbers can be sorrounded by C<{> and C<}>.
   "Foo \xA   Bar"
   "Foo \xFF  Bar"
   "Foo \x{A} Bar"
-
-=head2 Bool Literal
-
-The bool literal is a L<literal|/"Literal"> to represent a bool value in source codes.
-
-=head3 true
-
-C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bool>.
-
-  true
-
-Examples:
-
-  # true
-  my $is_valid = true;
-
-=head3 false
-
-C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Bool>.
-
-  false
-
-Examples:
-
-  # false
-  my $is_valid = false;
 
 =head2 Variable Expansion
 
@@ -6184,13 +6158,11 @@ If the type is the L<int type|/"int Type">, return the value.
 
 If the type is the L<undef|/"Undefined Type">, return 0.
 
-If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, return 1.
-
-If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, return 0.
+If the type is he L<Bool|SPVM::Bool> class, the L<value|SPVM::Bool/"value"> field of the L<Bool|SPVM::Bool> class is returned.
 
 If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the C<OPERAND>.
 
-And the following operation in the C language is performed on the C<OPERAND> .
+And the following operation in the C language is performed on the C<OPERAND>.
 
   !!OPERAND
 
@@ -6216,7 +6188,7 @@ Examples:
     # ok
   }
   
-  if (Bool->TRUE) {
+  if (Bool->new_true) {
     # ok
   }
   
@@ -6224,7 +6196,7 @@ Examples:
     # not ok
   }
   
-  if (Bool->FALSE) {
+  if (Bool->new_false) {
     # not ok
   }
   
@@ -8839,6 +8811,32 @@ B<Exampless:>
   my $x = 1;
   my $y = 2;
   my $ret = ($x += 2, $x + $y);
+
+=head3 true Operator
+
+The C<true> operator returns an instance of the L<Bool|SPVM::Bool> class that returns 1 in the L</"Boolean Conversion">.
+
+  true
+
+The instance of the L<Bool|SPVM::Bool> class is immutable, so the language implementation can cache the return value of the C<true> operator at the beggining of the method.
+
+Examples:
+
+  # true
+  my $true = true;
+
+=head3 false Operator
+
+The C<false> operator returns an instance of the L<Bool|SPVM::Bool> class that returns 0 in the L</"Boolean Conversion">.
+
+  false
+
+The instance of the L<Bool|SPVM::Bool> class is immutable, so the language implementation can cache the return value of the C<false> operator at the beggining of the method.
+
+Examples:
+
+  # false
+  my $false = false;
 
 =head1 void Returning Operator
 

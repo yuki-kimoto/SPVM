@@ -128,10 +128,10 @@ class TestCase::ConditionalBranch {
 
     # Condition - Bool object
     {
-      # Bool->TRUE
+      # Bool->new_true
       {
         my $pass = 0;
-        if (Bool->TRUE) {
+        if (Bool->new_true) {
           $pass = 1;
         }
         unless ($pass == 1) {
@@ -139,10 +139,10 @@ class TestCase::ConditionalBranch {
         }
       }
       
-      # Bool->FALSE
+      # Bool->new_false
       {
         my $pass = 0;
-        if (Bool->FALSE) {
+        if (Bool->new_false) {
           $pass = 1;
         }
         unless ($pass == 0) {

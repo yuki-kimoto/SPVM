@@ -1041,25 +1041,25 @@ SPVM_OP* SPVM_OP_build_default_statement(SPVM_COMPILER* compiler, SPVM_OP* op_de
 }
 
 SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  
-  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, "$Bool::TRUE", strlen("$Bool::TRUE"));
-  const char* class_var_name = class_var_name_string->value;
-  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
-  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
-  op_class_var_access->uv.class_var_access->inline_expansion = 1;
 
-  return op_class_var_access;
+  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op->file, op->line);
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
+  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "new_true", op->file, op->line);
+  SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_build_call_method(compiler, op_call_method, op_name_class, op_name_method, op_args);
+  
+  return op_call_method;
 }
 
 SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
-  SPVM_CONSTANT_STRING* class_var_name_string = SPVM_CONSTANT_STRING_new(compiler, "$Bool::FALSE", strlen("$Bool::FALSE"));
-  const char* class_var_name = class_var_name_string->value;
-  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
-  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
-  op_class_var_access->uv.class_var_access->inline_expansion = 1;
+  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op->file, op->line);
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
+  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "new_false", op->file, op->line);
+  SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_build_call_method(compiler, op_call_method, op_name_class, op_name_method, op_args);
   
-  return op_class_var_access;
+  return op_call_method;
 }
 
 SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_operand_condition, int32_t is_not) {

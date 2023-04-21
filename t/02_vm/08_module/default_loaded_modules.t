@@ -20,7 +20,7 @@ $api->class('Int')->new(1);
 $api->class('Long')->new(1);
 $api->class('Float')->new(1);
 $api->class('Double')->new(1);
-$api->class('Bool')->TRUE;
+$api->class('Bool')->new_true;
 $api->class('Address')->new;
 
 ok(1);

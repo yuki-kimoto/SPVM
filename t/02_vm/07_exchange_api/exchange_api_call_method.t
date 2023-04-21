@@ -1289,7 +1289,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     eval { SPVM::Double->new(undef) };
     ok($@);
     
-    my $bool = SPVM::Bool->TRUE;
+    my $bool = SPVM::Bool->new_true;
     
     eval { SPVM::Byte->new($bool) };
     ok($@);

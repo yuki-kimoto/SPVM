@@ -4,79 +4,49 @@ package SPVM::Bool;
 
 =head1 Name
 
-SPVM::Bool - Bool object
+SPVM::Bool - Bool Object
+
+=head1 Description
+
+The Bool class of L<SPVM> has methods to manipulate a bool object.
+
+This class is a L<default loaded class|SPVM::Document::Language/"Default Loaded Classes">.
+
+The L<boolean conversion|SPVM::Document::Language/"Boolean Conversion"> of an instance of this class returns the the L</"value"> field.
+
+The instance of this class is immutable.
 
 =head1 Usage
 
   use Bool;
   
-  my $true = Bool->TRUE;
-  my $false = Bool->FALSE;
+  my $true = Bool->new_true;
+  my $false = Bool->new_false;
   
   my $true_value = $true->value;
   my $false_value = $false->value;
 
-=head1 Description
-
-L<Bool|SPVM::Bool> object stores a C<long> value.
-
-This object is immutable and its value cannot be changed.
-
-L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
-
-=head1 Class Methods
-
-=head2 TRUE
-
-  static method TRUE : Bool ();
-
-A true singleton. This is created by INIT block when the program start.
-
-=head2 FALSE
-
-  static method FALSE : Bool ();
-
-A false singleton. This is created by INIT block when the program start.
-
-=head1 Instance Methods
+=head1 Fiedls
 
 =head2 value
 
-  method value : int ();
+  has value : ro int;
 
-Returns a C<int> value.
+Returns a value.
 
-If L<Bool|SPVM::Bool> object express true, this method return 1.
+=head1 Class Methods
 
-If L<Bool|SPVM::Bool> object express false, this method return 1.
+=head2 new_true
 
-=head1 Bool Context
+  static method new_true : Bool ();
 
-the object of Bool class is different behavior in bool context.
+Create a new L<Bool> object which L</"value"> field is set to 1.
 
-If the C<value> of Bool object is 1, it is evaluated as true.
+=head2 new_false
 
-  if (Bool->TRUE) {
-    # Run
-  }
+  static method new_false : Bool ();
 
-If the C<value> of Bool object is 0, it is evaluated as false.
-
-  if (Bool->FALSE) {
-    # Not run
-  }
-
-=head1 Keywords
-
-C<true> keyword means Bool->TRUE. C<false> keyword means Bool->FALSE.
-
-  if (true) {
-    # Run
-  }
-
-  if (false) {
-    # Not run
-  }
+Create a new L<Bool> object which L</"value"> field is set to 0.
 
 =head1 Copyright & License
 
