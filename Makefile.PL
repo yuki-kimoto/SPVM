@@ -112,9 +112,11 @@ my @csource_files = ('SPVM.c', @spvm_csource_files);
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
+my $spvm_version_string = &get_spvm_version_string('lib/SPVM/Builder/include/spvm_api.h');
+
 WriteMakefile(
     NAME              => 'SPVM',
-    VERSION_FROM      => 'lib/SPVM.pm', # finds $VERSION
+    VERSION           => $spvm_version_string,
     LICENSE           => 'mit',
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
@@ -210,6 +212,24 @@ sub MY::postamble {
   }
   
   return $make_rule;
+}
+
+sub get_spvm_version_string {
+  my ($spvm_api_header_file) = @_;
+  
+  open my $spvm_class_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
+  local $/;
+  my $content = <$spvm_class_fh>;
+  my $version_string;
+  if ($content =~ /#define\s+SPVM_VERSION\s*"([\d\._]+)"/) {
+    $version_string = $1;
+  }
+  
+  unless ($version_string) {
+    die "The version string can't be find in the $spvm_api_header_file file";
+  }
+  
+  return $version_string;
 }
 
 1;

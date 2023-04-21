@@ -41,14 +41,9 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   is($total, 26);
 }
 
-# VERSION
+# Version
 {
-  my $spvm_class_file = "blib/lib/SPVM.pm";
-  open my $fh, '<', $spvm_class_file
-    or die;
-  my $spvm_class_content = do { local $/; <$fh> };
-  
-  like($spvm_class_content, qr|our \$VERSION = '[\d\._]+';|);
+  like($SPVM::VERSION, qr|[\d\._]+|);
 }
 
 # All object is freed

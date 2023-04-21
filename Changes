@@ -1,4 +1,4 @@
-0.9708 2023-04-19
+0.971001 2023-04-21
   [New Features]
     * Added the following Native APIs.
     
@@ -13,6 +13,9 @@
     * "Writer" is renamed to "Setter Method"
   [Changes]
     * An interface doesn't need to have a required method.
+  [Versioning Changes]
+    * The versioning rule is changed from 0.XXYY to 0.XXXYYY.
+    * The version of SPVM is got from lib/SPVM/Builder/include/spvm_api.h
 0.9707 2023-04-19
   [New Features]
     * Added the version declaration syntax.
