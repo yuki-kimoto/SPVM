@@ -2833,8 +2833,6 @@ It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is $FOO, its getter method name is C<FOO>.
 
-Inline expantion to the L<getting class variable|/"Getting Class Variable"> is performed on each class variable getter method.
-
 Examples:
 
   # Class variable getter method
@@ -2859,8 +2857,6 @@ If the type of the class variable is the L<byte type|/"byte Type"> or the L<shor
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
 It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is $FOO, its setter method name is C<SET_FOO>.
-
-Inline expantion to the L<setting class variable|/"Setting Class Variable"> is performed on each class variable setter method.
 
 Examples:
 
@@ -3002,8 +2998,6 @@ If the type of the field is the C<byte> or C<short> type, The return type of a f
 A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
 
 If the type of the field is the C<byte> or C<short> type, The argument type of a field setter method is the C<int> type.
-
-Inline expansion to the field access except that the field type is the C<byte> or C<short> is performed on field getter method and setter method.
 
 Examples:
 
@@ -3311,27 +3305,20 @@ Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<
 
 =head2 Constant Method
 
-Constant Method is a Method that the return type is a L<numeric type|/"Numeric Type"> and returns Constant Value.
+A constant method is a method which return type is a L<numeric type|/"Numeric Type"> and returns a constant value.
 
-  static method foo : int () { return 5; }
-  static method foo : long () { return 5L; }
-  static method foo : float () { return 5.0f; }
-  static method foo : double () { return 5.0; }
-
-Inline Expansion optimization is performed on Constant Method.
-
-Note that SPVM does not perform constant convolution optimization, so if a constant is calculated, it will not performe Inline Expansion.
-
-  # This is not Constant Method.  Inline Expansion is not performed
-  static method foo : int () { return 5 + 3; }
+  static method FOO : int () { return 5; }
+  static method FOO : long () { return 5L; }
+  static method FOO : float () { return 5.0f; }
+  static method FOO : double () { return 5.0; }
 
 =head1 Enumeration
 
-The enumeration is the syntax to define constant values of the L<int type|/"int Type">.
+The enumeration is the syntx to defines constant values of the L<int type|/"int Type">.
 
 =head2 Enumeration Definition
 
-The C<enum> keyword defines an enumeration. An enumeration defines constant values.
+The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
 
   # Enumeration Definition
   enum {
@@ -3342,11 +3329,23 @@ The C<enum> keyword defines an enumeration. An enumeration defines constant valu
 
 An enumeration must be defined directly under the L<class definition|/"Class Definition">.
 
-The first value of an enumeration begins with 0. The next value is incremented by 1, and this is continued in the same way. In this example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
+  class Foo {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3
+    }
+  }
 
-The type of a value of an enumeration is the L<int type|/"int Type">.
+The name given to an enumeration value must be a L<method name|/"Method Name">.
 
-C<,> after the last value can be allowed.
+The first enumeration value is 0. The next enumeration value is incremented by 1, and this is continued in the same way.
+
+In the above example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
+
+The type of an enumeration value is the L<int type|/"int Type">.
+
+C<,> after the last enumeration value can be allowed.
 
   enum {
     FLAG1,
@@ -3354,13 +3353,7 @@ C<,> after the last value can be allowed.
     FLAG3,
   }
 
-A value of an enumeration is implemented as a L<constant method|/"Constant Method">.
-
-  static method FLAG1 : int () { return 0; }
-  static method FLAG2 : int () { return 1; }
-  static method FLAG3 : int () { return 2; }
-
-The value can be set explicitly.
+An enumeration value can be set by C<=> explicitly.
 
   enum {
     FLAG1,
@@ -3371,6 +3364,8 @@ The value can be set explicitly.
 In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
 
 If an enumeration definition is invalid, a compilation error occurs.
+
+An enumeration value is got by the L<getting enumeration value|/"Getting Enumeration Value">.
 
 Examples:
 
@@ -3437,13 +3432,17 @@ Only one of enumeration attributes C<private>, C<protected> or C<public> can be 
 
 =head2 Getting Enumeration Value
 
-The value of the enumeration can be got using the L<class method call|/"Class Method Call">.
+A value of the enumeration can be got using the L<class method call|/"Class Method Call">.
 
   my $flag1 = Foo->FLAG1;
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-As special cases, the value of the enumeration can be used as the C<OPERAND> of the L<case statement|/"case Statement">.
+A getting enumeration value is replaced to an L<interger literal|/"Integer Literal"> at compilation time.
+
+For this, if an enumeration value is changed after first publication to users, the binary compatibility is not kept.
+
+An enumeration value can be used as an operand of the L<case statement|/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
@@ -3601,7 +3600,7 @@ A class block is a L<block|/"Block">.
 
 =head3 Enumeration Block
 
-A enumeration block is a L<block|/"Block">.
+An enumeration block is a L<block|/"Block">.
 
   # Enumeration block
   enum {

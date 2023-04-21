@@ -99,7 +99,8 @@ class TestCase {
           
           $TestCase::CLASS_VAR_MINIMAL->set_x(4);
           
-          if ($TestCase::CLASS_VAR_MINIMAL->set_x(4)) {
+          $TestCase::CLASS_VAR_MINIMAL->set_x(4);
+          if ($TestCase::CLASS_VAR_MINIMAL->x) {
             $TestCase::CLASS_VAR_MINIMAL = undef;
             return 1;
           }

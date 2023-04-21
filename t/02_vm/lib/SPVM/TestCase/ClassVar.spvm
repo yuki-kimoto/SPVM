@@ -36,7 +36,8 @@ class TestCase::ClassVar {
     
     $TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4);
     
-    unless ($TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4)) {
+    $TestCase::ClassVar::CLASS_VAR_MINIMAL->set_x(4);
+    unless ($TestCase::ClassVar::CLASS_VAR_MINIMAL->x) {
       return 0;
     }
     $TestCase::ClassVar::CLASS_VAR_MINIMAL = undef;
