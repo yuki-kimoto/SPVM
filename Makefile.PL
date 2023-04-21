@@ -115,44 +115,44 @@ my @header_files = ('ppport.h', @spvm_header_files);
 my $spvm_version_string = &get_spvm_version_string('lib/SPVM/Builder/include/spvm_api.h');
 
 WriteMakefile(
-    NAME              => 'SPVM',
-    VERSION           => $spvm_version_string,
-    LICENSE           => 'mit',
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/SPVM.pm', # retrieve abstract from module
-       AUTHOR         => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
-    CCFLAGS => $ccflags,
-    OPTIMIZE => $optimize,
-    C => [@csource_files],
-    H => [@header_files],
-    OBJECT            => '$(O_FILES)', # link all the C files too
-    INC => $inc,
-    test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/02_vm/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
-    DEFINE => "@defines -o \$@",
-    META_MERGE => {
-        'meta-spec' => { version => 2 },
-        resources => {
-            repository => {
-                type => 'git',
-                url  => 'https://github.com/yuki-kimoto/SPVM.git',
-                web  => 'https://github.com/yuki-kimoto/SPVM',
-            },
-            bugtracker => {
-                web => "https://github.com/yuki-kimoto/SPVM/issues",
-            },            
-        },
+  NAME => 'SPVM',
+  VERSION => $spvm_version_string,
+  LICENSE => 'mit',
+  ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
+    (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module
+     AUTHOR => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
+  CCFLAGS => $ccflags,
+  OPTIMIZE => $optimize,
+  C => [@csource_files],
+  H => [@header_files],
+  OBJECT => '$(O_FILES)', # link all the C files too
+  INC => $inc,
+  test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
+  clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/02_vm/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
+  DEFINE => "@defines -o \$@",
+  META_MERGE => {
+    'meta-spec' => { version => 2 },
+    resources => {
+      repository => {
+        type => 'git',
+        url => 'https://github.com/yuki-kimoto/SPVM.git',
+        web => 'https://github.com/yuki-kimoto/SPVM',
+      },
+      bugtracker => {
+        web => "https://github.com/yuki-kimoto/SPVM/issues",
+      },            
     },
-    EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
-    PREREQ_PM => {
-        'ExtUtils::CBuilder' => '0.280236',
-        'Time::Piece' => '1.12',
-        'JSON::PP' => '2.27105',
-    },
-    TEST_REQUIRES => {
-        'Test::More' => '0.92',
-    },
-    NORECURS => 1,
+  },
+  EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
+  PREREQ_PM => {
+    'ExtUtils::CBuilder' => '0.280236',
+    'Time::Piece' => '1.12',
+    'JSON::PP' => '2.27105',
+  },
+  TEST_REQUIRES => {
+    'Test::More' => '0.92',
+  },
+  NORECURS => 1,
 );
 
 # Add Build shared library make rule
