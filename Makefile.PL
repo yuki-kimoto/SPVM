@@ -143,6 +143,7 @@ WriteMakefile(
   },
   EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
   PREREQ_PM => {
+    'ExtUtils::MakeMaker' => '6.58',
     'ExtUtils::CBuilder' => '0.280236',
     'CPAN::Meta' => '2.110440',
     'Time::Piece' => '1.12',
