@@ -660,11 +660,11 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The class specified by the $class_name must be loaded", __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t version_id = env->api->runtime->get_class_version_id(env->runtime, class_id);
+  int32_t version_string_id = env->api->runtime->get_class_version_string_id(env->runtime, class_id);
   
   void* obj_version = NULL;
-  if (version_id >= 0) {
-    const char* version = env->api->runtime->get_name(env->runtime, version_id);
+  if (version_string_id >= 0) {
+    const char* version = env->api->runtime->get_name(env->runtime, version_string_id);
     obj_version = env->new_string(env, stack, version, strlen(version));
   }
   

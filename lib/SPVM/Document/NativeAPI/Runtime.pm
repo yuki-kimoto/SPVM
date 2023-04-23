@@ -105,7 +105,7 @@ Runtime native APIs have its IDs.
   81 get_method_is_enum
   82 get_type_flag
   83 is_object_type
-  84 get_class_version_id
+  84 get_class_version_string_id
 
 =head1 Runtime Native APIs
 
@@ -445,9 +445,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
 
-=head2 get_class_version_id
+=head2 get_class_version_string_id
 
-  int32_t (*get_class_version_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
 
 Gets the ID of the constant string of the version number.
 

@@ -71,7 +71,7 @@ int32_t SPVM_API_RUNTIME_get_class_class_vars_base_id(SPVM_RUNTIME* runtime, int
 int32_t SPVM_API_RUNTIME_get_class_class_vars_length(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_parent_class_id(SPVM_RUNTIME* runtime, int32_t class_id);
 int32_t SPVM_API_RUNTIME_get_class_is_pointer(SPVM_RUNTIME* runtime, int32_t class_id);
-int32_t SPVM_API_RUNTIME_get_class_version_id(SPVM_RUNTIME* runtime, int32_t class_id);
+int32_t SPVM_API_RUNTIME_get_class_version_string_id(SPVM_RUNTIME* runtime, int32_t class_id);
 
 // Class variable
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index);

@@ -2601,9 +2601,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   return op_class;
 }
 
-SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version_decl, SPVM_OP* op_version_number_string) {
+SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version_decl, SPVM_OP* op_version_string) {
   
-  SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_number_string);
+  SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_string);
   
   return op_version_decl;
 }

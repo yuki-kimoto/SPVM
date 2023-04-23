@@ -650,10 +650,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     if (class->version_string) {
       SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, class->version_string, strlen(class->version_string));
-      runtime_class->version_id = class_version_string->id;
+      runtime_class->version_string_id = class_version_string->id;
     }
     else {
-      runtime_class->version_id = -1;
+      runtime_class->version_string_id = -1;
     }
     
     if (class->destructor_method) {
