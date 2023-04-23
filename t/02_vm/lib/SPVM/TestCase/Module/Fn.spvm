@@ -4252,7 +4252,7 @@ class TestCase::Module::Fn {
     
     {
       my $version_string = Fn->get_version_string("TestCase::Simple");
-      unless ($version_string eq "1.001009000") {
+      unless ($version_string eq "1.001_009000") {
         return 0;
       }
     }

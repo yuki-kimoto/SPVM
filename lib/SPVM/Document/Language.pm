@@ -2219,37 +2219,27 @@ The operand VERSION_STRING is a version string.
 
 The version string is a version of a class such as C<"1.001003">.
 
-This is the string type.
-
-This is composed of numbers C<0-9> and C<.>. 
-
-This can contain C<_>.
-
 If the version has already been declared, a compilation error occurs.
 
-This is normalized by the following way.
+A version string is the string type.
 
-=over 2
+This is composed of numbers C<0-9>, C<.> and C<_>. 
 
-=item * All C<_> is removed.
+The following checks are performed.
 
-=back
+A character in a version string must be a number or C<.>. Otherwise a compilation error occurs.
 
-The normalized version string can be parsed as a floating point number.
+The number of C<.> in a version string must be less than or equal to 1. Otherwise a compilation error occurs.
 
-After the nomalization, the following checks are performed.
+A version string must begin with a number. Otherwise a compilation error occurs.
 
-A character in a version number must be a number or C<.>. Otherwise a compilation error occurs.
+A version string must end with a number. Otherwise a compilation error occurs.
 
-The number of C<.> in a version number must be less than or equal to 1. Otherwise a compilation error occurs.
+The length of characters after C<.> in a version string must be divisible by 3. Otherwise a compilation error occurs.
 
-A version number must begin with a number. Otherwise a compilation error occurs.
+The version string is saved to the version information of the class.
 
-A version number must end with a number. Otherwise a compilation error occurs.
-
-The length of characters after C<.> in a version number must be divisible by 3. Otherwise a compilation error occurs.
-
-The normalized version string is saved to the version information of the class.
+The version string with "_" removed can be parsed as a floating point number.
 
 Examples:
   
@@ -2270,7 +2260,7 @@ Examples:
   }
   
   class Foo {
-    version "1.001003_001"; # Normalized to "1.001003001"
+    version "1.001003_001";
   }
 
 =head2 Class Attribute

@@ -1,3 +1,8 @@
+0.971003 2023-04-24
+  [Incompatible Changes]
+    * The version string is not normalized.
+  [Compilation Error Message Improvement]
+    * Compilation error messages of the version string are improved.
 0.971002 2023-04-22
   [Makefile.PL Bug Fix]
     * Fixed the bug that the version of SPVM can't get from SPVM.pm.
