@@ -247,7 +247,7 @@ enum {
   SPVM_OP_C_ID_IS_READ_ONLY,
   SPVM_OP_C_ID_MAKE_READ_ONLY,
   SPVM_OP_C_ID_COPY,
-  SPVM_OP_C_ID_HAS_IMPL,
+  SPVM_OP_C_ID_CAN,
   SPVM_OP_C_ID_CLASS_ID,
   SPVM_OP_C_ID_ERROR_CODE,
   SPVM_OP_C_ID_SET_ERROR_CODE,
@@ -504,7 +504,7 @@ SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op);
 SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 SPVM_OP* SPVM_OP_build_is_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_operand);
-SPVM_OP* SPVM_OP_build_field_impl(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_var, SPVM_OP* op_name);
+SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_var, SPVM_OP* op_name);
 
 const char* SPVM_OP_get_op_name(int32_t op_id);
 

@@ -161,7 +161,7 @@ extern int SPVM_yydebug;
     NEW_STRING_LEN = 371,
     IS_READ_ONLY = 372,
     COPY = 373,
-    HAS_IMPL = 374,
+    CAN = 374,
     SET_ERROR_CODE = 375,
     INC = 376,
     DEC = 377,

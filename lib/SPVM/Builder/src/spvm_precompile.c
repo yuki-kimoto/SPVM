@@ -2690,7 +2690,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_IMPL: {
+      case SPVM_OPCODE_C_ID_CAN: {
         int32_t method_id = opcode->operand1;
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -2703,7 +2703,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_HAS_IMPL(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CAN(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object, method_name);\n");
 

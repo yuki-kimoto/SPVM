@@ -294,7 +294,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "IF_EXCEPTION_RETURN",
     "ISA",
     "IS_TYPE",
-    "HAS_IMPL",
+    "CAN",
     "PRINT",
     "SAY",
     "WARN",

@@ -236,7 +236,7 @@ extern int SPVM_yydebug;
     NEW_STRING_LEN = 371,
     IS_READ_ONLY = 372,
     COPY = 373,
-    HAS_IMPL = 374,
+    CAN = 374,
     SET_ERROR_CODE = 375,
     INC = 376,
     DEC = 377,
@@ -618,7 +618,7 @@ static const char *const yytname[] =
   "REMAINDER_UNSIGNED_LONG", "LOGICAL_NOT", "BIT_NOT", "'@'", "CREATE_REF",
   "DEREF", "PLUS", "MINUS", "CONVERT", "SCALAR", "STRING_LENGTH", "ISWEAK",
   "REFCNT", "REFOP", "DUMP", "NEW_STRING_LEN", "IS_READ_ONLY", "COPY",
-  "HAS_IMPL", "SET_ERROR_CODE", "INC", "DEC", "ARROW", "':'", "';'", "'}'",
+  "CAN", "SET_ERROR_CODE", "INC", "DEC", "ARROW", "':'", "';'", "'}'",
   "','", "')'", "']'", "$accept", "grammar", "opt_classes", "classes",
   "class", "opt_extends", "class_block", "opt_declarations",
   "declarations", "declaration", "init_block", "version_decl", "use",
@@ -636,7 +636,7 @@ static const char *const yytname[] =
   "comparison_operator", "isa", "is_type", "is_compile_type",
   "logical_operator", "assign", "new", "array_init", "convert",
   "array_access", "call_method", "field_access", "weaken_field",
-  "unweaken_field", "isweak_field", "has_impl", "array_length", "var_decl",
+  "unweaken_field", "isweak_field", "can", "array_length", "var_decl",
   "var", "qualified_type", "type", "basic_type", "ref_type", "array_type",
   "array_type_with_length", "return_type", "opt_type_comment",
   "type_comment", "union_type", "field_name", "method_name", "class_name",
@@ -4131,7 +4131,7 @@ yyreduce:
   case 238:
 #line 1224 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_field_impl(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_can(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
 #line 4137 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -4139,7 +4139,7 @@ yyreduce:
   case 239:
 #line 1228 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_field_impl(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_can(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
     }
 #line 4145 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

@@ -852,15 +852,15 @@ use Test::More;
   }
 }
 
-# has_impl
+# can
 {
   {
-    my $source = 'class MyClass { static method main : void () { my $var = 0; has_impl $var->x; } }';
-    compile_not_ok($source, q|he invocant of the has_impl operator must be a class type or an interface type|);
+    my $source = 'class MyClass { static method main : void () { my $var = 0; can $var->x; } }';
+    compile_not_ok($source, q|he invocant of the can operator must be a class type or an interface type|);
   }
   {
-    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; has_impl $point->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by the has_impl operator must be defined|);
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; can $point->not_defined; } }';
+    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by the can operator must be defined|);
   }
   
 }

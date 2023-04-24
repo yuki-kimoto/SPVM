@@ -1137,12 +1137,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
-      case SPVM_OPCODE_C_ID_HAS_IMPL: {
+      case SPVM_OPCODE_C_ID_CAN: {
         void* object = object_vars[opcode->operand0];
         int32_t method_id = opcode->operand1;
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
-        SPVM_IMPLEMENT_HAS_IMPL(env, stack, int_vars[0], object, method_name);
+        SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, method_name);
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {

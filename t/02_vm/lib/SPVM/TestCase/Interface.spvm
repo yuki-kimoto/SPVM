@@ -325,26 +325,26 @@ class TestCase::Interface {
     return 1;
   }
 
-  static method has_impl : int () {
-    # has_impl
+  static method can : int () {
+    # can
     {
       my $pointable : TestCase::PointInterface = TestCase::PointForTest->new_xy(1, 2);
       
-      unless (has_impl $pointable->x) {
+      unless (can $pointable->x) {
         return 0;
       }
-      unless (has_impl $pointable->y) {
+      unless (can $pointable->y) {
         return 0;
       }
-      unless (has_impl $pointable->to_string) {
+      unless (can $pointable->to_string) {
         return 0;
       }
       
-      if (has_impl $pointable->not_impl) {
+      if (can $pointable->not_impl) {
         return 0;
       }
 
-      unless (has_impl $pointable) {
+      unless (can $pointable) {
         return 0;
       }
     }

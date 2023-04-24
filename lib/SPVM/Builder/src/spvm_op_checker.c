@@ -3087,14 +3087,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_HAS_IMPL: {
+            case SPVM_OP_C_ID_CAN: {
               SPVM_OP* op_var = op_cur->first;
               SPVM_OP* op_name_method = op_cur->last;
               
               SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_var);
               
               if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-                SPVM_COMPILER_error(compiler, "The invocant of the has_impl operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The invocant of the can operator must be a class type or an interface type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3111,7 +3111,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               );
               
               if (!found_method) {
-                SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the has_impl operator must be defined at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
+                SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
                 return;
               }
               

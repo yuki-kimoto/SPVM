@@ -266,7 +266,7 @@ The list of keywords:
   gt
   ge
   has
-  has_impl
+  can
   if
   isa
   isweak
@@ -1248,7 +1248,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> unary_operator binary_operator comparison_operator isa is_type
   %type <opval> call_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-  %type <opval> assign inc dec allow has_impl
+  %type <opval> assign inc dec allow can
   %type <opval> new array_init die opt_extends
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
@@ -1265,7 +1265,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY CAN SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1519,7 +1519,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | TRUE
     | FALSE
     | is_read_only
-    | has_impl
+    | can
     | logical_operator
     | CLASS_ID class_name
     | ERROR_CODE
@@ -1644,9 +1644,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
-  has_impl
-    : HAS_IMPL var ARROW method_name
-    | HAS_IMPL var
+  can
+    : CAN var ARROW method_name
+    | CAN var
 
   array_length
     : '@' operator
@@ -1865,7 +1865,7 @@ The list of syntax parsing tokens:
     <td>HAS</td><td>has</td>
   </tr>
   <tr>
-    <td>HAS_IMPL</td><td>has_impl</td>
+    <td>CAN</td><td>can</td>
   </tr>
   <tr>
     <td>IF</td><td>if</td>
@@ -2112,7 +2112,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY HAS_IMPL SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY CAN SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -3739,7 +3739,7 @@ The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
 
 Each class can have a C<INIT> block.
 
-The execution order of C<INIT> blocks is not guaranteed.
+The execution order of C<INIT> blocks is not guaranteed. Before using a class, 
 Using fields, class variables, methods of other classes is dangerous because INIT blocks may not have been executed yet.
 
 Examples:
@@ -3756,7 +3756,7 @@ Examples:
       $NUM = 3;
       $STRING = "abc";
       
-      # This is dangerous because the INIT block of the Point class may not have been executed.
+      Point->INIT;
       $POINT = Point->new(1, 2);
     }
   }
@@ -8079,13 +8079,13 @@ Examples:
   # isweak
   my $isweak = isweak $object->{point};
 
-=head2 has_impl Operator
+=head2 can Operator
 
-The C<has_impl> operator checks the existence of the method implementation.
+The C<can> operator checks the existence of the method implementation.
 
-  has_impl OPERAND->METHOD_NAME
+  can OPERAND->METHOD_NAME
 
-  has_impl OPERAND
+  can OPERAND
 
 The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
 
@@ -8103,7 +8103,7 @@ Examples:
 
   my $stringable = (Stringable)Point->new(1, 2);
   
-  if (has_impl $stringable->to_string) {
+  if (can $stringable->to_string) {
     # ...
   }
 

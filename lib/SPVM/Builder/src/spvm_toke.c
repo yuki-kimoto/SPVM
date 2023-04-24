@@ -2045,7 +2045,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'c' : {
-                if (strcmp(symbol_name, "case") == 0) {
+                if (strcmp(symbol_name, "can") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAN);
+                  keyword_token = CAN;
+                }
+                else if (strcmp(symbol_name, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CASE);
                   keyword_token = CASE;
                 }
@@ -2160,10 +2164,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_FIELD);
                   compiler->expect_field_name = 1;
                   keyword_token = HAS;
-                }
-                else if (strcmp(symbol_name, "has_impl") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_HAS_IMPL);
-                  keyword_token = HAS_IMPL;
                 }
                 break;
               }

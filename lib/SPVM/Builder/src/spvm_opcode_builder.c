@@ -4150,7 +4150,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
-                        case SPVM_OP_C_ID_HAS_IMPL: {
+                        case SPVM_OP_C_ID_CAN: {
                           SPVM_OP* op_var = op_assign_src->first;
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_var);
 
@@ -4165,7 +4165,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode = {0};
                           
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_HAS_IMPL);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
 
                           opcode.operand0 = mem_id_in;
                           opcode.operand1 = implement_method->id;
