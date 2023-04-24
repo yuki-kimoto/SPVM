@@ -1108,7 +1108,9 @@ The class specified by the $class_name must be loaded. Otherwise an exception is
 
   static method get_version_number : double ($class_name : string);
 
-Calls the L</"get_version_string"> method, and the return value is converted to a floating point number using the L</"to_double"> method, and returns it.
+Returns the version number of a class.
+
+About the version number, see L<SPVM::Document::NativeAPI/"get_version_number">.
 
 Exceptions:
 

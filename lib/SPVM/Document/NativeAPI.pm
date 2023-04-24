@@ -2237,7 +2237,7 @@ Returns the version string of the SPVM language.
 
 Returns the version string of a class. The C<class_id> must be a valid class id.
 
-If the version string is not defined in the class, returns NULL.
+If the version string in the class is not defined, returns NULL.
 
 =head2 get_version_number
 
@@ -2245,7 +2245,7 @@ If the version string is not defined in the class, returns NULL.
 
 Returns the version number of a class. The C<class_id> must be a valid class id.
 
-If the version string is not defined in the class, returns -1.
+If the version string in the class is not defined, returns -1.
 
 The version number is created by the following steps.
 
