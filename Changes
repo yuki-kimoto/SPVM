@@ -7,9 +7,13 @@
     
   [Incompatible Changes]
     * The version string is not normalized.
-    * Renamed the following Runtime APIs.
+    * Renamed the following Runtime Native APIs.
       [Before]  int32_t (*get_class_version_id)(void* runtime, int32_t class_id);
       [After]  int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
+    * Renamed the following Native APIs.
+      -  const char* (*get_spvm_version)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  const char* (*get_spvm_version_string)(SPVM_ENV* env, SPVM_VALUE* stack);
+      
   [Compilation Error Message Improvement]
     * Compilation error messages of the version string are improved.
 0.971002 2023-04-22

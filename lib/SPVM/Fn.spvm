@@ -1239,5 +1239,5 @@ class Fn {
   
   native static method get_version_number : double ($class_name : string);
   
-  native static method get_spvm_version : string ();
+  native static method get_spvm_version_string : string ();
 }

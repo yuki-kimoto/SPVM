@@ -1114,9 +1114,9 @@ Exceptions:
 
 Exceptions of the L</"get_version_string"> method can be thrown.
 
-=head2 get_spvm_version
+=head2 get_spvm_version_string
 
-  static method get_spvm_version : string ();
+  static method get_spvm_version_string : string ();
 
 Returns the version of the SPVM language.
 

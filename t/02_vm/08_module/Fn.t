@@ -156,7 +156,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_version_string);
     ok(SPVM::TestCase::Module::Fn->get_version_number);
     {
-      my $spvm_version = SPVM::Fn->get_spvm_version;
+      my $spvm_version = SPVM::Fn->get_spvm_version_string;
       warn "[Test Output]The version of the SPVM language:$spvm_version";
       ok(SPVM::Builder::Util::file_contains("lib/SPVM/Builder/include/spvm_api.h", $spvm_version));
     }
