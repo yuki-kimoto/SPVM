@@ -876,26 +876,6 @@ sub generate_basic_test_file {
   my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
-  my $sub_get_version_string = <<'EOS';
-sub get_version_string {
-  my ($spvm_class_file) = @_;
-  
-  open my $spvm_class_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
-  local $/;
-  my $content = <$spvm_class_fh>;
-  my $version_string;
-  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
-    $version_string = $1;
-  }
-
-  unless (defined $version_string) {
-    die "The version string can't be find in the $spvm_class_file file";
-  }
-  
-  return $version_string;
-}
-EOS
-
   # Content
   my $basic_test_content = <<"EOS";
 use Test::More;
@@ -906,21 +886,19 @@ use FindBin;
 use lib "\$FindBin::Bin/lib";
 BEGIN { \$ENV{SPVM_BUILD_DIR} = "\$FindBin::Bin/.spvm_build"; }
 
-use SPVM::Builder::Util::API;
-
-use SPVM::$class_name;
-use SPVM '$class_name';
 use SPVM 'TestCase::$class_name';
+
+use SPVM '$class_name';
+use SPVM::$class_name;
+use SPVM 'Fn';
 
 ok(SPVM::TestCase::$class_name->test);
 
 # Version
 {
-  my \$version_string = &get_version_string("$spvm_class_rel_file");
+  my \$version_string = SPVM::Fn->get_version_string("$class_name");
   is(\$SPVM::${class_name}::VERSION, \$version_string);
 }
-
-$sub_get_version_string;
 
 done_testing;
 EOS
