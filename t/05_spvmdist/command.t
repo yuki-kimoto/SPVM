@@ -24,6 +24,8 @@ my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
 my $blib_lib = File::Spec->rel2abs('blib/lib');
 my $blib_arch = File::Spec->rel2abs('blib/arch');
 my $include_blib = "-I$blib_arch -I$blib_lib";
+my $path_sep = $Config{path_sep};
+my $perl5lib = "$blib_arch$path_sep$blib_lib";
 
 # -h, --help
 {
@@ -540,6 +542,7 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   chdir('SPVM-Foo')
     or die "Can't chdir";
   
+  local $ENV{PERL5LIB} = $perl5lib;
   my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
