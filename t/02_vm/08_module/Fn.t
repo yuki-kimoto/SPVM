@@ -162,7 +162,7 @@ my $seed = time();
     }
     {
       my $spvm_version_number = SPVM::Fn->get_spvm_version_number;
-      ok($SPVM::VERSION == $spvm_version_number);
+      ok(eval "$SPVM::VERSION" == $spvm_version_number);
     }
   }
   
