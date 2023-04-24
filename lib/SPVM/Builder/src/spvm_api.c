@@ -304,7 +304,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_compile_type_name,
     SPVM_API_set_command_info_base_time,
     SPVM_API_get_spvm_version_string,
-    NULL,
+    SPVM_API_get_spvm_version_number,
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
   };
@@ -4138,6 +4138,33 @@ const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* spvm_version = SPVM_VERSION;
   
   return spvm_version;
+}
+
+double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  const char* spvm_version_string = env->get_spvm_version_string(env, stack);
+  
+  assert(spvm_version_string);
+  
+  int32_t spvm_version_string_length = strlen(spvm_version_string);
+  
+  char spvm_version_string_without_hyphen[20] = {0};
+  int32_t spvm_version_string_without_hyphen_length = 0;
+  for (int32_t i = 0; i < spvm_version_string_length; i++) {
+    char ch = spvm_version_string[i];
+    if (!(ch == '_')) {
+      spvm_version_string_without_hyphen[spvm_version_string_without_hyphen_length] = ch;
+      spvm_version_string_without_hyphen_length++;
+    }
+  }
+  
+  char *end;
+  errno = 0;
+  double version_number = strtod(spvm_version_string_without_hyphen, &end);
+  assert(*end == '\0');
+  assert(errno == 0);
+  
+  return version_number;
 }
 
 const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id){

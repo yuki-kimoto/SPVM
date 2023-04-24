@@ -24,6 +24,7 @@ enum {
 */
 
 const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack);
+double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack);
 const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
 double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
 

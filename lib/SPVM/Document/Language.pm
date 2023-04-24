@@ -2261,6 +2261,20 @@ Examples:
     version "1.001003_001";
   }
 
+=head3 Version String
+
+The version string is a string that is parsed by the L<version declaration|/"Version Declaration">.
+
+This is used as the version string of the SPVM language.
+
+=head2 Version Number
+
+The version number is a floating point number created by the following steps.
+
+1. C<_> is removed from a L<version string/"Version Declaration">.
+
+2. The string is converted to a floating point number by the C<strtod> C function.
+
 =head2 Class Attribute
 
 The list of class attributes.

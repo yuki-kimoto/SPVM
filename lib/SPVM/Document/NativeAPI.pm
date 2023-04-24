@@ -220,6 +220,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   203 get_compile_type_name
   204 set_command_info_base_time
   205 get_spvm_version_string
+  206 get_spvm_version_number
   207 get_version_string
   208 get_version_number
 
@@ -2229,7 +2230,13 @@ The program name must be a C<string> object. Otherwise return non-zero value.
 
   const char* (*get_spvm_version_string)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Returns the version string of the SPVM language.
+Returns the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
+
+=head2 get_spvm_version_number
+
+  double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the L<version number|SPVM::Document::Language/"Version Number"> of the SPVM language.
 
 =head2 get_version_string
 
@@ -2246,12 +2253,6 @@ If the version string in the class is not defined, returns NULL.
 Returns the version number of a class. The C<class_id> must be a valid class id.
 
 If the version string in the class is not defined, returns -1.
-
-The version number is created by the following steps.
-
-1. C<_> is removed from the version string got by the L</"get_version_string"> Native API.
-
-2. The string is converted to a floating point number by the C<strtod> C function.
 
 =head1 Compiler Native API
 

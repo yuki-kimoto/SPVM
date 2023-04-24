@@ -1092,11 +1092,17 @@ Examples:
 
 Converts the address of the $object to a value of the int type, and returns it.
 
+=head2 get_spvm_version_string
+
+  static method get_spvm_version_string : string ();
+
+Returns the the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
+
 =head2 get_version_string
 
   static method get_version_string : string ($class_name : string);
 
-Returns the version string of the class $class_name.
+Returns the L<version string|SPVM::Document::Language/"Version String"> of the class $class_name.
 
 Exceptions:
 
@@ -1108,19 +1114,13 @@ The class specified by the $class_name must be loaded. Otherwise an exception is
 
   static method get_version_number : double ($class_name : string);
 
-Returns the version number of a class.
-
-About the version number, see L<SPVM::Document::NativeAPI/"get_version_number">.
+Returns the L<version number|SPVM::Document::Language/"Version Number"> of a class.
 
 Exceptions:
 
-Exceptions of the L</"get_version_string"> method can be thrown.
+The $class_name must be defined. Otherwise an exception is thrown.
 
-=head2 get_spvm_version_string
-
-  static method get_spvm_version_string : string ();
-
-Returns the version of the SPVM language.
+The class specified by the $class_name must be loaded. Otherwise an exception is thrown.
 
 =head1 Copyright & License
 
