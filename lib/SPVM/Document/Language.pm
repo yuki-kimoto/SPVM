@@ -2239,8 +2239,6 @@ The length of characters after C<.> in a version string must be divisible by 3. 
 
 The version string is saved to the version information of the class.
 
-The version string with "_" removed can be parsed as a floating point number.
-
 Examples:
   
   class Foo {
