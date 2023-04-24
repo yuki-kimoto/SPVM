@@ -1237,28 +1237,7 @@ class Fn {
   
   native static method get_version_string : string ($class_name : string);
   
-  static method get_version_number : double ($class_name : string) {
-    my $version_string = &get_version_string($class_name);
-    
-    my $version_string_length = length $version_string;
-    
-    my $version_string_without_hyphen = (mutable string)new_string_len $version_string_length;
-    
-    my $version_string_without_hyphen_length = 0;
-    for (my $i = 0; $i < $version_string_length; $i++) {
-      my $char = $version_string->[$i];
-      unless ($char == '_') {
-        $version_string_without_hyphen->[$version_string_without_hyphen_length] = $char;
-        $version_string_without_hyphen_length++;
-      }
-    }
-    
-    Fn->shorten_null_char($version_string_without_hyphen);
-    
-    my $version_number = &to_double($version_string_without_hyphen);
-    
-    return $version_number;
-  }
+  native static method get_version_number : double ($class_name : string);
   
   native static method get_spvm_version : string ();
 }
