@@ -544,6 +544,10 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001_001"));
+  
   chdir($save_cur_dir) or die;
 }
 
@@ -565,10 +569,6 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   
   ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
   ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
-  
-  my $mymeta_json = 'MYMETA.json';
-  ok(-f $mymeta_json);
-  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001_001"));
   
   chdir($save_cur_dir) or die;
 }
