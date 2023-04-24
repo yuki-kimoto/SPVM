@@ -537,6 +537,13 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
   system($spvmdist_cmd) == 0
     or die "Can't execute spvmdist command $spvmdist_cmd:$!";
   
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  my $make = $Config{make};
+  my $ret = system("$^X Makefile.PL && $make && $make test");
+  ok($ret == 0);
+  
   chdir($save_cur_dir) or die;
 }
 
