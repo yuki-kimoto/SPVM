@@ -672,6 +672,15 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  double spvm_version_number = env->get_spvm_version_number(env, stack);
+  
+  stack[0].dval = spvm_version_number;
+  
+  return 0;
+}
+
 int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_name = stack[0].oval;
   

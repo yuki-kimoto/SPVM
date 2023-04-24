@@ -1098,17 +1098,17 @@ Converts the address of the $object to a value of the int type, and returns it.
 
 Returns the the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
 
-=head2 get_version_string
+=head2 get_spvm_version_string
 
-  static method get_version_string : string ($class_name : string);
+  static method get_spvm_version_string : string ();
 
-Returns the L<version string|SPVM::Document::Language/"Version String"> of the class $class_name.
+Returns the the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
 
-Exceptions:
+=head2 get_spvm_version_number
 
-The $class_name must be defined. Otherwise an exception is thrown.
+  static method get_spvm_version_number : double ();
 
-The class specified by the $class_name must be loaded. Otherwise an exception is thrown.
+Returns the L<version number|SPVM::Document::Language/"Version Number"> of the SPVM language.
 
 =head2 get_version_number
 

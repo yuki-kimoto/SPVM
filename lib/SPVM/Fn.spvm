@@ -1235,9 +1235,11 @@ class Fn {
   
   native static method object_to_long : long ($object : object);
   
+  native static method get_spvm_version_string : string ();
+  
+  native static method get_spvm_version_number : double ();
+  
   native static method get_version_string : string ($class_name : string);
   
   native static method get_version_number : double ($class_name : string);
-  
-  native static method get_spvm_version_string : string ();
 }
