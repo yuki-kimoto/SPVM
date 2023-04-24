@@ -366,6 +366,14 @@ use Test::More;
     my $source = 'class MyClass { interface Complex_2d; }';
     compile_not_ok($source);
   }
+  {
+    my $source = 'class MyClass { INIT {} static method main : void () { &INIT(); } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { method DESTROY : void () {} method main : void () { $self->DESTROY; } }';
+    compile_ok($source);
+  }
 }
 
 done_testing;
