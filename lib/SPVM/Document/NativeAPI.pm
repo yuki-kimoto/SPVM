@@ -220,8 +220,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   203 get_compile_type_name
   204 set_command_info_base_time
   205 get_spvm_version_string
-  206 get_version_string
-  207 get_version_number
+  207 get_version_string
+  208 get_version_number
 
 =head2 class_vars_heap
 

@@ -304,6 +304,7 @@ SPVM_ENV* SPVM_API_new_env_raw() {
     SPVM_API_get_compile_type_name,
     SPVM_API_set_command_info_base_time,
     SPVM_API_get_spvm_version_string,
+    NULL,
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
   };
