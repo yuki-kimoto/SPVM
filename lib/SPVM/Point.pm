@@ -41,13 +41,13 @@ C<Point> class has the following interfaces.
 
 =head2 x
 
-  has x : rw protected int;
+  has x : rw int;
 
 C<x>.
 
 =head2 y
 
-  has y : rw protected int;
+  has y : rw int;
 
 C<y>.
 

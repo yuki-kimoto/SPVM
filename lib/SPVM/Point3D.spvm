@@ -4,7 +4,7 @@
 class Point3D extends Point {
   
   # Fields
-  has z : rw protected int;
+  has z : rw int;
   
   # Class method
   static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {

@@ -1,3 +1,8 @@
+0.971007 2023-04-25
+  [Incompatible Changes]
+    * The x and y field in the Point class becomes private.
+    * The z field in the Point3D class becomes private.
+    
 0.971006 2023-04-25
   [Changes]
     * A empty default INIT block is defined if the class don't have a INIT block.
