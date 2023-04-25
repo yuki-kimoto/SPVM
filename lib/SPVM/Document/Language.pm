@@ -3752,10 +3752,16 @@ Zero or more L<statements|/"Statement"> can be written in a C<INIT> block.
 
 The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
 
-Each class can have a C<INIT> block.
+If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
 
-The execution order of C<INIT> blocks is not guaranteed. Before using a class, 
-Using fields, class variables, methods of other classes is dangerous because INIT blocks may not have been executed yet.
+The execution order of C<INIT> blocks is not guaranteed, so before using a class in a C<INIT> block, the C<INIT> block of a using class should be called.
+
+  INIT {
+    Point->INIT;
+    $POINT = Point->new(1, 2);
+  }
+
+For this reason, The C<INIT> block should be implemented so that it may be called multiple times.
 
 Examples:
 

@@ -1,9 +1,14 @@
 class TestCase::InitStatement {
+  use TestCase::Empty;
   
   our $FOO : int;
   
   INIT {
     $FOO = 1;
+    
+    # Call a default INIT block
+    Int->INIT;
+    TestCase::Empty->INIT;
   }
   
   # Array store undef

@@ -374,6 +374,10 @@ use Test::More;
     my $source = 'class MyClass { method DESTROY : void () {} method main : void () { $self->DESTROY; } }';
     compile_ok($source);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { &INIT(); } }';
+    compile_ok($source);
+  }
 }
 
 done_testing;

@@ -1,3 +1,6 @@
+0.971006 2023-04-25
+  [Changes]
+    * A empty default INIT block is defined if the class don't have a INIT block.
 0.971005 2023-04-25
   [Incompatible Changes]
     * The has_impl operator is renamed to the can operator, and the syntax is changed.
