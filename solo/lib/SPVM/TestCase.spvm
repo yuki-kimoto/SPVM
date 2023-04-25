@@ -202,12 +202,12 @@ SPVM::Test - SPVM test class
     {
       my $minimal = TestCase::Minimal->new;
       my $interface : TestCase::CommonInterface = $minimal;
-      my $can_share2 = can $interface->shared2;
+      my $can_share2 = $interface can shared2;
         warn $can_share2;
-      if (can $interface->shared2) {
+      if ($interface can shared2) {
         warn $can_share2;
       }
-      my $can_share3 = can $interface->shared3;
+      my $can_share3 = $interface can shared3;
       warn $can_share3;
     }
 

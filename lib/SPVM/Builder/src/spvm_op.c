@@ -1788,8 +1788,23 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
 
 SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_can, SPVM_OP* op_var, SPVM_OP* op_name) {
   
-  if (!op_name) {
-    op_name = SPVM_OP_new_op_name(compiler, "", op_var->file, op_var->line);
+  if (op_name->id == SPVM_OP_C_ID_CONSTANT) {
+    SPVM_OP* op_constant = op_name;
+    SPVM_CONSTANT* constant = op_constant->uv.constant;
+    SPVM_TYPE* constant_type = constant->type;
+    const char* constant_chars = (const char*)constant->value.oval;
+    int32_t is_empty_string = 0;
+    if (SPVM_TYPE_is_string_type(compiler, constant_type->basic_type->id, constant_type->dimension, constant_type->flag)) {
+      if (strcmp(constant_chars, "") == 0) {
+        is_empty_string = 1;
+      }
+    }
+    
+    if (!is_empty_string) {
+      SPVM_COMPILER_error(compiler, "If the right operand of the can operator is a constant value, it must be an empty string \"\" at %s line %d", op_name->file, op_name->line);
+    }
+    
+    op_name = SPVM_OP_new_op_name(compiler, "", op_name->file, op_name->line);
   }
   
   SPVM_OP_insert_child(compiler, op_can, op_can->last, op_var);

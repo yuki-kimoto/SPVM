@@ -855,14 +855,25 @@ use Test::More;
 # can
 {
   {
-    my $source = 'class MyClass { static method main : void () { my $var = 0; can $var->x; } }';
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point can x; } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $anon = method : void () {}; $anon can ""; } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; $var can x; } }';
     compile_not_ok($source, q|he invocant of the can operator must be a class type or an interface type|);
   }
   {
-    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; can $point->not_defined; } }';
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point can not_defined; } }';
     compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by the can operator must be defined|);
   }
-  
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $anon = method : void () {}; $anon can "a"; } }';
+    compile_not_ok($source, qr|If the right operand of the can operator is a constant value, it must be an empty string ""|);
+  }
 }
 
 # Type Case

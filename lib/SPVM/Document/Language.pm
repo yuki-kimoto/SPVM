@@ -241,6 +241,7 @@ The list of keywords:
   as
   break
   byte
+  can
   case
   cmp
   class
@@ -266,15 +267,16 @@ The list of keywords:
   gt
   ge
   has
-  can
   if
-  isa
-  isweak
-  is_type
-  is_read_only
   interface
   int
   interface_t
+  isa
+  isweak
+  is_compile_type
+  is_type
+  is_read_only
+  items
   last
   length
   lt
@@ -320,6 +322,7 @@ The list of keywords:
   unless
   unweaken
   use
+  version
   void
   warn
   while
@@ -1229,14 +1232,14 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE ERROR_CODE ERROR ITEMS VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
-  %type <opval> opt_classes classes class class_block
+  %type <opval> opt_classes classes class class_block version_decl
   %type <opval> opt_declarations declarations declaration
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
   %type <opval> method anon_method opt_args args arg has use require alias our
@@ -1245,7 +1248,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_operator binary_operator comparison_operator isa is_type
+  %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
   %type <opval> call_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow can
@@ -1261,11 +1264,11 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
   %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE NUMERIC_CMP STRING_CMP
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY CAN SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1302,7 +1305,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | declaration
 
   declaration
-    : has
+    : version_decl
+    | has
     | method
     | enumeration
     | our
@@ -1314,6 +1318,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   init_block
     : INIT block
+
+  version_decl
+    : VERSION_DECL CONSTANT ';'
 
   use
     : USE class_name ';'
@@ -1516,6 +1523,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | comparison_operator
     | isa
     | is_type
+    | is_compile_type
     | TRUE
     | FALSE
     | is_read_only
@@ -1525,6 +1533,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | ERROR_CODE
     | SET_ERROR_CODE operator
     | ERROR
+    | ITEMS
 
   operators
     : operators ',' operator
@@ -1593,6 +1602,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   is_type
     : operator IS_TYPE type
 
+  is_compile_type
+    : operator IS_COMPILE_TYPE type
+
   logical_operator
     : operator LOGICAL_OR operator
     | operator LOGICAL_AND operator
@@ -1645,8 +1657,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : ISWEAK var ARROW '{' field_name '}'
 
   can
-    : CAN var ARROW method_name
-    | CAN var
+    : operator CAN method_name
+    | operator CAN CONSTANT
 
   array_length
     : '@' operator
@@ -2066,6 +2078,9 @@ The list of syntax parsing tokens:
     <td>VAR</td><td>var</td>
   </tr>
   <tr>
+    <td>VERSION</td><td>version</td>
+  </tr>
+  <tr>
     <td>VOID</td><td>void</td>
   </tr>
   <tr>
@@ -2108,11 +2123,11 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
   %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY CAN SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -8081,29 +8096,29 @@ Examples:
 
 =head2 can Operator
 
-The C<can> operator checks the existence of the method implementation.
+The C<can> operator checks if a method can be called. 
 
-  can OPERAND->METHOD_NAME
+  OPERAND can METHOD_NAME
 
-  can OPERAND
+The type of the OPERAND must be the L<class type|/"Class Type"> or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
 
-The operand must the object that has a L<class type|/"Class Type"> or an L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
+The METHOD_NAME must be a L<method name|/"Method Name"> or an empty string C<"">. Otherwise a compilation error occurs.
 
-If the class or the interface doesn't have the method declaration, a compilation error occurs.
+An empty string C<""> means an L<anon method|/"Anon Method">.
 
-The method name must be a L<method name|/"Method Name">. Otherwise a compilation error occurs.
-
-If method name is not specified, the method name become C<"">.
+If the OPERAND can call the method given by METHOD_NAME, returns 1. Otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
-
-If the class or the interface has the method implementation, returns 1, otherwise returns 0.
 
 Examples:
 
   my $stringable = (Stringable)Point->new(1, 2);
   
-  if (can $stringable->to_string) {
+  if ($stringable can to_string) {
+    # ...
+  }
+  
+  if ($stringable can "") {
     # ...
   }
 

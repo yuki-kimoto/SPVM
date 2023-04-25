@@ -330,21 +330,21 @@ class TestCase::Interface {
     {
       my $pointable : TestCase::PointInterface = TestCase::PointForTest->new_xy(1, 2);
       
-      unless (can $pointable->x) {
+      unless ($pointable can x) {
         return 0;
       }
-      unless (can $pointable->y) {
+      unless ($pointable can y) {
         return 0;
       }
-      unless (can $pointable->to_string) {
+      unless ($pointable can to_string) {
         return 0;
       }
       
-      if (can $pointable->not_impl) {
+      if ($pointable can not_impl) {
         return 0;
       }
 
-      unless (can $pointable) {
+      unless ($pointable can "") {
         return 0;
       }
     }
