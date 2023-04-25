@@ -2596,6 +2596,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
+    // Add an empty INIT block
+    {
+      SPVM_METHOD* init_method = SPVM_HASH_get(class->method_symtable, "INIT", strlen("INIT"));
+      if (!init_method) {
+        
+      }
+    }
+    
     // mulnum_t
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       if (class->methods->length > 0) {
@@ -3070,6 +3078,24 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   method->op_method = op_method;
   
   op_method->uv.method = method;
+  
+  return op_method;
+}
+
+SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
+    
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_init->file, op_init->line);
+  SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, "INIT", strlen("INIT"));
+  const char* method_name = method_name_string->value;
+  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_init->file, op_init->line);
+  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_init->file, op_init->line);
+  
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_init->file, op_init->line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
+  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+  
+  int32_t is_init = 1;
+  SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, NULL, is_init, 0);
   
   return op_method;
 }
