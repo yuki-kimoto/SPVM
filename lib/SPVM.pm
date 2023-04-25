@@ -7,7 +7,7 @@ use Carp 'cluck';
 
 use SPVM::Global;
 
-our $VERSION = "0.971006";
+our $VERSION = "0.971007";
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
