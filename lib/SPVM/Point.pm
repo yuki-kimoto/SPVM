@@ -13,9 +13,6 @@ SPVM::Point - Point
   my $point = Point->new;
   my $point = Point->new(1, 2);
 
-  $point->set_x(1);
-  $point->set_y(2);
-  
   my $x = $point->x;
   my $y = $point->y;
   
@@ -41,13 +38,13 @@ C<Point> class has the following interfaces.
 
 =head2 x
 
-  has x : rw int;
+  has x : ro int;
 
 C<x>.
 
 =head2 y
 
-  has y : rw int;
+  has y : ro int;
 
 C<y>.
 

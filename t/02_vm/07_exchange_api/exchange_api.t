@@ -1958,13 +1958,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       
       {
         my $point = SPVM::Point->new(1, 2);
-        $point->set_x(4);
-        my $x = $point->x;
-        is($x, 4);
-      }
-      
-      {
-        my $point = SPVM::Point->new(1, 2);
         $point->clear;
         my $x = $point->x;
         my $y = $point->y;

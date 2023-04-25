@@ -13,10 +13,6 @@ SPVM::Point3D - Point 3D
   my $point = Point3D->new;
   my $point = Point3D->new(1, 2, 3);
 
-  $point->set_x(1);
-  $point->set_y(2);
-  $point->set_z(3);
-  
   my $x = $point->x;
   my $y = $point->y;
   my $z = $point->z;
@@ -37,7 +33,7 @@ C<Point3D> inherits the fields of L<Point|SPVM::Point/"Fields">.
 
 =head2 z
 
-  has z : rw int;
+  has z : ro int;
 
 C<z>.
 

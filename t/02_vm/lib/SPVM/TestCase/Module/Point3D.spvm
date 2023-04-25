@@ -48,34 +48,19 @@ class TestCase::Module::Point3D {
   static method fields : int () {
     
     {
-      my $Point3D3d = Point3D->new;
+      my $Point3D3d = Point3D->new(1, 2, 3);
       unless ($Point3D3d isa Point3D) {
         return 0;
       }
       
-      unless ($Point3D3d->x == 0) {
-        return 0;
-      }
-      
-      unless ($Point3D3d->y == 0) {
-        return 0;
-      }
-      
-      unless ($Point3D3d->z == 0) {
-        return 0;
-      }
-      
-      $Point3D3d->set_x(1);
       unless ($Point3D3d->x == 1) {
         return 0;
       }
       
-      $Point3D3d->set_y(2);
       unless ($Point3D3d->y == 2) {
         return 0;
       }
       
-      $Point3D3d->set_z(3);
       unless ($Point3D3d->z == 3) {
         return 0;
       }
@@ -208,7 +193,7 @@ class TestCase::Module::Point3D {
   static method extra : int () {
     # Basic
     {
-      my $point3d = Point3D->new;
+      my $point3d = Point3D->new(1, 2, 3);
       unless ($point3d isa Point3D) {
         return 0;
       }
@@ -216,28 +201,14 @@ class TestCase::Module::Point3D {
         return 0;
       }
       
-      unless ($point3d->x == 0) {
-        return 0;
-      }
-      
-      unless ($point3d->y == 0) {
-        return 0;
-      }
-      unless ($point3d->z == 0) {
-        return 0;
-      }
-      
-      $point3d->set_x(1);
       unless ($point3d->x == 1) {
         return 0;
       }
       
-      $point3d->set_y(2);
       unless ($point3d->y == 2) {
         return 0;
       }
 
-      $point3d->set_z(3);
       unless ($point3d->z == 3) {
         return 0;
       }
@@ -285,9 +256,6 @@ class TestCase::Module::Point3D {
       
       {
         my $point3d_2 = (Point3D)$point;
-        $point3d->set_x(1);
-        $point3d->set_y(2);
-        $point3d->set_z(3);
         $point3d_2->clear;
         unless ($point3d->x == 0) {
           return 0;
