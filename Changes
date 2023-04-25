@@ -1,5 +1,6 @@
 0.971007 2023-04-25
   [Incompatible Changes]
+    * The dismiss method in the Scope::Guard class is removed.
     * The x and y field in the Point class becomes private.
     * The z field in the Point3D class becomes private.
     * The definitions of the following fields in the Point class are changed.

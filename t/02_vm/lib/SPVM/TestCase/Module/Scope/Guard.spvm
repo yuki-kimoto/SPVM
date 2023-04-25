@@ -26,30 +26,6 @@ class TestCase::Module::Scope::Guard {
       }
     }
 
-    # dismiss
-    {
-      my $string = (mutable string)copy "abc";
-      {
-        my $guard = Scope::Guard->new([$string : mutable string] method : void () {
-          $string->[0] = 'A';
-          $string->[1] = 'B';
-        });
-
-        $guard->set_dismiss(1);
-
-        unless ($guard->dismiss == 1) {
-          return 0;
-        }
-        
-        $string->[0] = 'P';
-      }
-      
-      
-      unless ($string eq "Pbc") {
-        return 0;
-      }
-    }
-
     # Exceptions
     {
       my $handler : Scope::Guard::Handler;

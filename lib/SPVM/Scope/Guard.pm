@@ -41,12 +41,6 @@ C<Scope::Guard> provides a feature to execue a hander at the end of the scope.
 
 A handler. The type is L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>.
 
-=head2 dismiss
-
-  has dismiss : rw byte;
-
-Gets and sets C<dismiss> field. See the L</"DESTROY"> method about the behavior.
-
 =head1 Class Methods
 
 =head2 new
@@ -70,8 +64,6 @@ The $handler must be defined. Otherwize an exception is thrown.
   method DESTROY : void ();
 
 Executes the L</"handler">.
-
-If L</"dismiss"> is true, the handler is not executed.
 
 =head1 See Also
 
