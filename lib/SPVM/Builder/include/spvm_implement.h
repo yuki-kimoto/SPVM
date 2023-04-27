@@ -2673,7 +2673,7 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 static inline void SPVM_IMPLEMENT_CALL_INTERFACE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_name, const char* method_name, int32_t args_stack_length, int32_t* error, char* tmp_buffer) {
   int32_t entity_method_id = env->get_instance_method_id(env, stack, object, method_name);
   if (entity_method_id < 0) {
-    memset(tmp_buffer, sizeof(tmp_buffer), (0));
+    memset(tmp_buffer, (int)(sizeof(tmp_buffer)), (0));
     snprintf(tmp_buffer, 255, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, interface_name);
     void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
