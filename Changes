@@ -1,3 +1,7 @@
+0.971008 2023-04-27
+  [Test Fix]
+    * Fixed the version number tests.
+    
 0.971007 2023-04-25
   [Incompatible Changes]
     * The dismiss method in the Scope::Guard class is removed.
