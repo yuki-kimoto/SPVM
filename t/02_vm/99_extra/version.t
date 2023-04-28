@@ -30,23 +30,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   for my $miner_version (0 .. 999) {
     
-    # 1.000, 1.001, etc
-    my $major_and_miner_version_number_from_literal = SPVM::Fn->to_double(sprintf("1.%03d", $miner_version));
-    
-    # 1.000, 1.001, etc
-    my $version_string1 = sprintf("1.%03d", $miner_version);
-    my $major_and_miner_version_number_from_version_string1 = SPVM::Fn->to_double(sprintf("%.3f", SPVM::Fn->to_double($version_string1)));
-    ok($major_and_miner_version_number_from_version_string1 == $major_and_miner_version_number_from_literal);
+    # 1.000000, 1.001000, etc
+    ok(SPVM::Fn->to_double(sprintf("1.%03d000", $miner_version)) == SPVM::Fn->to_double(sprintf("1.%03d", $miner_version)));
     
     # 1.000001, 1.001001, etc
-    my $version_string2 = sprintf("1.%03d001", $miner_version);
-    my $major_and_miner_version_number_from_version_string2 = SPVM::Fn->to_double(sprintf("%.3f", SPVM::Fn->to_double($version_string1)));
-    ok($major_and_miner_version_number_from_version_string2 == $major_and_miner_version_number_from_literal);
-    
-    # 1.000000, 1.001000, etc
-    my $version_string3 = sprintf("1.%03d000", $miner_version);
-    my $major_and_miner_version_number_from_version_string3 = SPVM::Fn->to_double(sprintf("%.3f", SPVM::Fn->to_double($version_string1)));
-    ok($major_and_miner_version_number_from_version_string3 == $major_and_miner_version_number_from_literal);
+    ok(SPVM::Fn->to_double(sprintf("1.%03d001", $miner_version)) > SPVM::Fn->to_double(sprintf("1.%03d", $miner_version)));
   }
 }
 
