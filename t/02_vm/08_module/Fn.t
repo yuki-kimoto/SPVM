@@ -161,7 +161,10 @@ my $seed = time();
       ok(SPVM::Builder::Util::file_contains("lib/SPVM/Builder/include/spvm_api.h", $spvm_version_string));
     }
     {
-      my $perl_version_number = SPVM::Fn->to_double($SPVM::VERSION);
+      my $spvm_version_string = $SPVM::VERSION;
+      $spvm_version_string =~ s/_//g;
+      
+      my $perl_version_number = SPVM::Fn->to_double($spvm_version_string);
       my $spvm_version_number = SPVM::Fn->get_spvm_version_number;
       warn "[Test Output]Perl Version Number:" . sprintf("%.20f", $perl_version_number) . ",SPVM Version Number:" . sprintf("%.20f", $spvm_version_number);
       ok($perl_version_number == $spvm_version_number);
