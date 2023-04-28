@@ -3372,6 +3372,26 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Extra
+    {
+      unless (Fn->to_double("1.000") == 1.000) {
+        return 0;
+      }
+      
+      unless (Fn->to_double("2.000") == 2) {
+        return 0;
+      }
+      unless (Fn->to_double("1.001") == 1.001) {
+        return 0;
+      }
+      unless (Fn->to_double("1.999") == 1.999) {
+        return 0;
+      }
+      unless (Fn->to_double("1.001002") > 1.001) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
