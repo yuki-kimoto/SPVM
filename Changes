@@ -1,7 +1,8 @@
 0.971009 2023-04-28
   [Test Improvement]
     * Added tests of the version string.
-    
+  [Bug Fix]
+    * Fixed the bug that doing "use SPVM 'MyClass'" twice output warnings.
 0.971008 2023-04-27
   [Test Fix]
     * Fixed the version number tests.

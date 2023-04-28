@@ -164,46 +164,47 @@ sub bind_to_perl {
     if (my $error = $@) {
       confess $error;
     }
+    
+    my $method_names = $RUNTIME->get_method_names($class_name);
+
+    for my $method_name (@$method_names) {
+      
+      # Destrutor is skip
+      if ($method_name eq 'DESTROY') {
+        next;
+      }
+      # Anon method is skip
+      elsif (length $method_name == 0) {
+        next;
+      }
+      
+      my $perl_method_abs_name = "${perl_class_name}::$method_name";
+      my $is_class_method = $RUNTIME->get_method_is_class_method($class_name, $method_name);
+      
+      if ($is_class_method) {
+        # Define Perl method
+        no strict 'refs';
+        
+        # Suppress refer to objects
+        my $class_name_string = "$class_name";
+        my $method_name_string = "$method_name";
+        
+        *{"$perl_method_abs_name"} = sub {
+          my $perl_class_name = shift;
+          
+          my $return_value;
+          
+          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
+          my $error = $@;
+          if ($error) {
+            confess $error;
+          }
+          $return_value;
+        };
+      }
+    }
+    
     $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
-  }
-
-  my $method_names = $RUNTIME->get_method_names($class_name);
-
-  for my $method_name (@$method_names) {
-    
-    # Destrutor is skip
-    if ($method_name eq 'DESTROY') {
-      next;
-    }
-    # Anon method is skip
-    elsif (length $method_name == 0) {
-      next;
-    }
-    
-    my $perl_method_abs_name = "${perl_class_name}::$method_name";
-    my $is_class_method = $RUNTIME->get_method_is_class_method($class_name, $method_name);
-    
-    if ($is_class_method) {
-      # Define Perl method
-      no strict 'refs';
-      
-      # Suppress refer to objects
-      my $class_name_string = "$class_name";
-      my $method_name_string = "$method_name";
-      
-      *{"$perl_method_abs_name"} = sub {
-        my $perl_class_name = shift;
-        
-        my $return_value;
-        
-        eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
-        my $error = $@;
-        if ($error) {
-          confess $error;
-        }
-        $return_value;
-      };
-    }
   }
 }
 

@@ -30,6 +30,9 @@ use SPVM 'Float';
 use SPVM 'Double';
 use SPVM 'Bool';
 
+# use the same module twice
+use SPVM 'Point';
+
 use SPVM 'TestCase::Simple';
 
 my $BYTE_MAX = 127;
