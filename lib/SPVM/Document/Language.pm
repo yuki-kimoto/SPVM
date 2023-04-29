@@ -1489,7 +1489,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : '{' opt_statements '}'
 
   eval_block
-    : EVAL block ';'
+    : EVAL block
 
   opt_operators
     : /* Empty */

@@ -453,4 +453,12 @@ use Test::More;
   }
 }
 
+# Extra
+{
+  {
+    my $source = q|class MyClass { static method main : void () { eval {} } }|;
+    compile_ok($source);
+  }
+}
+
 done_testing;

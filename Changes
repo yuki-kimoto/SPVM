@@ -1,4 +1,9 @@
 0.971009 2023-04-28
+  [Changes]
+    * Support semi colon less eval block.
+      
+      eval { }
+      
   [Test Improvement]
     * Added tests of the version string.
   [Bug Fix]
