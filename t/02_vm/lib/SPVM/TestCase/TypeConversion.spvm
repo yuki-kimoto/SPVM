@@ -493,29 +493,104 @@ class TestCase::TypeConversion {
     
     return 0;
   }
-  static method convert_to_string : int () {
-    my $byte_string = (string)(byte)23;
-    my $short_string = (string)(short)23;
-    my $int_string = (string)23;
-    my $long_string = (string)23L;
-    my $float_string = (string)0.25000f;
-    my $double_string = (string)0.25000;
-    
-    if ($byte_string eq "23") {
-      if ($short_string eq "23") {
-        if ($int_string eq "23") {
-          if ($long_string eq "23") {
-            if ($float_string eq "0.25") {
-              if ($double_string eq "0.25") {
-                return 1;
-              }
-            }
-          }
-        }
+  
+  static method convert_byte_to_string : int () {
+    {
+      my $byte_string = (string)(byte)127;
+      
+      unless ($byte_string eq "127") {
+        return 0;
       }
     }
     
-    return 0;
+    {
+      my $byte_string = (string)(byte)-128;
+      
+      unless ($byte_string eq "-128") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method convert_short_to_string : int () {
+    {
+      my $short_string = (string)(short)32767;
+      
+      unless ($short_string eq "32767") {
+        return 0;
+      }
+    }
+    
+    {
+      my $short_string = (string)(short)-32768;
+      
+      unless ($short_string eq "-32768") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method convert_int_to_string : int () {
+    {
+      my $int_string = (string)2147483647;
+      
+      unless ($int_string eq "2147483647") {
+        return 0;
+      }
+    }
+    
+    {
+      my $int_string = (string)-2147483648;
+      
+      unless ($int_string eq "-2147483648") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  static method convert_long_to_string : int () {
+    {
+      my $long_string = (string)9223372036854775807L;
+      
+      unless ($long_string eq "9223372036854775807") {
+        return 0;
+      }
+    }
+    
+    {
+      my $long_string = (string)-9223372036854775808L;
+      
+      unless ($long_string eq "-9223372036854775808") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method convert_float_to_string : int () {
+    my $float_string = (string)0.25000f;
+    
+    unless ($float_string eq "0.25") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method convert_double_to_string : int () {
+    my $double_string = (string)0.25000;
+    
+    unless ($double_string eq "0.25") {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_byte_to_byte_object : int () {

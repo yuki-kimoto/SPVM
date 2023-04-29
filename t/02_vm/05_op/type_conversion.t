@@ -80,7 +80,12 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Convert to string
 {
-  ok(SPVM::TestCase::TypeConversion->convert_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_string());
 }
 
 {
