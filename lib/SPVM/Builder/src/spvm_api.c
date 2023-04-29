@@ -39,7 +39,7 @@
 
 static const char* FILE_NAME = "spvm_api.c";
 
-SPVM_ENV* SPVM_API_new_env_raw() {
+SPVM_ENV* SPVM_API_new_env_raw(void) {
 
   // Env Allocator
   SPVM_ENV_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_env();
@@ -3946,7 +3946,7 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   (void)env;
   
   // New raw env
-  SPVM_ENV* new_env = SPVM_API_new_env_raw(NULL);
+  SPVM_ENV* new_env = SPVM_API_new_env_raw();
   
   // Set the runtime
   new_env->runtime = env->runtime;
