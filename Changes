@@ -1,4 +1,4 @@
-0.971009 2023-04-28
+0.971009 2023-04-30
   [Changes]
     * Support semi colon less eval block.
       
@@ -12,6 +12,8 @@
   [Bug Fix and Breaking Binary Compatibility]
     * Fixed the bug that temporary buffer in (string) type cast is not initialized properly.
     * Fixed the bug that temporary buffer for exeption of calling methodin is not initialized properly.
+  [Fix Wranings]
+    * Fix warning "too many arguments in call to 'SPVM_API_new_env_raw'"
 0.971008 2023-04-27
   [Test Fix]
     * Fixed the version number tests.
