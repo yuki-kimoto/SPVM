@@ -237,6 +237,54 @@ class Fn {
     return -1;
   }
   
+
+  precompile static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int) {
+    
+    unless ($string) {
+      die "The \$string must be defined";
+    }
+    
+    unless ($substring) {
+      die "The \$substring must be defined";
+    }
+    
+    unless ($begin >= 0) {
+      die "The \$begin must be greater than or equal to 0";
+    }
+    
+    if ($end < 0) {
+      $end = length $string - 1;
+    }
+    
+    unless ($end < length $string) {
+      die "The \$end must be less than the length of the \$string";
+    }
+    
+    my $substring_length = length $substring;
+    
+    if ($substring_length == 0) {
+      return $begin;
+    }
+    
+    my $match_chars_count = 0;
+    for (my $i = $begin; $i <= $end; $i++) {
+      while ($string->[$i + $match_chars_count] == $substring->[$match_chars_count]) {
+        $match_chars_count++;
+        if ($match_chars_count == $substring_length) {
+          return $i;
+        }
+        
+        if ($i + $match_chars_count > $end) {
+          last;
+        }
+      }
+      
+      $match_chars_count = 0;
+    }
+    
+    return -1;
+  }
+  
   precompile static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 : int, $length = -1 : int) {
     unless ($string) {
       die "The \$string must be defined";

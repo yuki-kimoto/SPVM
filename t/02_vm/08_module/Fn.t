@@ -90,6 +90,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_code_point);
     ok(SPVM::TestCase::Module::Fn->hex);
     ok(SPVM::TestCase::Module::Fn->index);
+    ok(SPVM::TestCase::Module::Fn->index_v2);
     ok(SPVM::TestCase::Module::Fn->init_string);
     ok(SPVM::TestCase::Module::Fn->is_alnum);
     ok(SPVM::TestCase::Module::Fn->is_alpha);

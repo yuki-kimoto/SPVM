@@ -384,6 +384,32 @@ The $string_offset must be greater than or equal to 0. Otherwize an exception is
 
 The $string_offset + the $string_length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
 
+The definition and implementation of the index method will be replaced with the index_v2 method.
+
+=head2 index_v2
+
+  static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+
+Searches for the $substring in the range of the $string from the $begin to the $end.
+
+The search is performed from the beginning of the range of the $string.
+
+If the $substring is found, returns the found offset, otherwise returns -1.
+
+If the $end is less than 0, the $end is set to the length of the $string minus 1.
+
+The index_v2 method will be removed.
+
+Exceptions:
+
+The $string must be defined. Otherwize an exception is thrown.
+
+The $substring must be defined. Otherwize an exception is thrown.
+
+The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
+
+The $end must be less than the length of the $string
+
 =head2 init_string
 
   static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 int, $length = -1);

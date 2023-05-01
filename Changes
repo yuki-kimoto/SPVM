@@ -1,3 +1,14 @@
+0.971010 2023-05-02
+  [Notice of Backward Compatibility Breaking]]
+    * The index_v2 method in the Fn class is added, and the definition and implementation of the index method in the Fn class will be replaced to the index_v2 method in the Fn class.
+      The index_v2 method in the Fn class will be removed.
+      
+      [Before]
+      static method index : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);
+      
+      [After]
+      static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+      
 0.971009 2023-04-30
   [Changes]
     * Support semi colon less eval block.
