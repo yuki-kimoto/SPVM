@@ -44,7 +44,7 @@
 %type <opval> call_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
-%type <opval> new array_init die opt_extends
+%type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name class_name class_alias_name is_read_only
@@ -503,10 +503,7 @@ statement
 
 void_return_operator
   : die
-  | WARN operator
-    {
-      $$ = SPVM_OP_build_warn(compiler, $1, $2);
-    }
+  | warn
   | PRINT operator
     {
       $$ = SPVM_OP_build_print(compiler, $1, $2);
@@ -530,6 +527,16 @@ die
   | DIE
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL);
+    }
+
+warn
+  : WARN operator
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, $2);
+    }
+  | WARN
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, NULL);
     }
 
 for_statement

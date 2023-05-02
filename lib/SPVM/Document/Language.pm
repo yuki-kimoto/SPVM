@@ -3836,7 +3836,7 @@ In the level of L<native APIs|SPVM:Document::NativeAPI>, undef is defined as C<(
 
 An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
 
-The type of undef is L<undefined type|/"Undefined Type">
+The type of undef is L<undef type|/"undef Type">
 
 Examples:
   
@@ -4408,9 +4408,9 @@ The list of numeric object types:
 
 See also the L<boxing conversion|/"Boxing Conversion"> and L</"Unboxing Conversion">.
 
-=head2 Undefined Type
+=head2 undef Type
 
-The undefined type is the type of L<undef|/"Undefined Value"> value.
+The undef type is the type of L<undef|/"Undefined Value"> value.
 
 =head2 Interface Type
 
@@ -4915,7 +4915,7 @@ If the type of the left operand is the L<string type|/"string Type"> with the L<
 
 If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
@@ -4943,7 +4943,7 @@ Examples:
 
 =head2 Assignability to NumericObject
 
-If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -4969,7 +4969,7 @@ Examples:
 
 =head2 Assignability to Class
 
-If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
 If the type of the left operand is a super class of the type of the right operand, the assignability is true.
 
@@ -4994,7 +4994,7 @@ Examples:
 
 =head2 Assignability to Interface
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
 If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the assignability is true.
 
@@ -5020,7 +5020,7 @@ Examples:
 
 =head2 Assignability to Any Object
 
-If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5046,13 +5046,13 @@ Examples:
 
 =head2 Assignability to Undefined
 
-If the type of the left operand is the L<undefined type|/"Undefined Type">, the assignability is false.
+If the type of the left operand is the L<undef type|/"undef Type">, the assignability is false.
 
 =begin html
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>False</td><td>Undefined Type</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>False</td><td>undef Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
@@ -5064,7 +5064,7 @@ Examples:
 
 =head2 Assignability to Numeric Array
 
-If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5091,7 +5091,7 @@ Examples:
 
 =head2 Assignability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5113,7 +5113,7 @@ Examples:
 
 =head2 Assignability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5135,7 +5135,7 @@ Examples:
 
 =head2 Assignability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<class array type|/"Class Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 If the L<basic type|/"Basic Type"> of the left operand is an super class of the type of the right operand, the assignability is true.
 
@@ -5160,7 +5160,7 @@ Examples:
 
 =head2 Assignability to Interface Array
 
-If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
 
@@ -5188,7 +5188,7 @@ Examples:
 
 =head2 Assignability to Any Object Array
 
-If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5224,7 +5224,7 @@ Examples:
 
 =head2 Assignability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the assignability is true.
+If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
 
 If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the assignability is true.
 
@@ -5451,7 +5451,7 @@ If the type of the left operand is the L<string type|/"string Type"> with the L<
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"Undefined Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
 If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
@@ -5484,7 +5484,7 @@ Examples:
 
 If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the castability is true.
 
 The type of the right operand is other than above, the castability is false.
 
@@ -5518,7 +5518,7 @@ Examples:
 
 If the type of the left operand is a L<class type|/"Class Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
 
 If the type of the left operand is a super class of the type of right operand, the castability is true.
 
@@ -5559,7 +5559,7 @@ Examples:
 
 If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
 
 If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the castability is true.
 
@@ -5600,7 +5600,7 @@ Examples:
 
 If the type of the left operand is the L<any object type|/"Any Object Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5630,7 +5630,7 @@ If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the typ
 
 If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5666,7 +5666,7 @@ Examples:
 
 If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5697,7 +5697,7 @@ Examples:
 
 If the type of the left operand is a L<string array type|/"String Array Type"> and the types of the right operands are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5736,7 +5736,7 @@ If the L<basic type|/"Basic Type"> of the left operand is a super class of the L
 
 If the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the castability is true.
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5779,7 +5779,7 @@ If the type of the right operand is the same type of the left operand, the casta
 
 If the type of the right operand is an differnt type of L<interface array type|/"Interface Array Type">, the castability is also true.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5814,7 +5814,7 @@ Examples:
 
 If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of the right operands are the following cases:
 
-If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the castability is true.
 
 If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
 
@@ -5860,7 +5860,7 @@ Examples:
 
 If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of the right operands are the following cases:
 
-If the type of the right operand is the same type of the left operand or the L<undef type|/"Undefined Type">, the castability is true.
+If the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the castability is true.
 
 If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
 
@@ -6199,13 +6199,13 @@ The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the
 
 The boolean conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the C<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"Undefined Type">. Otherwise a compilation error occurs.
+The type of the C<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
 The boolean conversion returns the following value corresponding to the type of the condional operand.
 
 If the type is the L<int type|/"int Type">, return the value.
 
-If the type is the L<undef|/"Undefined Type">, return 0.
+If the type is the L<undef|/"undef Type">, return 0.
 
 If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, return 1.
 
@@ -6327,7 +6327,7 @@ The L<isa operator|/"isa Operator"> checks the L<runtime assignability/"Runtime 
 
 The runtime assignability is false, an exception is thrown.
 
-If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"Undefined Type">, the runtime assignability is true.
+If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"undef Type">, the runtime assignability is true.
 
 If the type of the distribution is the same as the type of the source, the runtime assignability is true.
 
@@ -8869,23 +8869,28 @@ The void returning operator is the operation that return type is C<void>.
 
 Note that this is not an L<operator|Operator> because the operator is defined as the operation that returns the value.
 
-void returning operators are the L<warn operator|/"warn Operator">, the L<die operator|/"die Operator">, the L<print operator|/"print Operator">, the L<make_read_only operator|/"make_read_only Operator">, the L<weaken operator|/"weaken Operator">, and the L<unweaken operator|/"unweaken Operator">.
-
 =head2 warn Operator
 
-The C<warn> operator is a L<void retruning operator|/"void Returning Operator"> to print a warning string to the standard error.
+The C<warn> operator prints a message to the standard error.
 
   warn OPERNAD;
+  warn;
 
-The operand must be the L<string Type|/"string Type">.
+The OPERNAD must be the L<string Type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
-If the end character of the string is C<\n>, C<warn> statement prints the string itself.
+If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Warned.">.
 
-If not, the current file name and current line number are added to the end of the string.
+The return type is the L<void type|/"void Type">.
 
-If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print "Warned.".
+If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
+
+If not, the current file name and current line number are added to the end of the OPERNAD.
 
 The buffer of the standard error is flushed after the printing.
+
+Examples:
+
+  warn "Warning:Something is wrong.";
 
 =head2 die Operator
 

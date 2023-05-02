@@ -3602,7 +3602,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand) {
   
-  if (!op_operand) {
+  if (!op_operand || op_operand->id == SPVM_OP_C_ID_UNDEF) {
     // Default warn message
     op_operand = SPVM_OP_new_op_constant_string(compiler, "Warned.", strlen("Warned."), op_warn->file, op_warn->line);
   }

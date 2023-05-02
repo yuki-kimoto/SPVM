@@ -1,4 +1,15 @@
 0.971011 2023-05-02
+  [Document Changes]
+    * "Undefined Type" is renamed to "undef Type".
+  [New Feature]
+    * Added operand less warn operator.
+      warn;
+    * The warn operator allow undef type.
+      warn undef;
+  [Changes]
+    * The die operator performet numeric to string convertion.
+    * The die operator can't receive undef.
+    
   [Compilation Error Message Changes]
     * The format of compilation error messages is changed.
       [Before]

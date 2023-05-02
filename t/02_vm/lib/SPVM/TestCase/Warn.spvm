@@ -29,4 +29,15 @@ class TestCase::Warn {
     return 1;
   }
 
+  static method test_warn_no_operand : int () {
+    warn;
+    
+    return 1;
+  }
+  
+  static method test_warn_undef_type : int () {
+    warn undef;
+    
+    return 1;
+  }
 }
