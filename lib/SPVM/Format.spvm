@@ -36,7 +36,7 @@ class Format {
         ++$index;
       }
       elsif ($index + $constant_string_length + 1 >= $format_length) {
-        die "Invalid conversion in sprintf: end of string";
+        die "Invalid conversion in sprintf: end of string.";
       }
       else {
         # Add constant string
@@ -49,7 +49,7 @@ class Format {
         
         # Check the next element of @$args corresponding to the specifier
         unless ($arg_count < @$args) {
-          die "Missing argument in sprintf";
+          die "Missing argument in sprintf.";
         }
         
         # Read specifier %[flags][width][.precision][length]type
@@ -294,7 +294,7 @@ class Format {
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         else {
-          die "Invalid specifier \"%$specifier\"";
+          die "Invalid specifier \"%$specifier\".";
         }
         
         ++$arg_count;

@@ -38,7 +38,7 @@ class IntList {
     my $self = new IntList;
     
     unless ($length >= 0) {
-      die "The \$length must be greater than or equal to 0";
+      die "The \$length must be greater than or equal to 0.";
     }
     
     if ($capacity < 0) {
@@ -61,11 +61,11 @@ class IntList {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "The \$index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "The \$index must be less than the length of the \$list";
+      die "The \$index must be less than the length of the \$list.";
     }
     
     my $element = $self->{values}[$index];
@@ -77,11 +77,11 @@ class IntList {
     my $length = $self->{length};
     
     unless ($index >= 0) {
-      die "The \$index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0.";
     }
     
     unless ($index <= $length) {
-      die "The \$index must be less than or equal to the length of the \$list";
+      die "The \$index must be less than or equal to the length of the \$list.";
     }
     
     my $new_length = $length + 1;
@@ -102,7 +102,7 @@ class IntList {
     my $length = $self->length;
     
     unless ($length > 0) {
-      die "The length of the \$list must be greater than 0";
+      die "The length of the \$list must be greater than 0.";
     }
     
     my $element = $self->{values}[$length - 1];
@@ -129,11 +129,11 @@ class IntList {
     my $length = $self->{length};
     
     unless ($index >= 0) {
-      die "The \$index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "The \$index must be less than the length of the \$list";
+      die "The \$index must be less than the length of the \$list.";
     }
     
     my $elements = $self->{values};
@@ -151,14 +151,14 @@ class IntList {
   
   method replace : void ($offset : int, $remove_length : int, $replace : int[]) {
     unless ($offset >= 0) {
-      die("The \$offset must be greater than or equal to 0");
+      die "The \$offset must be greater than or equal to 0.";
     }
     
     unless ($remove_length >= 0) {
-      die("The \$remove_length must be greater than or equal to 0");
+      die "The \$remove_length must be greater than or equal to 0.";
     }
     unless ($offset + $remove_length <= $self->{length}) {
-      die("The \$offset + the \$removing lenght must be less than or equal to the length of the \$list");
+      die "The \$offset + the \$removing lenght must be less than or equal to the length of the \$list.";
     }
     
     my $replace_length = 0;
@@ -181,7 +181,7 @@ class IntList {
   
   method reserve : void ($new_capacity : int) {
     unless ($new_capacity >= 0) {
-      die "The \$new_capacity must be greater than or equal to 0";
+      die "The \$new_capacity must be greater than or equal to 0.";
     }
     
     my $capacity = $self->{capacity};
@@ -197,7 +197,7 @@ class IntList {
   
   method resize : void ($new_length : int) {
     unless ($new_length >= 0) {
-      die "The \$new_length must be greater than or equal to 0";
+      die "The \$new_length must be greater than or equal to 0.";
     }
     
     my $length = $self->{length};
@@ -217,11 +217,11 @@ class IntList {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "The \$index must be greater than or equal to 0";
+      die "The \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "The \$index must be less than the length of the \$list";
+      die "The \$index must be less than the length of the \$list.";
     }
     
     $self->{values}[$index] = $element;
@@ -229,7 +229,7 @@ class IntList {
   
   method set_array : void ($array : int[]) {
     unless ($array) {
-      die "The \$array must be defined";
+      die "The \$array must be defined.";
     }
     
     my $cur_length = $self->length;
@@ -237,7 +237,7 @@ class IntList {
     my $set_length = @$array;
     
     unless ($set_length == $cur_length) {
-      die "The length of the \$array must be the \$same as the length of the \$list";
+      die "The length of the \$array must be the \$same as the length of the \$list.";
     }
     
     Array->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
@@ -247,7 +247,7 @@ class IntList {
     my $length = $self->{length};
     
     unless ($length > 0) {
-      die "The length of the \$list must be greater than 0";
+      die "The length of the \$list must be greater than 0.";
     }
     
     my $elements = $self->{values};
