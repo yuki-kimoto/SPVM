@@ -3600,6 +3600,18 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   return op_free_tmp;
 }
 
+SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand) {
+  
+  if (!op_operand) {
+    // Default warn message
+    op_operand = SPVM_OP_new_op_constant_string(compiler, "Warned.", strlen("Warned."), op_warn->file, op_warn->line);
+  }
+  
+  SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_operand);
+  
+  return op_warn;
+}
+
 SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, SPVM_OP* op_name_class) {
   
   SPVM_OP_insert_child(compiler, op_class_id, op_class_id->last, op_name_class);
@@ -3612,18 +3624,6 @@ SPVM_OP* SPVM_OP_build_set_error_code(SPVM_COMPILER* compiler, SPVM_OP* op_set_e
   SPVM_OP_insert_child(compiler, op_set_error_code, op_set_error_code->last, op_number);
   
   return op_set_error_code;
-}
-
-SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand) {
-  
-  if (!op_operand) {
-    // Default warn message
-    op_operand = SPVM_OP_new_op_constant_string(compiler, "Warned.", strlen("Warned."), op_warn->file, op_warn->line);
-  }
-  
-  SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_operand);
-  
-  return op_warn;
 }
 
 SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand) {
