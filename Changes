@@ -1,3 +1,12 @@
+0.971011 2023-05-02
+  [Compilation Error Message Improvement]
+    * The format of compilation error messages is changed.
+      [Before]
+        MESSAGE at FILE_NAME line LINE
+      [After]
+        MESSAGE.
+          at FILE_NAME line LINE
+      
 0.971010 2023-05-02
   [Notice of Backward Compatibility Breaking]]
     * The index_v2 method in the Fn class is added, and the definition and implementation of the index method in the Fn class will be replaced to the index_v2 method in the Fn class.

@@ -1380,7 +1380,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       }
       int32_t is_odd = element_index % 2 == 1;
       if (is_odd) {
-        SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number at %s line %d", op_list_elements->file, op_list_elements->line);
+        SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number.\n  at %s line %d", op_list_elements->file, op_list_elements->line);
       }
     }
   }
@@ -1801,7 +1801,7 @@ SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_can, SPVM_OP* op
     }
     
     if (!is_empty_string) {
-      SPVM_COMPILER_error(compiler, "If the right operand of the can operator is a constant value, it must be an empty string \"\" at %s line %d", op_name->file, op_name->line);
+      SPVM_COMPILER_error(compiler, "If the right operand of the can operator is a constant value, it must be an empty string \"\".\n  at %s line %d", op_name->file, op_name->line);
     }
     
     op_name = SPVM_OP_new_op_name(compiler, "", op_name->file, op_name->line);
@@ -1949,7 +1949,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // If class fail load by if (require xxx) syntax, that is ok
       const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
       if (!not_found_class_class_name) {
-        SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
         return op_class;
       }
     }
@@ -2014,15 +2014,15 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
         }
       }
     }
     if (class_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
   }
   
@@ -2039,7 +2039,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // version declaration
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
         if (class->version_string) {
-          SPVM_COMPILER_error(compiler, "The version has already been declared at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
         
@@ -2071,27 +2071,27 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           
           if (invalid_char) {
-            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\" or \"_\" at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\" or \"_\".\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
           if (!isdigit(version_string[0])) {
-            SPVM_COMPILER_error(compiler, "A version string must begin with a number at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "A version string must begin with a number.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
           if (!isdigit(version_string[version_string_length - 1])) {
-            SPVM_COMPILER_error(compiler, "A version string must end with a number at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "A version string must end with a number.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
           if (!(dot_count <= 1)) {
-            SPVM_COMPILER_error(compiler, "The number of \".\" in a version string must be less than or equal to 1 at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The number of \".\" in a version string must be less than or equal to 1.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
           if (!(digits_after_dot % 3 == 0)) {
-            SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3 at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
         }
@@ -2110,13 +2110,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // Class name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(class_alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_class_name = op_use->uv.use->class_name;
             const char* use_class_name_exists = SPVM_HASH_get(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
             if (use_class_name_exists) {
-              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
             }
             else {
               SPVM_HASH_set(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
@@ -2131,12 +2131,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
         if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         const char* interface_name = op_decl->uv.interface->class_name;
         
         if (strcmp(class->name, interface_name) == 0) {
-          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
@@ -2146,7 +2146,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have class variables at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
 
@@ -2275,7 +2275,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_FIELD* field = op_decl->uv.field;
         
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have fields at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->fields, field);
         
@@ -2460,7 +2460,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
       }
       else {
         SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
@@ -2478,7 +2478,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
       
       if (found_class_var) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
       }
       else {
         SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
@@ -2533,7 +2533,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       
       if (must_have_block && !method->op_block) {
-        SPVM_COMPILER_error(compiler, "The non-native method must have the block at %s line %d", op_name_method->file, op_name_method->line);
+        SPVM_COMPILER_error(compiler, "The non-native method must have the block.\n  at %s line %d", op_name_method->file, op_name_method->line);
       }
       
       // Method check
@@ -2557,37 +2557,37 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
       // If Method is anon, method must be method
       if (strlen(method_name) == 0 && method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "The anon method must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
 
       if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
         // Method having interface_t attribute must be method
         if (method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
         if (method->is_required) {
-          SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\" at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       
       if (method->is_native) {
         if (method->op_block) {
-          SPVM_COMPILER_error(compiler, "The native method cannnot have the block at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", method->op_method->file, method->op_method->line);
         }
       }
       
       SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
       
       if (found_method) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
       }
       // Unknown method
       else {
         const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
         if (found_method_name) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method at %s line %d", method_name, method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
         }
         else {
           // Bind standard functions
@@ -2599,7 +2599,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           if (method->is_required) {
             if (class->required_method) {
-              SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\".\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
             }
             class->required_method = method;
           }
@@ -2623,16 +2623,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // mulnum_t
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       if (class->methods->length > 0) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
       }
       if (class->class_vars->length > 0) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables at %s line %d", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
       }
       if (class->fields->length == 0) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field at %s line %d", class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
       }
       else if (class->fields->length > 255) {
-        SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255 at %s line %d", class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
       }
     }
   }
@@ -2715,7 +2715,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
   class_var->name = op_name->uv.name;
   
   if (strstr(name, "::")) {
-    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" cannnot contain \"::\" at %s line %d", class_var->name, op_name->file, op_name->line);
+    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
   }
   
   class_var->op_name = op_name;
@@ -2765,14 +2765,14 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
       if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -2795,7 +2795,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   field->name = op_name_field->uv.name;
 
   if (strstr(field->op_name->uv.name, "::")) {
-    SPVM_COMPILER_error(compiler, "The field name \"%s\" cannnot contain \"::\" at %s line %d", field->name, op_name_field->file, op_name_field->line);
+    SPVM_COMPILER_error(compiler, "The field name \"%s\" cannnot contain \"::\".\n  at %s line %d", field->name, op_name_field->file, op_name_field->line);
   }
 
   // Type
@@ -2845,15 +2845,15 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid field attribute \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid field attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
       
       if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed.\n  at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -2878,7 +2878,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   const char* method_name = op_name_method->uv.name;
   if (strstr(method_name, "::")) {
-    SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\" at %s line %d", method_name, op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
   }
   
   // Block is method block
@@ -2897,7 +2897,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   method->is_init = is_init;
   if (!is_init && strcmp(method_name, "INIT") == 0) {
-    SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name at %s line %d", op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
   }
 
   // Method attributes
@@ -2940,16 +2940,16 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
     }
     
     if (method->is_native && method->is_precompile) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified at %s line %d", op_attributes->file, op_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified.\n  at %s line %d", op_attributes->file, op_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
     }
   }
   
@@ -2960,7 +2960,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   // Native method cannnot have block
   if ((method->is_native) && op_block) {
-    SPVM_COMPILER_error(compiler, "The native method cannnot have the block at %s line %d", op_block->file, op_block->line);
+    SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", op_block->file, op_block->line);
   }
   
   // method args
@@ -3023,17 +3023,17 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type.\n  at %s line %d", op_method->file, op_method->line);
     }
     
     // DESTROY is instance method
     if (method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
     }
 
     // DESTROY doesn't have arguments without invocant
     if (method->args_length != 1) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method cannnot have arguments at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
     }
   }
   
@@ -3126,7 +3126,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
       compiler->current_enum_value = constant->value.ival;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The value of the enumeration must be int type at %s line %d", op_constant->file, op_constant->line);
+      SPVM_COMPILER_error(compiler, "The value of the enumeration must be int type.\n  at %s line %d", op_constant->file, op_constant->line);
     }
     
     compiler->current_enum_value++;
@@ -3206,12 +3206,12 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             break;
           }
           default: {
-            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute \"%s\" at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
           }
         }
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
       }
     }
     
@@ -3259,7 +3259,7 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   op_var->uv.var->var_decl = var_decl;
   
   if (strstr(op_var->uv.var->name, "::")) {
-    SPVM_COMPILER_error(compiler, "The local variable \"%s\" cannnot contain \"::\" at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
+    SPVM_COMPILER_error(compiler, "The local variable \"%s\" cannnot contain \"::\".\n  at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
   }
   
   return op_var;
@@ -3319,7 +3319,7 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   if (op_first->id != SPVM_OP_C_ID_VAR) {
-    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable at %s line %d", SPVM_OP_get_op_name(op_unary->id), op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable.\n  at %s line %d", SPVM_OP_get_op_name(op_unary->id), op_first->file, op_first->line);
   }
   
   // Build op
@@ -3370,7 +3370,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable at %s line %d", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
   
   return op_inc;
@@ -3382,7 +3382,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable at %s line %d", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
   
   return op_dec;
@@ -3536,7 +3536,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_dist);
   
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
-    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
+    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
   
   return op_special_assign;
@@ -3553,7 +3553,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_operand_dist->is_lvalue = 1;
   
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
-    SPVM_COMPILER_error(compiler, "The left operand of the assign operator must be mutable at %s line %d", op_operand_dist->file, op_operand_dist->line);
+    SPVM_COMPILER_error(compiler, "The left operand of the assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
   
   return op_assign;

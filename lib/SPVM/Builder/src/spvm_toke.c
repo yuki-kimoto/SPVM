@@ -92,12 +92,12 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
       has_brace = 1;
       char_ptr++;
       if (!SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
-        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
         return ch;
       }
     }
     else {
-      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
       return ch;
     }
   }
@@ -117,7 +117,7 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
     char* end;
     int32_t number = strtol(octal_escape_char, &end, 8);
     if (number > 255) {
-      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377 at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
       return ch;
     }
     ch = (char)number;
@@ -128,7 +128,7 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
       char_ptr++;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
     }
   }
   
@@ -166,7 +166,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
     ch = (char)strtol(hex_escape_char, &end, 16);
   }
   else {
-    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
   }
   
   if (has_brace) {
@@ -174,7 +174,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
       char_ptr++;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
     }
   }
   
@@ -319,7 +319,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           {
             // A class name must begin with an upper case character
             if (islower(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
@@ -330,7 +330,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (i > 1) {
                 if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
                   if (islower(class_name[i])) {
-                    SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character at %s line %d", class_name, op_use->file, op_use->line);
+                    SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
                     return 0;
                   }
                 }
@@ -339,31 +339,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // A class name cannnot conatain "__"
             if (strstr(class_name, "__")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
             
             // A class name cannnot end with "::"
             if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name cannnot contains "::::".
             if (strstr(class_name, "::::")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name cannnot begin with \"$::\"
             if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\" at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
 
             // A class name cannnot begin with a number
             if (class_name_length >= 1 && isdigit(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number at %s line %d", class_name, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
           }
@@ -453,7 +453,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s) at %s line %d", class_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s).\n  at %s line %d", class_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
                   
                   return 0;
                 }
@@ -464,13 +464,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
                 if (file_size < 0) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
                 char* src = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\" at %s line %d", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, src);
                   return 0;
                 }
@@ -1003,7 +1003,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "The character literal cannnot be empty at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character literal cannnot be empty.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
           compiler->bufptr++;
         }
         else {
@@ -1058,7 +1058,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr = char_ptr;
             }
             else {
-              SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character.\n  at %s line %d", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
               compiler->bufptr++;
             }
           }
@@ -1071,7 +1071,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "The character literal must ends with \"'\" at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The character literal must ends with \"'\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
           }
         }
         
@@ -1199,7 +1199,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           next_string_literal_bufptr++;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The character after \"->\" in a string literal must be \"[\" or \"{\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The character after \"->\" in a string literal must be \"[\" or \"{\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1214,7 +1214,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_getting_field_brace = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The getting field in a string literal must be closed with \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting field in a string literal must be closed with \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1224,7 +1224,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_bracket = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The getting array element in a string literal must be closed with \"]\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting array element in a string literal must be closed with \"]\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                           return 0;
                         }
                       }
@@ -1265,7 +1265,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->bufptr == '\0') {
-            SPVM_COMPILER_error(compiler, "The string literal must be end with '\"' at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The string literal must be end with '\"'.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
             return 0;
           }
           
@@ -1355,10 +1355,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     if (*char_ptr == '}') {
                       char_ptr++;
                       if (unicode_chars_length < 1) {
-                        SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                       }
                       else if (unicode_chars_length > 8) {
-                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                       }
                       else {
                         int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
@@ -1377,18 +1377,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           }
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                         }
                         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, unicode_chars);
                         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                       }
                     }
                     else {
-                      SPVM_COMPILER_error(compiler, "A Unicode escape character must be closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "A Unicode escape character must be closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Invalid Unicode escape character at %s line %d", compiler->cur_file, compiler->cur_line);
+                    SPVM_COMPILER_error(compiler, "Invalid Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
                   }
                 }
                 else {
@@ -1463,7 +1463,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       break;
                     }
                     default: {
-                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\" at %s line %d", *char_ptr, compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\".\n  at %s line %d", *char_ptr, compiler->cur_file, compiler->cur_line);
                     }
                   }
                 }
@@ -1587,7 +1587,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
               }
               else {
-                SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\" at %s line %d", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
               }
             }
             
@@ -1595,27 +1595,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             {
               // A variable name cannnot conatain "__"
               if (strstr(var_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A variable name cannnot begin with \"$::\"
               if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A variable name cannnot end with \"::\"
               if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
               
               // A variable name \"%s\" cannnot contain \"::::\"
               if (strstr(var_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\" at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A variable name cannnot begin with a number
               if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
-                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
               }
             }
             
@@ -1826,7 +1826,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (out_of_range) {
-              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of range of maximum and minimum values of int type at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of range of maximum and minimum values of int type.\n  at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1890,7 +1890,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s%s\" is out of range of maximum and minimum values of long type at %s line %d", minus ? "-" : "", numeric_literal, suffix, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s%s\" is out of range of maximum and minimum values of long type.\n  at %s line %d", minus ? "-" : "", numeric_literal, suffix, compiler->cur_file, compiler->cur_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1908,7 +1908,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             char *end;
             num.fval = strtof(numeric_literal, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid float literal at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid float literal.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
             }
             
             if (minus) {
@@ -1920,7 +1920,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             char *end;
             num.dval = strtod(numeric_literal, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid double literal.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
             }
             if (minus) {
               num.dval = -num.dval;
@@ -2520,17 +2520,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             {
               // A symbol name cannnot conatain "__"
               if (strstr(symbol_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
               
               // A symbol name cannnot end with "::"
               if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A symbol name cannnot contains "::::".
               if (strstr(symbol_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
               // A symbol name cannnot begin with "::"
@@ -2544,7 +2544,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (next_is_fat_camma) {
               // The string literal of the left operand of the fat camma cannnot contains "::".
               if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
-                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\" at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
 
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);

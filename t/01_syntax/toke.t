@@ -31,6 +31,14 @@ use Test::More;
   compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
 }
 
+# Exception Message Format
+{
+  {
+    my $source = 'class myclass;';
+    compile_not_ok($source, qr|\.\n  at .+ line |s);
+  }
+}
+
 # Class Name
 {
   {
@@ -241,12 +249,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 0x100000000; } }';
-        compile_not_ok($source, qr/The numeric literal "0x100000000" is out of range of maximum and minimum values of int type at/);
+        compile_not_ok($source, qr/The numeric literal "0x100000000" is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0x10000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0x10000000000000000L" is out of range of maximum and minimum values of long type at/);
+        compile_not_ok($source, qr/The numeric literal "0x10000000000000000L" is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -270,12 +278,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 040000000000; } }';
-        compile_not_ok($source, qr/The numeric literal "040000000000" is out of range of maximum and minimum values of int type at/);
+        compile_not_ok($source, qr/The numeric literal "040000000000" is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0x2000000000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0x2000000000000000000000L" is out of range of maximum and minimum values of long type at/);
+        compile_not_ok($source, qr/The numeric literal "0x2000000000000000000000L" is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -294,12 +302,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 0b100000000000000000000000000000000; } }';
-        compile_not_ok($source, qr/The numeric literal "0b100000000000000000000000000000000" is out of range of maximum and minimum values of int type at/);
+        compile_not_ok($source, qr/The numeric literal "0b100000000000000000000000000000000" is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0b10000000000000000000000000000000000000000000000000000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0b10000000000000000000000000000000000000000000000000000000000000000L" is out of range of maximum and minimum values of long type at/);
+        compile_not_ok($source, qr/The numeric literal "0b10000000000000000000000000000000000000000000000000000000000000000L" is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
