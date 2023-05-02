@@ -206,7 +206,7 @@ class TestCase::Exception {
     {
       eval { die; };
       my $error = $@;
-      unless (Fn->index($error, "Died\n", 0) == 0) {
+      unless (Fn->index($error, "Died.\n", 0) == 0) {
         return 0;
       }
     }

@@ -8883,7 +8883,7 @@ If the end character of the string is C<\n>, C<warn> statement prints the string
 
 If not, the current file name and current line number are added to the end of the string.
 
-If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print "Warning: something's wrong".
+If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print "Warned.".
 
 The buffer of the standard error is flushed after the printing.
 
