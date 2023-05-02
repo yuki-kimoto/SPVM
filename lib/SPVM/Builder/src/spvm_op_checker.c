@@ -2342,7 +2342,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!(SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
                 || SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))) {
-                SPVM_COMPILER_error(compiler, "The operand of the warn statement must be the string type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the warn operator must be the string type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2360,7 +2360,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the print statement must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the print operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2378,7 +2378,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the say statement must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the say operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -2389,7 +2389,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               first_type = SPVM_OP_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the make_read_only statement must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the make_read_only operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               break;

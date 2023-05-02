@@ -691,7 +691,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { warn Int->new(1); } }';
-    compile_not_ok($source, q|The operand of the warn statement must be the string type|);
+    compile_not_ok($source, q|The operand of the warn operator must be the string type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { warn undef; } }';
@@ -703,7 +703,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { print Int->new(1); } }';
-    compile_not_ok($source, q|The operand of the print statement must be the string type|);
+    compile_not_ok($source, q|The operand of the print operator must be the string type|);
   }
 }
 
@@ -711,7 +711,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { make_read_only 1; } }';
-    compile_not_ok($source, q|The operand of the make_read_only statement must be the string type|);
+    compile_not_ok($source, q|The operand of the make_read_only operator must be the string type|);
   }
 }
 

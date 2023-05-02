@@ -1,4 +1,8 @@
 0.971011 2023-05-02
+  [Document Changes]
+    * The die operator becomes the die statemenet.
+    * void Returning Operator is merged into Operator.
+    * The doc of the warn operator is improved.
   [Bug Fix]
     * XS and SPVM source codes were compiled by C99 in 0.9702, but in face compiled by GNU C99 from now.
       XS and SPVM source codes are compiled by C99 now.
@@ -13,6 +17,7 @@
     * The die operator performet numeric to string convertion.
     * The die operator can't receive undef.
     * The binding INIT block to Perl is skipped.
+    * The die operator becomes the die statemenet.
   [Compilation Error Message Changes]
     * The format of compilation error messages is changed.
       [Before]
@@ -25,6 +30,7 @@
     * The exception messages in Standard Modules ends with ".".
     * The exception messages in operations ends with ".".
     * The default die message is changed to "Died.".
+    * Fixed exception messages of the warn operator, print operator, make_read_only operator.
   [Message Changes]
     * The default warn message is changed to "Warned.".
   [Warning Fix]

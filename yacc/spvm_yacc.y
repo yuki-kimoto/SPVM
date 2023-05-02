@@ -500,10 +500,20 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->cur_file, compiler->cur_line);
     }
+  | die ';'
+
+die
+  : DIE operator
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, $2);
+    }
+  | DIE
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, NULL);
+    }
 
 void_return_operator
-  : die
-  | warn
+  : warn
   | PRINT operator
     {
       $$ = SPVM_OP_build_print(compiler, $1, $2);
@@ -517,16 +527,6 @@ void_return_operator
   | MAKE_READ_ONLY operator
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
-    }
-
-die
-  : DIE operator
-    {
-      $$ = SPVM_OP_build_die(compiler, $1, $2);
-    }
-  | DIE
-    {
-      $$ = SPVM_OP_build_die(compiler, $1, NULL);
     }
 
 warn

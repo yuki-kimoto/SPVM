@@ -6,7 +6,7 @@ SPVM::Document::Language - SPVM Language Specification
 
 =head1 Description
 
-B<SPVM::Document::Language> defines SPVM language specification.
+The L<SPVM> language specification is described.
 
 =head1 Tokenization
 
@@ -1252,7 +1252,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> call_method opt_vaarg
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow can
-  %type <opval> new array_init die opt_extends
+  %type <opval> new array_init die warn opt_extends
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
   %type <opval> field_name method_name class_name class_alias_name is_read_only
@@ -1425,19 +1425,23 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | operator ';'
     | void_return_operator ';'
     | ';'
+    | die ';'
+
+  die
+    : DIE operator
+    | DIE
 
   void_return_operator
-    : die
-    | WARN operator
+    : warn
     | PRINT operator
     | SAY operator
     | weaken_field
     | unweaken_field
     | MAKE_READ_ONLY operator
 
-  die
-    : DIE operator
-    | DIE
+  warn
+    : WARN operator
+    | WARN
 
   for_statement
     : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
@@ -6900,12 +6904,45 @@ If the return type of the current L<method|/"Method Definition"> is the non-void
 
 The type of the C<OPERAND> must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
 
-=head2 Empty Statement
+=head2 die Statement
 
-The empty statement C<;> is a L<statement|/"Statement"> to do nothing.
+The C<die> statement throws an L<exception|/"Throwing Exception">.
 
-  # The empty statemenet
-  ;
+  die OPERAND;
+
+The operand must be the L<string type|/"string Type">. If not a compilation error occurs.
+
+The return type is the L<void type|/"void Type">.
+
+You can specify the error message to the C<OPERAND>.
+
+  # Throw an exception
+  die "Error";
+
+The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code 255.
+
+The stack traces constain the class names, the method names, the file names and the line numbers.
+
+  Error
+  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+  from TestCase->main at SPVM/TestCase.spvm line 1198
+
+The exception can be catched using an L<eval block|/"Exception Catching">.
+
+Examples:
+  
+  # Catch the exception
+  eval {
+    # Throw an exception
+    die "Error";
+  }
+  
+  # Check the exception
+  if ($@) {
+    # ...
+  }
 
 =head2 Operator Statement
 
@@ -6924,18 +6961,12 @@ Examples:
   &foo();
   my $num = 1 + 2;
 
-=head2 void Returning Operator Statement
+=head2 Empty Statement
 
-The void returning operator statement is the L<statement|/"Statement"> to execute an L<void returning operator|/"void Returning Operator">.
+The empty statement C<;> is a L<statement|/"Statement"> to do nothing.
 
-The statement is composed of L<void returning operator|/"void Returning Operator"> and C<;>.
-
-  VOID_RETURN_OPERATOR;
-
-Examples:
-
-  die "Error";
-  warn "Warning";
+  # The empty statemenet
+  ;
 
 =head1 Operator
 
@@ -8863,12 +8894,6 @@ B<Exampless:>
   my $y = 2;
   my $ret = ($x += 2, $x + $y);
 
-=head1 void Returning Operator
-
-The void returning operator is the operation that return type is C<void>.
-
-Note that this is not an L<operator|Operator> because the operator is defined as the operation that returns the value.
-
 =head2 warn Operator
 
 The C<warn> operator prints a message to the standard error.
@@ -8884,79 +8909,47 @@ The return type is the L<void type|/"void Type">.
 
 If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
 
-If not, the current file name and current line number are added to the end of the OPERNAD.
+If not, the current file name and the current line number by the format C<"\n  at $file_name line $line\n"> are added to the end of the OPERNAD.
 
 The buffer of the standard error is flushed after the printing.
 
 Examples:
 
-  warn "Warning:Something is wrong.";
-
-=head2 die Operator
-
-The C<die> operator is a L<void retruning operator|/"void Returning Operator"> to L<throw an exception|/"Throwing Exception">.
-
-  die OPERAND;
-
-The operand must be the L<string type|/"string Type">. If not a compilation error occurs.
-
-You can specify the error message to the C<OPERAND>.
-
-  # Throw an exception
-  die "Error";
-
-The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
-
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code 255.
-
-The stack traces constain the class names, the method names, the file names and the line numbers.
-
-  Error
-  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-  from TestCase->main at SPVM/TestCase.spvm line 1198
-
-The exception can be catched using an L<eval block|/"Exception Catching">.
-
-Examples:
-  
-  # Catch the exception
-  eval {
-    # Throw an exception
-    die "Error";
-  }
-  
-  # Check the exception
-  if ($@) {
-    # ...
-  }
+  warn "Something is wrong.";
 
 =head2 print Operator
 
-The C<print> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> to the standard output.
+The C<print> operator prints a L<string|/"String"> to the standard output.
 
   print OPERAND;
 
 The oeprand must be a L<string type|/"string Type">.
 
+The return type is the L<void type|/"void Type">.
+
 If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
 
 =head2 say Operator
 
-The C<say> operator is a L<void retruning operator|/"void Returning Operator"> to print a L<string|/"String"> with a line break C<\n> to the standard output.
+The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the standard output.
 
   say OPERAND;
 
 The oeprand must be a L<string type|/"string Type">.
 
+The return type is the L<void type|/"void Type">.
+
 If the value of the C<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
 
 =head2 make_read_only Operator
 
-The C<make_read_only> operator is a L<void retruning operator|/"void Returning Operator"> to make the L<string|/"Strings"> read-only.
+The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
 
   make_read_only OPERAND;
 
 The oeprand must be a L<string type|/"string Type">.
+
+The return type is the L<void type|/"void Type">.
 
 Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
 
@@ -8971,11 +8964,13 @@ Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by 
 
 =head2 weaken Operator
 
-The C<weaken> operator is a L<void retruning operator|/"void Returning Operator"> to create a L<weak reference|/"Weak Reference">.
+The C<weaken> operator creates a L<weak reference|/"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
 The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+
+The return type is the L<void type|/"void Type">.
 
 If the field name is not found, a compilation error occurs.
 
@@ -8990,11 +8985,13 @@ Examples:
 
 =head2 unweaken Operator
 
-The C<unweaken> operator is a L<void retruning operator|/"void Returning Operator"> to unweakens a L<weak reference|/"Weak Reference">.
+The C<unweaken> operator unweakens a L<weak reference|/"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
 The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+
+The return type is the L<void type|/"void Type">.
 
 If the field name is not found, a compilation error occurs.
 
@@ -9009,7 +9006,7 @@ Examples:
 
 =head1 Method Call
 
-The method call is an L<operator|/"Operator"> that calls a L<method|/"Method">.
+The method call calls a L<method|/"Method">.
 
 =head2 Class Method Call
 
@@ -9107,7 +9104,7 @@ Explains exceptions.
 
 =head2 Throwing Exception
 
-You can throw an exception using the L<die statement|/"die Operator">.
+You can throw an exception using the L<die statement|/"die Statement">.
 
   die OPERAND;
 
@@ -9226,14 +9223,6 @@ C<stdin>, C<stdout>, C<stderr> in the C language is set to the binary mode on al
 This means the escape character of the string literal C<"\n"> is not coverted to C<"\r\n"> when it is got from C<stdin> and it is printed to C<stdout> and C<stderr>.
 
 C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native class|SPVM::Document::NativeClass>, but don't do that.
-
-=head1 See Also
-
-=head2 Examples
-
-You can see more examples in the following test codes.
-
-L<Examples of SPVM|https://github.com/yuki-kimoto/SPVM/tree/master/t/default/lib/SPVM/TestCase>
 
 =head1 Copyright & License
 
