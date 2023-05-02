@@ -70,6 +70,10 @@ unless ($optimize) {
 # CCFLAGS
 my $ccflags = $Config{ccflags};
 
+# Removed  -D__USE_MINGW_ANSI_STDIO because MinGW maybe changes the beheivior of functions in stdio.h.
+# -std=c99 defines this definition automatically.
+$ccflags =~ s/-D__USE_MINGW_ANSI_STDIO//;
+
 $ccflags .= " -std=$std";
 
 # Fix compile warnings

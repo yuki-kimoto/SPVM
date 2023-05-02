@@ -1,4 +1,9 @@
 0.971011 2023-05-02
+  [Compiler Options Changes]
+    * Removed -D__USE_MINGW_ANSI_STDIO of the compiler option that is used by SPVM.xs and SPVM core sources
+      because MinGW maybe changes the beheivior of functions in stdio.h.
+      -std=c99 defines this definition automatically.
+
   [Document Changes]
     * The die operator becomes the die statemenet.
     * void Returning Operator is merged into Operator.
