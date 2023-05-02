@@ -204,7 +204,7 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name_base}{$perl_class_name} = 1;
+    $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name} = 1;
   }
 }
 
