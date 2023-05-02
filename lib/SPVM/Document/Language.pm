@@ -3649,7 +3649,7 @@ The C<eval> block is a L<scope block|/"Scope Block">.
   # eval block
   eval {
   
-  };
+  }
 
 =head3 if Block
 
@@ -8918,7 +8918,7 @@ Examples:
   eval {
     # Throw an exception
     die "Error";
-  };
+  }
   
   # Check the exception
   if ($@) {
@@ -9117,7 +9117,7 @@ You can catch an exception using an L<eval block|/"eval Block">.
 
   eval {
     die "Error";
-  };
+  }
 
 The L<undef|/"Undefined Value"> is set to the L<exception variable|/"Exception Variable"> C<$@> at the top of the L<eval block|/"eval Block">.
 
@@ -9129,7 +9129,7 @@ Examples:
   eval {
     # Throw an exception
     die "Error";
-  };
+  }
   
   # Check the error message
   if ($@) {
