@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   ok(SPVM::TestCase::TypeConversion->convert_undef_to_object);
 }
-
+ 
 # Convert type - floating point narrowing convertion
 {
   ok(SPVM::TestCase::TypeConversion->convert_float_to_byte());

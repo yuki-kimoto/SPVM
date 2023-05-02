@@ -585,11 +585,73 @@ class TestCase::TypeConversion {
 
   static method convert_double_to_string : int () {
     my $double_string = (string)0.25000;
-    
+
     unless ($double_string eq "0.25") {
       return 0;
     }
     
+    unless ((string)0.123 eq "0.123") {
+      return 0;
+    }
+    
+    unless ((string) -0.123 eq "-0.123") {
+      return 0;
+    }
+    
+    unless ((string)3.14 eq "3.14") {
+      return 0;
+    }
+    
+    unless ((string)-3.14 eq "-3.14") {
+      return 0;
+    }
+    unless ((string)123.987 eq "123.987") {
+      return 0;
+    }
+    
+    unless ((string)-123.987 eq "-123.987") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+1 eq "12.3456") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-1 eq "0.123456") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+08 eq "1.23456e+08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-08 eq "1.23456e-08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+008 eq "1.23456e+08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-008 eq "1.23456e-08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+018 eq "1.23456e+18") {
+      return 0;
+    }
+    unless ((string)1.23456e-018 eq "1.23456e-18") {
+      return 0;
+    }
+    unless ((string)9.9e+300 eq "9.9e+300") {
+      return 0;
+    }
+    unless ((string)9.9e+300 eq "9.9e+300") {
+      return 0;
+    }
+    unless ((string)-1.23e+123 eq "-1.23e+123") {
+      return 0;
+    }
     return 1;
   }
 
