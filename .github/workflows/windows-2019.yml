@@ -13,6 +13,8 @@ jobs:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v3
+      - name: choco upgrade mingw
+        run: choco upgrade mingw
       - name: Perl version
         run: perl -V
       - name: Perl config
