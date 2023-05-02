@@ -3056,6 +3056,268 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+
+  static method rindex_v2 : int () {
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 0;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 1;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, 1);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 3;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "pq";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 0;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 0;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $found_offset = Fn->rindex_v2($string, $substring);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 1;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, 1);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 1;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, 1);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 3;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abab";
+      my $substring = "ab";
+      my $begin = 3;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abab";
+      my $substring = "pq";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abab";
+      my $substring = "pq";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 0;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+    }
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 0;
+      my $found_offset = Fn->rindex_v2($string, $substring, -1, $begin);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 0;
+      my $end = 3;
+      my $found_offset = Fn->rindex_v2($string, $substring, $end, $begin);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 1;
+      my $end = 3;
+      my $found_offset = Fn->rindex_v2($string, $substring, $end, $begin);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 2;
+      my $end = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, $end, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abcab";
+      my $substring = "bca";
+      my $begin = 2;
+      my $found_offset = Fn->rindex_v2($string, $substring, length $string - 1, $begin);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $string = (string)undef;
+        my $substring = "bcd";
+        eval { Fn->rindex_v2(undef, $substring); };
+        unless (Fn->contains($@, "The \$string must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = "abcde";
+        my $substring = (string)undef;
+        eval { Fn->rindex_v2($string, $substring); };
+        unless (Fn->contains($@, "The \$substring must be defined")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = "abcde";
+        my $substring = "bcd";
+        eval { Fn->rindex_v2($string, $substring, -1, -1); };
+        unless (Fn->contains($@, "The \$begin must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = "abcde";
+        my $substring = "bcd";
+        eval { Fn->rindex_v2($string, $substring, length $string, 0); };
+        unless (Fn->contains($@, "The \$end must be less than the length of the \$string")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
   static method sizeof_native_int : int () {
     
     my $value = Fn->sizeof_native_int;

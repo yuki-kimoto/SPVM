@@ -8,6 +8,15 @@
       
       [After]
       static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+
+    * The rindex_v2 method in the Fn class is added, and the definition and implementation of the rindex method in the Fn class will be replaced to the rindex_v2 method in the Fn class.
+      The rindex_v2 method in the Fn class will be removed.
+      
+      [Before]
+      static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int);
+      
+      [After]
+      static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
       
 0.971009 2023-04-30
   [Changes]

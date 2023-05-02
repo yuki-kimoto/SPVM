@@ -126,6 +126,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->repeat);
     ok(SPVM::TestCase::Module::Fn->replace_chars);
     ok(SPVM::TestCase::Module::Fn->rindex);
+    ok(SPVM::TestCase::Module::Fn->rindex_v2);
     ok(SPVM::TestCase::Module::Fn->sizeof_native_int);
     {
       is(SPVM::Fn->sizeof_native_pointer, $Config{ptrsize});

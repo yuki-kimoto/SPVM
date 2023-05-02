@@ -737,6 +737,8 @@ If the $substring is found, return the $found offset. Otherwise return -1.
 
 If the length is less than 0, the length to the end of the string is calculated from the length of the string and the offset.
 
+The definition and implementation of the rindex method will be replaced with the rindex_v2 method.
+
 Exceptions:
 
 The $string must be defined. Otherwize an exception is thrown.
@@ -746,6 +748,30 @@ The $substring must be defined. Otherwize an exception is thrown.
 The $offset must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $offset + the $length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
+
+=head2 rindex_v2
+
+  static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
+
+Searches for the $substring in the range of the $string from the $begin to the $end.
+
+The search is performed from the end of the range of the $string.
+
+If the $substring is found, returns the found offset, otherwise returns -1.
+
+If the $end is less than 0, the $end is set to the length of the $string minus 1.
+
+The rindex_v2 method will be removed.
+
+Exceptions:
+
+The $string must be defined. Otherwize an exception is thrown.
+
+The $substring must be defined. Otherwize an exception is thrown.
+
+The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
+
+The $end must be less than the length of the $string.
 
 =head2 sizeof_native_int
 
