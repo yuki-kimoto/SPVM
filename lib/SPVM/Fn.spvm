@@ -248,16 +248,22 @@ class Fn {
       die "The \$substring must be defined";
     }
     
-    unless ($begin >= 0) {
-      die "The \$begin must be greater than or equal to 0";
+    unless ($begin >= 0 && $begin <= length $string) {
+      die "The \$begin must be between 0 and the length of the \$string";
     }
+    
+    my $string_length = length $string;
     
     if ($end < 0) {
-      $end = length $string - 1;
+      $end = $string_length;
     }
     
-    unless ($end < length $string) {
-      die "The \$end must be less than the length of the \$string";
+    unless ($end <= length $string) {
+      die "The \$end must be less than or equal to the length of the \$string";
+    }
+    
+    unless ($end >= $begin) {
+      die "The \$end must be greater than or equal to \$begin";
     }
     
     my $substring_length = length $substring;
@@ -266,20 +272,28 @@ class Fn {
       return $begin;
     }
     
-    my $match_chars_count = 0;
+    if ($end == $string_length) {
+      $end--;
+    }
+    
     for (my $i = $begin; $i <= $end; $i++) {
-      while ($string->[$i + $match_chars_count] == $substring->[$match_chars_count]) {
-        $match_chars_count++;
-        if ($match_chars_count == $substring_length) {
-          return $i;
+      my $match = 1;
+      for (my $k = 0; $k < $substring_length; $k++) {
+        
+        if ($i + $k > $end) {
+          $match = 0;
+          last;
         }
         
-        if ($i + $match_chars_count > $end) {
+        unless ($string->[$i + $k] == $substring->[$k]) {
+          $match = 0;
           last;
         }
       }
       
-      $match_chars_count = 0;
+      if ($match) {
+        return $i;
+      }
     }
     
     return -1;
@@ -730,38 +744,52 @@ class Fn {
       die "The \$substring must be defined";
     }
     
-    unless ($begin >= 0) {
-      die "The \$begin must be greater than or equal to 0";
+    unless ($begin >= 0 && $begin <= length $string) {
+      die "The \$begin must be between 0 and the length of the \$string";
     }
+    
+    my $string_length = length $string;
     
     if ($end < 0) {
-      $end = length $string - 1;
+      $end = $string_length;
     }
     
-    unless ($end < length $string) {
-      die "The \$end must be less than the length of the \$string";
+    unless ($end <= length $string) {
+      die "The \$end must be less than or equal to the length of the \$string";
+    }
+    
+    unless ($end >= $begin) {
+      die "The \$end must be greater than or equal to \$begin";
     }
     
     my $substring_length = length $substring;
     
     if ($substring_length == 0) {
-      return $begin;
+      return $end;
+    }
+    
+    if ($end == $string_length) {
+      $end--;
     }
     
     my $match_chars_count = 0;
     for (my $i = $end; $i >= $begin; $i--) {
-      while ($string->[$i + $match_chars_count] == $substring->[$match_chars_count]) {
-        $match_chars_count++;
-        if ($match_chars_count == $substring_length) {
-          return $i;
+      my $match = 1;
+      for (my $k = 0; $k < $substring_length; $k++) {
+        if ($i + $k > $end) {
+          $match = 0;
+          last;
         }
         
-        if ($i + $match_chars_count > $end) {
+        unless ($string->[$i + $k] == $substring->[$k]) {
+          $match = 0;
           last;
         }
       }
       
-      $match_chars_count = 0;
+      if ($match) {
+        return $i;
+      }
     }
     
     return -1;
