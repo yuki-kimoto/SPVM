@@ -580,6 +580,69 @@ class TestCase::TypeConversion {
       return 0;
     }
     
+    unless ((string)0.123f eq "0.123") {
+      return 0;
+    }
+    
+    unless ((string) -0.123f eq "-0.123") {
+      return 0;
+    }
+    
+    unless ((string)3.14f eq "3.14") {
+      return 0;
+    }
+    
+    unless ((string)-3.14f eq "-3.14") {
+      return 0;
+    }
+    unless ((string)123.987f eq "123.987") {
+      return 0;
+    }
+    
+    unless ((string)-123.987f eq "-123.987") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+1f eq "12.3456") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-1f eq "0.123456") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+08f eq "1.23456e+08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-08f eq "1.23456e-08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+008f eq "1.23456e+08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e-008f eq "1.23456e-08") {
+      return 0;
+    }
+    
+    unless ((string)1.23456e+018f eq "1.23456e+18") {
+      return 0;
+    }
+    unless ((string)1.23456e-018f eq "1.23456e-18") {
+      return 0;
+    }
+    unless ((string)9.9e+300f eq "inf") {
+      return 0;
+    }
+    unless ((string)9.9e-300f eq "0") {
+      return 0;
+    }
+    unless ((string)-1.23e+123f eq "-inf") {
+      return 0;
+    }
+    
     return 1;
   }
 
@@ -646,7 +709,7 @@ class TestCase::TypeConversion {
     unless ((string)9.9e+300 eq "9.9e+300") {
       return 0;
     }
-    unless ((string)9.9e+300 eq "9.9e+300") {
+    unless ((string)9.9e-300 eq "9.9e-300") {
       return 0;
     }
     unless ((string)-1.23e+123 eq "-1.23e+123") {
