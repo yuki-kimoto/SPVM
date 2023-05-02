@@ -688,6 +688,10 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { warn Int->new(1); } }';
     compile_not_ok($source, q|The operand of the warn statement must be the string type|);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { warn undef; } }';
+    compile_not_ok($source, q|The operand of the warn statement must be the string type|);
+  }
 }
 
 # print
