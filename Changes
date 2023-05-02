@@ -1,4 +1,6 @@
 0.971011 2023-05-02
+  [Changes]
+    * XS and SPVM source codes are compiled by C99 and default config.
   [Document Changes]
     * "Undefined Type" is renamed to "undef Type".
   [New Feature]
