@@ -26,6 +26,8 @@
     * The default warn message is changed to "Warned.".
   [Warning Fix]
     * Fixed warning that the binding subroutines are redefined when it is used twice.
+  [Internal Improvement]
+    * Use more snprintf instead of sprintf.
 0.971010 2023-05-02
   [Notice of Backward Compatibility Breaking]]
     * The index_v2 method in the Fn class is added, and the definition and implementation of the index method in the Fn class will be replaced to the index_v2 method in the Fn class.
