@@ -8,15 +8,6 @@
 #undef call_method
 #undef leave_scope
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <assert.h>
-#include <inttypes.h>
-#include <stdint.h>
-
 #include "spvm_native.h"
 
 static const char* FILE_NAME = "SPVM.xs";
