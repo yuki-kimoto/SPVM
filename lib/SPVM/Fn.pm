@@ -366,29 +366,7 @@ The $hex string must contain only hex characters C<0-9a-zA-Z>. Otherwize an exce
 
 =head2 index
 
-  static method index : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);
-
-Searches for the $substring in the range of the $string from the $string_offset to the position proceeded by the $string_length.
-
-If the $substring is found, returns the found offset, otherwise returns -1.
-
-If the $string_length is less than 0, the $string_length is calculated from the length of the $string and the $string_offset.
-
-Exceptions:
-
-The $string must be defined. Otherwize an exception is thrown.
-
-The $substring must be defined. Otherwize an exception is thrown.
-
-The $string_offset must be greater than or equal to 0. Otherwize an exception is thrown.
-
-The $string_offset + the $string_length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
-
-The definition and implementation of the index method will be replaced with the index_v2 method.
-
-=head2 index_v2
-
-  static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+  static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
 
 Searches for the $substring in the range of the $string from the $begin to the $end.
 
@@ -397,8 +375,6 @@ The search is performed from the beginning of the range of the $string.
 If the $substring is found, returns the found offset, otherwise returns -1.
 
 If the $end is less than 0, the $end is set to the length of the $string minus 1.
-
-The index_v2 method will be removed.
 
 Exceptions:
 
@@ -409,6 +385,12 @@ The $substring must be defined. Otherwize an exception is thrown.
 The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $end must be less than the length of the $string.
+
+=head2 index_v2
+
+  static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+
+The same as L</"index">. The index_v2 method will be removed.
 
 =head2 init_string
 
@@ -729,29 +711,7 @@ The $string must be defined. Otherwize an exception is thrown.
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int);
-
-Searches for the substring in the range of the $string from the $offset to the position proceeded by the $length in the direction from back to front.
-
-If the $substring is found, return the $found offset. Otherwise return -1.
-
-If the length is less than 0, the length to the end of the string is calculated from the length of the string and the offset.
-
-The definition and implementation of the rindex method will be replaced with the rindex_v2 method.
-
-Exceptions:
-
-The $string must be defined. Otherwize an exception is thrown.
-
-The $substring must be defined. Otherwize an exception is thrown.
-
-The $offset must be greater than or equal to 0. Otherwize an exception is thrown.
-
-The $offset + the $length must be less than or equal to the length of the $string. Otherwize an exception is thrown.
-
-=head2 rindex_v2
-
-  static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
+  static method rindex : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
 
 Searches for the $substring in the range of the $string from the $begin to the $end.
 
@@ -760,8 +720,6 @@ The search is performed from the end of the range of the $string.
 If the $substring is found, returns the found offset, otherwise returns -1.
 
 If the $end is less than 0, the $end is set to the length of the $string minus 1.
-
-The rindex_v2 method will be removed.
 
 Exceptions:
 
@@ -772,6 +730,12 @@ The $substring must be defined. Otherwize an exception is thrown.
 The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $end must be less than the length of the $string.
+
+=head2 rindex_v2
+
+  static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
+
+The same as L<rindex>. The rindex_v2 method will be removed.
 
 =head2 sizeof_native_int
 

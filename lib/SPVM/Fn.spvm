@@ -188,7 +188,7 @@ class Fn {
     return $value;
   }
   
-  precompile static method index : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int) {
+  precompile static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int) {
     
     unless ($string) {
       die "The \$string must be defined.";
@@ -198,42 +198,54 @@ class Fn {
       die "The \$substring must be defined.";
     }
     
-    unless ($string_offset >= 0) {
-      die "The \$string_offset must be greater than or equal to 0.";
+    unless ($begin >= 0 && $begin <= length $string) {
+      die "The \$begin must be between 0 and the length of the \$string.";
     }
     
-    if ($string_length < 0) {
-      $string_length = length $string - $string_offset;
+    my $string_length = length $string;
+    
+    if ($end < 0) {
+      $end = $string_length;
     }
     
-    unless ($string_offset + $string_length <= length $string) {
-      die "The \$string_offset + the \$string_length must be less than or equal to the length of the \$string.";
+    unless ($end <= length $string) {
+      die "The \$end must be less than or equal to the length of the \$string.";
+    }
+    
+    unless ($end >= $begin) {
+      die "The \$end must be greater than or equal to \$begin.";
     }
     
     my $substring_length = length $substring;
     
     if ($substring_length == 0) {
-      return 0;
+      return $begin;
     }
     
-    my $first : byte  = $substring->[0];
-    my $max : int = ($string_offset + $string_length - $substring_length);
+    if ($end == $string_length) {
+      $end--;
+    }
     
-    for (my $i = $string_offset; $i <= $max; $i++) {
-      if ($string->[$i] != $first) {
-        while (++$i <= $max && $string->[$i] != $first) {}
-      }
-      
-      if ($i <= $max) {
-        my $j = $i + 1;
-        my $end = $j + $substring_length - 1;
-        for (my $k = 01; $j < $end && $string->[$j] == $substring->[$k]; ($j++, $k++)) {}
+    for (my $i = $begin; $i <= $end; $i++) {
+      my $match = 1;
+      for (my $k = 0; $k < $substring_length; $k++) {
         
-        if ($j == $end) {
-          return $i;
+        if ($i + $k > $end) {
+          $match = 0;
+          last;
+        }
+        
+        unless ($string->[$i + $k] == $substring->[$k]) {
+          $match = 0;
+          last;
         }
       }
+      
+      if ($match) {
+        return $i;
+      }
     }
+    
     return -1;
   }
   
@@ -692,7 +704,8 @@ class Fn {
     }
   }
 
-  precompile static method rindex : int ($string : string, $substring : string, $offset = 0 : int, $length = -1 : int) {
+  precompile static method rindex : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int) {
+    
     unless ($string) {
       die "The \$string must be defined.";
     }
@@ -701,31 +714,49 @@ class Fn {
       die "The \$substring must be defined.";
     }
     
-    unless ($offset >= 0) {
-      die "The \$offset must be greater than or equal to 0.";
+    unless ($begin >= 0 && $begin <= length $string) {
+      die "The \$begin must be between 0 and the length of the \$string.";
     }
     
     my $string_length = length $string;
-    if ($length < 0) {
-      $length = $string_length - $offset;
+    
+    if ($end < 0) {
+      $end = $string_length;
     }
     
-    unless ($offset + $length <= $string_length) {
-      die "The \$offset + the \$length must be less than or equal to the length of the \$string.";
+    unless ($end <= length $string) {
+      die "The \$end must be less than or equal to the length of the \$string.";
+    }
+    
+    unless ($end >= $begin) {
+      die "The \$end must be greater than or equal to \$begin.";
     }
     
     my $substring_length = length $substring;
     
-    my $start_offset = $offset + $length - $substring_length;
+    if ($substring_length == 0) {
+      return $end;
+    }
     
-    for (my $i = $start_offset; $i >= $offset; --$i) {
+    if ($end == $string_length) {
+      $end--;
+    }
+    
+    my $match_chars_count = 0;
+    for (my $i = $end; $i >= $begin; $i--) {
       my $match = 1;
-      for (my $j = 0; $j < $substring_length; ++$j) {
-        if ($string->[$i + $j] != $substring->[$j]) {
+      for (my $k = 0; $k < $substring_length; $k++) {
+        if ($i + $k > $end) {
+          $match = 0;
+          last;
+        }
+        
+        unless ($string->[$i + $k] == $substring->[$k]) {
           $match = 0;
           last;
         }
       }
+      
       if ($match) {
         return $i;
       }

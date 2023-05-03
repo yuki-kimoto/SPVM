@@ -1,3 +1,8 @@
+0.971012 2023-05-03
+  [Incompatible Changes]
+    * The index method in the Fn is replaced with the index_v2 method.
+    * The rindex method in the Fn is replaced with the rindex_v2 method.
+  
 0.971011 2023-05-03
   [Compiler Options Changes]
     * Removed -D__USE_MINGW_ANSI_STDIO of the compiler option that is used by SPVM.xs and SPVM core sources
