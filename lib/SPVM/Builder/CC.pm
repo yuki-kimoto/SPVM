@@ -648,7 +648,7 @@ sub link {
     if ($output_type eq 'dynamic_lib') {
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
-        class_name => $class_name,
+        module_name => $class_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
         dl_func_list => $dl_func_list,
@@ -672,7 +672,7 @@ sub link {
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_file_names,
-        class_name => $class_name,
+        module_name => $class_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
       );

@@ -11,6 +11,7 @@
   [Bug Fix]
     * XS and SPVM source codes were compiled by C99 in 0.9702, but in face compiled by GNU C99 from now.
       XS and SPVM source codes are compiled by C99 now.
+    * Fixed the bug that the module_name option of the link method in ExtUtils::CBuilder is not set correctly.
   [Document Changes]
     * "Undefined Type" is renamed to "undef Type".
   [New Feature]
