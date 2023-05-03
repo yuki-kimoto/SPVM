@@ -1,4 +1,4 @@
-0.971011 2023-05-02
+0.971011 2023-05-03
   [Compiler Options Changes]
     * Removed -D__USE_MINGW_ANSI_STDIO of the compiler option that is used by SPVM.xs and SPVM core sources
       because MinGW maybe changes the beheivior of functions in stdio.h.
