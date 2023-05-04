@@ -1670,32 +1670,40 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   (void)env;
   (void)stack;
   
-  int32_t method_id = env->get_class_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  int32_t e = 0;
+  
+  int32_t method_id = env->get_class_method_id(env, stack, "Point", "new");
   if (method_id < 0) {
     return 1;
   }
-  int32_t output;
+  void* obj_point = NULL;
   {
-    int32_t args_stack_length = 1;
-    stack[0].ival = 5;
-    int32_t error = env->call_method(env, stack, method_id, args_stack_length);
-    if (error) {
-      return 1;
-    }
-    output = stack[0].ival;
-  }
-  
-  stack[0].ival = 0;
-  
-  if (output == 5) {
+    int32_t args_stack_length = 2;
     stack[0].ival = 1;
+    stack[1].ival = 2;
+    e = env->call_method(env, stack, method_id, args_stack_length);
+    if (e) { return e; }
+    obj_point = stack[0].oval;
   }
-
-  int32_t method_id2 = env->get_method_id(env, stack, "TestCase::NativeAPI", "my_value");
-  if (method_id2 != method_id) {
-    return 1;
+  
+  int32_t x = env->get_field_int_by_name(env, stack, obj_point, "x", &e, __func__, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  int32_t y = env->get_field_int_by_name(env, stack, obj_point, "y", &e, __func__, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  if (!(x == 1)) {
+    stack[0].ival = 0;
+    return 0;
   }
-
+  
+  if (!(y == 2)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 

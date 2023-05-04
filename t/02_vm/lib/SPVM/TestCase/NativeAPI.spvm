@@ -12,6 +12,7 @@ class TestCase::NativeAPI {
   use Array;
   use Error;
   use Complex_2d;
+  use Point;
   
   INIT {
     # Call native method in INIT block
