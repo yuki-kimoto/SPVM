@@ -3583,7 +3583,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   
   if (!op_operand || op_operand->id == SPVM_OP_C_ID_UNDEF) {
     // Default error message
-    op_operand = SPVM_OP_new_op_constant_string(compiler, "Died.", strlen("Died."), op_die->file, op_die->line);
+    op_operand = SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_die->file, op_die->line);
   }
   
   // Exception variable
@@ -3606,7 +3606,7 @@ SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* 
   
   if (!op_operand || op_operand->id == SPVM_OP_C_ID_UNDEF) {
     // Default warn message
-    op_operand = SPVM_OP_new_op_constant_string(compiler, "Warned.", strlen("Warned."), op_warn->file, op_warn->line);
+    op_operand = SPVM_OP_new_op_constant_string(compiler, "Warning", strlen("Warning"), op_warn->file, op_warn->line);
   }
   
   SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_operand);

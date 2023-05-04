@@ -6917,7 +6917,7 @@ If an exception is thrown, the program prints the error message to the standard 
 
 The operand must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
-If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Died.">.
+If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Error">.
 
 The return type is the L<void type|/"void Type">.
 
@@ -8919,7 +8919,7 @@ The C<warn> operator prints a message to the standard error.
 
 The OPERNAD must be the L<string Type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
-If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Warned.">.
+If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Warning">.
 
 The return type is the L<void type|/"void Type">.
 

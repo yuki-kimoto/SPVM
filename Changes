@@ -7,6 +7,8 @@
   [Changes]
     * The compile error message of yacc are uniformed.
     * The indent of the stack trace of an exception is now 2.
+    * The default warn message is changed to "Warning".
+    * The default exception message is changed to "Error".
   [Incompatible Changes and Breaking Binary Compatibility]
     * The call_method Native API is renamed to call_method_raw and added the new call_method Native API.
   [Deprecation and New Features]
