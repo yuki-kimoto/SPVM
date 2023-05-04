@@ -677,6 +677,16 @@ use Test::More;
 # die
 {
   {
+    my $source = 'class MyClass { static method main : void () { die; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { die undef; } }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
     compile_not_ok($source, q|The implicite type conversion from "Int" to "string" in the assignment operator is not allowed|);
   }

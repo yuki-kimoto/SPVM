@@ -2105,7 +2105,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
   
   // Class name and method name
-  const char* new_line_part = "\n    ";
+  const char* new_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";
 

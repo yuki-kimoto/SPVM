@@ -508,7 +508,7 @@ t/02_vm/03_definition/allow.t
 t/02_vm/03_definition/enum.t
 t/02_vm/03_definition/interface.t
 t/02_vm/03_definition/type_comment.t
-t/02_vm/04_statement/exception.t
+t/02_vm/04_statement/die.t
 t/02_vm/04_statement/for.t
 t/02_vm/04_statement/if.t
 t/02_vm/04_statement/init.t

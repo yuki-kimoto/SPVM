@@ -1,6 +1,11 @@
 0.971013 2023-05-04
+  [New Features]
+    * The die statemenet support undef operand.
+    
+      die undef;
   [Changes]
     * The compile error message of yacc are uniformed.
+    * The indent of the stack trace of an exception is now 2.
   [Incompatible Changes and Breaking Binary Compatibility]
     * The call_method Native API is renamed to call_method_raw and added the new call_method Native API.
 0.971012 2023-05-03

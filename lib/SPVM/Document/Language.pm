@@ -6909,27 +6909,25 @@ The type of the C<OPERAND> must be able to L<assign|/"Assignability"> to the ret
 The C<die> statement throws an L<exception|/"Throwing Exception">.
 
   die OPERAND;
+  die;
 
-The operand must be the L<string type|/"string Type">. If not a compilation error occurs.
-
-The return type is the L<void type|/"void Type">.
-
-You can specify the error message to the C<OPERAND>.
-
-  # Throw an exception
-  die "Error";
-
-The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+The OPERAND is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
 If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code 255.
 
-The stack traces constain the class names, the method names, the file names and the line numbers.
+The operand must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+
+If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Died.">.
+
+The return type is the L<void type|/"void Type">.
+
+The following one is an example of a stack trace. Each line of the stack trace constains the class name, the method name, the file name and the line number of the caller.
 
   Error
-  from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
-  from TestCase->main at SPVM/TestCase.spvm line 1198
+    TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+    TestCase->main at SPVM/TestCase.spvm line 1198
 
-The exception can be catched using an L<eval block|/"Exception Catching">.
+The exception can be catched by the L<eval block|/"Exception Catching">.
 
 Examples:
   

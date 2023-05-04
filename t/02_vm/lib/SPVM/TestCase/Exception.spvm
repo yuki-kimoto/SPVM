@@ -196,17 +196,27 @@ class TestCase::Exception {
   }
 
   static method die : int () {
+    
     {
-      eval { die "Error"; };
+      eval { die "Error"; }
       my $error = $@;
-      unless (Fn->index($error, "Error\n", 0) == 0) {
+      unless (Fn->index($error, "Error\n  ", 0) == 0) {
         return 0;
       }
     }
+    
     {
-      eval { die; };
+      eval { die; }
       my $error = $@;
-      unless (Fn->index($error, "Died.\n", 0) == 0) {
+      unless (Fn->index($error, "Died.\n  ", 0) == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { die undef; }
+      my $error = $@;
+      unless (Fn->index($error, "Died.\n  ", 0) == 0) {
         return 0;
       }
     }

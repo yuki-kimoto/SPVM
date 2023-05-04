@@ -3579,7 +3579,7 @@ SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_o
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_operand) {
   
-  if (!op_operand) {
+  if (!op_operand || op_operand->id == SPVM_OP_C_ID_UNDEF) {
     // Default error message
     op_operand = SPVM_OP_new_op_constant_string(compiler, "Died.", strlen("Died."), op_die->file, op_die->line);
   }
