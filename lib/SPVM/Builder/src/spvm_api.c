@@ -1469,11 +1469,16 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack = NULL;
 }
 
-int32_t SPVM_API_call_method_precompile_address(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  (void)env;
   
+  int32_t mortal = 0;
+  int32_t e = SPVM_API_call_method_common(env, stack, method_id, args_stack_length, mortal);
+  
+  return e;
 }
 
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length, int32_t mortal) {
   (void)env;
   
   // Runtime
@@ -1491,6 +1496,8 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
+    int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
+    
     // Call native method
     if (method->is_native) {
       // Enter scope
@@ -1500,8 +1507,6 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id
       int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[method->id];
       assert(native_address != NULL);
       error = (*native_address)(env, stack);
-      
-      int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
       
       // Increment ref count of return value
       if (!error) {
@@ -1541,6 +1546,10 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id
       else {
         error = SPVM_API_call_method_vm(env, stack, method_id, args_stack_length);
       }
+    }
+    
+    if (mortal && method_return_type_is_object) {
+      env->push_mortal(env, stack, stack[0].oval);
     }
   }
   
