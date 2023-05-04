@@ -7790,6 +7790,20 @@ Examples:
   my $poitn = Point->new;
   my $type_name = type_name $point;
 
+=head2 compile_type_name Operator
+
+The C<compile_type_name> operator returns the type name at compilation time.
+
+  type_name OPERAND
+
+The return type is the L<string type|/"string Type">.
+
+Examples:
+  
+  # int
+  my $num = 1;
+  my $compile_type_name = compile_type_name $num;
+
 =head2 dump Operator
 
 The C<dump> operator is an L<operator|/"Operator"> to get the string representation of the object.

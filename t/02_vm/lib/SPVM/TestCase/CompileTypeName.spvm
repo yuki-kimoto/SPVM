@@ -1,0 +1,71 @@
+class TestCase::CompileTypeName {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  
+  static method compile_type_name : int () {
+    
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      unless (compile_type_name $minimal eq "TestCase::Minimal") {
+        return 0;
+      }
+    }
+    
+    {
+      my $minimal = TestCase::Minimal->new;
+      my $compile_type_name = compile_type_name $minimal;
+      
+      unless ($compile_type_name eq "TestCase::Minimal") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = new TestCase::Minimal[3];
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "TestCase::Minimal[]") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = new TestCase::Minimal[][3];
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "TestCase::Minimal[][]") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj : object = undef;
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "object") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj : object[] = undef;
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "object[]") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj : int = 1;
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "int") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

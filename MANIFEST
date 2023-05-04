@@ -531,6 +531,7 @@ t/02_vm/05_op/callback.t
 t/02_vm/05_op/class_id.t
 t/02_vm/05_op/class_var.t
 t/02_vm/05_op/comparison_operator.t
+t/02_vm/05_op/compile_type_name.t
 t/02_vm/05_op/concat.t
 t/02_vm/05_op/constant.t
 t/02_vm/05_op/copy.t
@@ -633,6 +634,7 @@ t/02_vm/lib/SPVM/TestCase/Comment/CR.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/CRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
 t/02_vm/lib/SPVM/TestCase/ComparisonOperator.spvm
+t/02_vm/lib/SPVM/TestCase/CompileTypeName.spvm
 t/02_vm/lib/SPVM/TestCase/Concat.spvm
 t/02_vm/lib/SPVM/TestCase/ConditionalBranch.spvm
 t/02_vm/lib/SPVM/TestCase/Constant.spvm
