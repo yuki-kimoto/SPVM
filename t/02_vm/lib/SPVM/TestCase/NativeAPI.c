@@ -1633,7 +1633,7 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
