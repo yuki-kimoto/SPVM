@@ -28,7 +28,7 @@ use Test::More;
 
 # Line number
 {
-  compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/i);
+  compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/is);
 }
 
 # Exception Message Format
@@ -466,6 +466,13 @@ use Test::More;
   {
     my $source = q|class MyClass { static method main : void () { eval {} } }|;
     compile_ok($source);
+  }
+  
+  # Unexpected token contains \n  at
+  {
+    # Invalid "_"
+    my $source = 'class Tmp { static method main : void () { _-123; } }';
+    compile_not_ok($source, qr/\n  at .+ line /);
   }
 }
 
