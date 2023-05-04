@@ -157,7 +157,7 @@ extern int SPVM_yydebug;
     STRING_LENGTH = 367,
     ISWEAK = 368,
     REFCNT = 369,
-    REFOP = 370,
+    TYPE_NAME = 370,
     DUMP = 371,
     NEW_STRING_LEN = 372,
     IS_READ_ONLY = 373,

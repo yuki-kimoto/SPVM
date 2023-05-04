@@ -1006,13 +1006,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
                           break;
                         }
-                        case SPVM_OP_C_ID_REFOP : {
+                        case SPVM_OP_C_ID_TYPE_NAME : {
                           
                           SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                           
                           SPVM_OPCODE opcode = {0};
                           
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REFOP);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_NAME);
                           
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);

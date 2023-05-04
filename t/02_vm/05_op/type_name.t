@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Refop';
+use SPVM 'TestCase::TypeName';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # Add - Operation
   {
-    ok(SPVM::TestCase::Refop->refop);
+    ok(SPVM::TestCase::TypeName->type_name);
   }
 }
 

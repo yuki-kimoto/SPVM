@@ -2346,8 +2346,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case 'r' : {
                 if (strcmp(symbol_name, "ref") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REFOP);
-                  keyword_token = REFOP;
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_TYPE_NAME);
+                  keyword_token = TYPE_NAME;
                 }
                 else if (strcmp(symbol_name, "refcnt") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REFCNT);
@@ -2425,6 +2425,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(symbol_name, "true") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_TRUE);
                   keyword_token = TRUE;
+                }
+                else if (strcmp(symbol_name, "type_name") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_TYPE_NAME);
+                  keyword_token = TYPE_NAME;
                 }
                 break;
               }

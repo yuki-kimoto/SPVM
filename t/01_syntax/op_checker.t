@@ -78,11 +78,11 @@ use Test::More;
   }
 }
 
-# ref
+# type_name
 {
   {
-    my $source = 'class MyClass { static method main : void () { my $num = 0; ref $num; } }';
-    compile_not_ok($source, qr'The operand of the ref operator must be an object type');
+    my $source = 'class MyClass { static method main : void () { my $num = 0; type_name $num; } }';
+    compile_not_ok($source, qr'The operand of the type_name operator must be an object type');
   }
 }
 

@@ -503,7 +503,7 @@ SPVM::Test - SPVM test class
 
     {
       my $minimal = TestCase::Minimal->new;
-      my $name = ref $minimal;
+      my $name = type_name $minimal;
     }
     {
       my $simple = TS->new;

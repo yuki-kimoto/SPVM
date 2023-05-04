@@ -554,7 +554,6 @@ t/02_vm/05_op/numeric_operator.t
 t/02_vm/05_op/print.t
 t/02_vm/05_op/ref.t
 t/02_vm/05_op/refcnt.t
-t/02_vm/05_op/refop.t
 t/02_vm/05_op/remainder.t
 t/02_vm/05_op/say.t
 t/02_vm/05_op/seqop.t
@@ -563,6 +562,7 @@ t/02_vm/05_op/special_assign.t
 t/02_vm/05_op/string.t
 t/02_vm/05_op/subtract.t
 t/02_vm/05_op/type_conversion.t
+t/02_vm/05_op/type_name.t
 t/02_vm/05_op/unary_minus.t
 t/02_vm/05_op/unary_plus.t
 t/02_vm/05_op/warn.t
@@ -754,7 +754,6 @@ t/02_vm/lib/SPVM/TestCase/Print.spvm
 t/02_vm/lib/SPVM/TestCase/Private.spvm
 t/02_vm/lib/SPVM/TestCase/Ref.spvm
 t/02_vm/lib/SPVM/TestCase/Refcnt.spvm
-t/02_vm/lib/SPVM/TestCase/Refop.spvm
 t/02_vm/lib/SPVM/TestCase/Remainder.spvm
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.config
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.mode1.config
@@ -779,6 +778,7 @@ t/02_vm/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQ
 t/02_vm/lib/SPVM/TestCase/TypeCast.spvm
 t/02_vm/lib/SPVM/TestCase/TypeComment.spvm
 t/02_vm/lib/SPVM/TestCase/TypeConversion.spvm
+t/02_vm/lib/SPVM/TestCase/TypeName.spvm
 t/02_vm/lib/SPVM/TestCase/UnaryMinus.spvm
 t/02_vm/lib/SPVM/TestCase/UnaryPlus.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource.spvm

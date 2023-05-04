@@ -437,7 +437,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_REFOP: {
+            case SPVM_OP_C_ID_TYPE_NAME: {
               
               SPVM_OP* op_operand = op_cur->first;
               
@@ -445,7 +445,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand of the ref operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of the type_name operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3469,7 +3469,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_SET_ERROR_CODE:
                         case SPVM_OP_C_ID_ITEMS:
                         case SPVM_OP_C_ID_CONCAT:
-                        case SPVM_OP_C_ID_REFOP:
+                        case SPVM_OP_C_ID_TYPE_NAME:
                         case SPVM_OP_C_ID_DUMP:
                         case SPVM_OP_C_ID_NEW_STRING_LEN:
                         case SPVM_OP_C_ID_EXCEPTION_VAR:

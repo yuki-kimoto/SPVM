@@ -1513,7 +1513,7 @@ static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_GET_CLASS_ID(out, class_id) (out = class_id)
 
-static inline void SPVM_IMPLEMENT_REFOP(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
+static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
   if (object == NULL) {
     *out = NULL;
   }

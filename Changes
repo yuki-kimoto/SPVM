@@ -8,6 +8,9 @@
     * The indent of the stack trace of an exception is now 2.
   [Incompatible Changes and Breaking Binary Compatibility]
     * The call_method Native API is renamed to call_method_raw and added the new call_method Native API.
+  [Deprecation and New Features]
+    * The ref operator is deprecated and will be removed.
+      The type_name operator is added. The type_name operator is the same as the ref operator.
 0.971012 2023-05-03
   [Incompatible Changes]
     * The index method in the Fn is replaced with the index_v2 method.

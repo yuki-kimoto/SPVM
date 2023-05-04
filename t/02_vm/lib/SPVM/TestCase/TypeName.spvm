@@ -1,18 +1,18 @@
-class TestCase::Refop {
+class TestCase::TypeName {
   use TestCase::Minimal;
   use TestCase::Simple;
   
-  static method refop : int () {
+  static method type_name : int () {
     {
       my $minimal = TestCase::Minimal->new;
       
-      unless (ref $minimal eq "TestCase::Minimal") {
+      unless (type_name $minimal eq "TestCase::Minimal") {
         return 0;
       }
     }
     {
       my $minimal = TestCase::Minimal->new;
-      my $type_name = ref $minimal;
+      my $type_name = type_name $minimal;
       
       unless ($type_name eq "TestCase::Minimal") {
         return 0;
@@ -20,7 +20,7 @@ class TestCase::Refop {
     }
     {
       my $obj = new TestCase::Minimal[3];
-      my $type_name = ref $obj;
+      my $type_name = type_name $obj;
       
       unless ($type_name eq "TestCase::Minimal[]") {
         return 0;
@@ -28,7 +28,7 @@ class TestCase::Refop {
     }
     {
       my $obj = new TestCase::Minimal[][3];
-      my $type_name = ref $obj;
+      my $type_name = type_name $obj;
       
       unless ($type_name eq "TestCase::Minimal[][]") {
         return 0;
@@ -37,9 +37,18 @@ class TestCase::Refop {
 
     {
       my $obj : object = undef;
-      my $type_name = ref $obj;
+      my $type_name = type_name $obj;
       
       unless ($type_name == undef) {
+        return 0;
+      }
+    }
+    
+    # Deprecated ref operator
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      unless (ref $minimal eq "TestCase::Minimal") {
         return 0;
       }
     }
