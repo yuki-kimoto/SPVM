@@ -1110,7 +1110,7 @@ class TestCase::NativeAPI {
   static method my_value : int ($value : int) { return $value; }
   
   native static method native_call_method_raw : int ();
-  native static method native_call_method_v2 : int ();
+  native static method native_call_method : int ();
   native static method native_call_class_method_by_name : int ();
   native static method native_call_class_method_by_name_exception : int ();
 
