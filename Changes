@@ -2,7 +2,7 @@
   [Changes]
     * The compile error message of yacc are uniformed.
   [Incompatible Changes and Breaking Binary Compatibility]
-    * The call_method Native API is renamed to call_method_raw.
+    * The call_method Native API is renamed to call_method_raw and added the new call_method Native API.
 0.971012 2023-05-03
   [Incompatible Changes]
     * The index method in the Fn is replaced with the index_v2 method.

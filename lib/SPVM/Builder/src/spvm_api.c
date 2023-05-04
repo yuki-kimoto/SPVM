@@ -307,6 +307,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_spvm_version_number,
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
+    SPVM_API_call_method,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -1473,6 +1474,15 @@ int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t metho
   (void)env;
   
   int32_t mortal = 0;
+  int32_t e = SPVM_API_call_method_common(env, stack, method_id, args_stack_length, mortal);
+  
+  return e;
+}
+
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
+  (void)env;
+  
+  int32_t mortal = 1;
   int32_t e = SPVM_API_call_method_common(env, stack, method_id, args_stack_length, mortal);
   
   return e;

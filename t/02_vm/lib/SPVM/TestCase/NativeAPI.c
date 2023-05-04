@@ -227,6 +227,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_spvm_version_number != &env_array[206]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_version_string != &env_array[207]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_version_number != &env_array[208]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_method != &env_array[209]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -1645,6 +1646,39 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
     int32_t args_stack_length = 1;
     stack[0].ival = 5;
     int32_t error = env->call_method_raw(env, stack, method_id, args_stack_length);
+    if (error) {
+      return 1;
+    }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+
+  int32_t method_id2 = env->get_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  if (method_id2 != method_id) {
+    return 1;
+  }
+
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__native_call_method_v2(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t method_id = env->get_class_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  if (method_id < 0) {
+    return 1;
+  }
+  int32_t output;
+  {
+    int32_t args_stack_length = 1;
+    stack[0].ival = 5;
+    int32_t error = env->call_method(env, stack, method_id, args_stack_length);
     if (error) {
       return 1;
     }

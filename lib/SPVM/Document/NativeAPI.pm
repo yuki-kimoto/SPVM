@@ -223,6 +223,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   206 get_spvm_version_number
   207 get_version_string
   208 get_version_number
+  209 call_method
 
 =head2 class_vars_heap
 
@@ -1062,7 +1063,7 @@ If you specify a pointer object and a C language pointer, the C language pointer
 
 Call a method by specifying the method ID and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
-The return value of the method is set to args[0].
+The return value of the method is set to stack[0].
 
 =head2 get_exception
 
@@ -2253,6 +2254,16 @@ If the version string in the class is not defined, returns NULL.
 Returns the version number of a class. The C<class_id> must be a valid class id.
 
 If the version string in the class is not defined, returns -1.
+
+=head2 call_method
+
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+
+Call a method by specifying the method ID and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
+
+The return value of the method is set to stack[0].
+
+If stack[0] is a value of an object type, the object is pushed to the mortal stack.
 
 =head1 Compiler Native API
 

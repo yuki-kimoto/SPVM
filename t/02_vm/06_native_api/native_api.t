@@ -141,6 +141,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->native_call_method);
 }
 
+# env->call_method
+{
+  ok(SPVM::TestCase::NativeAPI->native_call_method_v2);
+}
+
 # env->call_class_method_by_name
 {
   ok(SPVM::TestCase::NativeAPI->native_call_class_method_by_name);
