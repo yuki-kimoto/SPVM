@@ -1781,7 +1781,7 @@ _xs_call_method(...)
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t error_code_ret = env->call_method(env, stack, method_id, args_native_stack_length);
+  int32_t error_code_ret = env->call_method_raw(env, stack, method_id, args_native_stack_length);
   
   if (error_code_ret) {
     if (SvOK(sv_error_ret)) {
