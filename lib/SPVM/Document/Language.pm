@@ -9114,6 +9114,18 @@ Examples:
   my $z : Complex_2d;
   &my_mulnum_method($z, 2);
 
+=head2 set_items Operator
+
+The C<set_items> operator sets the stack length of the arguments passed to the method.
+
+  set_items OPERAND
+
+The OPERAND must be the int type. Otherwise a compilation error occurs.
+
+The return value is the OPERAND.
+
+The return type is the int type.
+
 =head1 Exception
 
 Explains exceptions.

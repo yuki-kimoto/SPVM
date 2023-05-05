@@ -1527,6 +1527,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_SET_ERROR_CODE:
     case SPVM_OP_C_ID_ERROR:
     case SPVM_OP_C_ID_ITEMS:
+    case SPVM_OP_C_ID_SET_ITEMS:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
@@ -3627,6 +3628,13 @@ SPVM_OP* SPVM_OP_build_set_error_code(SPVM_COMPILER* compiler, SPVM_OP* op_set_e
   SPVM_OP_insert_child(compiler, op_set_error_code, op_set_error_code->last, op_number);
   
   return op_set_error_code;
+}
+
+SPVM_OP* SPVM_OP_build_set_items(SPVM_COMPILER* compiler, SPVM_OP* op_set_items, SPVM_OP* op_number) {
+  
+  SPVM_OP_insert_child(compiler, op_set_items, op_set_items->last, op_number);
+  
+  return op_set_items;
 }
 
 SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand) {

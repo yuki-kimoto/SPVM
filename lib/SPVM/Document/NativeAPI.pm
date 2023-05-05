@@ -224,6 +224,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   207 get_version_string
   208 get_version_number
   209 call_method
+  210 set_items
 
 =head2 class_vars_heap
 
@@ -2264,6 +2265,12 @@ Call a method by specifying the method ID and the stack length of the argument. 
 The return value of the method is set to stack[0].
 
 If stack[0] is a value of an object type, the object is pushed to the mortal stack.
+
+=head2 set_items
+
+  void (*set_items)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t items);
+
+Sets the stack length of the arguments specified by the caller.
 
 =head1 Compiler Native API
 

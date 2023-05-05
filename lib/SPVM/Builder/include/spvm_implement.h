@@ -1503,6 +1503,11 @@ static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stac
   }
 }
 
+static inline void SPVM_IMPLEMENT_SET_ITEMS(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in) {
+  env->set_items(env, stack, in);
+  *out = in;
+}
+
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error) (eval_error = 0)
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR(out, eval_error) (out = eval_error)

@@ -4,6 +4,7 @@
     
       die undef;
     * The compile_type_name operator is added.
+    * The set_items operator is added.
   [Changes]
     * The compile error message of yacc are uniformed.
     * The indent of the stack trace of an exception is now 2.

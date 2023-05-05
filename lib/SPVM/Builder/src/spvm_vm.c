@@ -1185,6 +1185,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_SET_ERROR_CODE(env, stack, &int_vars[opcode->operand0], &error_code, int_vars[opcode->operand1], &error);
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_ITEMS: {
+        int32_t items = int_vars[opcode->operand1];
+        SPVM_IMPLEMENT_SET_ITEMS(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1]);
+        break;
+      }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
         SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error);
         break;

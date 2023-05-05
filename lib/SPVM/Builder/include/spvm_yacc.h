@@ -164,9 +164,10 @@ extern int SPVM_yydebug;
     IS_READ_ONLY = 374,
     COPY = 375,
     SET_ERROR_CODE = 376,
-    INC = 377,
-    DEC = 378,
-    ARROW = 379
+    SET_ITEMS = 377,
+    INC = 378,
+    DEC = 379,
+    ARROW = 380
   };
 #endif
 

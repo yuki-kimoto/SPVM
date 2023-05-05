@@ -308,6 +308,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
     SPVM_API_call_method,
+    SPVM_API_set_items,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4146,6 +4147,12 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   (void)env;
   
   stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_length;
+}
+
+void SPVM_API_set_items(SPVM_ENV* env, SPVM_VALUE* stack, int32_t items) {
+  (void)env;
+  
+  SPVM_API_set_args_stack_length(env, stack, items);
 }
 
 int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length) {
