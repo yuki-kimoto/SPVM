@@ -100,6 +100,7 @@
 const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
+    "END_ARGS",
     "END_METHOD",
     "GOTO",
     "IF_EQ_ZERO",
