@@ -246,6 +246,7 @@ The list of keywords:
   cmp
   class
   class_id
+  compile_type_name
   copy
   default
   die
@@ -301,7 +302,7 @@ The list of keywords:
   public
   precompile
   pointer
-  ref
+  ref (Deprecated)
   refcnt
   remui
   remul
@@ -318,6 +319,7 @@ The list of keywords:
   short
   scalar
   true
+  type_name
   undef
   unless
   unweaken
@@ -1268,7 +1270,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1550,6 +1552,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | BIT_NOT operator
     | REFCNT operator
     | TYPE_NAME operator
+    | COMPILE_TYPE_NAME operator
     | STRING_LENGTH operator
     | DUMP operator
     | DEREF var
@@ -1789,6 +1792,9 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>VAR_NAME</td><td>A variable name</td>
+  </tr>
+  <tr>
+    <td>COMPILE_TYPE_NAME</td><td>compile_type_name</td>
   </tr>
   <tr>
     <td>CONSTANT</td><td>Literal</td>
@@ -2131,7 +2137,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_ERROR_CODE
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
