@@ -1989,6 +1989,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(env, &object_vars[opcode->operand0], stack, stack_index);
         break;
       }
+      case SPVM_OPCODE_C_ID_END_ARGS: {
+        // Do nothing
+        break;
+      }
       case SPVM_OPCODE_C_ID_SET_STACK_BYTE: {
         SPVM_IMPLEMENT_SET_STACK_BYTE(stack, opcode->operand3, byte_vars[opcode->operand0]);
         break;
