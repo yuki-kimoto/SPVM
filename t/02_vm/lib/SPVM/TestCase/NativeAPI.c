@@ -3003,6 +3003,9 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   }
   else {
     if (!(value_float == 1.02f)) {
+      
+      spvm_warn("%f %f", value_float, 1.02f);
+      
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
       return 0;

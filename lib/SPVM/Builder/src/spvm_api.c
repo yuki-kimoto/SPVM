@@ -1566,7 +1566,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
             case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
               int32_t stack_index = opcode->operand3 & 0xFF;
               if (stack_index >= args_stack_length) {
-                stack[stack_index].fval = *(float*)&opcode->operand1;
+                SPVM_VALUE default_value;
+                default_value.ival = (int32_t)opcode->operand1;
+                stack[stack_index].fval = default_value.fval;
               }
               break;
             }
