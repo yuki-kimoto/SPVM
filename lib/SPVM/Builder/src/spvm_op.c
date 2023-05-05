@@ -3280,6 +3280,7 @@ SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, i
 
 SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_operands) {
   
+  SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_call_method->file, op_call_method->line));
   SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_list_operands);
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;

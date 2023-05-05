@@ -2597,8 +2597,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_call_method = op_cur;
 
-              assert(op_cur->first->id == SPVM_OP_C_ID_LIST);
-                  
+              assert(op_cur->last->id == SPVM_OP_C_ID_LIST);
               
               // Resolve method
               SPVM_OP_CHECKER_resolve_call_method(compiler, op_cur, class->op_class);
