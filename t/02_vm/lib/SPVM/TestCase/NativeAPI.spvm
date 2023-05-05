@@ -1386,6 +1386,34 @@ class TestCase::NativeAPI {
   native static method items_2 : int ($args0 : int, $args1 = 0 : int);
   native static method items_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int);
 
+  native static method default_all_types_native : int (
+    $value_byte = -128 : byte,
+    $value_short = -32768 : short,
+    $value_int = -2147483648 : int,
+    $value_long = -9223372036854775808L : long,
+    $value_float = 1.02f : float,
+    $value_double = 1.5e+300 : double,
+    $value_object = undef : object,
+  );
+
+  static method default_all_types : int () {
+    {
+      my $success = &default_all_types_native(1, 2, 3, 4, 5.5f, 6.5, Int->new(1));
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    {
+      my $success = &default_all_types_native();
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   native static method dumpc : int ();
 
   native static method precompile_build_methodd_source : int ();

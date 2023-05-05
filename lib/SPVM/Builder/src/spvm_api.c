@@ -13,6 +13,7 @@
 #include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
+#include "spvm_opcode.h"
 
 #include "spvm_strerror.h"
 #include "spvm_object.h"
@@ -1512,7 +1513,85 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     if (method->is_native) {
       // Enter scope
       int32_t original_mortal_stack_top = SPVM_API_enter_scope(env, stack);
+      
+      // Set argument default values
+      int32_t optional_args_length = method->args_length - method->required_args_length;
+      if (optional_args_length > 0) {
+        
+        // Operation codes
+        SPVM_OPCODE* opcodes = runtime->opcodes;
+        
+        // Operation code base
+        int32_t method_opcodes_base_id = method->opcodes_base_id;
+        
+        // Execute operation codes
+        int32_t opcode_rel_index = 0;
+        while (1) {
+          
+          SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_id + opcode_rel_index]);
 
+          if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
+            break;
+          }
+          
+          switch (opcode->id) {
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].bval = (int8_t)(uint8_t)opcode->operand1;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].sval = (int16_t)(uint16_t)opcode->operand1;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].ival = (int32_t)opcode->operand1;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].lval = *(int64_t*)&opcode->operand1;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                SPVM_VALUE default_value;
+                default_value.ival = (int32_t)opcode->operand1;
+                stack[stack_index].fval = default_value.fval;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].dval = *(double*)&opcode->operand1;
+              }
+              break;
+            }
+            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
+              int32_t stack_index = opcode->operand3 & 0xFF;
+              if (stack_index >= args_stack_length) {
+                stack[stack_index].oval = NULL;
+              }
+              break;
+            }
+          }
+          
+          opcode_rel_index++;
+        }
+      }
+      
       // Call native subrotuine
       int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[method->id];
       assert(native_address != NULL);

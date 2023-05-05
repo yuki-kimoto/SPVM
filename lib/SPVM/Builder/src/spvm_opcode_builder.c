@@ -99,81 +99,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         for (method_index = 0; method_index < methods->length; method_index++) {
           SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
           
+          int32_t method_opcodes_base_id = opcode_array->length;
+          
+          method->opcodes_base_id = method_opcodes_base_id;
+          
           // Check sub information
           assert(method->id > -1);
           assert(method->op_name);
           assert(method->return_type);
           assert(method->class->class_file);
           
-          if (method->is_native) {
-            continue;
-          }
-
-          // opcode index stack for if start
-          SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // opcode index stack for if end
-          SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // opcode index stack for loop start
-          SPVM_LIST* loop_first_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // opcode index stack for last
-          SPVM_LIST* last_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-          // opcode index stack for break
-          SPVM_LIST* break_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // opcode index stack for next
-          SPVM_LIST* next_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // opcode index stack for eval start
-          SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // IF_EXCEPTION_CATCH opcode index stack
-          SPVM_LIST* if_die_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-          // IF_EXCEPTION_RETURN opcode index stack
-          SPVM_LIST* if_die_return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-          // RETURN goto opcode index stack
-          SPVM_LIST* return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // Switch stack
-          SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // next block base stack
-          SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // last block base stack
-          SPVM_LIST* last_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-          // break block base stack
-          SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // Mortal variable stack
-          SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // Mortal variable base stack
-          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-          // Object temporary variable stack
-          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          int32_t method_opcodes_base_id = opcode_array->length;
-          
-          method->opcodes_base_id = method_opcodes_base_id;
-          
-          // Run OPs
-          SPVM_OP* op_base = method->op_block;
-          SPVM_OP* op_cur = op_base;
-          int32_t finish = 0;
-          
-          int32_t mortal_stack_top_max = 0;
-
           // Copy arguments to variables
           int32_t stack_index = 0;
           for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
@@ -408,6 +343,71 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_END_ARGS);
             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
           }
+
+          if (method->is_native) {
+            continue;
+          }
+
+          // opcode index stack for if start
+          SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // opcode index stack for if end
+          SPVM_LIST* if_block_end_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // opcode index stack for loop start
+          SPVM_LIST* loop_first_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // opcode index stack for last
+          SPVM_LIST* last_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // opcode index stack for break
+          SPVM_LIST* break_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // opcode index stack for next
+          SPVM_LIST* next_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // opcode index stack for eval start
+          SPVM_LIST* push_eval_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // IF_EXCEPTION_CATCH opcode index stack
+          SPVM_LIST* if_die_catch_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // IF_EXCEPTION_RETURN opcode index stack
+          SPVM_LIST* if_die_return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // RETURN goto opcode index stack
+          SPVM_LIST* return_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Switch stack
+          SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Block stack
+          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // next block base stack
+          SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // last block base stack
+          SPVM_LIST* last_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // break block base stack
+          SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Mortal variable stack
+          SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Mortal variable base stack
+          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // Object temporary variable stack
+          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Run OPs
+          SPVM_OP* op_base = method->op_block;
+          SPVM_OP* op_cur = op_base;
+          int32_t finish = 0;
+          
+          int32_t mortal_stack_top_max = 0;
 
           while (op_cur) {
             

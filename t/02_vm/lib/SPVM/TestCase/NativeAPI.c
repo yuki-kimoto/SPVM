@@ -2920,6 +2920,113 @@ int32_t SPVM__TestCase__NativeAPI__items_4(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t items = env->items(env, stack);
+  
+  int8_t value_byte = stack[0].bval;
+  int16_t value_short = stack[1].sval;
+  int32_t value_int = stack[2].ival;
+  int64_t value_long = stack[3].lval;
+  float value_float = stack[4].fval;
+  double value_double = stack[5].dval;
+  void* value_object = stack[6].oval;
+  
+  if (items >= 1) {
+    if (!(value_byte == 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_byte == -128)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 2) {
+    if (!(value_short == 2)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_short == -32768)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 3) {
+    if (!(value_int == 3)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_int == -2147483648)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 4) {
+    if (!(value_long == 4)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_long == -9223372036854775808LU)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 5) {
+    if (!(value_float == 5.5f)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_float == 1.02f)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 6) {
+    if (!(value_double == 6.5)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_double == 1.5e+300)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  if (items >= 7) {
+    if (!(value_object != NULL)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  else {
+    if (!(value_object == NULL)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
 
 int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   

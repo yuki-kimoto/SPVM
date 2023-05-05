@@ -285,6 +285,11 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->items);
 }
 
+# Default
+{
+  ok(SPVM::TestCase::NativeAPI->default_all_types);
+}
+
 # new_string_array
 {
   ok(SPVM::TestCase::NativeAPI->new_string_array);
