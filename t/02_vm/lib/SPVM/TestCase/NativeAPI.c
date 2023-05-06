@@ -3238,17 +3238,26 @@ int32_t SPVM__TestCase__NativeAPI__get_string_field_native(SPVM_ENV* env, SPVM_V
 int32_t SPVM__TestCase__NativeAPI__floating_point_constant_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   float float_value1 = stack[0].fval;
   double double_value1 = stack[1].dval;
-  
-  if (!(float_value1 == 1.02f)) {
-    spvm_warn("Got:%.20f,Expected:%.20f line %d", float_value1, 1.02f, __LINE__);
+
+  if (!(float_value1 == strtof("1.02", NULL))) {
+    spvm_warn("Got:%.20f,Expected:%.20f line %d", float_value1, strtof("1.02", NULL), __LINE__);
     stack[0].ival = 0;
     return 0;
   }
   
-  if (!(double_value1 == 1.5e+300)) {
-    spvm_warn("Got:%.20f,Expected:%.20f line %d", double_value1, 1.5e+300, __LINE__);
+  if (!(float_value1 == 1.02f)) {
+    spvm_warn("Warning:SPVM floating point literal is differenct from C floatin point literal. Got:%.20f,Expected:%.20f line %d", float_value1, 1.02f, __LINE__);
+  }
+  
+  if (!(double_value1 == strtod("1.5e+300", NULL))) {
+    spvm_warn("Got:%.20f,Expected:%.20f line %d", double_value1, strtod("1.5e+300", NULL), __LINE__);
     stack[0].ival = 0;
     return 0;
+  }
+  
+  
+  if (!(double_value1 == 1.5e+300)) {
+    spvm_warn("Warning:SPVM floating point literal is differenct from C floatin point literal. Got:%.20f,Expected:%.20f line %d", double_value1, 1.5e+300, __LINE__);
   }
   
   stack[0].ival = 1;
