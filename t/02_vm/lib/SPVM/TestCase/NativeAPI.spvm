@@ -1392,7 +1392,7 @@ class TestCase::NativeAPI {
     $value_int = -2147483648 : int,
     $value_long = -9223372036854775808L : long,
     $value_float = 1.5f : float,
-    $value_double = 1.5e+300 : double,
+    $value_double = -2147483648.5 : double,
     $value_object = undef : object,
   );
 

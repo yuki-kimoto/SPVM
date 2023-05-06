@@ -3020,7 +3020,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   else {
-    if (!(value_double == 1.5e+300)) {
+    if (!(value_double == -2147483648.5)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
       return 0;
