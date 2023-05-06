@@ -308,9 +308,11 @@ ok(SPVM::TestCase::NativeAPI->get_compile_type_name);
 
 ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
 
+ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
+
 # get string field
 {
-  ok(SPVM::TestCase::NativeAPI->get_string_field);
+  ok(SPVM::TestCase::NativeAPI->floating_point_constant);
 }
 
 # Clear exception

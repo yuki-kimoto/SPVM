@@ -1440,4 +1440,23 @@ class TestCase::NativeAPI {
   }
   
   native method get_string_field_native : int ();
+  
+  static method floating_point_constant : int () {
+    
+    {
+      my $float_value1 = 1.02f;
+      my $dobule_value1 = 1.5e+300;
+      my $success = &floating_point_constant_native($float_value1, $dobule_value1);
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  native static method floating_point_constant_native : int (
+    $float_value1 : float,
+    $double_value1 : double,
+  );
 }
