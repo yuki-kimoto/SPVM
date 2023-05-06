@@ -1,6 +1,8 @@
-0.973 2023-05-06
+0.973 2023-05-07
   [Changes]
     * Default value is passed to the arguments of native methods.
+  [Test Improvement]
+    * Tests of the floating point literal are added.
 0.972 2023-05-04
   [New Features]
     * The die statemenet support undef operand.
