@@ -4,7 +4,7 @@ package SPVM::Float;
 
 =head1 Name
 
-SPVM::Float - Float Object
+SPVM::Float - The float Object
 
 =head1 Description
 

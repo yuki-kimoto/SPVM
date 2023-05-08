@@ -4,19 +4,19 @@ package SPVM::Mutable::Float;
 
 =head1 Name
 
-SPVM::Mutable::Float - Mutable::Float Class
+SPVM::Mutable::Float - Mutable float Object
+
+=head1 Description
+
+The Mutable::Float class has methods to manipulate an object that has a float value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $float_object = Mutable::Float->new(5);
   my $float_value = $float_object->value;
   $float_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Float> is the class to hold a value of the C<float> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 

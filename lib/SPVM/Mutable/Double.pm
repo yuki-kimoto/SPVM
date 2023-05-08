@@ -4,19 +4,19 @@ package SPVM::Mutable::Double;
 
 =head1 Name
 
-SPVM::Mutable::Double - Mutable::Double Class
+SPVM::Mutable::Double - Mutable double Object
+
+=head1 Description
+
+The Mutable::Double class has methods to manipulate an object that has a double value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $double_object = Mutable::Double->new(5);
   my $double_value = $double_object->value;
   $double_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Double> is the class to hold a value of the C<double> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 

@@ -4,7 +4,7 @@ package SPVM::Int;
 
 =head1 Name
 
-SPVM::Int - Int Object
+SPVM::Int - The int Object
 
 =head1 Description
 

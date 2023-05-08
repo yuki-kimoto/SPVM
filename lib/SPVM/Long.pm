@@ -4,7 +4,7 @@ package SPVM::Long;
 
 =head1 Name
 
-SPVM::Long - Long Object
+SPVM::Long - The long Object
 
 =head1 Description
 

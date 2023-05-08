@@ -4,7 +4,7 @@ package SPVM::Double;
 
 =head1 Name
 
-SPVM::Double - Double Object
+SPVM::Double - The double Object
 
 =head1 Description
 

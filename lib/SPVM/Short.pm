@@ -4,7 +4,7 @@ package SPVM::Short;
 
 =head1 Name
 
-SPVM::Short - Short Class
+SPVM::Short - The short Class
 
 =head1 Description
 

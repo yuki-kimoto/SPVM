@@ -4,19 +4,19 @@ package SPVM::Mutable::Long;
 
 =head1 Name
 
-SPVM::Mutable::Long - Mutable::Long Class
+SPVM::Mutable::Long - Mutable long Object
+
+=head1 Description
+
+The Mutable::Long class has methods to manipulate an object that has a long value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $long_object = Mutable::Long->new(5);
   my $long_value = $long_object->value;
   $long_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Long> is the class to hold a value of the C<long> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 

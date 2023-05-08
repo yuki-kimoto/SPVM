@@ -4,19 +4,19 @@ package SPVM::Mutable::Int;
 
 =head1 Name
 
-SPVM::Mutable::Int - Mutable::Int Class
+SPVM::Mutable::Int - Mutable int Object
+
+=head1 Description
+
+The Mutable::Int class has methods to manipulate an object that has an int value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $int_object = Mutable::Int->new(5);
   my $int_value = $int_object->value;
   $int_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Int> is the class to hold a value of the C<int> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 

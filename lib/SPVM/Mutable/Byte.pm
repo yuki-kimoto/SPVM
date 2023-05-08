@@ -4,19 +4,19 @@ package SPVM::Mutable::Byte;
 
 =head1 Name
 
-SPVM::Mutable::Byte - Mutable::Byte Class
+SPVM::Mutable::Byte - Mutable byte Object
+
+=head1 Description
+
+The Mutable::Byte class has methods to manipulate an object that has a byte value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $byte_object = Mutable::Byte->new(5);
   my $byte_value = $byte_object->value;
   $byte_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Byte> is the class to hold a value of the C<byte> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 

@@ -4,7 +4,7 @@ package SPVM::Byte;
 
 =head1 Name
 
-SPVM::Byte - Byte Object
+SPVM::Byte - The byte Object
 
 =head1 Description
 

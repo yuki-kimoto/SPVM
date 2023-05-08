@@ -4,19 +4,19 @@ package SPVM::Mutable::Short;
 
 =head1 Name
 
-SPVM::Mutable::Short - Mutable::Short Class
+SPVM::Mutable::Short - Mutable short Object
+
+=head1 Description
+
+The Mutable::Short class has methods to manipulate an object that has a short value.
+
+This class is mutable.
 
 =head1 Usage
   
   my $short_object = Mutable::Short->new(5);
   my $short_value = $short_object->value;
   $short_object->set_value(10);
-
-=head1 Description
-
-C<Mutable::Short> is the class to hold a value of the C<short> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 
