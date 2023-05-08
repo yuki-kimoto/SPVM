@@ -6,23 +6,24 @@ package SPVM::Short;
 
 SPVM::Short - Short Class
 
+=head1 Description
+
+The Short class has methods to manipulate an object that has a short value.
+
+This class is immutable.
+
+This class is automatically loaded.
+
 =head1 Usage
   
   my $short_object = Short->new(5);
   my $short_value = $short_object->value;
-  $short_object->set_value(10);
-
-=head1 Description
-
-C<Short> is the class to hold a value of the C<short> type.
-
-This class is automatically loaded.
 
 =head1 Fields
 
 =head2 value
 
-  has value : rw short;
+  has value : ro short;
 
 The value.
 
@@ -33,6 +34,14 @@ The value.
   static method new : Short ($value : int);
 
 Creates a new L<Short|SPVM::Short> object with a C<short> $value.
+
+=head1 See Also
+
+=over 2
+
+=item * L<Mutable::Short|SPVM::Mutable::Short> - Mutable Short Object
+
+=back
 
 =head1 Copyright & License
 

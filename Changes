@@ -6,6 +6,14 @@
     Added the Mutable::Long class.
     Added the Mutable::Float class.
     Added the Mutable::Double class.
+  [Incompatible Changes]
+    * The set_value method in the Byte class is removed. This class becomes immutable.
+    * The set_value method in the Short class is removed. This class becomes immutable.
+    * The set_value method in the Int class is removed. This class becomes immutable.
+    * The set_value method in the Long class is removed. This class becomes immutable.
+    * The set_value method in the Float class is removed. This class becomes immutable.
+    * The set_value method in the Double class is removed. This class becomes immutable.
+    
 0.973 2023-05-07
   [Changes]
     * Default value is passed to the arguments of native methods.

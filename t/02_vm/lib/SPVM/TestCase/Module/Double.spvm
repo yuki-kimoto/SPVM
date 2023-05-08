@@ -1,22 +1,14 @@
 class TestCase::Module::Double {
   use Fn;
-  use Array;
   
   static method basic : int () {
-    my $oval = Double->new(Fn->DBL_MIN());
-    my $value1 = $oval->value;
+    my $numeric_object = Double->new(Fn->DBL_MIN());
+    my $value = $numeric_object->value;
     
-    unless ($value1 == Fn->DBL_MIN()) {
+    unless ($value == Fn->DBL_MIN()) {
       return 0;
     }
 
-    $oval->set_value(5);
-    
-    unless ($oval->value == 5) {
-      return 0;
-    }
-    
-    
     return 1;
   }
 }

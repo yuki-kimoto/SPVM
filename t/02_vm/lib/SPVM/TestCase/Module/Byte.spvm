@@ -1,18 +1,11 @@
 class TestCase::Module::Byte {
   use Fn;
-  use Array;
   
   static method basic : int () {
-    my $oval = Byte->new(Fn->INT8_MIN());
-    my $value1 = $oval->value;
+    my $numeric_object = Byte->new(Fn->INT8_MIN());
+    my $value = $numeric_object->value;
     
-    unless ($value1 == Fn->INT8_MIN()) {
-      return 0;
-    }
-    
-    $oval->set_value(5);
-    
-    unless ($oval->value == 5) {
+    unless ($value == Fn->INT8_MIN()) {
       return 0;
     }
     

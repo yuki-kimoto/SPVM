@@ -99,27 +99,27 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_HASH_set(compiler->class_source_symtable, "Error::NotSupported", strlen("Error::NotSupported"), (void*)spvm_error_not_supported_class_source);
 
   // Add Byte source
-  const char* spvm_byte_class_source = "class Byte {\n  has value : rw byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
+  const char* spvm_byte_class_source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_class_source);
   
   // Add Short source
-  const char* spvm_short_class_source = "class Short {\n  has value : rw short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
+  const char* spvm_short_class_source = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Short", strlen("Short"), (void*)spvm_short_class_source);
   
   // Add Int source
-  const char* spvm_int_class_source = "class Int {\n  has value : rw int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_int_class_source = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Int", strlen("Int"), (void*)spvm_int_class_source);
   
   // Add Long source
-  const char* spvm_long_class_source = "class Long {\n  has value : rw long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_long_class_source = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Long", strlen("Long"), (void*)spvm_long_class_source);
   
   // Add Float source
-  const char* spvm_float_class_source = "class Float {\n  has value : rw float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_float_class_source = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Float", strlen("Float"), (void*)spvm_float_class_source);
   
   // Add Double source
-  const char* spvm_double_class_source = "class Double {\n  has value : rw double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_double_class_source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_set(compiler->class_source_symtable, "Double", strlen("Double"), (void*)spvm_double_class_source);
   
   // Add CommandInfo source
