@@ -7,6 +7,8 @@
     * Removed the Mutable::Float class.
     * Removed the Mutable::Double class.
     * Removed the deprecated ref operator.
+    * Removed the deprecated index_v2 method in the Fn class.
+    * Removed the deprecated rindex_v2 method in the Fn class.
 0.974 2023-05-08
   [New Features]
     * Added the Mutable::Byte class.

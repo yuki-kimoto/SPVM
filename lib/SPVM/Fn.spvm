@@ -250,67 +250,6 @@ class Fn {
   }
   
 
-  precompile static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int) {
-    
-    unless ($string) {
-      die "The \$string must be defined.";
-    }
-    
-    unless ($substring) {
-      die "The \$substring must be defined.";
-    }
-    
-    unless ($begin >= 0 && $begin <= length $string) {
-      die "The \$begin must be between 0 and the length of the \$string.";
-    }
-    
-    my $string_length = length $string;
-    
-    if ($end < 0) {
-      $end = $string_length;
-    }
-    
-    unless ($end <= length $string) {
-      die "The \$end must be less than or equal to the length of the \$string.";
-    }
-    
-    unless ($end >= $begin) {
-      die "The \$end must be greater than or equal to \$begin.";
-    }
-    
-    my $substring_length = length $substring;
-    
-    if ($substring_length == 0) {
-      return $begin;
-    }
-    
-    if ($end == $string_length) {
-      $end--;
-    }
-    
-    for (my $i = $begin; $i <= $end; $i++) {
-      my $match = 1;
-      for (my $k = 0; $k < $substring_length; $k++) {
-        
-        if ($i + $k > $end) {
-          $match = 0;
-          last;
-        }
-        
-        unless ($string->[$i + $k] == $substring->[$k]) {
-          $match = 0;
-          last;
-        }
-      }
-      
-      if ($match) {
-        return $i;
-      }
-    }
-    
-    return -1;
-  }
-  
   precompile static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 : int, $length = -1 : int) {
     unless ($string) {
       die "The \$string must be defined.";
@@ -765,67 +704,6 @@ class Fn {
     return -1;
   }
 
-  precompile static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int) {
-    
-    unless ($string) {
-      die "The \$string must be defined.";
-    }
-    
-    unless ($substring) {
-      die "The \$substring must be defined.";
-    }
-    
-    unless ($begin >= 0 && $begin <= length $string) {
-      die "The \$begin must be between 0 and the length of the \$string.";
-    }
-    
-    my $string_length = length $string;
-    
-    if ($end < 0) {
-      $end = $string_length;
-    }
-    
-    unless ($end <= length $string) {
-      die "The \$end must be less than or equal to the length of the \$string.";
-    }
-    
-    unless ($end >= $begin) {
-      die "The \$end must be greater than or equal to \$begin.";
-    }
-    
-    my $substring_length = length $substring;
-    
-    if ($substring_length == 0) {
-      return $end;
-    }
-    
-    if ($end == $string_length) {
-      $end--;
-    }
-    
-    my $match_chars_count = 0;
-    for (my $i = $end; $i >= $begin; $i--) {
-      my $match = 1;
-      for (my $k = 0; $k < $substring_length; $k++) {
-        if ($i + $k > $end) {
-          $match = 0;
-          last;
-        }
-        
-        unless ($string->[$i + $k] == $substring->[$k]) {
-          $match = 0;
-          last;
-        }
-      }
-      
-      if ($match) {
-        return $i;
-      }
-    }
-    
-    return -1;
-  }
-  
   native static method sizeof_native_int : int ();
   
   native static method sizeof_native_pointer : int ();

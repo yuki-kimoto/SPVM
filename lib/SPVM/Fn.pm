@@ -386,12 +386,6 @@ The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $end must be less than the length of the $string.
 
-=head2 index_v2
-
-  static method index_v2 : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
-
-The same as L</"index">. The index_v2 method will be removed.
-
 =head2 init_string
 
   static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 int, $length = -1);
@@ -730,12 +724,6 @@ The $substring must be defined. Otherwize an exception is thrown.
 The $begin must be greater than or equal to 0. Otherwize an exception is thrown.
 
 The $end must be less than the length of the $string.
-
-=head2 rindex_v2
-
-  static method rindex_v2 : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
-
-The same as L<rindex>. The rindex_v2 method will be removed.
 
 =head2 sizeof_native_int
 
