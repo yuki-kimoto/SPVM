@@ -271,7 +271,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
     
     return $dump;
   }
@@ -295,7 +295,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
     
     return $dump;
   }
@@ -319,7 +319,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
     return $dump;
   }
   
@@ -342,7 +342,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . ref $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
     
     return $dump;
   }

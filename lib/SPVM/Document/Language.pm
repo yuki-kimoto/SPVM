@@ -302,7 +302,6 @@ The list of keywords:
   public
   precompile
   pointer
-  ref (Deprecated)
   refcnt
   remui
   remul
@@ -2004,7 +2003,7 @@ The list of syntax parsing tokens:
     <td>REFCNT</td><td>refcnt</td>
   </tr>
   <tr>
-    <td>TYPE_NAME</td><td>type_name(or ref)</td>
+    <td>TYPE_NAME</td><td>type_name</td>
   </tr>
   <tr>
     <td>REMAINDER</td><td>%</td>
@@ -7774,10 +7773,6 @@ Examples:
     }
   }
   
-=head2 ref Operator
-
-The same as L</"type_name Operator">. This is deprected and will be removed.
-
 =head2 type_name Operator
 
 The C<type_name> operator returns the type name of the object.

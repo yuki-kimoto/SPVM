@@ -1,19 +1,20 @@
 0.975 2023-05-09
   [Incompatible Changes]
-    Removed the Mutable::Byte class.
-    Removed the Mutable::Short class.
-    Removed the Mutable::Int class.
-    Removed the Mutable::Long class.
-    Removed the Mutable::Float class.
-    Removed the Mutable::Double class.
+    * Removed the Mutable::Byte class.
+    * Removed the Mutable::Short class.
+    * Removed the Mutable::Int class.
+    * Removed the Mutable::Long class.
+    * Removed the Mutable::Float class.
+    * Removed the Mutable::Double class.
+    * Removed the deprecated ref operator.
 0.974 2023-05-08
   [New Features]
-    Added the Mutable::Byte class.
-    Added the Mutable::Short class.
-    Added the Mutable::Int class.
-    Added the Mutable::Long class.
-    Added the Mutable::Float class.
-    Added the Mutable::Double class.
+    * Added the Mutable::Byte class.
+    * Added the Mutable::Short class.
+    * Added the Mutable::Int class.
+    * Added the Mutable::Long class.
+    * Added the Mutable::Float class.
+    * Added the Mutable::Double class.
   [Incompatible Changes]
     * The set_value method in the Byte class is removed. This class becomes immutable.
     * The set_value method in the Short class is removed. This class becomes immutable.

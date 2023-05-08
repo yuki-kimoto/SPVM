@@ -44,15 +44,6 @@ class TestCase::TypeName {
       }
     }
     
-    # Deprecated ref operator
-    {
-      my $minimal = TestCase::Minimal->new;
-      
-      unless (ref $minimal eq "TestCase::Minimal") {
-        return 0;
-      }
-    }
-    
     return 1;
   }
 }
