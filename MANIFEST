@@ -718,6 +718,12 @@ t/02_vm/lib/SPVM/TestCase/Module/IntList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/List.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Long.spvm
 t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Byte.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Double.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Float.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Int.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Long.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutable/Short.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Scope/Guard.spvm
