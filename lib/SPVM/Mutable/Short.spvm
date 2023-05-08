@@ -1,0 +1,14 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Mutable::Short {
+  # Fields
+  has value : rw short;
+  
+  # Class Methods
+  static method new : Mutable::Short ($value : int) {
+    my $self = new Mutable::Short;
+    $self->{value} = (short)$value;
+    return $self;
+  }
+}

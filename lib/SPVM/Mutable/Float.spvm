@@ -1,0 +1,14 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Mutable::Float {
+  # Fields
+  has value : rw float;
+  
+  # Class Methods
+  static method new : Mutable::Float ($value : float) {
+    my $self = new Mutable::Float;
+    $self->{value} = (float)$value;
+    return $self;
+  }
+}

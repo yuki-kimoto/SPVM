@@ -1,3 +1,11 @@
+0.974 2023-05-08
+  [New Features]
+    Added the Mutable::Byte class.
+    Added the Mutable::Short class.
+    Added the Mutable::Int class.
+    Added the Mutable::Long class.
+    Added the Mutable::Float class.
+    Added the Mutable::Double class.
 0.973 2023-05-07
   [Changes]
     * Default value is passed to the arguments of native methods.

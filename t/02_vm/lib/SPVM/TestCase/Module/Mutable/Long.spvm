@@ -1,0 +1,23 @@
+class TestCase::Module::Mutable::Long {
+  use Fn;
+  use Array;
+  use Mutable::Long;
+  
+  static method basic : int () {
+    my $oval = Mutable::Long->new(Fn->INT64_MIN());
+    my $value1 = $oval->value;
+    
+    unless ($value1 == Fn->INT64_MIN()) {
+      return 0;
+    }
+
+    $oval->set_value(5);
+    
+    unless ($oval->value == 5) {
+      return 0;
+    }
+    
+    
+    return 1;
+  }
+}
