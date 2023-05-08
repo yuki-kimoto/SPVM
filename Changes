@@ -1,3 +1,11 @@
+0.975 2023-05-09
+  [Incompatible Changes]
+    Removed the Mutable::Byte class.
+    Removed the Mutable::Short class.
+    Removed the Mutable::Int class.
+    Removed the Mutable::Long class.
+    Removed the Mutable::Float class.
+    Removed the Mutable::Double class.
 0.974 2023-05-08
   [New Features]
     Added the Mutable::Byte class.

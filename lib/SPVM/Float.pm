@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Float|SPVM::Float> object with a C<float> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Float|SPVM::Mutable::Float> - Mutable Float Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

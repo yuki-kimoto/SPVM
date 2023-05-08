@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Byte|SPVM::Mutable::Byte> - Mutable Byte Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

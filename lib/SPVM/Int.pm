@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Int|SPVM::Int> object with a C<int> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Int|SPVM::Mutable::Int> - Mutable Int Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

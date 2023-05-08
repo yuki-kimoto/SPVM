@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Long|SPVM::Long> object with a C<long> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Long|SPVM::Mutable::Long> - Mutable Long Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

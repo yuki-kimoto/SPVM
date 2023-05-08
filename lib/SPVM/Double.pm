@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Double|SPVM::Double> object with a C<double> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Double|SPVM::Mutable::Double> - Mutable Double Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

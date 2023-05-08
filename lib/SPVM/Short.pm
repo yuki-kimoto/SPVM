@@ -35,14 +35,6 @@ The value.
 
 Creates a new L<Short|SPVM::Short> object with a C<short> $value.
 
-=head1 See Also
-
-=over 2
-
-=item * L<Mutable::Short|SPVM::Mutable::Short> - Mutable Short Object
-
-=back
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
