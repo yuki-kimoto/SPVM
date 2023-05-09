@@ -1,0 +1,76 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::StringList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : string[];
+  
+  # Class methods
+  static method new : Immutable::StringList ($array = undef : string[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      for (my $i = 0; $i < $length; $i++ ) {
+        my $value = copy $array->[$i];
+        make_read_only $value;
+        $value->{values}[$i] = $value;
+      }
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::StringList ($length : int) {
+    my $self = new Immutable::StringList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new string[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : string ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : string[] () {
+    my $length = $self->length;
+    
+    my $array = new string[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_string_address($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+}

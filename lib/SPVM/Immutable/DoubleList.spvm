@@ -1,0 +1,72 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::DoubleList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : double[];
+  
+  # Class methods
+  static method new : Immutable::DoubleList ($array = undef : double[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      Array->memcpy_double($self->{values}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::DoubleList ($length : int) {
+    my $self = new Immutable::DoubleList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new double[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : double ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : double[] () {
+    my $length = $self->length;
+    
+    my $array = new double[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_double($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+}

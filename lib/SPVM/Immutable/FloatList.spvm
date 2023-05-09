@@ -1,0 +1,72 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::FloatList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : float[];
+  
+  # Class methods
+  static method new : Immutable::FloatList ($array = undef : float[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      Array->memcpy_float($self->{values}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::FloatList ($length : int) {
+    my $self = new Immutable::FloatList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new float[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : float ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : float[] () {
+    my $length = $self->length;
+    
+    my $array = new float[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_float($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+}

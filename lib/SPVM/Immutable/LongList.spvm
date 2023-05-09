@@ -1,0 +1,73 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::LongList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : long[];
+  
+  # Class methods
+  static method new : Immutable::LongList ($array = undef : long[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      Array->memcpy_long($self->{values}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::LongList ($length : int) {
+    my $self = new Immutable::LongList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new long[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : long ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : long[] () {
+    my $length = $self->length;
+    
+    my $array = new long[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_long($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+  
+}

@@ -1,0 +1,72 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::ByteList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : byte[];
+  
+  # Class methods
+  static method new : Immutable::ByteList ($array = undef : byte[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      Array->memcpy_byte($self->{values}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::ByteList ($length : intt) {
+    my $self = new Immutable::ByteList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new byte[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : int ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : byte[] () {
+    my $length = $self->length;
+    
+    my $array = new byte[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_byte($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+}

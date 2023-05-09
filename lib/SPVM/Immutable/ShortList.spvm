@@ -1,0 +1,73 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Immutable::ShortList {
+  use Fn;
+  use Array;
+  
+  # Fields
+  has length : ro int;
+  has values : short[];
+  
+  # Class methods
+  static method new : Immutable::ShortList ($array = undef : short[]) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($length);
+    
+    if ($array) {
+      Array->memcpy_short($self->{values}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+  
+  static method new_len : Immutable::ShortList ($length : int) {
+    my $self = new Immutable::ShortList;
+    
+    unless ($length >= 0) {
+      die "The \$length must be greater than or equal to 0.";
+    }
+    
+    $self->{length} = $length;
+    $self->{values} = new short[$length];
+    
+    return $self;
+  }
+  
+  # Instance methods
+  method get : int ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      die "The \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The \$index must be less than the length of the \$list.";
+    }
+    
+    my $element = $self->{values}[$index];
+    
+    return $element;
+  }
+  
+  method to_array : short[] () {
+    my $length = $self->length;
+    
+    my $array = new short[$length];
+    
+    my $elements = $self->{values};
+    
+    Array->memcpy_short($array, 0, $elements, 0, $length);
+    
+    return $array;
+  }
+  
+}

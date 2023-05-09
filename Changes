@@ -1,3 +1,12 @@
+0.976 2023-05-09
+  [New Features]
+    * Added the Immutable::ByteList class.
+    * Added the Immutable::ShortList class.
+    * Added the Immutable::IntList class.
+    * Added the Immutable::LongList class.
+    * Added the Immutable::FloatList class.
+    * Added the Immutable::DoubleList class.
+    * Added the Immutable::StringList class.
 0.975 2023-05-09
   [Incompatible Changes]
     * Removed the Mutable::Byte class.
