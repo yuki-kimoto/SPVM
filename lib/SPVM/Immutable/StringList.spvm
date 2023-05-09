@@ -25,7 +25,7 @@ class Immutable::StringList {
       for (my $i = 0; $i < $length; $i++ ) {
         my $value = copy $array->[$i];
         make_read_only $value;
-        $value->{values}[$i] = $value;
+        $self->{values}[$i] = $value;
       }
     }
     

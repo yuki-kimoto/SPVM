@@ -72,6 +72,20 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Hash::Entry|SPVM::Hash::Entry>
 
+=item * L<Immutable::ByteList|SPVM::Immutable::ByteList>
+
+=item * L<Immutable::DoubleList|SPVM::Immutable::DoubleList>
+
+=item * L<Immutable::FloatList|SPVM::Immutable::FloatList>
+
+=item * L<Immutable::IntList|SPVM::Immutable::IntList>
+
+=item * L<Immutable::LongList|SPVM::Immutable::LongList>
+
+=item * L<Immutable::ShortList|SPVM::Immutable::ShortList>
+
+=item * L<Immutable::StringList|SPVM::Immutable::StringList>
+
 =item * L<Int|SPVM::Int>
 
 =item * L<IntList|SPVM::IntList>

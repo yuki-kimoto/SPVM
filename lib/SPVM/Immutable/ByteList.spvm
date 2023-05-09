@@ -28,7 +28,7 @@ class Immutable::ByteList {
     return $self;
   }
   
-  static method new_len : Immutable::ByteList ($length : intt) {
+  static method new_len : Immutable::ByteList ($length : int) {
     my $self = new Immutable::ByteList;
     
     unless ($length >= 0) {

@@ -1,0 +1,186 @@
+class TestCase::Module::Immutable::IntList {
+  use Immutable::IntList;
+  use Fn;
+  use Array;
+  
+  # Fields
+  static method fields : int () {
+    {
+      my $list = Immutable::IntList->new([(int)1, 2, 3]);
+      
+      # length
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  # Class methods
+  static method new : int () {
+    # new with array
+    {
+      my $list = Immutable::IntList->new([(int)3, 5, Fn->INT_MAX()]);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+    }
+    
+    # new with undef
+    {
+      my $list = Immutable::IntList->new((int[])undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
+    # new without argument
+    {
+      my $list = Immutable::IntList->new;
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
+    # extra
+    {
+      {
+        my $list = Immutable::IntList->new([(int)3]);
+        
+        unless ($list->get(0) == 3) {
+          return 0;
+        }
+      }
+      {
+        my $list = Immutable::IntList->new([(int)3, 4]);
+        
+        unless ($list->get(0) == 3 && $list->get(1) == 4) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method new_len : int () {
+    {
+      my $list = Immutable::IntList->new_len(32);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Immutable::IntList->new_len(0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { Immutable::IntList->new_len(-1); };
+      unless (Fn->contains($@, "The \$length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Instance methods
+  static method get : int () {
+    {
+      my $list = Immutable::IntList->new([(int)3, 5, Fn->INT_MAX()]);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) isa int) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval { $list->get(-1); };
+      unless (Fn->contains($@, "The \$index must be greater than or equal to 0")) {
+        return 0;
+      }
+      
+      eval { $list->get(3); };
+      unless (Fn->contains($@, "The \$index must be less than the length of the \$list")) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+  
+  static method to_array : int () {
+    {
+      my $list = Immutable::IntList->new([(int)3, 5, Fn->INT_MAX()]);
+      
+      my $array = $list->to_array;
+      
+      unless ($array isa int[]) {
+        return 0;
+      }
+      
+      unless ($array->[0] == 3) {
+        return 0;
+      }
+
+      unless ($array->[1] == 5) {
+        return 0;
+      }
+
+      unless ($array->[2] == Fn->INT_MAX()) {
+        return 0;
+      }
+      
+      my $length = @$array;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+}
