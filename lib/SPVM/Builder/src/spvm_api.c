@@ -1522,6 +1522,26 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
+    // Call INIT block
+    {
+      int32_t class_id = method->class_id;
+      
+      int32_t* class_init_flags = (int32_t*)env->class_init_flags;
+      int32_t class_init_flag = class_init_flags[class_id];
+      if (!class_init_flags[class_id]++) {
+        SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+        int32_t init_method_id = class->init_method_id;
+        if (init_method_id >= 0) {
+          SPVM_VALUE* my_stack = env->new_stack(env);
+          
+          int32_t args_my_stack_length = 0;
+          env->call_method_raw(env, my_stack, init_method_id, args_my_stack_length);
+          
+          env->free_stack(env, my_stack);
+        }
+      }
+    }
+
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
     
     // Call native method
