@@ -228,6 +228,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_version_string != &env_array[207]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_version_number != &env_array[208]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_method != &env_array[209]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->class_init_flags != &env_array[210]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 

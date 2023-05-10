@@ -309,6 +309,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
     SPVM_API_call_method,
+    NULL, // class_init_flags
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -330,7 +331,15 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   }
   
   env->class_vars_heap = class_vars_heap;
-
+  
+  // Initialize class initialized flags
+  void* class_init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->classes_length + 1));
+  if (class_init_flags == NULL) {
+    return 2;
+  }
+  
+  env->class_init_flags = class_init_flags;
+  
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
   if (object_header_size % sizeof(SPVM_VALUE) != 0) {
@@ -1413,6 +1422,12 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   if (env->class_vars_heap != NULL) {
     free(env->class_vars_heap);
     env->class_vars_heap = NULL;
+  }
+  
+  // Free class initialized flags
+  if (env->class_init_flags != NULL) {
+    free(env->class_init_flags);
+    env->class_init_flags = NULL;
   }
   
   // Free env api
