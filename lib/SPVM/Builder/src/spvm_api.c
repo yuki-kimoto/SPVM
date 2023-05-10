@@ -1528,7 +1528,10 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
       
       int32_t* class_init_flags = (int32_t*)env->class_init_flags;
       int32_t class_init_flag = class_init_flags[class_id];
-      if (!class_init_flags[class_id]++) {
+      class_init_flags[class_id]++;
+      
+      if (!class_init_flag) {
+        
         SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
         int32_t init_method_id = class->init_method_id;
         if (init_method_id >= 0) {
@@ -1541,7 +1544,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
         }
       }
     }
-
+    
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
     
     // Call native method
