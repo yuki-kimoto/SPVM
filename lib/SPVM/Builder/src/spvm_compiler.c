@@ -656,6 +656,13 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_class->version_string_id = -1;
     }
     
+    if (class->init_method) {
+      runtime_class->init_method_id = class->init_method->id;
+    }
+    else {
+      runtime_class->init_method_id = -1;
+    }
+    
     if (class->destructor_method) {
       runtime_class->destructor_method_id = class->destructor_method->id;
     }

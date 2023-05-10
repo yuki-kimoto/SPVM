@@ -37,6 +37,7 @@ struct spvm_class {
   SPVM_HASH* class_alias_symtable;
   SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;
+  SPVM_METHOD* init_method;
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
   int32_t id;
