@@ -3968,7 +3968,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
   }
 }
 
-void SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id) {
+int32_t SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id) {
   (void)env;
   
   // Runtime
@@ -3978,34 +3978,36 @@ void SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id
   int32_t class_init_flag = class_init_flags[class_id];
   class_init_flags[class_id]++;
   
+  int32_t e = 0;
+  
   if (!class_init_flag) {
     // Call INIT blocks
     int32_t classes_length = runtime->classes_length;
     for (int32_t class_id = 0; class_id < classes_length; class_id++) {
       SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
       int32_t init_method_id = class->init_method_id;
-      
       if (init_method_id >= 0) {
         int32_t args_my_stack_length = 0;
-        SPVM_VALUE* my_stack = env->new_stack(env);
-        env->call_method_raw(env, my_stack, init_method_id, args_my_stack_length);
-        env->free_stack(env, my_stack);
+        e = env->call_method_raw(env, stack, init_method_id, args_my_stack_length);
+        if (e) { return e; }
       }
     }
   }
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Call INIT blocks
+  SPVM_VALUE* my_stack = env->new_stack(env);
   int32_t classes_length = runtime->classes_length;
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    SPVM_API_call_init_block(env, stack, class_id);
+    SPVM_API_call_init_block(env, my_stack, class_id);
   }
+  env->free_stack(env, my_stack);
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_program_name) {

@@ -1933,9 +1933,9 @@ Initialize the environment.
 
 =head2 call_init_blocks
   
-  void (*call_init_blocks)(SPVM_ENV* env);
+  int32_t (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Call C<INIT> blocks.
+Calls all C<INIT> blocks. If an exception is thrown, returns 1. Otherwise returns 0.
 
 =head2 get_class_id
 
