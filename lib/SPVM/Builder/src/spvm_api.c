@@ -3968,7 +3968,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
   }
 }
 
-void SPVM_API_call_init_block(SPVM_ENV* env, int32_t class_id) {
+void SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id) {
   (void)env;
   
   // Runtime
@@ -3995,16 +3995,16 @@ void SPVM_API_call_init_block(SPVM_ENV* env, int32_t class_id) {
   }
 }
 
-void SPVM_API_call_init_blocks(SPVM_ENV* env) {
+void SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
   // Call INIT blocks
   int32_t classes_length = runtime->classes_length;
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    SPVM_API_call_init_block(env, class_id);
+    SPVM_API_call_init_block(env, stack, class_id);
   }
 }
 

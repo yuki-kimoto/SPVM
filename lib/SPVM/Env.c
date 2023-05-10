@@ -12,7 +12,7 @@ int32_t SPVM__Env__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
   
-  my_env->call_init_blocks(my_env);
+  my_env->call_init_blocks(my_env, stack);
   
   return 0;
 }

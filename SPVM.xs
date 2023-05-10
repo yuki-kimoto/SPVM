@@ -5095,9 +5095,12 @@ call_init_blocks(...)
   (void)RETVAL;
   
   SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SV* sv_stack = ST(1);
   
-  env->call_init_blocks(env);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
+  
+  env->call_init_blocks(env, stack);
 
   XSRETURN(0);
 }
