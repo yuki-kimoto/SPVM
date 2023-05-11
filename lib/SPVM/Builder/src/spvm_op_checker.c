@@ -3317,28 +3317,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   // Resolve types
   SPVM_OP_CHECKER_resolve_types(compiler);
   
-  // Edit INIT blocks
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    SPVM_METHOD* init_method = class->init_method;
-    
-    if (init_method) {
-      SPVM_OP* op_block = init_method->op_block;
-      SPVM_OP* op_list_statement = op_block->first;
-      
-      SPVM_LIST* use_class_names = class->use_class_names;
-      
-      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
-        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
-        
-        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
-        if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
-          
-        }
-      }
-    }
-  }
-  
   // Check trees
   {
     for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
@@ -4570,6 +4548,42 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     
     const char* class_name = class->op_name->uv.name;
+    
+    // Edit INIT block
+    // The INIT mehtods that is the parent class and used classes in the order.
+    SPVM_METHOD* init_method = class->init_method;
+    if (init_method) {
+      SPVM_OP* op_block = init_method->op_block;
+      SPVM_OP* op_list_statement = op_block->first;
+      
+      SPVM_LIST* use_class_names = class->use_class_names;
+      
+      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
+        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
+        
+        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
+        if (use_class) {
+          if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+            SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
+            SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+            SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+            SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+            SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+          }
+        }
+      }
+      
+      const char* parent_class_name = class->parent_class_name;
+      if (parent_class_name) {
+        SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
+        SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+        SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+        SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+      }
+    }
     
     // Multi-numeric type limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {

@@ -3763,14 +3763,39 @@ The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
 
 If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
 
-The execution order of C<INIT> blocks is not guaranteed, so before using a class in a C<INIT> block, the C<INIT> block of a using class should be called.
+An C<INIT> block is editted.
 
-  INIT {
-    Point->INIT;
-    $POINT = Point->new(1, 2);
+If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
+
+If classes are used by the L<use statement|/"Loading Class">, the L<interface statement|/"Interface Guarantee">, and the L<allow statement|/"Allowing Private Access">, The INIT blocks in the classes are called in order after the above calling.
+  
+  # Before Editting
+  class MyClass extends ParentClass {
+    use Foo;
+    use Bar;
+    
+    INIT {
+      $POINT = Point->new(1, 2);
+    }
   }
 
-For this reason, The C<INIT> block should be implemented so that it may be called multiple times.
+  # After Editting
+  class MyClass extends ParentClass {
+    use Point;
+    use Fn;
+    
+    INIT {
+      ParentClass->INIT;
+      Point->INIT;
+      Fn->INIT;
+      
+      $POINT = Point->new(1, 2);
+    }
+  }
+
+An C<INIT> block is automatically called only once.
+
+The execution order of C<INIT> blocks is not guaranteed.
 
 Examples:
 
@@ -3786,7 +3811,6 @@ Examples:
       $NUM = 3;
       $STRING = "abc";
       
-      Point->INIT;
       $POINT = Point->new(1, 2);
     }
   }
