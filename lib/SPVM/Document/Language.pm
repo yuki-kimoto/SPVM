@@ -3795,7 +3795,7 @@ If classes are used by the L<use statement|/"Loading Class">, the L<interface st
 
 An C<INIT> block is automatically called only once.
 
-The execution order of C<INIT> blocks is not guaranteed.
+The execution order of C<INIT> blocks is not guaranteed. The INIT blocks in the L<default loaded class/"Default Loaded Classes"> are called before INIT blocks of user defined classes.
 
 Examples:
 
