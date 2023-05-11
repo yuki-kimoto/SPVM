@@ -3984,7 +3984,6 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
 }
 
 int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   int32_t e = 0;
   
@@ -4009,54 +4008,49 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {
-  (void)env;
   
   int32_t e = 0;
   
-  if (obj_program_name && !(obj_program_name->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_program_name->type_dimension == 0)) {
-    e = 1;
+  if (!obj_program_name) {
+    return env->die(env, stack, "The obj_program_name must be defined", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!(obj_program_name->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_program_name->type_dimension == 0)) {
+    return env->die(env, stack, "The obj_program_name must be a string", __func__, FILE_NAME, __LINE__);
   }
   
   env->set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &e, __func__, __FILE__, __LINE__);
-  if (e) {
-    assert(0);
-  }
+  if (e) { return e; }
   
-  return e;
+  return 0;
 }
 
 int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv) {
-  (void)env;
   
   int32_t e = 0;
   
-  if (obj_argv && !(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 1)) {
-    e = 1;
+  if (!obj_argv) {
+    return env->die(env, stack, "The obj_argv must be defined", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 1)) {
+    return env->die(env, stack, "The obj_argv must be a string array", __func__, FILE_NAME, __LINE__);
   }
   
   env->set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &e, __func__, __FILE__, __LINE__);
-  if (e) {
-    assert(0);
-  }
+  if (e) { return e; }
   
   return 0;
 }
 
 int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
-  (void)env;
   
   int32_t e = 0;
   
   env->set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &e, __func__, __FILE__, __LINE__);
-  if (e) {
-    assert(0);
-  }
-  int32_t ret = env->get_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", &e, __func__, __FILE__, __LINE__);
-  if (e) {
-    assert(0);
-  }
+  if (e) { return e; }
   
-  return e;
+  return 0;
 }
 
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
