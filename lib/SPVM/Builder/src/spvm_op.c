@@ -2490,28 +2490,35 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    // Add an default INIT block
-    int32_t has_init_block = 0;
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-      if (strcmp(method->name, "INIT") == 0) {
-        has_init_block = 1;
-        break;
+    // INIT block
+    {
+      // Check INIT block existance
+      int32_t has_init_block = 0;
+      for (int32_t i = 0; i < class->methods->length; i++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+        if (method->is_init) {
+          has_init_block = 1;
+          break;
+        }
       }
-    }
-    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS && !has_init_block) {
-      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
       
-      // Statements
-      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+      // Add an default INIT block
+      if (class->category == SPVM_CLASS_C_CATEGORY_CLASS && !has_init_block) {
+        SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
+        
+        // Statements
+        SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+        
+        // Block
+        SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
+        SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+        
+        SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
+        
+        SPVM_LIST_push(class->methods, op_method->uv.method);
+      }
       
-      // Block
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
-      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
       
-      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
-      
-      SPVM_LIST_push(class->methods, op_method->uv.method);
     }
     
     // Method declarations
