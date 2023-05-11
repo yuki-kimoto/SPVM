@@ -53,7 +53,6 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, int64_t base_time);
   These APIs need stack argument
 */
 
-int32_t SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
 int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Runtime information
