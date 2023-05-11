@@ -3316,11 +3316,23 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve types
   SPVM_OP_CHECKER_resolve_types(compiler);
-
+  
+  // Edit INIT blocks
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    SPVM_METHOD* init_method = class->init_method;
+    
+    if (init_method) {
+      SPVM_OP* op_block = init_method->op_block;
+      SPVM_OP* op_list_statement = op_block->first;
+      
+      
+    }
+  }
+  
   // Check trees
   {
-    int32_t class_index;
-    for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
       SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
       SPVM_LIST* methods = class->methods;
       {
