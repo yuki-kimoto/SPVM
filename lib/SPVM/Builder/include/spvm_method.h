@@ -42,7 +42,6 @@ struct spvm_method {
   int8_t is_class_var_getter;
   int8_t is_field_setter;
   int8_t is_field_getter;
-  int8_t is_simple_constructor;
   int8_t is_constant;
   int8_t is_class_method;
   int8_t is_init;

@@ -4754,33 +4754,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
       }
       
-      // Is simple constructor method
-      {
-        SPVM_OP* op_block = method->op_block;
-        if (op_block) {
-          SPVM_OP* op_statements = op_block->last;
-          
-          int32_t statements_count = SPVM_OP_get_list_elements_count(compiler, op_statements);
-          if (statements_count == 1) {
-            SPVM_OP* op_return = op_statements->last;
-            assert(op_return->id == SPVM_OP_C_ID_RETURN);
-            
-            SPVM_OP* op_new = op_return->first;
-            if (op_new && op_new->id == SPVM_OP_C_ID_NEW) {
-              SPVM_OP* op_type = op_new->first;
-              assert(op_type->id == SPVM_OP_C_ID_TYPE);
-              SPVM_TYPE* type = op_type->uv.type;
-              if (SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                if (method->args_length == 0) {
-                  method->is_simple_constructor = 1;
-                  method->op_inline = op_type;
-                }
-              }
-            }
-          }
-        }
-      }
-      
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
         SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);
@@ -4872,9 +4845,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           can_precompile = 0;
         }
         else if (method->is_field_getter) {
-          can_precompile = 0;
-        }
-        else if (method->is_simple_constructor) {
           can_precompile = 0;
         }
         else if (method->is_constant) {
