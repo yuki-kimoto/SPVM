@@ -121,10 +121,10 @@ sub init_runtime {
     my $base_time = $^T + 0; # For Perl 5.8.9
     $BUILDER_ENV->set_command_info_base_time($base_time);
     
-    # Call INIT blocks
-    $BUILDER_ENV->call_init_blocks;
-    
     $BUILDER_STACK = $BUILDER_ENV->build_stack;
+    
+    # Call INIT blocks
+    $BUILDER_ENV->call_init_blocks($BUILDER_STACK);
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
@@ -255,9 +255,9 @@ sub init_api {
   my $base_time = $^T + 0; # For Perl 5.8.9
   $ENV->set_command_info_base_time($base_time);
   
-  $ENV->call_init_blocks;
-  
   $STACK = $ENV->build_stack;
+  
+  $ENV->call_init_blocks($STACK);
   
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }

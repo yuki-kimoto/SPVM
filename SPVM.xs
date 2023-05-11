@@ -5100,8 +5100,12 @@ call_init_blocks(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   
-  env->call_init_blocks(env, stack);
-
+  int32_t e = env->call_init_blocks(env, stack);
+  
+  if (e) {
+    croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
+  }
+  
   XSRETURN(0);
 }
 

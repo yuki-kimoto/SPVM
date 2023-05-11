@@ -578,21 +578,23 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
   
+  SPVM_VALUE* stack = env->new_stack(env);
+  
+  int32_t error = 0;
+  
   // Set the program name and the command line arguments
   {
-    SPVM_VALUE* my_stack = env->new_stack(env);
-    
     // Enter scope
-    int32_t scope_id = env->enter_scope(env, my_stack);
+    int32_t scope_id = env->enter_scope(env, stack);
     
     // Program name - string
-    void* obj_program_name = env->new_string(env, my_stack, command_args[0], strlen(command_args[0]));
+    void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
     
     // ARGV - string[]
-    void* obj_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
+    void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
     for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
-      void* obj_arg = env->new_string(env, my_stack, command_args[arg_index], strlen(command_args[arg_index]));
-      env->set_elem_object(env, my_stack, obj_argv, arg_index - 1, obj_arg);
+      void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
+      env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
     }
     
     // Base time
@@ -609,39 +611,44 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       assert(e == 0);
     }
     // Leave scope
-    env->leave_scope(env, my_stack, scope_id);
+    env->leave_scope(env, stack, scope_id);
     
-    env->free_stack(env, my_stack);
   }
-
+  
   // Call INIT blocks
-  env->call_init_blocks(env);
   
-  SPVM_VALUE* stack = env->new_stack(env);
-  
-  // Class name
-  const char* class_name = "$class_name";
-  
-  // Class
-  int32_t method_id = env->get_class_method_id(env, stack, class_name, "main");
-  
-  if (method_id < 0) {
-    fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
-    return -1;
-  }
-  
-  // Run
-  int32_t args_stack_length = 0;
-  int32_t error = env->call_method(env, stack, method_id, args_stack_length);
-  
-  int32_t status;
+  int32_t status = 0;
+  error = env->call_init_blocks(env, stack);
   if (error) {
     env->print_stderr(env, stack, env->get_exception(env, stack));
     printf("\\n");
     status = 255;
   }
   else {
-    status = stack[0].ival;
+    
+    // Class name
+    const char* class_name = "$class_name";
+    
+    // Class
+    int32_t method_id = env->get_class_method_id(env, stack, class_name, "main");
+    
+    if (method_id < 0) {
+      fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
+      return -1;
+    }
+    
+    // Run
+    int32_t args_stack_length = 0;
+    error = env->call_method(env, stack, method_id, args_stack_length);
+    
+    if (error) {
+      env->print_stderr(env, stack, env->get_exception(env, stack));
+      printf("\\n");
+      status = 255;
+    }
+    else {
+      status = stack[0].ival;
+    }
   }
   
   // Free stack
