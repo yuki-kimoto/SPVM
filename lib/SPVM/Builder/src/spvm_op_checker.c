@@ -4734,26 +4734,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      // Is constant method
-      {
-        SPVM_OP* op_block = method->op_block;
-        if (op_block) {
-          SPVM_OP* op_statements = op_block->last;
-          
-          int32_t statements_count = SPVM_OP_get_list_elements_count(compiler, op_statements);
-          if (statements_count == 1) {
-            SPVM_OP* op_return = op_statements->last;
-            assert(op_return->id == SPVM_OP_C_ID_RETURN);
-            
-            SPVM_OP* op_constant = op_return->first;
-            if (op_constant && op_constant->id == SPVM_OP_C_ID_CONSTANT) {
-              method->is_constant = 1;
-              method->op_inline = op_constant;
-            }
-          }
-        }
-      }
-      
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
         SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);
@@ -4845,9 +4825,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           can_precompile = 0;
         }
         else if (method->is_field_getter) {
-          can_precompile = 0;
-        }
-        else if (method->is_constant) {
           can_precompile = 0;
         }
         else if (method->is_init) {
