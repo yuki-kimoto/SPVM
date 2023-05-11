@@ -29,6 +29,11 @@
     * The simple constructor inline expansion is removed.
     * The constant method inline expansion is removed.
     * INIT blocks that is the super class or used classes are automatically called.
+  [Document Changes]
+    * The heading "Loading Class" is renamed to "use Statement".
+    * The heading "Allow Field Access" is renamed to "allow Statement".
+    * The heading "Interface Gurantee" is renamed to "interface Statement".
+    * The heading "Class Alias" is renamed to "alias Statement".
     
 0.976 2023-05-09
   [New Features]
@@ -2879,9 +2884,9 @@ Converts the $string to UTF-8 characters, and returns it.
     * Improve many parts. The numeric widening type conversion is replaced with the integer promotional type conversion.
     * Improve the doc of the switch statement.
     * Improve the doc of "Loop Syntax".
-    * Improve the doc of "return Statemenet".
-    * Improve the doc of "Empty Statemenet".
-    * Improve the doc of "Operator Statemenet".
+    * Improve the doc of "return Statement".
+    * Improve the doc of "Empty Statement".
+    * Improve the doc of "Operator Statement".
   [Document Fix]
     * Fix the type of the heading "Character Literal".
 

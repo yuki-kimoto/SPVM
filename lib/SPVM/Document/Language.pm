@@ -2195,7 +2195,7 @@ Examples:
   
   }
 
-In a class block, L<loading classes|/"Loading Class">, L<class variables|/"Class Variable">, L<fields|/"Field Definition">, L<enumerations|/"Enumeration Definition">, L<methods|/"Method Definition">, L<allow statements|/"Allowing Private Access">, L<interface guarantees|/"Interface Guarantee"> and a L<INIT block|/"INIT Block"> can be defined.
+In a class block, L<use statements|/"use Statement">, L<class variable definitions|/"Class Variable Definition">, L<field definitions|/"Field Definition">, L<enumeration definitions|/"Enumeration Definition">, L<method definitions|/"Method Definition">, a L<INIT block|/"INIT Block">, L<allow statements|/"allow Statement">, and L<interface statements|/"interface Statement"> can be defined.
 
   class Foo {
     
@@ -2411,19 +2411,19 @@ Examples:
 
 The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
 
-=head2 Allowing Private Access
+=head2 allow Statement
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
 A private class cannot be the OPERAND of the L<new operator|/"Creating Object"> except from the current class.
 
-The C<allow> syntax allows the private access from the other classes.
+The C<allow> statemenet allows the private access from the other classes.
 
   allow CLASS_NAME;
 
-The C<allow> syntax must be defined directory under the L<class definition|/"Class Definition">.
+The C<allow> statemenet must be defined directory under the L<class definition|/"Class Definition">.
   
-The class that is the OPERAND of the C<allow> syntax is loaded by the same way as the L<use syntax|/"Loading Class">.
+The class that is the OPERAND of the C<allow> statemenet is loaded by the same way as the L<use statement|/"use Statement">.
 
 Examples:
 
@@ -2432,13 +2432,13 @@ Examples:
     allow Bar;
   }
 
-=head2 Interface Guarantee
+=head2 interface Statement
 
-The C<interface> syntax guarantees that the class has the required method defined in the L<interface|/"Interface">.
+The C<interface> statement guarantees that the class has the required method defined in the L<interface definition|/"Interface Definition">.
 
   interface INTERFACE_NAME;
 
-The C<interface> syntax must be defined directory under the L<class definition|/"Class Definition">.
+The C<interface> statement must be defined directory under the L<class definition|/"Class Definition">.
 
 If the required method of the interface is not defined in the current class, a compilation error occurs.
 
@@ -2448,7 +2448,7 @@ The current class B<is expected to> have all methods defined in the interface.
 
 Examples:
 
-  # Interface guarantee
+  # The interface statemenet
   class Foo {
     interface Stringable;
     interface Cloneable;
@@ -2568,7 +2568,7 @@ A interface must have only one required method. The required method is the metho
 
 The type of the interface is the L<interface type|/"Interface Type">.
 
-The class that has L<interface Guarantees|/"Interface Guarantee"> must have the required method that is declared in the interface. Otherwise a compilation error occurs.
+The class that has L<interface Guarantees|/"interface Statement"> must have the required method that is declared in the interface. Otherwise a compilation error occurs.
 
   class Point {
     interface Stringable;
@@ -2590,7 +2590,7 @@ A interface cannnot have L<field definitions|/"Field Definition">.
 
 A interface cannnot have L<class variable definitions|/"Class Variable Definition">.
 
-A interface can have L<interface Guarantees|/"Interface Guarantee">.
+A interface can have L<interface Guarantees|/"interface Statement">.
 
   class TestCase::Pointable : interface_t {
     interface Stringable;
@@ -2627,26 +2627,25 @@ Change C<::> to C</>. Add ".spvm" at the end.
   SPVM/Foo/Bar.spvm
   SPVM/Foo/Bar/Baz.spvm
 
-=head2 Loading Class
+=head2 use Statement
 
-The C<use> syntax loads a class.
-  
-  # Load a class
+The C<use> statemenet loads a class.
+
   use Foo;
 
 If the class does not exist, a compilation error occurs.
 
 Classes are loaded at compile-time.
 
-C<use> syntax must be defined directly under the L<class definition|/"Class Definition">.
+The C<use> statemenet must be defined directly under the L<class definition|/"Class Definition">.
 
   class Foo {
     use Foo;
   }
 
-=head2 Class Alias
+=head2 alias Statement
 
-The C<alias> keyword creates a alias name for a class name.
+The C<alias> statemenet creates an alias name for a class name.
   
   # Create alias
   alias Foo::Bar as FB;
@@ -2662,13 +2661,13 @@ C<alias> syntax must be defined directly under the L<class definition|/"Class De
     alias Foo::Bar as FB;
   }
 
-You can create an alias at the same time as loading a class by C<use>.
+You can create an alias at the same time as loading a class by the C<use> statement.
   
   use Foo::Bar as FB;
 
-=head2 Load Class Selective
+=head2 require Statement
 
-In SPVM, there is an if require Statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
+If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
 
 It was designed to implement a part of features of "#ifdef" in the C language.
 
@@ -3767,7 +3766,7 @@ An C<INIT> block is editted.
 
 If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
 
-If classes are used by the L<use statement|/"Loading Class">, the L<interface statement|/"Interface Guarantee">, and the L<allow statement|/"Allowing Private Access">, The INIT blocks in the classes are called in order after the above calling.
+If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
   
   # Before Editting
   class MyClass extends ParentClass {
