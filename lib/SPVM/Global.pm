@@ -133,7 +133,7 @@ sub init_runtime {
       $COMPILER->add_class_path($class_path);
     }
     $RUNTIME = $COMPILER->build_runtime;
-
+    
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
 }
@@ -266,11 +266,17 @@ END {
   $BUILDER = undef;
   $COMPILER = undef;
   $API = undef;
+  if ($ENV) {
+    $ENV->cleanup_global_vars($STACK);
+  }
   $STACK = undef;
   $ENV = undef;
   $RUNTIME = undef;
   $DYNAMIC_LIB_FILES = undef;
   $BUILDER_API = undef;
+  if ($BUILDER_ENV) {
+    $BUILDER_ENV->cleanup_global_vars($BUILDER_STACK);
+  }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
 }

@@ -20,6 +20,11 @@
       int32_t (*set_command_info_program_name)(SPVM_ENV* env, void* obj_program_name);
       [After]
       int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
+      
+      [Before]
+      void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+      [After]
+      void (*cleanup_global_vars)(SPVM_ENV* env);
 0.976 2023-05-09
   [New Features]
     * Added the Immutable::ByteList class.

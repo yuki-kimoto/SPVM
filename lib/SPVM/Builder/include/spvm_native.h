@@ -249,7 +249,7 @@ struct spvm_env {
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);
-  void (*cleanup_global_vars)(SPVM_ENV* env);
+  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   int32_t (*is_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   int32_t (*is_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);

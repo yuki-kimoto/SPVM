@@ -1388,32 +1388,28 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t origina
   return remove_count;
 }
 
-void SPVM_API_cleanup_global_vars(SPVM_ENV* env){
+void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   assert(runtime);
   
-  SPVM_VALUE* my_stack = env->new_stack(env);
-  
   // Free exception
-  SPVM_API_set_exception(env, my_stack, NULL);
+  SPVM_API_set_exception(env, stack, NULL);
   
   // Free objects of class variables
   for (int32_t class_var_id = 0; class_var_id < runtime->class_vars_length; class_var_id++) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
-
+    
     int32_t class_var_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, class_var->type_id);
     if (class_var_type_is_object) {
       SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
       if (object) {
-        SPVM_API_dec_ref_count(env, my_stack, object);
+        SPVM_API_dec_ref_count(env, stack, object);
       }
     }
   }
-  
-  env->free_stack(env, my_stack);
 }
 
 void SPVM_API_free_env_raw(SPVM_ENV* env) {
@@ -3991,18 +3987,16 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Call INIT blocks
-  SPVM_VALUE* my_stack = env->new_stack(env);
   int32_t classes_length = runtime->classes_length;
   for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
     int32_t init_method_id = class->init_method_id;
     if (init_method_id >= 0) {
       int32_t items = 0;
-      e = env->call_method_raw(env, my_stack, init_method_id, items);
+      e = env->call_method_raw(env, stack, init_method_id, items);
       if (e) { break; }
     }
   }
-  env->free_stack(env, my_stack);
   
   return e;
 }

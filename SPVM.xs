@@ -5113,6 +5113,23 @@ call_init_blocks(...)
 }
 
 SV*
+cleanup_global_vars(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_stack = ST(1);
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
+  
+  env->cleanup_global_vars(env, stack);
+  
+  XSRETURN(0);
+}
+
+SV*
 build_stack(...)
   PPCODE:
 {
@@ -5144,9 +5161,6 @@ DESTROY(...)
 
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
-  
-  // Cleanup global varialbes
-  env->cleanup_global_vars(env);
   
   env->free_env_raw(env);
   
