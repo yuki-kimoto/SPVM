@@ -2220,7 +2220,7 @@ Gets a new C<string> object that is the compile-time type name with a basic type
 
 =head2 set_command_info_base_time
 
-  int32_t (*set_command_info_base_time)(SPVM_ENV* env, int64_t base_time);
+  int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
 
 Sets the time when the program starts. This value is got by L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME">.
 

@@ -607,7 +607,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       assert(e == 0);
       e = env->set_command_info_argv(env, obj_argv);
       assert(e == 0);
-      e = env->set_command_info_base_time(env, base_time);
+      e = env->set_command_info_base_time(env, stack, base_time);
       assert(e == 0);
     }
     // Leave scope

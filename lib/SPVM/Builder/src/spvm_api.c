@@ -4051,23 +4051,19 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_OBJECT* obj_argv) {
   return 0;
 }
 
-int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, int64_t base_time) {
+int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
   (void)env;
   
   int32_t e = 0;
   
-  SPVM_VALUE* my_stack = env->new_stack(env);
-  
-  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", base_time, &e, __func__, __FILE__, __LINE__);
+  env->set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &e, __func__, __FILE__, __LINE__);
   if (e) {
     assert(0);
   }
-  int32_t ret = env->get_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", &e, __func__, __FILE__, __LINE__);
+  int32_t ret = env->get_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", &e, __func__, __FILE__, __LINE__);
   if (e) {
     assert(0);
   }
-
-  env->free_stack(env, my_stack);
   
   return e;
 }

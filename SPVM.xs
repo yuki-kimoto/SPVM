@@ -5065,24 +5065,25 @@ set_command_info_base_time(...)
   (void)RETVAL;
   
   SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SV* sv_stack = ST(1);
   
-  SV* sv_base_time = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
+  
+  SV* sv_base_time = ST(2);
   int64_t base_time = SvIV(sv_base_time);
   
   {
-    SPVM_VALUE* my_stack = env->new_stack(env);
-    int32_t scope_id = env->enter_scope(env, my_stack);
+    int32_t scope_id = env->enter_scope(env, stack);
     
     // Set command info
     {
       int32_t e;
-      e = env->set_command_info_base_time(env, base_time);
+      e = env->set_command_info_base_time(env, stack, base_time);
       assert(e == 0);
     }
     
-    env->leave_scope(env, my_stack, scope_id);
-    env->free_stack(env, my_stack);
+    env->leave_scope(env, stack, scope_id);
   }
   
   XSRETURN(0);

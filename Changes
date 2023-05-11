@@ -1,10 +1,16 @@
 0.977 2023-05-11
   [Incompatible Changes]
-    * The definition of the call_init_blocks native API is changed.
+    * The definition of the following native APIs are changed.
       [Before]
       void (*call_init_blocks)(SPVM_ENV* env);
       [After]
       int32_t (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
+      
+      [Before]
+      int32_t (*set_command_info_base_time)(SPVM_ENV* env, int64_t base_time);
+      [After]
+      int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
+      
 0.976 2023-05-09
   [New Features]
     * Added the Immutable::ByteList class.

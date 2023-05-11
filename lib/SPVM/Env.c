@@ -12,7 +12,10 @@ int32_t SPVM__Env__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
   
-  my_env->call_init_blocks(my_env, stack);
+  void* obj_my_stack = stack[1].oval;
+  SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
+  
+  my_env->call_init_blocks(my_env, my_stack);
   
   return 0;
 }
@@ -61,9 +64,12 @@ int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) 
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
   
-  int64_t base_time = stack[1].lval;
+  void* obj_my_stack = stack[1].oval;
+  SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
   
-  e = my_env->set_command_info_base_time(my_env, base_time);
+  int64_t base_time = stack[2].lval;
+  
+  e = my_env->set_command_info_base_time(my_env, my_stack, base_time);
   if (e) { return e; }
   
   return 0;
