@@ -1524,136 +1524,151 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
   else {
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
     
-    // Call native method
-    if (method->is_native) {
-      // Enter scope
-      int32_t original_mortal_stack_top = SPVM_API_enter_scope(env, stack);
-      
-      // Set argument default values
-      int32_t optional_args_length = method->args_length - method->required_args_length;
-      if (optional_args_length > 0) {
-        
-        // Operation codes
-        SPVM_OPCODE* opcodes = runtime->opcodes;
-        
-        // Operation code base
-        int32_t method_opcodes_base_id = method->opcodes_base_id;
-        
-        // Execute operation codes
-        int32_t opcode_rel_index = 0;
-        while (1) {
-          
-          SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_id + opcode_rel_index]);
-
-          if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
-            break;
-          }
-          
-          switch (opcode->id) {
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].bval = (int8_t)(uint8_t)opcode->operand1;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].sval = (int16_t)(uint16_t)opcode->operand1;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].ival = (int32_t)opcode->operand1;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].lval = *(int64_t*)&opcode->operand1;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                SPVM_VALUE default_value;
-                default_value.ival = (int32_t)opcode->operand1;
-                stack[stack_index].fval = default_value.fval;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].dval = *(double*)&opcode->operand1;
-              }
-              break;
-            }
-            case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
-              int32_t stack_index = opcode->operand3 & 0xFF;
-              if (stack_index >= args_stack_length) {
-                stack[stack_index].oval = NULL;
-              }
-              break;
-            }
-          }
-          
-          opcode_rel_index++;
-        }
+    int32_t no_need_call = 0;
+    if (method->is_init) {
+      int32_t* class_init_flags = (int32_t*)env->class_init_flags;
+      int32_t class_id = method->class_id;
+      int32_t class_init_flag = class_init_flags[class_id];
+      if (class_init_flag) {
+        no_need_call = 1;
       }
-      
-      // Call native subrotuine
-      int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[method->id];
-      assert(native_address != NULL);
-      error = (*native_address)(env, stack);
-      
-      // Increment ref count of return value
-      if (!error) {
-        if (method_return_type_is_object) {
-          if (*(void**)&stack[0] != NULL) {
-            SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
-          }
-        }
-      }
-
-      // Leave scope
-      SPVM_API_leave_scope(env, stack, original_mortal_stack_top);
-
-      // Decrement ref count of return value
-      if (!error) {
-        if (method_return_type_is_object) {
-          if (*(void**)&stack[0] != NULL) {
-            SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
-          }
-        }
-      }
-      
-      // Set default exception message
-      if (error && env->get_exception(env, stack) == NULL) {
-        void* exception = env->new_string_nolen_raw(env, stack, "Error");
-        env->set_exception(env, stack, exception);
-      }
-    }
-    else {
-      // Call precompiled method
-      void* method_precompile_address = runtime->method_precompile_addresses[method->id];
-      if (method_precompile_address) {
-        int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
-        error = (*precompile_address)(env, stack);
-      }
-      // Call sub virtual machine
       else {
-        error = SPVM_API_call_method_vm(env, stack, method_id, args_stack_length);
+        class_init_flags[class_id]++;
       }
     }
     
-    if (mortal && method_return_type_is_object) {
-      env->push_mortal(env, stack, stack[0].oval);
+    if (!no_need_call) {
+      // Call native method
+      if (method->is_native) {
+        // Enter scope
+        int32_t original_mortal_stack_top = SPVM_API_enter_scope(env, stack);
+        
+        // Set argument default values
+        int32_t optional_args_length = method->args_length - method->required_args_length;
+        if (optional_args_length > 0) {
+          
+          // Operation codes
+          SPVM_OPCODE* opcodes = runtime->opcodes;
+          
+          // Operation code base
+          int32_t method_opcodes_base_id = method->opcodes_base_id;
+          
+          // Execute operation codes
+          int32_t opcode_rel_index = 0;
+          while (1) {
+            
+            SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_id + opcode_rel_index]);
+            
+            if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
+              break;
+            }
+            
+            switch (opcode->id) {
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].bval = (int8_t)(uint8_t)opcode->operand1;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].sval = (int16_t)(uint16_t)opcode->operand1;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].ival = (int32_t)opcode->operand1;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].lval = *(int64_t*)&opcode->operand1;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  SPVM_VALUE default_value;
+                  default_value.ival = (int32_t)opcode->operand1;
+                  stack[stack_index].fval = default_value.fval;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].dval = *(double*)&opcode->operand1;
+                }
+                break;
+              }
+              case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
+                int32_t stack_index = opcode->operand3 & 0xFF;
+                if (stack_index >= args_stack_length) {
+                  stack[stack_index].oval = NULL;
+                }
+                break;
+              }
+            }
+            
+            opcode_rel_index++;
+          }
+        }
+        
+        // Call native subrotuine
+        int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[method->id];
+        assert(native_address != NULL);
+        error = (*native_address)(env, stack);
+        
+        // Increment ref count of return value
+        if (!error) {
+          if (method_return_type_is_object) {
+            if (*(void**)&stack[0] != NULL) {
+              SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+            }
+          }
+        }
+        
+        // Leave scope
+        SPVM_API_leave_scope(env, stack, original_mortal_stack_top);
+        
+        // Decrement ref count of return value
+        if (!error) {
+          if (method_return_type_is_object) {
+            if (*(void**)&stack[0] != NULL) {
+              SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+            }
+          }
+        }
+        
+        // Set default exception message
+        if (error && env->get_exception(env, stack) == NULL) {
+          void* exception = env->new_string_nolen_raw(env, stack, "Error");
+          env->set_exception(env, stack, exception);
+        }
+      }
+      else {
+        // Call precompiled method
+        void* method_precompile_address = runtime->method_precompile_addresses[method->id];
+        if (method_precompile_address) {
+          int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
+          error = (*precompile_address)(env, stack);
+        }
+        // Call sub virtual machine
+        else {
+          error = SPVM_API_call_method_vm(env, stack, method_id, args_stack_length);
+        }
+      }
+      
+      if (mortal && method_return_type_is_object) {
+        env->push_mortal(env, stack, stack[0].oval);
+      }
     }
   }
   
@@ -3974,23 +3989,17 @@ int32_t SPVM_API_call_init_block(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  int32_t* class_init_flags = (int32_t*)env->class_init_flags;
-  int32_t class_init_flag = class_init_flags[class_id];
-  class_init_flags[class_id]++;
-  
   int32_t e = 0;
   
-  if (!class_init_flag) {
-    // Call INIT blocks
-    int32_t classes_length = runtime->classes_length;
-    for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-      SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-      int32_t init_method_id = class->init_method_id;
-      if (init_method_id >= 0) {
-        int32_t args_my_stack_length = 0;
-        e = env->call_method_raw(env, stack, init_method_id, args_my_stack_length);
-        if (e) { return e; }
-      }
+  // Call INIT blocks
+  int32_t classes_length = runtime->classes_length;
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
+    SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+    int32_t init_method_id = class->init_method_id;
+    if (init_method_id >= 0) {
+      int32_t args_my_stack_length = 0;
+      e = env->call_method_raw(env, stack, init_method_id, args_my_stack_length);
+      if (e) { return e; }
     }
   }
 }
