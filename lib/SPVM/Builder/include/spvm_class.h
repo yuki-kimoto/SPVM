@@ -34,6 +34,7 @@ struct spvm_class {
   SPVM_LIST* anon_methods;
   SPVM_LIST* allows;
   SPVM_LIST* interface_decls;
+  SPVM_LIST* use_class_names;
   SPVM_HASH* class_alias_symtable;
   SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;

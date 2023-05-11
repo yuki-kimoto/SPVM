@@ -46,5 +46,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->class_alias_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
 
+  class->use_class_names = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+
   return class;
 }
