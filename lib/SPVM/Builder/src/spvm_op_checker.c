@@ -3326,7 +3326,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
       SPVM_OP* op_block = init_method->op_block;
       SPVM_OP* op_list_statement = op_block->first;
       
+      SPVM_LIST* use_class_names = class->use_class_names;
       
+      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
+        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
+        
+        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
+        if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+          
+        }
+      }
     }
   }
   
