@@ -2005,7 +2005,7 @@ Returns the count of the memory blocks on the stack.
 
 =head2 set_command_info_program_name
 
-  int32_t (*set_command_info_program_name)(SPVM_ENV* env, void* obj_program_name);
+  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
 
 Sets the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
 

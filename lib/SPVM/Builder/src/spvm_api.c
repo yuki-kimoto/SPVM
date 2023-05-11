@@ -4008,24 +4008,19 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   return e;
 }
 
-int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_program_name) {
+int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {
   (void)env;
   
   int32_t e = 0;
-
-  SPVM_VALUE* my_stack = env->new_stack(env);
   
   if (obj_program_name && !(obj_program_name->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_program_name->type_dimension == 0)) {
     e = 1;
   }
   
-  env->set_class_var_long_by_name(env, my_stack, "CommandInfo", "$BASE_TIME", 123, &e, __func__, __FILE__, __LINE__);
-  env->set_class_var_object_by_name(env, my_stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &e, __func__, __FILE__, __LINE__);
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &e, __func__, __FILE__, __LINE__);
   if (e) {
     assert(0);
   }
-
-  env->free_stack(env, my_stack);
   
   return e;
 }

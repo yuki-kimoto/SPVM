@@ -44,7 +44,6 @@ int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env);
-int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_program_name);
 
 /*
   Object manipulating APIs
@@ -52,6 +51,7 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_p
 */
 
 int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name);
 int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv);
 int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
 
