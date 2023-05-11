@@ -47,9 +47,12 @@ int32_t SPVM__Env__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
   
-  void* obj_argv = stack[1].oval;
+  void* obj_my_stack = stack[1].oval;
+  SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
+  
+  void* obj_argv = stack[2].oval;
 
-  e = my_env->set_command_info_argv(my_env, obj_argv);
+  e = my_env->set_command_info_argv(my_env, my_stack, obj_argv);
   if (e) { return e; }
   
   return 0;

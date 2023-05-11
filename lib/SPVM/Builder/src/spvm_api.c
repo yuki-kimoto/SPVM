@@ -4030,23 +4030,19 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_OBJECT* obj_p
   return e;
 }
 
-int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_OBJECT* obj_argv) {
+int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv) {
   (void)env;
   
   int32_t e = 0;
-  
-  SPVM_VALUE* my_stack = env->new_stack(env);
   
   if (obj_argv && !(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 1)) {
     e = 1;
   }
   
-  env->set_class_var_object_by_name(env, my_stack, "CommandInfo", "$ARGV", obj_argv, &e, __func__, __FILE__, __LINE__);
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &e, __func__, __FILE__, __LINE__);
   if (e) {
     assert(0);
   }
-
-  env->free_stack(env, my_stack);
   
   return 0;
 }

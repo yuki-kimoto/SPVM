@@ -2015,7 +2015,7 @@ The program name must be a C<string> object. Otherwise return non-zero value.
 
 =head2 set_command_info_argv
 
-  int32_t (*set_command_info_argv)(SPVM_ENV* env, void* obj_argv);
+  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
 
 Sets the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
 

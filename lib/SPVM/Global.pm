@@ -117,11 +117,11 @@ sub init_runtime {
     
     # Set command line info
     $BUILDER_ENV->set_command_info_program_name($0);
-    $BUILDER_ENV->set_command_info_argv(\@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9
     
     $BUILDER_STACK = $BUILDER_ENV->build_stack;
     
+    $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
     $BUILDER_ENV->set_command_info_base_time($BUILDER_STACK, $base_time);
     
     # Call INIT blocks
@@ -252,11 +252,11 @@ sub init_api {
   $ENV = $RUNTIME->build_env;
   
   $ENV->set_command_info_program_name($0);
-  $ENV->set_command_info_argv(\@ARGV);
   my $base_time = $^T + 0; # For Perl 5.8.9
   
   $STACK = $ENV->build_stack;
   
+  $ENV->set_command_info_argv($STACK, \@ARGV);
   $ENV->set_command_info_base_time($STACK, $base_time);
   
   $ENV->call_init_blocks($STACK);

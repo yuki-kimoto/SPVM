@@ -5022,17 +5022,19 @@ set_command_info_argv(...)
   (void)RETVAL;
   
   SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SV* sv_stack = ST(1);
   
-  SV* sv_argv = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
+  
+  SV* sv_argv = ST(2);
   AV* av_argv = (AV*)SvRV(sv_argv);
   int32_t argv_length = av_len(av_argv) + 1;
   
   {
-    SPVM_VALUE* my_stack = env->new_stack(env);
-    int32_t scope_id = env->enter_scope(env, my_stack);
+    int32_t scope_id = env->enter_scope(env, stack);
     
-    void* spvm_argv = env->new_object_array(env, my_stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
+    void* spvm_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
     for (int32_t index = 0; index < argv_length; index++) {
       SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
       SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
@@ -5040,19 +5042,18 @@ set_command_info_argv(...)
       const char* arg = SvPV_nolen(sv_arg);
       int32_t arg_length = strlen(arg);
       
-      void* spvm_arg = env->new_string(env, my_stack, arg, arg_length);
-      env->set_elem_string(env, my_stack, spvm_argv, index, spvm_arg);
+      void* spvm_arg = env->new_string(env, stack, arg, arg_length);
+      env->set_elem_string(env, stack, spvm_argv, index, spvm_arg);
     }
     
     // Set command info
     {
       int32_t e;
-      e = env->set_command_info_argv(env, spvm_argv);
+      e = env->set_command_info_argv(env, stack, spvm_argv);
       assert(e == 0);
     }
     
-    env->leave_scope(env, my_stack, scope_id);
-    env->free_stack(env, my_stack);
+    env->leave_scope(env, stack, scope_id);
   }
   
   XSRETURN(0);

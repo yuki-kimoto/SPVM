@@ -10,6 +10,11 @@
       int32_t (*set_command_info_base_time)(SPVM_ENV* env, int64_t base_time);
       [After]
       int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
+
+      [Before]
+      int32_t (*set_command_info_argv)(SPVM_ENV* env, void* obj_argv);
+      [After]
+      int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
       
 0.976 2023-05-09
   [New Features]
