@@ -462,4 +462,35 @@ class TestCase::LogicalOperator {
     
     return 1;
   }
+  
+  static method logical_not_assign : int () {
+    {
+      my $num = 0;
+      
+      my $boot = !($num = 5);
+      
+      unless ($boot == 0) {
+        return 0;
+      }
+      
+      unless ($num == 5) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $boot = !(my $num = 5);
+      
+      unless ($boot == 0) {
+        return 0;
+      }
+      
+      unless ($num == 5) {
+        return 0;
+      }
+      
+    }
+    return 1;
+  }
 }
