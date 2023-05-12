@@ -19,23 +19,14 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   {
     ok(SPVM::TestCase::LogicalOperator->combination);
   }
-
+  
   # logical not
   {
     ok(SPVM::TestCase::LogicalOperator->logical_not_operator);
     ok(SPVM::TestCase::LogicalOperator->logical_not_false);
     ok(SPVM::TestCase::LogicalOperator->logical_not_assign);
   }
-
-  # logical or
-  {
-    ok(SPVM::TestCase::LogicalOperator->logical_or);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_both_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_left_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_right_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_both_false);
-  }
-
+  
   # logical and
   {
     ok(SPVM::TestCase::LogicalOperator->logical_and);
@@ -46,6 +37,16 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     ok(SPVM::TestCase::LogicalOperator->logical_and_push_mortal_leave_scope);
     ok(SPVM::TestCase::LogicalOperator->logical_and_nagate);
   }
+  
+  # logical or
+  {
+    ok(SPVM::TestCase::LogicalOperator->logical_or);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_both_true);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_left_true);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_right_true);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_both_false);
+  }
+  
 }
 
 # All object is freed
