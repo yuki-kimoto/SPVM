@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::ConditionalBranch';
+use SPVM 'TestCase::If';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -17,14 +17,14 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 #   else Statement
 #   unless Statement
 {
-  ok(SPVM::TestCase::ConditionalBranch->if_condition_types());
-  ok(SPVM::TestCase::ConditionalBranch->if_condition_true());
-  ok(SPVM::TestCase::ConditionalBranch->if_condition_false());
-  ok(SPVM::TestCase::ConditionalBranch->elsif_condition_true());
-  ok(SPVM::TestCase::ConditionalBranch->elsif_condition_false());
-  ok(SPVM::TestCase::ConditionalBranch->elsif_only());
-  ok(SPVM::TestCase::ConditionalBranch->else_only());
-  ok(SPVM::TestCase::ConditionalBranch->if_condition_my());
+  ok(SPVM::TestCase::If->condition_types());
+  ok(SPVM::TestCase::If->condition_true());
+  ok(SPVM::TestCase::If->condition_false());
+  ok(SPVM::TestCase::If->elsif_condition_true());
+  ok(SPVM::TestCase::If->elsif_condition_false());
+  ok(SPVM::TestCase::If->elsif_only());
+  ok(SPVM::TestCase::If->else_only());
+  ok(SPVM::TestCase::If->condition_my());
 }
 
 # All object is freed

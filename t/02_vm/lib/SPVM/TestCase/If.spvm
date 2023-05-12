@@ -1,7 +1,7 @@
-class TestCase::ConditionalBranch {
+class TestCase::If {
   use Point;
   
-  static method if_condition_types : int () {
+  static method condition_types : int () {
     
     # Condition - byte
     {
@@ -176,7 +176,7 @@ class TestCase::ConditionalBranch {
     return 1;
   }
   
-  static method if_condition_true : int () {
+  static method condition_true : int () {
     
     if (1) {
       return 1;
@@ -185,7 +185,7 @@ class TestCase::ConditionalBranch {
     return 0;
   }
 
-  static method if_condition_false : int () {
+  static method condition_false : int () {
     
     if (0) {
       return 0;
@@ -257,7 +257,7 @@ class TestCase::ConditionalBranch {
     return 0;
   }
 
-  static method if_condition_my : int () {
+  static method condition_my : int () {
     # Check my declaration in if condition part - if condition part is true
     {
       my $check1 = 0;
@@ -320,39 +320,5 @@ class TestCase::ConditionalBranch {
     }
     
     return 1;
-  }
-  
-  static method unless_true_condition : int ()  {
-    unless(1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method unless_false_condition : int () {
-    unless(0) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  static method unless_elsif : int ()  {
-    unless (1) {
-      return 0;
-    }
-    elsif(1) {
-      return 1;
-    }
-  }
-  
-  static method unless_else : int ()  {
-    unless (1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
   }
 }

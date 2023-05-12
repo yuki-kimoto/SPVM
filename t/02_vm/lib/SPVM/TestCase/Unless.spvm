@@ -1,0 +1,37 @@
+class TestCase::Unless {
+  
+  static method true_condition : int ()  {
+    unless(1) {
+      return 0;
+    }
+     
+    return 1;
+  }
+  
+  static method false_condition : int () {
+    unless(0) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  static method elsif : int ()  {
+    unless (1) {
+      return 0;
+    }
+    elsif(1) {
+      return 1;
+    }
+  }
+  
+  static method else : int ()  {
+    unless (1) {
+      return 0;
+    }
+    else {
+      return 1;
+    }
+  }
+
+}

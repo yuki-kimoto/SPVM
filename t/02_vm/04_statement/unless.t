@@ -6,17 +6,17 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::ConditionalBranch';
+use SPVM 'TestCase::Unless';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # unless Statement
 {
-  ok(SPVM::TestCase::ConditionalBranch->unless_true_condition);
-  ok(SPVM::TestCase::ConditionalBranch->unless_false_condition);
-  ok(SPVM::TestCase::ConditionalBranch->unless_elsif);
-  ok(SPVM::TestCase::ConditionalBranch->unless_else);
+  ok(SPVM::TestCase::Unless->true_condition);
+  ok(SPVM::TestCase::Unless->false_condition);
+  ok(SPVM::TestCase::Unless->elsif);
+  ok(SPVM::TestCase::Unless->else);
 }
 
 # All object is freed

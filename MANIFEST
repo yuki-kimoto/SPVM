@@ -657,7 +657,6 @@ t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
 t/02_vm/lib/SPVM/TestCase/ComparisonOperator.spvm
 t/02_vm/lib/SPVM/TestCase/CompileTypeName.spvm
 t/02_vm/lib/SPVM/TestCase/Concat.spvm
-t/02_vm/lib/SPVM/TestCase/ConditionalBranch.spvm
 t/02_vm/lib/SPVM/TestCase/Constant.spvm
 t/02_vm/lib/SPVM/TestCase/Copy.spvm
 t/02_vm/lib/SPVM/TestCase/Data/Weaken.spvm
@@ -677,6 +676,7 @@ t/02_vm/lib/SPVM/TestCase/FatCamma.spvm
 t/02_vm/lib/SPVM/TestCase/Field.spvm
 t/02_vm/lib/SPVM/TestCase/FILE.spvm
 t/02_vm/lib/SPVM/TestCase/For.spvm
+t/02_vm/lib/SPVM/TestCase/If.spvm
 t/02_vm/lib/SPVM/TestCase/IfRequire.spvm
 t/02_vm/lib/SPVM/TestCase/Increment.spvm
 t/02_vm/lib/SPVM/TestCase/Init.spvm
@@ -811,6 +811,7 @@ t/02_vm/lib/SPVM/TestCase/TypeConversion.spvm
 t/02_vm/lib/SPVM/TestCase/TypeName.spvm
 t/02_vm/lib/SPVM/TestCase/UnaryMinus.spvm
 t/02_vm/lib/SPVM/TestCase/UnaryPlus.spvm
+t/02_vm/lib/SPVM/TestCase/Unless.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.c
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.config
