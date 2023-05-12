@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # logical operator - combination
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_operator_combination);
+    ok(SPVM::TestCase::LogicalOperator->combination);
   }
 
   # logical not
@@ -29,7 +29,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
   # logical or
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_or_operator);
+    ok(SPVM::TestCase::LogicalOperator->logical_or);
     ok(SPVM::TestCase::LogicalOperator->logical_or_both_true);
     ok(SPVM::TestCase::LogicalOperator->logical_or_left_true);
     ok(SPVM::TestCase::LogicalOperator->logical_or_right_true);
@@ -38,7 +38,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
   # logical and
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_and_operator);
+    ok(SPVM::TestCase::LogicalOperator->logical_and);
     ok(SPVM::TestCase::LogicalOperator->logical_and_both_true);
     ok(SPVM::TestCase::LogicalOperator->logical_and_left_true);
     ok(SPVM::TestCase::LogicalOperator->logical_and_right_true);

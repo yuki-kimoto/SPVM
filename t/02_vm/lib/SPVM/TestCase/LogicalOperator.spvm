@@ -3,7 +3,7 @@ class TestCase::LogicalOperator {
   use Point;
 
 
-  static method logical_operator_combination : int () {
+  static method combination : int () {
     {
       my $ret = (1 || 0) && (0 || 1);
       unless ($ret == 1) {
@@ -198,7 +198,7 @@ class TestCase::LogicalOperator {
     return 1;
   }
 
-  static method logical_and_operator : int () {
+  static method logical_and : int () {
     # Logical AND 1 && 1
     {
       my $ret = 1 && 1;
@@ -252,7 +252,7 @@ class TestCase::LogicalOperator {
     return 1;
   }
 
-  static method logical_or_operator : int () {
+  static method logical_or : int () {
     # Logical OR 1 || 1
     {
       my $ret = 1 || 1;
