@@ -24,6 +24,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     ok(SPVM::TestCase::LogicalOperator->logical_and_both_false);
     ok(SPVM::TestCase::LogicalOperator->logical_and_push_mortal_leave_scope);
     ok(SPVM::TestCase::LogicalOperator->logical_and_nagate);
+    ok(SPVM::TestCase::LogicalOperator->logical_and_assign);
+    ok(SPVM::TestCase::LogicalOperator->logical_and_type);
   }
   
   # logical or
@@ -33,6 +35,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     ok(SPVM::TestCase::LogicalOperator->logical_or_left_true);
     ok(SPVM::TestCase::LogicalOperator->logical_or_right_true);
     ok(SPVM::TestCase::LogicalOperator->logical_or_both_false);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_assign);
+    ok(SPVM::TestCase::LogicalOperator->logical_or_type);
   }
   
   # logical not
