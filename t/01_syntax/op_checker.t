@@ -767,6 +767,30 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { $MyClass::FOO; } }';
     compile_not_ok($source, q|The variable "$MyClass::FOO" is not found|);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 && (my $var = 0); } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; 1 && (my $var = 0); } }';
+    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { 1 || (my $var = 0); } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; 1 || (my $var = 0); } }';
+    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { !(my $var = 0); } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = 0; !(my $var = 0); } }';
+    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+  }
 }
 
 # Method Call
