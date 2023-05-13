@@ -176,6 +176,66 @@ class TestCase::LocalVar {
       }
     }
     
+    # !
+    {
+      {
+        my $num = 0;
+        !($num = 1);
+        
+        unless ($num == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        !(my $num = 1);
+        
+        unless ($num == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (Point)undef;
+        !($object = Point->new);
+        
+        unless ($object is_type Point) {
+          return 0;
+        }
+      }
+      
+      {
+        !(my $object = Point->new);
+        
+        unless ($object is_type Point) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (Point)undef;
+        if (!!($object = Point->new)) {
+          unless ($object is_type Point) {
+            return 0;
+          }
+        }
+        else {
+          return 0;
+        }
+      }
+      
+      {
+        if (!!(my $object = Point->new)) {
+          unless ($object is_type Point) {
+            return 0;
+          }
+        }
+        else {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
