@@ -146,6 +146,22 @@ class TestCase::LocalVar {
       }
       
       {
+        my $object = (Point)undef;
+        my $object2 = (Point)undef;
+        if (1 && ($object = Point->new) && ($object2 = Point->new)) {
+          unless ($object is_type Point) {
+            return 0;
+          }
+          unless ($object2 is_type Point) {
+            return 0;
+          }
+        }
+        else {
+          return 0;
+        }
+      }
+      
+      {
         if (1 && (my $object = Point->new) && (my $object2 = Point->new)) {
           unless ($object is_type Point) {
             return 0;
@@ -153,6 +169,9 @@ class TestCase::LocalVar {
           unless ($object2 is_type Point) {
             return 0;
           }
+        }
+        else {
+          return 0;
         }
       }
     }
