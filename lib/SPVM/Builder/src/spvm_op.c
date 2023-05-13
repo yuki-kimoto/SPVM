@@ -1297,10 +1297,6 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_operand_condition, not_condition);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
 
-  // Free tmp vars at end of condition
-  SPVM_OP* op_condition_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_condition->file, op_condition->line);
-  SPVM_OP_insert_child(compiler, op_condition_free_tmp, op_condition_free_tmp->last, op_condition);
-
   // Create true block if needed
   if (op_block_true->id != SPVM_OP_C_ID_BLOCK) {
     SPVM_OP* op_not_block = op_block_true;
@@ -1311,6 +1307,7 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP_insert_child(compiler, op_block_true, op_block_true->last, op_list);
   }
   op_block_true->uv.block->id = SPVM_BLOCK_C_ID_IF;
+  op_block_true->uv.block->no_scope = no_scope;
   
   // Create false block if needed
   if (op_block_false->id != SPVM_OP_C_ID_BLOCK) {
@@ -1323,8 +1320,9 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     SPVM_OP_insert_child(compiler, op_block_false, op_block_false->last, op_list);
   }
   op_block_false->uv.block->id = SPVM_BLOCK_C_ID_ELSE;
+  op_block_false->uv.block->no_scope = no_scope;
   
-  SPVM_OP_insert_child(compiler, op_if, op_if->last, op_condition_free_tmp);
+  SPVM_OP_insert_child(compiler, op_if, op_if->last, op_condition);
   SPVM_OP_insert_child(compiler, op_if, op_if->last, op_block_true);
   SPVM_OP_insert_child(compiler, op_if, op_if->last, op_block_false);
   
