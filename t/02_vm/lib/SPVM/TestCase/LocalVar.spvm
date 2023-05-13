@@ -1,13 +1,13 @@
 class TestCase::LocalVar {
+  use Point;
   
   our $VAR_PREC : int;
   
   INIT {
     $VAR_PREC = 11;
   }
-
+  
   static method name : int () {
-
     my $name = 1;
     my $my_name = 2;
     my ${name_brace} = 3;
@@ -17,23 +17,23 @@ class TestCase::LocalVar {
     unless ($name == 1) {
       return 0;
     }
-
+    
     unless ($my_name == 2) {
       return 0;
     }
-
+    
     unless (${name_brace} == 3) {
       return 0;
     }
-
+    
     unless ($name_brace == 3) {
       return 0;
     }
-
+    
     unless ($_name == 4) {
       return 0;
     }
-
+    
     unless ($NAME == 5) {
       return 0;
     }
@@ -42,7 +42,6 @@ class TestCase::LocalVar {
   }
   
   static method var_brace : int () {
-    
     my ${var} = 5;
     
     unless (${var} == 5) {
@@ -51,9 +50,8 @@ class TestCase::LocalVar {
     
     return 1;
   }
-
+  
   static method upper_case : int () {
-    
     my $VAR1 = 1;
     
     unless ($VAR1 == 1) {
@@ -62,9 +60,8 @@ class TestCase::LocalVar {
     
     return 1;
   }
-
+  
   static method high_precidence_than_class_var : int () {
-    
     my $VAR_PREC = 3;
     
     unless ($VAR_PREC == 3) {
@@ -73,9 +70,8 @@ class TestCase::LocalVar {
     
     return 1;
   }
-
+  
   static method high_precidence_than_capture_var : int () {
-    
     my $var = 13;
     my $cb = [$var : int] method : int () {
       
@@ -90,5 +86,46 @@ class TestCase::LocalVar {
     
     return 1;
   }
-
+  
+  static method with_logical_operator : int () {
+    
+    # &&
+    {
+      {
+        1 && (my $num = 1);
+        
+        unless ($num == 1) {
+          return 0;
+        }
+      }
+      {
+        1 && (my $object = Point->new);
+        
+        unless ($object is_type Point) {
+          return 0;
+        }
+      }
+      {
+        if (1 && (my $object = Point->new)) {
+          unless ($object is_type Point) {
+            return 0;
+          }
+        }
+      }
+      
+      {
+        if (1 && (my $object = Point->new) && (my $object2 = Point->new)) {
+          unless ($object is_type Point) {
+            return 0;
+          }
+          unless ($object2 is_type Point) {
+            return 0;
+          }
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

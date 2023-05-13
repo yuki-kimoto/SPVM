@@ -255,16 +255,18 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
         }
       }
       switch (op_cur->id) {
-        // Start scope
         case SPVM_OP_C_ID_BLOCK: {
-          int32_t block_var_decl_base = check_ast_info->my_stack->length;
-          SPVM_LIST_push(check_ast_info->block_var_decl_base_stack, (void*)(intptr_t)block_var_decl_base);
-          
-          if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-            check_ast_info->loop_block_stack_length++;
-          }
-          else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
-            check_ast_info->eval_block_stack_length++;
+          // Start scope
+          if (!op_cur->uv.block->no_scope) {
+            int32_t block_var_decl_base = check_ast_info->my_stack->length;
+            SPVM_LIST_push(check_ast_info->block_var_decl_base_stack, (void*)(intptr_t)block_var_decl_base);
+            
+            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+              check_ast_info->loop_block_stack_length++;
+            }
+            else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+              check_ast_info->eval_block_stack_length++;
+            }
           }
           
           break;
@@ -2426,25 +2428,27 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               break;
             }
-            // End of scope
             case SPVM_OP_C_ID_BLOCK: {
-              // Pop block var_decl variable base
-              assert(check_ast_info->block_var_decl_base_stack->length > 0);
-              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->block_var_decl_base_stack);
+              // End of scope
+              if (!op_cur->uv.block->no_scope) {
+                // Pop block var_decl variable base
+                assert(check_ast_info->block_var_decl_base_stack->length > 0);
+                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->block_var_decl_base_stack);
+                  
+                int32_t my_stack_pop_count = check_ast_info->my_stack->length - block_var_decl_base;
                 
-              int32_t my_stack_pop_count = check_ast_info->my_stack->length - block_var_decl_base;
-              
-              for (int32_t i = 0; i < my_stack_pop_count; i++) {
-                SPVM_LIST_pop(check_ast_info->my_stack);
-              }
+                for (int32_t i = 0; i < my_stack_pop_count; i++) {
+                  SPVM_LIST_pop(check_ast_info->my_stack);
+                }
 
-              // Pop loop block var_decl variable base
-              if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-                check_ast_info->loop_block_stack_length--;
-              }
-              // Pop try block var_decl variable base
-              else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
-                check_ast_info->eval_block_stack_length--;
+                // Pop loop block var_decl variable base
+                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                  check_ast_info->loop_block_stack_length--;
+                }
+                // Pop try block var_decl variable base
+                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+                  check_ast_info->eval_block_stack_length--;
+                }
               }
               
               break;
