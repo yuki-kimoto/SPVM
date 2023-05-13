@@ -3323,7 +3323,7 @@ yyreduce:
   case 116:
 #line 656 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval));
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
       
       // if is wraped with block to allow the following syntax
       //  if (var_decl $var = 3) { ... }
@@ -3338,7 +3338,7 @@ yyreduce:
   case 117:
 #line 667 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval));
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
       
       // if is wraped with block to allow the following syntax
       //  if (var_decl $var = 3) { ... }
@@ -3369,7 +3369,7 @@ yyreduce:
   case 120:
 #line 688 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
     }
 #line 3375 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

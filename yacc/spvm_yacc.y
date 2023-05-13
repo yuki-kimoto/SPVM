@@ -654,7 +654,7 @@ if_require_statement
 if_statement
   : IF '(' operator ')' block else_statement
     {
-      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6, 0);
       
       // if is wraped with block to allow the following syntax
       //  if (var_decl $var = 3) { ... }
@@ -665,7 +665,7 @@ if_statement
     }
   | UNLESS '(' operator ')' block else_statement
     {
-      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6, 0);
       
       // if is wraped with block to allow the following syntax
       //  if (var_decl $var = 3) { ... }
@@ -686,7 +686,7 @@ else_statement
     }
   | ELSIF '(' operator ')' block else_statement
     {
-      $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6);
+      $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6, 0);
     }
 
 block 
