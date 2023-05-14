@@ -1510,124 +1510,124 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         yylvalp->opval = op;
         return CREATE_REF;
       }
-      default: {
-        if (ch == '$') {
-          // A derefernece operator
-          if (*(compiler->bufptr + 1) == '$') {
+      case '$': {
+        // A derefernece operator
+        if (*(compiler->bufptr + 1) == '$') {
+          compiler->bufptr++;
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DEREF);
+          yylvalp->opval = op;
+          return DEREF;
+        }
+        // A exception variable
+        else if (*(compiler->bufptr + 1) == '@') {
+          compiler->bufptr += 2;
+          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+          yylvalp->opval = op_exception_var;
+          return EXCEPTION_VAR;
+        }
+        // A exception variable with {}
+        else if (*(compiler->bufptr + 1) == '{' && *(compiler->bufptr + 2) == '@' && *(compiler->bufptr + 3) == '}') {
+          compiler->bufptr += 4;
+          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+          yylvalp->opval = op_exception_var;
+          return EXCEPTION_VAR;
+        }
+        // A local variable name or a class variable name
+        else {
+          compiler->bufptr++;
+          
+          // ${var} is allowed
+          int8_t have_brace = 0;
+          if (*compiler->bufptr == '{') {
+            have_brace = 1;
             compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DEREF);
-            yylvalp->opval = op;
-            return DEREF;
           }
-          // A exception variable
-          else if (*(compiler->bufptr + 1) == '@') {
-            compiler->bufptr += 2;
-            SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
-            yylvalp->opval = op_exception_var;
-            return EXCEPTION_VAR;
-          }
-          // A exception variable with {}
-          else if (*(compiler->bufptr + 1) == '{' && *(compiler->bufptr + 2) == '@' && *(compiler->bufptr + 3) == '}') {
-            compiler->bufptr += 4;
-            SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
-            yylvalp->opval = op_exception_var;
-            return EXCEPTION_VAR;
-          }
-          // A local variable name or a class variable name
-          else {
-            compiler->bufptr++;
-            
-            // ${var} is allowed
-            int8_t have_brace = 0;
-            if (*compiler->bufptr == '{') {
-              have_brace = 1;
+          
+          // Save the starting position of the symbol name part of the variable name
+          const char* var_name_symbol_name_part_start_ptr = compiler->bufptr;
+          
+          // Go forward to the end of the variable name
+          while (
+            isalnum(*compiler->bufptr)
+            || (*compiler->bufptr) == '_'
+            || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')
+          )
+          {
+            if (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':') {
+              compiler->bufptr += 2;
+            }
+            else {
               compiler->bufptr++;
             }
-            
-            // Save the starting position of the symbol name part of the variable name
-            const char* var_name_symbol_name_part_start_ptr = compiler->bufptr;
-            
-            // Go forward to the end of the variable name
-            while (
-              isalnum(*compiler->bufptr)
-              || (*compiler->bufptr) == '_'
-              || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')
-            )
-            {
-              if (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':') {
-                compiler->bufptr += 2;
-              }
-              else {
-                compiler->bufptr++;
-              }
-            }
-            
-            // Create a variable name that doesn't contain "{" and "}"
-            int32_t var_name_symbol_name_part_length = compiler->bufptr - var_name_symbol_name_part_start_ptr;
-            int32_t var_name_length = var_name_symbol_name_part_length + 1;
-            const char* var_name = NULL;
-            {
-
-              int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
-              char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
-              var_name_tmp[0] = '$';
-              memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
-              var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
-              
-              SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
-              var_name = var_name_string->value;
-              
-              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
-              assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
-            }
-            
-            // Check the closing brace
-            if (have_brace) {
-              if (*compiler->bufptr == '}') {
-                compiler->bufptr++;
-              }
-              else {
-                SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-              }
-            }
-            
-            // Check the variable name
-            {
-              // A variable name cannnot conatain "__"
-              if (strstr(var_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-              }
-
-              // A variable name cannnot begin with \"$::\"
-              if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-              }
-
-              // A variable name cannnot end with \"::\"
-              if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-              }
-              
-              // A variable name \"%s\" cannnot contain \"::::\"
-              if (strstr(var_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-              }
-
-              // A variable name cannnot begin with a number
-              if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
-                SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
-              }
-            }
-            
-            // Name op
-            SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
-            yylvalp->opval = op_name;
-
-            return VAR_NAME;
           }
+          
+          // Create a variable name that doesn't contain "{" and "}"
+          int32_t var_name_symbol_name_part_length = compiler->bufptr - var_name_symbol_name_part_start_ptr;
+          int32_t var_name_length = var_name_symbol_name_part_length + 1;
+          const char* var_name = NULL;
+          {
+
+            int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
+            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
+            var_name_tmp[0] = '$';
+            memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
+            var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
+            
+            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
+            var_name = var_name_string->value;
+            
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
+            assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
+          }
+          
+          // Check the closing brace
+          if (have_brace) {
+            if (*compiler->bufptr == '}') {
+              compiler->bufptr++;
+            }
+            else {
+              SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+            }
+          }
+          
+          // Check the variable name
+          {
+            // A variable name cannnot conatain "__"
+            if (strstr(var_name, "__")) {
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+            }
+
+            // A variable name cannnot begin with \"$::\"
+            if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+            }
+
+            // A variable name cannnot end with \"::\"
+            if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+            }
+            
+            // A variable name \"%s\" cannnot contain \"::::\"
+            if (strstr(var_name, "::::")) {
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+            }
+
+            // A variable name cannnot begin with a number
+            if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
+              SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+            }
+          }
+          
+          // Name op
+          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
+          yylvalp->opval = op_name;
+
+          return VAR_NAME;
         }
+      }
+      default: {
         // Numeric literal
-        else if (isdigit(ch)) {
+        if (isdigit(ch)) {
           const char* number_literal_begin_ptr = compiler->bufptr;
           
           // The before character is "-"
