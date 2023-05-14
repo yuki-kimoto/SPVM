@@ -225,7 +225,6 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
-
   // Default source is a empty string
   if (compiler->bufptr == NULL) {
     compiler->bufptr = "";
@@ -233,14 +232,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
-
+  
   // Before character is "-". This is used by the numeric literal that has "-".
   int32_t before_char_is_minus = 0;
-
+  
   // Before token is arrow
   int32_t before_token_is_arrow = compiler->before_token_is_arrow;
   compiler->before_token_is_arrow = 0;
-
+  
   // Expect method name
   int32_t expect_method_name = compiler->expect_method_name;
   compiler->expect_method_name = 0;
@@ -252,10 +251,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Variable expansion state
   int32_t var_expansion_state = compiler->var_expansion_state;
   compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
-
+  
   int32_t parse_not_started = compiler->parse_not_started;
   compiler->parse_not_started = 0;
-
+  
   while(1) {
     
     // Get current character
@@ -283,7 +282,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
       ch = '"';
     }
-
+    
     // '\0' means end of file, so try to read next class source
     if (ch == '\0') {
       
@@ -314,7 +313,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           const char* class_name = op_use->uv.use->class_name;
           int32_t class_name_length = strlen(class_name);
-
+          
           // Check the class name
           {
             // A class name must begin with an upper case character
@@ -322,7 +321,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
-
+            
             // Part names of the class name begin with lower case
             int32_t class_part_name_is_invalid = 0;
             int32_t class_name_length = strlen(class_name);
@@ -336,7 +335,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
             }
-
+            
             // A class name cannnot conatain "__"
             if (strstr(class_name, "__")) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\".\n  at %s line %d", class_name, op_use->file, op_use->line);
@@ -348,28 +347,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
-
+            
             // A class name cannnot contains "::::".
             if (strstr(class_name, "::::")) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
-
+            
             // A class name cannnot begin with \"$::\"
             if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
-
+            
             // A class name cannnot begin with a number
             if (class_name_length >= 1 && isdigit(class_name[0])) {
               SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", class_name, op_use->file, op_use->line);
               return 0;
             }
           }
-
+          
           const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
-
+          
           if (used_class_name) {
             continue;
           }
@@ -396,12 +395,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             strncpy(bufptr_to, ".spvm", 5);
             bufptr_to += 5;
             *bufptr_to = '\0';
-
+            
             char* cur_file = NULL;
             
             // Do directry class search
             int32_t do_directry_class_search;
-
+            
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in class source symtable
             const char* found_class_source = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
             const char* class_path = NULL;
@@ -424,7 +423,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     cur_file[i] = '/';
                   }
                 }
-
+                
                 // Open source file
                 fh = fopen(cur_file, "rb");
                 if (fh) {
@@ -487,7 +486,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (found_class_source) {
               src = found_class_source;
               file_size = strlen(src);
-
+              
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = (char*)src;
               compiler->cur_dir = class_path;
@@ -553,7 +552,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         if (*compiler->bufptr == '\r' && *(compiler->bufptr + 1) == '\n') {
           compiler->bufptr++;
         }
-
+        
         compiler->bufptr++;
         compiler->cur_line++;
         compiler->line_start_ptr = compiler->bufptr;
@@ -891,7 +890,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-
+          
           // <=>
           if (*compiler->bufptr == '>') {
             compiler->bufptr++;
@@ -1044,7 +1043,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Octal escape character
             else if (SPVM_TOKE_is_octal_number(compiler, *compiler->bufptr) || *compiler->bufptr == 'o') {
               char* char_ptr = compiler->bufptr;
-
+              
               ch = SPVM_TOKE_parse_octal_escape(compiler, &char_ptr);
               
               compiler->bufptr = char_ptr;
@@ -1052,7 +1051,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Hex escape character
             else if (*compiler->bufptr == 'x') {
               char* char_ptr = compiler->bufptr;
-
+              
               ch = SPVM_TOKE_parse_hex_escape(compiler, &char_ptr);
               
               compiler->bufptr = char_ptr;
@@ -1123,7 +1122,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 // Proceed through a variable expansion and find the position of the next string literal
                 char* next_string_literal_bufptr = compiler->bufptr + 1;
-
+                
                 // Dereference
                 int32_t var_is_ref = 0;
                 if (*next_string_literal_bufptr == '$') {
@@ -1270,7 +1269,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           int32_t string_literal_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr) * 4;
-
+          
           compiler->bufptr++;
           
           string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, string_literal_tmp_len + 1);
@@ -1485,10 +1484,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           string_literal_tmp[string_literal_length] = '\0';
         }
-
+        
         SPVM_CONSTANT_STRING* string_literal_string = SPVM_CONSTANT_STRING_new(compiler, string_literal_tmp, string_literal_length);
         const char* string_literal = string_literal_string->value;
-
+        
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, string_literal_tmp);
         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
         
@@ -1566,7 +1565,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t var_name_length = var_name_symbol_name_part_length + 1;
           const char* var_name = NULL;
           {
-
             int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
             char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
             var_name_tmp[0] = '$';
@@ -1596,12 +1594,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (strstr(var_name, "__")) {
               SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
-
+            
             // A variable name cannnot begin with \"$::\"
             if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
               SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
-
+            
             // A variable name cannnot end with \"::\"
             if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
               SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
@@ -1611,7 +1609,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (strstr(var_name, "::::")) {
               SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
             }
-
+            
             // A variable name cannnot begin with a number
             if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
               SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
@@ -1621,7 +1619,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Name op
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
           yylvalp->opval = op_name;
-
+          
           return VAR_NAME;
         }
       }
@@ -1953,7 +1951,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, numeric_literal);
           assert(compiler->allocator->memory_blocks_count_tmp == numeric_literal_memoyr_blocks_count);
-
+          
           // Constant op
           SPVM_OP* op_constant;
           switch (constant_type->basic_type->id) {
@@ -1977,7 +1975,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               assert(0);
             }
           }
-
+          
           yylvalp->opval = op_constant;
           
           return CONSTANT;
@@ -2282,9 +2280,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "method") == 0) {
                   SPVM_OP* op_method = SPVM_TOKE_new_op_with_column(compiler, SPVM_OP_C_ID_METHOD, column);
                   yylvalp->opval = op_method;
-
+                  
                   compiler->expect_method_name = 1;
-
+                  
                   keyword_token = METHOD;
                 }
                 else if (strcmp(symbol_name, "mutable") == 0) {
@@ -2553,26 +2551,26 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
-
+              
               // A symbol name cannnot contains "::::".
               if (strstr(symbol_name, "::::")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
-
+              
               // A symbol name cannnot begin with "::"
               assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
-
+              
               // A symbol name cannnot begin with a number "0-9".
               assert(!isdigit(symbol_name[0]));
             }
-
+            
             // A string literal of the left operand of the fat camma
             if (next_is_fat_camma) {
               // The string literal of the left operand of the fat camma cannnot contains "::".
               if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
                 SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
               }
-
+              
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
               yylvalp->opval = op_constant;
               token = CONSTANT;
@@ -2584,7 +2582,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               token = SYMBOL_NAME;
             }
           }
-
+          
           // Free symbol name
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, symbol_name);
           
