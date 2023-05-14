@@ -461,6 +461,14 @@ use Test::More;
   }
 }
 
+# Unexpected Charater
+{
+  {
+    my $source = "class MyClass { \xFE }";
+    compile_not_ok($source, q|The character -2 in a signed int is not expected|);
+  }
+}
+
 # Extra
 {
   {
@@ -475,5 +483,6 @@ use Test::More;
     compile_not_ok($source, qr/\n  at .+ line /);
   }
 }
+
 
 done_testing;

@@ -1,7 +1,8 @@
 0.978 2023-05-13
   [Incompatible Changes and Bug Fix]
     * Fixed the bug that precidence of operators are wrong. The precidence must be the same as Perl.
-      
+  [Compilation Error Improvement]
+    * The compiliation error message "The character %d in a signed int is not expected." in tokenization is output.
     
 0.977 2023-05-11
   [Incompatible Changes]

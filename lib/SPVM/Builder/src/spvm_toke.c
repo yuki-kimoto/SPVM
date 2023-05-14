@@ -1625,6 +1625,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return VAR_NAME;
         }
       }
+      case '(' :
+      case ')' :
+      case '[' :
+      case ']' :
+      case '{' :
+      case '}' :
+      case ',' :
+      case ':' :
+      case ';' :
+      case '@' :
+      {
+        // Return character
+        compiler->bufptr++;
+        yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
+        
+        // Expect field name
+        if (before_token_is_arrow && ch == '{') {
+          compiler->expect_field_name = 1;
+        }
+        
+        return (int) (uint8_t) ch;
+      }
       default: {
         // Numeric literal
         if (isdigit(ch)) {
@@ -2568,17 +2590,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return token;
         }
-        
-        // Return character
-        compiler->bufptr++;
-        yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
-        
-        // Expect field name
-        if (before_token_is_arrow && ch == '{') {
-          compiler->expect_field_name = 1;
+        else {
+          SPVM_COMPILER_error(compiler, "The character %d in a signed int is not expected.\n  at %s line %d", ch, compiler->cur_file, compiler->cur_line);
+          return (int) (uint8_t) ch;
         }
-        
-        return (int) (uint8_t) ch;
       }
     }
   }
