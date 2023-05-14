@@ -481,14 +481,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
             }
             
-            const char* src = NULL;
-            int32_t file_size = 0;
             if (found_class_source) {
-              src = found_class_source;
-              file_size = strlen(src);
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_src = (char*)src;
+              compiler->cur_src = (char*)found_class_source;
               compiler->cur_dir = class_path;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
