@@ -2531,6 +2531,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
                   compiler->bufptr = compiler->cur_class_source + compiler->cur_class_source_length;
+                  compiler->befbufptr = compiler->bufptr;
                   compiler->parse_not_started = 1;
                   SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
                   yylvalp->opval = op;

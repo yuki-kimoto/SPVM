@@ -480,6 +480,10 @@ use Test::More;
     my $source = "class MyClass { }__END__ hello world";
     compile_ok($source);
   }
+  {
+    my $source = "class MyClass { __END__ }";
+    compile_not_ok($source, q|Unexpected token ""|);
+  }
 }
 
 # Extra
