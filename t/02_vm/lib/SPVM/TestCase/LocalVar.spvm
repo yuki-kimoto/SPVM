@@ -176,6 +176,97 @@ class TestCase::LocalVar {
       }
     }
     
+    # ||
+    {
+      {
+        my $num = 0;
+        0 || ($num = 1);
+        
+        unless ($num == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        0 || (my $num = 1);
+        
+        unless ($num == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (Bool)undef;
+        0 || ($object = Bool->FALSE);
+        
+        unless ($object is_type Bool) {
+          return 0;
+        }
+      }
+      
+      {
+        0 || (my $object = Bool->FALSE);
+        
+        unless ($object is_type Bool) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (Bool)undef;
+        my $object2 = (Bool)undef;
+        if (0 || ($object = Bool->FALSE) || ($object2 = Bool->FALSE)) {
+          return 0;
+        }
+        else {
+          unless (type_name $object eq "Bool") {
+            return 0;
+          }
+          unless (type_name $object2 eq "Bool") {
+            return 0;
+          }
+        }
+      }
+      {
+        my $object2 = (Bool)undef;
+        if (0 || (my $object = Bool->FALSE) || ($object2 = Bool->FALSE) || 1) {
+          unless (type_name $object eq "Bool") {
+            return 0;
+          }
+          
+          unless (type_name $object2 eq "Bool") {
+            return 0;
+          }
+        }
+        else {
+          return 0;
+        }
+      }
+
+=pod TODO
+
+      {
+        my $num = 0;
+        if (0 || (my $object = Bool->FALSE) || (my $object2 = Bool->FALSE) || ($num = 2)) {
+          unless ($num == 2) {
+            return 0;
+          }
+          unless (type_name $object eq "Bool") {
+            return 0;
+          }
+          unless (type_name $object2 eq "Bool") {
+            return 0;
+          }
+        }
+        else {
+          return 0;
+        }
+      }
+
+=cut
+
+    }
+    
     # !
     {
       {
