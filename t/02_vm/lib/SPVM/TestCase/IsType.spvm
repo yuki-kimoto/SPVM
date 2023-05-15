@@ -8,45 +8,45 @@ class TestCase::IsType {
 
   static method is_type : int () {
     {
-      my $minimal = TestCase::Minimal->new;
-      unless ($minimal is_type TestCase::Minimal) {
-        return 0;
-      }
-
-      my $object : object = $minimal;
+      my $object = TestCase::Minimal->new;
       unless ($object is_type TestCase::Minimal) {
         return 0;
       }
-    }
-
-    {
-      my $minimals = new TestCase::Minimal[3];
-      my $nums = new int[3];
       
-      unless ($minimals is_type TestCase::Minimal[]) {
+      my $object2 : object = $object;
+      unless ($object2 is_type TestCase::Minimal) {
         return 0;
       }
-
+    }
+    
+    {
+      my $objects = new TestCase::Minimal[3];
+      my $nums = new int[3];
+      
+      unless ($objects is_type TestCase::Minimal[]) {
+        return 0;
+      }
+       
       unless ($nums is_type int[]) {
         return 0;
       }
     }
-
+    
     {
-      my $minimal = TestCase::Minimal->new;
-      if ($minimal is_type TestCase::Simple) {
+      my $object = TestCase::Minimal->new;
+      if ($object is_type TestCase::Simple) {
         return 0;
       }
     }
-
+    
     {
-      my $minimal : TestCase::Minimal = undef;
+      my $object : TestCase::Minimal = undef;
       
-      if ($minimal is_type TestCase::Minimal) {
+      if ($object is_type TestCase::Minimal) {
         return 0;
       }
     }
-
+    
     {
       my $stringables = new Stringable[3];
       
@@ -54,7 +54,21 @@ class TestCase::IsType {
         return 0;
       }
     }
-  
+    
+    {
+      my $object = Bool->TRUE;
+      unless ($object is_type Bool) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = Bool->FALSE;
+      unless ($object is_type Bool) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }

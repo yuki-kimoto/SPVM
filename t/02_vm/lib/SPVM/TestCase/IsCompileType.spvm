@@ -13,7 +13,7 @@ class TestCase::IsCompileType {
         return 0;
       }
     }
-
+    
     {
       my $value : int[];
       unless ($value is_compile_type int[]) {
@@ -22,19 +22,19 @@ class TestCase::IsCompileType {
     }
     
     {
-      my $minimal : object = new TestCase::Minimal;
-      unless ($minimal is_compile_type object) {
+      my $object : object = new TestCase::Minimal;
+      unless ($object is_compile_type object) {
         return 0;
       }
     }
-
+    
     {
-      my $minimal : TestCase::Minimal;
-      unless ($minimal is_compile_type TestCase::Minimal) {
+      my $object : TestCase::Minimal;
+      unless ($object is_compile_type TestCase::Minimal) {
         return 0;
       }
     }
-
+    
     {
       my $value : Stringer = method : string () { return "aaa"; };
       unless ($value is_compile_type Stringer) {
@@ -48,10 +48,17 @@ class TestCase::IsCompileType {
         return 0;
       }
     }
-
+    
     {
       my $value_ref : int*;
       unless ($value_ref is_compile_type int*) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object : Bool;
+      unless ($object is_compile_type Bool) {
         return 0;
       }
     }
