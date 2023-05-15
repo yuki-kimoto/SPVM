@@ -217,7 +217,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* me
   return op_var;
 }
 
-void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
+void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
 
   // Class
   SPVM_CLASS* class = check_ast_info->class;
@@ -383,7 +383,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-              SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -415,7 +415,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
 
-              SPVM_OP_CHECKER_check_tree(compiler, op_constant, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_constant, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -465,7 +465,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, type_name, strlen(type_name), op_cur->file, op_cur->line);
               
               SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
-              SPVM_OP_CHECKER_check_tree(compiler, op_constant_string, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_constant_string, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -650,7 +650,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
-                SPVM_OP_CHECKER_check_tree(compiler, op_false, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_false, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -699,7 +699,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_true, op_first->file, op_first->line);
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -769,7 +769,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_false, op_first->file, op_first->line);
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1238,7 +1238,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                     
-                    SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
+                    SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
                     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                       return;
                     }
@@ -1347,7 +1347,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -1358,7 +1358,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -1421,7 +1421,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1432,7 +1432,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1517,7 +1517,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1578,7 +1578,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1656,7 +1656,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur = op_sequence;
               
-              SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1736,7 +1736,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur = op_sequence;
               
-              SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1866,7 +1866,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2559,7 +2559,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   op_cur = op_field_access;
                   
-                  SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_field_access, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -2582,7 +2582,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                     op_cur = op_class_var_access;
                     
-                    SPVM_OP_CHECKER_check_tree(compiler, op_class_var_access, check_ast_info);
+                    SPVM_OP_CHECKER_check_ast(compiler, op_class_var_access, check_ast_info);
                     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                       return;
                     }
@@ -2729,7 +2729,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 SPVM_OP_replace_op(compiler, op_call_method->last, op_list_args_new);
 
-                SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_list_args_new, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2883,7 +2883,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
                 
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2908,7 +2908,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
-                SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -3023,7 +3023,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                   
-                  SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_array_field_access, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3049,7 +3049,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3073,7 +3073,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3103,7 +3103,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
-                  SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3360,7 +3360,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
             
             // First AST traversal
-            SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
+            SPVM_OP_CHECKER_check_ast(compiler, method->op_block, check_ast_info);
 
             // Free list
             SPVM_LIST_free(check_ast_info->var_decl_stack);
