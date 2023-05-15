@@ -2550,7 +2550,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_field_access->uv.field_access->field = found_capture_field;
 
                   op_field_access->is_dist = op_cur->is_dist;
-                  op_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_field_access;
                   }
@@ -2571,7 +2570,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
                   
                   op_class_var_access->is_dist = op_cur->is_dist;
-                  op_class_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_class_var_access;
                   }
