@@ -13,11 +13,11 @@ struct spvm_check_ast_info {
   // Method
   SPVM_METHOD* method;
   
-  // My stack
-  SPVM_LIST* my_stack;
+  // Variable declaration stack
+  SPVM_LIST* var_decl_stack;
   
-  // Block var_decl base stack
-  SPVM_LIST* block_var_decl_base_stack;
+  // Variable declaration scope base stack
+  SPVM_LIST* var_decl_scope_base_stack;
   
   // Switch stack
   SPVM_LIST* op_switch_stack;

@@ -259,8 +259,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
           SPVM_BLOCK* block = op_cur->uv.block;
           // Start scope
           if (!block->no_scope) {
-            int32_t block_var_decl_base = check_ast_info->my_stack->length;
-            SPVM_LIST_push(check_ast_info->block_var_decl_base_stack, (void*)(intptr_t)block_var_decl_base);
+            int32_t block_var_decl_base = check_ast_info->var_decl_stack->length;
+            SPVM_LIST_push(check_ast_info->var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
             
             if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
               check_ast_info->loop_block_stack_length++;
@@ -1199,8 +1199,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                       // Search same name variable
                       SPVM_VAR_DECL* found_var_decl = NULL;
-                      for (int32_t stack_var_decl_index = check_ast_info->my_stack->length - 1; stack_var_decl_index >= 0; stack_var_decl_index--) {
-                        SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->my_stack, stack_var_decl_index);
+                      for (int32_t stack_var_decl_index = check_ast_info->var_decl_stack->length - 1; stack_var_decl_index >= 0; stack_var_decl_index--) {
+                        SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, stack_var_decl_index);
                         if (strcmp(capture_name, var_decl->var->name) == 0) {
                           found_var_decl = var_decl;
                           break;
@@ -2434,13 +2434,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // End of scope
               if (!block->no_scope) {
                 // Pop block var_decl variable base
-                assert(check_ast_info->block_var_decl_base_stack->length > 0);
-                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->block_var_decl_base_stack);
+                assert(check_ast_info->var_decl_scope_base_stack->length > 0);
+                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->var_decl_scope_base_stack);
                   
-                int32_t my_stack_pop_count = check_ast_info->my_stack->length - block_var_decl_base;
+                int32_t var_decl_stack_pop_count = check_ast_info->var_decl_stack->length - block_var_decl_base;
                 
-                for (int32_t i = 0; i < my_stack_pop_count; i++) {
-                  SPVM_LIST_pop(check_ast_info->my_stack);
+                for (int32_t i = 0; i < var_decl_stack_pop_count; i++) {
+                  SPVM_LIST_pop(check_ast_info->var_decl_stack);
                 }
 
                 // Pop loop block var_decl variable base
@@ -2486,9 +2486,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 
                 // Redeclaration error if same name variable is declare in same block
                 int32_t found = 0;
-                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(check_ast_info->block_var_decl_base_stack, check_ast_info->block_var_decl_base_stack->length - 1);
-                for (int32_t i = block_var_decl_base; i < check_ast_info->my_stack->length; i++) {
-                  SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(check_ast_info->my_stack, i);
+                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(check_ast_info->var_decl_scope_base_stack, check_ast_info->var_decl_scope_base_stack->length - 1);
+                for (int32_t i = block_var_decl_base; i < check_ast_info->var_decl_stack->length; i++) {
+                  SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, i);
                   
                   if (strcmp(var_decl->var->name, bef_var_decl->var->name) == 0) {
                     // Temporaly variable is not duplicated
@@ -2506,7 +2506,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 else {
                   var_decl->id = method->var_decls->length;
                   SPVM_LIST_push(method->var_decls, var_decl);
-                  SPVM_LIST_push(check_ast_info->my_stack, var_decl);
+                  SPVM_LIST_push(check_ast_info->var_decl_stack, var_decl);
                 }
                 
                 // Type cannnot be detected
@@ -2520,8 +2520,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Search same name variable
               SPVM_VAR_DECL* found_var_decl = NULL;
-              for (int32_t i = check_ast_info->my_stack->length - 1; i >= 0; i--) {
-                SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->my_stack, i);
+              for (int32_t i = check_ast_info->var_decl_stack->length - 1; i >= 0; i--) {
+                SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, i);
                 assert(var_decl);
                 if (strcmp(var->name, var_decl->var->name) == 0) {
                   found_var_decl = var_decl;
@@ -3354,10 +3354,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             check_ast_info->loop_block_stack_length = 0;
             
             // My stack
-            check_ast_info->my_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+            check_ast_info->var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
             
             // Block var_decl base stack
-            check_ast_info->block_var_decl_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+            check_ast_info->var_decl_scope_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
             
             // Switch stack
             check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -3366,8 +3366,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
 
             // Free list
-            SPVM_LIST_free(check_ast_info->my_stack);
-            SPVM_LIST_free(check_ast_info->block_var_decl_base_stack);
+            SPVM_LIST_free(check_ast_info->var_decl_stack);
+            SPVM_LIST_free(check_ast_info->var_decl_scope_base_stack);
             SPVM_LIST_free(check_ast_info->op_switch_stack);
             
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
