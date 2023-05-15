@@ -466,23 +466,23 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 // Read file content
                 fseek(fh, 0, SEEK_END);
-                int32_t file_size = (int32_t)ftell(fh);
-                if (file_size < 0) {
+                int32_t class_source_length = (int32_t)ftell(fh);
+                if (class_source_length < 0) {
                   SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* src = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_size + 1);
-                if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
+                char* class_source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, class_source_length + 1);
+                if ((int32_t)fread(class_source, 1, class_source_length, fh) < class_source_length) {
                   SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
-                  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, src);
+                  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
                   return 0;
                 }
                 fclose(fh);
-                src[file_size] = '\0';
+                class_source[class_source_length] = '\0';
                 
-                found_class_source = src;
-                SPVM_COMPILER_add_class_source(compiler, class_name, found_class_source, file_size);
+                found_class_source = class_source;
+                SPVM_COMPILER_add_class_source(compiler, class_name, found_class_source, class_source_length);
               }
             }
             
