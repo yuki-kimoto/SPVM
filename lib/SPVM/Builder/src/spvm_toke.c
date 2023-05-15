@@ -402,6 +402,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t do_directry_class_search;
             
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in class source symtable
+            SPVM_STRING_BUFFER* found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable2, class_name, strlen(class_name));
+            if (found_class_source_buffer) {
+              // warn("AAA %s %d %s", class_name, found_class_source_buffer->length, found_class_source_buffer->value);
+            }
             const char* found_class_source = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
             const char* class_path = NULL;
             if (!found_class_source) {

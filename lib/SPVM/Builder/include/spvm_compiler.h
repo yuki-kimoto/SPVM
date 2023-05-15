@@ -146,6 +146,9 @@ struct spvm_compiler {
   // class source symtable
   SPVM_HASH* class_source_symtable;
   
+  // class source symtable
+  SPVM_HASH* class_source_symtable2;
+  
   // SPVM 32bit codes
   int32_t* runtime_codes;
 };
