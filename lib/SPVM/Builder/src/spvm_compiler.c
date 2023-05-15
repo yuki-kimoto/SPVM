@@ -84,12 +84,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER_add_basic_types(compiler);
   
   // Add Bool source
-  const char* spvm_bool_class_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-  
-  SPVM_HASH_set(compiler->class_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_class_source);
-  SPVM_STRING_BUFFER* spvm_bool_class_source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
-  SPVM_STRING_BUFFER_add_len(spvm_bool_class_source_buffer, (char*)spvm_bool_class_source, strlen(spvm_bool_class_source));
-  SPVM_HASH_set(compiler->class_source_symtable2, "Bool", strlen("Bool"), (void*)spvm_bool_class_source_buffer);
+  {
+    const char* class_name = "Bool";
+    const char* spvm_class_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+    SPVM_COMPILER_add_class_source(compiler, class_name, spvm_class_source, strlen(spvm_class_source));
+  }
   
   // Add Error source
   const char* spvm_error_class_source = "class Error;";
@@ -136,6 +135,13 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_HASH_set(compiler->class_source_symtable, "Address", strlen("Address"), (void*)spvm_address_class_source);
   
   return compiler;
+}
+
+void SPVM_COMPILER_add_class_source(SPVM_COMPILER* compiler, const char* class_name, const char* class_source, int32_t length) {
+  SPVM_HASH_set(compiler->class_source_symtable, class_name, strlen(class_name), (void*)class_source);
+  SPVM_STRING_BUFFER* class_source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_STRING_BUFFER_add_len(class_source_buffer, (char*)class_source, strlen(class_source));
+  SPVM_HASH_set(compiler->class_source_symtable2, class_name, strlen(class_name), (void*)class_source_buffer);
 }
 
 void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {

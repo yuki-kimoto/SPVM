@@ -155,6 +155,7 @@ struct spvm_compiler {
 
 SPVM_COMPILER* SPVM_COMPILER_new();
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_add_class_source(SPVM_COMPILER* compiler, const char* class_name, const char* class_source, int32_t length);
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
