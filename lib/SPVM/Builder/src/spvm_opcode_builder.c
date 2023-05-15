@@ -399,9 +399,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Mortal variable base stack
           SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
-          // Object temporary variable stack
-          SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
           // Run OPs
           SPVM_OP* op_base = method->op_block;
           SPVM_OP* op_cur = op_base;
@@ -5128,7 +5125,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(break_block_base_stack);
           SPVM_LIST_free(mortal_stack);
           SPVM_LIST_free(mortal_top_stack);
-          SPVM_LIST_free(object_op_var_tmp_stack);
         }
       }
     }
