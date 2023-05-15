@@ -500,7 +500,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 // [START]Postorder traversal position
                 switch (op_cur->id) {
                   case SPVM_OP_C_ID_BLOCK: { // Postorder
-                    if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_IF) {
+                    SPVM_BLOCK* block = op_cur->uv.block;
+                    
+                    if (block->id == SPVM_BLOCK_C_ID_IF) {
                       
                       {
                         // Prepare to jump to end of true block
@@ -521,7 +523,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t if_eq_or_if_ne_jump_opcode_rel_index = opcode_array->length - method_opcodes_base_id;
                       if_eq_or_if_ne_goto->operand0 = if_eq_or_if_ne_jump_opcode_rel_index;
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_ELSE) {
+                    else if (block->id == SPVM_BLOCK_C_ID_ELSE) {
                       
                       assert(if_block_end_goto_opcode_rel_index_stack->length > 0);
                       
@@ -531,7 +533,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t if_block_end_jump_opcode_rel_index = opcode_array->length - method_opcodes_base_id;
                       if_block_end_goto->operand0 = if_block_end_jump_opcode_rel_index;
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+                    else if (block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
                       // last block base
                       int32_t last_block_base = (intptr_t)SPVM_LIST_pop(last_block_base_stack);
 
@@ -545,7 +547,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         last_goto->operand0 = last_goto_jump_opcode_rel_index;
                       }
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                    else if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                       // next block base
                       int32_t next_block_base = (intptr_t)SPVM_LIST_pop(next_block_base_stack);
                       
@@ -559,7 +561,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         next_goto->operand0 = next_goto_jump_opcode_rel_index;
                       }
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
+                    else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
                       // break block base
                       int32_t break_block_base = (intptr_t)SPVM_LIST_pop(break_block_base_stack);
                       
@@ -573,7 +575,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         break_goto->operand0 = break_goto_jump_opcode_rel_index;
                       }
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+                    else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
                       // Set IF_EXCEPTION_CATCH opcode index
                       while (if_die_catch_goto_opcode_rel_index_stack->length > 0) {
                         int32_t if_die_catch_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_die_catch_goto_opcode_rel_index_stack);
@@ -585,7 +587,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_LIST_pop(push_eval_opcode_rel_index_stack);
                     }
-                    else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_METHOD) {
+                    else if (block->id == SPVM_BLOCK_C_ID_METHOD) {
                       while (return_goto_opcode_rel_index_stack->length > 0) {
                         
                         int32_t return_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(return_goto_opcode_rel_index_stack);
