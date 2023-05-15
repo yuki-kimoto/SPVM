@@ -144,9 +144,6 @@ struct spvm_compiler {
   SPVM_LIST* switch_infos;
   
   // class source symtable
-  SPVM_HASH* class_source_symtable;
-  
-  // class source symtable
   SPVM_HASH* class_source_symtable2;
   
   // SPVM 32bit codes

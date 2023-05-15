@@ -75,7 +75,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->class_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->class_source_symtable2 = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->not_found_class_class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
@@ -171,7 +170,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 }
 
 void SPVM_COMPILER_add_class_source(SPVM_COMPILER* compiler, const char* class_name, const char* class_source, int32_t length) {
-  SPVM_HASH_set(compiler->class_source_symtable, class_name, strlen(class_name), (void*)class_source);
   SPVM_STRING_BUFFER* class_source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_STRING_BUFFER_add_len(class_source_buffer, (char*)class_source, strlen(class_source));
   SPVM_HASH_set(compiler->class_source_symtable2, class_name, strlen(class_name), (void*)class_source_buffer);
