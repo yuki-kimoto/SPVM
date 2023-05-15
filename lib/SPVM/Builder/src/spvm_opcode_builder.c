@@ -788,13 +788,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
                       SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
 
-                      // Push object temporary variable stack
-                      if (op_assign_dist->uv.var->var_decl->is_tmp) {
-                        if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
-                          SPVM_LIST_push(object_op_var_tmp_stack, op_assign_dist);
-                        }
-                      }
-                      
                       switch (op_assign_src->id) {
                         case SPVM_OP_C_ID_ASSIGN: {
                           SPVM_OP* op_var_src;
@@ -978,23 +971,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             assert(0);
-                          }
-                          break;
-                        }
-                        case SPVM_OP_C_ID_FREE_TMP: {
-                          // Free temporary variables
-                          int32_t length = object_op_var_tmp_stack->length;
-                          for (int32_t i = 0; i < length; i++) {
-                            SPVM_OP* op_var_tmp = SPVM_LIST_pop(object_op_var_tmp_stack);
-                            
-                            SPVM_OPCODE opcode = {0};
-                            
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_OBJECT);
-                            
-                            int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_var_tmp);
-                            opcode.operand0 = mem_id_out;
-                            
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
                           break;
                         }

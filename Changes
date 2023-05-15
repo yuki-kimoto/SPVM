@@ -5,7 +5,8 @@
     * The compiliation error message "The character %d in a signed int is not expected." in tokenization is output.
   [Bug Fix]
     * The bug that __END__ does not work well is fixed. 
-      
+  [Internal Changes]
+    * Removed FREE_TMP op. The reference count is not correct now in source codes.
 0.977 2023-05-11
   [Incompatible Changes]
     * The definition of the following native APIs are changed.

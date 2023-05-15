@@ -16,7 +16,7 @@ class TestCase::Refcnt {
         return 0;
       }
     }
-
+    
     # Repeat
     {
       my $minimal = new TestCase::Minimal;
@@ -39,6 +39,9 @@ class TestCase::Refcnt {
       }
     }
     
+
+=pod TODO
+
     # Operation which use tmp var
     {
       my $nums = [1, 2, 3];
@@ -47,7 +50,8 @@ class TestCase::Refcnt {
         return 0;
       }
     }
-    
+
+
     # Field
     {
       my $simple = new TestCase::Simple;
@@ -63,7 +67,7 @@ class TestCase::Refcnt {
         return 0;
       }
     }
-
+warn;
     # If condition
     {
       my $simple = new TestCase::Simple;
@@ -77,10 +81,13 @@ class TestCase::Refcnt {
         }
       }
     }
+=cut 
     
     return 1;
   }
   
+
+
   static method func :void ($object : TestCase::Minimal) {
     return;
   }

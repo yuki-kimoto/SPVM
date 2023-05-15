@@ -229,7 +229,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "deref",
     "string_length",
     "current_class_name",
-    "free_tmp",
     "refcnt",
     "allow",
     "warn",
@@ -965,11 +964,10 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   SPVM_OP* op_switch_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SWITCH_CONDITION, op_operand_condition->file, op_operand_condition->line);
   SPVM_OP_insert_child(compiler, op_switch_condition, op_switch_condition->last, op_operand_condition);
   
-  // Free tmp vars at end of condition
-  SPVM_OP* op_switch_condition_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_switch_condition->file, op_switch_condition->line);
-  SPVM_OP_insert_child(compiler, op_switch_condition_free_tmp, op_switch_condition_free_tmp->last, op_switch_condition);
+  SPVM_OP* op_switch_condition_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_switch_condition->file, op_switch_condition->line);
+  SPVM_OP_insert_child(compiler, op_switch_condition_do_nothing, op_switch_condition_do_nothing->last, op_switch_condition);
   
-  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_condition_free_tmp);
+  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_condition_do_nothing);
   SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_block);
   
   SPVM_SWITCH_INFO* switch_info = SPVM_SWITCH_INFO_new(compiler);
@@ -1095,10 +1093,6 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_operand_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
 
-  // Free tmp vars at end of condition
-  SPVM_OP* op_condition_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_condition->file, op_condition->line);
-  SPVM_OP_insert_child(compiler, op_condition_free_tmp, op_condition_free_tmp->last, op_condition);
-  
   // Set block flag
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
 
@@ -1109,18 +1103,10 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   // Block for increment
   SPVM_OP* op_loop_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP_INCREMENT, op_for->file, op_for->line);
 
-  // Free tmp vars at end of initialization statement
-  SPVM_OP* op_operand_increment_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_operand_increment->file, op_operand_increment->line);
-  SPVM_OP_insert_child(compiler, op_operand_increment_free_tmp, op_operand_increment_free_tmp->last, op_operand_increment);
+  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_operand_increment);
 
-  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_operand_increment_free_tmp);
-
-  // Free tmp vars at end of initialization statement
-  SPVM_OP* op_operand_init_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_operand_init->file, op_operand_init->line);
-  SPVM_OP_insert_child(compiler, op_operand_init_free_tmp, op_operand_init_free_tmp->last, op_operand_init);
-
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_operand_init_free_tmp);
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition_free_tmp);
+  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_operand_init);
+  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_block_statements);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_loop_increment);
   
@@ -1241,10 +1227,6 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_operand_condition, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
 
-  // Free tmp vars at end of condition
-  SPVM_OP* op_condition_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_condition->file, op_condition->line);
-  SPVM_OP_insert_child(compiler, op_condition_free_tmp, op_condition_free_tmp->last, op_condition);
-  
   // Set block flag
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
   
@@ -1259,7 +1241,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_operand_increment);
   
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_operand_init);
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition_free_tmp);
+  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_block_statements);
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_loop_increment);
   
@@ -1477,7 +1459,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_LOOP_INCREMENT:
     case SPVM_OP_C_ID_CONDITION:
     case SPVM_OP_C_ID_CONDITION_NOT:
-    case SPVM_OP_C_ID_FREE_TMP:
     case SPVM_OP_C_ID_SWITCH:
     case SPVM_OP_C_ID_DEFAULT:
     case SPVM_OP_C_ID_CASE:
@@ -3584,11 +3565,7 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
 
 SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_operator) {
   
-  // Free tmp vars at end of operator statement
-  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_operator->file, op_operator->line);
-  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_operator);
-  
-  return op_free_tmp;
+  return op_operator;
 }
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_operand) {
@@ -3607,11 +3584,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
 
-  // Free tmp vars at end of die statement
-  SPVM_OP* op_free_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FREE_TMP, op_die->file, op_die->line);
-  SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_die);
-  
-  return op_free_tmp;
+  return op_die;
 }
 
 SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand) {
