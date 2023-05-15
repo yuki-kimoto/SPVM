@@ -6,16 +6,21 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::IsType';
+use SPVM 'TestCase::IsCompileType';
 
 my $api = SPVM::api();
 
 # Start objects count
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
-# is_type
+# is_compile_type
 {
-  ok(SPVM::TestCase::IsType->is_type);
+  ok(SPVM::TestCase::IsCompileType->is_compile_type);
+}
+
+# is_compile_type
+{
+  ok(SPVM::TestCase::IsCompileType->is_compile_type);
 }
 
 # All object is freed

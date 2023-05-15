@@ -556,6 +556,7 @@ t/02_vm/05_op/error_code.t
 t/02_vm/05_op/field.t
 t/02_vm/05_op/increment.t
 t/02_vm/05_op/init.t
+t/02_vm/05_op/is_compile_type.t
 t/02_vm/05_op/is_type.t
 t/02_vm/05_op/isa.t
 t/02_vm/05_op/local_var.t
@@ -686,6 +687,7 @@ t/02_vm/lib/SPVM/TestCase/Inline.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceType.spvm
 t/02_vm/lib/SPVM/TestCase/Isa.spvm
+t/02_vm/lib/SPVM/TestCase/IsCompileType.spvm
 t/02_vm/lib/SPVM/TestCase/IsType.spvm
 t/02_vm/lib/SPVM/TestCase/LINEN.spvm
 t/02_vm/lib/SPVM/TestCase/LINER.spvm
