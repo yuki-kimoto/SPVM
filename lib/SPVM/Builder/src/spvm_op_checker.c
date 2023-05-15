@@ -3515,12 +3515,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         }
                         case SPVM_OP_C_ID_CONSTANT: {
                           if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                            if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
-                              create_tmp_var = 1;
-                            }
-                            else if (SPVM_TYPE_is_string_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
-                              create_tmp_var = 1;
-                            }
+                            create_tmp_var = 1;
                           }
                           break;
                         }
