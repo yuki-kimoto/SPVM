@@ -3632,10 +3632,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   // Start scope
                   case SPVM_OP_C_ID_BLOCK: {
                     SPVM_BLOCK* block = op_cur->uv.block;
-                    if (!block->no_scope) {
-                      // Push block
-                      SPVM_LIST_push(op_block_stack, op_cur);
-                    }
+                    
+                    // Push block
+                    SPVM_LIST_push(op_block_stack, op_cur);
                     
                     break;
                   }
@@ -3650,18 +3649,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     switch (op_cur->id) {
                       case SPVM_OP_C_ID_BLOCK: {
                         SPVM_BLOCK* block = op_cur->uv.block;
-                        if (!block->no_scope) {
-                          SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
 
-                          SPVM_LIST_pop(op_block_stack);
-                          
-                          // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
-                          if (op_block_stack->length > 0) {
-                            SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                            if (!op_block_parent->uv.block->have_object_var_decl) {
-                              if (op_block_current->uv.block->have_object_var_decl) {
-                                op_block_parent->uv.block->have_object_var_decl = 1;
-                              }
+                        SPVM_LIST_pop(op_block_stack);
+                        
+                        // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+                        if (op_block_stack->length > 0) {
+                          SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+                          if (!op_block_parent->uv.block->have_object_var_decl) {
+                            if (op_block_current->uv.block->have_object_var_decl) {
+                              op_block_parent->uv.block->have_object_var_decl = 1;
                             }
                           }
                         }
