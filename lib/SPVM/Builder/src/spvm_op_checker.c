@@ -256,15 +256,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
       }
       switch (op_cur->id) {
         case SPVM_OP_C_ID_BLOCK: {
-          // Start scope
-          if (!op_cur->uv.block->no_block) {
+          SPVM_BLOCK* block = op_cur->uv.block;
+          if (!block->no_block) {
             int32_t block_var_decl_base = check_ast_info->my_stack->length;
             SPVM_LIST_push(check_ast_info->block_var_decl_base_stack, (void*)(intptr_t)block_var_decl_base);
             
-            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+            if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
               check_ast_info->loop_block_stack_length++;
             }
-            else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+            else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
               check_ast_info->eval_block_stack_length++;
             }
           }
@@ -2429,8 +2429,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               break;
             }
             case SPVM_OP_C_ID_BLOCK: {
-              // End of scope
-              if (!op_cur->uv.block->no_block) {
+              SPVM_BLOCK* block = op_cur->uv.block;
+              if (!block->no_block) {
                 // Pop block var_decl variable base
                 assert(check_ast_info->block_var_decl_base_stack->length > 0);
                 int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->block_var_decl_base_stack);
@@ -2442,11 +2442,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
 
                 // Pop loop block var_decl variable base
-                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                   check_ast_info->loop_block_stack_length--;
                 }
                 // Pop try block var_decl variable base
-                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+                else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
                   check_ast_info->eval_block_stack_length--;
                 }
               }
