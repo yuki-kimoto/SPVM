@@ -261,13 +261,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
           if (!block->no_scope) {
             int32_t block_var_decl_base = check_ast_info->var_decl_stack->length;
             SPVM_LIST_push(check_ast_info->var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
-            
-            if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-              check_ast_info->loop_block_stack_length++;
-            }
-            else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-              check_ast_info->eval_block_stack_length++;
-            }
+          }
+          
+          if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+            check_ast_info->loop_block_stack_length++;
+          }
+          else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
+            check_ast_info->eval_block_stack_length++;
           }
           
           break;
@@ -2442,15 +2442,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 for (int32_t i = 0; i < var_decl_stack_pop_count; i++) {
                   SPVM_LIST_pop(check_ast_info->var_decl_stack);
                 }
-
-                // Pop loop block var_decl variable base
-                if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-                  check_ast_info->loop_block_stack_length--;
-                }
-                // Pop try block var_decl variable base
-                else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-                  check_ast_info->eval_block_stack_length--;
-                }
+              }
+              
+              // Pop loop block var_decl variable base
+              if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                check_ast_info->loop_block_stack_length--;
+              }
+              // Pop try block var_decl variable base
+              else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
+                check_ast_info->eval_block_stack_length--;
               }
               
               break;
