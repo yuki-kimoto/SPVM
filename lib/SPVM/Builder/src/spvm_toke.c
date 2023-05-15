@@ -257,8 +257,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   while(1) {
     
-    int32_t class_source_index = compiler->bufptr - compiler->cur_class_source;
-    
     // "aaa $foo bar" is interupted "aaa $foo" . " bar"
     if (compiler->bufptr == compiler->next_string_literal_bufptr) {
       compiler->next_string_literal_bufptr = NULL;
@@ -300,8 +298,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       ch = *compiler->bufptr;
     }
     
-    // '\0' means end of file, so try to read next class source
-    if (ch == '\0') {
+    // Load class file
+    int32_t class_source_index = compiler->bufptr - compiler->cur_class_source;
+    if (!compiler->cur_class_source || class_source_index >= compiler->cur_class_source_length) {
       
       // End of file
       if (!parse_not_started) {
