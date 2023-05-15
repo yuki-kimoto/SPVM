@@ -24,7 +24,7 @@ struct spvm_compiler {
   SPVM_LIST* op_types;
   
   // Directory of curreparsed file
-  const char* cur_dir;
+  const char* cur_class_path;
   
   // Current parsed file name
   const char* cur_file;
