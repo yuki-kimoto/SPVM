@@ -257,7 +257,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
       switch (op_cur->id) {
         case SPVM_OP_C_ID_BLOCK: {
           // Start scope
-          if (!op_cur->uv.block->no_scope) {
+          if (!op_cur->uv.block->no_block) {
             int32_t block_var_decl_base = check_ast_info->my_stack->length;
             SPVM_LIST_push(check_ast_info->block_var_decl_base_stack, (void*)(intptr_t)block_var_decl_base);
             
@@ -2430,7 +2430,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_BLOCK: {
               // End of scope
-              if (!op_cur->uv.block->no_scope) {
+              if (!op_cur->uv.block->no_block) {
                 // Pop block var_decl variable base
                 assert(check_ast_info->block_var_decl_base_stack->length > 0);
                 int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->block_var_decl_base_stack);
