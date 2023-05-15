@@ -398,18 +398,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             char* cur_file = NULL;
             
-            // Do directry class search
-            int32_t do_directry_class_search;
-            
-            // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in class source symtable
             SPVM_STRING_BUFFER* found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
-            const char* found_class_source = NULL;
-            if (found_class_source_buffer) {
-              found_class_source = found_class_source_buffer->value;
-            }
             
             const char* class_path = NULL;
-            if (!found_class_source) {
+            if (!found_class_source_buffer) {
+              
               // Search class file
               FILE* fh = NULL;
               int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
@@ -481,15 +474,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fclose(fh);
                 class_source[class_source_length] = '\0';
                 
-                found_class_source = class_source;
-                SPVM_COMPILER_add_class_source(compiler, class_name, found_class_source, class_source_length);
+                SPVM_COMPILER_add_class_source(compiler, class_name,class_source, class_source_length);
               }
             }
             
-            if (found_class_source) {
+            found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
+            
+            if (found_class_source_buffer) {
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_class_source = (char*)found_class_source;
+              compiler->cur_class_source = (char*)found_class_source_buffer->value;
+              compiler->cur_class_source_length = found_class_source_buffer->length;
               compiler->cur_class_path = class_path;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
