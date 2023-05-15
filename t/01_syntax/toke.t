@@ -469,6 +469,19 @@ use Test::More;
   }
 }
 
+# __END__
+{
+  {
+    my $source = "class MyClass { }\n__END__\n";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = "class MyClass { }__END__";
+    compile_ok($source);
+  }
+}
+
 # Extra
 {
   {

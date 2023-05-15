@@ -2024,6 +2024,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             next_is_fat_camma = 0;
           }
           
+          int32_t end_of_file = 0;
+          
           // Check if the symbol is symbol_name
           int32_t keyword_token = 0;
           if (next_is_fat_camma) {
@@ -2512,8 +2514,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
-                  *compiler->bufptr = '\0';
-                  continue;
+                  compiler->bufptr = compiler->cur_class_source + compiler->cur_class_source_length;
+                  parse_not_started = 0;
+                  end_of_file = 1;
                 }
                 else if (strcmp(symbol_name, "__CLASS__") == 0) {
                   yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS_NAME, compiler->cur_file, compiler->cur_line);
@@ -2536,58 +2539,65 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // The symbol name is a keyword
           int32_t token;
-          if (keyword_token > 0) {
-            token = keyword_token;
-          }
-          // The symbol name is not a keyword
-          else {
-            // Check the symbol name
-            {
-              // A symbol name cannnot conatain "__"
-              if (strstr(symbol_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
-              }
-              
-              // A symbol name cannnot end with "::"
-              if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
-              }
-              
-              // A symbol name cannnot contains "::::".
-              if (strstr(symbol_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
-              }
-              
-              // A symbol name cannnot begin with "::"
-              assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
-              
-              // A symbol name cannnot begin with a number "0-9".
-              assert(!isdigit(symbol_name[0]));
+          if (!end_of_file) {
+            if (keyword_token > 0) {
+              token = keyword_token;
             }
-            
-            // A string literal of the left operand of the fat camma
-            if (next_is_fat_camma) {
-              // The string literal of the left operand of the fat camma cannnot contains "::".
-              if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
-                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
-              }
-              
-              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
-              yylvalp->opval = op_constant;
-              token = CONSTANT;
-            }
-            // A symbol name
+            // The symbol name is not a keyword
             else {
-              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
-              yylvalp->opval = op_name;
-              token = SYMBOL_NAME;
+              // Check the symbol name
+              {
+                // A symbol name cannnot conatain "__"
+                if (strstr(symbol_name, "__")) {
+                  SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                }
+                
+                // A symbol name cannnot end with "::"
+                if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
+                  SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                }
+                
+                // A symbol name cannnot contains "::::".
+                if (strstr(symbol_name, "::::")) {
+                  SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                }
+                
+                // A symbol name cannnot begin with "::"
+                assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
+                
+                // A symbol name cannnot begin with a number "0-9".
+                assert(!isdigit(symbol_name[0]));
+              }
+              
+              // A string literal of the left operand of the fat camma
+              if (next_is_fat_camma) {
+                // The string literal of the left operand of the fat camma cannnot contains "::".
+                if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
+                  SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                }
+                
+                SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
+                yylvalp->opval = op_constant;
+                token = CONSTANT;
+              }
+              // A symbol name
+              else {
+                SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
+                yylvalp->opval = op_name;
+                token = SYMBOL_NAME;
+              }
             }
           }
           
           // Free symbol name
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, symbol_name);
           
-          return token;
+          if (end_of_file) {
+            continue;
+          }
+          else {
+            return token;
+          }
         }
         else {
           SPVM_COMPILER_error(compiler, "The character %d in a signed int is not expected.\n  at %s line %d", ch, compiler->cur_file, compiler->cur_line);

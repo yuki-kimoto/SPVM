@@ -3,7 +3,9 @@
     * Fixed the bug that precidence of operators are wrong. The precidence must be the same as Perl.
   [Compilation Error Improvement]
     * The compiliation error message "The character %d in a signed int is not expected." in tokenization is output.
-    
+  [Bug Fix]
+    * The bug that __END__ does not work well is fixed. 
+      
 0.977 2023-05-11
   [Incompatible Changes]
     * The definition of the following native APIs are changed.
