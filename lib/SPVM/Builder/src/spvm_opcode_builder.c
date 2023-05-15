@@ -415,12 +415,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             switch (op_cur->id) {
               case SPVM_OP_C_ID_BLOCK: { // Preorder
                 
-                if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+                SPVM_BLOCK* block = op_cur->uv.block;
+                
+                if (block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
                   // Push last block base stack
                   int32_t last_block_base = last_goto_opcode_rel_index_stack->length;
                   SPVM_LIST_push(last_block_base_stack, (void*)(intptr_t)last_block_base);
                 }
-                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                else if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                   
                   // Push next block base stack
                   int32_t next_block_base = next_goto_opcode_rel_index_stack->length;
@@ -436,12 +438,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_LIST_push(loop_first_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 }
-                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
+                else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
                   // Push break block base stack
                   int32_t break_block_base = break_goto_opcode_rel_index_stack->length;
                   SPVM_LIST_push(break_block_base_stack, (void*)(intptr_t)break_block_base);
                 }
-                else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
+                else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
                   int32_t opcode_rel_index = opcode_array->length - method_opcodes_base_id;
                   
                   SPVM_LIST_push(push_eval_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
