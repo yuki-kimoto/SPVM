@@ -219,10 +219,10 @@ class TestCase::LocalVar {
           return 0;
         }
         else {
-          unless (type_name $object eq "Bool") {
+          unless ($object is_type Bool) {
             return 0;
           }
-          unless (type_name $object2 eq "Bool") {
+          unless ($object2 is_type Bool) {
             return 0;
           }
         }
@@ -230,11 +230,11 @@ class TestCase::LocalVar {
       {
         my $object2 = (Bool)undef;
         if (0 || (my $object = Bool->FALSE) || ($object2 = Bool->FALSE) || 1) {
-          unless (type_name $object eq "Bool") {
+          unless ($object is_type Bool) {
             return 0;
           }
           
-          unless (type_name $object2 eq "Bool") {
+          unless ($object2 is_type Bool) {
             return 0;
           }
         }
@@ -249,10 +249,10 @@ class TestCase::LocalVar {
           unless ($num == 2) {
             return 0;
           }
-          unless (type_name $object eq "Bool") {
+          unless ($object is_type Bool) {
             return 0;
           }
-          unless (type_name $object2 eq "Bool") {
+          unless ($object2 is_type Bool) {
             return 0;
           }
         }
