@@ -1767,7 +1767,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP_cut_op(compiler, op_operand_src);
               
               SPVM_OP* op_operand_mutable_clone = SPVM_OP_new_op_operand_mutable_clone(compiler, op_operand_mutable);
-              op_operand_mutable_clone->is_lvalue = 1;
+              op_operand_mutable_clone->is_dist = 1;
               
               int32_t culc_op_id;
               switch (op_cur->flag) {
@@ -2509,7 +2509,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 // Type cannnot be detected
-                if (!op_cur->is_lvalue && var_decl->type == NULL) {
+                if (!op_cur->is_dist && var_decl->type == NULL) {
                   SPVM_COMPILER_error(compiler, "The type of the variable \"%s\" must be defined.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
@@ -2549,7 +2549,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_build_field_access(compiler, op_field_access, op_operand_invoker, op_name_field);
                   op_field_access->uv.field_access->field = found_capture_field;
 
-                  op_field_access->is_lvalue = op_cur->is_lvalue;
+                  op_field_access->is_dist = op_cur->is_dist;
                   op_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_field_access;
@@ -2570,7 +2570,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
                   SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
                   
-                  op_class_var_access->is_lvalue = op_cur->is_lvalue;
+                  op_class_var_access->is_dist = op_cur->is_dist;
                   op_class_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   if (op_cur->uv.var->call_method) {
                     op_cur->uv.var->call_method->op_invocant = op_class_var_access;
@@ -3008,7 +3008,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
-                  op_array_field_access->is_lvalue = op_cur->is_lvalue;
+                  op_array_field_access->is_dist = op_cur->is_dist;
 
                   op_cur = op_array_field_access;
                   
@@ -3446,7 +3446,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
                     
                     // [START]Postorder traversal position
-                    if (!op_cur->is_lvalue && !op_cur->is_assigned_to_var) {
+                    if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
                       switch (op_cur->id) {
                         case SPVM_OP_C_ID_RETURN:
                         case SPVM_OP_C_ID_LOOP_INCREMENT:

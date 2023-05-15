@@ -3545,7 +3545,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_operand_src);
   SPVM_OP_insert_child(compiler, op_assign, op_assign->last, op_operand_dist);
   
-  op_operand_dist->is_lvalue = 1;
+  op_operand_dist->is_dist = 1;
   
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
     SPVM_COMPILER_error(compiler, "The left operand of the assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);

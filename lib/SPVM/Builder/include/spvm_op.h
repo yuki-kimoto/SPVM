@@ -359,7 +359,7 @@ struct spvm_op {
   int32_t line;
   int32_t column;
   int8_t moresib;
-  int8_t is_lvalue;
+  int8_t is_dist;
   int8_t is_assigned_to_var;
   int8_t no_need_check;
   int8_t free_tmp_vars;
