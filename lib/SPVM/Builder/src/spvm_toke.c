@@ -484,7 +484,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 src[file_size] = '\0';
                 
                 found_class_source = src;
-                SPVM_HASH_set(compiler->class_source_symtable, class_name, strlen(class_name), src);
+                SPVM_COMPILER_add_class_source(compiler, class_name, found_class_source, file_size);
               }
             }
             
