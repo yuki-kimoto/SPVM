@@ -472,12 +472,12 @@ use Test::More;
 # __END__
 {
   {
-    my $source = "class MyClass { }\n__END__\n";
+    my $source = "class MyClass { }\n__END__\nhello world";
     compile_ok($source);
   }
   
   {
-    my $source = "class MyClass { }__END__";
+    my $source = "class MyClass { }__END__ hello world";
     compile_ok($source);
   }
 }
