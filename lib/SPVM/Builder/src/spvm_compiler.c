@@ -170,7 +170,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 }
 
 void SPVM_COMPILER_add_class_source(SPVM_COMPILER* compiler, const char* class_name, const char* class_source, int32_t length) {
-  SPVM_STRING_BUFFER* class_source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_STRING_BUFFER* class_source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, length, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_STRING_BUFFER_add_len(class_source_buffer, (char*)class_source, strlen(class_source));
   SPVM_HASH_set(compiler->class_source_symtable, class_name, strlen(class_name), (void*)class_source_buffer);
 }

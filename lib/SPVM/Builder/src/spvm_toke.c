@@ -465,16 +465,21 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* class_source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, class_source_length + 1);
+                char* class_source = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, class_source_length + 1);
+                int32_t read_error = 0;
                 if ((int32_t)fread(class_source, 1, class_source_length, fh) < class_source_length) {
                   SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
-                  return 0;
+                  read_error = 1;
                 }
-                fclose(fh);
-                class_source[class_source_length] = '\0';
                 
-                SPVM_COMPILER_add_class_source(compiler, class_name,class_source, class_source_length);
+                if (!read_error) {
+                  fclose(fh);
+                  class_source[class_source_length] = '\0';
+                  SPVM_COMPILER_add_class_source(compiler, class_name, class_source, class_source_length);
+                }
+                
+                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
               }
             }
             
