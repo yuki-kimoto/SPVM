@@ -296,7 +296,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       
       // Start parsing a source code
       compiler->cur_file = NULL;
-      compiler->cur_src = NULL;
+      compiler->cur_class_source = NULL;
       compiler->bufptr = NULL;
       compiler->befbufptr = NULL;
       compiler->line_start_ptr = NULL;
@@ -489,7 +489,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (found_class_source) {
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_src = (char*)found_class_source;
+              compiler->cur_class_source = (char*)found_class_source;
               compiler->cur_class_path = class_path;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
@@ -508,9 +508,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_file = cur_file_string->value;
               
               // Set initial information for tokenization
-              compiler->bufptr = compiler->cur_src;
-              compiler->befbufptr = compiler->cur_src;
-              compiler->line_start_ptr = compiler->cur_src;
+              compiler->bufptr = compiler->cur_class_source;
+              compiler->befbufptr = compiler->cur_class_source;
+              compiler->line_start_ptr = compiler->cur_class_source;
               compiler->cur_line = 1;
             }
             else {
@@ -528,7 +528,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           assert(0);
         }
       }
-      if (compiler->cur_src) {
+      if (compiler->cur_class_source) {
         continue;
       }
       else {
@@ -810,7 +810,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '=': {
         // POD
-        if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n') {
+        if (compiler->bufptr == compiler->cur_class_source || *(compiler->bufptr - 1) == '\n') {
           while (1) {
             compiler->bufptr++;
             if (*compiler->bufptr == '\n') {
