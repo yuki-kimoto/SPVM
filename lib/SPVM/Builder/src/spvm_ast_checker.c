@@ -13,7 +13,7 @@
 #include "spvm_hash.h"
 #include "spvm_allocator.h"
 #include "spvm_op.h"
-#include "spvm_op_checker.h"
+#include "spvm_ast_checker.h"
 #include "spvm_method.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"

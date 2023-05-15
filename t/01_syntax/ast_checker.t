@@ -24,7 +24,7 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-# Compilation Errors in spvm_op_checker.c 
+# Compilation Errors in spvm_ast_checker.c 
 
 # Array Initialization
 {
