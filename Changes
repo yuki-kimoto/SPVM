@@ -4,7 +4,8 @@
   [Compilation Error Improvement]
     * The compiliation error message "The character %d in a signed int is not expected." in tokenization is output.
   [Bug Fix]
-    * The bug that __END__ does not work well is fixed. 
+    * The bug that __END__ does not work well is fixed.
+    * The bug that variable declaration with logical operator does not work correctly.
   [Internal Changes]
     * Removed FREE_TMP op. The reference count is not correct now in source codes.
 0.977 2023-05-11
