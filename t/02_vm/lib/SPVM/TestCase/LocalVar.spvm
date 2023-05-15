@@ -243,8 +243,6 @@ class TestCase::LocalVar {
         }
       }
 
-=pod TODO
-
       {
         my $num = 0;
         if (0 || (my $object = Bool->FALSE) || (my $object2 = Bool->FALSE) || ($num = 2)) {
@@ -262,8 +260,6 @@ class TestCase::LocalVar {
           return 0;
         }
       }
-
-=cut
 
     }
     
