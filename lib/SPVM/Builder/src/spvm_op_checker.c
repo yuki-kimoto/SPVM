@@ -3359,7 +3359,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Switch stack
             check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
             
-            // First tree traversal
+            // First AST traversal
             SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
 
             // Free list
@@ -3371,10 +3371,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               return;
             }
             
-            // Second tree traversal
-            // set assign_to_var flag - 
-            // Add string to constant pool
-            // Check ref 
+            // Second AST traversal
+            //   Set is_assigned_to_var flag
             {
               // Run OPs
               SPVM_OP* op_root = method->op_block;
@@ -3389,13 +3387,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   while (1) {
                     // [START]Postorder traversal position
                     switch (op_cur->id) {
-                      case SPVM_OP_C_ID_ASSIGN:
+                      case SPVM_OP_C_ID_ASSIGN: {
                         if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
                           op_cur->first->is_assigned_to_var = 1;
                         }
-                        break;
-                      case SPVM_OP_C_ID_CONSTANT: {
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                         break;
                       }
                     }
@@ -3425,7 +3420,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
             
-            // Third tree traversal
+            // Third AST traversal
             // Create temporary variables for not assigned values - 
             {
               // Run OPs
@@ -3607,7 +3602,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
 
-            // Fourth tree traversal
+            // Fourth AST traversal
             // Fix LEAVE_SCOPE
             {
               // Block stack
@@ -3697,7 +3692,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          // Fifth tree traversal
+          // Fifth AST traversal
           // Resolve var_decl mem ids
           if (!(method->is_native)) {
             {
