@@ -415,9 +415,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             switch (op_cur->id) {
               case SPVM_OP_C_ID_BLOCK: { // Preorder
                 
-                // Push block
-                SPVM_LIST_push(op_block_stack, op_cur);
-                
                 if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
                   // Push last block base stack
                   int32_t last_block_base = last_goto_opcode_rel_index_stack->length;
@@ -462,8 +459,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 
+                // Push block
+                SPVM_LIST_push(op_block_stack, op_cur);
                 int32_t mortal_top = mortal_stack->length;
                 SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
+                
                 break;
               }
               case SPVM_OP_C_ID_SWITCH: {
