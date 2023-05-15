@@ -257,8 +257,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   while(1) {
     
-    // Get current character
-    char ch = *compiler->bufptr;
+    int32_t class_source_index = compiler->bufptr - compiler->cur_class_source;
     
     // "aaa $foo bar" is interupted "aaa $foo" . " bar"
     if (compiler->bufptr == compiler->next_string_literal_bufptr) {
@@ -266,21 +265,39 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
     }
     
+    // Current character
+    char ch = -1;
+    
     // Variable expansion state
-    if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED) {
-      // Nothing
+    if (var_expansion_state > 0) {
+      switch (var_expansion_state) {
+        case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
+          ch = *compiler->bufptr;
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
+          ch = '.';
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
+          ch = *compiler->bufptr;
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
+          ch = '.';
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL: {
+          ch = '"';
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
     }
-    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
-      ch = '.';
-    }
-    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR) {
-      // Nothing
-    }
-    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
-      ch = '.';
-    }
-    else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
-      ch = '"';
+    else {
+      ch = *compiler->bufptr;
     }
     
     // '\0' means end of file, so try to read next class source
