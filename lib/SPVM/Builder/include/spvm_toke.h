@@ -15,6 +15,23 @@ enum {
 };
 
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler);
-SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type);
+
+SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type);
+
+SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int32_t column);
+
+int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch);
+
+int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch);
+
+int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch);
+
+char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr);
+
+char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr);
+
+int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point);
+
+int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst);
 
 #endif

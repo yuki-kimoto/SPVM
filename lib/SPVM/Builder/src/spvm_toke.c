@@ -29,200 +29,6 @@
 #include "spvm_class.h"
 #include "spvm_constant_string.h"
 
-SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
-  
-  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
-  
-  return op;
-}
-
-SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int32_t column) {
-  
-  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
-  
-  // column is only used to decide anon method uniquness
-  op->column = column;
-  
-  return op;
-}
-
-int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
-  (void)compiler;
-  // SP, CR, LF, HT, FF
-  if (ch == 0x20 || ch == 0x0D || ch == 0x0A || ch == 0x09 || ch == 0x0C) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
-int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch) {
-  (void)compiler;
-  // SP, CR, LF, HT, FF
-  if (ch >= '0' && ch <= '7') {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
-int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
-  (void)compiler;
-  // SP, CR, LF, HT, FF
-  if (isdigit(ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
-char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
-  char ch = -1;
-  char* char_ptr = *char_ptr_ptr;
-  
-  int32_t is_o_escape_character = 0;
-  int32_t has_brace = 0;
-  if (*char_ptr == 'o') {
-    is_o_escape_character = 1;
-    char_ptr++;
-    if (*char_ptr == '{') {
-      has_brace = 1;
-      char_ptr++;
-      if (!SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
-        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-        return ch;
-      }
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-      return ch;
-    }
-  }
-  
-  char octal_escape_char[4] = {0};
-  int32_t octal_escape_char_index = 0;
-  while (SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
-    if (octal_escape_char_index >= 3) {
-      break;
-    }
-    octal_escape_char[octal_escape_char_index] = *char_ptr;
-    char_ptr++;
-    octal_escape_char_index++;
-  }
-  
-  if (strlen(octal_escape_char) > 0) {
-    char* end;
-    int32_t number = strtol(octal_escape_char, &end, 8);
-    if (number > 255) {
-      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-      return ch;
-    }
-    ch = (char)number;
-  }
-  
-  if (has_brace) {
-    if (*char_ptr == '}') {
-      char_ptr++;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-    }
-  }
-  
-  *char_ptr_ptr = char_ptr;
-  
-  return ch;
-}
-
-char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
-  char ch;
-  char* char_ptr = *char_ptr_ptr;
-
-  char_ptr++;
-  
-  // {
-  int32_t has_brace = 0;
-  if (*char_ptr == '{') {
-    has_brace = 1;
-    char_ptr++;
-  }
-  
-  char hex_escape_char[9] = {0};
-  int32_t hex_escape_char_index = 0;
-  while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
-    if (hex_escape_char_index >= 2) {
-      break;
-    }
-    hex_escape_char[hex_escape_char_index] = *char_ptr;
-    char_ptr++;
-    hex_escape_char_index++;
-  }
-  
-  if (strlen(hex_escape_char) > 0) {
-    char* end;
-    ch = (char)strtol(hex_escape_char, &end, 16);
-  }
-  else {
-    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-  }
-  
-  if (has_brace) {
-    if (*char_ptr == '}') {
-      char_ptr++;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-    }
-  }
-  
-  *char_ptr_ptr = char_ptr;
-  
-  return ch;
-}
-
-int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point) {
-  int32_t is_unicode_scalar_value = 0;
-  if (code_point >= 0 && code_point <= 0x10FFFF) {
-    if (!(code_point >= 0xD800 && code_point <= 0xDFFF)) {
-      is_unicode_scalar_value = 1;
-    }
-  }
-  
-  return is_unicode_scalar_value;
-}
-
-int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst) {
-  if (uc < 0x00) {
-    return 0;
-  } else if (uc < 0x80) {
-    dst[0] = (uint8_t)uc;
-    return 1;
-  } else if (uc < 0x800) {
-    dst[0] = (uint8_t)(0xC0 + (uc >> 6));
-    dst[1] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 2;
-  // Note: we allow encoding 0xd800-0xdfff here, so as not to change
-  // the API, however, these are actually invalid in UTF-8
-  } else if (uc < 0x10000) {
-    dst[0] = (uint8_t)(0xE0 + (uc >> 12));
-    dst[1] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
-    dst[2] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 3;
-  } else if (uc < 0x110000) {
-    dst[0] = (uint8_t)(0xF0 + (uc >> 18));
-    dst[1] = (uint8_t)(0x80 + ((uc >> 12) & 0x3F));
-    dst[2] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
-    dst[3] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 4;
-  }
-  else {
-    return 0;
-  }
-}
-
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Default source is a empty string
@@ -2620,3 +2426,196 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   }
 }
 
+SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
+  
+  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
+  
+  return op;
+}
+
+SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int32_t column) {
+  
+  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
+  
+  // column is only used to decide anon method uniquness
+  op->column = column;
+  
+  return op;
+}
+
+int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (ch == 0x20 || ch == 0x0D || ch == 0x0A || ch == 0x09 || ch == 0x0C) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (ch >= '0' && ch <= '7') {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
+  (void)compiler;
+  // SP, CR, LF, HT, FF
+  if (isdigit(ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
+  char ch = -1;
+  char* char_ptr = *char_ptr_ptr;
+  
+  int32_t is_o_escape_character = 0;
+  int32_t has_brace = 0;
+  if (*char_ptr == 'o') {
+    is_o_escape_character = 1;
+    char_ptr++;
+    if (*char_ptr == '{') {
+      has_brace = 1;
+      char_ptr++;
+      if (!SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
+        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+        return ch;
+      }
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      return ch;
+    }
+  }
+  
+  char octal_escape_char[4] = {0};
+  int32_t octal_escape_char_index = 0;
+  while (SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
+    if (octal_escape_char_index >= 3) {
+      break;
+    }
+    octal_escape_char[octal_escape_char_index] = *char_ptr;
+    char_ptr++;
+    octal_escape_char_index++;
+  }
+  
+  if (strlen(octal_escape_char) > 0) {
+    char* end;
+    int32_t number = strtol(octal_escape_char, &end, 8);
+    if (number > 255) {
+      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      return ch;
+    }
+    ch = (char)number;
+  }
+  
+  if (has_brace) {
+    if (*char_ptr == '}') {
+      char_ptr++;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+    }
+  }
+  
+  *char_ptr_ptr = char_ptr;
+  
+  return ch;
+}
+
+char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
+  char ch;
+  char* char_ptr = *char_ptr_ptr;
+
+  char_ptr++;
+  
+  // {
+  int32_t has_brace = 0;
+  if (*char_ptr == '{') {
+    has_brace = 1;
+    char_ptr++;
+  }
+  
+  char hex_escape_char[9] = {0};
+  int32_t hex_escape_char_index = 0;
+  while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
+    if (hex_escape_char_index >= 2) {
+      break;
+    }
+    hex_escape_char[hex_escape_char_index] = *char_ptr;
+    char_ptr++;
+    hex_escape_char_index++;
+  }
+  
+  if (strlen(hex_escape_char) > 0) {
+    char* end;
+    ch = (char)strtol(hex_escape_char, &end, 16);
+  }
+  else {
+    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+  }
+  
+  if (has_brace) {
+    if (*char_ptr == '}') {
+      char_ptr++;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+    }
+  }
+  
+  *char_ptr_ptr = char_ptr;
+  
+  return ch;
+}
+
+int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point) {
+  int32_t is_unicode_scalar_value = 0;
+  if (code_point >= 0 && code_point <= 0x10FFFF) {
+    if (!(code_point >= 0xD800 && code_point <= 0xDFFF)) {
+      is_unicode_scalar_value = 1;
+    }
+  }
+  
+  return is_unicode_scalar_value;
+}
+
+int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst) {
+  if (uc < 0x00) {
+    return 0;
+  } else if (uc < 0x80) {
+    dst[0] = (uint8_t)uc;
+    return 1;
+  } else if (uc < 0x800) {
+    dst[0] = (uint8_t)(0xC0 + (uc >> 6));
+    dst[1] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 2;
+  // Note: we allow encoding 0xd800-0xdfff here, so as not to change
+  // the API, however, these are actually invalid in UTF-8
+  } else if (uc < 0x10000) {
+    dst[0] = (uint8_t)(0xE0 + (uc >> 12));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 3;
+  } else if (uc < 0x110000) {
+    dst[0] = (uint8_t)(0xF0 + (uc >> 18));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 12) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[3] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 4;
+  }
+  else {
+    return 0;
+  }
+}
