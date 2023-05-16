@@ -78,8 +78,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           SPVM_LIST_push(method->var_decls, arg_var_decl);
         }
       }
-        
-      if (!(method->is_native)) {
+      
+      // AST traversals
+      if (method->op_block) {
         SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
         SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
         
