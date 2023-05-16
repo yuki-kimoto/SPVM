@@ -6,6 +6,7 @@ use warnings;
 use utf8;
 
 use SPVM::Builder;
+use File::Temp;
 
 my $test_dir;
 my $test_dir_vm;
@@ -25,6 +26,20 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 use Test::More;
 
 # Compilation Errors in yacc/spvm_yacc.y
+
+# reduce/reduce is not allowed
+{
+  {
+    my $tmp_dir = File::Temp->newdir;
+    my $output = `bison -o $tmp_dir/spvm_yacc.c --defines=$tmp_dir/spvm_yacc.h -t -p SPVM_yy -d yacc/spvm_yacc.y 2>&1`;
+    if ($? == 0) {
+      warn "$output";
+      if ($output =~ m|reduce/reduce|) {
+        ok(0);
+      }
+    }
+  }
+}
 
 # Extra
 {
