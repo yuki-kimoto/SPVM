@@ -38,186 +38,557 @@
 #include "spvm_constant_string.h"
 #include "spvm_attribute.h"
 
-SPVM_METHOD* SPVM_OP_CHECKER_search_method_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
-  SPVM_METHOD* found_method = NULL;
-  
-  SPVM_CLASS* parent_class = class;
-  while (1) {
-    found_method = SPVM_HASH_get(
-      parent_class->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
-    if (found_method) {
-      break;
-    }
-    parent_class = parent_class->parent_class;
-    
-    if (!parent_class) {
-      break;
-    }
+void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
+  // Resolve type ops
+  SPVM_OP_CHECKER_resolve_op_types(compiler);
+  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+    return;
   }
   
-  return found_method;
-}
-
-
-SPVM_FIELD* SPVM_OP_CHECKER_search_field_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
-  SPVM_FIELD* found_field = NULL;
+  // Resolve basic types
+  SPVM_OP_CHECKER_resolve_basic_types(compiler);
+  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+    return;
+  }
   
-  if (class) {
-    SPVM_CLASS* parent_class = class;
-    while (1) {
-      found_field = SPVM_HASH_get(
-        parent_class->field_symtable,
-        field_name,
-        strlen(field_name)
-      );
-      if (found_field) {
-        break;
-      }
-      parent_class = parent_class->parent_class;
+  // Resolve classes
+  SPVM_OP_CHECKER_resolve_classes(compiler);
+  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+    return;
+  }
+  
+  // Resolve types
+  SPVM_OP_CHECKER_resolve_types(compiler);
+  
+  // Check syntax and generate operations in classes
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    SPVM_LIST* methods = class->methods;
+    
+    // Check syntax and generate operations in methods
+    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
-      if (!parent_class) {
-        break;
-      }
-    }
-  }
-  
-  return found_field;
-}
+      if (!(method->is_native)) {
+        SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
+        SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
+        
+        // Class
+        check_ast_info->class = class;
+        
+        // Method
+        check_ast_info->method = method;
+        
+        // Eval block stack length
+        check_ast_info->eval_block_stack_length = 0;
+        
+        // Loop block stack length
+        check_ast_info->loop_block_stack_length = 0;
+        
+        // First AST traversal - Check syntax and generate some operations
+        {
+          check_ast_info->var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          check_ast_info->var_decl_scope_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, method->op_block, check_ast_info);
+          
+          SPVM_LIST_free(check_ast_info->var_decl_stack);
+          SPVM_LIST_free(check_ast_info->var_decl_scope_base_stack);
+          SPVM_LIST_free(check_ast_info->op_switch_stack);
+          
+          if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            return;
+          }
+        }
+        
+        // Second AST traversal - Generate local variable assignment operations
+        {
+          // Run OPs
+          SPVM_OP* op_root = method->op_block;
+          SPVM_OP* op_cur = op_root;
+          int32_t finish = 0;
+          while (op_cur) {
+            // [START]Preorder traversal position
+            switch (op_cur->id) {
+              case SPVM_OP_C_ID_ASSIGN: {
+                if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
+                  op_cur->first->is_assigned_to_var = 1;
+                }
+                break;
+              }
+            }
+            
+            if (op_cur->first) {
+              op_cur = op_cur->first;
+            }
+            else {
+              while (1) {
+                // Create temporary variable for no is_assigned_to_var operand which is not variable
+                int32_t create_tmp_var = 0;
+                SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+                
+                // [START]Postorder traversal position
+                if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
+                  switch (op_cur->id) {
+                    case SPVM_OP_C_ID_RETURN:
+                    case SPVM_OP_C_ID_LOOP_INCREMENT:
+                    case SPVM_OP_C_ID_CONDITION:
+                    case SPVM_OP_C_ID_CONDITION_NOT:
+                    case SPVM_OP_C_ID_TYPE_CAST:
+                    case SPVM_OP_C_ID_SWITCH:
+                    case SPVM_OP_C_ID_DEFAULT:
+                    case SPVM_OP_C_ID_CASE:
+                    case SPVM_OP_C_ID_DIE:
+                    case SPVM_OP_C_ID_WARN:
+                    case SPVM_OP_C_ID_PRINT:
+                    case SPVM_OP_C_ID_SAY:
+                    case SPVM_OP_C_ID_MAKE_READ_ONLY:
+                    case SPVM_OP_C_ID_IS_READ_ONLY:
+                    case SPVM_OP_C_ID_LAST:
+                    case SPVM_OP_C_ID_NEXT:
+                    case SPVM_OP_C_ID_BREAK:
+                    case SPVM_OP_C_ID_ADD:
+                    case SPVM_OP_C_ID_SUBTRACT:
+                    case SPVM_OP_C_ID_MULTIPLY:
+                    case SPVM_OP_C_ID_DIVIDE:
+                    case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
+                    case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
+                    case SPVM_OP_C_ID_REMAINDER:
+                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
+                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
+                    case SPVM_OP_C_ID_BIT_AND:
+                    case SPVM_OP_C_ID_BIT_OR:
+                    case SPVM_OP_C_ID_BIT_XOR:
+                    case SPVM_OP_C_ID_BIT_NOT:
+                    case SPVM_OP_C_ID_LEFT_SHIFT:
+                    case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
+                    case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
+                    case SPVM_OP_C_ID_MINUS:
+                    case SPVM_OP_C_ID_PLUS:
+                    case SPVM_OP_C_ID_COPY:
+                    case SPVM_OP_C_ID_ARRAY_LENGTH:
+                    case SPVM_OP_C_ID_STRING_LENGTH:
+                    case SPVM_OP_C_ID_NEW:
+                    case SPVM_OP_C_ID_CLASS_ID:
+                    case SPVM_OP_C_ID_ERROR:
+                    case SPVM_OP_C_ID_ERROR_CODE:
+                    case SPVM_OP_C_ID_SET_ERROR_CODE:
+                    case SPVM_OP_C_ID_ITEMS:
+                    case SPVM_OP_C_ID_CONCAT:
+                    case SPVM_OP_C_ID_TYPE_NAME:
+                    case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
+                    case SPVM_OP_C_ID_DUMP:
+                    case SPVM_OP_C_ID_NEW_STRING_LEN:
+                    case SPVM_OP_C_ID_EXCEPTION_VAR:
+                    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+                    case SPVM_OP_C_ID_SWITCH_CONDITION:
+                    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+                    case SPVM_OP_C_ID_CREATE_REF:
+                    case SPVM_OP_C_ID_DEREF:
+                    case SPVM_OP_C_ID_REFCNT:
+                    case SPVM_OP_C_ID_FIELD_ACCESS:
+                    case SPVM_OP_C_ID_ARRAY_ACCESS:
+                    case SPVM_OP_C_ID_CALL_METHOD:
+                    case SPVM_OP_C_ID_TRUE:
+                    case SPVM_OP_C_ID_FALSE:
+                    {
+                      create_tmp_var = 1;
+                      break;
+                    }
+                    case SPVM_OP_C_ID_CONSTANT: {
+                      if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
+                        create_tmp_var = 1;
+                      }
+                      break;
+                    }
+                    case SPVM_OP_C_ID_NUMERIC_EQ:
+                    case SPVM_OP_C_ID_NUMERIC_NE:
+                    case SPVM_OP_C_ID_NUMERIC_GT:
+                    case SPVM_OP_C_ID_NUMERIC_GE:
+                    case SPVM_OP_C_ID_NUMERIC_LT:
+                    case SPVM_OP_C_ID_NUMERIC_LE:
+                    case SPVM_OP_C_ID_NUMERIC_CMP:
+                    case SPVM_OP_C_ID_STRING_EQ:
+                    case SPVM_OP_C_ID_STRING_NE:
+                    case SPVM_OP_C_ID_STRING_GT:
+                    case SPVM_OP_C_ID_STRING_GE:
+                    case SPVM_OP_C_ID_STRING_LT:
+                    case SPVM_OP_C_ID_STRING_LE:
+                    case SPVM_OP_C_ID_STRING_CMP:
+                    case SPVM_OP_C_ID_ISA:
+                    case SPVM_OP_C_ID_IS_TYPE:
+                    case SPVM_OP_C_ID_IS_COMPILE_TYPE:
+                    case SPVM_OP_C_ID_BOOL:
+                    {
+                      assert(0);
+                      break;
+                    }
+                  }
+                }
 
-int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
-  
-  int32_t can_access = 0;
-  
-  if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-    if (class_from->id == class_to->id) {
-      can_access = 1;
-    }
-    else {
-      can_access = 0;
-    }
-  }
-  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-    if (class_from->id == class_to->id) {
-      can_access = 1;
-    }
-    else {
-      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_to->type->basic_type->id, class_from->type->basic_type->id)) {
-        can_access = 1;
-      }
-      else {
-        can_access = 0;
-      }
-    }
-  }
-  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
-    can_access = 1;
-  }
-  else {
-    assert(0);
-  }
-  
-  return can_access;
-}
+                // Create temporary variable
+                if (create_tmp_var) {
+                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, tmp_var_type, op_cur->file, op_cur->line);
+                  
+                  op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
+                  SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
+                  
+                  if (op_var_tmp == NULL) {
+                    return;
+                  }
+                  
+                  // Cut new op
+                  SPVM_OP* op_target = op_cur;
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
 
-int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
-  
-  SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
-  SPVM_METHOD* method2 = *(SPVM_METHOD**)method2_ptr;
-  
-  const char* method1_name = method1->name;
-  const char* method2_name = method2->name;
-  
-  return strcmp(method1_name, method2_name);
-}
+                  // Assing op
+                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                  
+                  // Convert cur new op to var
+                  SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                  op_target->uv = op_cur->uv;
+                  
+                  op_cur = op_target;
+                }
 
-void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
-  (void)compiler;
-  
-  SPVM_TYPE* my_type = var_decl->type;
-  
-  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+                if (op_cur == op_root) {
 
-  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
-    int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id);
-    if (my_id == var_decl->id) {
-      assert(mem_id + stack_length <= mem_stack->length);
-      for (int32_t i = 0; i < stack_length; i++) {
-        mem_stack->values[mem_id + i] = (void*)(intptr_t)-1;
-      }
-    }
-  }
-}
+                  // Finish
+                  finish = 1;
+                  
+                  break;
+                }
+                
+                // Next sibling
+                if (op_cur->moresib) {
+                  op_cur = SPVM_OP_sibling(compiler, op_cur);
+                  break;
+                }
+                // Next is parent
+                else {
+                  op_cur = op_cur->sibparent;
+                }
+              }
+              if (finish) {
+                break;
+              }
+            }
+          }
+        }
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+          return;
+        }
+        assert(method->class->class_file);
+        
+        // Add op var_decl if need
+        if (method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          int32_t arg_index;
+          for (arg_index = 0; arg_index < method->args_length; arg_index++) {
+            SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+            SPVM_LIST_push(method->var_decls, arg_var_decl);
+          }
+        }
+        
+        // Third AST traversal
+        // Fix LEAVE_SCOPE
+        {
+          // Block stack
+          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          // Run OPs
+          SPVM_OP* op_root = method->op_block;
+          SPVM_OP* op_cur = op_root;
+          int32_t finish = 0;
+          while (op_cur) {
+            // [START]Preorder traversal position
+            switch (op_cur->id) {
+              // Start scope
+              case SPVM_OP_C_ID_BLOCK: {
+                SPVM_BLOCK* block = op_cur->uv.block;
+                
+                // Push block
+                SPVM_LIST_push(op_block_stack, op_cur);
+                
+                break;
+              }
+            }
 
-int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
-  
-  int32_t found_mem_id = -1;
-  
-  SPVM_TYPE* my_type = var_decl->type;
+            if (op_cur->first) {
+              op_cur = op_cur->first;
+            }
+            else {
+              while (1) {
+                // [START]Postorder traversal position
+                switch (op_cur->id) {
+                  case SPVM_OP_C_ID_BLOCK: {
+                    SPVM_BLOCK* block = op_cur->uv.block;
+                    SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
 
-  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
-  
-  // Search free memory
-  int32_t found = 0;
-  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
-    if (mem_id + stack_length <= mem_stack->length) {
-      int32_t is_used = 0;
-      for (int32_t i = 0; i < stack_length; i++) {
-        int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id + i);
-        if (my_id >= 0) {
-          is_used = 1;
-          break;
+                    SPVM_LIST_pop(op_block_stack);
+                    
+                    // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+                    if (op_block_stack->length > 0) {
+                      SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+                      if (!op_block_parent->uv.block->have_object_var_decl) {
+                        if (op_block_current->uv.block->have_object_var_decl) {
+                          op_block_parent->uv.block->have_object_var_decl = 1;
+                        }
+                      }
+                    }
+                    break;
+                  }
+                  case SPVM_OP_C_ID_VAR: {
+                    if (op_cur->uv.var->is_declaration) {
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+                      int32_t type_is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag);
+                      
+                      if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_mulnum_t) {
+                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+                        op_block_current->uv.block->have_object_var_decl = 1;
+                      }
+                    }
+                    
+                    break;
+                  }
+                }
+
+                if (op_cur == op_root) {
+
+                  // Finish
+                  finish = 1;
+                  
+                  break;
+                }
+                
+                // Next sibling
+                if (op_cur->moresib) {
+                  op_cur = SPVM_OP_sibling(compiler, op_cur);
+                  break;
+                }
+                // Next is parent
+                else {
+                  op_cur = op_cur->sibparent;
+                }
+              }
+              if (finish) {
+                break;
+              }
+            }
+          }
+          SPVM_LIST_free(op_block_stack);
         }
       }
-      if (!is_used) {
-        found = 1;
-        found_mem_id = mem_id;
-        for (int32_t i = 0; i < stack_length; i++) {
-          mem_stack->values[mem_id + i] = (void*)(intptr_t)var_decl->id;
+
+      // Forth AST traversal
+      // Resolve var_decl mem ids
+      if (!(method->is_native)) {
+        {
+          SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          
+          SPVM_LIST* call_stack_byte_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_short_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_int_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_long_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_float_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_double_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_object_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_ref_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+
+          // Run OPs
+          SPVM_OP* op_root = method->op_block;
+          SPVM_OP* op_cur = op_root;
+          int32_t finish = 0;
+          while (op_cur) {
+            // [START]Preorder traversal position
+            switch (op_cur->id) {
+            }
+
+            if (op_cur->first) {
+              op_cur = op_cur->first;
+            }
+            else {
+              while (1) {
+                // [START]Postorder traversal position
+                switch (op_cur->id) {
+                  case SPVM_OP_C_ID_BLOCK: {
+                    SPVM_BLOCK* block = op_cur->uv.block;
+                    // Move loop condition to last sibling before opcode building
+                    if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+                      SPVM_OP* op_operand_init = op_cur->first;
+                      SPVM_OP* op_condition = op_cur->first->sibparent;
+                      SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
+                      SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
+                      
+                      op_operand_init->sibparent = op_block_statements;
+                      op_loop_increment->sibparent = op_condition;
+                      op_loop_increment->moresib = 1;
+                      
+                      op_condition->sibparent = op_cur;
+                      op_condition->moresib = 0;
+                    }
+                    
+                    break;
+                  }
+                  case SPVM_OP_C_ID_VAR: {
+                    if (op_cur->uv.var->is_declaration) {
+                      SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
+                      
+                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
+                      
+                      // Resolve mem id
+                      int32_t mem_id;
+                      if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_object_vars, var_decl);
+                      }
+                      else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_ref_vars, var_decl);
+                      }
+                      else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        SPVM_CLASS* value_class =  type->basic_type->class;
+                        
+                        SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
+                        assert(first_field);
+                        
+                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        
+                        switch (field_type->basic_type->id) {
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
+                            break;
+                          }
+                          default:
+                            assert(0);
+                        }
+                      }
+                      else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
+                        switch(numeric_type->basic_type->id) {
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
+                            if (strcmp(var_decl->var->name, "$.condition_flag") == 0) {
+                              assert(mem_id == 0);
+                            }
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
+                            break;
+                          }
+                          default:
+                            assert(0);
+                        }
+                      }
+                      else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        mem_id = -1;
+                      }
+                      else {
+                        assert(0);
+                      }
+                      var_decl->mem_id = mem_id;
+                      
+                    }
+                    break;
+                  }
+                }
+
+                if (op_cur == op_root) {
+                  // Finish
+                  finish = 1;
+                  
+                  break;
+                }
+                
+                // Next sibling
+                if (op_cur->moresib) {
+                  op_cur = SPVM_OP_sibling(compiler, op_cur);
+                  break;
+                }
+                // Next is parent
+                else {
+                  op_cur = op_cur->sibparent;
+                }
+              }
+              if (finish) {
+                break;
+              }
+            }
+          }
+          
+          method->call_stack_byte_vars_length = call_stack_byte_vars->length;
+          method->call_stack_short_vars_length = call_stack_short_vars->length;
+          method->call_stack_int_vars_length = call_stack_int_vars->length;
+          method->call_stack_long_vars_length = call_stack_long_vars->length;
+          method->call_stack_float_vars_length = call_stack_float_vars->length;
+          method->call_stack_double_vars_length = call_stack_double_vars->length;
+          method->call_stack_object_vars_length = call_stack_object_vars->length;
+          method->call_stack_ref_vars_length = call_stack_ref_vars->length;
+
+          SPVM_LIST_free(tmp_var_decl_stack);
+
+          SPVM_LIST_free(call_stack_byte_vars);
+          SPVM_LIST_free(call_stack_short_vars);
+          SPVM_LIST_free(call_stack_int_vars);
+          SPVM_LIST_free(call_stack_long_vars);
+          SPVM_LIST_free(call_stack_float_vars);
+          SPVM_LIST_free(call_stack_double_vars);
+          SPVM_LIST_free(call_stack_object_vars);
+          SPVM_LIST_free(call_stack_ref_vars);
         }
-        break;
       }
     }
+  }
+
+#ifdef SPVM_DEBUG_COMPILE
+#include "spvm_dumper.h"
+  if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
+    printf("\n[Basic types]\n");
+    SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
     
-    if (found) {
-      break;
-    }
+    printf("\n[Classes]\n");
+    SPVM_DUMPER_dump_classes(compiler, compiler->classes);
   }
-  
-  // Add stack
-  if (!found) {
-    found_mem_id = mem_stack->length;
-    for (int32_t i = 0; i < stack_length; i++) {
-      SPVM_LIST_push(mem_stack, (void*)(intptr_t)var_decl->id);
-    }
-  }
-  
-  return found_mem_id;
+#endif
 }
 
-SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
-
-  // Temparary variable name
-  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
-  sprintf(name, "$.tmp_%d", method->tmp_vars_length);
-  method->tmp_vars_length++;
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
-  op_name->uv.name = name;
-  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
-  assert(type);
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
-  
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-  
-  op_var->uv.var->is_initialized = 1;
-  
-  return op_var;
-}
-
-void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
+void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
 
   // Class
   SPVM_CLASS* class = check_ast_info->class;
@@ -383,7 +754,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -415,7 +786,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
 
-              SPVM_OP_CHECKER_check_ast(compiler, op_constant, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_constant, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -465,7 +836,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, type_name, strlen(type_name), op_cur->file, op_cur->line);
               
               SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
-              SPVM_OP_CHECKER_check_ast(compiler, op_constant_string, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_constant_string, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -650,7 +1021,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 SPVM_OP* op_false = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
-                SPVM_OP_CHECKER_check_ast(compiler, op_false, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_false, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -699,7 +1070,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_true, op_first->file, op_first->line);
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -769,7 +1140,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_false, op_first->file, op_first->line);
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1238,7 +1609,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                     
                     SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                     
-                    SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
+                    SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
                     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                       return;
                     }
@@ -1347,7 +1718,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                  SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -1358,7 +1729,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                  SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -1421,7 +1792,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1432,7 +1803,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
                 SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign_bool, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -1517,7 +1888,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1578,7 +1949,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1656,7 +2027,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               
               op_cur = op_sequence;
               
-              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1736,7 +2107,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               
               op_cur = op_sequence;
               
-              SPVM_OP_CHECKER_check_ast(compiler, op_sequence, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -1866,7 +2237,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
               
               op_cur = op_assign;
               
-              SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+              SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2559,7 +2930,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   
                   op_cur = op_field_access;
                   
-                  SPVM_OP_CHECKER_check_ast(compiler, op_field_access, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_field_access, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -2582,7 +2953,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
 
                     op_cur = op_class_var_access;
                     
-                    SPVM_OP_CHECKER_check_ast(compiler, op_class_var_access, check_ast_info);
+                    SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_class_var_access, check_ast_info);
                     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                       return;
                     }
@@ -2729,7 +3100,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
 
                 SPVM_OP_replace_op(compiler, op_call_method->last, op_list_args_new);
 
-                SPVM_OP_CHECKER_check_ast(compiler, op_list_args_new, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_list_args_new, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2883,7 +3254,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
                 
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2908,7 +3279,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                 // Convert cur new op to var
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
-                SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+                SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -3023,7 +3394,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                   
-                  SPVM_OP_CHECKER_check_ast(compiler, op_array_field_access, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_array_field_access, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3049,7 +3420,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
-                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3073,7 +3444,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
-                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3103,7 +3474,7 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
-                  SPVM_OP_CHECKER_check_ast(compiler, op_assign, check_ast_info);
+                  SPVM_OP_CHECKER_traversal_ast_check_syntax(compiler, op_assign, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
@@ -3206,6 +3577,185 @@ void SPVM_OP_CHECKER_check_ast(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_C
   
 }
 
+SPVM_METHOD* SPVM_OP_CHECKER_search_method_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
+  SPVM_METHOD* found_method = NULL;
+  
+  SPVM_CLASS* parent_class = class;
+  while (1) {
+    found_method = SPVM_HASH_get(
+      parent_class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
+    if (found_method) {
+      break;
+    }
+    parent_class = parent_class->parent_class;
+    
+    if (!parent_class) {
+      break;
+    }
+  }
+  
+  return found_method;
+}
+
+
+SPVM_FIELD* SPVM_OP_CHECKER_search_field_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
+  SPVM_FIELD* found_field = NULL;
+  
+  if (class) {
+    SPVM_CLASS* parent_class = class;
+    while (1) {
+      found_field = SPVM_HASH_get(
+        parent_class->field_symtable,
+        field_name,
+        strlen(field_name)
+      );
+      if (found_field) {
+        break;
+      }
+      parent_class = parent_class->parent_class;
+      
+      if (!parent_class) {
+        break;
+      }
+    }
+  }
+  
+  return found_field;
+}
+
+int32_t SPVM_OP_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
+  
+  int32_t can_access = 0;
+  
+  if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      can_access = 0;
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
+    if (class_from->id == class_to->id) {
+      can_access = 1;
+    }
+    else {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_to->type->basic_type->id, class_from->type->basic_type->id)) {
+        can_access = 1;
+      }
+      else {
+        can_access = 0;
+      }
+    }
+  }
+  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
+    can_access = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return can_access;
+}
+
+int SPVM_OP_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
+  
+  SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
+  SPVM_METHOD* method2 = *(SPVM_METHOD**)method2_ptr;
+  
+  const char* method1_name = method1->name;
+  const char* method2_name = method2->name;
+  
+  return strcmp(method1_name, method2_name);
+}
+
+void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
+  (void)compiler;
+  
+  SPVM_TYPE* my_type = var_decl->type;
+  
+  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+
+  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
+    int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id);
+    if (my_id == var_decl->id) {
+      assert(mem_id + stack_length <= mem_stack->length);
+      for (int32_t i = 0; i < stack_length; i++) {
+        mem_stack->values[mem_id + i] = (void*)(intptr_t)-1;
+      }
+    }
+  }
+}
+
+int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
+  
+  int32_t found_mem_id = -1;
+  
+  SPVM_TYPE* my_type = var_decl->type;
+
+  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  
+  // Search free memory
+  int32_t found = 0;
+  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
+    if (mem_id + stack_length <= mem_stack->length) {
+      int32_t is_used = 0;
+      for (int32_t i = 0; i < stack_length; i++) {
+        int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id + i);
+        if (my_id >= 0) {
+          is_used = 1;
+          break;
+        }
+      }
+      if (!is_used) {
+        found = 1;
+        found_mem_id = mem_id;
+        for (int32_t i = 0; i < stack_length; i++) {
+          mem_stack->values[mem_id + i] = (void*)(intptr_t)var_decl->id;
+        }
+        break;
+      }
+    }
+    
+    if (found) {
+      break;
+    }
+  }
+  
+  // Add stack
+  if (!found) {
+    found_mem_id = mem_stack->length;
+    for (int32_t i = 0; i < stack_length; i++) {
+      SPVM_LIST_push(mem_stack, (void*)(intptr_t)var_decl->id);
+    }
+  }
+  
+  return found_mem_id;
+}
+
+SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
+
+  // Temparary variable name
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
+  sprintf(name, "$.tmp_%d", method->tmp_vars_length);
+  method->tmp_vars_length++;
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = name;
+  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
+  assert(type);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  
+  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+  
+  op_var->uv.var->is_initialized = 1;
+  
+  return op_var;
+}
+
 void SPVM_OP_CHECKER_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
@@ -3295,569 +3845,6 @@ void SPVM_OP_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, 
     SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_last, NULL);
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
-}
-
-void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
-  
-  // Resolve type ops
-  SPVM_OP_CHECKER_resolve_op_types(compiler);
-  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-    return;
-  }
-  
-  // Resolve basic types
-  SPVM_OP_CHECKER_resolve_basic_types(compiler);
-  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-    return;
-  }
-  
-  // Resolve classes
-  SPVM_OP_CHECKER_resolve_classes(compiler);
-  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-    return;
-  }
-  
-  // Resolve types
-  SPVM_OP_CHECKER_resolve_types(compiler);
-  
-  // Check trees
-  {
-    for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-      SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-      SPVM_LIST* methods = class->methods;
-      {
-        int32_t method_index;
-        for (method_index = 0; method_index < methods->length; method_index++) {
-          
-          SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
-          SPVM_CLASS* class = method->class;
-          SPVM_TYPE* class_type = class->type;
-          
-          // Check method
-          if (!(method->is_native)) {
-            SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
-            SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
-            
-            // Class
-            check_ast_info->class = class;
-            
-            // Method
-            check_ast_info->method = method;
-
-            // Eval block stack length
-            check_ast_info->eval_block_stack_length = 0;
-            
-            // Loop block stack length
-            check_ast_info->loop_block_stack_length = 0;
-            
-            // My stack
-            check_ast_info->var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-            
-            // Block var_decl base stack
-            check_ast_info->var_decl_scope_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-            
-            // Switch stack
-            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-            
-            // First AST traversal
-            SPVM_OP_CHECKER_check_ast(compiler, method->op_block, check_ast_info);
-
-            // Free list
-            SPVM_LIST_free(check_ast_info->var_decl_stack);
-            SPVM_LIST_free(check_ast_info->var_decl_scope_base_stack);
-            SPVM_LIST_free(check_ast_info->op_switch_stack);
-            
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            // Second AST traversal - Create local variable assignment operations
-            {
-              // Run OPs
-              SPVM_OP* op_root = method->op_block;
-              SPVM_OP* op_cur = op_root;
-              int32_t finish = 0;
-              while (op_cur) {
-                // [START]Preorder traversal position
-                switch (op_cur->id) {
-                  case SPVM_OP_C_ID_ASSIGN: {
-                    if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
-                      op_cur->first->is_assigned_to_var = 1;
-                    }
-                    break;
-                  }
-                }
-                
-                if (op_cur->first) {
-                  op_cur = op_cur->first;
-                }
-                else {
-                  while (1) {
-                    // Create temporary variable for no is_assigned_to_var operand which is not variable
-                    int32_t create_tmp_var = 0;
-                    SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-                    
-                    // [START]Postorder traversal position
-                    if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
-                      switch (op_cur->id) {
-                        case SPVM_OP_C_ID_RETURN:
-                        case SPVM_OP_C_ID_LOOP_INCREMENT:
-                        case SPVM_OP_C_ID_CONDITION:
-                        case SPVM_OP_C_ID_CONDITION_NOT:
-                        case SPVM_OP_C_ID_TYPE_CAST:
-                        case SPVM_OP_C_ID_SWITCH:
-                        case SPVM_OP_C_ID_DEFAULT:
-                        case SPVM_OP_C_ID_CASE:
-                        case SPVM_OP_C_ID_DIE:
-                        case SPVM_OP_C_ID_WARN:
-                        case SPVM_OP_C_ID_PRINT:
-                        case SPVM_OP_C_ID_SAY:
-                        case SPVM_OP_C_ID_MAKE_READ_ONLY:
-                        case SPVM_OP_C_ID_IS_READ_ONLY:
-                        case SPVM_OP_C_ID_LAST:
-                        case SPVM_OP_C_ID_NEXT:
-                        case SPVM_OP_C_ID_BREAK:
-                        case SPVM_OP_C_ID_ADD:
-                        case SPVM_OP_C_ID_SUBTRACT:
-                        case SPVM_OP_C_ID_MULTIPLY:
-                        case SPVM_OP_C_ID_DIVIDE:
-                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
-                        case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
-                        case SPVM_OP_C_ID_REMAINDER:
-                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
-                        case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
-                        case SPVM_OP_C_ID_BIT_AND:
-                        case SPVM_OP_C_ID_BIT_OR:
-                        case SPVM_OP_C_ID_BIT_XOR:
-                        case SPVM_OP_C_ID_BIT_NOT:
-                        case SPVM_OP_C_ID_LEFT_SHIFT:
-                        case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
-                        case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
-                        case SPVM_OP_C_ID_MINUS:
-                        case SPVM_OP_C_ID_PLUS:
-                        case SPVM_OP_C_ID_COPY:
-                        case SPVM_OP_C_ID_ARRAY_LENGTH:
-                        case SPVM_OP_C_ID_STRING_LENGTH:
-                        case SPVM_OP_C_ID_NEW:
-                        case SPVM_OP_C_ID_CLASS_ID:
-                        case SPVM_OP_C_ID_ERROR:
-                        case SPVM_OP_C_ID_ERROR_CODE:
-                        case SPVM_OP_C_ID_SET_ERROR_CODE:
-                        case SPVM_OP_C_ID_ITEMS:
-                        case SPVM_OP_C_ID_CONCAT:
-                        case SPVM_OP_C_ID_TYPE_NAME:
-                        case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
-                        case SPVM_OP_C_ID_DUMP:
-                        case SPVM_OP_C_ID_NEW_STRING_LEN:
-                        case SPVM_OP_C_ID_EXCEPTION_VAR:
-                        case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
-                        case SPVM_OP_C_ID_SWITCH_CONDITION:
-                        case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
-                        case SPVM_OP_C_ID_CREATE_REF:
-                        case SPVM_OP_C_ID_DEREF:
-                        case SPVM_OP_C_ID_REFCNT:
-                        case SPVM_OP_C_ID_FIELD_ACCESS:
-                        case SPVM_OP_C_ID_ARRAY_ACCESS:
-                        case SPVM_OP_C_ID_CALL_METHOD:
-                        case SPVM_OP_C_ID_TRUE:
-                        case SPVM_OP_C_ID_FALSE:
-                        {
-                          create_tmp_var = 1;
-                          break;
-                        }
-                        case SPVM_OP_C_ID_CONSTANT: {
-                          if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                            create_tmp_var = 1;
-                          }
-                          break;
-                        }
-                        case SPVM_OP_C_ID_NUMERIC_EQ:
-                        case SPVM_OP_C_ID_NUMERIC_NE:
-                        case SPVM_OP_C_ID_NUMERIC_GT:
-                        case SPVM_OP_C_ID_NUMERIC_GE:
-                        case SPVM_OP_C_ID_NUMERIC_LT:
-                        case SPVM_OP_C_ID_NUMERIC_LE:
-                        case SPVM_OP_C_ID_NUMERIC_CMP:
-                        case SPVM_OP_C_ID_STRING_EQ:
-                        case SPVM_OP_C_ID_STRING_NE:
-                        case SPVM_OP_C_ID_STRING_GT:
-                        case SPVM_OP_C_ID_STRING_GE:
-                        case SPVM_OP_C_ID_STRING_LT:
-                        case SPVM_OP_C_ID_STRING_LE:
-                        case SPVM_OP_C_ID_STRING_CMP:
-                        case SPVM_OP_C_ID_ISA:
-                        case SPVM_OP_C_ID_IS_TYPE:
-                        case SPVM_OP_C_ID_IS_COMPILE_TYPE:
-                        case SPVM_OP_C_ID_BOOL:
-                        {
-                          assert(0);
-                          break;
-                        }
-                      }
-                    }
-
-                    // Create temporary variable
-                    if (create_tmp_var) {
-                      SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, tmp_var_type, op_cur->file, op_cur->line);
-                      
-                      op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
-                      SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
-                      
-                      if (op_var_tmp == NULL) {
-                        return;
-                      }
-                      
-                      // Cut new op
-                      SPVM_OP* op_target = op_cur;
-                      
-                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                      // Assing op
-                      SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                      
-                      // Convert cur new op to var
-                      SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                      op_target->uv = op_cur->uv;
-                      
-                      op_cur = op_target;
-                    }
-
-                    if (op_cur == op_root) {
-
-                      // Finish
-                      finish = 1;
-                      
-                      break;
-                    }
-                    
-                    // Next sibling
-                    if (op_cur->moresib) {
-                      op_cur = SPVM_OP_sibling(compiler, op_cur);
-                      break;
-                    }
-                    // Next is parent
-                    else {
-                      op_cur = op_cur->sibparent;
-                    }
-                  }
-                  if (finish) {
-                    break;
-                  }
-                }
-              }
-            }
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            assert(method->class->class_file);
-            
-            // Add op var_decl if need
-            if (method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-              int32_t arg_index;
-              for (arg_index = 0; arg_index < method->args_length; arg_index++) {
-                SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-                SPVM_LIST_push(method->var_decls, arg_var_decl);
-              }
-            }
-
-            // Third AST traversal
-            // Fix LEAVE_SCOPE
-            {
-              // Block stack
-              SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              
-              // Run OPs
-              SPVM_OP* op_root = method->op_block;
-              SPVM_OP* op_cur = op_root;
-              int32_t finish = 0;
-              while (op_cur) {
-                // [START]Preorder traversal position
-                switch (op_cur->id) {
-                  // Start scope
-                  case SPVM_OP_C_ID_BLOCK: {
-                    SPVM_BLOCK* block = op_cur->uv.block;
-                    
-                    // Push block
-                    SPVM_LIST_push(op_block_stack, op_cur);
-                    
-                    break;
-                  }
-                }
-
-                if (op_cur->first) {
-                  op_cur = op_cur->first;
-                }
-                else {
-                  while (1) {
-                    // [START]Postorder traversal position
-                    switch (op_cur->id) {
-                      case SPVM_OP_C_ID_BLOCK: {
-                        SPVM_BLOCK* block = op_cur->uv.block;
-                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-
-                        SPVM_LIST_pop(op_block_stack);
-                        
-                        // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
-                        if (op_block_stack->length > 0) {
-                          SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                          if (!op_block_parent->uv.block->have_object_var_decl) {
-                            if (op_block_current->uv.block->have_object_var_decl) {
-                              op_block_parent->uv.block->have_object_var_decl = 1;
-                            }
-                          }
-                        }
-                        break;
-                      }
-                      case SPVM_OP_C_ID_VAR: {
-                        if (op_cur->uv.var->is_declaration) {
-                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                          int32_t type_is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag);
-                          
-                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_mulnum_t) {
-                            SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                            op_block_current->uv.block->have_object_var_decl = 1;
-                          }
-                        }
-                        
-                        break;
-                      }
-                    }
-
-                    if (op_cur == op_root) {
-
-                      // Finish
-                      finish = 1;
-                      
-                      break;
-                    }
-                    
-                    // Next sibling
-                    if (op_cur->moresib) {
-                      op_cur = SPVM_OP_sibling(compiler, op_cur);
-                      break;
-                    }
-                    // Next is parent
-                    else {
-                      op_cur = op_cur->sibparent;
-                    }
-                  }
-                  if (finish) {
-                    break;
-                  }
-                }
-              }
-              SPVM_LIST_free(op_block_stack);
-            }
-          }
-
-          // Forth AST traversal
-          // Resolve var_decl mem ids
-          if (!(method->is_native)) {
-            {
-              SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              
-              SPVM_LIST* call_stack_byte_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_short_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_int_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_long_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_float_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_double_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_object_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-              SPVM_LIST* call_stack_ref_vars = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-
-              // Run OPs
-              SPVM_OP* op_root = method->op_block;
-              SPVM_OP* op_cur = op_root;
-              int32_t finish = 0;
-              while (op_cur) {
-                // [START]Preorder traversal position
-                switch (op_cur->id) {
-                }
-
-                if (op_cur->first) {
-                  op_cur = op_cur->first;
-                }
-                else {
-                  while (1) {
-                    // [START]Postorder traversal position
-                    switch (op_cur->id) {
-                      case SPVM_OP_C_ID_BLOCK: {
-                        SPVM_BLOCK* block = op_cur->uv.block;
-                        // Move loop condition to last sibling before opcode building
-                        if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
-                          SPVM_OP* op_operand_init = op_cur->first;
-                          SPVM_OP* op_condition = op_cur->first->sibparent;
-                          SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
-                          SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
-                          
-                          op_operand_init->sibparent = op_block_statements;
-                          op_loop_increment->sibparent = op_condition;
-                          op_loop_increment->moresib = 1;
-                          
-                          op_condition->sibparent = op_cur;
-                          op_condition->moresib = 0;
-                        }
-                        
-                        break;
-                      }
-                      case SPVM_OP_C_ID_VAR: {
-                        if (op_cur->uv.var->is_declaration) {
-                          SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
-                          
-                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
-                          
-                          // Resolve mem id
-                          int32_t mem_id;
-                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_object_vars, var_decl);
-                          }
-                          else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_ref_vars, var_decl);
-                          }
-                          else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_CLASS* value_class =  type->basic_type->class;
-                            
-                            SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
-                            assert(first_field);
-                            
-                            SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-                            
-                            switch (field_type->basic_type->id) {
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
-                                break;
-                              }
-                              default:
-                                assert(0);
-                            }
-                          }
-                          else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
-                            switch(numeric_type->basic_type->id) {
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
-                                if (strcmp(var_decl->var->name, "$.condition_flag") == 0) {
-                                  assert(mem_id == 0);
-                                }
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
-                                break;
-                              }
-                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
-                                break;
-                              }
-                              default:
-                                assert(0);
-                            }
-                          }
-                          else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                            mem_id = -1;
-                          }
-                          else {
-                            assert(0);
-                          }
-                          var_decl->mem_id = mem_id;
-                          
-                        }
-                        break;
-                      }
-                    }
-
-                    if (op_cur == op_root) {
-                      // Finish
-                      finish = 1;
-                      
-                      break;
-                    }
-                    
-                    // Next sibling
-                    if (op_cur->moresib) {
-                      op_cur = SPVM_OP_sibling(compiler, op_cur);
-                      break;
-                    }
-                    // Next is parent
-                    else {
-                      op_cur = op_cur->sibparent;
-                    }
-                  }
-                  if (finish) {
-                    break;
-                  }
-                }
-              }
-              
-              method->call_stack_byte_vars_length = call_stack_byte_vars->length;
-              method->call_stack_short_vars_length = call_stack_short_vars->length;
-              method->call_stack_int_vars_length = call_stack_int_vars->length;
-              method->call_stack_long_vars_length = call_stack_long_vars->length;
-              method->call_stack_float_vars_length = call_stack_float_vars->length;
-              method->call_stack_double_vars_length = call_stack_double_vars->length;
-              method->call_stack_object_vars_length = call_stack_object_vars->length;
-              method->call_stack_ref_vars_length = call_stack_ref_vars->length;
-
-              SPVM_LIST_free(tmp_var_decl_stack);
-
-              SPVM_LIST_free(call_stack_byte_vars);
-              SPVM_LIST_free(call_stack_short_vars);
-              SPVM_LIST_free(call_stack_int_vars);
-              SPVM_LIST_free(call_stack_long_vars);
-              SPVM_LIST_free(call_stack_float_vars);
-              SPVM_LIST_free(call_stack_double_vars);
-              SPVM_LIST_free(call_stack_object_vars);
-              SPVM_LIST_free(call_stack_ref_vars);
-            }
-          }
-        }
-      }
-    }
-  }
-
-#ifdef SPVM_DEBUG_COMPILE
-#include "spvm_dumper.h"
-  if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
-    printf("\n[Basic types]\n");
-    SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
-    
-    printf("\n[Classes]\n");
-    SPVM_DUMPER_dump_classes(compiler, compiler->classes);
-  }
-#endif
 }
 
 SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
