@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_SPVM_YY_SPVM_YACC_TAB_H_INCLUDED
-# define YY_SPVM_YY_SPVM_YACC_TAB_H_INCLUDED
+#ifndef YY_SPVM_YY_LIB_SPVM_BUILDER_INCLUDE_SPVM_YACC_H_INCLUDED
+# define YY_SPVM_YY_LIB_SPVM_BUILDER_INCLUDE_SPVM_YACC_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -176,4 +176,4 @@ extern int SPVM_yydebug;
 
 int SPVM_yyparse (SPVM_COMPILER* compiler);
 
-#endif /* !YY_SPVM_YY_SPVM_YACC_TAB_H_INCLUDED  */
+#endif /* !YY_SPVM_YY_LIB_SPVM_BUILDER_INCLUDE_SPVM_YACC_H_INCLUDED  */
