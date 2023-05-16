@@ -606,13 +606,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     
+                    // Leave scope
                     if (!block->no_scope) {
-                      // Leave scope
                       int32_t mortal_top = (intptr_t)SPVM_LIST_pop(mortal_top_stack);
-
                       SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                      
-                      if (op_block_current->uv.block->have_object_var_decl) {
+                      if (op_block_current->uv.block->need_leave_scope) {
                         while (mortal_stack->length > mortal_top) {
                           SPVM_LIST_pop(mortal_stack);
                         }
@@ -651,7 +649,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         mortal_stack_top_max++;
                         
                         SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                        op_block_current->uv.block->have_object_var_decl = 1;
+                        op_block_current->uv.block->need_leave_scope = 1;
                       }
                       
                       // Initialized not initialized variable

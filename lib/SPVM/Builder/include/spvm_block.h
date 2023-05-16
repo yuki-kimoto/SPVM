@@ -20,7 +20,7 @@ enum {
 
 struct spvm_block {
   int32_t id;
-  int32_t have_object_var_decl;
+  int32_t need_leave_scope;
   int32_t no_scope;
 };
 

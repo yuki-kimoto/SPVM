@@ -293,7 +293,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
         
-        // Third AST traversal - Fix LEAVE_SCOPE
+        // Third AST traversal - Check if a block needs "leave scope" operation
         {
           // Block stack
           SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -332,9 +332,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                     // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
                     if (op_block_stack->length > 0) {
                       SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                      if (!op_block_parent->uv.block->have_object_var_decl) {
-                        if (op_block_current->uv.block->have_object_var_decl) {
-                          op_block_parent->uv.block->have_object_var_decl = 1;
+                      if (!op_block_parent->uv.block->need_leave_scope) {
+                        if (op_block_current->uv.block->need_leave_scope) {
+                          op_block_parent->uv.block->need_leave_scope = 1;
                         }
                       }
                     }
@@ -346,7 +346,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       
                       if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                        op_block_current->uv.block->have_object_var_decl = 1;
+                        op_block_current->uv.block->need_leave_scope = 1;
                       }
                     }
                     
