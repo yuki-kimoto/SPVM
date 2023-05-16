@@ -293,8 +293,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
         }
         
-        // Third AST traversal
-        // Fix LEAVE_SCOPE
+        // Third AST traversal - Fix LEAVE_SCOPE
         {
           // Block stack
           SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -344,9 +343,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   case SPVM_OP_C_ID_VAR: {
                     if (op_cur->uv.var->is_declaration) {
                       SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                      int32_t type_is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag);
                       
-                      if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_mulnum_t) {
+                      if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
                         op_block_current->uv.block->have_object_var_decl = 1;
                       }
