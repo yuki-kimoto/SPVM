@@ -30,6 +30,8 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr);
 
 char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr);
 
+int32_t SPVM_TOKE_is_valid_utf8_code_point(int32_t code_point);
+
 int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point);
 
 int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst);

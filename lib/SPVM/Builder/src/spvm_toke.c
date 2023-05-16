@@ -1189,8 +1189,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         char *end;
                         int64_t unicode = (int64_t)strtoll(unicode_chars, &end, 16);
                         
-                        int32_t is_unicode_scalar_value = SPVM_TOKE_is_unicode_scalar_value(unicode);
-                        if (is_unicode_scalar_value) {
+                        int32_t is_valid_utf8_code_point = SPVM_TOKE_is_valid_utf8_code_point(unicode);
+                        if (is_valid_utf8_code_point) {
                           char utf8_chars[4];
                           int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(unicode, (uint8_t*)utf8_chars);
                           for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
@@ -2578,6 +2578,10 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
   *char_ptr_ptr = char_ptr;
   
   return ch;
+}
+
+int32_t SPVM_TOKE_is_valid_utf8_code_point(int32_t code_point) {
+  return SPVM_TOKE_is_unicode_scalar_value(code_point);
 }
 
 int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point) {
