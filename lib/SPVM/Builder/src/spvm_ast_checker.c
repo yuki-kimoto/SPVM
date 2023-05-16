@@ -69,6 +69,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
+      assert(method->class->class_file);
+      
+      // Add variable declarations if the block does not exist
+      if (!method->op_block) {
+        for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+          SPVM_LIST_push(method->var_decls, arg_var_decl);
+        }
+      }
+        
       if (!(method->is_native)) {
         SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
         SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
@@ -276,18 +286,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
           }
-        }
-        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          return;
-        }
-        assert(method->class->class_file);
-        
-        // Add op var_decl if need
-        if (method->class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          int32_t arg_index;
-          for (arg_index = 0; arg_index < method->args_length; arg_index++) {
-            SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-            SPVM_LIST_push(method->var_decls, arg_var_decl);
+          
+          if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            return;
           }
         }
         
