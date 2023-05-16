@@ -3371,8 +3371,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               return;
             }
             
-            // Second AST traversal
-            //   Set is_assigned_to_var flag
+            // Second AST traversal - Create local variable assignment operations
             {
               // Run OPs
               SPVM_OP* op_root = method->op_block;
@@ -3380,55 +3379,15 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               int32_t finish = 0;
               while (op_cur) {
                 // [START]Preorder traversal position
-                if (op_cur->first) {
-                  op_cur = op_cur->first;
-                }
-                else {
-                  while (1) {
-                    // [START]Postorder traversal position
-                    switch (op_cur->id) {
-                      case SPVM_OP_C_ID_ASSIGN: {
-                        if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
-                          op_cur->first->is_assigned_to_var = 1;
-                        }
-                        break;
-                      }
+                switch (op_cur->id) {
+                  case SPVM_OP_C_ID_ASSIGN: {
+                    if (op_cur->last->id == SPVM_OP_C_ID_VAR) {
+                      op_cur->first->is_assigned_to_var = 1;
                     }
-
-                    if (op_cur == op_root) {
-
-                      // Finish
-                      finish = 1;
-                      
-                      break;
-                    }
-                    
-                    // Next sibling
-                    if (op_cur->moresib) {
-                      op_cur = SPVM_OP_sibling(compiler, op_cur);
-                      break;
-                    }
-                    // Next is parent
-                    else {
-                      op_cur = op_cur->sibparent;
-                    }
-                  }
-                  if (finish) {
                     break;
                   }
                 }
-              }
-            }
-            
-            // Third AST traversal
-            // Create temporary variables for not assigned values - 
-            {
-              // Run OPs
-              SPVM_OP* op_root = method->op_block;
-              SPVM_OP* op_cur = op_root;
-              int32_t finish = 0;
-              while (op_cur) {
-                // [START]Preorder traversal position
+                
                 if (op_cur->first) {
                   op_cur = op_cur->first;
                 }
@@ -3602,7 +3561,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
             }
 
-            // Fourth AST traversal
+            // Third AST traversal
             // Fix LEAVE_SCOPE
             {
               // Block stack
@@ -3692,7 +3651,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
           }
 
-          // Fifth AST traversal
+          // Forth AST traversal
           // Resolve var_decl mem ids
           if (!(method->is_native)) {
             {
