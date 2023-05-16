@@ -134,136 +134,138 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
             else {
               while (1) {
-                // Create temporary variable for no is_assigned_to_var operand which is not variable
-                int32_t create_tmp_var = 0;
-                SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-                
                 // [START]Postorder traversal position
-                if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
-                  switch (op_cur->id) {
-                    case SPVM_OP_C_ID_RETURN:
-                    case SPVM_OP_C_ID_LOOP_INCREMENT:
-                    case SPVM_OP_C_ID_CONDITION:
-                    case SPVM_OP_C_ID_CONDITION_NOT:
-                    case SPVM_OP_C_ID_TYPE_CAST:
-                    case SPVM_OP_C_ID_SWITCH:
-                    case SPVM_OP_C_ID_DEFAULT:
-                    case SPVM_OP_C_ID_CASE:
-                    case SPVM_OP_C_ID_DIE:
-                    case SPVM_OP_C_ID_WARN:
-                    case SPVM_OP_C_ID_PRINT:
-                    case SPVM_OP_C_ID_SAY:
-                    case SPVM_OP_C_ID_MAKE_READ_ONLY:
-                    case SPVM_OP_C_ID_IS_READ_ONLY:
-                    case SPVM_OP_C_ID_LAST:
-                    case SPVM_OP_C_ID_NEXT:
-                    case SPVM_OP_C_ID_BREAK:
-                    case SPVM_OP_C_ID_ADD:
-                    case SPVM_OP_C_ID_SUBTRACT:
-                    case SPVM_OP_C_ID_MULTIPLY:
-                    case SPVM_OP_C_ID_DIVIDE:
-                    case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
-                    case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
-                    case SPVM_OP_C_ID_REMAINDER:
-                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
-                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
-                    case SPVM_OP_C_ID_BIT_AND:
-                    case SPVM_OP_C_ID_BIT_OR:
-                    case SPVM_OP_C_ID_BIT_XOR:
-                    case SPVM_OP_C_ID_BIT_NOT:
-                    case SPVM_OP_C_ID_LEFT_SHIFT:
-                    case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
-                    case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
-                    case SPVM_OP_C_ID_MINUS:
-                    case SPVM_OP_C_ID_PLUS:
-                    case SPVM_OP_C_ID_COPY:
-                    case SPVM_OP_C_ID_ARRAY_LENGTH:
-                    case SPVM_OP_C_ID_STRING_LENGTH:
-                    case SPVM_OP_C_ID_NEW:
-                    case SPVM_OP_C_ID_CLASS_ID:
-                    case SPVM_OP_C_ID_ERROR:
-                    case SPVM_OP_C_ID_ERROR_CODE:
-                    case SPVM_OP_C_ID_SET_ERROR_CODE:
-                    case SPVM_OP_C_ID_ITEMS:
-                    case SPVM_OP_C_ID_CONCAT:
-                    case SPVM_OP_C_ID_TYPE_NAME:
-                    case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
-                    case SPVM_OP_C_ID_DUMP:
-                    case SPVM_OP_C_ID_NEW_STRING_LEN:
-                    case SPVM_OP_C_ID_EXCEPTION_VAR:
-                    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
-                    case SPVM_OP_C_ID_SWITCH_CONDITION:
-                    case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
-                    case SPVM_OP_C_ID_CREATE_REF:
-                    case SPVM_OP_C_ID_DEREF:
-                    case SPVM_OP_C_ID_REFCNT:
-                    case SPVM_OP_C_ID_FIELD_ACCESS:
-                    case SPVM_OP_C_ID_ARRAY_ACCESS:
-                    case SPVM_OP_C_ID_CALL_METHOD:
-                    case SPVM_OP_C_ID_TRUE:
-                    case SPVM_OP_C_ID_FALSE:
-                    {
-                      create_tmp_var = 1;
-                      break;
-                    }
-                    case SPVM_OP_C_ID_CONSTANT: {
-                      if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                        create_tmp_var = 1;
+                
+                // Convert an operator to a assign operator
+                {
+                  int32_t convert_to_assign = 0;
+                  
+                  if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
+                    switch (op_cur->id) {
+                      case SPVM_OP_C_ID_RETURN:
+                      case SPVM_OP_C_ID_LOOP_INCREMENT:
+                      case SPVM_OP_C_ID_CONDITION:
+                      case SPVM_OP_C_ID_CONDITION_NOT:
+                      case SPVM_OP_C_ID_TYPE_CAST:
+                      case SPVM_OP_C_ID_SWITCH:
+                      case SPVM_OP_C_ID_DEFAULT:
+                      case SPVM_OP_C_ID_CASE:
+                      case SPVM_OP_C_ID_DIE:
+                      case SPVM_OP_C_ID_WARN:
+                      case SPVM_OP_C_ID_PRINT:
+                      case SPVM_OP_C_ID_SAY:
+                      case SPVM_OP_C_ID_MAKE_READ_ONLY:
+                      case SPVM_OP_C_ID_IS_READ_ONLY:
+                      case SPVM_OP_C_ID_LAST:
+                      case SPVM_OP_C_ID_NEXT:
+                      case SPVM_OP_C_ID_BREAK:
+                      case SPVM_OP_C_ID_ADD:
+                      case SPVM_OP_C_ID_SUBTRACT:
+                      case SPVM_OP_C_ID_MULTIPLY:
+                      case SPVM_OP_C_ID_DIVIDE:
+                      case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
+                      case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
+                      case SPVM_OP_C_ID_REMAINDER:
+                      case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
+                      case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
+                      case SPVM_OP_C_ID_BIT_AND:
+                      case SPVM_OP_C_ID_BIT_OR:
+                      case SPVM_OP_C_ID_BIT_XOR:
+                      case SPVM_OP_C_ID_BIT_NOT:
+                      case SPVM_OP_C_ID_LEFT_SHIFT:
+                      case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT:
+                      case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT:
+                      case SPVM_OP_C_ID_MINUS:
+                      case SPVM_OP_C_ID_PLUS:
+                      case SPVM_OP_C_ID_COPY:
+                      case SPVM_OP_C_ID_ARRAY_LENGTH:
+                      case SPVM_OP_C_ID_STRING_LENGTH:
+                      case SPVM_OP_C_ID_NEW:
+                      case SPVM_OP_C_ID_CLASS_ID:
+                      case SPVM_OP_C_ID_ERROR:
+                      case SPVM_OP_C_ID_ERROR_CODE:
+                      case SPVM_OP_C_ID_SET_ERROR_CODE:
+                      case SPVM_OP_C_ID_ITEMS:
+                      case SPVM_OP_C_ID_CONCAT:
+                      case SPVM_OP_C_ID_TYPE_NAME:
+                      case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
+                      case SPVM_OP_C_ID_DUMP:
+                      case SPVM_OP_C_ID_NEW_STRING_LEN:
+                      case SPVM_OP_C_ID_EXCEPTION_VAR:
+                      case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+                      case SPVM_OP_C_ID_SWITCH_CONDITION:
+                      case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
+                      case SPVM_OP_C_ID_CREATE_REF:
+                      case SPVM_OP_C_ID_DEREF:
+                      case SPVM_OP_C_ID_REFCNT:
+                      case SPVM_OP_C_ID_FIELD_ACCESS:
+                      case SPVM_OP_C_ID_ARRAY_ACCESS:
+                      case SPVM_OP_C_ID_CALL_METHOD:
+                      case SPVM_OP_C_ID_TRUE:
+                      case SPVM_OP_C_ID_FALSE:
+                      {
+                        convert_to_assign = 1;
+                        break;
                       }
-                      break;
-                    }
-                    case SPVM_OP_C_ID_NUMERIC_EQ:
-                    case SPVM_OP_C_ID_NUMERIC_NE:
-                    case SPVM_OP_C_ID_NUMERIC_GT:
-                    case SPVM_OP_C_ID_NUMERIC_GE:
-                    case SPVM_OP_C_ID_NUMERIC_LT:
-                    case SPVM_OP_C_ID_NUMERIC_LE:
-                    case SPVM_OP_C_ID_NUMERIC_CMP:
-                    case SPVM_OP_C_ID_STRING_EQ:
-                    case SPVM_OP_C_ID_STRING_NE:
-                    case SPVM_OP_C_ID_STRING_GT:
-                    case SPVM_OP_C_ID_STRING_GE:
-                    case SPVM_OP_C_ID_STRING_LT:
-                    case SPVM_OP_C_ID_STRING_LE:
-                    case SPVM_OP_C_ID_STRING_CMP:
-                    case SPVM_OP_C_ID_ISA:
-                    case SPVM_OP_C_ID_IS_TYPE:
-                    case SPVM_OP_C_ID_IS_COMPILE_TYPE:
-                    case SPVM_OP_C_ID_BOOL:
-                    {
-                      assert(0);
-                      break;
+                      case SPVM_OP_C_ID_CONSTANT: {
+                        if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
+                          convert_to_assign = 1;
+                        }
+                        break;
+                      }
+                      case SPVM_OP_C_ID_NUMERIC_EQ:
+                      case SPVM_OP_C_ID_NUMERIC_NE:
+                      case SPVM_OP_C_ID_NUMERIC_GT:
+                      case SPVM_OP_C_ID_NUMERIC_GE:
+                      case SPVM_OP_C_ID_NUMERIC_LT:
+                      case SPVM_OP_C_ID_NUMERIC_LE:
+                      case SPVM_OP_C_ID_NUMERIC_CMP:
+                      case SPVM_OP_C_ID_STRING_EQ:
+                      case SPVM_OP_C_ID_STRING_NE:
+                      case SPVM_OP_C_ID_STRING_GT:
+                      case SPVM_OP_C_ID_STRING_GE:
+                      case SPVM_OP_C_ID_STRING_LT:
+                      case SPVM_OP_C_ID_STRING_LE:
+                      case SPVM_OP_C_ID_STRING_CMP:
+                      case SPVM_OP_C_ID_ISA:
+                      case SPVM_OP_C_ID_IS_TYPE:
+                      case SPVM_OP_C_ID_IS_COMPILE_TYPE:
+                      case SPVM_OP_C_ID_BOOL:
+                      {
+                        assert(0);
+                        break;
+                      }
                     }
                   }
-                }
+                  
+                  if (convert_to_assign) {
+                    SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, tmp_var_type, op_cur->file, op_cur->line);
+                    
+                    op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
+                    SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
+                    
+                    if (op_var_tmp == NULL) {
+                      return;
+                    }
+                    
+                    // Cut new op
+                    SPVM_OP* op_target = op_cur;
+                    
+                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
 
-                // Create temporary variable
-                if (create_tmp_var) {
-                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, tmp_var_type, op_cur->file, op_cur->line);
-                  
-                  op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
-                  SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
-                  
-                  if (op_var_tmp == NULL) {
-                    return;
+                    // Assing op
+                    SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+                    SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
+                    
+                    // Convert cur new op to var
+                    SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
+                    op_target->uv = op_cur->uv;
+                    
+                    op_cur = op_target;
                   }
-                  
-                  // Cut new op
-                  SPVM_OP* op_target = op_cur;
-                  
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_target);
-
-                  // Assing op
-                  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                  SPVM_OP* op_build_assign = SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_target);
-                  
-                  // Convert cur new op to var
-                  SPVM_OP_replace_op(compiler, op_stab, op_build_assign);
-                  op_target->uv = op_cur->uv;
-                  
-                  op_cur = op_target;
                 }
-
+                
                 if (op_cur == op_root) {
 
                   // Finish
