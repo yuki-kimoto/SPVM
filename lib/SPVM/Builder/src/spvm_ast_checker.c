@@ -142,7 +142,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
                     switch (op_cur->id) {
-                      case SPVM_OP_C_ID_RETURN:
                       case SPVM_OP_C_ID_LOOP_INCREMENT:
                       case SPVM_OP_C_ID_CONDITION:
                       case SPVM_OP_C_ID_CONDITION_NOT:
@@ -208,6 +207,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         convert_to_assign = 1;
                         break;
                       }
+                      case SPVM_OP_C_ID_RETURN:
                       case SPVM_OP_C_ID_VAR:
                       case SPVM_OP_C_ID_ASSIGN:
                       case SPVM_OP_C_ID_LIST:
