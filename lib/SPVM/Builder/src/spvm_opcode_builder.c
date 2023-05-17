@@ -4172,7 +4172,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                             SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
                             SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
-                            opcode_case_info->operand1 = case_info->condition_value;
+                            opcode_case_info->operand1 = case_info->case_value;
                             opcode_case_info->operand2 = case_info->opcode_rel_index;
                           }
                           

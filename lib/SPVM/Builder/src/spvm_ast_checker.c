@@ -943,7 +943,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                   SPVM_COMPILER_error(compiler, "The operand of the case statement must be the int type.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                   return;
                 }
-                case_info->condition_value = constant->value.ival;
+                case_info->case_value = constant->value.ival;
               }
 
               // sort by asc order
@@ -951,8 +951,8 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
                   SPVM_CASE_INFO* case_i = SPVM_LIST_get(switch_info->case_infos, i);
                   SPVM_CASE_INFO* case_j = SPVM_LIST_get(switch_info->case_infos, j);
-                  int32_t match_i = case_i->condition_value;
-                  int32_t match_j = case_j->condition_value;
+                  int32_t match_i = case_i->case_value;
+                  int32_t match_j = case_j->case_value;
                   
                   if (match_i > match_j) {
                     SPVM_LIST_set(switch_info->case_infos, i, case_j);
@@ -965,7 +965,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
                 SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
-                if (case_info->condition_value == case_info_next->condition_value) {
+                if (case_info->case_value == case_info_next->case_value) {
                   SPVM_COMPILER_error(compiler, "The value of the case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                 }
               }
