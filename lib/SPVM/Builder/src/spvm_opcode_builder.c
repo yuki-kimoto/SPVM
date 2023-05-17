@@ -431,7 +431,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 if (switch_info_stack->length > 0) {
                   SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_info_stack, switch_info_stack->length - 1);
                   int32_t opcode_rel_index = opcode_array->length - method_opcodes_base_id;
-                  op_cur->uv.case_info->opcode_rel_index = opcode_rel_index;
+                  op_cur->uv.case_info->goto_opcode_rel_index = opcode_rel_index;
                 }
                 break;
               }
@@ -4135,7 +4135,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             // Branch
                             SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
-                            branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
+                            branch_opcode_rel_index_case_info->goto_opcode_rel_index = case_info->goto_opcode_rel_index;
                             
                             // Add case info
                             SPVM_OPCODE opcode_case_info;
@@ -4170,7 +4170,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
                             SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
                             opcode_case_info->operand1 = case_info->case_value;
-                            opcode_case_info->operand2 = case_info->opcode_rel_index;
+                            opcode_case_info->operand2 = case_info->goto_opcode_rel_index;
                           }
                           
                           break;
