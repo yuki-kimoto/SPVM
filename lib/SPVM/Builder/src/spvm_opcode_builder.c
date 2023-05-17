@@ -606,6 +606,28 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
+                  case SPVM_OP_C_ID_SWITCH: {
+                    
+                    // Pop switch information
+                    SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
+                    
+                    // Set the information of switch opcodes
+                    int32_t opcode_id = switch_info->opcode_id;
+                    SPVM_OPCODE* opcode = (SPVM_OPCODE*)&opcode_array->values[opcode_id];
+                    opcode->operand1 = switch_info->default_opcode_rel_index;
+                    opcode->operand2 = switch_info->case_infos->length;
+
+                    // Set case info operands
+                    SPVM_LIST* case_infos = switch_info->case_infos;
+                    for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                      SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
+                      SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
+                      opcode_case_info->operand1 = case_info->case_value;
+                      opcode_case_info->operand2 = case_info->goto_opcode_rel_index;
+                    }
+                    
+                    break;
+                  }
                   case SPVM_OP_C_ID_BREAK: {
                     // GOTO end of switch block
                     SPVM_OPCODE opcode = {0};
@@ -4318,28 +4340,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
-                          break;
-                        }
-                        case SPVM_OP_C_ID_SWITCH: {
-                          
-                          // Pop switch information
-                          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_pop(switch_info_stack);
-                          
-                          // Set the information of switch opcodes
-                          int32_t opcode_id = switch_info->opcode_id;
-                          SPVM_OPCODE* opcode = (SPVM_OPCODE*)&opcode_array->values[opcode_id];
-                          opcode->operand1 = switch_info->default_opcode_rel_index;
-                          opcode->operand2 = switch_info->case_infos->length;
-
-                          // Set case info operands
-                          SPVM_LIST* case_infos = switch_info->case_infos;
-                          for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                            SPVM_OPCODE* opcode_case_info = (SPVM_OPCODE*)&opcode_array->values[opcode_id + 1 + i];
-                            SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
-                            opcode_case_info->operand1 = case_info->case_value;
-                            opcode_case_info->operand2 = case_info->goto_opcode_rel_index;
-                          }
-                          
                           break;
                         }
                         case SPVM_OP_C_ID_DIE: {

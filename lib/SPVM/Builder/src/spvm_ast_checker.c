@@ -146,9 +146,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CONDITION:
                       case SPVM_OP_C_ID_CONDITION_NOT:
                       case SPVM_OP_C_ID_TYPE_CAST:
-                      case SPVM_OP_C_ID_SWITCH:
-                      case SPVM_OP_C_ID_DEFAULT:
-                      case SPVM_OP_C_ID_CASE:
                       case SPVM_OP_C_ID_DIE:
                       case SPVM_OP_C_ID_WARN:
                       case SPVM_OP_C_ID_PRINT:
@@ -206,6 +203,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_NEXT:
                       case SPVM_OP_C_ID_LAST:
+                      case SPVM_OP_C_ID_SWITCH:
+                      case SPVM_OP_C_ID_DEFAULT:
+                      case SPVM_OP_C_ID_CASE:
                       case SPVM_OP_C_ID_BREAK:
                       case SPVM_OP_C_ID_RETURN:
                       case SPVM_OP_C_ID_VAR:
