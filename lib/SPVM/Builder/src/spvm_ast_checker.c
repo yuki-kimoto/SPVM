@@ -994,7 +994,6 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               if (check_ast_info->op_switch_stack->length > 0) {
                 SPVM_OP* op_switch = SPVM_LIST_get(check_ast_info->op_switch_stack, check_ast_info->op_switch_stack->length - 1);
                 SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
-                op_cur->uv.case_info->index = switch_info->case_infos->length;
                 SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
               }
               break;
