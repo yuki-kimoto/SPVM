@@ -63,47 +63,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   while(1) {
     
-    // "aaa $foo bar" is interupted "aaa $foo" . " bar"
-    if (compiler->bufptr == compiler->next_string_literal_bufptr) {
-      compiler->next_string_literal_bufptr = NULL;
-      var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
-    }
-    
-    // Current character
-    char ch = -1;
-    
-    // Variable expansion state
-    if (var_expansion_state > 0) {
-      switch (var_expansion_state) {
-        case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
-          ch = *compiler->bufptr;
-          break;
-        }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
-          ch = '.';
-          break;
-        }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
-          ch = *compiler->bufptr;
-          break;
-        }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
-          ch = '.';
-          break;
-        }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL: {
-          ch = '"';
-          break;
-        }
-        default: {
-          assert(0);
-        }
-      }
-    }
-    else {
-      ch = *compiler->bufptr;
-    }
-    
     // Load class file
     int32_t class_source_index = compiler->bufptr - compiler->cur_class_source;
     if (!compiler->cur_class_source || class_source_index >= compiler->cur_class_source_length) {
@@ -356,6 +315,47 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       else {
         return 0;
       }
+    }
+    
+    // "aaa $foo bar" is interupted "aaa $foo" . " bar"
+    if (compiler->bufptr == compiler->next_string_literal_bufptr) {
+      compiler->next_string_literal_bufptr = NULL;
+      var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
+    }
+    
+    // Current character
+    char ch = -1;
+    
+    // Variable expansion state
+    if (var_expansion_state > 0) {
+      switch (var_expansion_state) {
+        case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
+          ch = *compiler->bufptr;
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
+          ch = '.';
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
+          ch = *compiler->bufptr;
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
+          ch = '.';
+          break;
+        }
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL: {
+          ch = '"';
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else {
+      ch = *compiler->bufptr;
     }
     
     switch (ch) {
