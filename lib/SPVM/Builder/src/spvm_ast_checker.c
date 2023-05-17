@@ -143,7 +143,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   if (!op_cur->is_dist && !op_cur->is_assigned_to_var) {
                     switch (op_cur->id) {
                       case SPVM_OP_C_ID_TYPE_CAST:
-                      case SPVM_OP_C_ID_DIE:
                       case SPVM_OP_C_ID_WARN:
                       case SPVM_OP_C_ID_PRINT:
                       case SPVM_OP_C_ID_SAY:
@@ -208,6 +207,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CASE:
                       case SPVM_OP_C_ID_BREAK:
                       case SPVM_OP_C_ID_RETURN:
+                      case SPVM_OP_C_ID_DIE:
                       case SPVM_OP_C_ID_VAR:
                       case SPVM_OP_C_ID_ASSIGN:
                       case SPVM_OP_C_ID_LIST:

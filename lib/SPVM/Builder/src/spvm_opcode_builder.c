@@ -810,6 +810,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
+                  case SPVM_OP_C_ID_DIE: {
+                    
+                    // SET_ERROR
+                    {
+                      SPVM_OPCODE opcode = {0};
+                      
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR);
+                      
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
+                    
+                    SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
+                    
+                    break;
+                  }
                   case SPVM_OP_C_ID_VAR: {
                     if (op_cur->uv.var->is_declaration) {
                       
@@ -4381,22 +4397,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
-                          break;
-                        }
-                        case SPVM_OP_C_ID_DIE: {
-                          
-                          // SET_ERROR
-                          {
-                            SPVM_OPCODE opcode = {0};
-                            
-                            
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR);
-                            
-                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          }
-                          
-                          SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
-                          
                           break;
                         }
                         case SPVM_OP_C_ID_WARN: {
