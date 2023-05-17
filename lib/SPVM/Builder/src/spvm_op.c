@@ -2605,8 +2605,8 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_chil
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_operand_length);
   }
   else {
-    SPVM_OP* op_null = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_child->file, op_type_child->line);
-    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_null);
+    SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_child->file, op_type_child->line);
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_do_nothing);
   }
 
   return op_type;

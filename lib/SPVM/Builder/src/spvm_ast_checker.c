@@ -997,6 +997,11 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               
               case_info->case_value = constant->value.ival;
               
+              // Remove case value operation because this is a constant value for a case statemenet.
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
+              SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->first->file, op_cur->first->line);
+              SPVM_OP_replace_op(compiler, op_stab, op_do_nothing);
+              
               break;
             }
             case SPVM_OP_C_ID_DEFAULT: {
