@@ -75,240 +75,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return END_OF_FILE;
       }
       
-      // Start parsing a source code
-      compiler->cur_file = NULL;
-      compiler->cur_class_source = NULL;
-      compiler->bufptr = NULL;
-      compiler->befbufptr = NULL;
-      compiler->line_start_ptr = NULL;
+      // Load class file
+      int32_t success = SPVM_TOKE_load_class_file(compiler);
       
-      // If there are more class, load it
-      SPVM_LIST* op_use_stack = compiler->op_use_stack;
-      
-      while (1) {
-        if (op_use_stack->length == 0) {
-          return 0;
-        }
-        else if (op_use_stack->length > 0) {
-          SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
-          
-          const char* class_name = op_use->uv.use->class_name;
-          int32_t class_name_length = strlen(class_name);
-          
-          // Check the class name
-          {
-            // A class name must begin with an upper case character
-            if (islower(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-            
-            // Part names of the class name begin with lower case
-            int32_t class_part_name_is_invalid = 0;
-            int32_t class_name_length = strlen(class_name);
-            for (int32_t i = 0; i < class_name_length; i++) {
-              if (i > 1) {
-                if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
-                  if (islower(class_name[i])) {
-                    SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
-                    return 0;
-                  }
-                }
-              }
-            }
-            
-            // A class name cannnot conatain "__"
-            if (strstr(class_name, "__")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\".\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-            
-            // A class name cannnot end with "::"
-            if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-            
-            // A class name cannnot contains "::::".
-            if (strstr(class_name, "::::")) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-            
-            // A class name cannnot begin with \"$::\"
-            if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-            
-            // A class name cannnot begin with a number
-            if (class_name_length >= 1 && isdigit(class_name[0])) {
-              SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", class_name, op_use->file, op_use->line);
-              return 0;
-            }
-          }
-          
-          const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
-          
-          if (used_class_name) {
-            continue;
-          }
-          else {
-            SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
-            
-            // Create moudle relative file name from class name by changing :: to / and add ".spvm"
-            int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
-            char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);
-            const char* bufptr_orig = class_name;
-            char* bufptr_to = cur_rel_file;
-            while (*bufptr_orig) {
-              if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
-                *bufptr_to = '/';
-                bufptr_orig += 2;
-                bufptr_to++;
-              }
-              else {
-                *bufptr_to = *bufptr_orig;
-                bufptr_orig++;
-                bufptr_to++;
-              }
-            }
-            strncpy(bufptr_to, ".spvm", 5);
-            bufptr_to += 5;
-            *bufptr_to = '\0';
-            
-            char* cur_file = NULL;
-            
-            SPVM_STRING_BUFFER* found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
-            
-            const char* class_path = NULL;
-            if (!found_class_source_buffer) {
-              
-              // Search class file
-              FILE* fh = NULL;
-              int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
-              for (int32_t i = 0; i < class_paths_length; i++) {
-                class_path = SPVM_COMPILER_get_class_path(compiler, i);
-                
-                // File name
-                int32_t file_name_length = (int32_t)(strlen(class_path) + 1 + strlen(cur_rel_file));
-                cur_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
-                sprintf(cur_file, "%s/%s", class_path, cur_rel_file);
-                cur_file[file_name_length] = '\0';
-                
-                // \ is replaced to /
-                for (int32_t i = 0; i < file_name_length; i++) {
-                  if (cur_file[i] == '\\') {
-                    cur_file[i] = '/';
-                  }
-                }
-                
-                // Open source file
-                fh = fopen(cur_file, "rb");
-                if (fh) {
-                  break;
-                }
-                errno = 0;
-              }
-              
-              // Class not found
-              if (!fh) {
-                if (!op_use->uv.use->is_require) {
-                  int32_t classr_dirs_str_length = 0;
-                  for (int32_t i = 0; i < class_paths_length; i++) {
-                    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
-                    classr_dirs_str_length += 1 + strlen(class_path);
-                  }
-                  char* classr_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, classr_dirs_str_length + 1);
-                  int32_t classr_dirs_str_offset = 0;
-                  for (int32_t i = 0; i < class_paths_length; i++) {
-                    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
-                    sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", class_path);
-                    classr_dirs_str_offset += strlen(class_path);
-                    if (i != class_paths_length - 1) {
-                      classr_dirs_str[classr_dirs_str_offset] = ' ';
-                      classr_dirs_str_offset++;
-                    }
-                  }
-                  
-                  SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s).\n  at %s line %d", class_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
-                  
-                  return 0;
-                }
-              }
-              // Class found
-              else {
-                // Read file content
-                fseek(fh, 0, SEEK_END);
-                int32_t class_source_length = (int32_t)ftell(fh);
-                if (class_source_length < 0) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
-                  return 0;
-                }
-                fseek(fh, 0, SEEK_SET);
-                char* class_source = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, class_source_length + 1);
-                int32_t read_error = 0;
-                if ((int32_t)fread(class_source, 1, class_source_length, fh) < class_source_length) {
-                  SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
-                  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
-                  read_error = 1;
-                }
-                
-                if (!read_error) {
-                  fclose(fh);
-                  class_source[class_source_length] = '\0';
-                  SPVM_COMPILER_add_class_source(compiler, class_name, class_source, class_source_length);
-                }
-                
-                SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
-              }
-            }
-            
-            found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
-            
-            if (found_class_source_buffer) {
-              
-              // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_class_source = (char*)found_class_source_buffer->value;
-              compiler->cur_class_source_length = found_class_source_buffer->length;
-              compiler->cur_class_path = class_path;
-              compiler->cur_rel_file = cur_rel_file;
-              compiler->cur_rel_file_class_name = class_name;
-              
-              // If we get current class file path, set it, otherwise set class relative file path
-              if (cur_file) {
-                compiler->cur_file = cur_file;
-              }
-              else {
-                char* embedded_file_name = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 11 + strlen(cur_rel_file) + 1);
-                sprintf(embedded_file_name, "embedded://%s", cur_rel_file);
-                compiler->cur_file = embedded_file_name;
-              }
-              
-              SPVM_CONSTANT_STRING* cur_file_string = SPVM_CONSTANT_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
-              compiler->cur_file = cur_file_string->value;
-              
-              // Set initial information for tokenization
-              compiler->bufptr = compiler->cur_class_source;
-              compiler->befbufptr = compiler->cur_class_source;
-              compiler->line_start_ptr = compiler->cur_class_source;
-              compiler->cur_line = 1;
-            }
-            else {
-              // If class not found and the class is used in require syntax, compilation errors don't occur.
-              if (op_use->uv.use->is_require) {
-                SPVM_HASH_set(compiler->not_found_class_class_symtable, class_name, strlen(class_name), (void*)class_name);
-                continue;
-              }
-            }
-            
-            break;
-          }
-        }
-        else {
-          assert(0);
-        }
+      if (!success) {
+        return success;
       }
+      
       if (compiler->cur_class_source) {
         continue;
       }
@@ -2418,12 +2191,252 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return token;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The character %d in a signed int is not expected.\n  at %s line %d", ch, compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character %d in a 8bit signed integer is not expected.\n  at %s line %d", ch, compiler->cur_file, compiler->cur_line);
           return (int) (uint8_t) ch;
         }
       }
     }
   }
+}
+
+int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
+
+  // Start parsing a source code
+  compiler->cur_file = NULL;
+  compiler->cur_class_source = NULL;
+  compiler->bufptr = NULL;
+  compiler->befbufptr = NULL;
+  compiler->line_start_ptr = NULL;
+  
+  // If there are more class, load it
+  SPVM_LIST* op_use_stack = compiler->op_use_stack;
+  
+  while (1) {
+    if (op_use_stack->length == 0) {
+      return 0;
+    }
+    else if (op_use_stack->length > 0) {
+      SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
+      
+      const char* class_name = op_use->uv.use->class_name;
+      int32_t class_name_length = strlen(class_name);
+      
+      // Check the class name
+      {
+        // A class name must begin with an upper case character
+        if (islower(class_name[0])) {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+        
+        // Part names of the class name begin with lower case
+        int32_t class_part_name_is_invalid = 0;
+        int32_t class_name_length = strlen(class_name);
+        for (int32_t i = 0; i < class_name_length; i++) {
+          if (i > 1) {
+            if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
+              if (islower(class_name[i])) {
+                SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character.\n  at %s line %d", class_name, op_use->file, op_use->line);
+                return 0;
+              }
+            }
+          }
+        }
+        
+        // A class name cannnot conatain "__"
+        if (strstr(class_name, "__")) {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\".\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+        
+        // A class name cannnot end with "::"
+        if (class_name_length >= 2 && class_name[class_name_length - 2] == ':' && class_name[class_name_length - 1] == ':' ) {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+        
+        // A class name cannnot contains "::::".
+        if (strstr(class_name, "::::")) {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+        
+        // A class name cannnot begin with \"$::\"
+        if (class_name_length >= 2 && class_name[0] == ':' && class_name[1] == ':') {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\".\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+        
+        // A class name cannnot begin with a number
+        if (class_name_length >= 1 && isdigit(class_name[0])) {
+          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", class_name, op_use->file, op_use->line);
+          return 0;
+        }
+      }
+      
+      const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
+      
+      if (used_class_name) {
+        continue;
+      }
+      else {
+        SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
+        
+        // Create moudle relative file name from class name by changing :: to / and add ".spvm"
+        int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
+        char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);
+        const char* bufptr_orig = class_name;
+        char* bufptr_to = cur_rel_file;
+        while (*bufptr_orig) {
+          if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
+            *bufptr_to = '/';
+            bufptr_orig += 2;
+            bufptr_to++;
+          }
+          else {
+            *bufptr_to = *bufptr_orig;
+            bufptr_orig++;
+            bufptr_to++;
+          }
+        }
+        strncpy(bufptr_to, ".spvm", 5);
+        bufptr_to += 5;
+        *bufptr_to = '\0';
+        
+        char* cur_file = NULL;
+        
+        SPVM_STRING_BUFFER* found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
+        
+        const char* class_path = NULL;
+        if (!found_class_source_buffer) {
+          
+          // Search class file
+          FILE* fh = NULL;
+          int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
+          for (int32_t i = 0; i < class_paths_length; i++) {
+            class_path = SPVM_COMPILER_get_class_path(compiler, i);
+            
+            // File name
+            int32_t file_name_length = (int32_t)(strlen(class_path) + 1 + strlen(cur_rel_file));
+            cur_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
+            sprintf(cur_file, "%s/%s", class_path, cur_rel_file);
+            cur_file[file_name_length] = '\0';
+            
+            // \ is replaced to /
+            for (int32_t i = 0; i < file_name_length; i++) {
+              if (cur_file[i] == '\\') {
+                cur_file[i] = '/';
+              }
+            }
+            
+            // Open source file
+            fh = fopen(cur_file, "rb");
+            if (fh) {
+              break;
+            }
+            errno = 0;
+          }
+          
+          // Class not found
+          if (!fh) {
+            if (!op_use->uv.use->is_require) {
+              int32_t classr_dirs_str_length = 0;
+              for (int32_t i = 0; i < class_paths_length; i++) {
+                const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
+                classr_dirs_str_length += 1 + strlen(class_path);
+              }
+              char* classr_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, classr_dirs_str_length + 1);
+              int32_t classr_dirs_str_offset = 0;
+              for (int32_t i = 0; i < class_paths_length; i++) {
+                const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
+                sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", class_path);
+                classr_dirs_str_offset += strlen(class_path);
+                if (i != class_paths_length - 1) {
+                  classr_dirs_str[classr_dirs_str_offset] = ' ';
+                  classr_dirs_str_offset++;
+                }
+              }
+              
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s).\n  at %s line %d", class_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
+              
+              return 0;
+            }
+          }
+          // Class found
+          else {
+            // Read file content
+            fseek(fh, 0, SEEK_END);
+            int32_t class_source_length = (int32_t)ftell(fh);
+            if (class_source_length < 0) {
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              return 0;
+            }
+            fseek(fh, 0, SEEK_SET);
+            char* class_source = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, class_source_length + 1);
+            int32_t read_error = 0;
+            if ((int32_t)fread(class_source, 1, class_source_length, fh) < class_source_length) {
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
+              read_error = 1;
+            }
+            
+            if (!read_error) {
+              fclose(fh);
+              class_source[class_source_length] = '\0';
+              SPVM_COMPILER_add_class_source(compiler, class_name, class_source, class_source_length);
+            }
+            
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_source);
+          }
+        }
+        
+        found_class_source_buffer = SPVM_HASH_get(compiler->class_source_symtable, class_name, strlen(class_name));
+        
+        if (found_class_source_buffer) {
+          
+          // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
+          compiler->cur_class_source = (char*)found_class_source_buffer->value;
+          compiler->cur_class_source_length = found_class_source_buffer->length;
+          compiler->cur_class_path = class_path;
+          compiler->cur_rel_file = cur_rel_file;
+          compiler->cur_rel_file_class_name = class_name;
+          
+          // If we get current class file path, set it, otherwise set class relative file path
+          if (cur_file) {
+            compiler->cur_file = cur_file;
+          }
+          else {
+            char* embedded_file_name = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 11 + strlen(cur_rel_file) + 1);
+            sprintf(embedded_file_name, "embedded://%s", cur_rel_file);
+            compiler->cur_file = embedded_file_name;
+          }
+          
+          SPVM_CONSTANT_STRING* cur_file_string = SPVM_CONSTANT_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
+          compiler->cur_file = cur_file_string->value;
+          
+          // Set initial information for tokenization
+          compiler->bufptr = compiler->cur_class_source;
+          compiler->befbufptr = compiler->cur_class_source;
+          compiler->line_start_ptr = compiler->cur_class_source;
+          compiler->cur_line = 1;
+        }
+        else {
+          // If class not found and the class is used in require syntax, compilation errors don't occur.
+          if (op_use->uv.use->is_require) {
+            SPVM_HASH_set(compiler->not_found_class_class_symtable, class_name, strlen(class_name), (void*)class_name);
+            continue;
+          }
+        }
+        
+        break;
+      }
+    }
+    else {
+      assert(0);
+    }
+  }
+  
+  return 1;
 }
 
 SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
