@@ -625,8 +625,6 @@ void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* sta
 
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_list);
-
 const char* SPVM_OP_get_op_name(int32_t op_id);
 
 #endif

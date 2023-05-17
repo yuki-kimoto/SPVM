@@ -3787,17 +3787,6 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op->moresib ? op->sibparent : NULL;
 }
 
-int32_t SPVM_OP_get_list_elements_count(SPVM_COMPILER* compiler, SPVM_OP* op_list) {
-  
-  int32_t count = 0;
-  SPVM_OP* op_operand = op_list->first;
-  while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-    count++;
-  }
-  
-  return count;
-}
-
 const char* SPVM_OP_get_op_name(int32_t op_id) {
   const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
   
