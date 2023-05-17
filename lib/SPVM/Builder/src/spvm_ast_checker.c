@@ -182,7 +182,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_NEW_STRING_LEN:
                       case SPVM_OP_C_ID_EXCEPTION_VAR:
                       case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
-                      case SPVM_OP_C_ID_SWITCH_CONDITION:
                       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
                       case SPVM_OP_C_ID_CREATE_REF:
                       case SPVM_OP_C_ID_DEREF:
@@ -203,6 +202,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_NEXT:
                       case SPVM_OP_C_ID_LAST:
                       case SPVM_OP_C_ID_SWITCH:
+                      case SPVM_OP_C_ID_SWITCH_CONDITION:
                       case SPVM_OP_C_ID_DEFAULT:
                       case SPVM_OP_C_ID_CASE:
                       case SPVM_OP_C_ID_BREAK:
