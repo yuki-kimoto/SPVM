@@ -921,31 +921,6 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               SPVM_LIST* cases = switch_info->case_infos;
               int32_t cases_length = cases->length;
               
-              // Check case type
-              for (int32_t i = 0; i < cases_length; i++) {
-                SPVM_CASE_INFO* case_info = SPVM_LIST_get(cases, i);
-                SPVM_OP* op_constant = case_info->op_case_info->first;
-                SPVM_CONSTANT* constant = op_constant->uv.constant;
-
-                if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
-                  SPVM_COMPILER_error(compiler, "The operand of the case statement must be a constant value.\n  at %s line %d", op_cur->file, op_cur->line);
-                  return;
-                }
-
-                // Upgrade byte to int
-                if (constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-                  constant->type = SPVM_TYPE_new_int_type(compiler);
-                  constant->value.ival = (int32_t)constant->value.bval;
-                }
-                
-                SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
-                if (!(case_value_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && case_value_type->dimension == 0)) {
-                  SPVM_COMPILER_error(compiler, "The operand of the case statement must be the int type.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
-                  return;
-                }
-                case_info->case_value = constant->value.ival;
-              }
-
               // sort by asc order
               for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                 for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
@@ -960,7 +935,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                   }
                 }
               }
-
+              
               // Check duplication
               for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
@@ -971,7 +946,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               }
               
               SPVM_LIST_pop(check_ast_info->op_switch_stack);
-
+              
               op_cur->uv.switch_info->switch_id = compiler->switch_infos->length;
               SPVM_LIST_push(compiler->switch_infos, op_cur->uv.switch_info);
               
@@ -996,6 +971,29 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
                 SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
               }
+              
+              SPVM_CASE_INFO* case_info = op_cur->uv.case_info;
+              SPVM_OP* op_constant = op_cur->first;
+              SPVM_CONSTANT* constant = op_constant->uv.constant;
+              
+              if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
+                SPVM_COMPILER_error(compiler, "The operand of the case statement must be a constant value.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Upgrade byte to int
+              if (constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
+                constant->type = SPVM_TYPE_new_int_type(compiler);
+                constant->value.ival = (int32_t)constant->value.bval;
+              }
+              
+              SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
+              if (!(case_value_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && case_value_type->dimension == 0)) {
+                SPVM_COMPILER_error(compiler, "The operand of the case statement must be the int type.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                return;
+              }
+              case_info->case_value = constant->value.ival;
+              
               break;
             }
             case SPVM_OP_C_ID_DEFAULT: {
