@@ -192,6 +192,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_TRUE:
                       case SPVM_OP_C_ID_FALSE:
                       case SPVM_OP_C_ID_CONSTANT:
+                      case SPVM_OP_C_ID_CUT:
                       {
                         convert_to_assign = 1;
                         break;
@@ -688,7 +689,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               int32_t line = op_list_elements->line;
               
               SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
-
+              
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
               op_cur = op_sequence;
               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
@@ -703,19 +704,19 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 }
                 length = index;
               }
-
+              
               SPVM_OP* op_type_element = NULL;
               SPVM_OP* op_type_new = NULL;
               if (length > 0) {
                 SPVM_OP* op_operand_element = op_list_elements->first;
-
+                
                 op_operand_element = SPVM_OP_sibling(compiler, op_operand_element);
                 if (op_operand_element->id == SPVM_OP_C_ID_UNDEF) {
                   SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined.\n  at %s line %d", file, line);
                   return;
                 }
                 SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_operand_element);
-
+                
                 // Create element type
                 op_type_element = SPVM_OP_new_op_type(compiler, type_operand_element, file, line);
                 
