@@ -601,15 +601,15 @@ SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, 
 
 SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line);
+
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist);
 
-int32_t SPVM_OP_is_op_operand_mutable(SPVM_COMPILER* compiler, SPVM_OP* op);
+int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-const char* SPVM_OP_get_var_name(SPVM_COMPILER* compiler, SPVM_OP* op_var);
+int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op);
-
-void SPVM_OP_insert_to_most_left_deep_child(SPVM_COMPILER* compiler, SPVM_OP* op_parent, SPVM_OP* op_child);
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target);
 
@@ -619,17 +619,7 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target);
 
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace);
 
-SPVM_OP* SPVM_OP_fold_constant(SPVM_COMPILER* compiler, SPVM_OP* op_cur);
-
-SPVM_OP* SPVM_OP_get_op_block_from_op_method(SPVM_COMPILER* compiler, SPVM_OP* op_method);
-
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
-
-void SPVM_OP_convert_to_op_constant_true(SPVM_COMPILER* compiler, SPVM_OP* op);
-
-void SPVM_OP_convert_to_op_constant_false(SPVM_COMPILER* compiler, SPVM_OP* op);
-
-void SPVM_OP_resolve_op_convert_type(SPVM_COMPILER* compiler, SPVM_OP* op_convert_type);
 
 void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert);
 
