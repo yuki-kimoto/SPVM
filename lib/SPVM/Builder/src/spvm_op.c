@@ -251,6 +251,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ERROR",
     "ITEMS",
     "VERSION",
+    "CUT",
   };
   
   return id_names;
@@ -3498,6 +3499,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
     case SPVM_OP_C_ID_COPY:
+    case SPVM_OP_C_ID_CUT:
     {
       type = SPVM_OP_get_type(compiler, op->first);
       break;

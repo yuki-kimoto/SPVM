@@ -251,6 +251,7 @@ enum {
   SPVM_OP_C_ID_ERROR,
   SPVM_OP_C_ID_ITEMS,
   SPVM_OP_C_ID_VERSION_DECL,
+  SPVM_OP_C_ID_CUT,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
