@@ -95,9 +95,6 @@
 
 
 
-
-
-
 /* Operation id */
 enum {
   SPVM_OP_C_ID_GRAMMAR,
@@ -235,6 +232,7 @@ enum {
   SPVM_OP_C_ID_PRINT,
   SPVM_OP_C_ID_SAY,
   SPVM_OP_C_ID_TYPE_NAME,
+  SPVM_OP_C_ID_COMPILE_TYPE_NAME,
   SPVM_OP_C_ID_DUMP,
   SPVM_OP_C_ID_TRUE,
   SPVM_OP_C_ID_FALSE,
@@ -253,7 +251,6 @@ enum {
   SPVM_OP_C_ID_ERROR,
   SPVM_OP_C_ID_ITEMS,
   SPVM_OP_C_ID_VERSION_DECL,
-  SPVM_OP_C_ID_COMPILE_TYPE_NAME,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

@@ -94,9 +94,6 @@
 
 
 
-
-
-
 const char* const* SPVM_OP_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
@@ -233,7 +230,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "allow",
     "warn",
     "print",
+    "say",
     "type_name",
+    "compile_type_name",
     "dump",
     "true",
     "false",
@@ -252,7 +251,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "error",
     "items",
     "version",
-    "compile_type_name",
   };
   
   return id_names;
