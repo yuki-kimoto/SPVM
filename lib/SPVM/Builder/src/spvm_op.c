@@ -2224,7 +2224,7 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
   if (op_first->id != SPVM_OP_C_ID_VAR) {
-    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable.\n  at %s line %d", SPVM_OP_get_op_name(op_unary->id), op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable.\n  at %s line %d", SPVM_OP_get_op_name(compiler, op_unary->id), op_first->file, op_first->line);
   }
   
   // Build op
@@ -3787,7 +3787,7 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op->moresib ? op->sibparent : NULL;
 }
 
-const char* SPVM_OP_get_op_name(int32_t op_id) {
+const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id) {
   const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
   
   return op_name;
