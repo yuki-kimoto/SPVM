@@ -203,14 +203,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_CALL_METHOD:
                       case SPVM_OP_C_ID_TRUE:
                       case SPVM_OP_C_ID_FALSE:
+                      case SPVM_OP_C_ID_CONSTANT:
                       {
                         convert_to_assign = 1;
-                        break;
-                      }
-                      case SPVM_OP_C_ID_CONSTANT: {
-                        if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
-                          convert_to_assign = 1;
-                        }
                         break;
                       }
                       case SPVM_OP_C_ID_NUMERIC_EQ:
