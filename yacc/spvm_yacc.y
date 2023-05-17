@@ -240,7 +240,7 @@ interface
 enumeration
   : opt_attributes ENUM enumeration_block
     {
-      $$ = SPVM_OP_build_enumeration(compiler, $2, $3, $1);
+      $$ = SPVM_OP_build_enumeration_definition(compiler, $2, $3, $1);
     }
 
 enumeration_block 
@@ -299,31 +299,31 @@ enumeration_value
 our
   : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_our(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
     }
 
 has
   : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_field_definition(compiler, $1, $2, $4, $5);
     }
 
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
      }
   | opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
      {
-       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
      {
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
      }
 
 anon_method
@@ -331,7 +331,7 @@ anon_method
      {
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
      }
   | '[' args ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
@@ -346,7 +346,7 @@ anon_method
        
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_init, is_anon);
      }
 
 opt_args

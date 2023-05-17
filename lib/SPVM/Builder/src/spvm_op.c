@@ -256,11 +256,779 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
+  // Class
+  SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
-  return op_var;
+  // Set class
+  op_class->uv.class = class;
+  
+  class->op_class = op_class;
+  class->op_extends = op_extends;
+  
+  class->class_path = compiler->cur_class_path;
+  class->class_rel_file = compiler->cur_rel_file;
+  class->class_file = compiler->cur_file;
+  
+  if (op_extends) {
+    SPVM_OP* op_name_parent_class = op_extends->first;
+    class->parent_class_name = op_name_parent_class->uv.name;
+    // add use stack
+    SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
+    SPVM_OP* op_name_class_alias = NULL;
+    int32_t is_require = 0;
+    SPVM_OP_build_use(compiler, op_use, op_name_parent_class, op_name_class_alias, is_require);
+  }
+  
+  if (class->class_path) {
+    SPVM_CONSTANT_STRING_new(compiler, class->class_path, strlen(class->class_path));
+  }
+  SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
+  
+  if (!op_type) {
+    // Class is anon
+    class->is_anon = 1;
+    
+    SPVM_OP* op_method = op_block->first->last;
+    assert(op_method);
+    assert(op_method->id == SPVM_OP_C_ID_METHOD);
+
+    // int32_t max length is 10(2147483647)
+    int32_t int32_max_length = 10;
+    
+    // Create anon method class name
+    // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+    const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
+    int32_t anon_method_defined_line = op_method->line;
+    int32_t anon_method_defined_column = op_method->column;
+    int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
+    
+    // Anon class name
+    char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
+    sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
+
+    SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
+    const char* name_class = name_class_string->value;
+
+    SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+    op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
+    
+    op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
+  }
+  
+  const char* class_name = op_type->uv.type->basic_type->name;
+  class->type = op_type->uv.type;
+
+  if (!class->is_anon) {
+    assert(!islower(class_name[0]));
+    
+    // If class name is different from the class name corresponding to the class file, compile error occur.
+    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
+      // If class fail load by if (require xxx) syntax, that is ok
+      const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
+      if (!not_found_class_class_name) {
+        SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+        return op_class;
+      }
+    }
+  }
+  
+  SPVM_HASH* class_symtable = compiler->class_symtable;
+  
+  // Assert
+  SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, class_name, strlen(class_name));
+  if (found_class) { assert(0); }
+
+  // Add class
+  SPVM_LIST_push(compiler->classes, class);
+  SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
+  
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
+  class->op_name = op_name_class;
+  
+  class->name = op_name_class->uv.name;
+
+  // Class attributes
+  int32_t class_attributes_count = 0;
+  int32_t access_control_attributes_count = 0;
+  if (op_list_attributes) {
+    SPVM_OP* op_attribute = op_list_attributes->first;
+    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+      switch (attribute->id) {
+        case SPVM_ATTRIBUTE_C_ID_POINTER: {
+          class->category = SPVM_CLASS_C_CATEGORY_CLASS;
+          class->is_pointer = 1;
+          class_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
+          class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
+          class_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
+          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
+          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
+          class->is_precompile = 1;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
+          class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
+          class_attributes_count++;
+          break;
+        }
+        default: {
+          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
+        }
+      }
+    }
+    if (class_attributes_count > 1) {
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+    }
+    if (access_control_attributes_count > 1) {
+      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+    }
+  }
+  
+  // The default of the access controll is private
+  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+  }
+  
+  // Declarations
+  if (op_block) {
+    SPVM_OP* op_decls = op_block->first;
+    SPVM_OP* op_decl = op_decls->first;
+    while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
+      // version declaration
+      if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
+        if (class->version_string) {
+          SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        SPVM_OP* op_version_string = op_decl->first;
+        SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
+        const char* version_string = version_string_constant->value.oval;
+        int32_t version_string_length = version_string_constant->string_length;
+        
+        // Version string validation
+        {
+          int32_t dot_count = 0;
+          int32_t digits_after_dot = 0;
+          int32_t invalid_char = 0;
+          for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
+            char ch = version_string[version_string_index];
+            
+            if (!(ch == '.' || isdigit(ch) || ch == '_')) {
+              invalid_char = 1;
+              break;
+            }
+            
+            if (ch == '.') {
+              dot_count++;
+            }
+            
+            if (dot_count > 0 && isdigit(ch)) {
+              digits_after_dot++;
+            }
+          }
+          
+          if (invalid_char) {
+            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\" or \"_\".\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
+          }
+          
+          if (!isdigit(version_string[0])) {
+            SPVM_COMPILER_error(compiler, "A version string must begin with a number.\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
+          }
+          
+          if (!isdigit(version_string[version_string_length - 1])) {
+            SPVM_COMPILER_error(compiler, "A version string must end with a number.\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
+          }
+          
+          if (!(dot_count <= 1)) {
+            SPVM_COMPILER_error(compiler, "The number of \".\" in a version string must be less than or equal to 1.\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
+          }
+          
+          if (!(digits_after_dot % 3 == 0)) {
+            SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
+          }
+        }
+        
+        SPVM_CONSTANT_STRING_new(compiler, version_string, version_string_length);
+        class->version_string = version_string;
+      }
+      // use statement
+      else if (op_decl->id == SPVM_OP_C_ID_USE) {
+        SPVM_OP* op_use = op_decl;
+        
+        SPVM_LIST_push(class->use_class_names, (void*)op_use->uv.use->class_name);
+        
+        // Class alias
+        const char* class_alias_name = op_use->uv.use->class_alias_name;
+        if (class_alias_name) {
+    
+          // Class name must begin with upper case, otherwise compiler error occur.
+          // (Invalid example) Foo::bar
+          if (islower(class_alias_name[0])) {
+            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+          }
+          else {
+            const char* use_class_name = op_use->uv.use->class_name;
+            const char* use_class_name_exists = SPVM_HASH_get(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
+            if (use_class_name_exists) {
+              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+            }
+            else {
+              SPVM_HASH_set(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
+            }
+          }
+        }
+      }
+      // allow statement
+      else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
+        SPVM_LIST_push(class->allows, op_decl->uv.allow);
+      }
+      // interface statement
+      else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
+        if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+          SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
+        }
+        const char* interface_name = op_decl->uv.interface->class_name;
+        
+        if (strcmp(class->name, interface_name) == 0) {
+          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
+        }
+        
+        SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
+      }
+      // Class var declarations
+      else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
+        SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
+
+        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
+        }
+        SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
+
+        // Getter
+        if (class_var->has_getter) {
+          // static method FOO : TYPE () {
+          //   return $FOO;
+          // }
+
+          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
+          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
+          const char* method_name = method_name_string->value;
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
+
+          // If the type of the class_var is byte or short, the return type becomes int
+          SPVM_TYPE* class_var_type = class_var->type;
+          SPVM_TYPE* return_type;
+          if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
+          {
+            return_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            return_type = class_var->type;
+          }
+          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          
+          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
+          
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_class_var_access);
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+          SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+          
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, NULL, 0, 0);
+
+          op_method->uv.method->is_class_var_getter = 1;
+          op_method->uv.method->field_method_original_name = class_var->name;
+          op_method->uv.method->field_method_original_type = class_var->type;
+         
+          SPVM_LIST_push(class->methods, op_method->uv.method);
+        }
+
+        // Setter
+        if (class_var->has_setter) {
+          
+          // method SET_FOO : void ($foo : TYPE) {
+          //   $FOO = $foo;
+          // }
+          
+          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
+          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
+          memcpy(method_name_tmp, "SET_", 4);
+          memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
+
+          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          const char* method_name = method_name_string->value;
+
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
+          SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+          // If the type of the class_var is byte or short, the arg type becomes int
+          SPVM_TYPE* class_var_type = class_var->type;
+          SPVM_TYPE* arg_type;
+          if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
+          {
+            arg_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            arg_type = class_var->type;
+          }
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
+          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
+
+          SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
+          
+          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
+
+          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
+
+          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, class_var_type, op_decl->file, op_decl->line);
+          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
+
+          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
+          SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_type_cast);
+          
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
+          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+          SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+          
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, NULL, 0, 0);
+          
+          op_method->uv.method->is_class_var_setter = 1;
+          op_method->uv.method->field_method_original_name = class_var->name;
+          op_method->uv.method->field_method_original_type = class_var->type;
+          
+          SPVM_LIST_push(class->methods, op_method->uv.method);
+        }
+      }
+      // Field declarations
+      else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
+        SPVM_FIELD* field = op_decl->uv.field;
+        
+        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+          SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
+        }
+        SPVM_LIST_push(class->fields, field);
+        
+        // Getter
+        if (field->has_getter) {
+          // method foo : TYPE () {
+          //   return $self->{foo};
+          // }
+          
+          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+
+          // If the type of the field is byte or short, the return type becomes int
+          SPVM_TYPE* field_type = field->type;
+          SPVM_TYPE* return_type;
+          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
+          {
+            return_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            return_type = field->type;
+          }
+          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          
+          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
+          SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
+          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          
+          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
+
+          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
+          
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_field_access);
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+          
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          
+          op_method->uv.method->is_field_getter = 1;
+          op_method->uv.method->field_method_original_name = field->name;
+          op_method->uv.method->field_method_original_type = field->type;
+          
+          SPVM_LIST_push(class->methods, op_method->uv.method);
+        }
+
+        // Setter
+        if (field->has_setter) {
+          // method set_foo : void ($foo : TYPE) {
+          //   $self->{foo} = $foo;
+          // }
+
+          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
+          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
+          memcpy(method_name_tmp, "set_", 4);
+          memcpy(method_name_tmp + 4, field->name, strlen(field->name));
+          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          const char* method_name = method_name_string->value;
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
+          SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+          // If the type of the field is byte or short, the arg type becomes int
+          SPVM_TYPE* field_type = field->type;
+          SPVM_TYPE* arg_type;
+          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+            || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
+          {
+            arg_type = SPVM_TYPE_new_int_type(compiler);
+          }
+          else {
+            arg_type = field->type;
+          }
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
+          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
+
+          SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
+          
+          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+
+          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
+          SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
+          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
+          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
+
+          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
+          
+          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, field_type, op_decl->file, op_decl->line);
+          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
+
+          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
+          SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_type_cast);
+          
+          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
+          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+          
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          
+          op_method->uv.method->is_field_setter = 1;
+          op_method->uv.method->field_method_original_name = field->name;
+          op_method->uv.method->field_method_original_type = field->type;
+          
+          SPVM_LIST_push(class->methods, op_method->uv.method);
+        }
+      }
+      // Enum declarations
+      else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
+        SPVM_OP* op_enum_block = op_decl->first;
+        SPVM_OP* op_enumeration_values = op_enum_block->first;
+        SPVM_OP* op_method = op_enumeration_values->first;
+        while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
+          SPVM_LIST_push(class->methods, op_method->uv.method);
+        }
+      }
+      // Method declarations
+      else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
+        SPVM_LIST_push(class->methods, op_decl->uv.method);
+        
+        // Captures is added to field
+        SPVM_LIST* captures = op_decl->uv.method->captures;
+        for (int32_t i = 0; i < captures->length; i++) {
+          SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(captures, i);
+          
+          SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
+          SPVM_CONSTANT_STRING* field_name_string = SPVM_CONSTANT_STRING_new(compiler, capture_var_decl->var->name + 1, strlen(capture_var_decl->var->name) - 1);
+          
+          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name_string->value, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
+          
+          SPVM_TYPE* type_new_capture_var_decl = SPVM_TYPE_new(compiler, capture_var_decl->type->basic_type->id, capture_var_decl->type->dimension, capture_var_decl->type->flag);
+          SPVM_OP* op_type_new_capture_var_decl = SPVM_OP_new_op_type(compiler, type_new_capture_var_decl, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
+          SPVM_OP_build_field_definition(compiler, op_field, op_name_field, NULL, op_type_new_capture_var_decl);
+          SPVM_LIST_push(class->fields, op_field->uv.field);
+          op_field->uv.field->is_captured = 1;
+        }
+        
+        // Begin block
+        if (op_decl->uv.method->is_init) {
+          class->has_init_block = 1;
+        }
+      }
+      else {
+        assert(0);
+      }
+    }
+  }
+  
+  // Field declarations
+  for (int32_t i = 0; i < class->fields->length; i++) {
+    SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+
+    // The default of the access controll of the field is private.
+    if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+      // If anon method, field is public
+      if (class->is_anon) {
+        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+      }
+      // If multi-numeric type, field is public
+      else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+      }
+      // Default is private
+      else {
+        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+      }
+    }
+
+    field->index = i;
+    const char* field_name = field->op_name->uv.name;
+
+    SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
+    
+    if (found_field) {
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
+    }
+    else {
+      SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
+      
+      // Add op class
+      field->class = class;
+    }
+  }
+
+  // Class variable declarations
+  for (int32_t i = 0; i < class->class_vars->length; i++) {
+    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
+    const char* class_var_name = class_var->name;
+
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
+    
+    if (found_class_var) {
+      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
+    }
+    else {
+      SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
+      
+      // Add op class
+      class_var->class = class;
+    }
+  }
+  
+  // INIT block
+  {
+    // Check INIT block existance
+    int32_t has_init_block = 0;
+    for (int32_t i = 0; i < class->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      if (method->is_init) {
+        has_init_block = 1;
+        break;
+      }
+    }
+    
+    // Add an default INIT block
+    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS && !has_init_block) {
+      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
+      
+      // Statements
+      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+      
+      // Block
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
+      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+      
+      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
+      
+      SPVM_LIST_push(class->methods, op_method->uv.method);
+    }
+  }
+  
+  // Method declarations
+  for (int32_t i = 0; i < class->methods->length; i++) {
+    SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+    
+    SPVM_OP* op_name_method = method->op_name;
+    const char* method_name = op_name_method->uv.name;
+    
+    int32_t must_have_block;
+    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+      must_have_block = 0;
+    }
+    else {
+      if (method->is_native) {
+        must_have_block = 0;
+      }
+      else {
+        must_have_block = 1;
+      }
+    }
+    
+    if (must_have_block && !method->op_block) {
+      SPVM_COMPILER_error(compiler, "The non-native method must have the block.\n  at %s line %d", op_name_method->file, op_name_method->line);
+    }
+    
+    // Method check
+    
+    // Set first argument type if not set
+    if (method->args_length > 0) {
+      SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
+      SPVM_OP* op_arg_first_type = NULL;
+      if (!method->is_class_method) {
+        SPVM_TYPE* arg_invocant_type = op_type->uv.type;
+        op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
+        arg_var_decl_first->type = op_arg_first_type->uv.type;
+        assert(arg_invocant_type->basic_type);
+      }
+      else {
+        SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
+        op_arg_first_type = op_type_new_arg_var_decl_first;
+        assert(op_arg_first_type->uv.type->basic_type);
+      }
+    }
+
+    // If Method is anon, method must be method
+    if (strlen(method_name) == 0 && method->is_class_method) {
+      SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
+    }
+
+    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+      // Method having interface_t attribute must be method
+      if (method->is_class_method) {
+        SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
+      }
+    }
+    else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+      if (method->is_required) {
+        SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
+      }
+    }
+    
+    if (method->is_native) {
+      if (method->op_block) {
+        SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", method->op_method->file, method->op_method->line);
+      }
+    }
+    
+    SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+    
+    if (found_method) {
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
+    }
+    // Unknown method
+    else {
+      const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+      if (found_method_name) {
+        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
+      }
+      else {
+        // Bind standard functions
+        method->class = class;
+        
+        if (method->is_destructor) {
+          class->destructor_method = method;
+        }
+        
+        if (method->is_init) {
+          class->init_method = method;
+        }
+
+        if (method->is_required) {
+          if (class->required_method) {
+            SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\".\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
+          }
+          class->required_method = method;
+        }
+        
+        assert(method->op_method->file);
+        
+        // Method absolute name
+        int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
+        char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
+        memcpy(method_abs_name, class->name, strlen(class->name));
+        memcpy(method_abs_name + strlen(class_name), "->", 2);
+        memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
+        method->abs_name = method_abs_name;
+
+        // Add the method to the method symtable of the class
+        SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
+      }
+    }
+  }
+  
+  // mulnum_t
+  if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+    if (class->methods->length > 0) {
+      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
+    }
+    if (class->class_vars->length > 0) {
+      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
+    }
+    if (class->fields->length == 0) {
+      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
+    }
+    else if (class->fields->length > 255) {
+      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
+    }
+  }
+
+  return op_class;
 }
 
 SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_name_parent_class) {
@@ -268,6 +1036,597 @@ SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPV
   SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_name_parent_class);
   
   return op_extends;
+}
+
+SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version_decl, SPVM_OP* op_version_string) {
+  
+  SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_string);
+  
+  return op_version_decl;
+}
+
+SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_name_class) {
+  
+  SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
+  op_allow->uv.allow = allow;
+  allow->op_allow = op_allow;
+  allow->class_name = op_name_class->uv.name;
+  
+  // add use stack
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
+  SPVM_OP* op_name_class_alias = NULL;
+  int32_t is_require = 0;
+  SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
+  
+  return op_allow;
+}
+
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias) {
+  
+  SPVM_USE* use = op_use->uv.use;
+  use->op_use = op_use;
+  use->class_name = op_name_class->uv.name;
+  const char* class_alias_name = op_name_class_alias->uv.name;
+  use->class_alias_name = class_alias_name;
+  
+  return op_use;
+}
+
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
+  
+  SPVM_USE* use = op_use->uv.use;
+  use->op_use = op_use;
+  use->is_require = is_require;
+  use->class_name = op_name_class->uv.name;
+  
+  if (op_name_class_alias) {
+    const char* class_alias_name = op_name_class_alias->uv.name;
+    use->class_alias_name = class_alias_name;
+  }
+
+  SPVM_LIST_push(compiler->op_use_stack, op_use);
+  
+  return op_use;
+}
+
+SPVM_OP* SPVM_OP_build_enumeration_definition(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block, SPVM_OP* op_attributes) {
+  
+  SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
+  
+  SPVM_OP* op_enumeration_values = op_enumeration_block->first;
+  SPVM_OP* op_method = op_enumeration_values->first;
+  while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
+    SPVM_METHOD* method = op_method->uv.method;
+
+    // Enumeration attributes
+    int32_t access_control_attributes_count = 0;
+    if (op_attributes) {
+      SPVM_OP* op_attribute = op_attributes->first;
+      while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+        SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+        
+        switch (attribute->id) {
+          case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
+            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+            access_control_attributes_count++;
+            break;
+          }
+          case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+            access_control_attributes_count++;
+            break;
+          }
+          case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
+            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+            access_control_attributes_count++;
+            break;
+          }
+          default: {
+            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          }
+        }
+      }
+      if (access_control_attributes_count > 1) {
+        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
+      }
+    }
+    
+    // The default of the access controll of the enumeration is public.
+    if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+      method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+    }
+  }
+  
+  // Reset enum information
+  compiler->current_enum_value = 0;
+  
+  return op_enumeration;
+}
+
+SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_constant) {
+  
+  if (op_constant) {
+    
+    SPVM_CONSTANT* constant = op_constant->uv.constant;
+    
+    if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+      compiler->current_enum_value = constant->value.ival;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The value of the enumeration must be int type.\n  at %s line %d", op_constant->file, op_constant->line);
+    }
+    
+    compiler->current_enum_value++;
+  }
+  else {
+    op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->current_enum_value, op_name->file, op_name->line);
+    
+    compiler->current_enum_value++;
+  }
+  
+  // Return
+  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
+  
+  // Statements
+  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
+
+  // Block
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_name->file, op_name->line);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+  
+  // method
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_name->file, op_name->line);
+  op_method->file = op_name->file;
+  op_method->line = op_name->line;
+  
+  // Type
+  SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
+
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+  
+  // Build method
+  op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name, op_return_type, NULL, op_list_attributes, op_block, NULL, NULL, 0, 0);
+  
+  // Set constant
+  op_method->uv.method->op_inline = op_constant;
+  
+  // Method is enumeration
+  op_method->uv.method->is_enum = 1;
+  
+  return op_method;
+}
+
+SPVM_OP* SPVM_OP_build_class_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+  
+  SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
+  
+  const char* name = op_name->uv.name;;
+  class_var->name = op_name->uv.name;
+  
+  if (strstr(name, "::")) {
+    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
+  }
+  
+  class_var->op_name = op_name;
+  class_var->type = op_type->uv.type;
+  class_var->op_class_var = op_class_var;
+
+  op_class_var->uv.class_var = class_var;
+
+  // Class variable attributes
+  if (op_attributes) {
+    int32_t field_method_attributes_count = 0;
+    int32_t access_control_attributes_count = 0;
+    SPVM_OP* op_attribute = op_attributes->first;
+    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+      
+      switch (attribute->id) {
+        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
+          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
+          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_RW: {
+          class_var->has_setter = 1;
+          class_var->has_getter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_RO: {
+          class_var->has_getter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_WO: {
+          class_var->has_setter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        default: {
+          SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+        }
+      }
+      if (field_method_attributes_count > 1) {
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
+      }
+      if (access_control_attributes_count > 1) {
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
+      }
+    }
+  }
+  
+  // The default of the access controll of the class variable is private.
+  if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+  }
+  
+  return op_class_var;
+}
+
+SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+
+  // Create field information
+  SPVM_FIELD* field = SPVM_FIELD_new(compiler);
+
+  // Field Name
+  field->op_name = op_name_field;
+  field->name = op_name_field->uv.name;
+
+  if (strstr(field->op_name->uv.name, "::")) {
+    SPVM_COMPILER_error(compiler, "The field name \"%s\" cannnot contain \"::\".\n  at %s line %d", field->name, op_name_field->file, op_name_field->line);
+  }
+
+  // Type
+  field->type = op_type->uv.type;
+  
+  // Set field informaiton
+  op_field->uv.field = field;
+
+  // Field attributes
+  if (op_attributes) {
+    SPVM_OP* op_attribute = op_attributes->first;
+    int32_t field_method_attributes_count = 0;
+    int32_t access_control_attributes_count = 0;
+    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+      
+      switch (attribute->id) {
+        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
+          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_RW: {
+          field->has_setter = 1;
+          field->has_getter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_RO: {
+          field->has_getter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_WO: {
+          field->has_setter = 1;
+          field_method_attributes_count++;
+          break;
+        }
+        default: {
+          SPVM_COMPILER_error(compiler, "Invalid field attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+        }
+      }
+      
+      if (field_method_attributes_count > 1) {
+        SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed.\n  at %s line %d", op_field->file, op_field->line);
+      }
+      if (access_control_attributes_count > 1) {
+        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
+      }
+    }
+  }
+  
+  field->op_field = op_field;
+  
+  return op_field;
+}
+
+SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_init, int32_t is_anon) {
+  SPVM_METHOD* method = SPVM_METHOD_new(compiler);
+  
+  // Is anon method
+  if (is_anon) {
+    method->is_anon = 1;
+  }
+  
+  if (op_name_method == NULL) {
+    SPVM_CONSTANT_STRING* anon_method_name_string = SPVM_CONSTANT_STRING_new(compiler, "", strlen(""));
+    const char* anon_method_name = anon_method_name_string->value;
+    op_name_method = SPVM_OP_new_op_name(compiler, anon_method_name, op_method->file, op_method->line);
+  }
+  const char* method_name = op_name_method->uv.name;
+  if (strstr(method_name, "::")) {
+    SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
+  }
+  
+  // Block is method block
+  if (op_block) {
+    op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
+  }
+  
+  // Create method information
+  method->op_name = op_name_method;
+  
+  method->name = method->op_name->uv.name;
+  
+  if (op_dot3) {
+    method->have_vaarg = 1;
+  }
+  
+  method->is_init = is_init;
+  if (!is_init && strcmp(method_name, "INIT") == 0) {
+    SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
+  }
+
+  // Method attributes
+  int32_t access_control_attributes_count = 0;
+  if (op_attributes) {
+    SPVM_OP* op_attribute = op_attributes->first;
+    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+      
+      switch (attribute->id) {
+        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
+          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
+          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
+          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          access_control_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
+          method->is_precompile = 1;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_REQUIRED: {
+          method->is_required = 1;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_NATIVE: {
+          method->is_native = 1;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_STATIC: {
+          method->is_class_method = 1;
+          break;
+        }
+        default: {
+          SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+        }
+      }
+    }
+    
+    if (method->is_native && method->is_precompile) {
+      SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified.\n  at %s line %d", op_attributes->file, op_attributes->line);
+    }
+    if (access_control_attributes_count > 1) {
+      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
+    }
+  }
+  
+  // The default of the access controll of the method is publice.
+  if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+  }
+  
+  // Native method cannnot have block
+  if ((method->is_native) && op_block) {
+    SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", op_block->file, op_block->line);
+  }
+  
+  // method args
+  if (!op_args) {
+    op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
+  }
+  
+  // Add $self : self before the first argument
+  if (!method->is_class_method) {
+    SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
+    SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
+    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler, 0, 0, 0);
+    SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
+    op_self_type->flag |= SPVM_OP_C_FLAG_TYPE_IS_SELF;
+    SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL, NULL);
+    SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
+  }
+
+  // Add method arguments
+  {
+    int32_t found_optional_arg = 0;
+    int32_t required_args_length = 0;
+    int32_t args_length = 0;
+    SPVM_OP* op_arg = op_args->first;
+    while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
+      if (!found_optional_arg) {
+        if (arg_var_decl->op_optional_arg_default) {
+          found_optional_arg = 1;
+        }
+        else {
+          required_args_length++;
+        }
+      }
+      args_length++;
+    }
+    method->args_length = args_length;
+    method->required_args_length = required_args_length;
+  }
+
+  // Capture variables
+  if (op_captures) {
+    SPVM_OP* op_capture = op_captures->first;
+    while ((op_capture = SPVM_OP_sibling(compiler, op_capture))) {
+      SPVM_LIST_push(method->captures, op_capture->uv.var->var_decl);
+    }
+  }
+  
+  // Variable declarations of arguments
+  SPVM_OP* op_arg = op_args->first;
+  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+    SPVM_LIST_push(method->var_decls, op_arg->uv.var->var_decl);
+  }
+
+  // return type
+  method->return_type = op_return_type->uv.type;
+  
+  if (strcmp(method->op_name->uv.name, "DESTROY") == 0) {
+    method->is_destructor = 1;
+    
+    // DESTROY return type must be void
+    if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
+      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type.\n  at %s line %d", op_method->file, op_method->line);
+    }
+    
+    // DESTROY is instance method
+    if (method->is_class_method) {
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
+    }
+
+    // DESTROY doesn't have arguments without invocant
+    if (method->args_length != 1) {
+      SPVM_COMPILER_error(compiler, "The DESTROY destructor method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
+    }
+  }
+  
+  if (op_block) {
+
+    SPVM_OP* op_list_statement = op_block->first;
+
+    // Add variable declarations before the first of the statements
+    for (int32_t i = method->args_length - 1; i >= 0; i--) {
+      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
+      assert(arg_var_decl);
+      SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
+      SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+      op_var->uv.var->var_decl = arg_var_decl;
+      op_var->uv.var->is_declaration = 1;
+      op_var->uv.var->var_decl = arg_var_decl;
+
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+    }
+
+    // Add condition_flag variable to first of block
+    {
+      char* name = "$.condition_flag";
+      SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
+      op_name->uv.name = name;
+      SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
+      op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+    }
+
+    // Add return statement after the last of the statements
+    {
+      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_TYPE* return_type = method->return_type;
+      if (SPVM_TYPE_is_void_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+      else {
+        // Return variable name
+        char* name = "$.return";
+        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
+        op_name->uv.name = name;
+        SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+        SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
+        op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+    }
+  }
+  
+  // Save block
+  method->op_block = op_block;
+  
+  method->op_method = op_method;
+  
+  op_method->uv.method = method;
+  
+  return op_method;
+}
+
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_optional_arg_default) {
+  
+  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_eternal(compiler, op_var->file, op_var->line);
+
+  op_var_decl->uv.var_decl->is_arg = 1;
+  
+  op_var_decl->uv.var_decl->op_optional_arg_default = op_optional_arg_default;
+  
+  op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_attributes);
+  
+  return op_var;
+}
+
+SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
+    
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_init->file, op_init->line);
+  SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, "INIT", strlen("INIT"));
+  const char* method_name = method_name_string->value;
+  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_init->file, op_init->line);
+  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_init->file, op_init->line);
+  
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_init->file, op_init->line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
+  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+  
+  int32_t is_init = 1;
+  SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, NULL, is_init, 0);
+  
+  return op_method;
+}
+
+SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
+  
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_var_name);
+  
+  return op_var;
 }
 
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_eval_block) {
@@ -781,832 +2140,6 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   return op_type_cast;
 }
 
-SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
-  
-  // Class
-  SPVM_CLASS* class = SPVM_CLASS_new(compiler);
-  
-  // Set class
-  op_class->uv.class = class;
-  
-  class->op_class = op_class;
-  class->op_extends = op_extends;
-  
-  class->class_path = compiler->cur_class_path;
-  class->class_rel_file = compiler->cur_rel_file;
-  class->class_file = compiler->cur_file;
-  
-  if (op_extends) {
-    SPVM_OP* op_name_parent_class = op_extends->first;
-    class->parent_class_name = op_name_parent_class->uv.name;
-    // add use stack
-    SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
-    SPVM_OP* op_name_class_alias = NULL;
-    int32_t is_require = 0;
-    SPVM_OP_build_use(compiler, op_use, op_name_parent_class, op_name_class_alias, is_require);
-  }
-  
-  if (class->class_path) {
-    SPVM_CONSTANT_STRING_new(compiler, class->class_path, strlen(class->class_path));
-  }
-  SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
-  
-  if (!op_type) {
-    // Class is anon
-    class->is_anon = 1;
-    
-    SPVM_OP* op_method = op_block->first->last;
-    assert(op_method);
-    assert(op_method->id == SPVM_OP_C_ID_METHOD);
-
-    // int32_t max length is 10(2147483647)
-    int32_t int32_max_length = 10;
-    
-    // Create anon method class name
-    // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-    const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
-    int32_t anon_method_defined_line = op_method->line;
-    int32_t anon_method_defined_column = op_method->column;
-    int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
-    
-    // Anon class name
-    char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
-    sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
-
-    SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
-    const char* name_class = name_class_string->value;
-
-    SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
-    op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
-    
-    op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
-  }
-  
-  const char* class_name = op_type->uv.type->basic_type->name;
-  class->type = op_type->uv.type;
-
-  if (!class->is_anon) {
-    assert(!islower(class_name[0]));
-    
-    // If class name is different from the class name corresponding to the class file, compile error occur.
-    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
-      // If class fail load by if (require xxx) syntax, that is ok
-      const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
-      if (!not_found_class_class_name) {
-        SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
-        return op_class;
-      }
-    }
-  }
-  
-  SPVM_HASH* class_symtable = compiler->class_symtable;
-  
-  // Assert
-  SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, class_name, strlen(class_name));
-  if (found_class) { assert(0); }
-
-  // Add class
-  SPVM_LIST_push(compiler->classes, class);
-  SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
-  
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
-  class->op_name = op_name_class;
-  
-  class->name = op_name_class->uv.name;
-
-  // Class attributes
-  int32_t class_attributes_count = 0;
-  int32_t access_control_attributes_count = 0;
-  if (op_list_attributes) {
-    SPVM_OP* op_attribute = op_list_attributes->first;
-    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
-      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
-      switch (attribute->id) {
-        case SPVM_ATTRIBUTE_C_ID_POINTER: {
-          class->category = SPVM_CLASS_C_CATEGORY_CLASS;
-          class->is_pointer = 1;
-          class_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
-          class_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
-          class->is_precompile = 1;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
-          class_attributes_count++;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
-        }
-      }
-    }
-    if (class_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
-    }
-    if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
-    }
-  }
-  
-  // The default of the access controll is private
-  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-  }
-  
-  // Declarations
-  if (op_block) {
-    SPVM_OP* op_decls = op_block->first;
-    SPVM_OP* op_decl = op_decls->first;
-    while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      // version declaration
-      if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
-        if (class->version_string) {
-          SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
-          break;
-        }
-        
-        SPVM_OP* op_version_string = op_decl->first;
-        SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
-        const char* version_string = version_string_constant->value.oval;
-        int32_t version_string_length = version_string_constant->string_length;
-        
-        // Version string validation
-        {
-          int32_t dot_count = 0;
-          int32_t digits_after_dot = 0;
-          int32_t invalid_char = 0;
-          for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
-            char ch = version_string[version_string_index];
-            
-            if (!(ch == '.' || isdigit(ch) || ch == '_')) {
-              invalid_char = 1;
-              break;
-            }
-            
-            if (ch == '.') {
-              dot_count++;
-            }
-            
-            if (dot_count > 0 && isdigit(ch)) {
-              digits_after_dot++;
-            }
-          }
-          
-          if (invalid_char) {
-            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\" or \"_\".\n  at %s line %d", op_decl->file, op_decl->line);
-            break;
-          }
-          
-          if (!isdigit(version_string[0])) {
-            SPVM_COMPILER_error(compiler, "A version string must begin with a number.\n  at %s line %d", op_decl->file, op_decl->line);
-            break;
-          }
-          
-          if (!isdigit(version_string[version_string_length - 1])) {
-            SPVM_COMPILER_error(compiler, "A version string must end with a number.\n  at %s line %d", op_decl->file, op_decl->line);
-            break;
-          }
-          
-          if (!(dot_count <= 1)) {
-            SPVM_COMPILER_error(compiler, "The number of \".\" in a version string must be less than or equal to 1.\n  at %s line %d", op_decl->file, op_decl->line);
-            break;
-          }
-          
-          if (!(digits_after_dot % 3 == 0)) {
-            SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
-            break;
-          }
-        }
-        
-        SPVM_CONSTANT_STRING_new(compiler, version_string, version_string_length);
-        class->version_string = version_string;
-      }
-      // use statement
-      else if (op_decl->id == SPVM_OP_C_ID_USE) {
-        SPVM_OP* op_use = op_decl;
-        
-        SPVM_LIST_push(class->use_class_names, (void*)op_use->uv.use->class_name);
-        
-        // Class alias
-        const char* class_alias_name = op_use->uv.use->class_alias_name;
-        if (class_alias_name) {
-    
-          // Class name must begin with upper case, otherwise compiler error occur.
-          // (Invalid example) Foo::bar
-          if (islower(class_alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
-          }
-          else {
-            const char* use_class_name = op_use->uv.use->class_name;
-            const char* use_class_name_exists = SPVM_HASH_get(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
-            if (use_class_name_exists) {
-              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
-            }
-            else {
-              SPVM_HASH_set(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
-            }
-          }
-        }
-      }
-      // allow statement
-      else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
-        SPVM_LIST_push(class->allows, op_decl->uv.allow);
-      }
-      // interface statement
-      else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
-        if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-          SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
-        }
-        const char* interface_name = op_decl->uv.interface->class_name;
-        
-        if (strcmp(class->name, interface_name) == 0) {
-          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
-        }
-        
-        SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
-      }
-      // Class var declarations
-      else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
-        SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
-
-        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
-        }
-        SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
-
-        // Getter
-        if (class_var->has_getter) {
-          // static method FOO : TYPE () {
-          //   return $FOO;
-          // }
-
-          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
-          const char* method_name = method_name_string->value;
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
-
-          // If the type of the class_var is byte or short, the return type becomes int
-          SPVM_TYPE* class_var_type = class_var->type;
-          SPVM_TYPE* return_type;
-          if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
-            || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
-          {
-            return_type = SPVM_TYPE_new_int_type(compiler);
-          }
-          else {
-            return_type = class_var->type;
-          }
-          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          
-          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
-          
-          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_class_var_access);
-          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
-          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-          SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
-          
-          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, NULL, 0, 0);
-
-          op_method->uv.method->is_class_var_getter = 1;
-          op_method->uv.method->field_method_original_name = class_var->name;
-          op_method->uv.method->field_method_original_type = class_var->type;
-         
-          SPVM_LIST_push(class->methods, op_method->uv.method);
-        }
-
-        // Setter
-        if (class_var->has_setter) {
-          
-          // method SET_FOO : void ($foo : TYPE) {
-          //   $FOO = $foo;
-          // }
-          
-          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
-          memcpy(method_name_tmp, "SET_", 4);
-          memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
-
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
-          const char* method_name = method_name_string->value;
-
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
-          SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
-          // If the type of the class_var is byte or short, the arg type becomes int
-          SPVM_TYPE* class_var_type = class_var->type;
-          SPVM_TYPE* arg_type;
-          if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
-            || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
-          {
-            arg_type = SPVM_TYPE_new_int_type(compiler);
-          }
-          else {
-            arg_type = class_var->type;
-          }
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
-          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
-
-          SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
-          
-          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
-
-          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
-
-          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
-          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, class_var_type, op_decl->file, op_decl->line);
-          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
-
-          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_type_cast);
-          
-          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
-          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-          SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
-          
-          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, NULL, 0, 0);
-          
-          op_method->uv.method->is_class_var_setter = 1;
-          op_method->uv.method->field_method_original_name = class_var->name;
-          op_method->uv.method->field_method_original_type = class_var->type;
-          
-          SPVM_LIST_push(class->methods, op_method->uv.method);
-        }
-      }
-      // Field declarations
-      else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-        SPVM_FIELD* field = op_decl->uv.field;
-        
-        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
-        }
-        SPVM_LIST_push(class->fields, field);
-        
-        // Getter
-        if (field->has_getter) {
-          // method foo : TYPE () {
-          //   return $self->{foo};
-          // }
-          
-          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-
-          // If the type of the field is byte or short, the return type becomes int
-          SPVM_TYPE* field_type = field->type;
-          SPVM_TYPE* return_type;
-          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
-            || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
-          {
-            return_type = SPVM_TYPE_new_int_type(compiler);
-          }
-          else {
-            return_type = field->type;
-          }
-          SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          
-          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
-          SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
-          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          
-          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
-
-          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
-          
-          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_field_access);
-          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
-          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-          
-          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
-          
-          op_method->uv.method->is_field_getter = 1;
-          op_method->uv.method->field_method_original_name = field->name;
-          op_method->uv.method->field_method_original_type = field->type;
-          
-          SPVM_LIST_push(class->methods, op_method->uv.method);
-        }
-
-        // Setter
-        if (field->has_setter) {
-          // method set_foo : void ($foo : TYPE) {
-          //   $self->{foo} = $foo;
-          // }
-
-          SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
-          memcpy(method_name_tmp, "set_", 4);
-          memcpy(method_name_tmp + 4, field->name, strlen(field->name));
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
-          const char* method_name = method_name_string->value;
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
-          SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
-          // If the type of the field is byte or short, the arg type becomes int
-          SPVM_TYPE* field_type = field->type;
-          SPVM_TYPE* arg_type;
-          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
-            || SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag))
-          {
-            arg_type = SPVM_TYPE_new_int_type(compiler);
-          }
-          else {
-            arg_type = field->type;
-          }
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
-          SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
-
-          SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
-          
-          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
-          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
-          SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
-          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
-          SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
-
-          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
-          
-          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
-          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, field_type, op_decl->file, op_decl->line);
-          SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
-
-          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_type_cast);
-          
-          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
-          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-          
-          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
-          
-          op_method->uv.method->is_field_setter = 1;
-          op_method->uv.method->field_method_original_name = field->name;
-          op_method->uv.method->field_method_original_type = field->type;
-          
-          SPVM_LIST_push(class->methods, op_method->uv.method);
-        }
-      }
-      // Enum declarations
-      else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
-        SPVM_OP* op_enum_block = op_decl->first;
-        SPVM_OP* op_enumeration_values = op_enum_block->first;
-        SPVM_OP* op_method = op_enumeration_values->first;
-        while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-          SPVM_LIST_push(class->methods, op_method->uv.method);
-        }
-      }
-      // Method declarations
-      else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
-        SPVM_LIST_push(class->methods, op_decl->uv.method);
-        
-        // Captures is added to field
-        SPVM_LIST* captures = op_decl->uv.method->captures;
-        for (int32_t i = 0; i < captures->length; i++) {
-          SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(captures, i);
-          
-          SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
-          SPVM_CONSTANT_STRING* field_name_string = SPVM_CONSTANT_STRING_new(compiler, capture_var_decl->var->name + 1, strlen(capture_var_decl->var->name) - 1);
-          
-          SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, field_name_string->value, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
-          
-          SPVM_TYPE* type_new_capture_var_decl = SPVM_TYPE_new(compiler, capture_var_decl->type->basic_type->id, capture_var_decl->type->dimension, capture_var_decl->type->flag);
-          SPVM_OP* op_type_new_capture_var_decl = SPVM_OP_new_op_type(compiler, type_new_capture_var_decl, capture_var_decl->op_var_decl->file, capture_var_decl->op_var_decl->line);
-          SPVM_OP_build_field(compiler, op_field, op_name_field, NULL, op_type_new_capture_var_decl);
-          SPVM_LIST_push(class->fields, op_field->uv.field);
-          op_field->uv.field->is_captured = 1;
-        }
-        
-        // Begin block
-        if (op_decl->uv.method->is_init) {
-          class->has_init_block = 1;
-        }
-      }
-      else {
-        assert(0);
-      }
-    }
-  }
-  
-  // Field declarations
-  for (int32_t i = 0; i < class->fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
-
-    // The default of the access controll of the field is private.
-    if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-      // If anon method, field is public
-      if (class->is_anon) {
-        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-      }
-      // If multi-numeric type, field is public
-      else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-      }
-      // Default is private
-      else {
-        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-      }
-    }
-
-    field->index = i;
-    const char* field_name = field->op_name->uv.name;
-
-    SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
-    
-    if (found_field) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
-    }
-    else {
-      SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
-      
-      // Add op class
-      field->class = class;
-    }
-  }
-
-  // Class variable declarations
-  for (int32_t i = 0; i < class->class_vars->length; i++) {
-    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
-    const char* class_var_name = class_var->name;
-
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
-    
-    if (found_class_var) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
-    }
-    else {
-      SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
-      
-      // Add op class
-      class_var->class = class;
-    }
-  }
-  
-  // INIT block
-  {
-    // Check INIT block existance
-    int32_t has_init_block = 0;
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-      if (method->is_init) {
-        has_init_block = 1;
-        break;
-      }
-    }
-    
-    // Add an default INIT block
-    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS && !has_init_block) {
-      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
-      
-      // Statements
-      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
-      
-      // Block
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
-      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
-      
-      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
-      
-      SPVM_LIST_push(class->methods, op_method->uv.method);
-    }
-  }
-  
-  // Method declarations
-  for (int32_t i = 0; i < class->methods->length; i++) {
-    SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-    
-    SPVM_OP* op_name_method = method->op_name;
-    const char* method_name = op_name_method->uv.name;
-    
-    int32_t must_have_block;
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-      must_have_block = 0;
-    }
-    else {
-      if (method->is_native) {
-        must_have_block = 0;
-      }
-      else {
-        must_have_block = 1;
-      }
-    }
-    
-    if (must_have_block && !method->op_block) {
-      SPVM_COMPILER_error(compiler, "The non-native method must have the block.\n  at %s line %d", op_name_method->file, op_name_method->line);
-    }
-    
-    // Method check
-    
-    // Set first argument type if not set
-    if (method->args_length > 0) {
-      SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
-      SPVM_OP* op_arg_first_type = NULL;
-      if (!method->is_class_method) {
-        SPVM_TYPE* arg_invocant_type = op_type->uv.type;
-        op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
-        arg_var_decl_first->type = op_arg_first_type->uv.type;
-        assert(arg_invocant_type->basic_type);
-      }
-      else {
-        SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
-        op_arg_first_type = op_type_new_arg_var_decl_first;
-        assert(op_arg_first_type->uv.type->basic_type);
-      }
-    }
-
-    // If Method is anon, method must be method
-    if (strlen(method_name) == 0 && method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
-    }
-
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-      // Method having interface_t attribute must be method
-      if (method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
-      }
-    }
-    else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
-      if (method->is_required) {
-        SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
-      }
-    }
-    
-    if (method->is_native) {
-      if (method->op_block) {
-        SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", method->op_method->file, method->op_method->line);
-      }
-    }
-    
-    SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
-    
-    if (found_method) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
-    }
-    // Unknown method
-    else {
-      const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
-      if (found_method_name) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
-      }
-      else {
-        // Bind standard functions
-        method->class = class;
-        
-        if (method->is_destructor) {
-          class->destructor_method = method;
-        }
-        
-        if (method->is_init) {
-          class->init_method = method;
-        }
-
-        if (method->is_required) {
-          if (class->required_method) {
-            SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\".\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
-          }
-          class->required_method = method;
-        }
-        
-        assert(method->op_method->file);
-        
-        // Method absolute name
-        int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
-        char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
-        memcpy(method_abs_name, class->name, strlen(class->name));
-        memcpy(method_abs_name + strlen(class_name), "->", 2);
-        memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
-        method->abs_name = method_abs_name;
-
-        // Add the method to the method symtable of the class
-        SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
-      }
-    }
-  }
-  
-  // mulnum_t
-  if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-    if (class->methods->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
-    }
-    if (class->class_vars->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
-    }
-    if (class->fields->length == 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
-    }
-    else if (class->fields->length > 255) {
-      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
-    }
-  }
-
-  return op_class;
-}
-
-SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version_decl, SPVM_OP* op_version_string) {
-  
-  SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_string);
-  
-  return op_version_decl;
-}
-
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
-  
-  SPVM_USE* use = op_use->uv.use;
-  use->op_use = op_use;
-  use->is_require = is_require;
-  use->class_name = op_name_class->uv.name;
-  
-  if (op_name_class_alias) {
-    const char* class_alias_name = op_name_class_alias->uv.name;
-    use->class_alias_name = class_alias_name;
-  }
-
-  SPVM_LIST_push(compiler->op_use_stack, op_use);
-  
-  return op_use;
-}
-
-SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias) {
-  
-  SPVM_USE* use = op_use->uv.use;
-  use->op_use = op_use;
-  use->class_name = op_name_class->uv.name;
-  const char* class_alias_name = op_name_class_alias->uv.name;
-  use->class_alias_name = class_alias_name;
-  
-  return op_use;
-}
-
-SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_name_class) {
-  
-  SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
-  op_allow->uv.allow = allow;
-  allow->op_allow = op_allow;
-  allow->class_name = op_name_class->uv.name;
-  
-  // add use stack
-  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
-  SPVM_OP* op_name_class_alias = NULL;
-  int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
-  
-  return op_allow;
-}
-
 SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_name_class) {
   
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
@@ -1621,539 +2154,6 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface,
   SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
   
   return op_interface;
-}
-
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
-  
-  SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
-  
-  const char* name = op_name->uv.name;;
-  class_var->name = op_name->uv.name;
-  
-  if (strstr(name, "::")) {
-    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
-  }
-  
-  class_var->op_name = op_name;
-  class_var->type = op_type->uv.type;
-  class_var->op_class_var = op_class_var;
-
-  op_class_var->uv.class_var = class_var;
-
-  // Class variable attributes
-  if (op_attributes) {
-    int32_t field_method_attributes_count = 0;
-    int32_t access_control_attributes_count = 0;
-    SPVM_OP* op_attribute = op_attributes->first;
-    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
-      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
-      
-      switch (attribute->id) {
-        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_RW: {
-          class_var->has_setter = 1;
-          class_var->has_getter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_RO: {
-          class_var->has_getter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_WO: {
-          class_var->has_setter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
-        }
-      }
-      if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
-      }
-      if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
-      }
-    }
-  }
-  
-  // The default of the access controll of the class variable is private.
-  if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-  }
-  
-  return op_class_var;
-}
-
-SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
-
-  // Create field information
-  SPVM_FIELD* field = SPVM_FIELD_new(compiler);
-
-  // Field Name
-  field->op_name = op_name_field;
-  field->name = op_name_field->uv.name;
-
-  if (strstr(field->op_name->uv.name, "::")) {
-    SPVM_COMPILER_error(compiler, "The field name \"%s\" cannnot contain \"::\".\n  at %s line %d", field->name, op_name_field->file, op_name_field->line);
-  }
-
-  // Type
-  field->type = op_type->uv.type;
-  
-  // Set field informaiton
-  op_field->uv.field = field;
-
-  // Field attributes
-  if (op_attributes) {
-    SPVM_OP* op_attribute = op_attributes->first;
-    int32_t field_method_attributes_count = 0;
-    int32_t access_control_attributes_count = 0;
-    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
-      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
-      
-      switch (attribute->id) {
-        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_RW: {
-          field->has_setter = 1;
-          field->has_getter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_RO: {
-          field->has_getter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_WO: {
-          field->has_setter = 1;
-          field_method_attributes_count++;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid field attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
-        }
-      }
-      
-      if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed.\n  at %s line %d", op_field->file, op_field->line);
-      }
-      if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
-      }
-    }
-  }
-  
-  field->op_field = op_field;
-  
-  return op_field;
-}
-
-SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_init, int32_t is_anon) {
-  SPVM_METHOD* method = SPVM_METHOD_new(compiler);
-  
-  // Is anon method
-  if (is_anon) {
-    method->is_anon = 1;
-  }
-  
-  if (op_name_method == NULL) {
-    SPVM_CONSTANT_STRING* anon_method_name_string = SPVM_CONSTANT_STRING_new(compiler, "", strlen(""));
-    const char* anon_method_name = anon_method_name_string->value;
-    op_name_method = SPVM_OP_new_op_name(compiler, anon_method_name, op_method->file, op_method->line);
-  }
-  const char* method_name = op_name_method->uv.name;
-  if (strstr(method_name, "::")) {
-    SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
-  }
-  
-  // Block is method block
-  if (op_block) {
-    op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
-  }
-  
-  // Create method information
-  method->op_name = op_name_method;
-  
-  method->name = method->op_name->uv.name;
-  
-  if (op_dot3) {
-    method->have_vaarg = 1;
-  }
-  
-  method->is_init = is_init;
-  if (!is_init && strcmp(method_name, "INIT") == 0) {
-    SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
-  }
-
-  // Method attributes
-  int32_t access_control_attributes_count = 0;
-  if (op_attributes) {
-    SPVM_OP* op_attribute = op_attributes->first;
-    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
-      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
-      
-      switch (attribute->id) {
-        case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-          access_control_attributes_count++;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
-          method->is_precompile = 1;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_REQUIRED: {
-          method->is_required = 1;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_NATIVE: {
-          method->is_native = 1;
-          break;
-        }
-        case SPVM_ATTRIBUTE_C_ID_STATIC: {
-          method->is_class_method = 1;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
-        }
-      }
-    }
-    
-    if (method->is_native && method->is_precompile) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified.\n  at %s line %d", op_attributes->file, op_attributes->line);
-    }
-    if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
-    }
-  }
-  
-  // The default of the access controll of the method is publice.
-  if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-  }
-  
-  // Native method cannnot have block
-  if ((method->is_native) && op_block) {
-    SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", op_block->file, op_block->line);
-  }
-  
-  // method args
-  if (!op_args) {
-    op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
-  }
-  
-  // Add $self : self before the first argument
-  if (!method->is_class_method) {
-    SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
-    SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
-    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler, 0, 0, 0);
-    SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
-    op_self_type->flag |= SPVM_OP_C_FLAG_TYPE_IS_SELF;
-    SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL, NULL);
-    SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
-  }
-
-  // Add method arguments
-  {
-    int32_t found_optional_arg = 0;
-    int32_t required_args_length = 0;
-    int32_t args_length = 0;
-    SPVM_OP* op_arg = op_args->first;
-    while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-      SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
-      if (!found_optional_arg) {
-        if (arg_var_decl->op_optional_arg_default) {
-          found_optional_arg = 1;
-        }
-        else {
-          required_args_length++;
-        }
-      }
-      args_length++;
-    }
-    method->args_length = args_length;
-    method->required_args_length = required_args_length;
-  }
-
-  // Capture variables
-  if (op_captures) {
-    SPVM_OP* op_capture = op_captures->first;
-    while ((op_capture = SPVM_OP_sibling(compiler, op_capture))) {
-      SPVM_LIST_push(method->captures, op_capture->uv.var->var_decl);
-    }
-  }
-  
-  // Variable declarations of arguments
-  SPVM_OP* op_arg = op_args->first;
-  while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
-    SPVM_LIST_push(method->var_decls, op_arg->uv.var->var_decl);
-  }
-
-  // return type
-  method->return_type = op_return_type->uv.type;
-  
-  if (strcmp(method->op_name->uv.name, "DESTROY") == 0) {
-    method->is_destructor = 1;
-    
-    // DESTROY return type must be void
-    if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type.\n  at %s line %d", op_method->file, op_method->line);
-    }
-    
-    // DESTROY is instance method
-    if (method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
-    }
-
-    // DESTROY doesn't have arguments without invocant
-    if (method->args_length != 1) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
-    }
-  }
-  
-  if (op_block) {
-
-    SPVM_OP* op_list_statement = op_block->first;
-
-    // Add variable declarations before the first of the statements
-    for (int32_t i = method->args_length - 1; i >= 0; i--) {
-      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
-      assert(arg_var_decl);
-      SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
-      SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-      op_var->uv.var->var_decl = arg_var_decl;
-      op_var->uv.var->is_declaration = 1;
-      op_var->uv.var->var_decl = arg_var_decl;
-
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
-    }
-
-    // Add condition_flag variable to first of block
-    {
-      char* name = "$.condition_flag";
-      SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
-      op_name->uv.name = name;
-      SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
-      op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
-    }
-
-    // Add return statement after the last of the statements
-    {
-      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_TYPE* return_type = method->return_type;
-      if (SPVM_TYPE_is_void_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
-      }
-      else {
-        // Return variable name
-        char* name = "$.return";
-        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
-        op_name->uv.name = name;
-        SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-        SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
-        op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
-      }
-    }
-  }
-  
-  // Save block
-  method->op_block = op_block;
-  
-  method->op_method = op_method;
-  
-  op_method->uv.method = method;
-  
-  return op_method;
-}
-
-SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
-    
-  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_init->file, op_init->line);
-  SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, "INIT", strlen("INIT"));
-  const char* method_name = method_name_string->value;
-  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_init->file, op_init->line);
-  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_init->file, op_init->line);
-  
-  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_init->file, op_init->line);
-  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
-  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
-  
-  int32_t is_init = 1;
-  SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, NULL, is_init, 0);
-  
-  return op_method;
-}
-
-SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_constant) {
-  
-  if (op_constant) {
-    
-    SPVM_CONSTANT* constant = op_constant->uv.constant;
-    
-    if (constant->type->dimension == 0 && constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-      compiler->current_enum_value = constant->value.ival;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The value of the enumeration must be int type.\n  at %s line %d", op_constant->file, op_constant->line);
-    }
-    
-    compiler->current_enum_value++;
-  }
-  else {
-    op_constant = SPVM_OP_new_op_constant_int(compiler, (int32_t)compiler->current_enum_value, op_name->file, op_name->line);
-    
-    compiler->current_enum_value++;
-  }
-  
-  // Return
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_constant);
-  
-  // Statements
-  SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_return);
-
-  // Block
-  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_name->file, op_name->line);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
-  
-  // method
-  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_name->file, op_name->line);
-  op_method->file = op_name->file;
-  op_method->line = op_name->line;
-  
-  // Type
-  SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
-
-  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
-  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
-  
-  // Build method
-  op_method = SPVM_OP_build_method(compiler, op_method, op_name, op_return_type, NULL, op_list_attributes, op_block, NULL, NULL, 0, 0);
-  
-  // Set constant
-  op_method->uv.method->op_inline = op_constant;
-  
-  // Method is enumeration
-  op_method->uv.method->is_enum = 1;
-  
-  return op_method;
-}
-
-SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block, SPVM_OP* op_attributes) {
-  
-  SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
-  
-  SPVM_OP* op_enumeration_values = op_enumeration_block->first;
-  SPVM_OP* op_method = op_enumeration_values->first;
-  while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-    SPVM_METHOD* method = op_method->uv.method;
-
-    // Enumeration attributes
-    int32_t access_control_attributes_count = 0;
-    if (op_attributes) {
-      SPVM_OP* op_attribute = op_attributes->first;
-      while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
-        SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
-        
-        switch (attribute->id) {
-          case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
-            access_control_attributes_count++;
-            break;
-          }
-          case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-            access_control_attributes_count++;
-            break;
-          }
-          case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-            method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-            access_control_attributes_count++;
-            break;
-          }
-          default: {
-            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
-          }
-        }
-      }
-      if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
-      }
-    }
-    
-    // The default of the access controll of the enumeration is public.
-    if (method->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-      method->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-    }
-  }
-  
-  // Reset enum information
-  compiler->current_enum_value = 0;
-  
-  return op_enumeration;
-}
-
-SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_optional_arg_default) {
-  
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_eternal(compiler, op_var->file, op_var->line);
-
-  op_var_decl->uv.var_decl->is_arg = 1;
-  
-  op_var_decl->uv.var_decl->op_optional_arg_default = op_optional_arg_default;
-  
-  op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_attributes);
-  
-  return op_var;
 }
 
 SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes) {
