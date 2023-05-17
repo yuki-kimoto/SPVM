@@ -208,6 +208,25 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         convert_to_assign = 1;
                         break;
                       }
+                      case SPVM_OP_C_ID_VAR:
+                      case SPVM_OP_C_ID_ASSIGN:
+                      case SPVM_OP_C_ID_LIST:
+                      case SPVM_OP_C_ID_PUSHMARK:
+                      case SPVM_OP_C_ID_NAME:
+                      case SPVM_OP_C_ID_TYPE:
+                      case SPVM_OP_C_ID_BLOCK:
+                      case SPVM_OP_C_ID_IF:
+                      case SPVM_OP_C_ID_LOOP:
+                      case SPVM_OP_C_ID_EVAL:
+                      case SPVM_OP_C_ID_UNDEF:
+                      case SPVM_OP_C_ID_SEQUENCE:
+                      case SPVM_OP_C_ID_DO_NOTHING:
+                      case SPVM_OP_C_ID_WEAKEN_FIELD:
+                      case SPVM_OP_C_ID_UNWEAKEN_FIELD:
+                      {
+                        // Do nothing
+                        break;
+                      }
                       case SPVM_OP_C_ID_NUMERIC_EQ:
                       case SPVM_OP_C_ID_NUMERIC_NE:
                       case SPVM_OP_C_ID_NUMERIC_GT:
@@ -229,6 +248,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       {
                         assert(0);
                         break;
+                      }
+                      default: {
+                        fprintf(stderr, "[Unexpected Error]The %s operator", SPVM_OP_get_op_name(compiler, op_cur->id));
+                        assert(0);
                       }
                     }
                   }
