@@ -155,7 +155,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_SAY:
                       case SPVM_OP_C_ID_MAKE_READ_ONLY:
                       case SPVM_OP_C_ID_IS_READ_ONLY:
-                      case SPVM_OP_C_ID_NEXT:
                       case SPVM_OP_C_ID_BREAK:
                       case SPVM_OP_C_ID_ADD:
                       case SPVM_OP_C_ID_SUBTRACT:
@@ -206,6 +205,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         convert_to_assign = 1;
                         break;
                       }
+                      case SPVM_OP_C_ID_NEXT:
                       case SPVM_OP_C_ID_LAST:
                       case SPVM_OP_C_ID_RETURN:
                       case SPVM_OP_C_ID_VAR:

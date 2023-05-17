@@ -580,6 +580,19 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
+                  case SPVM_OP_C_ID_NEXT: {
+                    // GOTO increment statement
+                    SPVM_OPCODE opcode = {0};
+                    
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
+                    SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    
+                    int32_t opcode_rel_index = opcode_array->length - 1 - method_opcodes_base_id;
+                    
+                    SPVM_LIST_push(next_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
+                    
+                    break;
+                  }
                   case SPVM_OP_C_ID_LAST: {
                     // GOTO end of loop init block
                     SPVM_OPCODE opcode = {0};
@@ -4399,19 +4412,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t opcode_rel_index = opcode_array->length - 1 - method_opcodes_base_id;
                           
                           SPVM_LIST_push(break_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
-                          
-                          break;
-                        }
-                        case SPVM_OP_C_ID_NEXT: {
-                          // GOTO increment statement
-                          SPVM_OPCODE opcode = {0};
-                          
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          
-                          int32_t opcode_rel_index = opcode_array->length - 1 - method_opcodes_base_id;
-                          
-                          SPVM_LIST_push(next_goto_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                           
                           break;
                         }
