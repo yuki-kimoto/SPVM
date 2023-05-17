@@ -976,8 +976,16 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               SPVM_OP* op_constant = op_cur->first;
               SPVM_CONSTANT* constant = op_constant->uv.constant;
               
-              if (op_constant->id != SPVM_OP_C_ID_CONSTANT) {
-                SPVM_COMPILER_error(compiler, "The operand of the case statement must be a constant value.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
+              if (!(
+                op_constant->id == SPVM_OP_C_ID_CONSTANT &&
+                (
+                  SPVM_TYPE_is_byte_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag) ||
+                  SPVM_TYPE_is_int_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag)
+                )
+              ))
+              {
+                SPVM_COMPILER_error(compiler, "The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -987,11 +995,6 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 constant->value.ival = (int32_t)constant->value.bval;
               }
               
-              SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
-              if (!(case_value_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && case_value_type->dimension == 0)) {
-                SPVM_COMPILER_error(compiler, "The operand of the case statement must be the int type.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
-                return;
-              }
               case_info->case_value = constant->value.ival;
               
               break;

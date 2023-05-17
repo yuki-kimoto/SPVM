@@ -126,11 +126,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case Int->new(1): { } } } }';
-    compile_not_ok($source, q|The operand of the case statement must be a constant value|);
+    compile_not_ok($source, q|The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case "foo": { } } } }';
-    compile_not_ok($source, q|The operand of the case statement must be the int type|);
+    compile_not_ok($source, q|The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } case 1: { } } } }';
