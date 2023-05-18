@@ -1,6 +1,8 @@
-0.979 2023-05-17
+0.979 2023-05-19
   [Compilation Error Changes]
     * A compilation error message is changed. "The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.".
+  [Internal Changes]
+    * The internal symbol names are cleaned up.
 0.978 2023-05-16
   [Incompatible Changes and Bug Fix]
     * Fixed the bug that precidence of operators are wrong. The precidence must be the same as Perl.

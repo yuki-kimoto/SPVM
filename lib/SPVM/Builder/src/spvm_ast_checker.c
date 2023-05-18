@@ -192,7 +192,6 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
                       case SPVM_OP_C_ID_TRUE:
                       case SPVM_OP_C_ID_FALSE:
                       case SPVM_OP_C_ID_CONSTANT:
-                      case SPVM_OP_C_ID_CUT:
                       {
                         convert_to_assign = 1;
                         break;
