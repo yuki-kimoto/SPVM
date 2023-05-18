@@ -2,12 +2,12 @@ class MyExe {
   use MyExe::Precompile;
   use TestCase::NativeAPI2;
   
-  our $INIT_BLOCK_PROGRAM_NAME : ro string;
-  our $INIT_BLOCK_ARGV : ro string[];
+  our $MOVE_BLOCK_PROGRAM_NAME_ZERO : ro string;
+  our $MOVE_BLOCK_ARGV_ZERO : ro string[];
 
   INIT {
-    $INIT_BLOCK_PROGRAM_NAME = CommandInfo->PROGRAM_NAME;
-    $INIT_BLOCK_ARGV = CommandInfo->ARGV;
+    $MOVE_BLOCK_PROGRAM_NAME_ZERO = CommandInfo->PROGRAM_NAME;
+    $MOVE_BLOCK_ARGV_ZERO = CommandInfo->ARGV;
   }
   
   static method main : int () {
@@ -33,11 +33,11 @@ class MyExe {
       die "Wrong";
     }
     
-    unless ($global_program_name == $INIT_BLOCK_PROGRAM_NAME) {
+    unless ($global_program_name == $MOVE_BLOCK_PROGRAM_NAME_ZERO) {
       die "Wrong";
     }
     
-    unless ($global_argv == $INIT_BLOCK_ARGV) {
+    unless ($global_argv == $MOVE_BLOCK_ARGV_ZERO) {
       die "Wrong";
     }
     

@@ -308,7 +308,7 @@ enum {
 
 enum {
   // ARRAY_INIT flag
-  SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES = 1,
+  SPVM_OP_C_FLAG_ARRAY_MOVE_IS_KEY_VALUES_ZERO = 1,
 };
 
 enum {

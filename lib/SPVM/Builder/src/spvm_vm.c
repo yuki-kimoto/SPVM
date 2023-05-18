@@ -299,56 +299,56 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_BYTE: {
-        SPVM_IMPLEMENT_INIT_BYTE(byte_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
+        SPVM_IMPLEMENT_MOVE_BYTE_ZERO(byte_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_SHORT: {
-        SPVM_IMPLEMENT_INIT_SHORT(short_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_SHORT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_SHORT_ZERO(short_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_INT: {
-        SPVM_IMPLEMENT_INIT_INT(int_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_INT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_INT_ZERO(int_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_LONG: {
-        SPVM_IMPLEMENT_INIT_LONG(long_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_LONG_ZERO: {
+        SPVM_IMPLEMENT_MOVE_LONG_ZERO(long_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_FLOAT: {
-        SPVM_IMPLEMENT_INIT_FLOAT(float_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_FLOAT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_FLOAT_ZERO(float_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_DOUBLE: {
-        SPVM_IMPLEMENT_INIT_DOUBLE(double_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_MOVE_DOUBLE_ZERO: {
+        SPVM_IMPLEMENT_MOVE_DOUBLE_ZERO(double_vars[opcode->operand0]);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_OBJECT: {
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF: {
         SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &object_vars[opcode->operand0], NULL);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_BYTE: {
-        SPVM_IMPLEMENT_INIT_MULNUM_BYTE(env, stack, &byte_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_BYTE_ZERO(env, stack, &byte_vars[opcode->operand0], opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_SHORT: {
-        SPVM_IMPLEMENT_INIT_MULNUM_SHORT(env, stack, &short_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_SHORT_ZERO(env, stack, &short_vars[opcode->operand0], opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_INT: {
-        SPVM_IMPLEMENT_INIT_MULNUM_INT(env, stack, &int_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_INT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_INT_ZERO(env, stack, &int_vars[opcode->operand0], opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_LONG: {
-        SPVM_IMPLEMENT_INIT_MULNUM_LONG(env, stack, &long_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_LONG_ZERO(env, stack, &long_vars[opcode->operand0], opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_FLOAT: {
-        SPVM_IMPLEMENT_INIT_MULNUM_FLOAT(env, stack, &float_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_FLOAT_ZERO(env, stack, &float_vars[opcode->operand0], opcode->operand2);
         break;
       }
-      case SPVM_OPCODE_C_ID_INIT_MULNUM_DOUBLE: {
-        SPVM_IMPLEMENT_INIT_MULNUM_DOUBLE(env, stack, &double_vars[opcode->operand0], opcode->operand2);
+      case SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE_ZERO: {
+        SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE_ZERO(env, stack, &double_vars[opcode->operand0], opcode->operand2);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_BYTE: {

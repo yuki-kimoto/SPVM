@@ -1,11 +1,11 @@
 class TestCase::Module::CommandInfo {
-  our $INIT_BLOCK_PROGRAM_NAME : ro string;
-  our $INIT_BLOCK_ARGV : ro string[];
-  our $INIT_BLOCK_BASE_TIME : ro long;
+  our $MOVE_BLOCK_PROGRAM_NAME_ZERO : ro string;
+  our $MOVE_BLOCK_ARGV_ZERO : ro string[];
+  our $MOVE_BLOCK_BASE_TIME_ZERO : ro long;
   
   INIT {
-    $INIT_BLOCK_PROGRAM_NAME = CommandInfo->PROGRAM_NAME;
-    $INIT_BLOCK_ARGV = CommandInfo->ARGV;
-    $INIT_BLOCK_BASE_TIME = CommandInfo->BASE_TIME;
+    $MOVE_BLOCK_PROGRAM_NAME_ZERO = CommandInfo->PROGRAM_NAME;
+    $MOVE_BLOCK_ARGV_ZERO = CommandInfo->ARGV;
+    $MOVE_BLOCK_BASE_TIME_ZERO = CommandInfo->BASE_TIME;
   }
 }
