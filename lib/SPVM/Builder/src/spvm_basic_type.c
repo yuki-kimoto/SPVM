@@ -256,7 +256,7 @@ int32_t SPVM_BASIC_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t
   
   int32_t is_not_found_class_type;
   const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->not_found_class_class_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->not_found_class_symtable, basic_type_name, strlen(basic_type_name));
   // Class
   if (class) {
     is_not_found_class_type = 1;

@@ -328,7 +328,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
       // If class fail load by if (require xxx) syntax, that is ok
-      const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_class_symtable, class_name, strlen(class_name));
+      const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_symtable, class_name, strlen(class_name));
       if (!not_found_class_class_name) {
         SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
         return op_class;

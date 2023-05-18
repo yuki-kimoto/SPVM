@@ -36,10 +36,10 @@ struct spvm_compiler {
   const char* cur_rel_file_class_name;
   
   // Current parsed source
-  char* cur_class_source;
+  char* cur_source;
   
   // Current parsed source
-  int32_t cur_class_source_length;
+  int32_t cur_source_length;
   
   // Current line number
   int32_t cur_line;
@@ -51,16 +51,16 @@ struct spvm_compiler {
   SPVM_ALLOCATOR* allocator;
   
   // Line start position
-  char* line_start_ptr;
+  char* line_begin_ptr;
   
-  // Current buffer position
-  char* bufptr;
+  // Char pointer of current source
+  char* ch_ptr;
   
-  // Before buffer position
-  char* befbufptr;
+  // Char pointer of current source just before
+  char* before_ch_ptr;
   
   // Next double quote start position
-  char* next_string_literal_bufptr;
+  char* next_string_literal_ch_ptr;
   
   // Expect method name
   int8_t expect_method_name;
@@ -105,7 +105,7 @@ struct spvm_compiler {
   SPVM_HASH* used_class_symtable;
 
   // Fail load class symtable
-  SPVM_HASH* not_found_class_class_symtable;
+  SPVM_HASH* not_found_class_symtable;
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
@@ -147,7 +147,7 @@ struct spvm_compiler {
   SPVM_LIST* switch_infos;
   
   // class source symtable
-  SPVM_HASH* class_source_symtable;
+  SPVM_HASH* source_symtable;
   
   // SPVM 32bit codes
   int32_t* runtime_codes;
@@ -155,7 +155,7 @@ struct spvm_compiler {
 
 SPVM_COMPILER* SPVM_COMPILER_new();
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
-void SPVM_COMPILER_add_class_source(SPVM_COMPILER* compiler, const char* class_name, const char* class_source, int32_t length);
+void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* class_name, const char* source, int32_t length);
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
