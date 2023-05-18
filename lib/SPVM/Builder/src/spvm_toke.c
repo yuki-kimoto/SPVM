@@ -2204,6 +2204,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
   // Start parsing a source code
   compiler->cur_file = NULL;
   compiler->cur_class_source = NULL;
+  compiler->cur_tmp_vars_length = 0;
   compiler->bufptr = NULL;
   compiler->befbufptr = NULL;
   compiler->line_start_ptr = NULL;

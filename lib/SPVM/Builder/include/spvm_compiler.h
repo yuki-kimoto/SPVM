@@ -45,7 +45,7 @@ struct spvm_compiler {
   int32_t cur_line;
   
   // Current temporary variables length
-  int32_t tmp_vars_length;
+  int32_t cur_tmp_vars_length;
   
   // Allocator
   SPVM_ALLOCATOR* allocator;

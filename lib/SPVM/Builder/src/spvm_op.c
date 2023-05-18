@@ -3171,8 +3171,8 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const 
   
   // Temparary variable name
   char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
-  sprintf(name, "$.tmp_%d", compiler->tmp_vars_length);
-  compiler->tmp_vars_length++;
+  sprintf(name, "$.tmp_%d", compiler->cur_tmp_vars_length);
+  compiler->cur_tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
@@ -3191,8 +3191,8 @@ SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, 
   
   // Temparary variable name
   char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.op2147483647") + 1);
-  sprintf(name, "$.op%d", compiler->tmp_vars_length);
-  compiler->tmp_vars_length++;
+  sprintf(name, "$.op%d", compiler->cur_tmp_vars_length);
+  compiler->cur_tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   
