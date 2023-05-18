@@ -259,7 +259,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                   
                   if (convert_to_assign) {
                     SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, tmp_var_type, op_cur->file, op_cur->line);
+                    SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, tmp_var_type, op_cur->file, op_cur->line);
                     
                     op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
                     SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
@@ -734,7 +734,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 assert(0);
               }
               
-              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type_new->uv.type, file, line);
+              SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, op_type_new->uv.type, file, line);
               
               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
@@ -1582,7 +1582,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                     
                     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type->uv.type, file, line);
+                    SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, op_type->uv.type, file, line);
                     
                     SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -2019,7 +2019,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               SPVM_TYPE* operand_mutable_type = SPVM_OP_get_type(compiler, op_operand_mutable);
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-              SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_mutable_type, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_mutable_type, op_cur->file, op_cur->line);
 
               SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
         
@@ -2099,7 +2099,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
               
-              SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_mutable_type, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp1 = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_mutable_type, op_cur->file, op_cur->line);
               
               SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
         
@@ -3067,7 +3067,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
                 // Sequence
                 SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
                 SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, op_type_new->uv.type, file, line);
+                SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, op_type_new->uv.type, file, line);
                 
                 SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
 
@@ -3271,7 +3271,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_array);
                 
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_index_type, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
 
                 SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -3296,7 +3296,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_index);
                 
-                SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_index_type, op_cur->file, op_cur->line);
+                SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
                 
                 SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -3437,7 +3437,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_array);
                   
-                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_index_type, op_cur->file, op_cur->line);
+                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
 
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -3461,7 +3461,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_index);
                   
-                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_index_type, op_cur->file, op_cur->line);
+                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
@@ -3492,7 +3492,7 @@ void SPVM_OP_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_invocker);
                   
-                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, method, operand_index_type, op_cur->file, op_cur->line);
+                  SPVM_OP* op_var_tmp = SPVM_OP_CHECKER_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
                   SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_operand_invocker);
@@ -3762,12 +3762,12 @@ int32_t SPVM_OP_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack
   return found_mem_id;
 }
 
-SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* method, SPVM_TYPE* type, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
 
   // Temparary variable name
   char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_2147483647") + 1);
-  sprintf(name, "$.tmp_%d", method->tmp_vars_length);
-  method->tmp_vars_length++;
+  sprintf(name, "$.tmp_%d", compiler->tmp_vars_length);
+  compiler->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);

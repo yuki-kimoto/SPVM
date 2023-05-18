@@ -16,10 +16,10 @@ struct spvm_compiler {
   
   // Class paths
   SPVM_LIST* class_paths;
-
+  
   // Class loading stack
   SPVM_LIST* op_use_stack;
-
+  
   // Types
   SPVM_LIST* op_types;
   
@@ -31,22 +31,25 @@ struct spvm_compiler {
   
   // Current parsed file relative name
   const char* cur_rel_file;
-
+  
   // Current parsed class name
   const char* cur_rel_file_class_name;
-
+  
   // Current parsed source
   char* cur_class_source;
-
+  
   // Current parsed source
   int32_t cur_class_source_length;
-
+  
   // Current line number
   int32_t cur_line;
   
+  // Current temporary variables length
+  int32_t tmp_vars_length;
+  
   // Allocator
   SPVM_ALLOCATOR* allocator;
-
+  
   // Line start position
   char* line_start_ptr;
   
@@ -55,13 +58,13 @@ struct spvm_compiler {
   
   // Before buffer position
   char* befbufptr;
-
+  
   // Next double quote start position
   char* next_string_literal_bufptr;
-
+  
   // Expect method name
   int8_t expect_method_name;
-
+  
   // Expect field name
   int8_t expect_field_name;
   
@@ -70,13 +73,13 @@ struct spvm_compiler {
   
   // Parsing is not started
   int8_t parse_not_started;
-
+  
   // State of variable expansion
   int8_t var_expansion_state;
   
   // Current enum value
   int32_t current_enum_value;
-
+  
   // Current class base;
   int32_t cur_class_base;
   
@@ -112,7 +115,7 @@ struct spvm_compiler {
   
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
-
+  
   // Types
   SPVM_LIST* types;
   
@@ -121,22 +124,22 @@ struct spvm_compiler {
   
   // Classes
   SPVM_LIST* classes;
-
+  
   // OP class symtable
   SPVM_HASH* class_symtable;
-
+  
   // Anon methods
   SPVM_LIST* anon_methods;
   
   // Method ops
   SPVM_LIST* methods;
-
+  
   // Argments
   SPVM_LIST* args;
-
+  
   // OP our symtable
   SPVM_LIST* class_vars;
-
+  
   // Field ops
   SPVM_LIST* fields;
   
