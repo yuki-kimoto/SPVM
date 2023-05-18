@@ -318,7 +318,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     }
     else {
       // Check syntax
-      SPVM_OP_CHECKER_check(compiler);
+      SPVM_AST_CHECKER_check(compiler);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
         error_code = 3;
       }
