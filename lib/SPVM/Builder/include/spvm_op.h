@@ -604,6 +604,8 @@ SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, i
 
 SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
+
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist);
 
 int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op);
