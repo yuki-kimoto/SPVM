@@ -2324,8 +2324,16 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     int32_t culc_op_id;
     
     switch (op_update->id) {
-      case SPVM_OP_C_ID_PRE_INC: {
+      case SPVM_OP_C_ID_PRE_INC:
+      case SPVM_OP_C_ID_POST_INC:
+      {
         culc_op_id = SPVM_OP_C_ID_ADD;
+        break;
+      }
+      case SPVM_OP_C_ID_PRE_DEC:
+      case SPVM_OP_C_ID_POST_DEC:
+      {
+        culc_op_id = SPVM_OP_C_ID_SUBTRACT;
         break;
       }
       case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
