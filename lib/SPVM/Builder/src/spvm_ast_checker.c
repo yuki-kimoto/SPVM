@@ -3337,15 +3337,15 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               break;
             }
             case SPVM_OP_C_ID_FIELD_ACCESS: {
-              SPVM_OP* op_operand_invocker = op_cur->first;
+              SPVM_OP* op_invocant = op_cur->first;
               SPVM_OP* op_name = op_cur->uv.field_access->op_name;
               
-              if (op_operand_invocker->id == SPVM_OP_C_ID_ASSIGN) {
-                op_operand_invocker = op_operand_invocker->first;
+              if (op_invocant->id == SPVM_OP_C_ID_ASSIGN) {
+                op_invocant = op_invocant->first;
               }
               
               // Invoker type check
-              SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_operand_invocker);
+              SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_invocant);
               int32_t is_valid_invoker_type;
               if (invoker_type) {
                 if (SPVM_TYPE_is_class_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
@@ -3413,9 +3413,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 }
               }
               
-              // If invocker is array access and array access object is mulnum_t, this op become array field access
-              if (op_operand_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
-                SPVM_OP* op_array_access = op_operand_invocker;
+              // If invocant is array access and array access object is mulnum_t, this op is multi-numeric array field access
+              if (op_invocant->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
+                SPVM_OP* op_array_access = op_invocant;
                 
                 SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                 
@@ -3505,18 +3505,18 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 // ASSIGN
                 //   TERM
                 //   VAR
-                SPVM_OP* op_operand_invocker = op_cur->first;
-                if (op_operand_invocker->id != SPVM_OP_C_ID_VAR) {
+                SPVM_OP* op_invocant = op_cur->first;
+                if (op_invocant->id != SPVM_OP_C_ID_VAR) {
                   op_cur->no_need_check = 1;
 
-                  SPVM_TYPE* operand_index_type = SPVM_OP_get_type(compiler, op_operand_invocker);
+                  SPVM_TYPE* operand_index_type = SPVM_OP_get_type(compiler, op_invocant);
 
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_invocker);
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_invocant);
                   
                   SPVM_OP* op_var_tmp = SPVM_OP_new_op_var_tmp(compiler, operand_index_type, op_cur->file, op_cur->line);
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                  SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_operand_invocker);
+                  SPVM_OP_build_assign(compiler, op_assign, op_var_tmp, op_invocant);
                   
                   // Convert cur new op to var
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
