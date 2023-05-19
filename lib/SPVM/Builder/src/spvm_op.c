@@ -2983,7 +2983,6 @@ SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   op_field_access->uv.field_access->op_invocant = original_op_field_access->uv.field_access->op_invocant;
   op_field_access->uv.field_access->op_name = original_op_field_access->uv.field_access->op_name;
   op_field_access->uv.field_access->field = original_op_field_access->uv.field_access->field;
-  op_field_access->uv.field_access->inline_expansion = original_op_field_access->uv.field_access->inline_expansion;
 
   return op_field_access;
 }

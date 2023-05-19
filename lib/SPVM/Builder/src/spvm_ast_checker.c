@@ -3406,12 +3406,10 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               }
 
               SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
-              if (!op_cur->uv.field_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
-                  if (!SPVM_AST_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
-                    return;
-                  }
+              if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
+                if (!SPVM_AST_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
+                  SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
+                  return;
                 }
               }
               

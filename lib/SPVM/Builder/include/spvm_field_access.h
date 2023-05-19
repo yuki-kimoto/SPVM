@@ -10,7 +10,6 @@ struct spvm_field_access {
   SPVM_OP* op_invocant;
   SPVM_OP* op_name;
   SPVM_FIELD* field;
-  int32_t inline_expansion;
 };
 
 SPVM_FIELD_ACCESS* SPVM_FIELD_ACCESS_new(SPVM_COMPILER* compiler);
