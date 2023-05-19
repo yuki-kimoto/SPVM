@@ -1,3 +1,6 @@
+0.980 2023-05-19
+  [Compilation Error Message Improvement]
+    * Some compilation error messages are improved.
 0.979 2023-05-19
   [Compilation Error Changes]
     * A compilation error message is changed. "The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.".

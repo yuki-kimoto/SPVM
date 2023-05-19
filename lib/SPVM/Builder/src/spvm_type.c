@@ -984,7 +984,7 @@ int32_t SPVM_TYPE_can_assign(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
-  int32_t* need_implicite_conversion, int32_t* mutable_invalid, int32_t allow_narrowing_conversion)
+  int32_t* need_implicite_conversion, int32_t allow_narrowing_conversion)
 {
   // Dist type is numeric type
   int32_t assignability = 0;
@@ -1076,7 +1076,6 @@ int32_t SPVM_TYPE_can_assign(
       // Mutable check
       if(dist_type_flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(src_type_flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE)) {
         assignability = 0;
-        *mutable_invalid = 1;
       }
       else {
         assignability = 1;

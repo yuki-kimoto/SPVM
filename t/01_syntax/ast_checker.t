@@ -935,19 +935,19 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
-    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the assignment operator|);
+    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the assignment operator is not allowed|);
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
-    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the return statement|);
+    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the return statement is not allowed|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the 1th argument of the "foo" method in the "MyClass" class is not allowed|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The non-mutable type cannnot be assign to a mutable type in the 1th argument of the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the 1th argument of the "foo" method in the "MyClass" class is not allowed|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
