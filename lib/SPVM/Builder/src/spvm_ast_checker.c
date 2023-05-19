@@ -1894,6 +1894,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
               SPVM_OP_build_binary_op(compiler, op_add, op_operand_mutable, op_constant);
               
+              op_add->maybe_need_narrowing_conversion = 1;
+              
               SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
               SPVM_TYPE* operand_mutable_type = SPVM_OP_get_type(compiler, op_operand_mutable);
@@ -1956,6 +1958,10 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP_build_binary_op(compiler, op_subtract, op_operand_mutable, op_constant);
               
               SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+
+              
+              op_subtract->maybe_need_narrowing_conversion = 1;
+              
               
               SPVM_TYPE* operand_mutable_type = SPVM_OP_get_type(compiler, op_operand_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, operand_mutable_type->basic_type->id, operand_mutable_type->dimension, operand_mutable_type->flag)
@@ -2029,6 +2035,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
               SPVM_OP_build_binary_op(compiler, op_add, op_var_tmp2, op_constant);
               SPVM_OP* op_assign_add = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+              
+              op_add->maybe_need_narrowing_conversion = 1;
               
               SPVM_OP* op_operand_mutable_clone = SPVM_OP_new_op_operand_mutable_clone(compiler, op_operand_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, operand_mutable_type->basic_type->id, operand_mutable_type->dimension, operand_mutable_type->flag)
@@ -2109,6 +2117,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
               SPVM_OP_build_binary_op(compiler, op_subtract, op_var_tmp2, op_constant);
               SPVM_OP* op_assign_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+              
+              op_subtract->maybe_need_narrowing_conversion = 1;
               
               SPVM_OP* op_operand_mutable_clone = SPVM_OP_new_op_operand_mutable_clone(compiler, op_operand_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, operand_mutable_type->basic_type->id, operand_mutable_type->dimension, operand_mutable_type->flag)
@@ -2209,6 +2219,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               }
               
               SPVM_OP* op_culc = SPVM_OP_new_op(compiler, culc_op_id, op_cur->file, op_cur->line);
+
+              
+              op_culc->maybe_need_narrowing_conversion = 1;
               
               SPVM_OP_build_binary_op(compiler, op_culc, op_operand_mutable, op_operand_src);
               
@@ -3879,12 +3892,13 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
   int32_t need_implicite_conversion = 0;
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
+  int32_t narrowing_conversion = 0;
   
   int32_t assignability = SPVM_TYPE_can_assign(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
   );
     
   if (!assignability) {
@@ -4441,11 +4455,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               int32_t need_implicite_conversion = 0;
               int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
+              int32_t narrowing_conversion = 0;
               int32_t assignability = SPVM_TYPE_can_assign(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
               );
               
               if (!assignability) {
@@ -4840,11 +4855,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                   int32_t need_implicite_conversion = 0;
                   int32_t narrowing_conversion_error = 0;
                   int32_t mutable_invalid = 0;
+                  int32_t narrowing_conversion = 0;
                   int32_t assignability = SPVM_TYPE_can_assign(
                     compiler,
                     interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
                     method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid
+                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
                   );
                   
                   if (assignability) {

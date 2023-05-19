@@ -2287,6 +2287,8 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
     SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
   
+  op_inc->maybe_need_narrowing_conversion = 1;
+  
   return op_inc;
 }
 
@@ -2294,14 +2296,15 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   
   // Build op
   SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
-
+  
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
     SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
   
+  op_dec->maybe_need_narrowing_conversion = 1;
+  
   return op_dec;
 }
-
 
 SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
@@ -2455,6 +2458,8 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
     SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
+  
+  op_special_assign->maybe_need_narrowing_conversion = 1;
   
   return op_special_assign;
 }
