@@ -3980,7 +3980,6 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
   }
 
   int32_t need_implicite_conversion = 0;
-  int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
   int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   
@@ -3988,21 +3987,15 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
+    src_constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
   );
     
   if (!assignability) {
     if (mutable_invalid) {
       SPVM_COMPILER_error(compiler, "The non-mutable type cannnot be assign to a mutable type in %s.\n  at %s line %d", place, file, line);
     }
-    if (narrowing_conversion_error) {
-      SPVM_COMPILER_error(compiler, "The implicite narrowing conversion from \"%s\" to \"%s\" in %s is not allowed.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
-      return NULL;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
-      return NULL;
-    }
+    SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
+    return NULL;
   }
   
   if (need_implicite_conversion) {
@@ -4543,14 +4536,13 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             else {
               SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_optional_arg_default);
               int32_t need_implicite_conversion = 0;
-              int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
               int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
               int32_t assignability = SPVM_TYPE_can_assign(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
+                op_optional_arg_default->uv.constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
               );
               
               if (!assignability) {
@@ -4943,16 +4935,14 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                 else {
                   SPVM_CONSTANT* src_constant = NULL;
                   int32_t need_implicite_conversion = 0;
-                  int32_t narrowing_conversion_error = 0;
                   int32_t mutable_invalid = 0;
                   int32_t allow_narrowing_conversion = 0;
                   int32_t assignability = SPVM_TYPE_can_assign(
                     compiler,
                     interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
                     method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
+                    src_constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
                   );
-                  assert(narrowing_conversion_error == 0);
                   assert(mutable_invalid == 0);
                   
                   if (assignability) {
