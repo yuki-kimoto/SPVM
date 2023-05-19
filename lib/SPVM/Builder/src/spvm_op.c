@@ -2285,10 +2285,12 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR))
   {
     /*
+      ++$var, ++$VAR, ++$@
       (
-        my $var_old = VAR,
-        VAR = ($var_old + 1),
+        my $old = $var,
+        $var = $old + 1,
       )
+
       ++ARRAY->[INDEX]
       (
         my $array = ARRAY,
@@ -2296,23 +2298,35 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
         my $old = $array->[$index],
         $array->[$index] = $old + 1,
       )
+
+      ++OBJECT->{FIELD_NAME}
+      (
+        my $object = OBJECT,
+        my $old = $object->{FIELD_NAME},
+        $object->{FIELD_NAME} = $old + 1,
+      )
+
+      ++ARRAY->[INDEX]{FIELD_NAME}
+      (
+        my $array = ARRAY,
+        my $index = INDEX,
+        my $old = $array->[$index]{FIELD_NAME},
+        $array->[$index]{FIELD_NAME} = $old + 1,
+      )
+
+      ++$$var_ref
+      (
+        my $old = $$var_ref,
+        $$var_ref = $old + 1,
+      )
+      
+      ACCESS++
+      (
+        ...,
+        ...,
+        $old,
+      )
     */
-    
-    // Convert PRE_INC VAR
-    // [Before]
-    // PRE_INC
-    //   VAR
-    // 
-    // [After]
-    // SEQUENCE
-    //   ASSIGN_SAVE_OLD
-    //     ACCESS
-    //     VAR_OLD
-    //   ASSIGN_UPDATE
-    //     ADD
-    //       VAR_OLD_CLONE
-    //       DIFF_VALUE
-    //     ACCESS_CLONE
     
     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_update->file, op_update->line);
     
