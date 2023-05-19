@@ -3426,8 +3426,6 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                   SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
                   op_array_field_access->is_dist = op_cur->is_dist;
 
-                  op_cur = op_array_field_access;
-                  
                   SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
                   array_field_access->field = field;
                   
@@ -3441,10 +3439,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                   
-                  SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_array_field_access, check_ast_info);
-                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                    return;
-                  }
+                  op_cur = op_array_field_access;
                 }
               }
               
