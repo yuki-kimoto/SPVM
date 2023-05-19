@@ -2278,16 +2278,9 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  // Build op
-  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
-  
-  if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
-  }
-
-  if (op_inc->id == SPVM_OP_C_ID_PRE_INC && op_first->id == SPVM_OP_C_ID_VAR) {
+  if (op_update->id == SPVM_OP_C_ID_PRE_INC && op_first->id == SPVM_OP_C_ID_VAR) {
     /*
     (
       my $old = $var,
@@ -2308,7 +2301,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
     //   ASSIGN_UPDATE
     //     ADD
     //       VAR_OLD_CLONE
-    //       CONST 1
+    //       OP_LAST
     //     VAR_CLONE
     
     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_first->file, op_first->line);
@@ -2327,20 +2320,107 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
     
     SPVM_OP* op_assign_update = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_first->file, op_first->line);
     SPVM_OP* op_var_old_clone = SPVM_OP_new_op_var_clone(compiler, op_var_old, op_var_old->file, op_var_old->line);
-    SPVM_OP* op_add = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_inc->file, op_inc->line);
     
-    op_add->allow_narrowing_conversion = 1;
-    op_add->original_id = SPVM_OP_C_ID_PRE_INC;
+    int32_t culc_op_id;
     
-    SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
-    SPVM_OP_build_binary_op(compiler, op_add, op_var_old_clone, op_constant);
+    switch (op_update->id) {
+      case SPVM_OP_C_ID_PRE_INC: {
+        culc_op_id = SPVM_OP_C_ID_ADD;
+        break;
+      }
+      case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
+        switch (op_update->flag) {
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD: {
+            culc_op_id = SPVM_OP_C_ID_ADD;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT: {
+            culc_op_id = SPVM_OP_C_ID_SUBTRACT;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY: {
+            culc_op_id = SPVM_OP_C_ID_MULTIPLY;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE: {
+            culc_op_id = SPVM_OP_C_ID_DIVIDE;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER: {
+            culc_op_id = SPVM_OP_C_ID_REMAINDER;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT: {
+            culc_op_id = SPVM_OP_C_ID_LEFT_SHIFT;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_ARITHMETIC_SHIFT: {
+            culc_op_id = SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_RIGHT_LOGICAL_SHIFT: {
+            culc_op_id = SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_XOR: {
+            culc_op_id = SPVM_OP_C_ID_BIT_XOR;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_OR: {
+            culc_op_id = SPVM_OP_C_ID_BIT_OR;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_BIT_AND: {
+            culc_op_id = SPVM_OP_C_ID_BIT_AND;
+            break;
+          }
+          case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT: {
+            culc_op_id = SPVM_OP_C_ID_CONCAT;
+            break;
+          }
+          default: {
+            assert(0);
+            break;
+          }
+        }
+        
+        break;
+      }
+    }
+    
+    SPVM_OP* op_culc = SPVM_OP_new_op(compiler, culc_op_id, op_update->file, op_update->line);
+    
+    op_culc->allow_narrowing_conversion = 1;
+    op_culc->original_id = op_update->id;
+    
+    SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_last);
     SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var, op_var_old->file, op_var_old->line);
-    SPVM_OP_build_assign(compiler, op_assign_update, op_var_clone, op_add);
+    SPVM_OP_build_assign(compiler, op_assign_update, op_var_clone, op_culc);
     
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_save_old);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_update);
     
     return op_sequence;
+  }
+  else {
+    assert(0);
+  }
+}
+
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
+  
+  if (!SPVM_OP_is_mutable(compiler, op_first)) {
+    SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
+  }
+  
+  if (op_inc->id == SPVM_OP_C_ID_PRE_INC && op_first->id == SPVM_OP_C_ID_VAR) {
+    SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
+    SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_inc, op_first, op_constant);
+    
+    return op_update;
   }
   
   op_inc->allow_narrowing_conversion = 1;
