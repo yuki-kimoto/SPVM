@@ -3983,13 +3983,13 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
   int32_t need_implicite_conversion = 0;
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
-  int32_t narrowing_conversion = 0;
+  int32_t allow_narrowing_conversion = 0;
   
   int32_t assignability = SPVM_TYPE_can_assign(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
+    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
   );
     
   if (!assignability) {
@@ -4546,12 +4546,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               int32_t need_implicite_conversion = 0;
               int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
-              int32_t narrowing_conversion = 0;
+              int32_t allow_narrowing_conversion = 0;
               int32_t assignability = SPVM_TYPE_can_assign(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
+                op_optional_arg_default->uv.constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
               );
               
               if (!assignability) {
@@ -4946,16 +4946,15 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                   int32_t need_implicite_conversion = 0;
                   int32_t narrowing_conversion_error = 0;
                   int32_t mutable_invalid = 0;
-                  int32_t narrowing_conversion = 0;
+                  int32_t allow_narrowing_conversion = 0;
                   int32_t assignability = SPVM_TYPE_can_assign(
                     compiler,
                     interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
                     method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
+                    src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, allow_narrowing_conversion
                   );
                   assert(narrowing_conversion_error == 0);
                   assert(mutable_invalid == 0);
-                  assert(narrowing_conversion == 0);
                   
                   if (assignability) {
                     if (need_implicite_conversion) {

@@ -984,10 +984,8 @@ int32_t SPVM_TYPE_can_assign(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
-  SPVM_CONSTANT* src_constant, int32_t* need_implicite_conversion, int32_t* narrowing_conversion_error, int32_t* mutable_invalid, int32_t* narrowing_conversion)
+  SPVM_CONSTANT* src_constant, int32_t* need_implicite_conversion, int32_t* narrowing_conversion_error, int32_t* mutable_invalid, int32_t allow_narrowing_conversion)
 {
-  *narrowing_conversion = 0;
-  
   // Dist type is numeric type
   int32_t assignability = 0;
   if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
@@ -1004,7 +1002,6 @@ int32_t SPVM_TYPE_can_assign(
       }
       // Dist type is narrow than source type
       else if (dist_type_basic_type_id < src_type_basic_type_id) {
-        *narrowing_conversion = 1;
         int32_t can_narrowing_conversion = 0;
         if (src_constant) {
           assert(src_type_dimension == 0);
