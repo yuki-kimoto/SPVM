@@ -2408,6 +2408,12 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_save_old);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_update);
     
+    // Return the old value
+    if (op_update->id == SPVM_OP_C_ID_POST_INC || SPVM_OP_C_ID_POST_DEC) {
+      SPVM_OP* op_var_clone_ret = SPVM_OP_new_op_var_clone(compiler, op_var, op_var_old->file, op_var_old->line);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_clone_ret);
+    }
+    
     return op_sequence;
   }
   else {
