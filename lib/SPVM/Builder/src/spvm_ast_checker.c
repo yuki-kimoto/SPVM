@@ -3983,7 +3983,7 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
   int32_t need_implicite_conversion = 0;
   int32_t narrowing_conversion_error = 0;
   int32_t mutable_invalid = 0;
-  int32_t allow_narrowing_conversion = 0;
+  int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   
   int32_t assignability = SPVM_TYPE_can_assign(
     compiler,
