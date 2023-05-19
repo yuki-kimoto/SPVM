@@ -2278,16 +2278,16 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_access, SPVM_OP* op_diff_value) {
   
   if (
     (op_update->id == SPVM_OP_C_ID_PRE_INC || op_update->id == SPVM_OP_C_ID_PRE_DEC || op_update->id == SPVM_OP_C_ID_POST_INC || op_update->id == SPVM_OP_C_ID_POST_DEC)
-    && (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR))
+    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR))
   {
     /*
     (
-      my $old = $var,
-      $var = ($old + 1),
+      my $var_old = ACCESS,
+      ACCESS = ($var_old + 1),
     )
     */
     
@@ -2299,29 +2299,26 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     // [After]
     // SEQUENCE
     //   ASSIGN_SAVE_OLD
-    //     VAR
+    //     ACCESS
     //     VAR_OLD
     //   ASSIGN_UPDATE
     //     ADD
     //       VAR_OLD_CLONE
-    //       OP_LAST
-    //     VAR_CLONE
+    //       DIFF_VALUE
+    //     ACCESS_CLONE
     
-    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_first->file, op_first->line);
+    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_update->file, op_update->line);
     
-    SPVM_OP* op_assign_save_old = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_first->file, op_first->line);
-    SPVM_OP* op_var = op_first;
+    SPVM_OP* op_assign_save_old = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_update->file, op_update->line);
     
-    SPVM_OP* op_name_var_old = SPVM_OP_new_op_name_tmp_var(compiler, op_first->file, op_first->line);
+    SPVM_OP* op_name_var_old = SPVM_OP_new_op_name_tmp_var(compiler, op_update->file, op_update->line);
     
     SPVM_OP* op_var_old = SPVM_OP_new_op_var(compiler, op_name_var_old);
     
-    SPVM_OP* op_var_old_decl = SPVM_OP_new_op_var_decl(compiler, op_first->file, op_first->line);
+    SPVM_OP* op_var_old_decl = SPVM_OP_new_op_var_decl(compiler, op_update->file, op_update->line);
     SPVM_OP_build_var_decl(compiler, op_var_old_decl, op_var_old, NULL, NULL);
     
-    SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_var);
-    
-    SPVM_OP* op_assign_update = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_first->file, op_first->line);
+    SPVM_OP* op_assign_update = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_update->file, op_update->line);
     SPVM_OP* op_var_old_clone = SPVM_OP_new_op_var_clone(compiler, op_var_old, op_var_old->file, op_var_old->line);
     
     int32_t culc_op_id;
@@ -2404,16 +2401,18 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     op_culc->allow_narrowing_conversion = 1;
     op_culc->original_id = op_update->id;
     
-    SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_last);
-    SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var, op_var_old->file, op_var_old->line);
-    SPVM_OP_build_assign(compiler, op_assign_update, op_var_clone, op_culc);
+    SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_diff_value);
+    
+    SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
+    SPVM_OP* op_access_clone = SPVM_OP_new_op_var_clone(compiler, op_access, op_var_old->file, op_var_old->line);
+    SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
     
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_save_old);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_update);
     
     // Return the old value
     if (op_update->id == SPVM_OP_C_ID_POST_INC || op_update->id == SPVM_OP_C_ID_POST_DEC) {
-      SPVM_OP* op_var_old_clone_ret = SPVM_OP_new_op_var_clone(compiler, op_var_old_clone, op_var_clone->file, op_var_clone->line);
+      SPVM_OP* op_var_old_clone_ret = SPVM_OP_new_op_var_clone(compiler, op_var_old_clone, op_var_old_clone->file, op_var_old_clone->line);
       SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_old_clone_ret);
     }
     
