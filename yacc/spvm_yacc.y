@@ -1183,8 +1183,10 @@ call_method
 array_field_access
   : array_access '{' field_name '}'
     {
+      SPVM_OP* op_array_access = $1;
+      op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_PARENT_IS_FIELD_ACCESS;
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
+      $$ = SPVM_OP_build_field_access(compiler, op_field_access, op_array_access, $3);
     }
 
 field_access
