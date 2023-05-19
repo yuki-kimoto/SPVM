@@ -3865,14 +3865,13 @@ void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler,
   }
 }
 
-int32_t SPVM_AST_CHECKER_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
+int32_t SPVM_AST_CHECKER_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src) {
   
   int32_t allow_narrowing_conversion = 0;
   if (op_src->allow_narrowing_conversion) {
     allow_narrowing_conversion = 1;
   }
   else {
-    SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
     SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
     
     int32_t dist_type_basic_type_id = dist_type->basic_type->id;
