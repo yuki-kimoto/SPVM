@@ -3411,7 +3411,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   compiler,
                                   cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
                                   src_type_basic_type_id, src_type_dimension, src_type_flag,
-                                  NULL, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
+                                  &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
                                 );
                                 assert(need_implicite_conversion == 0);
                                 assert(mutable_invalid == 0);

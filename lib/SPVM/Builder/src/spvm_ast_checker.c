@@ -3974,11 +3974,6 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
     return NULL;
   }
 
-  SPVM_CONSTANT* src_constant = NULL;
-  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
-    src_constant = op_src->uv.constant;
-  }
-
   int32_t need_implicite_conversion = 0;
   int32_t mutable_invalid = 0;
   int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, dist_type, op_src);
@@ -3987,7 +3982,7 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    src_constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
+    &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
   );
     
   if (!assignability) {
@@ -4542,7 +4537,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                op_optional_arg_default->uv.constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
+                &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
               );
               
               if (!assignability) {
@@ -4933,7 +4928,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                   // OK
                 }
                 else {
-                  SPVM_CONSTANT* src_constant = NULL;
                   int32_t need_implicite_conversion = 0;
                   int32_t mutable_invalid = 0;
                   int32_t allow_narrowing_conversion = 0;
@@ -4941,7 +4935,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                     compiler,
                     interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
                     method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    src_constant, &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
+                    &need_implicite_conversion, &mutable_invalid, allow_narrowing_conversion
                   );
                   assert(mutable_invalid == 0);
                   
