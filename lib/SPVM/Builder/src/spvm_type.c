@@ -1002,63 +1002,11 @@ int32_t SPVM_TYPE_can_assign(
       }
       // Dist type is narrow than source type
       else if (dist_type_basic_type_id < src_type_basic_type_id) {
-        int32_t can_narrowing_conversion = 0;
-        if (src_constant) {
-          assert(src_type_dimension == 0);
-          if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-            int64_t src_constant_value;
-            if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-              src_constant_value = src_constant->value.ival;
-            }
-            else if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-              src_constant_value = src_constant->value.lval;
-            }
-            else {
-              assert(0);
-            }
-            
-            if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-              if (src_constant_value >= INT8_MIN && src_constant_value <= INT8_MAX) {
-                can_narrowing_conversion = 1;
-              }
-              else {
-                can_narrowing_conversion = 0;
-              }
-            }
-            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
-              if (src_constant_value >= INT16_MIN && src_constant_value <= INT16_MAX) {
-                can_narrowing_conversion = 1;
-              }
-              else {
-                can_narrowing_conversion = 0;
-              }
-            }
-            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-              if (src_constant_value >= INT32_MIN && src_constant_value <= INT32_MAX) {
-                can_narrowing_conversion = 1;
-              }
-              else {
-                can_narrowing_conversion = 0;
-              }
-            }
-            else {
-              assert(0);
-            }
-          }
-          else {
-            can_narrowing_conversion = 0;
-          }
-        }
-        else {
-          assignability = 0;
-        }
-        
-        if (can_narrowing_conversion) {
-          *need_implicite_conversion = 1;
+        if (allow_narrowing_conversion) {
           assignability = 1;
+          *need_implicite_conversion = 1;
         }
         else {
-          *narrowing_conversion_error = 1;
           assignability = 0;
         }
       }

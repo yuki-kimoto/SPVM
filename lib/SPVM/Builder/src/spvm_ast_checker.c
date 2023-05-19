@@ -3901,7 +3901,6 @@ int32_t SPVM_AST_CHECKER_check_allow_narrowing_conversion(SPVM_COMPILER* compile
         }
         // Dist type is narrow than source type
         else if (dist_type_basic_type_id < src_type_basic_type_id) {
-          int32_t allow_narrowing_conversion = 0;
           if (src_constant) {
             assert(src_type_dimension == 0);
             if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
@@ -4546,7 +4545,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
               int32_t need_implicite_conversion = 0;
               int32_t narrowing_conversion_error = 0;
               int32_t mutable_invalid = 0;
-              int32_t allow_narrowing_conversion = 0;
+              int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
               int32_t assignability = SPVM_TYPE_can_assign(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
