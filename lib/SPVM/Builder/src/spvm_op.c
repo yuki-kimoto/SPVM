@@ -2285,10 +2285,17 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR))
   {
     /*
-    (
-      my $var_old = ACCESS,
-      ACCESS = ($var_old + 1),
-    )
+      (
+        my $var_old = VAR,
+        VAR = ($var_old + 1),
+      )
+      ++ARRAY->[INDEX]
+      (
+        my $array = ARRAY,
+        my $index = INDEX,
+        my $old = $array->[$index],
+        $array->[$index] = $old + 1,
+      )
     */
     
     // Convert PRE_INC VAR
@@ -2403,9 +2410,14 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     
     SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_diff_value);
     
-    SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
-    SPVM_OP* op_access_clone = SPVM_OP_new_op_var_clone(compiler, op_access, op_var_old->file, op_var_old->line);
-    SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
+    if (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
+      SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
+      SPVM_OP* op_access_clone = SPVM_OP_new_op_var_clone(compiler, op_access, op_var_old->file, op_var_old->line);
+      SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
+    }
+    else {
+      assert(0);
+    }
     
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_save_old);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_update);
