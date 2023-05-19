@@ -2419,10 +2419,16 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               
               // Left operand must be a numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand of the + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                if (op_cur->original_id == SPVM_OP_C_ID_PRE_INC) {
+                  SPVM_COMPILER_error(compiler, "The operand of the increment operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "The left operand of the + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                
                 return;
               }
-
+              
               // Right operand must be a numeric type
               if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The right operand of the + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);

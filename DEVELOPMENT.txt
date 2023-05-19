@@ -30,7 +30,7 @@ DEVELOPERS NOTE
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --config solo/myexe.config -f MyExe && ./solo/work/myexe foo bar
        
        # Debug run
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g"  && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --config solo/myexe.debug.config -f MyExe && ./solo/work/myexe foo bar
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --config solo/myexe.debug.config -f MyExe && ./solo/work/myexe foo bar
        
        # Debug run - Print memory count
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g"  && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --config solo/myexe.debug_memory_count.config -f MyExe && ./solo/work/myexe foo bar

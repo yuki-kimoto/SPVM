@@ -1850,7 +1850,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   
   // ++$.i;
   SPVM_OP* op_inc_increament = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, op_for->file, op_for->line);
-  SPVM_OP_build_inc(compiler, op_inc_increament, op_var_init_for_increament);
+  op_inc_increament = SPVM_OP_build_inc(compiler, op_inc_increament, op_var_init_for_increament);
   
   SPVM_OP* op_statements = op_block_statements->first;
   if (!op_statements) {
@@ -2285,6 +2285,62 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
     SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
+  }
+
+  if (op_inc->id == SPVM_OP_C_ID_PRE_INC && op_first->id == SPVM_OP_C_ID_VAR) {
+    /*
+    (
+      my $old = $var,
+      $var = ($old + 1),
+    )
+    */
+    
+    // Convert PRE_INC VAR
+    // [Before]
+    // PRE_INC
+    //   VAR
+    // 
+    // [After]
+    // SEQUENCE
+    //   ASSIGN_SAVE_OLD
+    //     VAR
+    //     VAR_OLD
+    //   ASSIGN_UPDATE
+    //     ADD
+    //       VAR_OLD_CLONE
+    //       CONST 1
+    //     VAR_CLONE
+    
+    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_first->file, op_first->line);
+    
+    SPVM_OP* op_assign_save_old = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_first->file, op_first->line);
+    SPVM_OP* op_var = op_first;
+    
+    SPVM_OP* op_name_var_old = SPVM_OP_new_op_name_tmp_var(compiler, op_first->file, op_first->line);
+    
+    SPVM_OP* op_var_old = SPVM_OP_new_op_var(compiler, op_name_var_old);
+    
+    SPVM_OP* op_var_old_decl = SPVM_OP_new_op_var_decl(compiler, op_first->file, op_first->line);
+    SPVM_OP_build_var_decl(compiler, op_var_old_decl, op_var_old, NULL, NULL);
+    
+    SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_var);
+    
+    SPVM_OP* op_assign_update = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_first->file, op_first->line);
+    SPVM_OP* op_var_old_clone = SPVM_OP_new_op_var_clone(compiler, op_var_old, op_var_old->file, op_var_old->line);
+    SPVM_OP* op_add = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, op_inc->file, op_inc->line);
+    
+    op_add->allow_narrowing_conversion = 1;
+    op_add->original_id = SPVM_OP_C_ID_PRE_INC;
+    
+    SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
+    SPVM_OP_build_binary_op(compiler, op_add, op_var_old_clone, op_constant);
+    SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var, op_var_old->file, op_var_old->line);
+    SPVM_OP_build_assign(compiler, op_assign_update, op_var_clone, op_add);
+    
+    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_save_old);
+    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_update);
+    
+    return op_sequence;
   }
   
   op_inc->allow_narrowing_conversion = 1;

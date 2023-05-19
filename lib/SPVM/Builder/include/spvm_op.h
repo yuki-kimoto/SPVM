@@ -360,6 +360,7 @@ struct spvm_op {
   int8_t no_need_check;
   int8_t free_tmp_vars;
   int8_t allow_narrowing_conversion;
+  int8_t original_id;
 };
 
 SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_value_op);
