@@ -1894,7 +1894,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
               SPVM_OP_build_binary_op(compiler, op_add, op_operand_mutable, op_constant);
               
-              op_add->maybe_need_narrowing_conversion = 1;
+              op_add->allow_narrowing_conversion = 1;
               
               SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
@@ -1960,7 +1960,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
 
               
-              op_subtract->maybe_need_narrowing_conversion = 1;
+              op_subtract->allow_narrowing_conversion = 1;
               
               
               SPVM_TYPE* operand_mutable_type = SPVM_OP_get_type(compiler, op_operand_mutable);
@@ -2036,7 +2036,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP_build_binary_op(compiler, op_add, op_var_tmp2, op_constant);
               SPVM_OP* op_assign_add = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
-              op_add->maybe_need_narrowing_conversion = 1;
+              op_add->allow_narrowing_conversion = 1;
               
               SPVM_OP* op_operand_mutable_clone = SPVM_OP_new_op_operand_mutable_clone(compiler, op_operand_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, operand_mutable_type->basic_type->id, operand_mutable_type->dimension, operand_mutable_type->flag)
@@ -2118,7 +2118,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP_build_binary_op(compiler, op_subtract, op_var_tmp2, op_constant);
               SPVM_OP* op_assign_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
-              op_subtract->maybe_need_narrowing_conversion = 1;
+              op_subtract->allow_narrowing_conversion = 1;
               
               SPVM_OP* op_operand_mutable_clone = SPVM_OP_new_op_operand_mutable_clone(compiler, op_operand_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, operand_mutable_type->basic_type->id, operand_mutable_type->dimension, operand_mutable_type->flag)
@@ -2221,7 +2221,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_culc = SPVM_OP_new_op(compiler, culc_op_id, op_cur->file, op_cur->line);
 
               
-              op_culc->maybe_need_narrowing_conversion = 1;
+              op_culc->allow_narrowing_conversion = 1;
               
               SPVM_OP_build_binary_op(compiler, op_culc, op_operand_mutable, op_operand_src);
               
