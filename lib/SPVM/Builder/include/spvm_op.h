@@ -308,7 +308,7 @@ enum {
 
 enum {
   // ARRAY_INIT flag
-  SPVM_OP_C_FLAG_ARRAY_MOVE_IS_KEY_VALUES_ZERO = 1,
+  SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES = 1,
 };
 
 enum {
@@ -359,6 +359,7 @@ struct spvm_op {
   int8_t is_assigned_to_var;
   int8_t no_need_check;
   int8_t free_tmp_vars;
+  int8_t maybe_need_norrowing_conversion;
 };
 
 SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_value_op);
