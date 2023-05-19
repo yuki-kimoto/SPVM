@@ -3417,6 +3417,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 assert(need_implicite_conversion == 0);
                                 assert(narrowing_conversion_error == 0);
                                 assert(mutable_invalid == 0);
+                                assert(narrowing_conversion == 0);
                                 
                                 if (runtime_assignability) {
                                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);

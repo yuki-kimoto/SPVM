@@ -3865,6 +3865,94 @@ void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler,
   }
 }
 
+int32_t SPVM_AST_CHECKER_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_dist, SPVM_OP* op_src) {
+  
+  SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
+  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
+
+  int32_t dist_type_basic_type_id = dist_type->basic_type->id;
+  int32_t dist_type_dimension = dist_type->dimension;
+  int32_t dist_type_flag = dist_type->flag;
+  
+  int32_t src_type_basic_type_id = src_type->basic_type->id;
+  int32_t src_type_dimension = src_type->dimension;
+  int32_t src_type_flag = src_type->flag;
+  
+  int32_t allow_narrowing_conversion = 0;
+  
+  SPVM_CONSTANT* src_constant = NULL;
+  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
+    src_constant = op_src->uv.constant;
+  }
+  
+  // Dist type is numeric type
+  if (SPVM_TYPE_is_numeric_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
+    // Soruce type is numeric type
+    if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      // Dist type is same as source type
+      if (src_type_basic_type_id == dist_type_basic_type_id) {
+        
+      }
+      // Dist type is more wide than source type
+      else if (dist_type_basic_type_id > src_type_basic_type_id) {
+        
+      }
+      // Dist type is narrow than source type
+      else if (dist_type_basic_type_id < src_type_basic_type_id) {
+        int32_t allow_narrowing_conversion = 0;
+        if (src_constant) {
+          assert(src_type_dimension == 0);
+          if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+            int64_t src_constant_value;
+            if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+              src_constant_value = src_constant->value.ival;
+            }
+            else if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+              src_constant_value = src_constant->value.lval;
+            }
+            else {
+              assert(0);
+            }
+            
+            if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
+              if (src_constant_value >= INT8_MIN && src_constant_value <= INT8_MAX) {
+                allow_narrowing_conversion = 1;
+              }
+              else {
+                allow_narrowing_conversion = 0;
+              }
+            }
+            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
+              if (src_constant_value >= INT16_MIN && src_constant_value <= INT16_MAX) {
+                allow_narrowing_conversion = 1;
+              }
+              else {
+                allow_narrowing_conversion = 0;
+              }
+            }
+            else if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+              if (src_constant_value >= INT32_MIN && src_constant_value <= INT32_MAX) {
+                allow_narrowing_conversion = 1;
+              }
+              else {
+                allow_narrowing_conversion = 0;
+              }
+            }
+            else {
+              assert(0);
+            }
+          }
+          else {
+            allow_narrowing_conversion = 0;
+          }
+        }
+      }
+    }
+  }
+  
+  return allow_narrowing_conversion;
+}
+
 SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src, const char* place, const char* file, int32_t line) {
   SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src);
   
@@ -4862,6 +4950,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                     method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
                     src_constant, &need_implicite_conversion, &narrowing_conversion_error, &mutable_invalid, &narrowing_conversion
                   );
+                  assert(narrowing_conversion_error == 0);
+                  assert(mutable_invalid == 0);
+                  assert(narrowing_conversion == 0);
                   
                   if (assignability) {
                     if (need_implicite_conversion) {
