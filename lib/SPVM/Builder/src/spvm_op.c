@@ -2435,7 +2435,7 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
       SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
       SPVM_OP* op_deref = op_access;
       SPVM_OP* op_var_deref = op_deref->first;
-      SPVM_OP* op_deref_clone = SPVM_OP_new_op_deref_clone_v2(compiler, op_var_deref);
+      SPVM_OP* op_deref_clone = SPVM_OP_new_op_deref_clone_v2(compiler, op_deref, op_var_deref);
       SPVM_OP* op_access_clone = op_deref_clone;
       SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
     }
@@ -3081,16 +3081,16 @@ SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_o
   return op_deref;
 }
 
-SPVM_OP* SPVM_OP_new_op_deref_clone_v2(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+SPVM_OP* SPVM_OP_new_op_deref_clone_v2(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
   (void)compiler;
   
-  SPVM_OP* op_deref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, op_var->file, op_var->line);
+  SPVM_OP* op_deref_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, op_deref->file, op_deref->line);
   
   SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var);
   
-  SPVM_OP_build_unary_op(compiler, op_deref, op_var_clone);
+  SPVM_OP_build_unary_op(compiler, op_deref_clone, op_var_clone);
   
-  return op_deref;
+  return op_deref_clone;
 }
 
 SPVM_OP* SPVM_OP_new_op_operand_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_operand_mutable) {
