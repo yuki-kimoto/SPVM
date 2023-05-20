@@ -3027,6 +3027,19 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
   return op_array_access;
 }
 
+SPVM_OP* SPVM_OP_new_op_array_access_clone_v2(SPVM_COMPILER* compiler, SPVM_OP* op_array_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index) {
+  (void)compiler;
+  
+  SPVM_OP* op_var_array_clone = SPVM_OP_new_op_var_clone(compiler, op_var_array);
+  SPVM_OP* op_var_index_clone = SPVM_OP_new_op_var_clone(compiler, op_var_index);
+  
+  SPVM_OP* op_array_access_clone = SPVM_OP_build_array_access(compiler, op_var_array_clone, op_var_index_clone);
+  
+  SPVM_OP_build_array_access(compiler, op_var_array, op_var_index);
+  
+  return op_array_access_clone;
+}
+
 SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   (void)compiler;
   
