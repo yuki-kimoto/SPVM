@@ -1125,20 +1125,6 @@ convert
       $$ = SPVM_OP_build_type_cast(compiler, op_convert, $4, $1, NULL);
     }
 
-array_access
-  : operator ARROW '[' operator ']'
-    {
-      $$ = SPVM_OP_build_array_access(compiler, $1, $4);
-    }
-  | array_access '[' operator ']'
-    {
-      $$ = SPVM_OP_build_array_access(compiler, $1, $3);
-    }
-  | field_access '[' operator ']'
-    {
-      $$ = SPVM_OP_build_array_access(compiler, $1, $3);
-    }
-
 call_method
   : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     {
@@ -1180,13 +1166,21 @@ call_method
       $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, op_method_name, $4);
     }
 
-array_field_access
-  : array_access '{' field_name '}'
+array_access
+  : operator ARROW '[' operator ']'
     {
-      SPVM_OP* op_array_access = $1;
-      op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_PARENT_IS_FIELD_ACCESS;
-      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_field_access(compiler, op_field_access, op_array_access, $3);
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $4);
+    }
+  | array_access '[' operator ']'
+    {
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $3);
+    }
+  | field_access '[' operator ']'
+    {
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $3);
     }
 
 field_access
@@ -1199,6 +1193,15 @@ field_access
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
+    }
+
+array_field_access
+  : array_access '{' field_name '}'
+    {
+      SPVM_OP* op_array_access = $1;
+      op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_PARENT_IS_FIELD_ACCESS;
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_field_access(compiler, op_field_access, op_array_access, $3);
     }
 
 weaken_field
