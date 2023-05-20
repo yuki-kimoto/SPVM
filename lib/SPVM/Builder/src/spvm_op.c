@@ -2989,12 +2989,12 @@ SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP
 SPVM_OP* SPVM_OP_new_op_field_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_field_access) {
   (void)compiler;
   
-  SPVM_OP* op_var_invoker = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_field_access->first);
+  SPVM_OP* op_var_invocant = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_field_access->first);
   
   SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, original_op_field_access->file, original_op_field_access->line);
 
   SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, original_op_field_access->uv.field_access->op_name->uv.name, original_op_field_access->file, original_op_field_access->line);
-  SPVM_OP_build_field_access(compiler, op_field_access, op_var_invoker, op_name_field);
+  SPVM_OP_build_field_access(compiler, op_field_access, op_var_invocant, op_name_field);
   
   op_field_access->uv.field_access->op_invocant = original_op_field_access->uv.field_access->op_invocant;
   op_field_access->uv.field_access->op_name = original_op_field_access->uv.field_access->op_name;
