@@ -15,18 +15,23 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Pre inc
 {
+warn;
   ok(SPVM::TestCase::Increment->pre_inc_var);
+warn;
   ok(SPVM::TestCase::Increment->pre_inc_array_access_constant_index);
   ok(SPVM::TestCase::Increment->pre_inc_array_access_var_index);
+warn;
   ok(SPVM::TestCase::Increment->pre_inc_field_access);
   ok(SPVM::TestCase::Increment->pre_inc_deref);
   ok(SPVM::TestCase::Increment->pre_inc_class_var_access);
   ok(SPVM::TestCase::Increment->pre_inc_array_field_access_constant_index);
-  
+warn;
   ok(SPVM::TestCase::Increment->pre_inc_array_access_invocant_not_var);
   ok(SPVM::TestCase::Increment->pre_inc_array_field_access_invocant_not_var);
   ok(SPVM::TestCase::Increment->pre_inc_field_access_invocant_not_var);
 }
+
+warn;
 
 # Pre dec
 {

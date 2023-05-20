@@ -2282,7 +2282,7 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
   
   if (
     (op_update->id == SPVM_OP_C_ID_PRE_INC || op_update->id == SPVM_OP_C_ID_PRE_DEC || op_update->id == SPVM_OP_C_ID_POST_INC || op_update->id == SPVM_OP_C_ID_POST_DEC)
-    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_access->id == SPVM_OP_C_ID_DEREF))
+    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_access->id == SPVM_OP_C_ID_DEREF || op_access->id == SPVM_OP_C_ID_ARRAY_ACCESS))
   {
     /*
       ++$var, ++$VAR, ++$@
@@ -2439,6 +2439,46 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
       SPVM_OP* op_access_clone = op_deref_clone;
       SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
     }
+    else if (op_access->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
+      SPVM_OP* op_array_access = op_access;
+      
+      SPVM_OP* op_array = op_array_access->first;
+      SPVM_OP* op_index = op_array_access->last;
+      
+      SPVM_OP_cut_op(compiler, op_array_access->first);
+      SPVM_OP_cut_op(compiler, op_array_access->last);
+      
+      SPVM_OP* op_assign_array_get = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array->file, op_array->line);
+      SPVM_OP* op_name_var_array = SPVM_OP_new_op_name_tmp_var(compiler, op_array->file, op_array->line);
+      SPVM_OP* op_var_array_get = SPVM_OP_new_op_var(compiler, op_name_var_array);
+      SPVM_OP* op_var_array_get_decl = SPVM_OP_new_op_var_decl(compiler, op_array->file,op_array->line);
+      SPVM_OP_build_var_decl(compiler, op_var_array_get_decl, op_var_array_get, NULL, NULL);
+      op_assign_array_get = SPVM_OP_build_assign(compiler, op_assign_array_get, op_var_array_get, op_array);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_get);
+      
+      SPVM_OP* op_assign_index_get = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_index->file, op_index->line);
+      SPVM_OP* op_name_var_index = SPVM_OP_new_op_name_tmp_var(compiler, op_index->file, op_index->line);
+      SPVM_OP* op_var_index_get = SPVM_OP_new_op_var(compiler, op_name_var_index);
+      SPVM_OP* op_var_index_get_decl = SPVM_OP_new_op_var_decl(compiler, op_index->file,op_index->line);
+      SPVM_OP_build_var_decl(compiler, op_var_index_get_decl, op_var_index_get, NULL, NULL);
+      op_assign_index_get = SPVM_OP_build_assign(compiler, op_assign_index_get, op_var_index_get, op_index);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_index_get);
+      
+      SPVM_OP* op_array_access_clone_get = SPVM_OP_new_op_array_access_clone_v2(compiler, op_array_access, op_var_array_get, op_var_index_get);
+      SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_array_access_clone_get);
+      
+      SPVM_OP* op_assign_array_set = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array->file, op_array->line);
+      SPVM_OP* op_var_array_set = SPVM_OP_new_op_var(compiler, op_name_var_array);
+      SPVM_OP* op_var_array_set_decl = SPVM_OP_new_op_var_decl(compiler, op_array->file,op_array->line);
+      
+      SPVM_OP* op_assign_index_set = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_index->file, op_index->line);
+      SPVM_OP* op_var_index_set = SPVM_OP_new_op_var(compiler, op_name_var_index);
+      SPVM_OP* op_var_index_set_decl = SPVM_OP_new_op_var_decl(compiler, op_index->file,op_index->line);
+      
+      SPVM_OP* op_array_access_clone_set = SPVM_OP_new_op_array_access_clone_v2(compiler, op_array_access, op_var_array_set, op_var_index_set);
+      SPVM_OP* op_access_clone_set = op_array_access_clone_set;
+      SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone_set, op_culc);
+    }
     else {
       assert(0);
     }
@@ -2470,7 +2510,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   
   if (
     (op_inc->id == SPVM_OP_C_ID_PRE_INC || op_inc->id == SPVM_OP_C_ID_POST_INC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF))
+    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS))
   {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_inc, op_first, op_constant);
@@ -2494,7 +2534,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   
   if (
     (op_dec->id == SPVM_OP_C_ID_PRE_DEC || op_dec->id == SPVM_OP_C_ID_POST_DEC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF))
+    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS))
   {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_dec, op_first, op_constant);
@@ -3029,14 +3069,14 @@ SPVM_OP* SPVM_OP_new_op_array_access_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
 }
 
 SPVM_OP* SPVM_OP_new_op_array_access_clone_v2(SPVM_COMPILER* compiler, SPVM_OP* op_array_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index) {
-  (void)compiler;
-  
   SPVM_OP* op_var_array_clone = SPVM_OP_new_op_var_clone(compiler, op_var_array);
   SPVM_OP* op_var_index_clone = SPVM_OP_new_op_var_clone(compiler, op_var_index);
+  SPVM_OP* op_array_access_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_array_access->file, op_array_access->line);
   
-  SPVM_OP* op_array_access_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->cur_file, compiler->cur_line);
-  op_array_access_clone = SPVM_OP_build_array_access(compiler,  op_array_access_clone, op_var_array_clone, op_var_index_clone);
-  
+  op_array_access_clone = SPVM_OP_build_array_access(compiler, op_array_access_clone, op_var_array_clone, op_var_index_clone);
+
+  op_array_access_clone->flag = op_array_access->flag;
+
   return op_array_access_clone;
 }
 
@@ -3078,6 +3118,8 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone_v2(SPVM_COMPILER* compiler, SPV
   
   SPVM_OP* op_array_access_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_array_access->file, op_array_access->line);
   op_array_access_clone = SPVM_OP_build_array_access(compiler,  op_array_access_clone, op_var_array_clone, op_var_index_clone);
+  
+  op_array_access_clone->flag = op_array_access->flag;
   
   SPVM_OP* op_name_field_clone = SPVM_OP_new_op_name(compiler,op_name_field->uv.name, op_name_field->file, op_name_field->line);
   
