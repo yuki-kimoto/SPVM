@@ -2940,16 +2940,16 @@ SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
   return op_class_var_access;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_var) {
+SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
   (void)compiler;
   
-  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, original_op_var->uv.var->name, original_op_var->file, original_op_var->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name);
-  SPVM_VAR* var = op_var->uv.var;
+  SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, op_var->uv.var->name, op_var->file, op_var->line);
+  SPVM_OP* op_var_clone = SPVM_OP_new_op_var(compiler, op_name);
+  SPVM_VAR* var_clone = op_var_clone->uv.var;
   
-  var->var_decl = original_op_var->uv.var->var_decl;
+  var_clone->var_decl = op_var->uv.var->var_decl;
   
-  return op_var;
+  return op_var_clone;
 }
 
 SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign) {
