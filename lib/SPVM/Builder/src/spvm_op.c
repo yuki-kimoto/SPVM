@@ -3058,6 +3058,18 @@ SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_o
   return op_deref;
 }
 
+SPVM_OP* SPVM_OP_new_op_deref_clone_v2(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
+  (void)compiler;
+  
+  SPVM_OP* op_deref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, op_var->file, op_var->line);
+  
+  SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var);
+  
+  SPVM_OP_build_unary_op(compiler, op_deref, op_var_clone);
+  
+  return op_deref;
+}
+
 SPVM_OP* SPVM_OP_new_op_operand_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_operand_mutable) {
   
   SPVM_OP* op_operand_mutable;
