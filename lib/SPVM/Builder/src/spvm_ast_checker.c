@@ -747,7 +747,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                   
                   SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
-                  SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                  SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new);
                   SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
 
                   SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
@@ -769,7 +769,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
               SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
               
-              SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+              SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new);
               
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
@@ -1628,7 +1628,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                       SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_field_access);
                     }
                     
-                    SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                    SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new);
                     
                     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
                     
@@ -2026,7 +2026,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
               SPVM_OP* op_var_tmp1 = SPVM_OP_new_op_var_tmp(compiler, operand_mutable_type, op_cur->file, op_cur->line);
 
-              SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1);
         
               SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               SPVM_OP_build_assign(compiler, op_assign_tmp, op_var_tmp1, op_operand_mutable);
@@ -2051,7 +2051,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 SPVM_OP_build_assign(compiler, op_assign_add, op_operand_mutable_clone, op_add);
               }
 
-              SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_tmp);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_add);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp3);
@@ -2108,7 +2108,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               
               SPVM_OP* op_var_tmp1 = SPVM_OP_new_op_var_tmp(compiler, operand_mutable_type, op_cur->file, op_cur->line);
               
-              SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp2 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1);
         
               SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               SPVM_OP_build_assign(compiler, op_assign_tmp, op_var_tmp1, op_operand_mutable);
@@ -2133,7 +2133,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 SPVM_OP_build_assign(compiler, op_assign_subtract, op_operand_mutable_clone, op_subtract);
               }
 
-              SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
+              SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_tmp);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_subtract);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp3);
@@ -3118,7 +3118,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                     
                     SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
-                    SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                    SPVM_OP* op_var_tmp_array_access = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new);
                     SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
 
                     SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, vaarg_index, file, line);
@@ -3141,7 +3141,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
                 SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
                 
-                SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new, op_var_tmp_new->file, op_var_tmp_new->line);
+                SPVM_OP* op_var_tmp_ret = SPVM_OP_new_op_var_clone(compiler, op_var_tmp_new);
                 
                 SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
 
