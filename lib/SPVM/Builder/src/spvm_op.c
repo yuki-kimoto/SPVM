@@ -2282,7 +2282,7 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
   
   if (
     (op_update->id == SPVM_OP_C_ID_PRE_INC || op_update->id == SPVM_OP_C_ID_PRE_DEC || op_update->id == SPVM_OP_C_ID_POST_INC || op_update->id == SPVM_OP_C_ID_POST_DEC)
-    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR))
+    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_access->id == SPVM_OP_C_ID_DEREF))
   {
     /*
       ++$var, ++$VAR, ++$@
@@ -2426,7 +2426,17 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     
     if (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
       SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
-      SPVM_OP* op_access_clone = SPVM_OP_new_op_var_clone(compiler, op_access);
+      SPVM_OP* op_var = op_access;
+      SPVM_OP* op_var_clone = SPVM_OP_new_op_var_clone(compiler, op_var);
+      SPVM_OP* op_access_clone = op_var_clone;
+      SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
+    }
+    else if (op_access->id == SPVM_OP_C_ID_DEREF) {
+      SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_access);
+      SPVM_OP* op_deref = op_access;
+      SPVM_OP* op_var_deref = op_deref->first;
+      SPVM_OP* op_deref_clone = SPVM_OP_new_op_deref_clone_v2(compiler, op_var_deref);
+      SPVM_OP* op_access_clone = op_deref_clone;
       SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone, op_culc);
     }
     else {
@@ -2460,7 +2470,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   
   if (
     (op_inc->id == SPVM_OP_C_ID_PRE_INC || op_inc->id == SPVM_OP_C_ID_POST_INC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR))
+    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF))
   {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_inc, op_first, op_constant);
