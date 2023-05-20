@@ -2291,6 +2291,12 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
         $var = $old + 1,
       )
 
+      ++$$var_ref
+      (
+        my $old = $$var_ref,
+        $$var_ref = $old + 1,
+      )
+      
       ++ARRAY->[INDEX]
       (
         my $array = ARRAY,
@@ -2314,12 +2320,6 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
         $array->[$index]{FIELD_NAME} = $old + 1,
       )
 
-      ++$$var_ref
-      (
-        my $old = $$var_ref,
-        $$var_ref = $old + 1,
-      )
-      
       ACCESS++
       (
         ...,
