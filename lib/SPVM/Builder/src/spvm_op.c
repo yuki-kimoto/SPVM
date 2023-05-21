@@ -2603,7 +2603,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   
   if (
     (op_dec->id == SPVM_OP_C_ID_PRE_DEC || op_dec->id == SPVM_OP_C_ID_POST_DEC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS))
+    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS || op_first->id == SPVM_OP_C_ID_FIELD_ACCESS))
   {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_dec, op_first, op_constant);
