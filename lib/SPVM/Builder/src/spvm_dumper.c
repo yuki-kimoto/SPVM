@@ -97,8 +97,12 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     }
     else if (id == SPVM_OP_C_ID_FIELD_ACCESS) {
       SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
-      printf(" \"%s\"", field_access->op_name->uv.name);
-      printf(" (id :%d)", field_access->field->id);
+      if (field_access->op_name) {
+        printf(" \"%s\"", field_access->op_name->uv.name);
+      }
+      if (field_access->field) {
+        printf(" (id :%d)", field_access->field->id);
+      }
     }
     else if (id == SPVM_OP_C_ID_NAME) {
       printf(" \"%s\"", op_cur->uv.name);
