@@ -2280,10 +2280,6 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
 
 SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_access, SPVM_OP* op_diff_value) {
   
-  if (
-    (op_update->id == SPVM_OP_C_ID_PRE_INC || op_update->id == SPVM_OP_C_ID_PRE_DEC || op_update->id == SPVM_OP_C_ID_POST_INC || op_update->id == SPVM_OP_C_ID_POST_DEC)
-    && (op_access->id == SPVM_OP_C_ID_VAR || op_access->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_access->id == SPVM_OP_C_ID_DEREF || op_access->id == SPVM_OP_C_ID_ARRAY_ACCESS || op_access->id == SPVM_OP_C_ID_FIELD_ACCESS))
-  {
     /*
       ++$var, ++$VAR, ++$@
       (
@@ -2562,10 +2558,6 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
     }
     
     return op_sequence;
-  }
-  else {
-    assert(0);
-  }
 }
 
 SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
@@ -2576,18 +2568,11 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
     SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
-  
-  if (
-    (op_inc->id == SPVM_OP_C_ID_PRE_INC || op_inc->id == SPVM_OP_C_ID_POST_INC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS || op_first->id == SPVM_OP_C_ID_FIELD_ACCESS))
-  {
+  else {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_inc, op_first, op_constant);
-    
-    return op_update;
+    op_inc = op_update;
   }
-  
-  op_inc->allow_narrowing_conversion = 1;
   
   return op_inc;
 }
@@ -2600,17 +2585,11 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
     SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
   }
-  
-  if (
-    (op_dec->id == SPVM_OP_C_ID_PRE_DEC || op_dec->id == SPVM_OP_C_ID_POST_DEC) &&
-    (op_first->id == SPVM_OP_C_ID_VAR || op_first->id == SPVM_OP_C_ID_EXCEPTION_VAR || op_first->id == SPVM_OP_C_ID_DEREF || op_first->id == SPVM_OP_C_ID_ARRAY_ACCESS || op_first->id == SPVM_OP_C_ID_FIELD_ACCESS))
-  {
+  else {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
     SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_dec, op_first, op_constant);
-    return op_update;
+    op_dec = op_update;
   }
-  
-  op_dec->allow_narrowing_conversion = 1;
   
   return op_dec;
 }
