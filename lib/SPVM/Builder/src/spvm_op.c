@@ -2479,6 +2479,35 @@ SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SP
       SPVM_OP* op_access_clone_set = op_array_access_clone_set;
       SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone_set, op_culc);
     }
+    else if (op_access->id == SPVM_OP_C_ID_FIELD_ACCESS) {
+      SPVM_OP* op_field_access = op_access;
+      
+      SPVM_OP* op_invocant = op_field_access->first;
+      SPVM_OP* op_name_field = op_field_access->last;
+      
+      SPVM_OP_cut_op(compiler, op_field_access->first);
+      SPVM_OP_cut_op(compiler, op_field_access->last);
+      
+      SPVM_OP* op_assign_invocant_get = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_invocant->file, op_invocant->line);
+      SPVM_OP* op_name_var_invocant = SPVM_OP_new_op_name_tmp_var(compiler, op_invocant->file, op_invocant->line);
+      SPVM_OP* op_var_invocant_get = SPVM_OP_new_op_var(compiler, op_name_var_invocant);
+      SPVM_OP* op_var_invocant_get_decl = SPVM_OP_new_op_var_decl(compiler, op_invocant->file,op_invocant->line);
+      SPVM_OP_build_var_decl(compiler, op_var_invocant_get_decl, op_var_invocant_get, NULL, NULL);
+      op_assign_invocant_get = SPVM_OP_build_assign(compiler, op_assign_invocant_get, op_var_invocant_get, op_invocant);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_invocant_get);
+      SPVM_OP* op_name_field_get = SPVM_OP_new_op_name(compiler, op_name_field->uv.name, op_name_field->file, op_name_field->line);
+      SPVM_OP* op_field_access_clone_get = SPVM_OP_new_op_field_access_clone_v2(compiler, op_field_access, op_var_invocant_get, op_name_field_get);
+      SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_field_access_clone_get);
+      
+      SPVM_OP* op_assign_invocant_set = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_invocant->file, op_invocant->line);
+      SPVM_OP* op_var_invocant_set = SPVM_OP_new_op_var(compiler, op_name_var_invocant);
+      SPVM_OP* op_var_invocant_set_decl = SPVM_OP_new_op_var_decl(compiler, op_invocant->file,op_invocant->line);
+      
+      SPVM_OP* op_name_field_set = SPVM_OP_new_op_name(compiler, op_name_field->uv.name, op_name_field->file, op_name_field->line);
+      SPVM_OP* op_field_access_clone_set = SPVM_OP_new_op_field_access_clone_v2(compiler, op_field_access, op_var_invocant_set, op_name_field_set);
+      SPVM_OP* op_access_clone_set = op_field_access_clone_set;
+      SPVM_OP_build_assign(compiler, op_assign_update, op_access_clone_set, op_culc);
+    }
     else {
       assert(0);
     }
