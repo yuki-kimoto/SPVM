@@ -1815,24 +1815,14 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
-                op_cur = op_assign_bool;
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                op_cur = op_constant_true;
               }
               else {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
-                op_cur = op_assign_bool;
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
+                op_cur = op_constant_false;
               }
               
               break;
