@@ -34,7 +34,7 @@
 %type <opval> opt_classes classes class class_block version_decl
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> method anon_method opt_args args arg has use require alias our
+%type <opval> method anon_method opt_args args arg has use require alias our captures capture
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -333,7 +333,7 @@ anon_method
        int32_t is_anon = 1;
        $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
      }
-  | '[' args ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  | '[' captures ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -385,6 +385,34 @@ args
   | arg
 
 arg
+  : var ':' qualified_type opt_type_comment
+    {
+      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
+    }
+  | var ASSIGN operator ':' qualified_type opt_type_comment
+    {
+      $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
+    }
+
+captures
+  : captures ',' capture
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | captures ','
+  | capture
+
+capture
   : var ':' qualified_type opt_type_comment
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
