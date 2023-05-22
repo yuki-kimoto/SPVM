@@ -1,8 +1,14 @@
-0.980 2023-05-20
+0.980 2023-05-22
   [Compilation Error Message Improvement]
     * Some compilation error messages are improved.
   [Internal Changes]
     * Internal changes are done.
+  [Incompatible Changes]
+    * Capture syntax is changed. The before syntax is deprecated and will be removed.
+      [Before]
+        [$name : TYPE] method : int () {}
+      [After]
+        [has name : TYPE = $name] method : int () {}
 0.979 2023-05-19
   [Compilation Error Changes]
     * A compilation error message is changed. "The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.".

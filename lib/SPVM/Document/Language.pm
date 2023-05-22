@@ -8799,9 +8799,12 @@ The above example is the same as the following codes.
 The capture is a syntax to use externally defined L<local variables|/"Local Variable"> in an L<anon method|/"Anon Method">.
 
   # Capture
-  [VAR1 : TYPE1, VAR2 : TYPE2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
+  [has FIELD_NAME : TYPE1 = VAR1, has FIELD_NAME : TYPE2 = VAR2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
   
   };
+  
+  # Deprecated
+  [VAR1 : TYPE1, VAR2 : TYPE2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
 
 Examples:
 
@@ -8812,7 +8815,11 @@ Examples:
       my $bar = 5L;
       
       # Capture
-      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+      my $comparator = (Comparator)[has foo : int = $foo, has bar : long = $bar] method : int ($x1 : object, $x2 : object) {
+        print "$self->{foo}\n";
+        print "$self->{bar}\n";
+        
+        # Deprecated
         print "$foo\n";
         print "$bar\n";
       };

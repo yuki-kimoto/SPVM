@@ -20,6 +20,10 @@
   #include "spvm_class.h"
   #include "spvm_attribute.h"
   #include "spvm_constant_string.h"
+  
+  // Temporary
+  #include <assert.h>
+  #include <spvm_var.h>
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
@@ -417,9 +421,21 @@ capture
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ASSIGN operator ':' qualified_type opt_type_comment
+  | HAS field_name ':' qualified_type opt_type_comment ASSIGN var
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
+      // Temporary
+      if (strcmp($2->uv.name, &$7->uv.var->op_name->uv.name[1]) != 0) {
+        assert(0);
+      }
+      
+      $$ = SPVM_OP_build_arg(compiler, $7, $4, NULL, NULL);
+    }
+  | HAS field_name ':' qualified_type opt_type_comment
+    {
+      // Temporary
+      assert(0);
+      
+      $$ = SPVM_OP_build_arg(compiler, NULL, $4, NULL, NULL);
     }
 
 opt_vaarg
