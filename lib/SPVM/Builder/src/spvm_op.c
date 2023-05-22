@@ -2278,7 +2278,7 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_update_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_access, SPVM_OP* op_diff_value) {
+SPVM_OP* SPVM_OP_mutable_assign_op(SPVM_COMPILER* compiler, SPVM_OP* op_update, SPVM_OP* op_access, SPVM_OP* op_diff_value) {
   
   /*
     ++$var, ++$VAR, ++$@
@@ -2570,8 +2570,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   }
   else {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
-    SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_inc, op_first, op_constant);
-    op_inc = op_update;
+    op_inc = SPVM_OP_mutable_assign_op(compiler, op_inc, op_first, op_constant);
   }
   
   return op_inc;
@@ -2587,8 +2586,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   }
   else {
     SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
-    SPVM_OP* op_update = SPVM_OP_build_update_op(compiler, op_dec, op_first, op_constant);
-    op_dec = op_update;
+    op_dec = SPVM_OP_mutable_assign_op(compiler, op_dec, op_first, op_constant);
   }
   
   return op_dec;
