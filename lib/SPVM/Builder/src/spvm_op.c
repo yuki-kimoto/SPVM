@@ -2594,14 +2594,12 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_operand_dist, SPVM_OP* op_operand_src) {
   
-  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_src);
-  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_dist);
-  
   if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
     SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
   }
-  
-  op_special_assign->allow_narrowing_conversion = 1;
+  else {
+    op_special_assign = SPVM_OP_mutable_assign_op(compiler, op_special_assign, op_operand_dist, op_operand_src);
+  }
   
   return op_special_assign;
 }
