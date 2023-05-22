@@ -805,12 +805,6 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
-
-              SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_constant, check_ast_info);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-
               SPVM_OP_replace_op(compiler, op_stab, op_constant);
               op_cur = op_constant;
               
