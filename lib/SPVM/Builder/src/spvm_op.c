@@ -1984,17 +1984,9 @@ SPVM_OP* SPVM_OP_build_string_length(SPVM_COMPILER* compiler, SPVM_OP* op_string
   return op_string_length;
 }
 
-SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_list_elements) {
+SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type) {
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
-  
-  if (op_list_elements) {
-    SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, op_list_elements->file, op_list_elements->line);
-    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
-    SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_type);
-    
-    return op_array_init;
-  }
   
   return op_new;
 }
