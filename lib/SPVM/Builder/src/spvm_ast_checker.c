@@ -1133,17 +1133,11 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               
               // undef == undef
               if (SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                
-                // Return constant 0
+                // Constant 0
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_first->file, op_first->line);
-                SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_zero, op_first->file, op_first->line);
-                op_cur = op_assign_bool;
-                SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
-                SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_assign_bool, check_ast_info);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
+                op_cur = op_constant_zero;
               }
               // value_op == undef
               else if (!SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag) && SPVM_TYPE_is_undef_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
