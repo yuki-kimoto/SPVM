@@ -2594,6 +2594,20 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   return op_dec;
 }
 
+SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_operand_dist, SPVM_OP* op_operand_src) {
+  
+  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_src);
+  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_dist);
+  
+  if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
+    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
+  }
+  
+  op_special_assign->allow_narrowing_conversion = 1;
+  
+  return op_special_assign;
+}
+
 SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Convert && to if statement
@@ -2736,20 +2750,6 @@ SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPV
   SPVM_OP_build_assign(compiler, op_assign, op_var, op_if);
   
   return op_assign;
-}
-
-SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_operand_dist, SPVM_OP* op_operand_src) {
-  
-  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_src);
-  SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_operand_dist);
-  
-  if (!SPVM_OP_is_mutable(compiler, op_operand_dist)) {
-    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
-  }
-  
-  op_special_assign->allow_narrowing_conversion = 1;
-  
-  return op_special_assign;
 }
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_operand_dist, SPVM_OP* op_operand_src) {
