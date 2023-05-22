@@ -42,7 +42,7 @@
 %type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
 %type <opval> call_method opt_vaarg
-%type <opval> array_access field_access array_field_access weaken_field unweaken_field isweak_field convert array_length
+%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
 %type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
@@ -735,7 +735,6 @@ operator
   | call_method
   | field_access
   | array_access
-  | array_field_access
   | convert
   | new
   | array_init
@@ -1194,12 +1193,9 @@ field_access
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
     }
-
-array_field_access
-  : array_access '{' field_name '}'
+  | array_access '{' field_name '}'
     {
       SPVM_OP* op_array_access = $1;
-      op_array_access->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_PARENT_IS_FIELD_ACCESS;
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, op_array_access, $3);
     }

@@ -1251,7 +1251,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> block eval_block init_block switch_block if_require_statement
   %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
   %type <opval> call_method opt_vaarg
-  %type <opval> array_access field_access array_field_access weaken_field unweaken_field isweak_field convert array_length
+  %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow can
   %type <opval> new array_init die warn opt_extends
   %type <opval> var_decl var interface union_type
@@ -1634,11 +1634,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : '(' qualified_type ')' operator %prec CONVERT
     | operator ARROW '(' qualified_type ')' %prec CONVERT
 
-  array_access
-    : operator ARROW '[' operator ']'
-    | array_access '[' operator ']'
-    | field_access '[' operator ']'
-
   call_method
     : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     | CURRENT_CLASS SYMBOL_NAME
@@ -1648,9 +1643,11 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | operator ARROW method_name
     | operator ARROW '(' opt_operators ')'
 
-  array_field_access
-    : array_access '{' field_name '}'
-  
+  array_access
+    : operator ARROW '[' operator ']'
+    | array_access '[' operator ']'
+    | field_access '[' operator ']'
+
   field_access
     : operator ARROW '{' field_name '}'
     | field_access '{' field_name '}'
