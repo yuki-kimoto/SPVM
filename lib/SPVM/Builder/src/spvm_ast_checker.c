@@ -843,18 +843,10 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_operand = op_cur->first;
               
               SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_operand);
-              
               const char* type_name = SPVM_TYPE_new_type_name(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-              
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, type_name, strlen(type_name), op_cur->file, op_cur->line);
-              
               SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
-              SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_constant_string, check_ast_info);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
               op_cur = op_constant_string;
               
               break;
