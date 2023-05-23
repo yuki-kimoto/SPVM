@@ -424,7 +424,7 @@ class TestCase::Module::Format {
     unless (Format->sprintf("%+s", [(object)"str"]) eq "str") { return 0; }
     {
       eval {
-        Format->sprintf("%s", [(object)1);
+        Format->sprintf("%s", [(object)1]);
       };
       unless ($@) {
         return 0;
