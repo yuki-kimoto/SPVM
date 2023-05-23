@@ -152,7 +152,9 @@ class TestCase::Method {
   static method cb_obj_capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $cb_obj = [$capture1 : int, $capture2 : int] method : int ($x1 : object, $x2 : object) {
+    my $cb_obj = [has capture1 : int = $capture1, has capture2 : int = $capture2] method : int ($x1 : object, $x2 : object) {
+      my $capture1 = $self->{capture1};
+      my $capture2 = $self->{capture2};
       
       unless ($capture1 == 7) {
         return 0;
@@ -168,7 +170,7 @@ class TestCase::Method {
       
       $self->{capture1} = 5;
       
-      unless ($capture1 == 5) {
+      unless ($self->{capture1} == 5) {
         return 0;
       }
       

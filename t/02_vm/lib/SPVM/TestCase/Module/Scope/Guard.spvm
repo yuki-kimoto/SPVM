@@ -8,7 +8,9 @@ class TestCase::Module::Scope::Guard {
     {
       my $string = (mutable string)copy "abc";
       {
-        my $handler = [$string : mutable string] method : void () {
+        my $handler = [has string : mutable string = $string] method : void () {
+          my $string = $self->{string};
+          
           $string->[0] = 'A';
           $string->[1] = 'B';
         };

@@ -1,6 +1,8 @@
 0.982 2023-05-23
   [Incompatible Changes]
     * Variable Length Argument is removed.
+    * The syntax of the capture is changed. The variable is passed by fields, not local variables.
+    
 0.981 2023-05-22
   [Incompatible Changes]
     * Capture syntax is changed. The before syntax is deprecated and will be removed.

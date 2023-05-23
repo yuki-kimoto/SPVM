@@ -8764,16 +8764,14 @@ The above example is the same as the following codes.
 
 =head3 Capture
 
-The capture is a syntax to use externally defined L<local variables|/"Local Variable"> in an L<anon method|/"Anon Method">.
+The capture is the syntax to pass variables to an anon method.
 
-  # Capture
-  [has FIELD_NAME : TYPE1 = VAR1, has FIELD_NAME : TYPE2 = VAR2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
+  # Capture - Field definitions and passing variables
+  [has FIELD_NAME : TYPE1 = VAR1, has FIELD_NAME : TYPE2 = VAR2, ...] ANON_METHOD_DEFINITION
   
-  };
+  # Capture - Field definitions only
+  [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_DEFINITION
   
-  # Deprecated
-  [VAR1 : TYPE1, VAR2 : TYPE2, ...] method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
-
 Examples:
 
   class Foo::Bar {
@@ -8784,17 +8782,14 @@ Examples:
       
       # Capture
       my $comparator = (Comparator)[has foo : int = $foo, has bar : long = $bar] method : int ($x1 : object, $x2 : object) {
-        print "$self->{foo}\n";
-        print "$self->{bar}\n";
+        my $foo = $self->{foo};
+        my $bar = $self->{bar};
         
-        # Deprecated
         print "$foo\n";
         print "$bar\n";
       };
     }
   }
-
-Externally defined local variables are implemented as L<fields|/"Field"> of the anon class internally.
 
 The above example is the same as the following codes.
 
@@ -8805,10 +8800,10 @@ The above example is the same as the following codes.
       my $foo = 1;
       my $bar = 5L;
       
-      # Capture
       my $anon = new Foo::Bar::anon::5::61;
       $anon->{foo} = $foo;
       $anon->{bar} = $bar;
+      
       my $comparator = (Comparator)$anon;
     }
   }
@@ -8819,8 +8814,11 @@ The above example is the same as the following codes.
     has bar : public long;
     
     method : int ($x1 : object, $x2 : object) {
-      print "$self->{foo}\n";
-      print "$self->{bar}\n";
+      my $foo = $self->{foo};
+      my $bar = $self->{bar};
+      
+      print "$foo\n";
+      print "$bar\n";
     }
   }
 

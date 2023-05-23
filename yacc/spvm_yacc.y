@@ -417,11 +417,7 @@ captures
   | capture
 
 capture
-  : var ':' qualified_type opt_type_comment
-    {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
-    }
-  | HAS field_name ':' qualified_type opt_type_comment ASSIGN var
+  : HAS field_name ':' qualified_type opt_type_comment ASSIGN var
     {
       // Temporary
       if (strcmp($2->uv.name, &$7->uv.var->op_name->uv.name[1]) != 0) {

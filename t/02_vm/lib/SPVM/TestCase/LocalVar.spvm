@@ -71,22 +71,6 @@ class TestCase::LocalVar {
     return 1;
   }
   
-  static method high_precidence_than_capture_var : int () {
-    my $var = 13;
-    my $cb = [$var : int] method : int () {
-      
-      my $var = 5;
-      
-      return $var;
-    };
-    
-    unless ($cb->() == 5) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
   static method with_logical_operator : int () {
     
     # &&
