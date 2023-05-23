@@ -576,9 +576,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
 
           op_method->uv.method->is_class_var_getter = 1;
-          op_method->uv.method->field_method_original_name = class_var->name;
-          op_method->uv.method->field_method_original_type = class_var->type;
-         
+          
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
 
@@ -646,8 +644,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
           op_method->uv.method->is_class_var_setter = 1;
-          op_method->uv.method->field_method_original_name = class_var->name;
-          op_method->uv.method->field_method_original_type = class_var->type;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -704,8 +700,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
           op_method->uv.method->is_field_getter = 1;
-          op_method->uv.method->field_method_original_name = field->name;
-          op_method->uv.method->field_method_original_type = field->type;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -770,8 +764,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
           op_method->uv.method->is_field_setter = 1;
-          op_method->uv.method->field_method_original_name = field->name;
-          op_method->uv.method->field_method_original_type = field->type;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }

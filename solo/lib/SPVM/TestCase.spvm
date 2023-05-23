@@ -699,10 +699,6 @@ SPVM::Test - SPVM test class
     }
 
     {
-      TestCase->vaarg(10, 20, 30);
-    }
-    
-    {
       my $var1 = 1;
       my $var2 = 2;
       
@@ -712,13 +708,16 @@ SPVM::Test - SPVM test class
     {
       my $capture1 = 7;
       my $capture2 = 10;
-      my $cb_obj = [$capture1 : int, $capture2 : int] method : int ($x1 : object, $x2 : object) {
+      my $cb_obj = [has capture1 : int = $capture1, has capture2 : int = $capture2] method : int ($x1 : object, $x2 : object) {
+        my $capture1 = $self->{capture1};
+        my $capture2 = $self->{capture2};
+        
         print($capture1 . "\n");
         print($capture2 . "\n");
 
         $self->{capture1} = 5;
         
-        print($capture1 . "\n");
+        print($self->{capture1} . "\n");
         
         return -1;
       };
@@ -2310,11 +2309,6 @@ SPVM::Test - SPVM test class
   static method ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d*) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
-  }
-
-  static method vaarg : void ($flag : int, $nums : int[]...) {
-    print($nums->[0] . "\n");
-    print($nums->[1] . "\n");
   }
 }
 
