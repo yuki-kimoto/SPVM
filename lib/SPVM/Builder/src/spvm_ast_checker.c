@@ -1558,13 +1558,11 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                     return;
                   }
 
-                  if (!(op_cur->flag & SPVM_OP_C_FLAG_NEW_INLINE)) {
-                    SPVM_CLASS* cur_class = method->class;
-                    if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
-                      if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
-                        SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
-                        return;
-                      }
+                  SPVM_CLASS* cur_class = method->class;
+                  if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
+                    if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
+                      SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
+                      return;
                     }
                   }
                 }

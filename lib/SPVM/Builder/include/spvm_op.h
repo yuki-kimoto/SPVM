@@ -302,11 +302,6 @@ enum {
 };
 
 enum {
-  // NEW flag
-  SPVM_OP_C_FLAG_NEW_INLINE = 1,
-};
-
-enum {
   // ARRAY_INIT flag
   SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES = 1,
 };
