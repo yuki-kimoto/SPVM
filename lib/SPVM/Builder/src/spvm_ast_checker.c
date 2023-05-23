@@ -2590,19 +2590,21 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             }
             case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
               
+              SPVM_OP* op_class_var_access = op_cur;
+              
               // Check field name
-              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_cur, class->op_class);
+              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
               
-              SPVM_CLASS_VAR_ACCESS* class_var_access = op_cur->uv.class_var_access;
+              SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
               SPVM_CLASS_VAR* class_var = class_var_access->class_var;
               SPVM_CLASS* class_var_access_class = class_var->class;
               
               if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
                 if (!SPVM_AST_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
-                  SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_class_var_access->file, op_class_var_access->line);
                   return;
                 }
               }
