@@ -1968,6 +1968,83 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type);
   
+  if (strstr(op_type->uv.type->name, "::anon::")) {
+    
+    const char* anon_class_name = op_type->uv.type->name;
+    SPVM_CLASS* anon_class = SPVM_HASH_get(compiler->class_symtable, anon_class_name, strlen(anon_class_name));
+    
+    // Anon method
+    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class->methods, 0);
+    if (anon_method->captures->length) {
+      // [Before]
+      // NEW
+      //   TYPE
+      // [After]
+      // SEQUENCE
+      //   ASSIGN_NEW
+      //     NEW
+      //       TYPE
+      //     VAR_INCOVANT_NEW
+      // ASSIGN_FIELD_ACCESS1
+      //   VAR_CAPTURE1
+      //   FIELD_ACCESS1
+      //     VAR_INCOVANT_NEW1
+      //     NAME_FIELD1
+      // ASSIGN_FIELD_ACCESS2
+      //   VAR_CAPTURE2
+      //   FIELD_ACCESS2
+      //     VAR_INCOVANT_NEW2
+      //     NAME_FIELD2
+      // VAR_INCOVANT_NEW_RET
+      
+      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_new->file, op_new->line);
+      SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_new->file, op_new->line);
+      
+      SPVM_OP* op_var_invocant_new_name = SPVM_OP_new_op_name_tmp_var(compiler, op_new->file, op_new->line);
+      SPVM_OP* op_var_invocant_new = SPVM_OP_new_op_var(compiler, op_var_invocant_new_name);
+      
+      SPVM_OP* op_var_decl_invocant_new = SPVM_OP_new_op_var_decl_eternal(compiler, op_new->file, op_new->line);
+      
+      op_var_invocant_new = SPVM_OP_build_var_decl(compiler, op_var_decl_invocant_new, op_var_invocant_new, NULL, NULL);
+
+      SPVM_OP_build_assign(compiler, op_assign_new, op_var_invocant_new, op_new);
+      
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
+      
+      // Check capture variable exists
+      for (int32_t caputre_index = 0; caputre_index < anon_method->captures->length; caputre_index++) {
+        SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(anon_method->captures, caputre_index);
+        const char* capture_name = capture_var_decl->var->name;
+        
+        // Create field assignment
+        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, op_var_invocant_new->uv.var->name , op_new->file, op_new->line);
+        SPVM_OP* op_operand_invocant = SPVM_OP_new_op_var(compiler, op_name_invocant);
+        op_operand_invocant->uv.var->var_decl = capture_var_decl;
+        SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_var_decl->var->name + 1, op_new->file, op_new->line);
+        
+        SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_new->file, op_new->line);
+        SPVM_OP_build_field_access(compiler, op_field_access, op_operand_invocant, op_name_field);
+        
+        SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, capture_name, op_new->file, op_new->line);
+        SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
+        
+        SPVM_FIELD* capture_field = SPVM_HASH_get(anon_class->field_symtable, capture_name + 1, strlen(capture_name) - 1);
+        op_field_access->uv.field_access->field = capture_field;
+        
+        SPVM_OP* op_assign_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_new->file, op_new->line);
+        SPVM_OP_build_assign(compiler, op_assign_field_access, op_field_access, op_var_capture);
+        
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_field_access);
+      }
+      
+      SPVM_OP* op_var_invocant_ret = SPVM_OP_clone_op_var(compiler, op_var_invocant_new);
+      
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_invocant_ret);
+      
+      op_new = op_sequence;
+    }
+  }
+  
   return op_new;
 }
 

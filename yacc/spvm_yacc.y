@@ -1115,7 +1115,8 @@ new
       
       // Build class
       SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);
-
+      op_class->uv.class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+      
       // Type
       SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_class->uv.class->type, op_method->file, op_method->line);
       

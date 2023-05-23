@@ -1513,91 +1513,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 
                 SPVM_CLASS* new_class = type->basic_type->class;
                 
-                // Anon method
-                if (new_class && new_class->is_anon) {
-                  SPVM_OP* op_type = op_cur->first;
-                  
-                  SPVM_METHOD* anon_method = SPVM_LIST_get(new_class->methods, 0);
-                  if (anon_method->captures->length) {
-                    // [Before]
-                    // NEW
-                    //   TYPE
-                    // [After]
-                    // SEQUENCE
-                    //   ASSIGN_NEW
-                    //     NEW
-                    //       TYPE
-                    //     VAR_TMP_NEW
-                    // ASSIGN_FIELD_ACCESS1
-                    //   VAR_CAPTURE1
-                    //   FIELD_ACCESS1
-                    //     VAR_TMP_NEW1
-                    //     NAME_FIELD1
-                    // ASSIGN_FIELD_ACCESS2
-                    //   VAR_CAPTURE2
-                    //   FIELD_ACCESS2
-                    //     VAR_TMP_NEW2
-                    //     NAME_FIELD2
-                    // VAR_TMP_NEW_RET
-                    
-                    SPVM_OP* op_new = op_cur;
-                    
-                    op_new->no_need_check = 1;
-                  
-                    const char* file = op_new->file;
-                    int32_t line = op_new->line;
-                    
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                    
-                    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
-                    SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                    SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, op_type->uv.type, file, line);
-                    
-                    SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
-
-                    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
-                    
-                    // Check capture variable exists
-                    for (int32_t caputre_index = 0; caputre_index < anon_method->captures->length; caputre_index++) {
-                      SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(anon_method->captures, caputre_index);
-                      const char* capture_name = capture_var_decl->var->name;
-
-                      // Create field assignment
-                      SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->name , op_cur->file, op_cur->line);
-                      SPVM_OP* op_operand_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
-                      op_operand_invoker->uv.var->var_decl = capture_var_decl;
-                      SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_var_decl->var->name + 1, op_cur->file, op_cur->line);
-                      
-                      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-                      SPVM_OP_build_field_access(compiler, op_field_access, op_operand_invoker, op_name_field);
-                      
-                      SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, capture_var_decl->var->name, op_cur->file, op_cur->line);
-                      SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
-                      op_var_capture->uv.var->var_decl = capture_var_decl;
-
-                      SPVM_FIELD* capture_field = SPVM_HASH_get(new_class->field_symtable, capture_var_decl->var->name + 1, strlen(capture_var_decl->var->name) - 1);
-                      op_field_access->uv.field_access->field = capture_field;
-                      
-                      SPVM_OP* op_assign_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-                      SPVM_OP_build_assign(compiler, op_assign_field_access, op_field_access, op_var_capture);
-                      
-                      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_field_access);
-                    }
-                    
-                    SPVM_OP* op_var_tmp_ret = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
-                    
-                    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
-                    
-                    SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-                    
-                    SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
-                    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                      return;
-                    }
-                  }
-                }
                 // Array type
-                else if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   
                   SPVM_OP* op_index_operand = op_type->last;
 
@@ -2648,26 +2565,26 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               }
               
               // Invoker type check
-              SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_invocant);
-              int32_t is_valid_invoker_type;
-              if (invoker_type) {
-                if (SPVM_TYPE_is_class_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
-                  is_valid_invoker_type = 1;
+              SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_invocant);
+              int32_t is_valid_invocant_type;
+              if (invocant_type) {
+                if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
                 }
-                else if (SPVM_TYPE_is_mulnum_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
-                  is_valid_invoker_type = 1;
+                else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
                 }
-                else if (SPVM_TYPE_is_mulnum_ref_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
-                  is_valid_invoker_type = 1;
+                else if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
                 }
                 else {
-                  is_valid_invoker_type = 0;
+                  is_valid_invocant_type = 0;
                 }
               }
               else {
-                is_valid_invoker_type = 0;
+                is_valid_invocant_type = 0;
               }
-              if (!is_valid_invoker_type) {
+              if (!is_valid_invocant_type) {
                 SPVM_COMPILER_error(compiler, "The invocant of the field access must be a class type, or a multi-numeric type, or a multi-numeric reference type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2681,8 +2598,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_FIELD* field = op_cur->uv.field_access->field;
               
               if (!field) {
-                const char* invoker_type_name = SPVM_TYPE_new_type_name(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag);
-                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class is not found.\n  at %s line %d", op_name->uv.name, invoker_type_name, op_cur->file, op_cur->line);
+                const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class is not found.\n  at %s line %d", op_name->uv.name, invocant_type_name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3440,8 +3357,8 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   SPVM_OP* op_operand = op_field_access->first;
   SPVM_OP* op_name = field_access->op_name;
   
-  SPVM_TYPE* invoker_type = SPVM_OP_get_type(compiler, op_operand);
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invoker_type->basic_type->name, strlen(invoker_type->basic_type->name));
+  SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_operand);
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
   const char* field_name = op_name->uv.name;
 
   // Search the field of the super class
