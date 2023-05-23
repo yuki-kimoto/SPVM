@@ -2704,7 +2704,11 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               assert(src_type);
               
               SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast);
-              assert(cast_type);
+              
+              // Type inference
+              if (!cast_type) {
+                cast_type = src_type;
+              }
               
               int32_t castability = SPVM_TYPE_can_cast(
                 compiler,
