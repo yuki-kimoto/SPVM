@@ -2466,7 +2466,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 var->var_decl = found_var_decl;
               }
               else {
-                // Finds the class variable
+                // Search the class variable
                 SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
                 SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
                 
@@ -2600,12 +2600,10 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_CLASS_VAR* class_var = class_var_access->class_var;
               SPVM_CLASS* class_var_access_class = class_var->class;
               
-              if (!op_cur->uv.class_var_access->inline_expansion) {
-                if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
-                  if (!SPVM_AST_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
-                    return;
-                  }
+              if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
+                if (!SPVM_AST_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
+                  SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
