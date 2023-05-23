@@ -581,8 +581,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Setter
         if (class_var->has_setter) {
           
-          // method SET_FOO : void ($foo : TYPE) {
-          //   $FOO = $foo;
+          // method SET_FOO : void ($value : TYPE) {
+          //   $FOO = $value;
           // }
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
@@ -610,7 +610,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
           
-          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, "$value", op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
           
@@ -619,10 +619,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
-          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
+          SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_class_var = SPVM_OP_new_op_var(compiler, op_name_class_var);
           
-          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, "$value", op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
           
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
@@ -630,7 +630,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
           
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_type_cast);
+          SPVM_OP_build_assign(compiler, op_assign, op_var_class_var, op_type_cast);
           
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
@@ -639,7 +639,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
-          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
+          op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
