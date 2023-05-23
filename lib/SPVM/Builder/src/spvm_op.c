@@ -1176,7 +1176,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name, op_return_type, NULL, op_list_attributes, op_block, NULL, 0, 0);
   
   // Set constant
-  op_method->uv.method->op_inline = op_constant;
+  op_method->uv.method->enum_value = op_constant->uv.constant->value.ival;
   
   // Method is enumeration
   op_method->uv.method->is_enum = 1;

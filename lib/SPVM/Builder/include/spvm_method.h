@@ -18,7 +18,7 @@ struct spvm_method {
   const char* abs_name;
   SPVM_CLASS* class;
   const char* anon_method_defined_class_name;
-  SPVM_OP* op_inline;
+  int32_t enum_value;
   int32_t args_length;
   int32_t required_args_length;
   int32_t id;
