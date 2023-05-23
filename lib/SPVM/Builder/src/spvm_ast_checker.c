@@ -1562,34 +1562,20 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                       SPVM_VAR_DECL* capture_var_decl = SPVM_LIST_get(anon_method->captures, caputre_index);
                       const char* capture_name = capture_var_decl->var->name;
 
-                      // Search same name variable
-                      SPVM_VAR_DECL* found_var_decl = NULL;
-                      for (int32_t stack_var_decl_index = check_ast_info->var_decl_stack->length - 1; stack_var_decl_index >= 0; stack_var_decl_index--) {
-                        SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, stack_var_decl_index);
-                        if (strcmp(capture_name, var_decl->var->name) == 0) {
-                          found_var_decl = var_decl;
-                          break;
-                        }
-                      }
-                      if (!found_var_decl) {
-                        SPVM_COMPILER_error(compiler, "The capture variable \"%s\" is not found.\n  at %s line %d", capture_name, op_cur->file, op_cur->line);
-                        return;
-                      }
-                      
                       // Create field assignment
                       SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, op_var_tmp_new->uv.var->name , op_cur->file, op_cur->line);
                       SPVM_OP* op_operand_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
-                      op_operand_invoker->uv.var->var_decl = found_var_decl;
-                      SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, found_var_decl->var->name + 1, op_cur->file, op_cur->line);
+                      op_operand_invoker->uv.var->var_decl = capture_var_decl;
+                      SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_var_decl->var->name + 1, op_cur->file, op_cur->line);
                       
                       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
                       SPVM_OP_build_field_access(compiler, op_field_access, op_operand_invoker, op_name_field);
                       
-                      SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, found_var_decl->var->name, op_cur->file, op_cur->line);
+                      SPVM_OP* op_name_var_capture = SPVM_OP_new_op_name(compiler, capture_var_decl->var->name, op_cur->file, op_cur->line);
                       SPVM_OP* op_var_capture = SPVM_OP_new_op_var(compiler, op_name_var_capture);
-                      op_var_capture->uv.var->var_decl = found_var_decl;
+                      op_var_capture->uv.var->var_decl = capture_var_decl;
 
-                      SPVM_FIELD* capture_field = SPVM_HASH_get(new_class->field_symtable, found_var_decl->var->name + 1, strlen(found_var_decl->var->name) - 1);
+                      SPVM_FIELD* capture_field = SPVM_HASH_get(new_class->field_symtable, capture_var_decl->var->name + 1, strlen(capture_var_decl->var->name) - 1);
                       op_field_access->uv.field_access->field = capture_field;
                       
                       SPVM_OP* op_assign_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);

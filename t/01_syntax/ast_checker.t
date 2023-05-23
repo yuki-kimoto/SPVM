@@ -322,7 +322,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { [has foo : int = $foo] method : void () { }; } }';
-    compile_not_ok($source, 'The capture variable "$foo" is not found');
+    compile_not_ok($source, 'The variable "$foo" is not found');
   }
 }
 
