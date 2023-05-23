@@ -138,7 +138,7 @@ class TestCase::Method {
         return 0;
       }
     }
-
+    
     {
       my $num : short = &test_return_mulnum_automatical_numeric_convertion_narrowing_short();
       unless ($num == 32767) {
@@ -147,103 +147,6 @@ class TestCase::Method {
     }
     
     return 1;
-  }
-  
-  static method test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
-    
-    unless ($string eq "a") {
-      return 0;
-    }
-    
-    unless (@$nums == 3) {
-      return 0;
-    }
-    
-    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method vaarg_objects_pass_array : int () {
-    return TestCase::Method->test_vaarg_objects_pass_array("a", [(object)1, 2, 3]);
-  }
-
-  static method test_vaarg_objects_pass_each_values : int ($string : string, $nums : object[]...) {
-    
-    unless ($string eq "a") {
-      return 0;
-    }
-    
-    unless (@$nums == 3) {
-      return 0;
-    }
-    
-    unless ((int)$nums->[0] == 1 && (int)$nums->[1] == 2 && (int)$nums->[2] == 3) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method test_vaarg_objects_pass_empty : int ($string : string, $nums : object[]...) {
-    
-    unless (@$nums == 0) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method vaarg_objects_pass_each_values : int () {
-    return TestCase::Method->test_vaarg_objects_pass_each_values("a", 1, 2, 3);
-  }
-
-  static method vaarg_objects_pass_empty : int () {
-    return TestCase::Method->test_vaarg_objects_pass_empty("a");
-  }
-
-  static method test_vaarg_pass_array : int ($string : string, $nums : int[]...) {
-    
-    unless ($string eq "a") {
-      return 0;
-    }
-    
-    unless (@$nums == 3) {
-      return 0;
-    }
-    
-    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method vaarg_pass_array : int () {
-    return TestCase::Method->test_vaarg_pass_array("a", [1, 2, 3]);
-  }
-
-  static method test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
-    
-    unless ($string eq "a") {
-      return 0;
-    }
-    
-    unless (@$nums == 3) {
-      return 0;
-    }
-    
-    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method vaarg_pass_each_values : int () {
-    return TestCase::Method->test_vaarg_pass_each_values("a", 1, 2, 3);
   }
   
   static method cb_obj_capture : int () {
@@ -262,7 +165,7 @@ class TestCase::Method {
       unless ($self->{capture1} == 7) {
         return 0;
       }
-
+      
       $self->{capture1} = 5;
       
       unless ($capture1 == 5) {

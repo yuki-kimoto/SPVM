@@ -5,7 +5,7 @@ class Format {
   use StringBuffer;
   use Fn;
   
-  precompile static method sprintf : string ($format : string, $args : object[]...) {
+  precompile static method sprintf : string ($format : string, $args : object[]) {
     my $format_length = length $format;
     my $index = 0;
     

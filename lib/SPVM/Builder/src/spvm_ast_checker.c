@@ -2569,120 +2569,6 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               }
               
               int32_t args_length = call_method->method->args_length;
-              int32_t method_is_vaarg = call_method->method->have_vaarg;
-
-              // Variable length argument. Last argument is not array.
-              int32_t vaarg_last_arg_is_not_array = 0;
-              if (method_is_vaarg) {
-                int32_t arg_index = 0;
-                SPVM_OP* op_operand = op_list_args->first;
-                while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-                  if (arg_index == args_length - 1) {
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
-                    if (!SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                      vaarg_last_arg_is_not_array = 1;
-                    }
-                  }
-                  
-                  arg_index++;
-                }
-                
-                // Empty vaargs 
-                if (arg_index == args_length - 1) {
-                  vaarg_last_arg_is_not_array = 1;
-                }
-              }
-
-              // Variable length arguments
-              if (vaarg_last_arg_is_not_array) {
-                
-                SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_method->file, op_call_method->line);
-                
-                const char* file = op_cur->file;
-                int32_t line = op_cur->line;
-                
-                // New
-                SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
-                
-                SPVM_VAR_DECL* vaarg_last_arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method->method->args_length - 1);
-                SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_var_decl->type;
-
-                // Create new type
-                SPVM_OP* op_type_new = SPVM_OP_new_op_type(compiler, vaarg_last_arg_type, op_cur->file, op_cur->line);
-                
-                // Create element type
-                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler, vaarg_last_arg_type->basic_type->id, vaarg_last_arg_type->dimension - 1, vaarg_last_arg_type->flag);
-                SPVM_OP* op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_cur->file, op_cur->line);
-                
-                // Sequence
-                SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
-                SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, op_type_new->uv.type, file, line);
-                
-                SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
-
-                SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
-                
-                int32_t length;
-                int32_t arg_index = 0;
-                int32_t vaarg_index = 0;
-                
-                SPVM_OP* op_operand_element = op_list_args->first;
-                while ((op_operand_element = SPVM_OP_sibling(compiler, op_operand_element))) {
-
-                  op_operand_element->no_need_check = 1;
-
-                  if (arg_index < args_length - 1) {
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_element);
-                    SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_operand_element);
-                    op_operand_element = op_stab;
-                  }
-                  else {
-                    op_var_tmp_new->uv.var->var_decl->type = op_type_new->uv.type;
-
-                    SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_element);
-                    
-                    SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
-
-                    SPVM_OP* op_var_tmp_array_access = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
-                    SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
-
-                    SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, vaarg_index, file, line);
-                    SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
-                    
-                    SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_operand_element);
-                    
-                    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
-                    
-                    vaarg_index++;
-                    op_operand_element = op_stab;
-                  }
-                  arg_index++;
-                }
-                length = vaarg_index;
-                
-                SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
-                SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
-
-                SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-                SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
-                
-                SPVM_OP* op_var_tmp_ret = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
-                
-                SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
-
-                SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
-
-                SPVM_OP_replace_op(compiler, op_call_method->last, op_list_args_new);
-
-                SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_list_args_new, check_ast_info);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
-                
-                op_list_args = op_list_args_new;
-              }
               
               int32_t call_method_args_length = 0;
               {
@@ -3969,11 +3855,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           last_arg_type = arg_type;
         }
       }
-
-      if (method->have_vaarg && !SPVM_TYPE_is_array_type(compiler, last_arg_type->basic_type->id, last_arg_type->dimension, last_arg_type->flag)) {
-        SPVM_COMPILER_error(compiler, "\"...\" must be used with array types.\n  at %s line %d", method->op_method->file, method->op_method->line);
-        return;
-      }
       
       if (!(args_stack_length <= 255)) {
         SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
@@ -3985,7 +3866,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
-
+      
       // Copy has_precomile_attribute from anon method defined class
       if (method->anon_method_defined_class_name) {
         SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));

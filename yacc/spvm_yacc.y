@@ -31,7 +31,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-%token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
+%token <opval> FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
@@ -45,7 +45,7 @@
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
-%type <opval> call_method opt_vaarg
+%type <opval> call_method
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
 %type <opval> new array_init die warn opt_extends
@@ -313,31 +313,31 @@ has
     }
 
 method
-  : opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
+  : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $9, NULL, 0, 0);
      }
-  | opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
+  | opt_attributes METHOD method_name ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, 0, 0);
      }
-  | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  | opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, 0, 0);
      }
-  | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
+  | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, 0, 0);
      }
 
 anon_method
-  : opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  : opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, is_init, is_anon);
      }
-  | '[' captures ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+  | '[' captures ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -350,7 +350,7 @@ anon_method
        
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $11, op_list_args, is_init, is_anon);
      }
 
 opt_args
@@ -437,13 +437,6 @@ capture
       
       $$ = SPVM_OP_build_arg(compiler, NULL, $4, NULL, NULL);
     }
-
-opt_vaarg
-  : /* Empty */
-    {
-      $$ = NULL;
-    }
-  | DOT3
 
 opt_attributes
   : /* Empty */

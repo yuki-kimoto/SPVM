@@ -1835,9 +1835,6 @@ The list of syntax parsing tokens:
     <td>DIVIDE_UNSIGNED_LONG</td><td>divul</td>
   </tr>
   <tr>
-    <td>DOT3</td><td>...</td>
-  </tr>
-  <tr>
     <td>DOUBLE</td><td>double</td>
   </tr>
   <tr>
@@ -3128,35 +3125,6 @@ A method can have L<method attributes|/"Method Attributes">.
   }
 
 A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
-
-=head3 Variable Length Arguments
-
-... after the type of the argument indicates the argument is a variable length argument. Only the last argument can become a variable length argument.
-
-  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2...) {
-  
-  }
-
-The type of the variable length argument must be the L<array type|/"Array Type">.
-
-A variable length argument can recieve multiple values.
-
-  # Definition of variable length argument 
-  static method sprintf : string ($format : string, $values : object[]...) {
-  
-  }
-  
-  # Pass multiple values to the a variable length argument
-  sprintf("Value %d %f", 1, 2.0);
-
-A variable length argument can recieve an array.
-
-  # Pass array to a variable lenght argument
-  sprintf("Value  %d %f", [(object)1, 2.0]);
-
-If you want to treat the value as an individual element, cast it to type other than the L<array type|/"Array Type">..
-
-  sprintf("aaa %p", (object)[(object)1, 2.0]);
 
 =head3 Optional Argument
 
@@ -5268,16 +5236,16 @@ Otherwise, the assignability is false.
 
 <table>
   <tr><th>Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
-  <tr><td>True</td><td>X[]...[]</td><td>X[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>X[]..[]</td><td>X[]..[]</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]..[]</td><td>CLASS_Y[]..[]</td><td>None</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]..[]</td><td>INTERFACE_HAVING_Y[]..[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
 
-(C<[]...[]> means two or more C<[]>)
+(C<[]..[]> means two or more C<[]>)
 
 Examples:
 
@@ -5908,19 +5876,19 @@ Otherwise, the castability is false.
 
 <table>
   <tr><th>Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>ANY_X[]...[]</td><td>ANY_X[]...[]</td><td>None</td></tr>
-  <tr><td>True</td><td>ANY_X[]...[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[]...[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[]...[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X[]...[]</td><td>SUPER_CLASS_Y[]...[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td><td>None</td></tr>
+  <tr><td>True</td><td>ANY_X[]..[]</td><td>ANY_X[]..[]</td><td>None</td></tr>
+  <tr><td>True</td><td>ANY_X[]..[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>ANY_X[]..[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>ANY_X[]..[]</td><td>undef</td><td>None</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]..[]</td><td>CLASS_Y[]..[]</td><td>None</td></tr>
+  <tr><td>True</td><td>CLASS_X[]..[]</td><td>SUPER_CLASS_Y[]..[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]..[]</td><td>INTERFACE_HAVING_Y[]..[]</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
 </table>
 
 =end html
 
-(C<[]...[]> means two or more C<[]>)
+(C<[]..[]> means two or more C<[]>)
 
 Examples:
 
@@ -6381,16 +6349,16 @@ If the type of distribution is an L<interface type|/"Interface Type">, an L<inte
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]...[]</td><td>CLASS_Y[]...[]</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]..[]</td><td>CLASS_Y[]..[]</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]...[]</td><td>INTERFACE_HAVING_Y[]...[]</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]..[]</td><td>INTERFACE_HAVING_Y[]..[]</td></tr>
   <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
 </table>
 
 =end html
 
-(C<[]...[]> means two or more C<[]>)
+(C<[]..[]> means two or more C<[]>)
 
 =head1 Type Comment
 
@@ -8514,9 +8482,9 @@ Examples:
 Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
 
   new BasicType[][LENGTH]
-  new BasicType[]...[][LENGTH]
+  new BasicType[]..[][LENGTH]
 
-(C<[]...[]> means two or more C<[]>)
+(C<[]..[]> means two or more C<[]>)
 
 Examples:
 

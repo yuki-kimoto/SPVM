@@ -261,7 +261,7 @@ class Array {
     my $dump = "[\n";
     
     for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", (int)$array->[$i] & 0xFF);
+      my $string = Format->sprintf("%u", [(object)((int)$array->[$i] & 0xFF)]);
       $dump .= "  $string";
       if ($i != @$array - 1) {
         $dump .= ",\n";
@@ -271,7 +271,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", [(object)$array])  . ")";
     
     return $dump;
   }
@@ -285,7 +285,7 @@ class Array {
     my $dump = "[\n";
     
     for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", $array->[$i]);
+      my $string = Format->sprintf("%u", [(object)$array->[$i]]);
       $dump .= "  $string";
       if ($i != @$array - 1) {
         $dump .= ",\n";
@@ -295,7 +295,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", [(object)$array])  . ")";
     
     return $dump;
   }
@@ -309,7 +309,7 @@ class Array {
     my $dump = "[\n";
     
     for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%lu", $array->[$i]);
+      my $string = Format->sprintf("%lu", [(object)$array->[$i]]);
       $dump .= "  $string";
       if ($i != @$array - 1) {
         $dump .= ",\n";
@@ -319,7 +319,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", [(object)$array])  . ")";
     return $dump;
   }
   
@@ -332,7 +332,7 @@ class Array {
     my $dump = "[\n";
     
     for (my $i = 0; $i < @$array; $i++) {
-      my $string = Format->sprintf("%u", (int)$array->[$i] & 0xFFFF);
+      my $string = Format->sprintf("%u", [(object)((int)$array->[$i] & 0xFFFF)]);
       $dump .= "  $string";
       if ($i != @$array - 1) {
         $dump .= ",\n";
@@ -342,7 +342,7 @@ class Array {
       }
     }
     
-    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", (object)$array)  . ")";
+    $dump .= "] : " . type_name $array . "(" . Format->sprintf("%p", [(object)$array])  . ")";
     
     return $dump;
   }

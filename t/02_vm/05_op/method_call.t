@@ -38,15 +38,6 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   ok(SPVM::TestCase::Method->return_mulnum_automatical_numeric_convertion);
 }
-# variable length arguments
-{
-  ok(SPVM::TestCase::Method->vaarg_objects_pass_each_values);
-  ok(SPVM::TestCase::Method->vaarg_objects_pass_array);
-  ok(SPVM::TestCase::Method->vaarg_pass_each_values);
-  ok(SPVM::TestCase::Method->vaarg_pass_array);
-  ok(SPVM::TestCase::Method->vaarg_objects_pass_empty);
-}
-
 # Anon method
 {
   ok(SPVM::TestCase::Method->cb_obj_capture);

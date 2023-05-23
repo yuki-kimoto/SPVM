@@ -181,11 +181,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             return SPECIAL_ASSIGN;
           }
-          else if (*compiler->ch_ptr == '.' && *(compiler->ch_ptr + 1) == '.') {
-            compiler->ch_ptr += 2;
-            yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DOT3);
-            return DOT3;
-          }
           else {
             yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
             return '.';

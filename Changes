@@ -1,3 +1,6 @@
+0.982 2023-05-23
+  [Incompatible Changes]
+    * Variable Length Argument is removed.
 0.981 2023-05-22
   [Incompatible Changes]
     * Capture syntax is changed. The before syntax is deprecated and will be removed.

@@ -36,7 +36,6 @@ struct spvm_method {
   int32_t call_stack_ref_vars_length;
   int32_t mortal_stack_length;
   int32_t anon_method_id;
-  int8_t have_vaarg;
   int8_t is_class_var_setter;
   int8_t is_class_var_getter;
   int8_t is_field_setter;

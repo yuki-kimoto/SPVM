@@ -13,55 +13,55 @@ SPVM::Format - Format Utilities
   use Format;
   
   # Foo 123 abc 1.115 Bar
-  my $result = Format->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+  my $result = Format->sprintf("Foo %d %s %.3f Bar", [(object)123, "abc", 1.115]);
   
   # %d - "123"
-  my $result = Format->sprintf("%d", 123);
+  my $result = Format->sprintf("%d", [(object)123]);
   
   # %5d - "  123"
-  my $result = Format->sprintf("%5d", 123);
+  my $result = Format->sprintf("%5d", [(object)123]);
 
   # %05d - "00123"
-  my $result = Format->sprintf("%05d", 123);
+  my $result = Format->sprintf("%05d", [(object)123]);
   
   # %+d - "+123"
-  my $result = Format->sprintf("%+d", 123);
+  my $result = Format->sprintf("%+d", [(object)123]);
   
   # %-5d - "123  "
-  my $result = Format->sprintf("%-5d", 123);
+  my $result = Format->sprintf("%-5d", [(object)123]);
   
   # %d - "x"
-  my $result = Format->sprintf("%c", 'x');
+  my $result = Format->sprintf("%c", [(object)'x']);
   
   # %c - "あ"
-  my $result = Format->sprintf("%c", Fn->ord("あ"));
+  my $result = Format->sprintf("%c", [(object)Fn->ord("あ")]);
 
   # %s - "ABC"
-  my $result = Format->sprintf("%s", "ABC");
+  my $result = Format->sprintf("%s", [(object)"ABC"]);
   
   # %.2s - "AB"
-  my $result = Format->sprintf("%.2s", "ABC");
+  my $result = Format->sprintf("%.2s", [(object)"ABC"]);
   
   # %u - "4294967295"
-  my $result = Format->sprintf("%u", -1);
+  my $result = Format->sprintf("%u", [(object)-1]);
   
   # %f - "3.141500"
-  my $result = Format->sprintf("%f", 3.1415);
+  my $result = Format->sprintf("%f", [(object)3.1415]);
   
   # %.2f - "3.14"
-  my $result = Format->sprintf("%.2f", 3.1415);
+  my $result = Format->sprintf("%.2f", [(object)3.1415]);
   
   # %g - "3.14"
-  my $result = Format->sprintf("%g", 3.14);
+  my $result = Format->sprintf("%g", [(object)3.14]);
   
   # %x - "ff"
-  my $result = Format->sprintf("%x", 255);
+  my $result = Format->sprintf("%x", [(object)255]);
     
   # %x - "ffffffff"
-  my $result = Format->sprintf("%x", -1);
+  my $result = Format->sprintf("%x", [(object)-1]);
 
   # %p - "0x8000000000000000"
-  my $result = Format->sprintf("%p", $object);
+  my $result = Format->sprintf("%p", [(object)$object]);
 
 =head1 Description
 
@@ -71,7 +71,7 @@ C<Format> is a formatting utilities for C<sprintf> method.
 
 =head2 sprintf
 
-  static method sprintf : string ($format : string, $args : object[]...);
+  static method sprintf : string ($format : string, $args : object[]);
 
 Creates a formatted string form the $format and the $args.
 
