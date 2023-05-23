@@ -2480,64 +2480,31 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 var->var_decl = found_var_decl;
               }
               else {
-                // Variable is capture var
-                SPVM_FIELD* found_capture_field = SPVM_HASH_get(class->field_symtable, var->name + 1, strlen(var->name) - 1);
-                if (found_capture_field && found_capture_field->is_captured) {
-                  
-                  // Capture var is converted to field access
-                  SPVM_VAR_DECL* arg_first_var_decl = SPVM_LIST_get(method->var_decls, 0);
-                  assert(arg_first_var_decl);
-                  SPVM_OP* op_name_invoker = SPVM_OP_new_op_name(compiler, arg_first_var_decl->var->name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_operand_invoker = SPVM_OP_new_op_var(compiler, op_name_invoker);
-                  op_operand_invoker->uv.var->var_decl = arg_first_var_decl;
-                  SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name + 1, op_cur->file, op_cur->line);
-                  
-                  SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-                  SPVM_OP_build_field_access(compiler, op_field_access, op_operand_invoker, op_name_field);
-                  op_field_access->uv.field_access->field = found_capture_field;
+                // Finds the class variable
+                SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
+                SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
+                
+                op_class_var_access->is_dist = op_cur->is_dist;
+                if (op_cur->uv.var->call_method) {
+                  op_cur->uv.var->call_method->op_invocant = op_class_var_access;
+                }
 
-                  op_field_access->is_dist = op_cur->is_dist;
-                  if (op_cur->uv.var->call_method) {
-                    op_cur->uv.var->call_method->op_invocant = op_field_access;
-                  }
+                SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
+                if (op_class_var_access->uv.class_var_access->class_var) {
                   
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                  SPVM_OP_replace_op(compiler, op_stab, op_field_access);
+                  SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
+
+                  op_cur = op_class_var_access;
                   
-                  op_cur = op_field_access;
-                  
-                  SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_field_access, check_ast_info);
+                  SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_class_var_access, check_ast_info);
                   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                     return;
                   }
                 }
                 else {
-                  // Variable is class var
-                  SPVM_OP* op_name_class_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
-                  
-                  op_class_var_access->is_dist = op_cur->is_dist;
-                  if (op_cur->uv.var->call_method) {
-                    op_cur->uv.var->call_method->op_invocant = op_class_var_access;
-                  }
-
-                  SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
-                  if (op_class_var_access->uv.class_var_access->class_var) {
-                    
-                    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                    SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
-
-                    op_cur = op_class_var_access;
-                    
-                    SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_class_var_access, check_ast_info);
-                    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                      return;
-                    }
-                  }
-                  else {
-                    SPVM_COMPILER_error(compiler, "The variable \"%s\" is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
-                    return;
-                  }
+                  SPVM_COMPILER_error(compiler, "The variable \"%s\" is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
+                  return;
                 }
               }
               
