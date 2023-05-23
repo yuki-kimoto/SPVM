@@ -526,23 +526,23 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // Class var declarations
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
-
+        
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
-
+        
         // Getter
         if (class_var->has_getter) {
           // static method FOO : TYPE () {
           //   return $FOO;
           // }
-
+          
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
           const char* method_name = method_name_string->value;
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
-
+          
           // If the type of the class_var is byte or short, the return type becomes int
           SPVM_TYPE* class_var_type = class_var->type;
           SPVM_TYPE* return_type;
@@ -555,31 +555,29 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             return_type = class_var->type;
           }
           SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
           
           SPVM_OP_insert_child(compiler, op_return, op_return->last, op_class_var_access);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-
+          
           SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
-
-          op_method->uv.method->is_class_var_getter = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
-
+        
         // Setter
         if (class_var->has_setter) {
           
@@ -591,14 +589,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name_tmp, "SET_", 4);
           memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
-
+          
           SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
           const char* method_name = method_name_string->value;
-
+          
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
+          
           // If the type of the class_var is byte or short, the arg type becomes int
           SPVM_TYPE* class_var_type = class_var->type;
           SPVM_TYPE* arg_type;
@@ -611,39 +609,37 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             arg_type = class_var->type;
           }
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
-
+          
           SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var_access);
-
+          
           SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
-
+          
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
           SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, class_var_type, op_decl->file, op_decl->line);
           SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
-
+          
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
           SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_type_cast);
           
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-
+          
           SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
-          
-          op_method->uv.method->is_class_var_setter = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -698,8 +694,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
-          
-          op_method->uv.method->is_field_getter = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -762,8 +756,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
-          
-          op_method->uv.method->is_field_setter = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }

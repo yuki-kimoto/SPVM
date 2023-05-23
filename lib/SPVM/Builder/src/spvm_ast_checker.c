@@ -3895,22 +3895,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // Set method precompile flag if class have precompile attribute
       if (class->is_precompile) {
         int32_t can_precompile;
-        if (method->is_class_var_setter) {
-          can_precompile = 0;
-        }
-        else if (method->is_class_var_getter) {
-          can_precompile = 0;
-        }
-        else if (method->is_field_setter) {
-          can_precompile = 0;
-        }
-        else if (method->is_field_getter) {
-          can_precompile = 0;
-        }
-        else if (method->is_init) {
-          can_precompile = 0;
-        }
-        else if (method->is_enum) {
+        if (method->is_enum) {
           can_precompile = 0;
         }
         // native method, methods of interface type
