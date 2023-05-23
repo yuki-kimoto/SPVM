@@ -1508,8 +1508,20 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             case SPVM_OP_C_ID_NEW: {
               assert(op_cur->first);
               if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
+                
                 SPVM_OP* op_type = op_cur->first;
-                SPVM_TYPE* type = op_type->uv.type;
+                SPVM_TYPE* type = NULL;
+                if (op_cur->first->id == SPVM_OP_C_ID_VAR) {
+                  SPVM_OP* op_var = op_cur->first;
+                  type = SPVM_OP_get_type(compiler, op_var);
+                }
+                else if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
+                  SPVM_OP* op_type = op_cur->first;
+                  type = op_type->uv.type;
+                }
+                else {
+                  assert(0);
+                }
                 
                 SPVM_CLASS* new_class = type->basic_type->class;
                 
