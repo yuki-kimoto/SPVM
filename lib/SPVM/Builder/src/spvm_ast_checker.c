@@ -92,91 +92,8 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
-        {
-          // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          // Run OPs
-          SPVM_OP* op_root = method->op_block;
-          SPVM_OP* op_cur = op_root;
-          int32_t finish = 0;
-          while (op_cur) {
-            // [START]Preorder traversal position
-            switch (op_cur->id) {
-              // Start scope
-              case SPVM_OP_C_ID_BLOCK: {
-                SPVM_BLOCK* block = op_cur->uv.block;
-                
-                // Push block
-                SPVM_LIST_push(op_block_stack, op_cur);
-                
-                break;
-              }
-            }
-
-            if (op_cur->first) {
-              op_cur = op_cur->first;
-            }
-            else {
-              while (1) {
-                // [START]Postorder traversal position
-                switch (op_cur->id) {
-                  case SPVM_OP_C_ID_BLOCK: {
-                    SPVM_BLOCK* block = op_cur->uv.block;
-                    SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-
-                    SPVM_LIST_pop(op_block_stack);
-                    
-                    // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
-                    if (op_block_stack->length > 0) {
-                      SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                      if (!op_block_parent->uv.block->need_leave_scope) {
-                        if (op_block_current->uv.block->need_leave_scope) {
-                          op_block_parent->uv.block->need_leave_scope = 1;
-                        }
-                      }
-                    }
-                    break;
-                  }
-                  case SPVM_OP_C_ID_VAR: {
-                    if (op_cur->uv.var->is_declaration) {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                      
-                      if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                        op_block_current->uv.block->need_leave_scope = 1;
-                      }
-                    }
-                    
-                    break;
-                  }
-                }
-
-                if (op_cur == op_root) {
-
-                  // Finish
-                  finish = 1;
-                  
-                  break;
-                }
-                
-                // Next sibling
-                if (op_cur->moresib) {
-                  op_cur = SPVM_OP_sibling(compiler, op_cur);
-                  break;
-                }
-                // Next is parent
-                else {
-                  op_cur = op_cur->sibparent;
-                }
-              }
-              if (finish) {
-                break;
-              }
-            }
-          }
-          SPVM_LIST_free(op_block_stack);
-        }
+        SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(compiler, class, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
       
       // AST traversal - Resolve variable declaration call stack ids
@@ -3597,6 +3514,93 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
       }
     }
   }
+}
+
+void SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+  
+  // Block stack
+  SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  // Run OPs
+  SPVM_OP* op_root = method->op_block;
+  SPVM_OP* op_cur = op_root;
+  int32_t finish = 0;
+  while (op_cur) {
+    // [START]Preorder traversal position
+    switch (op_cur->id) {
+      // Start scope
+      case SPVM_OP_C_ID_BLOCK: {
+        SPVM_BLOCK* block = op_cur->uv.block;
+        
+        // Push block
+        SPVM_LIST_push(op_block_stack, op_cur);
+        
+        break;
+      }
+    }
+
+    if (op_cur->first) {
+      op_cur = op_cur->first;
+    }
+    else {
+      while (1) {
+        // [START]Postorder traversal position
+        switch (op_cur->id) {
+          case SPVM_OP_C_ID_BLOCK: {
+            SPVM_BLOCK* block = op_cur->uv.block;
+            SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+
+            SPVM_LIST_pop(op_block_stack);
+            
+            // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+            if (op_block_stack->length > 0) {
+              SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+              if (!op_block_parent->uv.block->need_leave_scope) {
+                if (op_block_current->uv.block->need_leave_scope) {
+                  op_block_parent->uv.block->need_leave_scope = 1;
+                }
+              }
+            }
+            break;
+          }
+          case SPVM_OP_C_ID_VAR: {
+            if (op_cur->uv.var->is_declaration) {
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
+              
+              if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+                op_block_current->uv.block->need_leave_scope = 1;
+              }
+            }
+            
+            break;
+          }
+        }
+
+        if (op_cur == op_root) {
+
+          // Finish
+          finish = 1;
+          
+          break;
+        }
+        
+        // Next sibling
+        if (op_cur->moresib) {
+          op_cur = SPVM_OP_sibling(compiler, op_cur);
+          break;
+        }
+        // Next is parent
+        else {
+          op_cur = op_cur->sibparent;
+        }
+      }
+      if (finish) {
+        break;
+      }
+    }
+  }
+  SPVM_LIST_free(op_block_stack);
 }
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
