@@ -438,10 +438,10 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
                       // Resolve mem id
                       int32_t mem_id;
                       if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_object_vars, var_decl);
+                        mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_object_vars, var_decl);
                       }
                       else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                        mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_ref_vars, var_decl);
+                        mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_ref_vars, var_decl);
                       }
                       else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                         SPVM_CLASS* value_class =  type->basic_type->class;
@@ -453,27 +453,27 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         switch (field_type->basic_type->id) {
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_byte_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_short_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_int_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_long_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_float_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_double_vars, var_decl);
                             break;
                           }
                           default:
@@ -484,30 +484,30 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
                         SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
                         switch(numeric_type->basic_type->id) {
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_byte_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_byte_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_short_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_short_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_int_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_int_vars, var_decl);
                             if (strcmp(var_decl->var->name, "$.condition_flag") == 0) {
                               assert(mem_id == 0);
                             }
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_long_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_long_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_float_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_float_vars, var_decl);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                            mem_id = SPVM_AST_CHECKER_get_mem_id(compiler, call_stack_double_vars, var_decl);
+                            mem_id = SPVM_AST_CHECKER_get_execution_stack_id(compiler, call_stack_double_vars, var_decl);
                             break;
                           }
                           default:
@@ -584,6 +584,972 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
     SPVM_DUMPER_dump_classes(compiler, compiler->classes);
   }
 #endif
+}
+
+void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
+
+  SPVM_LIST* op_types = compiler->op_types;
+  
+  // Check type names
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    
+    SPVM_TYPE* type = op_type->uv.type;
+
+    if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_SELF) {
+      continue;
+    }
+    else if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS) {
+      continue;
+    }
+    
+    // Basic type name
+    const char* basic_type_name = type->basic_type->name;
+    
+    // Check if type name is class
+    if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
+      
+      // Unknonw class
+      SPVM_HASH* class_symtable = compiler->class_symtable;
+      SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
+      if (!found_class) {
+        const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_symtable, basic_type_name, strlen(basic_type_name));
+        if (!not_found_class_class_name) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
+        }
+      }
+    }
+    
+    // Reference type must be numeric refernce type or multi-numeric reference type
+    if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
+      }
+    }
+    
+    // mutable only allow string type
+    if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
+      SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
+    }
+
+    if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
+      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+      SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
+    }
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
+
+  SPVM_LIST* types = compiler->types;
+  
+  // Check type names
+  for (int32_t i = 0; i < types->length; i++) {
+    SPVM_TYPE* type = SPVM_LIST_get(types, i);
+    type->stack_length = SPVM_TYPE_get_stack_length(compiler, type->basic_type->id, type->dimension, type->flag);
+    
+    if (type->basic_type->category == 0) {
+      type->basic_type->category = SPVM_BASIC_TYPE_get_category(compiler, type->basic_type->id);
+    }
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_class_current) {
+  
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+  
+  if (call_method->method) {
+    return;
+  }
+  
+  const char* method_name = call_method->op_name->uv.name;
+  
+  // Class method call
+  if (call_method->is_class_method_call) {
+    SPVM_METHOD* found_method = NULL;
+    // Class name + method name
+    assert(call_method->op_invocant);
+    const char* class_name;
+    if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+      class_name = op_class_current->uv.class->name;
+    }
+    else {
+      const char* class_name_maybe = call_method->op_invocant->uv.name;
+      SPVM_CLASS* class_current = op_class_current->uv.class;
+      class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
+      if (class_name == NULL) {
+        class_name = class_name_maybe;
+      }
+    }
+    
+    SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    // This checking is needed because in the method call the class is not chekced in some cases.
+    if (!found_class) {
+      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
+      return;
+    }
+    found_method = SPVM_HASH_get(
+      found_class->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
+    
+    if (found_method && !found_method->is_class_method) {
+      found_method = NULL;
+    }
+  
+    if (found_method) {
+      call_method->method = found_method;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class->name, op_call_method->file, op_call_method->line);
+      return;
+    }
+  }
+  // Instance method call
+  else {
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
+    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The invocant of the \"%s\" method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      return;
+    }
+    
+    const char* class_name = type->basic_type->name;
+    
+    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    assert(class);
+
+    // Static instance method call
+    char* last_colon_pos = strrchr(method_name, ':');
+    if (last_colon_pos) {
+      const char* abs_method_name = method_name;
+      call_method->is_static_instance_method_call = 1;
+      method_name = last_colon_pos + 1;
+      int32_t class_name_length = (last_colon_pos - 1) - abs_method_name;
+      
+      // SUPER::
+      SPVM_METHOD* found_method = NULL;
+      if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
+        SPVM_CLASS* parent_class = class->parent_class;
+        if (parent_class) {
+          // Search the method of the super class
+          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class, method_name);
+        }
+      }
+      else {
+        SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, abs_method_name, class_name_length);
+        if (!found_class) {
+          class = found_method->class;
+          SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        if (found_class) {
+          found_method = SPVM_HASH_get(
+            found_class->method_symtable,
+            method_name,
+            strlen(method_name)
+          );
+        }
+      }
+      
+      if (found_method) {
+        class = found_method->class;
+        if (found_method->is_class_method) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class->name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        call_method->method = found_method;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+        return;
+      }
+    }
+    // Instance method
+    else {
+      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class, method_name);
+      
+      if (found_method) {
+        if (found_method->is_class_method) {
+          class = found_method->class;
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        call_method->method = found_method;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+        return;
+      }
+    }
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
+
+  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
+
+  if (field_access->field) {
+    return;
+  }
+
+  SPVM_OP* op_operand = op_field_access->first;
+  SPVM_OP* op_name = field_access->op_name;
+  
+  SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_operand);
+  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
+  const char* field_name = op_name->uv.name;
+
+  // Search the field of the super class
+  SPVM_FIELD* found_field = NULL;
+  SPVM_CLASS* parent_class = class;
+  
+  while (1) {
+    found_field = SPVM_HASH_get(
+      parent_class->field_symtable,
+      field_name,
+      strlen(field_name)
+    );
+    if (found_field) {
+      break;
+    }
+    parent_class = parent_class->parent_class;
+    if (!parent_class) {
+      break;
+    }
+  }
+  
+  if (found_field) {
+    op_field_access->uv.field_access->field = found_field;
+  }
+  else {
+    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
+    return;
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_OP* op_current_class) {
+  
+  if (op_class_var_access->uv.class_var_access->class_var) {
+    return;
+  }
+  assert(op_class_var_access->uv.class_var_access);
+  
+  SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
+  
+  char* class_name;
+  char* base_name;
+  
+  const char* name = op_name->uv.name;
+  
+  char* colon_ptr = strrchr(name, ':');
+  if (colon_ptr) {
+    // Class name
+    // (end - start + 1) - $ - colon * 2
+    int32_t class_name_length = (colon_ptr - name + 1) - 1 - 2;
+    class_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, class_name_length + 1);
+    memcpy(class_name, name + 1, class_name_length);
+    
+    // Base name($foo)
+    int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
+    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, base_name_length + 1);
+    base_name[0] = '$';
+    memcpy(base_name + 1, colon_ptr + 1, base_name_length);
+  }
+  else {
+    class_name = (char*)op_current_class->uv.class->name;
+    base_name = (char*)name;
+  }
+  
+  SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+  if (found_class) {
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class->class_var_symtable, base_name, strlen(base_name));
+    if (found_class_var) {
+      op_class_var_access->uv.class_var_access->class_var = found_class_var;
+    }
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
+  SPVM_LIST* basic_types = compiler->basic_types;
+  
+  for (int32_t basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, basic_type_index);
+    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type->name, strlen(basic_type->name));
+    if (class) {
+      basic_type->class = class;
+    }
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* class) {
+  if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
+    return;
+  }
+  
+  int32_t alignment_size;
+  if (sizeof(void*) > sizeof(int64_t)) {
+    alignment_size = sizeof(void*);
+  }
+  else {
+    alignment_size = sizeof(int64_t);
+  }
+  
+  int32_t alignment_index = 0;
+  int32_t offset = 0;
+  int32_t offset_size;
+  
+  // 8 byte data
+  for (int32_t merged_field_index = 0; merged_field_index < class->merged_fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, merged_field_index);
+    SPVM_TYPE* merged_field_type = merged_field->type;
+    
+    int32_t next_offset;
+    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 8;
+    }
+    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 4;
+    }
+    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 2;
+    }
+    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 1;
+    }
+    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = sizeof(void*);
+    }
+    else {
+      assert(0);
+    }
+    
+    next_offset = offset + offset_size;
+    
+    if (next_offset % offset_size != 0) {
+      offset += (offset_size - offset % offset_size);
+    }
+    
+    if (next_offset == alignment_size * (alignment_index + 1)) {
+      alignment_index++;
+    }
+    else if (next_offset > alignment_size * (alignment_index + 1)) {
+      alignment_index++;
+      // Next alignment
+      offset += (alignment_size - offset % alignment_size);
+      
+      assert(offset % alignment_size == 0);
+    }
+
+    merged_field->offset = offset;
+    
+    offset += offset_size;
+  }
+
+  class->fields_size = offset;
+  
+  int32_t merged_fields_original_offset = class->merged_fields_original_offset;
+  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, field_index + merged_fields_original_offset);
+    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+    
+    field->offset = merged_field->offset;
+  }
+}
+
+void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
+  
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    const char* class_name = class->op_name->uv.name;
+    
+    // Edit INIT block
+    // The INIT mehtods that is the parent class and used classes in the order.
+    SPVM_METHOD* init_method = class->init_method;
+    if (init_method) {
+      SPVM_OP* op_block = init_method->op_block;
+      SPVM_OP* op_list_statement = op_block->first;
+      
+      SPVM_LIST* use_class_names = class->use_class_names;
+      
+      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
+        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
+        
+        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
+        if (use_class) {
+          if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+            SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
+            SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+            SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+            SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+            SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+          }
+        }
+      }
+      
+      const char* parent_class_name = class->parent_class_name;
+      if (parent_class_name) {
+        SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
+        SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+        SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+        SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+      }
+    }
+    
+    // Multi-numeric type limitation
+    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+      SPVM_LIST* fields = class->fields;
+      SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
+      SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+      if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type must have the only fields of numeric types.\n  at %s line %d", first_field->op_field->file, first_field->op_field->line);
+        return;
+      }
+      
+      int32_t field_index;
+      for (field_index = 0; field_index < class->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
+        if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
+          SPVM_COMPILER_error(compiler, "The fields of the multi-numeric type must be of the same type.\n  at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
+          return;
+        }
+      }
+      
+      // Check type name
+      char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
+      switch (first_field_type->basic_type->id) {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
+          sprintf(tail_name, "_%db", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
+          sprintf(tail_name, "_%ds", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
+          sprintf(tail_name, "_%di", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
+          sprintf(tail_name, "_%dl", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
+          sprintf(tail_name, "_%df", fields->length);
+          break;
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
+          sprintf(tail_name, "_%dd", fields->length);
+          break;
+        default:
+          assert(0);
+      }
+      int32_t tail_name_length = (int32_t)strlen(tail_name);
+      int32_t class_name_length = strlen(class_name);
+      
+      char* found_pos_ptr = strstr(class_name + class_name_length - tail_name_length, tail_name);
+      if (!found_pos_ptr) {
+        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, class->fields->length, tail_name, class->op_class->file, class->op_class->line);
+        return;
+      }
+    }
+
+    // Check class var
+    for (int32_t class_var_index = 0; class_var_index < class->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, class_var_index);
+      SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
+      
+      // valut_t cannnot become class variable
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        return;
+      }
+    }
+    
+    // Check fields
+    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
+
+      // valut_t cannnot become field
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
+        return;
+      }
+    }
+    
+    // Check methods
+    for (int32_t i = 0; i < class->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      
+      // Argument limit check
+      int32_t args_stack_length = 0;
+      SPVM_TYPE* last_arg_type = NULL;
+      int32_t found_optional_arg = 0;
+      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+
+        SPVM_TYPE* arg_type = arg_var_decl->type;
+        
+        int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        
+        // Optional argument
+        SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
+        if (op_optional_arg_default) {
+          found_optional_arg = 1;
+          if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+            if (op_optional_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+              return;
+            }
+            else {
+              SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_optional_arg_default);
+              int32_t need_implicite_conversion = 0;
+              int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
+              int32_t assignability = SPVM_TYPE_can_assign(
+                compiler,
+                arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
+                constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
+                &need_implicite_conversion, allow_narrowing_conversion
+              );
+              
+              if (!assignability) {
+                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to be assigned to the argument.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+                return;
+              }
+            }
+          }
+          else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+            if (op_optional_arg_default->id != SPVM_OP_C_ID_UNDEF) {
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+              return;
+            }
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type cannnot be used in the optional argument.\n  at %s line %d", method->op_method->file, method->op_method->line);
+            return;
+          }
+        }
+        else {
+          if (found_optional_arg) {
+            SPVM_COMPILER_error(compiler, "Arguments after optional arguments must be optional arguments.\n  at %s line %d", method->op_method->file, method->op_method->line);
+            return;
+          }
+        }
+        
+        if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
+          args_stack_length += arg_type->basic_type->class->fields->length;
+        }
+        else {
+          args_stack_length++;
+        }
+        
+        if (arg_index == method->args_length - 1) {
+          last_arg_type = arg_type;
+        }
+      }
+      
+      if (!(args_stack_length <= 255)) {
+        SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
+        return;
+      }
+      
+      // Can't return refernece type
+      if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
+        SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);
+        return;
+      }
+      
+      // Copy has_precomile_attribute from anon method defined class
+      if (method->anon_method_defined_class_name) {
+        SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
+        SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
+        class->is_precompile = anon_method_defined_class->is_precompile;
+      }
+    }
+    
+    const char* parent_class_name = class->parent_class_name;
+    if (parent_class_name) {
+      SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
+      SPVM_TYPE* parent_class_type = parent_class->type;
+      if (!SPVM_TYPE_is_class_type(compiler, parent_class_type->basic_type->id, parent_class_type->dimension, parent_class_type->flag)) {
+        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
+      if (!SPVM_TYPE_is_class_type(compiler, class->type->basic_type->id, class->type->dimension, class->type->flag)) {
+        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
+      
+      if (strcmp(class->name, parent_class->name) == 0) {
+        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        return;
+      }
+      class->parent_class = parent_class;
+    }
+  }
+  
+  // Add anon methods
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    // Add the anon method
+    for (int32_t anon_methods_index = 0; anon_methods_index < class->anon_methods->length; anon_methods_index++) {
+      SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, anon_methods_index);
+      anon_method->anon_method_id = compiler->anon_methods->length;
+      SPVM_LIST_push(compiler->anon_methods, anon_method);
+    }
+  }
+
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    // Add interfaces
+    for (int32_t i = 0; i < class->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
+      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
+      assert(interface);
+      
+      SPVM_TYPE* interface_type = interface->type;
+      if (!SPVM_TYPE_is_interface_type(compiler, interface_type->basic_type->id, interface_type->dimension, interface_type->flag)) {
+        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
+        return;
+      }
+      
+      SPVM_LIST_push(class->interfaces, interface);
+      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+    }
+  }
+
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    SPVM_LIST* methods = class->methods;
+    
+    // Sort methods by name
+    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_AST_CHECKER_method_name_cmp);
+    
+    // Create method ids
+    for (int32_t i = 0; i < class->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+      
+      // Set method precompile flag if class have precompile attribute
+      if (class->is_precompile) {
+        int32_t can_precompile;
+        if (method->is_enum) {
+          can_precompile = 0;
+        }
+        // native method, methods of interface type
+        else if (!method->op_block) {
+          can_precompile = 0;
+        }
+        else {
+          can_precompile = 1;
+        }
+        
+        if (can_precompile) {
+          method->is_precompile = 1;
+        }
+      }
+
+      // Set method id
+      method->id = compiler->methods->length;
+
+      // Add the method to the compiler
+      SPVM_LIST_push(compiler->methods, method);
+      
+      // Add the method arguments
+      for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
+        SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, args_index);
+        arg->arg_id = compiler->args->length;
+        SPVM_LIST_push(compiler->args, arg);
+      }
+    }
+
+    for (int32_t i = 0; i < class->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
+
+      // Set class_var id
+      class_var->id = compiler->class_vars->length;
+
+      // Add the class_var to the compiler
+      SPVM_LIST_push(compiler->class_vars, class_var);
+    }
+  }
+  
+  // Resolve inheritance
+  int32_t compile_error = 0;
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    SPVM_LIST_push(class_stack, class);
+
+    SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    
+    SPVM_CLASS* parent_class = class->parent_class;
+    while (1) {
+      if (parent_class) {
+        if (strcmp(parent_class->name, class->name) == 0) {
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->name, class->op_extends->file, class->op_extends->line);
+          compile_error = 1;
+          break;
+        }
+        
+        // Inherit destructor
+        if (!class->destructor_method) {
+          if (parent_class->destructor_method) {
+            class->destructor_method = parent_class->destructor_method;
+          }
+        }
+        
+        SPVM_LIST_push(class_stack, parent_class);
+        parent_class = parent_class->parent_class;
+      }
+      else {
+        break;
+      }
+    }
+    
+    SPVM_CLASS* cur_class = class;
+    int32_t merged_fields_original_offset_set = 0;
+    int32_t merged_fields_index = 0;
+    for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
+      SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
+      
+      // All fields
+      SPVM_LIST* fields = class->fields;
+      int32_t field_index = 0;
+      int32_t fields_length = fields->length;
+      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+
+        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->parent_class, field->name);
+        if (found_field_in_suer_class) {
+          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->name, field->name, field->op_field->file, field->op_field->line);
+          compile_error = 1;
+          break;
+        }
+        
+        SPVM_FIELD* new_field;
+        if (strcmp(field->class->name, cur_class->name) == 0) {
+          new_field = field;
+          if (!merged_fields_original_offset_set) {
+            class->merged_fields_original_offset = merged_fields_index;
+            merged_fields_original_offset_set = 1;
+          }
+        }
+        // Clone field
+        else {
+          new_field = SPVM_FIELD_new(compiler);
+          new_field->name = field->name;
+          new_field->class = cur_class;
+          new_field->type = field->type;
+          new_field->access_control_type = field->access_control_type;
+        }
+        SPVM_LIST_push(merged_fields, new_field);
+        merged_fields_index++;
+      }
+      if (compile_error) {
+        break;
+      }
+      
+      // All interfaces
+      SPVM_LIST* interfaces = class->interfaces;
+      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
+        SPVM_CLASS* interface = SPVM_LIST_get(interfaces, interface_index);
+        SPVM_LIST_push(merged_interfaces, interface);
+      }
+    }
+    
+    class->merged_fields = merged_fields;
+    
+    // Add parent interfaces
+    class->interfaces = merged_interfaces;
+    for (int32_t i = 0; i < merged_interfaces->length; i++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
+      if (!found_interface) {
+        SPVM_LIST_push(class->interfaces, interface);
+        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+      }
+    }
+    
+    SPVM_LIST_free(class_stack);
+    if (compile_error) {
+      return;
+    }
+  }
+  
+  // Check required method
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
+      assert(interface);
+      
+      SPVM_METHOD* interface_required_method = interface->required_method;
+      
+      if (interface_required_method) {
+        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);
+        
+        if (!found_required_method) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
+          return;
+        }
+      }
+    }
+  }
+  
+  // Check method compatibility
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
+      
+      // Interface methods and the method of the super class
+      for (int32_t interface_index = 0; interface_index < class->interfaces->length + 1; interface_index++) {
+        
+        SPVM_CLASS* interface = NULL;
+        
+        // Super class
+        char* class_desc = NULL;
+        if (interface_index == class->interfaces->length) {
+          class_desc = "class";
+          if (class->parent_class) {
+            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->parent_class, method->name);
+            if (found_method) {
+              interface = found_method->class;
+            }
+          }
+        }
+        // Interface
+        else {
+          class_desc = "interface";
+          interface = SPVM_LIST_get(class->interfaces, interface_index);
+          assert(interface);
+        }
+        
+        if (interface) {
+          for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
+            SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
+            
+            if (strcmp(method->name, interface_method->name) == 0) {
+              if (method->is_class_method) {
+                if (!interface_method->is_class_method) {
+                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  return;
+                }
+              }
+              else {
+                // Check the equality of the arguments
+                SPVM_LIST* method_var_decls = method->var_decls;
+                
+                SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
+                
+                if (!(method->required_args_length == interface_method->required_args_length)) {
+                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  return;
+                }
+
+                if (!(method->args_length >= interface_method->args_length)) {
+                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  return;
+                }
+                
+                for (int32_t arg_index = 1; arg_index < interface_method->args_length; arg_index++) {
+                  SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
+                  SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
+                  
+                  SPVM_TYPE* method_var_decl_type = method_var_decl->type;
+                  SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
+                  
+                  if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
+                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                    return;
+                  }
+                }
+                
+                // Check the assignability of the return value
+                SPVM_TYPE* method_return_type = method->return_type;
+                SPVM_TYPE* interface_method_return_type = interface_method->return_type;
+                
+                int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
+                int32_t interface_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag);
+                
+                if (method_return_type_is_void && interface_method_return_type_is_void) {
+                  // OK
+                }
+                else {
+                  int32_t need_implicite_conversion = 0;
+                  int32_t allow_narrowing_conversion = 0;
+                  int32_t assignability = SPVM_TYPE_can_assign(
+                    compiler,
+                    interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
+                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
+                    &need_implicite_conversion, allow_narrowing_conversion
+                  );
+                  
+                  if (assignability) {
+                    if (need_implicite_conversion) {
+                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                      return;
+                    }
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                    return;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Replace fields
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+
+    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+      field->index = field_index;
+      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
+    }
+  }
+  
+  // Resolve fields
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    // Class
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    
+    for (int32_t i = 0; i < class->fields->length; i++) {
+      // Field
+      SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+
+      // Create field id
+      field->id = compiler->fields->length;
+
+      // Add field to compiler
+      SPVM_LIST_push(compiler->fields, field);
+    }
+    
+    // Resove field offset
+    SPVM_AST_CHECKER_resolve_field_offset(compiler, class);
+  }
+  
+  // Create class id
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    class->id = class_index;
+  }
 }
 
 void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
@@ -2724,70 +3690,6 @@ int SPVM_AST_CHECKER_method_name_cmp(const void* method1_ptr, const void* method
   return strcmp(method1_name, method2_name);
 }
 
-void SPVM_AST_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
-  (void)compiler;
-  
-  SPVM_TYPE* my_type = var_decl->type;
-  
-  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
-
-  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
-    int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id);
-    if (my_id == var_decl->id) {
-      assert(mem_id + stack_length <= mem_stack->length);
-      for (int32_t i = 0; i < stack_length; i++) {
-        mem_stack->values[mem_id + i] = (void*)(intptr_t)-1;
-      }
-    }
-  }
-}
-
-int32_t SPVM_AST_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl) {
-  
-  int32_t found_mem_id = -1;
-  
-  SPVM_TYPE* my_type = var_decl->type;
-
-  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
-  
-  // Search free memory
-  int32_t found = 0;
-  for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
-    if (mem_id + stack_length <= mem_stack->length) {
-      int32_t is_used = 0;
-      for (int32_t i = 0; i < stack_length; i++) {
-        int32_t my_id = (intptr_t)SPVM_LIST_get(mem_stack, mem_id + i);
-        if (my_id >= 0) {
-          is_used = 1;
-          break;
-        }
-      }
-      if (!is_used) {
-        found = 1;
-        found_mem_id = mem_id;
-        for (int32_t i = 0; i < stack_length; i++) {
-          mem_stack->values[mem_id + i] = (void*)(intptr_t)var_decl->id;
-        }
-        break;
-      }
-    }
-    
-    if (found) {
-      break;
-    }
-  }
-  
-  // Add stack
-  if (!found) {
-    found_mem_id = mem_stack->length;
-    for (int32_t i = 0; i < stack_length; i++) {
-      SPVM_LIST_push(mem_stack, (void*)(intptr_t)var_decl->id);
-    }
-  }
-  
-  return found_mem_id;
-}
-
 void SPVM_AST_CHECKER_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {
   
   SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_operand);
@@ -3017,968 +3919,48 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
   return op_src;
 }
 
-void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
-
-  SPVM_LIST* op_types = compiler->op_types;
+int32_t SPVM_AST_CHECKER_get_execution_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* execution_stack, SPVM_VAR_DECL* var_decl) {
   
-  // Check type names
-  for (int32_t i = 0; i < op_types->length; i++) {
-    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
-    
-    SPVM_TYPE* type = op_type->uv.type;
-
-    if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_SELF) {
-      continue;
-    }
-    else if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS) {
-      continue;
-    }
-    
-    // Basic type name
-    const char* basic_type_name = type->basic_type->name;
-    
-    // Check if type name is class
-    if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
-      
-      // Unknonw class
-      SPVM_HASH* class_symtable = compiler->class_symtable;
-      SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
-      if (!found_class) {
-        const char* not_found_class_class_name = SPVM_HASH_get(compiler->not_found_class_symtable, basic_type_name, strlen(basic_type_name));
-        if (!not_found_class_class_name) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
-        }
-      }
-    }
-    
-    // Reference type must be numeric refernce type or multi-numeric reference type
-    if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
-      }
-    }
-    
-    // mutable only allow string type
-    if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-      SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
-    }
-
-    if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
-      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
-    }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
-
-  SPVM_LIST* types = compiler->types;
+  int32_t found_mem_id = -1;
   
-  // Check type names
-  for (int32_t i = 0; i < types->length; i++) {
-    SPVM_TYPE* type = SPVM_LIST_get(types, i);
-    type->stack_length = SPVM_TYPE_get_stack_length(compiler, type->basic_type->id, type->dimension, type->flag);
-    
-    if (type->basic_type->category == 0) {
-      type->basic_type->category = SPVM_BASIC_TYPE_get_category(compiler, type->basic_type->id);
-    }
-  }
-}
+  SPVM_TYPE* my_type = var_decl->type;
 
-void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_class_current) {
+  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
-  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-  
-  if (call_method->method) {
-    return;
-  }
-  
-  const char* method_name = call_method->op_name->uv.name;
-  
-  // Class method call
-  if (call_method->is_class_method_call) {
-    SPVM_METHOD* found_method = NULL;
-    // Class name + method name
-    assert(call_method->op_invocant);
-    const char* class_name;
-    if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
-      class_name = op_class_current->uv.class->name;
-    }
-    else {
-      const char* class_name_maybe = call_method->op_invocant->uv.name;
-      SPVM_CLASS* class_current = op_class_current->uv.class;
-      class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
-      if (class_name == NULL) {
-        class_name = class_name_maybe;
-      }
-    }
-    
-    SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-    // This checking is needed because in the method call the class is not chekced in some cases.
-    if (!found_class) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
-      return;
-    }
-    found_method = SPVM_HASH_get(
-      found_class->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
-    
-    if (found_method && !found_method->is_class_method) {
-      found_method = NULL;
-    }
-  
-    if (found_method) {
-      call_method->method = found_method;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class->name, op_call_method->file, op_call_method->line);
-      return;
-    }
-  }
-  // Instance method call
-  else {
-    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
-    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant of the \"%s\" method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
-      return;
-    }
-    
-    const char* class_name = type->basic_type->name;
-    
-    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-    assert(class);
-
-    // Static instance method call
-    char* last_colon_pos = strrchr(method_name, ':');
-    if (last_colon_pos) {
-      const char* abs_method_name = method_name;
-      call_method->is_static_instance_method_call = 1;
-      method_name = last_colon_pos + 1;
-      int32_t class_name_length = (last_colon_pos - 1) - abs_method_name;
-      
-      // SUPER::
-      SPVM_METHOD* found_method = NULL;
-      if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
-        SPVM_CLASS* parent_class = class->parent_class;
-        if (parent_class) {
-          // Search the method of the super class
-          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class, method_name);
-        }
-      }
-      else {
-        SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, abs_method_name, class_name_length);
-        if (!found_class) {
-          class = found_method->class;
-          SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        if (found_class) {
-          found_method = SPVM_HASH_get(
-            found_class->method_symtable,
-            method_name,
-            strlen(method_name)
-          );
-        }
-      }
-      
-      if (found_method) {
-        class = found_method->class;
-        if (found_method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class->name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        call_method->method = found_method;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
-        return;
-      }
-    }
-    // Instance method
-    else {
-      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class, method_name);
-      
-      if (found_method) {
-        if (found_method->is_class_method) {
-          class = found_method->class;
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        call_method->method = found_method;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
-        return;
-      }
-    }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
-
-  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-
-  if (field_access->field) {
-    return;
-  }
-
-  SPVM_OP* op_operand = op_field_access->first;
-  SPVM_OP* op_name = field_access->op_name;
-  
-  SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_operand);
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
-  const char* field_name = op_name->uv.name;
-
-  // Search the field of the super class
-  SPVM_FIELD* found_field = NULL;
-  SPVM_CLASS* parent_class = class;
-  
-  while (1) {
-    found_field = SPVM_HASH_get(
-      parent_class->field_symtable,
-      field_name,
-      strlen(field_name)
-    );
-    if (found_field) {
-      break;
-    }
-    parent_class = parent_class->parent_class;
-    if (!parent_class) {
-      break;
-    }
-  }
-  
-  if (found_field) {
-    op_field_access->uv.field_access->field = found_field;
-  }
-  else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
-    return;
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_OP* op_current_class) {
-  
-  if (op_class_var_access->uv.class_var_access->class_var) {
-    return;
-  }
-  assert(op_class_var_access->uv.class_var_access);
-  
-  SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
-  
-  char* class_name;
-  char* base_name;
-  
-  const char* name = op_name->uv.name;
-  
-  char* colon_ptr = strrchr(name, ':');
-  if (colon_ptr) {
-    // Class name
-    // (end - start + 1) - $ - colon * 2
-    int32_t class_name_length = (colon_ptr - name + 1) - 1 - 2;
-    class_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, class_name_length + 1);
-    memcpy(class_name, name + 1, class_name_length);
-    
-    // Base name($foo)
-    int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
-    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, base_name_length + 1);
-    base_name[0] = '$';
-    memcpy(base_name + 1, colon_ptr + 1, base_name_length);
-  }
-  else {
-    class_name = (char*)op_current_class->uv.class->name;
-    base_name = (char*)name;
-  }
-  
-  SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-  if (found_class) {
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class->class_var_symtable, base_name, strlen(base_name));
-    if (found_class_var) {
-      op_class_var_access->uv.class_var_access->class_var = found_class_var;
-    }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
-  SPVM_LIST* basic_types = compiler->basic_types;
-  
-  for (int32_t basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, basic_type_index);
-    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type->name, strlen(basic_type->name));
-    if (class) {
-      basic_type->class = class;
-    }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* class) {
-  if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
-    return;
-  }
-  
-  int32_t alignment_size;
-  if (sizeof(void*) > sizeof(int64_t)) {
-    alignment_size = sizeof(void*);
-  }
-  else {
-    alignment_size = sizeof(int64_t);
-  }
-  
-  int32_t alignment_index = 0;
-  int32_t offset = 0;
-  int32_t offset_size;
-  
-  // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < class->merged_fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, merged_field_index);
-    SPVM_TYPE* merged_field_type = merged_field->type;
-    
-    int32_t next_offset;
-    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 8;
-    }
-    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 4;
-    }
-    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 2;
-    }
-    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 1;
-    }
-    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = sizeof(void*);
-    }
-    else {
-      assert(0);
-    }
-    
-    next_offset = offset + offset_size;
-    
-    if (next_offset % offset_size != 0) {
-      offset += (offset_size - offset % offset_size);
-    }
-    
-    if (next_offset == alignment_size * (alignment_index + 1)) {
-      alignment_index++;
-    }
-    else if (next_offset > alignment_size * (alignment_index + 1)) {
-      alignment_index++;
-      // Next alignment
-      offset += (alignment_size - offset % alignment_size);
-      
-      assert(offset % alignment_size == 0);
-    }
-
-    merged_field->offset = offset;
-    
-    offset += offset_size;
-  }
-
-  class->fields_size = offset;
-  
-  int32_t merged_fields_original_offset = class->merged_fields_original_offset;
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, field_index + merged_fields_original_offset);
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-    
-    field->offset = merged_field->offset;
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
-  
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    
-    const char* class_name = class->op_name->uv.name;
-    
-    // Edit INIT block
-    // The INIT mehtods that is the parent class and used classes in the order.
-    SPVM_METHOD* init_method = class->init_method;
-    if (init_method) {
-      SPVM_OP* op_block = init_method->op_block;
-      SPVM_OP* op_list_statement = op_block->first;
-      
-      SPVM_LIST* use_class_names = class->use_class_names;
-      
-      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
-        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
-        
-        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
-        if (use_class) {
-          if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
-            SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
-            SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
-            SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-            SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
-            SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
-          }
-        }
-      }
-      
-      const char* parent_class_name = class->parent_class_name;
-      if (parent_class_name) {
-        SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
-        SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
-        SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-        SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
-      }
-    }
-    
-    // Multi-numeric type limitation
-    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      SPVM_LIST* fields = class->fields;
-      SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
-      SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-      if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type must have the only fields of numeric types.\n  at %s line %d", first_field->op_field->file, first_field->op_field->line);
-        return;
-      }
-      
-      int32_t field_index;
-      for (field_index = 0; field_index < class->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
-        if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
-          SPVM_COMPILER_error(compiler, "The fields of the multi-numeric type must be of the same type.\n  at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
-          return;
-        }
-      }
-      
-      // Check type name
-      char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 255);
-      switch (first_field_type->basic_type->id) {
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
-          sprintf(tail_name, "_%db", fields->length);
-          break;
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
-          sprintf(tail_name, "_%ds", fields->length);
-          break;
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-          sprintf(tail_name, "_%di", fields->length);
-          break;
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-          sprintf(tail_name, "_%dl", fields->length);
-          break;
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-          sprintf(tail_name, "_%df", fields->length);
-          break;
-        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-          sprintf(tail_name, "_%dd", fields->length);
-          break;
-        default:
-          assert(0);
-      }
-      int32_t tail_name_length = (int32_t)strlen(tail_name);
-      int32_t class_name_length = strlen(class_name);
-      
-      char* found_pos_ptr = strstr(class_name + class_name_length - tail_name_length, tail_name);
-      if (!found_pos_ptr) {
-        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, class->fields->length, tail_name, class->op_class->file, class->op_class->line);
-        return;
-      }
-    }
-
-    // Check class var
-    for (int32_t class_var_index = 0; class_var_index < class->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
-      
-      // valut_t cannnot become class variable
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
-        return;
-      }
-    }
-    
-    // Check fields
-    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
-
-      // valut_t cannnot become field
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
-        return;
-      }
-    }
-    
-    // Check methods
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-      
-      // Argument limit check
-      int32_t args_stack_length = 0;
-      SPVM_TYPE* last_arg_type = NULL;
-      int32_t found_optional_arg = 0;
-      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
-        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-
-        SPVM_TYPE* arg_type = arg_var_decl->type;
-        
-        int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        
-        // Optional argument
-        SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
-        if (op_optional_arg_default) {
-          found_optional_arg = 1;
-          if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_optional_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
-              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
-              return;
-            }
-            else {
-              SPVM_TYPE* constant_type = SPVM_OP_get_type(compiler, op_optional_arg_default);
-              int32_t need_implicite_conversion = 0;
-              int32_t allow_narrowing_conversion = SPVM_AST_CHECKER_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
-              int32_t assignability = SPVM_TYPE_can_assign(
-                compiler,
-                arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
-                constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                &need_implicite_conversion, allow_narrowing_conversion
-              );
-              
-              if (!assignability) {
-                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to be assigned to the argument.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
-                return;
-              }
-            }
-          }
-          else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_optional_arg_default->id != SPVM_OP_C_ID_UNDEF) {
-              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
-              return;
-            }
-          }
-          else {
-            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type cannnot be used in the optional argument.\n  at %s line %d", method->op_method->file, method->op_method->line);
-            return;
-          }
-        }
-        else {
-          if (found_optional_arg) {
-            SPVM_COMPILER_error(compiler, "Arguments after optional arguments must be optional arguments.\n  at %s line %d", method->op_method->file, method->op_method->line);
-            return;
-          }
-        }
-        
-        if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
-          args_stack_length += arg_type->basic_type->class->fields->length;
-        }
-        else {
-          args_stack_length++;
-        }
-        
-        if (arg_index == method->args_length - 1) {
-          last_arg_type = arg_type;
-        }
-      }
-      
-      if (!(args_stack_length <= 255)) {
-        SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
-        return;
-      }
-      
-      // Can't return refernece type
-      if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);
-        return;
-      }
-      
-      // Copy has_precomile_attribute from anon method defined class
-      if (method->anon_method_defined_class_name) {
-        SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
-        SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
-        class->is_precompile = anon_method_defined_class->is_precompile;
-      }
-    }
-    
-    const char* parent_class_name = class->parent_class_name;
-    if (parent_class_name) {
-      SPVM_CLASS* parent_class = SPVM_HASH_get(compiler->class_symtable, parent_class_name, strlen(parent_class_name));
-      SPVM_TYPE* parent_class_type = parent_class->type;
-      if (!SPVM_TYPE_is_class_type(compiler, parent_class_type->basic_type->id, parent_class_type->dimension, parent_class_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
-        return;
-      }
-      if (!SPVM_TYPE_is_class_type(compiler, class->type->basic_type->id, class->type->dimension, class->type->flag)) {
-        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
-        return;
-      }
-      
-      if (strcmp(class->name, parent_class->name) == 0) {
-        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
-        return;
-      }
-      class->parent_class = parent_class;
-    }
-  }
-  
-  // Add anon methods
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    
-    // Add the anon method
-    for (int32_t anon_methods_index = 0; anon_methods_index < class->anon_methods->length; anon_methods_index++) {
-      SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, anon_methods_index);
-      anon_method->anon_method_id = compiler->anon_methods->length;
-      SPVM_LIST_push(compiler->anon_methods, anon_method);
-    }
-  }
-
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    // Add interfaces
-    for (int32_t i = 0; i < class->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
-      SPVM_CLASS* interface = SPVM_HASH_get(compiler->class_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
-      assert(interface);
-      
-      SPVM_TYPE* interface_type = interface->type;
-      if (!SPVM_TYPE_is_interface_type(compiler, interface_type->basic_type->id, interface_type->dimension, interface_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
-        return;
-      }
-      
-      SPVM_LIST_push(class->interfaces, interface);
-      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
-    }
-  }
-
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    
-    SPVM_LIST* methods = class->methods;
-    
-    // Sort methods by name
-    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_AST_CHECKER_method_name_cmp);
-    
-    // Create method ids
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
-      
-      // Set method precompile flag if class have precompile attribute
-      if (class->is_precompile) {
-        int32_t can_precompile;
-        if (method->is_enum) {
-          can_precompile = 0;
-        }
-        // native method, methods of interface type
-        else if (!method->op_block) {
-          can_precompile = 0;
-        }
-        else {
-          can_precompile = 1;
-        }
-        
-        if (can_precompile) {
-          method->is_precompile = 1;
-        }
-      }
-
-      // Set method id
-      method->id = compiler->methods->length;
-
-      // Add the method to the compiler
-      SPVM_LIST_push(compiler->methods, method);
-      
-      // Add the method arguments
-      for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
-        SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, args_index);
-        arg->arg_id = compiler->args->length;
-        SPVM_LIST_push(compiler->args, arg);
-      }
-    }
-
-    for (int32_t i = 0; i < class->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
-
-      // Set class_var id
-      class_var->id = compiler->class_vars->length;
-
-      // Add the class_var to the compiler
-      SPVM_LIST_push(compiler->class_vars, class_var);
-    }
-  }
-  
-  // Resolve inheritance
-  int32_t compile_error = 0;
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    
-    SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-    SPVM_LIST_push(class_stack, class);
-
-    SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-    
-    SPVM_CLASS* parent_class = class->parent_class;
-    while (1) {
-      if (parent_class) {
-        if (strcmp(parent_class->name, class->name) == 0) {
-          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->name, class->op_extends->file, class->op_extends->line);
-          compile_error = 1;
+  // Search free memory
+  int32_t found = 0;
+  for (int32_t mem_id = 0; mem_id < execution_stack->length; mem_id++) {
+    if (mem_id + stack_length <= execution_stack->length) {
+      int32_t is_used = 0;
+      for (int32_t i = 0; i < stack_length; i++) {
+        int32_t my_id = (intptr_t)SPVM_LIST_get(execution_stack, mem_id + i);
+        if (my_id >= 0) {
+          is_used = 1;
           break;
         }
-        
-        // Inherit destructor
-        if (!class->destructor_method) {
-          if (parent_class->destructor_method) {
-            class->destructor_method = parent_class->destructor_method;
-          }
-        }
-        
-        SPVM_LIST_push(class_stack, parent_class);
-        parent_class = parent_class->parent_class;
       }
-      else {
+      if (!is_used) {
+        found = 1;
+        found_mem_id = mem_id;
+        for (int32_t i = 0; i < stack_length; i++) {
+          execution_stack->values[mem_id + i] = (void*)(intptr_t)var_decl->id;
+        }
         break;
       }
     }
     
-    SPVM_CLASS* cur_class = class;
-    int32_t merged_fields_original_offset_set = 0;
-    int32_t merged_fields_index = 0;
-    for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
-      SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
-      
-      // All fields
-      SPVM_LIST* fields = class->fields;
-      int32_t field_index = 0;
-      int32_t fields_length = fields->length;
-      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-
-        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->parent_class, field->name);
-        if (found_field_in_suer_class) {
-          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->name, field->name, field->op_field->file, field->op_field->line);
-          compile_error = 1;
-          break;
-        }
-        
-        SPVM_FIELD* new_field;
-        if (strcmp(field->class->name, cur_class->name) == 0) {
-          new_field = field;
-          if (!merged_fields_original_offset_set) {
-            class->merged_fields_original_offset = merged_fields_index;
-            merged_fields_original_offset_set = 1;
-          }
-        }
-        // Clone field
-        else {
-          new_field = SPVM_FIELD_new(compiler);
-          new_field->name = field->name;
-          new_field->class = cur_class;
-          new_field->type = field->type;
-          new_field->access_control_type = field->access_control_type;
-        }
-        SPVM_LIST_push(merged_fields, new_field);
-        merged_fields_index++;
-      }
-      if (compile_error) {
-        break;
-      }
-      
-      // All interfaces
-      SPVM_LIST* interfaces = class->interfaces;
-      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
-        SPVM_CLASS* interface = SPVM_LIST_get(interfaces, interface_index);
-        SPVM_LIST_push(merged_interfaces, interface);
-      }
-    }
-    
-    class->merged_fields = merged_fields;
-    
-    // Add parent interfaces
-    class->interfaces = merged_interfaces;
-    for (int32_t i = 0; i < merged_interfaces->length; i++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
-      if (!found_interface) {
-        SPVM_LIST_push(class->interfaces, interface);
-        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
-      }
-    }
-    
-    SPVM_LIST_free(class_stack);
-    if (compile_error) {
-      return;
+    if (found) {
+      break;
     }
   }
   
-  // Check required method
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
-      assert(interface);
-      
-      SPVM_METHOD* interface_required_method = interface->required_method;
-      
-      if (interface_required_method) {
-        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);
-        
-        if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
-          return;
-        }
-      }
+  // Add stack
+  if (!found) {
+    found_mem_id = execution_stack->length;
+    for (int32_t i = 0; i < stack_length; i++) {
+      SPVM_LIST_push(execution_stack, (void*)(intptr_t)var_decl->id);
     }
   }
   
-  // Check method compatibility
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
-      
-      // Interface methods and the method of the super class
-      for (int32_t interface_index = 0; interface_index < class->interfaces->length + 1; interface_index++) {
-        
-        SPVM_CLASS* interface = NULL;
-        
-        // Super class
-        char* class_desc = NULL;
-        if (interface_index == class->interfaces->length) {
-          class_desc = "class";
-          if (class->parent_class) {
-            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->parent_class, method->name);
-            if (found_method) {
-              interface = found_method->class;
-            }
-          }
-        }
-        // Interface
-        else {
-          class_desc = "interface";
-          interface = SPVM_LIST_get(class->interfaces, interface_index);
-          assert(interface);
-        }
-        
-        if (interface) {
-          for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
-            SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
-            
-            if (strcmp(method->name, interface_method->name) == 0) {
-              if (method->is_class_method) {
-                if (!interface_method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                  return;
-                }
-              }
-              else {
-                // Check the equality of the arguments
-                SPVM_LIST* method_var_decls = method->var_decls;
-                
-                SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
-                
-                if (!(method->required_args_length == interface_method->required_args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                  return;
-                }
-
-                if (!(method->args_length >= interface_method->args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                  return;
-                }
-                
-                for (int32_t arg_index = 1; arg_index < interface_method->args_length; arg_index++) {
-                  SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
-                  SPVM_VAR_DECL* interface_method_var_decl = SPVM_LIST_get(interface_method_var_decls, arg_index);
-                  
-                  SPVM_TYPE* method_var_decl_type = method_var_decl->type;
-                  SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
-                  
-                  if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
-                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                    return;
-                  }
-                }
-                
-                // Check the assignability of the return value
-                SPVM_TYPE* method_return_type = method->return_type;
-                SPVM_TYPE* interface_method_return_type = interface_method->return_type;
-                
-                int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
-                int32_t interface_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag);
-                
-                if (method_return_type_is_void && interface_method_return_type_is_void) {
-                  // OK
-                }
-                else {
-                  int32_t need_implicite_conversion = 0;
-                  int32_t allow_narrowing_conversion = 0;
-                  int32_t assignability = SPVM_TYPE_can_assign(
-                    compiler,
-                    interface_method_return_type->basic_type->id, interface_method_return_type->dimension, interface_method_return_type->flag,
-                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    &need_implicite_conversion, allow_narrowing_conversion
-                  );
-                  
-                  if (assignability) {
-                    if (need_implicite_conversion) {
-                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                      return;
-                    }
-                  }
-                  else {
-                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
-                    return;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Replace fields
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-
-    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
-      field->index = field_index;
-      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
-    }
-  }
-  
-  // Resolve fields
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    // Class
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    
-    for (int32_t i = 0; i < class->fields->length; i++) {
-      // Field
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
-
-      // Create field id
-      field->id = compiler->fields->length;
-
-      // Add field to compiler
-      SPVM_LIST_push(compiler->fields, field);
-    }
-    
-    // Resove field offset
-    SPVM_AST_CHECKER_resolve_field_offset(compiler, class);
-  }
-  
-  // Create class id
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    class->id = class_index;
-  }
+  return found_mem_id;
 }
