@@ -184,7 +184,7 @@ A native implementation function has two arguments.
 
 The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<execution environment|Execution Environment>.
 
-The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<execution stack|Execution Stack>.
+The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<call stack|Call Stack>.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -240,9 +240,9 @@ To free this object, use the L<free_env|SPVM::Document::NativeAPI/"free_env"> me
 
   my_env->free_env(my_env);
 
-=head1 Execution Stack
+=head1 Call Stack
 
-An execution stack is passed to the second argument of the definition of the native method.. Stack is used getting arguments and return the value.
+A call stack is passed to the second argument of the definition of the native method.. Stack is used getting arguments and return the value.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     

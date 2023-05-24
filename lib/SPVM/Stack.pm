@@ -6,7 +6,7 @@ package SPVM::Stack;
 
 =head1 Name
 
-SPVM::Stack - Execution Stack
+SPVM::Stack - Call Stack
 
 =head1 Description
 
@@ -26,7 +26,7 @@ An instance of the C<Stack> class is build by the L<build_stack|SPVM::Env/"build
 
 The C<Stack> class is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
 
-Its insntace has a pointer to an object of the L<SPVM_VALUE|SPVM::Document::NativeAPI/"Execution Stack"> type.
+Its insntace has a pointer to an object of the L<SPVM_VALUE|SPVM::Document::NativeAPI/"Call Stack"> type.
 
 =head1 Fields
 
