@@ -636,7 +636,7 @@ int32_t SPVM__TestCase__NativeAPI__has_interface_test(SPVM_ENV* env, SPVM_VALUE*
   
   void* object = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Callback::Callback");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::AnonMethod::AnonMethod");
   if (basic_type_id < 0) {
     assert(0);
   }

@@ -1,9 +1,9 @@
-class CompileError::Convert::ConvertToCallback {
+class CompileError::Convert::ConvertToAnonMethod {
   use TestCase::Minimal;
-  use TestCase::Callback::Callback;
-  use TestCase::Callback::ImplementCallback1;
+  use TestCase::AnonMethod::AnonMethod;
+  use TestCase::AnonMethod::ImplementAnonMethod1;
 
   static method main : int () {
-    (TestCase::Callback::Callback)new TestCase::Callback::ImplementCallback1;
+    (TestCase::AnonMethod::AnonMethod)new TestCase::AnonMethod::ImplementAnonMethod1;
   }
 }

@@ -1,8 +1,8 @@
-class TestCase::Callback {
+class TestCase::AnonMethod {
   use TestCase::Minimal;
-  use TestCase::Callback::Callback;
-  use TestCase::Callback::ImplementCallback1;
-  use TestCase::Callback::ImplementCallback2;
+  use TestCase::AnonMethod::AnonMethod;
+  use TestCase::AnonMethod::ImplementAnonMethod1;
+  use TestCase::AnonMethod::ImplementAnonMethod2;
   use Comparator;
   use Stringer;
   use Point;
@@ -94,7 +94,7 @@ class TestCase::Callback {
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      TestCase::Callback->sort_objects($minimals, $comparator);
+      TestCase::AnonMethod->sort_objects($minimals, $comparator);
       
       if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
         return 1;
@@ -105,8 +105,8 @@ class TestCase::Callback {
 
   static method basic : int () {
     my $object : object = TestCase::Minimal->new;
-    my $implement_callback1 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback1->new;
-    my $implement_callback2 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback2->new;
+    my $implement_callback1 : TestCase::AnonMethod::AnonMethod = TestCase::AnonMethod::ImplementAnonMethod1->new;
+    my $implement_callback2 : TestCase::AnonMethod::AnonMethod = TestCase::AnonMethod::ImplementAnonMethod2->new;
     
     my $num1 = $implement_callback1->(0, 0);
     my $num2 = $implement_callback2->(0, 0);

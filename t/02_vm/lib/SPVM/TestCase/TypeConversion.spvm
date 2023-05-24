@@ -1,6 +1,6 @@
 class TestCase::TypeConversion {
   use TestCase::Minimal;
-  use TestCase::Callback::Callback;
+  use TestCase::AnonMethod::AnonMethod;
   use Comparator;
   use Fn;
   use Array;
@@ -101,8 +101,8 @@ class TestCase::TypeConversion {
   }
 
   static method convert_to_callback_array : int () {
-    my $ocallbacks : object = new TestCase::Callback::Callback[3];
-    my $callbacks = (TestCase::Callback::Callback[])$ocallbacks;
+    my $ocallbacks : object = new TestCase::AnonMethod::AnonMethod[3];
+    my $callbacks = (TestCase::AnonMethod::AnonMethod[])$ocallbacks;
     
     return 1;
   }

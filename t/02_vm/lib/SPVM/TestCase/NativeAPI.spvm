@@ -5,9 +5,9 @@ class TestCase::NativeAPI {
   use TestCase::Pointer;
   use TestCase::PointerChild;
   use TestCase::PointerEmpty;
-  use TestCase::Callback::Callback;
-  use TestCase::Callback::ImplementCallback1;
-  use TestCase::Callback::ImplementCallback2;
+  use TestCase::AnonMethod::AnonMethod;
+  use TestCase::AnonMethod::ImplementAnonMethod1;
+  use TestCase::AnonMethod::ImplementAnonMethod2;
   use Fn;
   use Array;
   use Error;
@@ -407,8 +407,8 @@ class TestCase::NativeAPI {
 
   native static method has_interface_test : int ($object : object);
   static method has_interface : int () {
-    my $impl1 = TestCase::Callback::ImplementCallback1->new;
-    my $impl1s = new TestCase::Callback::ImplementCallback1[3];
+    my $impl1 = TestCase::AnonMethod::ImplementAnonMethod1->new;
+    my $impl1s = new TestCase::AnonMethod::ImplementAnonMethod1[3];
     my $minimal = TestCase::Minimal->new;
 
     unless (TestCase::NativeAPI->has_interface_test($impl1)) {
