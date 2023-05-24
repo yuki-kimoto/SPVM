@@ -262,11 +262,6 @@ enum {
 };
 
 enum {
-  // Case flag
-  SPVM_OP_C_FLAG_CONSTANT_CASE = 1,
-};
-
-enum {
   // Assign flag
   SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
 };
