@@ -1,7 +1,6 @@
 0.983 2023-05-24
   [Document Changes]
     * The "Execution Stack" heading is renamed to "Call Stack"
-0.982 2023-05-23
   [Incompatible Changes]
     * Variable Length Argument is removed.
     * The syntax of the capture is changed. The variable is passed by fields, not local variables.
