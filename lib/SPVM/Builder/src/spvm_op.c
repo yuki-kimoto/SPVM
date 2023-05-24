@@ -3534,8 +3534,8 @@ SPVM_OP* SPVM_OP_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const 
 SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.op2147483647") + 1);
-  sprintf(name, "$.op%d", compiler->cur_tmp_vars_length);
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_in_op2147483647") + 1);
+  sprintf(name, "$.tmp_in_op%d", compiler->cur_tmp_vars_length);
   compiler->cur_tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
