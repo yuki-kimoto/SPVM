@@ -5157,7 +5157,37 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* 
       return 0;
     }
     default: {
-      SPVM_OP* op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op);
+      SPVM_OP* op_var;
+      if (op->id == SPVM_OP_C_ID_VAR) {
+        op_var = op;
+      }
+      else if (op->id == SPVM_OP_C_ID_ASSIGN) {
+        if (op->first->id == SPVM_OP_C_ID_VAR || op->first->id == SPVM_OP_C_ID_ASSIGN) {
+          op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
+        }
+        else if (op->last->id == SPVM_OP_C_ID_VAR || op->last->id == SPVM_OP_C_ID_ASSIGN) {
+          op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->last);
+        }
+        else {
+          assert(0);
+        }
+      }
+      else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
+        op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->last);
+      }
+      else if (op->id == SPVM_OP_C_ID_CREATE_REF) {
+        op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
+      }
+      else if (op->id == SPVM_OP_C_ID_DEREF) {
+        op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
+      }
+      else if (op->id == SPVM_OP_C_ID_REFCNT) {
+        op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
+      }
+      else {
+        spvm_warn("Unexpcted op:%s", SPVM_OP_get_op_name(compiler, op->id));
+        assert(0);
+      }
       
       return op_var->uv.var->var_decl->call_stack_id;
     }
@@ -5166,7 +5196,7 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* 
   return -1;
 }
 
-SPVM_OP* SPVM_OPCODE_BUILDER_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
+SPVM_OP* SPVM_OPCODE_BUILDER_get_returned_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
   SPVM_OP* op_var;
@@ -5175,26 +5205,26 @@ SPVM_OP* SPVM_OPCODE_BUILDER_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP*
   }
   else if (op->id == SPVM_OP_C_ID_ASSIGN) {
     if (op->first->id == SPVM_OP_C_ID_VAR || op->first->id == SPVM_OP_C_ID_ASSIGN) {
-      op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->first);
+      op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
     }
     else if (op->last->id == SPVM_OP_C_ID_VAR || op->last->id == SPVM_OP_C_ID_ASSIGN) {
-      op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->last);
+      op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->last);
     }
     else {
       assert(0);
     }
   }
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
-    op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->last);
+    op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->last);
   }
   else if (op->id == SPVM_OP_C_ID_CREATE_REF) {
-    op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->first);
+    op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
   }
   else if (op->id == SPVM_OP_C_ID_DEREF) {
-    op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->first);
+    op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
   }
   else if (op->id == SPVM_OP_C_ID_REFCNT) {
-    op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->first);
+    op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
   }
   else {
     spvm_warn("Unexpcted op:%s", SPVM_OP_get_op_name(compiler, op->id));
