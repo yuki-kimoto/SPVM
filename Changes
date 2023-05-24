@@ -1,4 +1,4 @@
-0.983 2023-05-24
+0.982 2023-05-24
   [Document Changes]
     * The "Execution Stack" heading is renamed to "Call Stack"
     * The "Capture" heading is renamed to "Anon Method Field Definition".
