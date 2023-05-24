@@ -1554,6 +1554,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
 void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
   
+  if (!method->op_block) {
+    return;
+  }
+  
   // Eval block stack length
   int32_t eval_block_stack_length = 0;
   
