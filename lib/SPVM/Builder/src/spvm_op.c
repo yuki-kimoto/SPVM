@@ -2928,44 +2928,44 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child) {
+SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_child->uv.type->basic_type->id, op_type_child->uv.type->dimension, op_type_child->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension, op_type_elem->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
   
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child, SPVM_OP* op_operand_length) {
+SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem, SPVM_OP* op_length) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_child->uv.type->basic_type->id, op_type_child->uv.type->dimension + 1, 0);
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension + 1, 0);
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_child->file, op_type_child->line);
-  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_child);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
+  SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_elem);
   
-  if (op_operand_length) {
-    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_operand_length);
+  if (op_length) {
+    SPVM_OP_insert_child(compiler, op_type, op_type->last, op_length);
   }
   else {
-    SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_child->file, op_type_child->line);
+    SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_elem->file, op_type_elem->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_do_nothing);
   }
 
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_element) {
+SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_elem) {
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_element->file, op_element->line);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_elem->file, op_elem->line);
 
   return op_type;
 }
