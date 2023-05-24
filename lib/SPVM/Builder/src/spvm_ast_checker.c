@@ -1528,17 +1528,17 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 // Array type
                 if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   
-                  SPVM_OP* op_index_operand = op_type->last;
-
-                  SPVM_TYPE* index_type = SPVM_OP_get_type(compiler, op_index_operand);
+                  SPVM_OP* op_length_operand = op_type->last;
                   
-                  assert(index_type);
-                  if (!SPVM_TYPE_is_integer_type_within_int(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
+                  SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length_operand);
+                  
+                  assert(length_type);
+                  if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
                     const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
                     SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
-                  SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_index_operand);
+                  SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length_operand);
                 }
                 // Numeric type
                 else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
