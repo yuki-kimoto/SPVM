@@ -81,31 +81,9 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
       
       // AST traversals
       if (method->op_block) {
-        SPVM_CHECK_AST_INFO check_ast_info_struct = {0};
-        SPVM_CHECK_AST_INFO* check_ast_info = &check_ast_info_struct;
-        
-        // Class
-        check_ast_info->class = class;
-        
-        // Method
-        check_ast_info->method = method;
-        
-        // Eval block stack length
-        check_ast_info->eval_block_stack_length = 0;
-        
-        // Loop block stack length
-        check_ast_info->loop_block_stack_length = 0;
-        
         // First AST traversal - Check syntax and generate some operations
         {
-          check_ast_info->var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          check_ast_info->var_decl_scope_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
-          SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, method->op_block, check_ast_info);
-          
-          SPVM_LIST_free(check_ast_info->var_decl_stack);
-          SPVM_LIST_free(check_ast_info->var_decl_scope_base_stack);
-          SPVM_LIST_free(check_ast_info->op_switch_stack);
+          SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, class, method);
           
           if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
             return;
@@ -608,15 +586,20 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
-
-  // Class
-  SPVM_CLASS* class = check_ast_info->class;
+void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
   
-  // Method
-  SPVM_METHOD* method = check_ast_info->method;
+  // Eval block stack length
+  int32_t eval_block_stack_length = 0;
+  
+  // Loop block stack length
+  int32_t loop_block_stack_length = 0;
+  
+  SPVM_LIST* var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_LIST* var_decl_scope_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_LIST* op_switch_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Check tree
+  SPVM_OP* op_root = method->op_block;
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
@@ -648,21 +631,21 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
         SPVM_BLOCK* block = op_cur->uv.block;
         // Start scope
         if (!block->no_scope) {
-          int32_t block_var_decl_base = check_ast_info->var_decl_stack->length;
-          SPVM_LIST_push(check_ast_info->var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
+          int32_t block_var_decl_base = var_decl_stack->length;
+          SPVM_LIST_push(var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
         }
         
         if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-          check_ast_info->loop_block_stack_length++;
+          loop_block_stack_length++;
         }
         else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-          check_ast_info->eval_block_stack_length++;
+          eval_block_stack_length++;
         }
         
         break;
       }
       case SPVM_OP_C_ID_SWITCH: {
-        SPVM_LIST_push(check_ast_info->op_switch_stack, op_cur);
+        SPVM_LIST_push(op_switch_stack, op_cur);
         break;
       }
     }
@@ -676,21 +659,21 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
         // [START]Postorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_NEXT: {
-            if (check_ast_info->loop_block_stack_length == 0) {
+            if (loop_block_stack_length == 0) {
               SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
           }
           case SPVM_OP_C_ID_LAST: {
-            if (check_ast_info->loop_block_stack_length == 0) {
+            if (loop_block_stack_length == 0) {
               SPVM_COMPILER_error(compiler, "The last statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
           }
           case SPVM_OP_C_ID_BREAK: {
-            if (check_ast_info->op_switch_stack->length == 0) {
+            if (op_switch_stack->length == 0) {
               SPVM_COMPILER_error(compiler, "The break statement must be in a switch block.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -843,7 +826,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               }
             }
             
-            SPVM_LIST_pop(check_ast_info->op_switch_stack);
+            SPVM_LIST_pop(op_switch_stack);
             
             op_cur->uv.switch_info->switch_id = compiler->switch_infos->length;
             SPVM_LIST_push(compiler->switch_infos, op_cur->uv.switch_info);
@@ -864,8 +847,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             break;
           }
           case SPVM_OP_C_ID_CASE: {
-            if (check_ast_info->op_switch_stack->length > 0) {
-              SPVM_OP* op_switch = SPVM_LIST_get(check_ast_info->op_switch_stack, check_ast_info->op_switch_stack->length - 1);
+            if (op_switch_stack->length > 0) {
+              SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
               SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
               SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
             }
@@ -903,8 +886,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             break;
           }
           case SPVM_OP_C_ID_DEFAULT: {
-            if (check_ast_info->op_switch_stack->length > 0) {
-              SPVM_OP* op_switch = SPVM_LIST_get(check_ast_info->op_switch_stack, check_ast_info->op_switch_stack->length - 1);
+            if (op_switch_stack->length > 0) {
+              SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
               SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
               
               switch_info->op_default = op_cur;
@@ -2172,23 +2155,23 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             // End of scope
             if (!block->no_scope) {
               // Pop block var_decl variable base
-              assert(check_ast_info->var_decl_scope_base_stack->length > 0);
-              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(check_ast_info->var_decl_scope_base_stack);
+              assert(var_decl_scope_base_stack->length > 0);
+              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(var_decl_scope_base_stack);
                 
-              int32_t var_decl_stack_pop_count = check_ast_info->var_decl_stack->length - block_var_decl_base;
+              int32_t var_decl_stack_pop_count = var_decl_stack->length - block_var_decl_base;
               
               for (int32_t i = 0; i < var_decl_stack_pop_count; i++) {
-                SPVM_LIST_pop(check_ast_info->var_decl_stack);
+                SPVM_LIST_pop(var_decl_stack);
               }
             }
             
             // Pop loop block var_decl variable base
             if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
-              check_ast_info->loop_block_stack_length--;
+              loop_block_stack_length--;
             }
             // Pop try block var_decl variable base
             else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-              check_ast_info->eval_block_stack_length--;
+              eval_block_stack_length--;
             }
             
             break;
@@ -2224,9 +2207,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               
               // Redeclaration error if same name variable is declare in same block
               int32_t found = 0;
-              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(check_ast_info->var_decl_scope_base_stack, check_ast_info->var_decl_scope_base_stack->length - 1);
-              for (int32_t i = block_var_decl_base; i < check_ast_info->var_decl_stack->length; i++) {
-                SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, i);
+              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(var_decl_scope_base_stack, var_decl_scope_base_stack->length - 1);
+              for (int32_t i = block_var_decl_base; i < var_decl_stack->length; i++) {
+                SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(var_decl_stack, i);
                 
                 if (strcmp(var_decl->var->name, bef_var_decl->var->name) == 0) {
                   // Temporaly variable is not duplicated
@@ -2244,7 +2227,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               else {
                 var_decl->id = method->var_decls->length;
                 SPVM_LIST_push(method->var_decls, var_decl);
-                SPVM_LIST_push(check_ast_info->var_decl_stack, var_decl);
+                SPVM_LIST_push(var_decl_stack, var_decl);
               }
               
               // Type cannnot be detected
@@ -2258,8 +2241,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             
             // Search same name variable
             SPVM_VAR_DECL* found_var_decl = NULL;
-            for (int32_t i = check_ast_info->var_decl_stack->length - 1; i >= 0; i--) {
-              SPVM_VAR_DECL* var_decl = SPVM_LIST_get(check_ast_info->var_decl_stack, i);
+            for (int32_t i = var_decl_stack->length - 1; i >= 0; i--) {
+              SPVM_VAR_DECL* var_decl = SPVM_LIST_get(var_decl_stack, i);
               assert(var_decl);
               if (strcmp(var->name, var_decl->var->name) == 0) {
                 found_var_decl = var_decl;
@@ -2644,7 +2627,6 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
       }
     }
   }
-  
 }
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {

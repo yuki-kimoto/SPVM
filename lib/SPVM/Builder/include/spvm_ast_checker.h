@@ -24,7 +24,7 @@ void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler,
 
 void SPVM_AST_CHECKER_resolve_var_decl_mem_ids(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 
-void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info);
+void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 int32_t SPVM_AST_CHECKER_get_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl);
 int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to);
 #endif
