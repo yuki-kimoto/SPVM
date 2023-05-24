@@ -215,7 +215,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
+      case SPVM_OPCODE_C_ID_GOTO_END_OF_EVAL_ON_EXCEPTION: {
         if (__builtin_expect(error, 0)) {
           int32_t method_id = opcode->operand1;
           int32_t line = opcode->operand2;
@@ -227,7 +227,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
+      case SPVM_OPCODE_C_ID_GOTO_END_OF_METHOD_ON_EXCEPTION: {
         if (__builtin_expect(error, 0)) {
           int32_t method_id = opcode->operand1;
           int32_t line = opcode->operand2;
