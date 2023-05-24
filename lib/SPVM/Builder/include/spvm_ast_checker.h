@@ -24,6 +24,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler);
 
 void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 
+void SPVM_AST_CHECKER_traverse_ast_convert_op_to_assign(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
+
 int SPVM_AST_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr);
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name);
