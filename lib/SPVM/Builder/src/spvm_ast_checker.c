@@ -3279,9 +3279,6 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
             SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
             SPVM_OP* op_var_tmp = SPVM_AST_CHECKER_new_op_var_tmp(compiler, tmp_var_type, method, op_cur->file, op_cur->line);
             
-            op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
-            SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
-            
             if (op_var_tmp == NULL) {
               return;
             }
@@ -3982,14 +3979,17 @@ SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
-  SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
+  SPVM_OP* op_var_tmp = SPVM_OP_build_var(compiler, op_name);
+  SPVM_OP* op_var_tmp_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
   assert(type);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+  SPVM_OP_build_var_decl(compiler, op_var_tmp_decl, op_var_tmp, op_type, NULL);
   
-  op_var->uv.var->is_initialized = 1;
+  op_var_tmp->uv.var->is_initialized = 1;
   
-  return op_var;
+  op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
+  SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
+  
+  return op_var_tmp;
 }
