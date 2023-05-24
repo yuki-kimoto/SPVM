@@ -179,7 +179,7 @@ declarations
 
 declaration
   : version_decl
-  | has
+  | has ';'
   | method
   | enumeration
   | our
@@ -307,7 +307,7 @@ our
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
+  : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     {
       $$ = SPVM_OP_build_field_definition(compiler, $1, $2, $4, $5);
     }
