@@ -2414,7 +2414,7 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_mutable_assign_op(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {
+SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {
   
   /*
     ++$var, ++$VAR, ++$@
@@ -2459,7 +2459,7 @@ SPVM_OP* SPVM_OP_mutable_assign_op(SPVM_COMPILER* compiler, SPVM_OP* op_special_
       $old,
     )
   */
-  
+
   SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_special_assign->file, op_special_assign->line);
   
   SPVM_OP* op_assign_save_old = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_special_assign->file, op_special_assign->line);
@@ -2480,16 +2480,31 @@ SPVM_OP* SPVM_OP_mutable_assign_op(SPVM_COMPILER* compiler, SPVM_OP* op_special_
     case SPVM_OP_C_ID_PRE_INC:
     case SPVM_OP_C_ID_POST_INC:
     {
+      if (!SPVM_OP_is_mutable(compiler, op_dist)) {
+        SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
+        return op_special_assign;
+      }
+      
       culc_op_id = SPVM_OP_C_ID_ADD;
       break;
     }
     case SPVM_OP_C_ID_PRE_DEC:
     case SPVM_OP_C_ID_POST_DEC:
     {
+      if (!SPVM_OP_is_mutable(compiler, op_dist)) {
+        SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
+        return op_special_assign;
+      }
+      
       culc_op_id = SPVM_OP_C_ID_SUBTRACT;
       break;
     }
     case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
+      if (!SPVM_OP_is_mutable(compiler, op_dist)) {
+        SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
+        return op_special_assign;
+      }
+      
       switch (op_special_assign->flag) {
         case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD: {
           culc_op_id = SPVM_OP_C_ID_ADD;
@@ -2698,46 +2713,22 @@ SPVM_OP* SPVM_OP_mutable_assign_op(SPVM_COMPILER* compiler, SPVM_OP* op_special_
 
 SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_first) {
   
-  // Build op
   SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
   
-  if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "The operand of ++ operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
-  }
-  else {
-    SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
-    op_inc = SPVM_OP_mutable_assign_op(compiler, op_inc, op_first, op_constant);
-  }
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
+  op_inc = SPVM_OP_build_special_assign(compiler, op_inc, op_first, op_constant);
   
   return op_inc;
 }
 
 SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_first) {
   
-  // Build op
   SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
   
-  if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "The operand of -- operator must be mutable.\n  at %s line %d", op_first->file, op_first->line);
-  }
-  else {
-    SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
-    op_dec = SPVM_OP_mutable_assign_op(compiler, op_dec, op_first, op_constant);
-  }
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_first->file, op_first->line);
+  op_dec = SPVM_OP_build_special_assign(compiler, op_dec, op_first, op_constant);
   
   return op_dec;
-}
-
-SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {
-  
-  if (!SPVM_OP_is_mutable(compiler, op_dist)) {
-    SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
-  }
-  else {
-    op_special_assign = SPVM_OP_mutable_assign_op(compiler, op_special_assign, op_dist, op_src);
-  }
-  
-  return op_special_assign;
 }
 
 SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
