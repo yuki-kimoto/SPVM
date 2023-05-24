@@ -2629,7 +2629,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_C
   }
 }
 
-SPVM_METHOD* SPVM_AST_CHECKER_search_method_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
+SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
   SPVM_METHOD* found_method = NULL;
   
   SPVM_CLASS* parent_class = class;
@@ -2653,7 +2653,7 @@ SPVM_METHOD* SPVM_AST_CHECKER_search_method_in_current_and_super_classes(SPVM_CO
 }
 
 
-SPVM_FIELD* SPVM_AST_CHECKER_search_field_in_current_and_super_classes(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
+SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
   SPVM_FIELD* found_field = NULL;
   
   if (class) {
@@ -3164,7 +3164,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         SPVM_CLASS* parent_class = class->parent_class;
         if (parent_class) {
           // Search the method of the super class
-          found_method = SPVM_AST_CHECKER_search_method_in_current_and_super_classes(compiler, parent_class, method_name);
+          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class, method_name);
         }
       }
       else {
@@ -3198,7 +3198,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     // Instance method
     else {
-      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method_in_current_and_super_classes(compiler, class, method_name);
+      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class, method_name);
       
       if (found_method) {
         if (found_method->is_class_method) {
@@ -3760,7 +3760,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field_in_current_and_super_classes(compiler, class->parent_class, field->name);
+        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->parent_class, field->name);
         if (found_field_in_suer_class) {
           SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->name, field->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
@@ -3827,7 +3827,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* interface_required_method = interface->required_method;
       
       if (interface_required_method) {
-        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method_in_current_and_super_classes(compiler, class, interface_required_method->name);
+        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);
         
         if (!found_required_method) {
           SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
@@ -3853,7 +3853,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         if (interface_index == class->interfaces->length) {
           class_desc = "class";
           if (class->parent_class) {
-            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method_in_current_and_super_classes(compiler, class->parent_class, method->name);
+            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->parent_class, method->name);
             if (found_method) {
               interface = found_method->class;
             }
