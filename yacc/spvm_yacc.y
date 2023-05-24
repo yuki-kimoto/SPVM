@@ -1093,11 +1093,11 @@ assign
 new
   : NEW basic_type
     {
-      $$ = SPVM_OP_build_new(compiler, $1, $2);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
   | NEW array_type_with_length
     {
-      $$ = SPVM_OP_build_new(compiler, $1, $2);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
   | anon_method
     {
@@ -1122,7 +1122,7 @@ new
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
-      $$ = SPVM_OP_build_new(compiler, op_new, op_type);
+      $$ = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     }
 
 array_init
