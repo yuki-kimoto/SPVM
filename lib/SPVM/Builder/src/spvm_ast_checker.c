@@ -436,12 +436,12 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
                     SPVM_BLOCK* block = op_cur->uv.block;
                     // Move loop condition to last sibling before opcode building
                     if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
-                      SPVM_OP* op_operand_init = op_cur->first;
+                      SPVM_OP* op_init = op_cur->first;
                       SPVM_OP* op_condition = op_cur->first->sibparent;
                       SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
                       SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
                       
-                      op_operand_init->sibparent = op_block_statements;
+                      op_init->sibparent = op_block_statements;
                       op_loop_increment->sibparent = op_condition;
                       op_loop_increment->moresib = 1;
                       
@@ -695,9 +695,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               // Array length
               int32_t length = 0;
               {
-                SPVM_OP* op_operand_element = op_list_elements->first;
+                SPVM_OP* op_element = op_list_elements->first;
                 int32_t index = 0;
-                while ((op_operand_element = SPVM_OP_sibling(compiler, op_operand_element))) {
+                while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
                   index++;
                 }
                 length = index;
@@ -706,14 +706,14 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP* op_type_element = NULL;
               SPVM_OP* op_type_new = NULL;
               if (length > 0) {
-                SPVM_OP* op_operand_element = op_list_elements->first;
+                SPVM_OP* op_element = op_list_elements->first;
                 
-                op_operand_element = SPVM_OP_sibling(compiler, op_operand_element);
-                if (op_operand_element->id == SPVM_OP_C_ID_UNDEF) {
+                op_element = SPVM_OP_sibling(compiler, op_element);
+                if (op_element->id == SPVM_OP_C_ID_UNDEF) {
                   SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined.\n  at %s line %d", file, line);
                   return;
                 }
-                SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_operand_element);
+                SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_element);
                 
                 // Create element type
                 op_type_element = SPVM_OP_new_op_type(compiler, type_operand_element, file, line);
@@ -738,11 +738,11 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
 
               if (length > 0) {
-                SPVM_OP* op_operand_element = op_list_elements->first;
+                SPVM_OP* op_element = op_list_elements->first;
                 int32_t index = 0;
-                while ((op_operand_element = SPVM_OP_sibling(compiler, op_operand_element))) {
+                while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
                   SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand_element);
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_element);
                   
                   SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
 
@@ -753,12 +753,12 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
   
                   SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
                   
-                  SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_operand_element);
+                  SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_element);
                   
                   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
                   
                   index++;
-                  op_operand_element = op_stab;
+                  op_element = op_stab;
                 }
               }
               
@@ -1723,41 +1723,41 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               break;
             }
             case SPVM_OP_C_ID_ASSIGN: {
-              SPVM_OP* op_operand_dist = op_cur->last;
-              SPVM_OP* op_operand_src = op_cur->first;
+              SPVM_OP* op_dist = op_cur->last;
+              SPVM_OP* op_src = op_cur->first;
               
-              SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_operand_dist);
+              SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_dist);
               
               // Type inference
-              if (op_operand_dist->id == SPVM_OP_C_ID_VAR) {
-                SPVM_VAR_DECL* var_decl = op_operand_dist->uv.var->var_decl;
+              if (op_dist->id == SPVM_OP_C_ID_VAR) {
+                SPVM_VAR_DECL* var_decl = op_dist->uv.var->var_decl;
                 if (var_decl->type == NULL) {
-                  var_decl->type = SPVM_OP_get_type(compiler, op_operand_src);
+                  var_decl->type = SPVM_OP_get_type(compiler, op_src);
                 }
                 assert(var_decl->type);
                 if (SPVM_TYPE_is_undef_type(compiler, var_decl->type->basic_type->id, var_decl->type->dimension, var_decl->type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The type of \"%s\" cannnot be detected.\n  at %s line %d", op_operand_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  SPVM_COMPILER_error(compiler, "The type of \"%s\" cannnot be detected.\n  at %s line %d", op_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
-                op_operand_dist->uv.var->is_initialized = 1;
+                op_dist->uv.var->is_initialized = 1;
               }
               
               // Check if source can be assigned to dist
               // If needed, numeric conversion op is added
-              dist_type = SPVM_OP_get_type(compiler, op_operand_dist);
-              SPVM_AST_CHECKER_check_assign(compiler, dist_type, op_operand_src, "the assignment operator", op_cur->file, op_cur->line);
+              dist_type = SPVM_OP_get_type(compiler, op_dist);
+              SPVM_AST_CHECKER_check_assign(compiler, dist_type, op_src, "the assignment operator", op_cur->file, op_cur->line);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
 
               // If dist is string access and const, it is invalid
-              if (op_operand_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_operand_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
-                SPVM_OP* op_array = op_operand_dist->first;
+              if (op_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
+                SPVM_OP* op_array = op_dist->first;
                 SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array);
                 int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
 
                 if(!is_mutable) {
-                  SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings.\n  at %s line %d", op_operand_dist->file, op_operand_dist->line);
+                  SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings.\n  at %s line %d", op_dist->file, op_dist->line);
                   return;
                 }
               }
