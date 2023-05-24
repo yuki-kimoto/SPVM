@@ -302,12 +302,7 @@ enum {
 };
 
 enum {
-  // ARRAY_INIT flag
-  SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES = 1,
-};
-
-enum {
-  // ARRAY_INIT flag
+  // CONVERT flag
   SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE = 1,
 };
 
