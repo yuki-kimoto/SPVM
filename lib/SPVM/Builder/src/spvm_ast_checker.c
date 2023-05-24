@@ -759,7 +759,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_LIST* methods = class->methods;
     
     // Sort methods by name
-    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_AST_CHECKER_method_name_cmp);
+    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_AST_CHECKER_method_name_compare_cb);
     
     // Create method ids
     for (int32_t i = 0; i < class->methods->length; i++) {
@@ -3688,7 +3688,7 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
   return can_access;
 }
 
-int SPVM_AST_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr) {
+int SPVM_AST_CHECKER_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr) {
   
   SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
   SPVM_METHOD* method2 = *(SPVM_METHOD**)method2_ptr;

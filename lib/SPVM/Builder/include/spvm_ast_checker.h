@@ -30,7 +30,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER
 
 void SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 
-int SPVM_AST_CHECKER_method_name_cmp(const void* method1_ptr, const void* method2_ptr);
+int SPVM_AST_CHECKER_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr);
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name);
 
