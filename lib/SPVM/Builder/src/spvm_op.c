@@ -2959,7 +2959,9 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
     SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_elem->file, op_type_elem->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_do_nothing);
   }
-
+  
+  op_type->flag |= SPVM_OP_C_FLAG_TYPE_ARRAY;
+  
   return op_type;
 }
 
