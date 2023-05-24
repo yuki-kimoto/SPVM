@@ -1,6 +1,7 @@
 0.983 2023-05-24
   [Document Changes]
     * The "Execution Stack" heading is renamed to "Call Stack"
+    * The "Capture" heading is renamed to "Anon Method Field Definition".
   [Incompatible Changes]
     * Variable Length Argument is removed.
     * The syntax of the capture is changed. The variable is passed by fields, not local variables.

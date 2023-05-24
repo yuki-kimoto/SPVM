@@ -36,9 +36,9 @@
 
 %type <opval> grammar
 %type <opval> opt_classes classes class class_block version_decl
-%type <opval> opt_declarations declarations declaration
+%type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> method anon_method opt_args args arg has use require alias our captures capture
+%type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -137,19 +137,19 @@ opt_extends
     }
 
 class_block
-  : '{' opt_declarations '}'
+  : '{' opt_definitions '}'
     {
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
       $$ = op_class_block;
     }
 
-opt_declarations
+opt_definitions
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  | declarations
+  | definitions
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -160,8 +160,8 @@ opt_declarations
       }
     }
 
-declarations
-  : declarations declaration
+definitions
+  : definitions definition
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -175,19 +175,19 @@ declarations
       
       $$ = op_list;
     }
-  | declaration
+  | definition
 
-declaration
+definition
   : version_decl
-  | has ';'
-  | method
-  | enumeration
-  | our
   | use
+  | alias
   | allow
   | interface
   | init_block
-  | alias
+  | enumeration
+  | our
+  | has ';'
+  | method
 
 init_block
   : INIT block
@@ -337,7 +337,7 @@ anon_method
        int32_t is_anon = 1;
        $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, is_init, is_anon);
      }
-  | '[' captures ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+  | '[' anon_method_has_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -398,8 +398,8 @@ arg
       $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
     }
 
-captures
-  : captures ',' capture
+anon_method_has_list
+  : anon_method_has_list ',' anon_method_has
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -413,25 +413,17 @@ captures
       
       $$ = op_list;
     }
-  | captures ','
-  | capture
+  | anon_method_has_list ','
+  | anon_method_has
 
-capture
-  : HAS field_name ':' qualified_type opt_type_comment ASSIGN var
+anon_method_has
+  : has ASSIGN operator
     {
-      // Temporary
-      if (strcmp($2->uv.name, &$7->uv.var->op_name->uv.name[1]) != 0) {
-        assert(0);
-      }
-      
-      $$ = SPVM_OP_build_arg(compiler, $7, $4, NULL, NULL);
+      $$ = SPVM_OP_build_anon_method_field_definition(compiler, $1, $3);
     }
-  | HAS field_name ':' qualified_type opt_type_comment
+  | has
     {
-      // Temporary
-      assert(0);
-      
-      $$ = SPVM_OP_build_arg(compiler, NULL, $4, NULL, NULL);
+      $$ = SPVM_OP_build_anon_method_field_definition(compiler, $1, NULL);
     }
 
 opt_attributes
@@ -1111,9 +1103,9 @@ new
       
       // Create class block
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
-      SPVM_OP* op_list_declarations = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, op_method);
-      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
+      SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
+      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
       
       // Build class
       SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);

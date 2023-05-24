@@ -8762,15 +8762,15 @@ The above example is the same as the following codes.
     }
   }
 
-=head3 Capture
+=head3 Anon Method Field Definition
 
-The capture is the syntax to pass variables to an anon method.
+The anon method field definition is the syntax to define the field of the anon class of the anon method.
 
-  # Capture - Field definitions and passing variables
-  [has FIELD_NAME : TYPE1 = VAR1, has FIELD_NAME : TYPE2 = VAR2, ...] ANON_METHOD_DEFINITION
-  
-  # Capture - Field definitions only
+  # Anon method field definitions
   [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_DEFINITION
+  
+  # Anon method field definitions with field default values
+  [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_DEFINITION
   
 Examples:
 

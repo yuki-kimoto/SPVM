@@ -14,7 +14,7 @@ struct spvm_method {
   SPVM_OP* op_block;
   SPVM_TYPE* return_type;
   SPVM_LIST* var_decls;
-  SPVM_LIST* captures;
+  SPVM_LIST* anon_method_fields;
   const char* abs_name;
   SPVM_CLASS* class;
   const char* anon_method_defined_class_name;
