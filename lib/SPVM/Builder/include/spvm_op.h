@@ -262,11 +262,6 @@ enum {
 };
 
 enum {
-  // Assign flag
-  SPVM_OP_C_FLAG_ASSIGN_TMP_VAR = 1
-};
-
-enum {
   // Special assign flag
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD,
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT,
@@ -302,7 +297,7 @@ enum {
 };
 
 enum {
-  // ARRAY_INIT flag
+  // TYPE flag
   SPVM_OP_C_FLAG_TYPE_MUTABLE = 1,
   SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS = 2,
   SPVM_OP_C_FLAG_TYPE_IS_SELF = 4,
