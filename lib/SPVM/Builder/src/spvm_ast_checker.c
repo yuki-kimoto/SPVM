@@ -732,6 +732,8 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 assert(0);
               }
               
+              op_type_new->flag |= SPVM_OP_C_FLAG_TYPE_ARRAY;
+                
               SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, op_type_new->uv.type, file, line);
               
               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
@@ -766,7 +768,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
 
               SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_constant_length);
+              SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant_length);
               
               SPVM_OP* op_var_tmp_ret = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
               
@@ -868,9 +870,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
             }
             case SPVM_OP_C_ID_NEW_STRING_LEN: {
               
-              SPVM_OP* op_length_operand = op_cur->first;
+              SPVM_OP* op_length = op_cur->first;
 
-              SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length_operand);
+              SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length);
               
               assert(length_type);
               
@@ -879,7 +881,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 return;
               }
 
-              SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length_operand);
+              SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length);
               
               break;
             }
@@ -1528,9 +1530,9 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                 // Array type
                 if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                   
-                  SPVM_OP* op_length_operand = op_type->last;
+                  SPVM_OP* op_length = op_cur->last;
                   
-                  SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length_operand);
+                  SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length);
                   
                   assert(length_type);
                   if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
@@ -1538,7 +1540,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
                     SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
                     return;
                   }
-                  SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length_operand);
+                  SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length);
                 }
                 // Numeric type
                 else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {

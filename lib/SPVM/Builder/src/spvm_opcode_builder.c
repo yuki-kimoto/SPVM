@@ -3461,7 +3461,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 NEW op_assign_src
                                    TYPE op_assign_src->first
                                      ELEMENT_TYPE op_assign_src->first->first
-                                     INDEX op_assign_src->first->last
+                                     INDEX op_assign_src->last
                               */
                               
                               if (type_dimension == 1) {
@@ -3472,7 +3472,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY);
 
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3489,7 +3489,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_SHORT_ARRAY);
 
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
                                     
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3507,7 +3507,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_INT_ARRAY);
 
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3525,7 +3525,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_LONG_ARRAY);
 
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3543,7 +3543,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_FLOAT_ARRAY);
 
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3561,7 +3561,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_DOUBLE_ARRAY);
                                     
                                     int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                    int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                     opcode.operand0 = mem_id_out;
                                     opcode.operand1 = mem_id_index;
@@ -3580,7 +3580,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY);
 
                                       int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                      int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                      int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                       opcode.operand0 = mem_id_out;
                                       opcode.operand1 = op_type->uv.type->basic_type->id;
@@ -3597,7 +3597,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY);
 
                                       int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                      int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                      int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                       opcode.operand0 = mem_id_out;
                                       opcode.operand1 = op_type->uv.type->basic_type->id;
@@ -3617,7 +3617,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY);
 
                                 int32_t mem_id_out = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_dist);
-                                int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->first->last);
+                                int32_t mem_id_index = SPVM_OPCODE_BUILDER_get_mem_id(compiler, op_assign_src->last);
 
                                 opcode.operand0 = mem_id_out;
                                 opcode.operand1 = op_type->uv.type->basic_type->id;
@@ -5199,6 +5199,7 @@ SPVM_OP* SPVM_OPCODE_BUILDER_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP*
     op_var = SPVM_OPCODE_BUILDER_get_target_op_var(compiler, op->first);
   }
   else {
+    spvm_warn("Unexpcted op:%s", SPVM_OP_get_op_name(compiler, op->id));
     assert(0);
   }
   

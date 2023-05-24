@@ -1097,7 +1097,9 @@ new
     }
   | NEW array_type_with_length
     {
-      $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
+      SPVM_OP* op_length = $2->last;
+      SPVM_OP_cut_op(compiler, $2->last);
+      $$ = SPVM_OP_build_new(compiler, $1, $2, op_length);
     }
   | anon_method
     {
