@@ -678,112 +678,6 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
         // [START]Postorder traversal position
         if (!op_cur->no_need_check) {
           switch (op_cur->id) {
-            case SPVM_OP_C_ID_ARRAY_INIT: {
-              SPVM_OP* op_array_init = op_cur;
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              
-              SPVM_OP* op_list_elements = op_array_init->first;
-              
-              const char* file = op_list_elements->file;
-              int32_t line = op_list_elements->line;
-              
-              SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
-              
-              SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
-              SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-              
-              // Array length
-              int32_t length = 0;
-              {
-                SPVM_OP* op_element = op_list_elements->first;
-                int32_t index = 0;
-                while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
-                  index++;
-                }
-                length = index;
-              }
-              
-              SPVM_OP* op_type_element = NULL;
-              SPVM_OP* op_type_new = NULL;
-              if (length > 0) {
-                SPVM_OP* op_element = op_list_elements->first;
-                
-                op_element = SPVM_OP_sibling(compiler, op_element);
-                if (op_element->id == SPVM_OP_C_ID_UNDEF) {
-                  SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined.\n  at %s line %d", file, line);
-                  return;
-                }
-                SPVM_TYPE* type_operand_element = SPVM_OP_get_type(compiler, op_element);
-                
-                // Create element type
-                op_type_element = SPVM_OP_new_op_type(compiler, type_operand_element, file, line);
-                
-                // Create array type
-                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler, type_operand_element->basic_type->id, type_operand_element->dimension + 1, 0);
-                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
-              }
-              else if (length == 0) {
-                op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
-                SPVM_TYPE* type_element = op_type_element->uv.type;
-                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler, type_element->basic_type->id, type_element->dimension + 1, 0);
-                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
-              }
-              else {
-                assert(0);
-              }
-              
-              op_type_new->flag |= SPVM_OP_C_FLAG_TYPE_ARRAY;
-                
-              SPVM_OP* op_var_tmp_new = SPVM_OP_new_op_var_tmp(compiler, op_type_new->uv.type, file, line);
-              
-              SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
-              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
-
-              if (length > 0) {
-                SPVM_OP* op_element = op_list_elements->first;
-                int32_t index = 0;
-                while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
-                  SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_element);
-                  
-                  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, file, line);
-
-                  SPVM_OP* op_var_tmp_array_access = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
-                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_tmp_array_access);
-
-                  SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, file, line);
-  
-                  SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
-                  
-                  SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_element);
-                  
-                  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
-                  
-                  index++;
-                  op_element = op_stab;
-                }
-              }
-              
-              SPVM_OP_insert_child(compiler, op_new, op_new->last, op_type_new);
-              SPVM_OP_insert_child(compiler, op_type_new, op_type_new->last, op_type_element);
-
-              SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, file, line);
-              SPVM_OP_insert_child(compiler, op_new, op_new->last, op_constant_length);
-              
-              SPVM_OP* op_var_tmp_ret = SPVM_OP_clone_op_var(compiler, op_var_tmp_new);
-              
-              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp_ret);
-
-              SPVM_OP_replace_op(compiler, op_stab, op_sequence);
-              SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, op_sequence, check_ast_info);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
-              op_cur = op_sequence;
-              
-              break;
-            }
             case SPVM_OP_C_ID_NEXT: {
               if (check_ast_info->loop_block_stack_length == 0) {
                 SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
@@ -1508,68 +1402,54 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_O
               break;
             }
             case SPVM_OP_C_ID_NEW: {
-              assert(op_cur->first);
-              if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
+              SPVM_OP* op_new = op_cur;
+              
+              assert(op_new->first);
+              assert(op_new->first->id == SPVM_OP_C_ID_TYPE || op_new->first->id == SPVM_OP_C_ID_VAR);
+              
+              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_new);
+              
+              SPVM_CLASS* new_class = type->basic_type->class;
+              
+              // Array type
+              if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 
-                SPVM_OP* op_type = op_cur->first;
-                SPVM_TYPE* type = NULL;
-                if (op_cur->first->id == SPVM_OP_C_ID_VAR) {
-                  SPVM_OP* op_var = op_cur->first;
-                  type = SPVM_OP_get_type(compiler, op_var);
-                }
-                else if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
-                  SPVM_OP* op_type = op_cur->first;
-                  type = op_type->uv.type;
-                }
-                else {
-                  assert(0);
-                }
+                SPVM_OP* op_length = op_new->last;
                 
-                SPVM_CLASS* new_class = type->basic_type->class;
+                SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length);
                 
-                // Array type
-                if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                  
-                  SPVM_OP* op_length = op_cur->last;
-                  
-                  SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length);
-                  
-                  assert(length_type);
-                  if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
-                    const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                    SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-                  SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length);
-                }
-                // Numeric type
-                else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                assert(length_type);
+                if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
+                  const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+                  SPVM_COMPILER_error(compiler, "The array length specified by the new operator must be an integer type within int.\n  at %s line %d", op_new->file, op_new->line);
                   return;
                 }
-                // Object type
-                else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
-                  
-                  if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-                    SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-                  else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-                    SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-
-                  SPVM_CLASS* cur_class = method->class;
-                  if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
-                    if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
-                      SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_cur->file, op_cur->line);
-                      return;
-                    }
-                  }
+                SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length);
+              }
+              // Numeric type
+              else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a numeric type.\n  at %s line %d", op_new->file, op_new->line);
+                return;
+              }
+              // Object type
+              else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                
+                if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+                  SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be an interface type.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
                 }
-                else {
-                  assert(0);
+                else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+                  SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
+                }
+
+                SPVM_CLASS* cur_class = method->class;
+                if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
+                  if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
+                    SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_new->file, op_new->line);
+                    return;
+                  }
                 }
               }
               else {

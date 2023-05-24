@@ -2052,35 +2052,119 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   return op_new;
 }
 
-SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements, int32_t is_key_values) {
-
-  // Check key value pairs count when {} array init syntax
-  if (is_key_values) {
-    if (op_list_elements) {
-      int32_t element_index = 0;
-      SPVM_OP* op_element = op_list_elements->first;
-      while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
-        if (element_index == 0) {
-          // Convert to any object type
-          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_element);
-          SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_element->file, op_element->line);
-          SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_element->file, op_element->line);
-          SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_element, NULL);
-          SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
-          op_element = op_type_cast;
-        }
-        element_index++;
-      }
-      int32_t is_odd = element_index % 2 == 1;
-      if (is_odd) {
-        SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number.\n  at %s line %d", op_list_elements->file, op_list_elements->line);
-      }
+SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements, int32_t is_key_value_pairs) {
+  
+  // Array length
+  int32_t length = 0;
+  {
+    SPVM_OP* op_element = op_list_elements->first;
+    int32_t index = 0;
+    while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
+      length++;
     }
   }
   
-  SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
+  if (is_key_value_pairs && length % 2 != 0) {
+    SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number.\n  at %s line %d", op_list_elements->file, op_list_elements->line);
+    return op_array_init;
+  }
   
-  return  op_array_init;
+  SPVM_OP* op_constant_length = SPVM_OP_new_op_constant_int(compiler, length, op_array_init->file, op_array_init->line);
+  SPVM_OP* op_new = NULL;
+  if (length == 0) {
+    op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_array_init->file, op_array_init->line);
+    SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
+    SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_array_init->file, op_array_init->line);
+    SPVM_OP_build_new(compiler, op_new, op_type, op_constant_length);
+    op_array_init = op_new;
+  }
+  else if (length > 0) {
+    {
+      SPVM_OP* op_pushmark = op_list_elements->first;
+      SPVM_OP* op_first_element = SPVM_OP_sibling(compiler, op_pushmark);
+      if (op_first_element->id == SPVM_OP_C_ID_UNDEF) {
+        SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined.\n  at %s line %d", op_array_init->file, op_array_init->line);
+        return op_array_init;
+      }
+    }
+    
+    if (is_key_value_pairs) {
+      SPVM_OP* op_pushmark = op_list_elements->first;
+      SPVM_OP* op_first_element = SPVM_OP_sibling(compiler, op_pushmark);
+      if (is_key_value_pairs) {
+        SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_array_init->file, op_array_init->line);
+        SPVM_TYPE* type_for_cast = SPVM_TYPE_new_any_object_type(compiler);
+        SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, type_for_cast, op_array_init->file, op_array_init->line);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first_element);
+        SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_first_element, NULL);
+        SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+      }
+    }
+    
+    SPVM_OP* op_pushmark = op_list_elements->first;
+    SPVM_OP* op_first_element = SPVM_OP_sibling(compiler, op_pushmark);
+    
+    SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_array_init->file, op_array_init->line);
+    
+    // my $first_element = FIRST_ELEMENT;
+    SPVM_OP* op_var_first_element_name = SPVM_OP_new_op_name_tmp_var(compiler, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_first_element = SPVM_OP_new_op_var(compiler, op_var_first_element_name);
+    SPVM_OP* op_var_decl_first_element = SPVM_OP_new_op_var_decl_eternal(compiler, op_array_init->file, op_array_init->line);
+    op_var_first_element = SPVM_OP_build_var_decl(compiler, op_var_decl_first_element, op_var_first_element, NULL, NULL);
+    SPVM_OP* op_assign_first_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
+    SPVM_OP_cut_op(compiler, op_first_element);
+    SPVM_OP_build_assign(compiler, op_assign_first_element, op_var_first_element, op_first_element);
+    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_first_element);
+    
+    // my $array = new $first_element;
+    op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_first_element_new = SPVM_OP_clone_op_var(compiler, op_var_first_element);
+    op_new = SPVM_OP_build_new(compiler, op_new, op_var_first_element_new, op_constant_length);
+    SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_array_new_name = SPVM_OP_new_op_name_tmp_var(compiler, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_array_new = SPVM_OP_new_op_var(compiler, op_var_array_new_name);
+    SPVM_OP* op_var_decl_array_new = SPVM_OP_new_op_var_decl_eternal(compiler, op_array_init->file, op_array_init->line);
+    op_var_array_new = SPVM_OP_build_var_decl(compiler, op_var_decl_array_new, op_var_array_new, NULL, NULL);
+    SPVM_OP_build_assign(compiler, op_assign_new, op_var_array_new, op_new);
+    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
+    
+    {
+      int32_t index = 0;
+      SPVM_OP* op_element = op_list_elements->first;
+      while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
+        SPVM_OP* op_assign_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
+        SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_array_init->file, op_array_init->line);
+        SPVM_OP* op_var_array_set = SPVM_OP_clone_op_var(compiler, op_var_array_new);
+        SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_var_array_set);
+        SPVM_OP* op_constant_index = SPVM_OP_new_op_constant_int(compiler, index, op_array_init->file, op_array_init->line);
+        SPVM_OP_insert_child(compiler, op_array_access, op_array_access->last, op_constant_index);
+        
+        if (index == 0) {
+          // $array->[0] = $first_element;
+          SPVM_OP* op_var_first_element_array_set = SPVM_OP_clone_op_var(compiler, op_var_first_element);
+          SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_var_first_element_array_set);
+        }
+        else {
+          // $array->[$i] = ELEMENT
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_element);
+          SPVM_OP_build_assign(compiler, op_assign_array_access, op_array_access, op_element);
+          op_element = op_stab;
+        }
+        
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_array_access);
+        
+        index++;
+      }
+    }
+    
+    // $array
+    SPVM_OP* op_var_array_ret = SPVM_OP_clone_op_var(compiler, op_var_array_new);
+    SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_array_ret);
+    
+    op_array_init = op_sequence;
+  }
+  
+  return op_array_init;
 }
 
 SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_array_access, SPVM_OP* op_array, SPVM_OP* op_index) {
@@ -3820,12 +3904,25 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BIT_NOT:
     case SPVM_OP_C_ID_PLUS:
     case SPVM_OP_C_ID_MINUS:
-    case SPVM_OP_C_ID_NEW:
     case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
     case SPVM_OP_C_ID_COPY:
     {
       type = SPVM_OP_get_type(compiler, op->first);
+      break;
+    }
+    case SPVM_OP_C_ID_NEW: {
+      if (op->first->id == SPVM_OP_C_ID_TYPE) {
+        type = op->first->uv.type;
+      }
+      else if (op->first->id == SPVM_OP_C_ID_VAR) {
+        SPVM_OP* op_var_element = op->first;
+        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_var_element);
+        type = SPVM_TYPE_new(compiler, element_type->basic_type->id, element_type->dimension + 1, element_type->flag);
+      }
+      else {
+        assert(0);
+      }
       break;
     }
     case SPVM_OP_C_ID_LIST:
