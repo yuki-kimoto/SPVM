@@ -20,7 +20,7 @@ void SPVM_OPCODE_BUILDER_push_if_die(
   int32_t line
 );
 
-int32_t SPVM_OPCODE_BUILDER_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op);
+int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 SPVM_OP* SPVM_OPCODE_BUILDER_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op);
 
