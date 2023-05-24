@@ -82,13 +82,13 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
       // AST traversals
       if (method->op_block) {
         // AST traversal - Check syntax and generate some operations
-        SPVM_AST_CHECKER_traversal_ast_check_syntax(compiler, class, method);
+        SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
-        
-        // AST traversal - Convert some op to an assignment operator
-        SPVM_AST_CHECKER_traverse_ast_convert_op_to_assign(compiler, class, method);
+
+        // AST traversal - assign an unassigned operator to a variable
+        SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
@@ -1351,7 +1351,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -3398,7 +3398,7 @@ void SPVM_AST_CHECKER_traversal_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_C
   }
 }
 
-void SPVM_AST_CHECKER_traverse_ast_convert_op_to_assign(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -3597,29 +3597,6 @@ void SPVM_AST_CHECKER_traverse_ast_convert_op_to_assign(SPVM_COMPILER* compiler,
       }
     }
   }
-}
-
-SPVM_METHOD* SPVM_AST_CHECKER_traversal_ast_assign(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
-  SPVM_METHOD* found_method = NULL;
-  
-  SPVM_CLASS* parent_class = class;
-  while (1) {
-    found_method = SPVM_HASH_get(
-      parent_class->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
-    if (found_method) {
-      break;
-    }
-    parent_class = parent_class->parent_class;
-    
-    if (!parent_class) {
-      break;
-    }
-  }
-  
-  return found_method;
 }
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
