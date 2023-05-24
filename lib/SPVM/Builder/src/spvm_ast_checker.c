@@ -3277,7 +3277,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
           
           if (convert_to_assign) {
             SPVM_TYPE* tmp_var_type = SPVM_OP_get_type(compiler, op_cur);
-            SPVM_OP* op_var_tmp = SPVM_AST_CHECKER_new_op_var_tmp(compiler, tmp_var_type, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_tmp = SPVM_AST_CHECKER_new_op_var_tmp(compiler, tmp_var_type, method, op_cur->file, op_cur->line);
             
             op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
             SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
@@ -3974,12 +3974,12 @@ int32_t SPVM_AST_CHECKER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* c
   return found_call_stack_id;
 }
 
-SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line) {
   
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_in_assign2147483647") + 1);
-  sprintf(name, "$.tmp_in_assign%d", compiler->cur_tmp_vars_length);
-  compiler->cur_tmp_vars_length++;
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_in_method2147483647") + 1);
+  sprintf(name, "$.tmp_in_method%d", method->tmp_vars_length);
+  method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
@@ -3993,4 +3993,3 @@ SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   
   return op_var;
 }
-
