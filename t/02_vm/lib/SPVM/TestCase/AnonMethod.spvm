@@ -12,19 +12,79 @@ class TestCase::AnonMethod {
     $var_prec = 5;
   }
 
-  static method capture : int () {
+  static method anon_method_field_definition : int () {
     {
-      my $capture1 = 7;
-      my $capture2 = 10;
-      my $cb_obj = [has capture1 : int = $capture1, has capture2 : int = $capture2] method : int () {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [has default1 : int = $default1, has default2 : int = $default2] method : int () {
         
-        my $total = $self->{capture1} + $self->{capture2};
+        my $total = $self->{default1} + $self->{default2};
         
         return $total;
       };
       
-      my $total = $cb_obj->();
+      my $total = $object->();
       unless ($total == 17) {
+        return 0;
+      }
+    }
+    
+    {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [has var1 : int = $default1, has var2 : int = $default2] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 17) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : Int = Int->new(3), has var2 : Int = Int->new(7)] method : int () {
+        
+        my $total = $self->{var1}->value + $self->{var2}->value;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 10) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : int, has var2 : int] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : int, has var2 : int] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      $object->{var1} = 3;
+      $object->{var2} = 7;
+      
+      my $total = $object->();
+      unless ($total == 10) {
         return 0;
       }
     }
@@ -32,24 +92,6 @@ class TestCase::AnonMethod {
     return 1;
   }
 
-  static method capture_var_high_precidence_than_class_var : int () {
-    
-    {
-      my $var_prec = 13;
-      
-      my $cb = [has var_prec : int = $var_prec] method : int () {
-        my $var_prec = $self->{var_prec};
-        return $var_prec;
-      };
-      
-      unless ($cb->() == 13) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
   static method sort_objects : void ($values : object[], $comparator : Comparator) {
 
     my $change_cnt = @$values - 1;

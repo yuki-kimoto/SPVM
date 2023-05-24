@@ -17,8 +17,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::AnonMethod->basic);
   ok(SPVM::TestCase::AnonMethod->callback_array);
   ok(SPVM::TestCase::AnonMethod->comparator);
-  ok(SPVM::TestCase::AnonMethod->capture);
-  ok(SPVM::TestCase::AnonMethod->capture_var_high_precidence_than_class_var);
+  ok(SPVM::TestCase::AnonMethod->anon_method_field_definition);
 }
 
 # Check the precompile source
