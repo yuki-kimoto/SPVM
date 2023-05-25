@@ -1236,20 +1236,20 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
+  %token <opval> FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block version_decl
-  %type <opval> opt_declarations declarations declaration
+  %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-  %type <opval> method anon_method opt_args args arg has use require alias our
+  %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
   %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
-  %type <opval> call_method opt_vaarg
+  %type <opval> call_method
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow can
   %type <opval> new array_init die warn opt_extends
@@ -1294,27 +1294,27 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | EXTENDS class_name
 
   class_block
-    : '{' opt_declarations '}'
+    : '{' opt_definitions '}'
 
-  opt_declarations
+  opt_definitions
     : /* Empty */
-    | declarations
+    | definitions
 
-  declarations
-    : declarations declaration
-    | declaration
+  definitions
+    : definitions definition
+    | definition
 
-  declaration
+  definition
     : version_decl
-    | has
-    | method
-    | enumeration
-    | our
     | use
+    | alias
     | allow
     | interface
     | init_block
-    | alias
+    | enumeration
+    | our
+    | has ';'
+    | method
 
   init_block
     : INIT block
@@ -1361,17 +1361,17 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
 
   has
-    : HAS field_name ':' opt_attributes qualified_type opt_type_comment ';'
+    : HAS field_name ':' opt_attributes qualified_type opt_type_comment
 
   method
-    : opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' block
-    | opt_attributes METHOD method_name ':' return_type '(' opt_args opt_vaarg')' ';'
-    | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
-    | opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg ')' ';'
+    : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
+    | opt_attributes METHOD method_name ':' return_type '(' opt_args ')' ';'
+    | opt_attributes METHOD ':' return_type '(' opt_args ')' block
+    | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
 
   anon_method
-    : opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
-    | '[' args ']' opt_attributes METHOD ':' return_type '(' opt_args opt_vaarg')' block
+    : opt_attributes METHOD ':' return_type '(' opt_args ')' block
+    | '[' anon_method_has_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
 
   opt_args
     : /* Empty */
@@ -1386,9 +1386,14 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : var ':' qualified_type opt_type_comment
     | var ASSIGN operator ':' qualified_type opt_type_comment
 
-  opt_vaarg
-    : /* Empty */
-    | DOT3
+  anon_method_has_list
+    : anon_method_has_list ',' anon_method_has
+    | anon_method_has_list ','
+    | anon_method_has
+
+  anon_method_has
+    : has ASSIGN operator
+    | has
 
   opt_attributes
     : /* Empty */
