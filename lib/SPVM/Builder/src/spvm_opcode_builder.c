@@ -38,6 +38,7 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 #include "spvm_constant_string.h"
+#include "spvm_dumper.h"
 
 void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
@@ -5072,12 +5073,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   }
   
 #ifdef SPVM_DEBUG_COMPILE
-#include "spvm_dumper.h"
-  printf("\n[OP codes]\n");
+  fprintf(stderr, "\n[Opcodes]\n");
   SPVM_DUMPER_dump_classes_opcode_array(compiler, compiler->classes);
 #endif
-
-    
 
 }
 

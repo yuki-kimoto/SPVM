@@ -31,6 +31,7 @@
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
+  
   // Default source is a empty string
   if (compiler->ch_ptr == NULL) {
     compiler->ch_ptr = "";

@@ -37,6 +37,7 @@
 #include "spvm_interface.h"
 #include "spvm_constant_string.h"
 #include "spvm_attribute.h"
+#include "spvm_dumper.h"
 
 void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
   // Resolve type ops
@@ -103,12 +104,11 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
   }
 
 #ifdef SPVM_DEBUG_COMPILE
-#include "spvm_dumper.h"
   if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
-    printf("\n[Basic types]\n");
+    fprintf(stderr, "\n[Basic types]\n");
     SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
     
-    printf("\n[Classes]\n");
+    fprintf(stderr, "\n[Classes]\n");
     SPVM_DUMPER_dump_classes(compiler, compiler->classes);
   }
 #endif
