@@ -24,6 +24,12 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
+# Extra
+{
+  # allow - Hash::Entry class uses the allow statement
+  use SPVM 'Hash';
+}
+
 # Compilation Errors in spvm_ast_checker.c 
 
 # Array Initialization
