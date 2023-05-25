@@ -68,8 +68,41 @@ class TestCase::Refcnt {
       }
     }
 
+    # Field
+    {
+      {
+        my $simple = new TestCase::Simple;
+        
+        $simple->{object_value} = new TestCase::Minimal;
+        
+        my $minimal = $simple->{object_value};
+        
+        unless (refcnt $minimal == 2) {
+          return 0;
+        }
+      }
+    }
+    
 =pod
 
+    # Method arguments
+    {
+      {
+        my $simple = new TestCase::Simple;
+        
+        $simple->{object_value} = new TestCase::Minimal;
+        
+        TestCase::Refcnt->func($simple->{object_value});
+        TestCase::Refcnt->func($simple->{object_value});
+        
+        my $minimal = $simple->{object_value};
+        
+        unless (refcnt $minimal == 2) {
+          return 0;
+        }
+      }
+    }
+    
     # If condition
     {
       my $simple = new TestCase::Simple;
@@ -84,22 +117,6 @@ class TestCase::Refcnt {
       }
     }
     
-    # Field
-    {
-      my $simple = new TestCase::Simple;
-      
-      $simple->{object_value} = new TestCase::Minimal;
-      
-      TestCase::Refcnt->func($simple->{object_value});
-      TestCase::Refcnt->func($simple->{object_value});
-      
-      my $minimal = $simple->{object_value};
-      
-      unless (refcnt $minimal == 2) {
-        return 0;
-      }
-    }
-
 =cut
 
     return 1;

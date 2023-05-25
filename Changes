@@ -2,6 +2,7 @@
   [Bug Fix]
     * The bug of array init reference count is fixed.
     * The bug of anon method reference count is fixed.
+    * The bug of setting field reference count is fixed.
     
 0.982 2023-05-24
   [Document Changes]
