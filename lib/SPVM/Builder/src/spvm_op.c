@@ -1766,7 +1766,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
     }
   */
 
-  SPVM_OP* op_var_init_name = SPVM_OP_new_op_name(compiler, "$.i", op_for->file, op_for->line);
+  SPVM_OP* op_var_init_name = SPVM_OP_new_op_name_tmp_var(compiler, op_for->file, op_for->line);
   SPVM_OP* op_var_init_orig = SPVM_OP_new_op_var(compiler, op_var_init_name);
   SPVM_OP* op_var_array_name = SPVM_OP_new_op_name(compiler, "$.array", op_for->file, op_for->line);
   SPVM_OP* op_var_array_orig = SPVM_OP_new_op_var(compiler, op_var_array_name);
