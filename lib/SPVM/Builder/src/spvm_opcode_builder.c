@@ -1011,6 +1011,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     break;
                   }
+                  // all operators are assigned to variables by SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var.
                   case SPVM_OP_C_ID_ASSIGN: {
                     SPVM_OP* op_assign_dist = op_cur->last;
                     SPVM_OP* op_assign_src = op_cur->first;
