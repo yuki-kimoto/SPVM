@@ -100,8 +100,48 @@ class TestCase::Refcnt {
       }
     }
     
+    # Assign
+    {
+      {
+        my $nums = new object[1];
+        
+        my $object = TestCase::Minimal->new;
+        my $object2 = $nums->[0] = $object;
+        
+        unless (refcnt $object == 3) {
+          return 0;
+        }
+      }
+      
+      {
+        my $nums = new object[1];
+        
+        my $object = TestCase::Minimal->new;
+        my $object3 = (object)undef;
+        my $object2 = $object3 = $nums->[0] = $object;
+        
+        unless (refcnt $object == 4) {
+          return 0;
+        }
+      }
+    }
+    
 =pod
 
+    # If condition
+    {
+      my $simple = new TestCase::Simple;
+      
+      $simple->{object_value} = new TestCase::Minimal;
+      
+      if ($simple->{object_value}) {
+        my $minimal = $simple->{object_value};
+        warn refcnt $minimal;
+        unless (refcnt $minimal == 2) {
+          return 0;
+        }
+      }
+    }
     # Method arguments
     {
       {
@@ -114,20 +154,6 @@ class TestCase::Refcnt {
         
         my $minimal = $simple->{object_value};
         
-        unless (refcnt $minimal == 2) {
-          return 0;
-        }
-      }
-    }
-    
-    # If condition
-    {
-      my $simple = new TestCase::Simple;
-      
-      $simple->{object_value} = new TestCase::Minimal;
-      
-      if ($simple->{object_value}) {
-        my $minimal = $simple->{object_value};
         unless (refcnt $minimal == 2) {
           return 0;
         }

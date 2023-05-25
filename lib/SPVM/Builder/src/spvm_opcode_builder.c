@@ -5063,6 +5063,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                         }
                       }
+                      else if (op_assign_src->first->id == SPVM_OP_C_ID_VAR) {
+                        // Do nothing
+                      }
                     }
 
                     break;
