@@ -1,3 +1,8 @@
+0.983 2023-05-25
+  [Bug Fix]
+    * The bug of array init reference count is fixed.
+    * The bug of anon method reference count is fixed.
+    
 0.982 2023-05-24
   [Document Changes]
     * The "Execution Stack" heading is renamed to "Call Stack"

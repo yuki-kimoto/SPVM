@@ -5028,6 +5028,25 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
+                    // Set undef to a temporary variable of the object type
+                    if (op_assign_src->id == SPVM_OP_C_ID_VAR) {
+                      SPVM_OP* op_var = op_assign_src;
+                      
+                      if (op_var->uv.var->name[1] == '.') {
+                        SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
+                        if (SPVM_TYPE_is_object_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag)) {
+                          SPVM_OPCODE opcode = {0};
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF);
+                          int32_t call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_var);
+                          
+                          opcode.operand0 = call_stack_id_out;
+                          
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        }
+                      }
+                    }
+                    
                     break;
                   }
                 }
