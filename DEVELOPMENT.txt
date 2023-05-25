@@ -45,11 +45,14 @@ DEVELOPERS NOTE
        rm solo/work/myexe
 
     See batcktrace of core dump
-
+      
+      # Compiliation time stack trace
+      gdb perl core
+      
+      # Runtime stack trace
       gdb solo/work/myexe core
       
       bt
-
       
     If core file is not output, set the following.
       
