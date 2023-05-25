@@ -68,7 +68,7 @@ class TestCase::Refcnt {
       }
     }
 
-    # Field
+    # Setting field
     {
       {
         my $simple = new TestCase::Simple;
@@ -78,6 +78,23 @@ class TestCase::Refcnt {
         my $minimal = $simple->{object_value};
         
         unless (refcnt $minimal == 2) {
+          return 0;
+        }
+      }
+    }
+    
+    # Setting array element
+    {
+      {
+        my $object = new TestCase::Minimal;
+        
+        my $objects = new TestCase::Minimal[1];
+        
+        $objects->[0] = $object;
+        
+        my $objects2 = $objects->[0];
+        
+        unless (refcnt $object == 3) {
           return 0;
         }
       }
