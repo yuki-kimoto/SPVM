@@ -1,9 +1,11 @@
+0.984 2023-05-25
+  [Bug Fix]
+    * The bug that the allow statemenet throws segfault.
 0.983 2023-05-25
   [Bug Fix]
     * The bug of array init reference count is fixed.
     * The bug of anon method reference count is fixed.
     * The bug of setting field reference count is fixed.
-    * The bug that the allow statemenet throws segfault.
   [Incompatible Changes]
     * The refcnt operator is removed. The reference count is managed internally, not user land.
     
