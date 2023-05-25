@@ -70,14 +70,6 @@ use Test::More;
   }
 }
 
-# refcnt
-{
-  {
-    my $source = 'class MyClass { static method main : void () { my $num = 0; refcnt $num; } }';
-    compile_not_ok($source, qr'The operand of the refcnt operator must be an object type');
-  }
-}
-
 # type_name
 {
   {

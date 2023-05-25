@@ -1185,20 +1185,6 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             break;
           }
-          case SPVM_OP_C_ID_REFCNT: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_operand);
-            
-            // Must be object variable
-            if (!(op_operand->id == SPVM_OP_C_ID_VAR && SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand of the refcnt operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
           case SPVM_OP_C_ID_TYPE_NAME: {
             
             SPVM_OP* op_operand = op_cur->first;
@@ -3204,7 +3190,6 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
               case SPVM_OP_C_ID_CREATE_REF:
               case SPVM_OP_C_ID_DEREF:
-              case SPVM_OP_C_ID_REFCNT:
               case SPVM_OP_C_ID_FIELD_ACCESS:
               case SPVM_OP_C_ID_ARRAY_ACCESS:
               case SPVM_OP_C_ID_CALL_METHOD:

@@ -3,6 +3,8 @@
     * The bug of array init reference count is fixed.
     * The bug of anon method reference count is fixed.
     * The bug of setting field reference count is fixed.
+  [Incompatible Changes]
+    * The refcnt operator is removed. The reference count is managed internally, not user land.
     
 0.982 2023-05-24
   [Document Changes]

@@ -226,7 +226,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEREF",
     "STRING_LENGTH",
     "CURRENT_CLASS_NAME",
-    "REFCNT",
     "ALLOW",
     "WARN",
     "PRINT",
@@ -3806,7 +3805,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
     case SPVM_OP_C_ID_STRING_LENGTH:
-    case SPVM_OP_C_ID_REFCNT:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;

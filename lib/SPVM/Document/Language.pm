@@ -302,7 +302,6 @@ The list of keywords:
   public
   precompile
   pointer
-  refcnt
   remui
   remul
   return
@@ -1995,9 +1994,6 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>REF</td><td>\</td>
-  </tr>
-  <tr>
-    <td>REFCNT</td><td>refcnt</td>
   </tr>
   <tr>
     <td>TYPE_NAME</td><td>type_name</td>

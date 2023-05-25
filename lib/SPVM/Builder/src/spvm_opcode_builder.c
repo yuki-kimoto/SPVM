@@ -1122,22 +1122,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;
                         }
-                        case SPVM_OP_C_ID_REFCNT : {
-                          
-                          SPVM_OPCODE opcode = {0};
-                          
-
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REFCNT);
-                          int32_t call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
-                          int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src);
-                          
-                          opcode.operand0 = call_stack_id_out;
-                          opcode.operand1 = call_stack_id_in;
-
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          
-                          break;
-                        }
                         case SPVM_OP_C_ID_UNDEF : {
 
                           SPVM_OPCODE opcode = {0};
@@ -5193,9 +5177,6 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* 
       else if (op->id == SPVM_OP_C_ID_DEREF) {
         op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
       }
-      else if (op->id == SPVM_OP_C_ID_REFCNT) {
-        op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
-      }
       else {
         spvm_warn("Unexpcted op:%s", SPVM_OP_get_op_name(compiler, op->id));
         assert(0);
@@ -5233,9 +5214,6 @@ SPVM_OP* SPVM_OPCODE_BUILDER_get_returned_op_var(SPVM_COMPILER* compiler, SPVM_O
     op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
   }
   else if (op->id == SPVM_OP_C_ID_DEREF) {
-    op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
-  }
-  else if (op->id == SPVM_OP_C_ID_REFCNT) {
     op_var = SPVM_OPCODE_BUILDER_get_returned_op_var(compiler, op->first);
   }
   else {

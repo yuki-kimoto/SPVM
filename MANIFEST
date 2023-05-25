@@ -570,7 +570,6 @@ t/02_vm/05_op/new.t
 t/02_vm/05_op/numeric_operator.t
 t/02_vm/05_op/print.t
 t/02_vm/05_op/ref.t
-t/02_vm/05_op/refcnt.t
 t/02_vm/05_op/remainder.t
 t/02_vm/05_op/say.t
 t/02_vm/05_op/seqop.t
@@ -786,7 +785,6 @@ t/02_vm/lib/SPVM/TestCase/Precedence.spvm
 t/02_vm/lib/SPVM/TestCase/Print.spvm
 t/02_vm/lib/SPVM/TestCase/Private.spvm
 t/02_vm/lib/SPVM/TestCase/Ref.spvm
-t/02_vm/lib/SPVM/TestCase/Refcnt.spvm
 t/02_vm/lib/SPVM/TestCase/Remainder.spvm
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.config
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.mode1.config

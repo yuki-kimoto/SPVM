@@ -1671,11 +1671,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_id, &error, object_header_size);
         break;
       }
-      case SPVM_OPCODE_C_ID_REFCNT: {
-        void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_REFCNT(env, stack, &int_vars[opcode->operand0], object);
-        break;
-      }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
         SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_SHORT(short_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;

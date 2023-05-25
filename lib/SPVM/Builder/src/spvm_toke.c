@@ -1962,11 +1962,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'r' : {
-                if (strcmp(symbol_name, "refcnt") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REFCNT);
-                  keyword_token = REFCNT;
-                }
-                else if (strcmp(symbol_name, "remui") == 0) {
+                if (strcmp(symbol_name, "remui") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT);
                   keyword_token = REMAINDER_UNSIGNED_INT;
                 }
