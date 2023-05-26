@@ -627,6 +627,7 @@ t/02_vm/08_module/StringBuffer.t
 t/02_vm/08_module/StringList.t
 t/02_vm/09_stdio/stdio.t
 t/02_vm/99_extra/examples.t
+t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
 t/02_vm/lib/SPVM/4foo.spvm
 t/02_vm/lib/SPVM/EmptyClass.spvm

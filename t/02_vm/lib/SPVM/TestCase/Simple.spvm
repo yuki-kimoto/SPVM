@@ -89,4 +89,22 @@ class TestCase::Simple : public {
     
     return $self;
   }
+  
+  # https://github.com/yuki-kimoto/SPVM/issues/369
+  method issues_369 : int ($path : string, $base = undef : string) {
+    warn dump $self;
+    if (1 || "") {
+      if (length "") {
+        if ($@) {
+          
+        }
+      }
+    }
+    warn dump $self;
+    unless ($self) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }
