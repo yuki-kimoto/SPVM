@@ -554,21 +554,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     
+                    if (block->need_leave_scope) {
+                      int32_t mortal_top = (intptr_t)SPVM_LIST_get(mortal_top_stack, mortal_top_stack->length - 1);
+                      
+                      while (mortal_stack->length > mortal_top) {
+                        SPVM_LIST_pop(mortal_stack);
+                      }
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
+                      opcode.operand0 = mortal_top;
+                      
+                      SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                    }
+                    
                     // Leave scope
                     if (!block->no_scope) {
-                      int32_t mortal_top = (intptr_t)SPVM_LIST_pop(mortal_top_stack);
-                      if (block->need_leave_scope) {
-                        while (mortal_stack->length > mortal_top) {
-                          SPVM_LIST_pop(mortal_stack);
-                        }
-                        
-                        SPVM_OPCODE opcode = {0};
-                        
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
-                        opcode.operand0 = mortal_top;
-                        
-                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                      }
+                      SPVM_LIST_pop(mortal_top_stack);
                     }
                     
                     break;

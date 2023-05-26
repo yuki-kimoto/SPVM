@@ -1,3 +1,6 @@
+0.985 2023-05-26
+  [Bug Fix]
+    * The bug that scopes does not work well in some cases.
 0.984 2023-05-25
   [Bug Fix]
     * The bug that the allow statemenet throws segfault.
