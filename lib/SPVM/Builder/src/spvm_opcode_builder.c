@@ -887,9 +887,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_call_stack_id);
                         
                         mortal_stack_top_max++;
-                        
-                        SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                        op_block_current->uv.block->need_leave_scope = 1;
                       }
                       
                       // Initialized not initialized variable
