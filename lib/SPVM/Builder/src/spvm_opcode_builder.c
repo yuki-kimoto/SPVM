@@ -337,9 +337,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
           
-          // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-          
           // next block base stack
           SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
           
@@ -418,8 +415,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t mortal_top = mortal_stack->length;
                   SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
                 }
-                
-                SPVM_LIST_push(op_block_stack, op_cur);
                 
                 break;
               }
@@ -562,8 +557,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     // Leave scope
                     if (!block->no_scope) {
                       int32_t mortal_top = (intptr_t)SPVM_LIST_pop(mortal_top_stack);
-                      SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                      if (op_block_current->uv.block->need_leave_scope) {
+                      if (block->need_leave_scope) {
                         while (mortal_stack->length > mortal_top) {
                           SPVM_LIST_pop(mortal_stack);
                         }
@@ -576,8 +570,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                     }
-                    
-                    SPVM_LIST_pop(op_block_stack);
                     
                     break;
                   }
@@ -5058,7 +5050,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(if_die_return_goto_opcode_rel_index_stack);
           SPVM_LIST_free(return_goto_opcode_rel_index_stack);
           SPVM_LIST_free(switch_info_stack);
-          SPVM_LIST_free(op_block_stack);
           SPVM_LIST_free(next_block_base_stack);
           SPVM_LIST_free(last_block_base_stack);
           SPVM_LIST_free(break_block_base_stack);
