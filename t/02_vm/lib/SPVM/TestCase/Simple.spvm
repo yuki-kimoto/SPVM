@@ -93,12 +93,12 @@ class TestCase::Simple : public {
   # https://github.com/yuki-kimoto/SPVM/issues/369
   method issues_369 : int ($path : string, $base = undef : string) {
     warn dump $self;
+    
     if (1 || "") {
-      if (length "") {
-        if ("") {
-          
-        }
-      }
+      
+    }
+    elsif ("") {
+      
     }
     warn dump $self;
     unless ($self) {
