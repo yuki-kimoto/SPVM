@@ -14,7 +14,7 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::Simple->new->issues_369(""));
+  ok(SPVM::TestCase::Simple->new->issues_369);
 }
 
 # All object is freed

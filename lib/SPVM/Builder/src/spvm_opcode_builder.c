@@ -347,17 +347,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
           
           // Mortal variable stack
-          SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_ids_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
           
           // Mortal variable base stack
-          SPVM_LIST* mortal_top_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_LIST* call_stack_ids_top_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
           // Run OPs
           SPVM_OP* op_base = method->op_block;
           SPVM_OP* op_cur = op_base;
           int32_t finish = 0;
           
-          int32_t mortal_stack_top_max = 0;
+          int32_t call_stack_ids_stack_top_max = 0;
 
           while (op_cur) {
             
@@ -411,10 +411,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 
-                if (!block->no_scope) {
-                  int32_t mortal_top = mortal_stack->length;
-                  SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
-                }
+                int32_t decl_vars_top = call_stack_ids_stack->length;
+                SPVM_LIST_push(call_stack_ids_top_stack, (void*)(intptr_t)decl_vars_top);
                 
                 break;
               }
@@ -554,25 +552,24 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     
+                    int32_t decl_vars_top = (intptr_t)SPVM_LIST_get(call_stack_ids_top_stack, call_stack_ids_top_stack->length - 1);
+                    
+                    // Leave scope
                     if (block->need_leave_scope) {
-                      int32_t mortal_top = (intptr_t)SPVM_LIST_get(mortal_top_stack, mortal_top_stack->length - 1);
-                      
-                      while (mortal_stack->length > mortal_top) {
-                        SPVM_LIST_pop(mortal_stack);
-                      }
                       
                       SPVM_OPCODE opcode = {0};
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
-                      opcode.operand0 = mortal_top;
+                      opcode.operand0 = decl_vars_top;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
                     
-                    // Leave scope
-                    if (!block->no_scope) {
-                      SPVM_LIST_pop(mortal_top_stack);
+                    while (call_stack_ids_stack->length > decl_vars_top) {
+                      SPVM_LIST_pop(call_stack_ids_stack);
                     }
+                    
+                    SPVM_LIST_pop(call_stack_ids_top_stack);
                     
                     break;
                   }
@@ -874,14 +871,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE opcode = {0};
                         
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_MORTAL);
-                        int32_t my_call_stack_id = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_cur);
-                        opcode.operand0 = my_call_stack_id;
+                        int32_t call_stack_id = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_cur);
+                        opcode.operand0 = call_stack_id;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         
-                        SPVM_LIST_push(mortal_stack, (void*)(intptr_t)my_call_stack_id);
+                        SPVM_LIST_push(call_stack_ids_stack, (void*)(intptr_t)call_stack_id);
                         
-                        mortal_stack_top_max++;
+                        call_stack_ids_stack_top_max++;
                       }
                       
                       // Initialized not initialized variable
@@ -5039,7 +5036,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           method->opcodes_length = opcode_array->length - method->opcodes_base_id;
           
-          method->mortal_stack_length = mortal_stack_top_max + 1;
+          method->mortal_stack_length = call_stack_ids_stack_top_max + 1;
           
           // Free list
           SPVM_LIST_free(if_eq_or_if_ne_goto_opcode_rel_index_stack);
@@ -5056,8 +5053,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(next_block_base_stack);
           SPVM_LIST_free(last_block_base_stack);
           SPVM_LIST_free(break_block_base_stack);
-          SPVM_LIST_free(mortal_stack);
-          SPVM_LIST_free(mortal_top_stack);
+          SPVM_LIST_free(call_stack_ids_stack);
+          SPVM_LIST_free(call_stack_ids_top_stack);
         }
       }
     }
