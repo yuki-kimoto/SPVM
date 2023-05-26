@@ -95,7 +95,7 @@ class TestCase::Simple : public {
     warn dump $self;
     if (1 || "") {
       if (length "") {
-        if ($@) {
+        if ("") {
           
         }
       }
