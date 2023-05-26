@@ -5145,6 +5145,7 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* 
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_IS_TYPE:
+    case SPVM_OP_C_ID_IS_COMPILE_TYPE:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_CAN:
     {
