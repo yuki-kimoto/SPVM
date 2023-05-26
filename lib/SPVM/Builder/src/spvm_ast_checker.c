@@ -3334,7 +3334,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER
         break;
       }
     }
-
+    
     if (op_cur->first) {
       op_cur = op_cur->first;
     }
@@ -3343,38 +3343,51 @@ void SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER
         // [START]Postorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_BLOCK: {
-            SPVM_BLOCK* block = op_cur->uv.block;
-            SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-
+            SPVM_OP* op_block_current = op_cur;
+            SPVM_BLOCK* block_current = op_block_current->uv.block;
+            
             SPVM_LIST_pop(op_block_stack);
             
-            // Parent block need LEAVE_SCOPE if child is needing LEAVE_SCOPE
+            // The current block needs the LEAVE_SCOPE opcode
+            if (block_current->has_object_var_decls && !block_current->no_scope) {
+              block_current->need_leave_scope = 1;
+            }
+            
+            // The parent block needs the LEAVE_SCOPE opcode if the child block has object variable declarations
             if (op_block_stack->length > 0) {
               SPVM_OP* op_block_parent = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-              if (!op_block_parent->uv.block->need_leave_scope) {
-                if (op_block_current->uv.block->need_leave_scope) {
-                  op_block_parent->uv.block->need_leave_scope = 1;
-                }
+              SPVM_BLOCK* block_parent = op_block_parent->uv.block;
+              
+              if (block_current->has_object_var_decls) {
+                block_parent->has_object_var_decls = 1;
+              }
+              
+              if (block_current->has_object_var_decls && !block_parent->no_scope) {
+                block_parent->need_leave_scope = 1;
               }
             }
+            
             break;
           }
           case SPVM_OP_C_ID_VAR: {
-            if (op_cur->uv.var->is_declaration) {
-              SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-              
-              if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
-                op_block_current->uv.block->need_leave_scope = 1;
+            SPVM_OP* op_var = op_cur;
+            
+            SPVM_OP* op_block_current = SPVM_LIST_get(op_block_stack, op_block_stack->length - 1);
+            SPVM_BLOCK* block_current = op_block_current->uv.block;
+            
+            if (op_var->uv.var->is_declaration) {
+              SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
+              if (SPVM_TYPE_is_object_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag)) {
+                block_current->has_object_var_decls = 1;
               }
             }
             
             break;
           }
         }
-
+        
         if (op_cur == op_root) {
-
+          
           // Finish
           finish = 1;
           
