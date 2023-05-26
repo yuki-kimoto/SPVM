@@ -411,8 +411,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                 }
                 
-                int32_t decl_vars_top = call_stack_ids_stack->length;
-                SPVM_LIST_push(call_stack_ids_top_stack, (void*)(intptr_t)decl_vars_top);
+                int32_t call_stack_ids_top = call_stack_ids_stack->length;
+                SPVM_LIST_push(call_stack_ids_top_stack, (void*)(intptr_t)call_stack_ids_top);
                 
                 break;
               }
@@ -552,7 +552,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                     
-                    int32_t decl_vars_top = (intptr_t)SPVM_LIST_get(call_stack_ids_top_stack, call_stack_ids_top_stack->length - 1);
+                    int32_t call_stack_ids_top = (intptr_t)SPVM_LIST_get(call_stack_ids_top_stack, call_stack_ids_top_stack->length - 1);
                     
                     // Leave scope
                     if (block->need_leave_scope) {
@@ -560,12 +560,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
-                      opcode.operand0 = decl_vars_top;
+                      opcode.operand0 = call_stack_ids_top;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }
                     
-                    while (call_stack_ids_stack->length > decl_vars_top) {
+                    while (call_stack_ids_stack->length > call_stack_ids_top) {
                       SPVM_LIST_pop(call_stack_ids_stack);
                     }
                     
