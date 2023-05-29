@@ -13,6 +13,7 @@ class TestCase::NativeAPI {
   use Error;
   use Complex_2d;
   use Point;
+  use TestCase::PrecompileClassAttribute;
   
   INIT {
     # Call native method in INIT block
@@ -1459,4 +1460,14 @@ class TestCase::NativeAPI {
     $float_value1 : float,
     $double_value1 : double,
   );
+  
+  static method call_method_in_precompile_class : int () {
+    my $ret = TestCase::PrecompileClassAttribute->foo;
+    
+    unless ($ret == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }

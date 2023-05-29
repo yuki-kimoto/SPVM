@@ -314,6 +314,9 @@ ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
 {
   ok(SPVM::TestCase::NativeAPI->floating_point_constant);
 }
+{
+  ok(SPVM::TestCase::NativeAPI->call_method_in_precompile_class);
+}
 
 # Clear exception
 SPVM::api->set_exception(undef);

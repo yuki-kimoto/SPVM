@@ -1,3 +1,6 @@
+0.987 2023-05-29
+  [Changes]
+    * INIT block in precompile class is not precompiled.
 0.986 2023-05-29
   [Incompatible Changes]
     * The syntax of the optional argument is changed. The before syntax is deprecated and will be removed.
