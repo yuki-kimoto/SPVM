@@ -783,6 +783,7 @@ t/02_vm/lib/SPVM/TestCase/PointerEmpty.spvm
 t/02_vm/lib/SPVM/TestCase/PointForTest.spvm
 t/02_vm/lib/SPVM/TestCase/PointInterface.spvm
 t/02_vm/lib/SPVM/TestCase/Precedence.spvm
+t/02_vm/lib/SPVM/TestCase/PrecompileClassAttribute.spvm
 t/02_vm/lib/SPVM/TestCase/Print.spvm
 t/02_vm/lib/SPVM/TestCase/Private.spvm
 t/02_vm/lib/SPVM/TestCase/Ref.spvm
