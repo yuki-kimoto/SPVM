@@ -16,7 +16,7 @@ class ByteList {
   has values : ro byte[];
   
   # Class methods
-  static method new : ByteList ($array = undef : byte[], $capacity = -1 : int) {
+  static method new : ByteList ($array : byte[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class ByteList {
     return $self;
   }
   
-  static method new_len : ByteList ($length : int, $capacity = -1 : int) {
+  static method new_len : ByteList ($length : int, $capacity : int = -1) {
     my $self = new ByteList;
     
     unless ($length >= 0) {

@@ -16,7 +16,7 @@ class FloatList {
   has values : ro float[];
   
   # Class methods
-  static method new : FloatList ($array = undef : float[], $capacity = -1 : int) {
+  static method new : FloatList ($array : float[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class FloatList {
     return $self;
   }
   
-  static method new_len : FloatList ($length : int, $capacity = -1 : int) {
+  static method new_len : FloatList ($length : int, $capacity : int = -1) {
     my $self = new FloatList;
     
     unless ($length >= 0) {

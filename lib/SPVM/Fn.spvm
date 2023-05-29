@@ -98,7 +98,7 @@ class Fn {
     return $utf8_char;
   }
   
-  static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int) {
+  static method contains : int ($string : string, $substring : string, $string_offset : int = 0, $string_length : int = -1) {
     return &index($string, $substring, $string_offset, $string_length) >= 0;
   }
   
@@ -188,7 +188,7 @@ class Fn {
     return $value;
   }
   
-  precompile static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int) {
+  precompile static method index : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1) {
     
     unless ($string) {
       die "The \$string must be defined.";
@@ -250,7 +250,7 @@ class Fn {
   }
   
 
-  precompile static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 : int, $length = -1 : int) {
+  precompile static method init_string : void ($string : mutable string, $ascii_code : int = 0, $offset : int = 0, $length : int = -1) {
     unless ($string) {
       die "The \$string must be defined.";
     }
@@ -600,7 +600,7 @@ class Fn {
     return $ret;
   }
   
-  static method rand : double ($seed : int*, $max = 1 : int) {
+  static method rand : double ($seed : int*, $max : int = 1) {
     
     # 0 <= random_number < 1
     my $random_number = (double)&crand($seed) / ((double)&RAND_MAX() + 1);
@@ -643,7 +643,7 @@ class Fn {
     }
   }
 
-  precompile static method rindex : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int) {
+  precompile static method rindex : int ($string : string, $substring : string, $end : int = -1, $begin : int = 0) {
     
     unless ($string) {
       die "The \$string must be defined.";
@@ -730,7 +730,7 @@ class Fn {
     }
   }
   
-  precompile static method split : string[] ($separator : string, $string : string, $limit = 0 : int) {
+  precompile static method split : string[] ($separator : string, $string : string, $limit : int = 0) {
     unless ($separator) {
       die "The \$separator must be defined.";
     }
@@ -790,7 +790,7 @@ class Fn {
     return $parts;
   }
   
-  static method substr : string ($string : string, $offset : int, $length = -1 : int) {
+  static method substr : string ($string : string, $offset : int, $length : int = -1) {
     
     unless ($string) {
       die "The \$string must be defined.";
@@ -1089,7 +1089,7 @@ class Fn {
   }
   
 
-  precompile static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length = -1 : int) {
+  precompile static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length : int = -1) {
     
     unless ($string) {
       die "The \$string must be defined.";

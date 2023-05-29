@@ -16,7 +16,7 @@ class IntList {
   has values : ro int[];
   
   # Class methods
-  static method new : IntList ($array = undef : int[], $capacity = -1 : int) {
+  static method new : IntList ($array : int[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class IntList {
     return $self;
   }
   
-  static method new_len : IntList ($length : int, $capacity = -1 : int) {
+  static method new_len : IntList ($length : int, $capacity : int = -1) {
     my $self = new IntList;
     
     unless ($length >= 0) {

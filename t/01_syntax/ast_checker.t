@@ -801,15 +801,15 @@ use Test::More;
     compile_not_ok($source, q|The private "foo" method of the "MyClass2" class cannnot be called from the current class "MyClass"|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
     compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
     compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 = 0 : int) { } }';
+    my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
     compile_not_ok($source, q|Too many arguments are passed to the "foo" method in the "MyClass" class|);
   }
 }
@@ -1031,6 +1031,7 @@ use Test::More;
     compile_not_ok($source, q|The "port" method is not found in the "MySockaddrIn" class or its super classes|);
   }
 }
+
 # Multi-Numeric Type
 {
   {
@@ -1058,27 +1059,27 @@ use Test::More;
 # Optional Argument
 {
   {
-    my $source = 'class MyClass {  static method main : void ($arg1 = Int->new(1) : int) { } }';
+    my $source = 'class MyClass {  static method main : void ($arg1 : int = Int->new(1)) { } }';
     compile_not_ok($source, q|The default value of the optional argument "$arg1" must be a constant value|);
   }
   {
-    my $source = 'class MyClass {  static method main : void ($arg1 = 1000 : byte) { } }';
+    my $source = 'class MyClass {  static method main : void ($arg1 : byte = 1000) { } }';
     compile_not_ok($source, q|The default value of the optional argument "$arg1" must be able to be assigned to the argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : Complex_2d) { } }';
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = 0) { } }';
     compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int* = 0) { } }';
     compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int*) { } }';
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int* = 0) { } }';
     compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 = 0 : int, $arg2 : int) { } }';
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int = 0, $arg2 : int) { } }';
     compile_not_ok($source, q|Arguments after optional arguments must be optional arguments|);
   }
   compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The stack length of arguments must be less than or equal to 255/);
@@ -1208,7 +1209,7 @@ use Test::More;
   {
     {
       my $source = [
-        'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 = 0 : int) { return 0; } }',
+        'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 : int = 0) { return 0; } }',
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
       ];
@@ -1220,7 +1221,7 @@ use Test::More;
       my $source = [
         'class MyClass extends MyClass::Parent { method foo : long ($num : int) { return 0; } }',
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 = 0 : int); }',
+        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 : int = 0); }',
       ];
       compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
     }

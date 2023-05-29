@@ -41,7 +41,7 @@ C<z>.
 
 =head2 new
 
-  static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int);
+  static method new : Point3D ($x : int = 0, $y : int = 0, $z : int = 0);
 
 Creates a new C<Point3D> object with $x, $y, $z.
 
@@ -51,7 +51,7 @@ C<Point3D> inherits the instance methods of L<Point|SPVM::Point/"Instance Method
 
 =head2 init
 
-  protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int)
+  protected method init : Point3D ($x : int = 0, $y : int = 0, $z : int = 0)
 
 Initializes L</"x">, L</"y">, and L</"z">.
 

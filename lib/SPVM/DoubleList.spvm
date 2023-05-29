@@ -16,7 +16,7 @@ class DoubleList {
   has values : ro double[];
   
   # Class methods
-  static method new : DoubleList ($array = undef : double[], $capacity = -1 : int) {
+  static method new : DoubleList ($array : double[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class DoubleList {
     return $self;
   }
   
-  static method new_len : DoubleList ($length : int, $capacity = -1 : int) {
+  static method new_len : DoubleList ($length : int, $capacity : int = -1) {
     my $self = new DoubleList;
     
     unless ($length >= 0) {

@@ -10,7 +10,7 @@ class Immutable::StringList {
   has values : string[];
   
   # Class methods
-  static method new : Immutable::StringList ($array = undef : string[]) {
+  static method new : Immutable::StringList ($array : string[] = undef) {
     my $length : int;
     if ($array) {
       $length = @$array;

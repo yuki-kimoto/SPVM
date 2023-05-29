@@ -11,7 +11,7 @@ class Point {
   has y : ro int;
   
   # Class methods
-  static method new : Point ($x = 0 : int, $y = 0 : int) {
+  static method new : Point ($x : int = 0, $y : int = 0) {
     my $self = new Point;
     
     $self->init($x, $y);
@@ -20,7 +20,7 @@ class Point {
   }
   
   # Instance methods
-  protected method init : Point ($x = 0 : int, $y = 0 : int) {
+  protected method init : Point ($x : int = 0, $y : int = 0) {
     $self->{x} = $x;
     $self->{y} = $y;
   }

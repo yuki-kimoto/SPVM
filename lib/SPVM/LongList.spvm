@@ -16,7 +16,7 @@ class LongList {
   has values : ro long[];
   
   # Class methods
-  static method new : LongList ($array = undef : long[], $capacity = -1 : int) {
+  static method new : LongList ($array : long[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class LongList {
     return $self;
   }
   
-  static method new_len : LongList ($length : int, $capacity = -1 : int) {
+  static method new_len : LongList ($length : int, $capacity : int = -1) {
     my $self = new LongList;
     
     unless ($length >= 0) {

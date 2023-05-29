@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::IntList ($array = undef : int[]);
+  static method new : Immutable::IntList ($array : int[] = undef);
 
 Create a new L<Immutable::IntList|SPVM::Immutable::IntList> object using L</"new_len">.
 

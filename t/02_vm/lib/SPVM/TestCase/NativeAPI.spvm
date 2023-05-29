@@ -1330,8 +1330,8 @@ class TestCase::NativeAPI {
   }
   native static method get_args_stack_length_0 : int ();
   native static method get_args_stack_length_1 : int ($args0 : int);
-  native static method get_args_stack_length_2 : int ($args0 : int, $args1 = 0 : int);
-  native static method get_args_stack_length_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int);
+  native static method get_args_stack_length_2 : int ($args0 : int, $args1 : int = 0);
+  native static method get_args_stack_length_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0);
 
   static method items : int () {
     {
@@ -1383,17 +1383,17 @@ class TestCase::NativeAPI {
   }
   native static method items_0 : int ();
   native static method items_1 : int ($args0 : int);
-  native static method items_2 : int ($args0 : int, $args1 = 0 : int);
-  native static method items_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int);
+  native static method items_2 : int ($args0 : int, $args1 : int = 0);
+  native static method items_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0);
 
   native static method default_all_types_native : int (
-    $value_byte = -128 : byte,
-    $value_short = -32768 : short,
-    $value_int = -2147483648 : int,
-    $value_long = -9223372036854775808L : long,
-    $value_float = 1.5f : float,
-    $value_double = -2147483648.5 : double,
-    $value_object = undef : object,
+    $value_byte : byte = -128,
+    $value_short : short = -32768,
+    $value_int : int = -2147483648,
+    $value_long : long = -9223372036854775808L,
+    $value_float : float = 1.5f,
+    $value_double : double = -2147483648.5,
+    $value_object : object = undef,
   );
 
   static method default_all_types : int () {

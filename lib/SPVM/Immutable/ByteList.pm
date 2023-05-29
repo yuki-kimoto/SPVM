@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::ByteList ($array = undef : byte[]);
+  static method new : Immutable::ByteList ($array : byte[] = undef);
 
 Creates a new L<Immutable::ByteList|SPVM::Immutable::ByteList> object using L</"new_len">.
 

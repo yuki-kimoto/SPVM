@@ -10,7 +10,7 @@ class Immutable::ShortList {
   has values : short[];
   
   # Class methods
-  static method new : Immutable::ShortList ($array = undef : short[]) {
+  static method new : Immutable::ShortList ($array : short[] = undef) {
     my $length : int;
     if ($array) {
       $length = @$array;

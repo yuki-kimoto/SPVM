@@ -41,7 +41,7 @@ The hash function is C<siphash-1-3>.
 
 =head2 new
 
-  static method new : Hash ($key_values = undef : object[]);
+  static method new : Hash ($key_values : object[] = undef);
 
 Create a new L<Hash|SPVM::Hash> object with key value pairs.
 
@@ -187,7 +187,7 @@ Sets the string $value with the $key.
 
 =head2 to_array
 
-  method to_array : object[] ($sort = 0 : int);
+  method to_array : object[] ($sort : int = 0);
 
 Converts the hash to an array.
 

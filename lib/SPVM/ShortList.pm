@@ -88,7 +88,7 @@ The elements of the list. This is the internally used array, but it can be manip
 
 =head2 new
 
-  static method new : ShortList ($array = undef : short[], $capacity = -1 : int);
+  static method new : ShortList ($array : short[] = undef, $capacity : int = -1);
 
 Create a new C<ShortList> object using L</"new_len">.
 
@@ -103,7 +103,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : ShortList ($length : int, $capacity = -1 : int);
+  static method new_len : ShortList ($length : int, $capacity : int = -1);
 
 Creates a new C<ShortList> object with the $length and the $capacity.
 

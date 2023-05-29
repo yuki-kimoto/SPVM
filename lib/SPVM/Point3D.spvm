@@ -7,7 +7,7 @@ class Point3D extends Point {
   has z : ro int;
   
   # Class method
-  static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+  static method new : Point3D ($x : int = 0, $y : int = 0, $z : int = 0) {
     my $self = new Point3D;
     
     $self->init($x, $y, $z);
@@ -15,7 +15,7 @@ class Point3D extends Point {
     return $self;
   }
   
-  protected method init : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+  protected method init : Point3D ($x : int = 0, $y : int = 0, $z : int = 0) {
     $self->SUPER::init($x, $y);
     $self->{z} = $z;
   }

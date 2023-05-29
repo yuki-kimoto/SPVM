@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::ShortList ($array = undef : short[]);
+  static method new : Immutable::ShortList ($array : short[] = undef);
 
 Create a new L<Immutable::ShortList|SPVM::Immutable::ShortList> object using L</"new_len">.
 

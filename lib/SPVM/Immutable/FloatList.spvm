@@ -10,7 +10,7 @@ class Immutable::FloatList {
   has values : float[];
   
   # Class methods
-  static method new : Immutable::FloatList ($array = undef : float[]) {
+  static method new : Immutable::FloatList ($array : float[] = undef) {
     my $length : int;
     if ($array) {
       $length = @$array;

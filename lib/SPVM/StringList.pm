@@ -88,7 +88,7 @@ The values. This is the internally used array, but it can be manipulated directl
 
 =head2 new
 
-  static method new : StringList ($array = undef : string[], $capacity = -1 : int);
+  static method new : StringList ($array : string[] = undef, $capacity : int = -1);
 
 Create a new C<StringList> object using L</"new_len">.
 
@@ -103,7 +103,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : StringList ($length : int, $capacity = -1 : int);
+  static method new_len : StringList ($length : int, $capacity : int = -1);
 
 Creates a new C<StringList> object with the $length and the $capacity.
 

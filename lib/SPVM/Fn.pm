@@ -283,7 +283,7 @@ If the $code_point is not a Unicode scalar value, return undef.
 
 =head2 contains
 
-  static method contains : int ($string : string, $substring : string, $string_offset = 0 : int, $string_length = -1 : int);
+  static method contains : int ($string : string, $substring : string, $string_offset : int = 0, $string_length : int = -1);
 
 The alias for the following code using L</"index>.
 
@@ -366,7 +366,7 @@ The $hex string must contain only hex characters C<0-9a-zA-Z>. Otherwize an exce
 
 =head2 index
 
-  static method index : int ($string : string, $substring : string, $begin = 0 : int, $end = -1 : int);
+  static method index : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1);
 
 Searches for the $substring in the range of the $string from the $begin to the $end.
 
@@ -388,7 +388,7 @@ The $end must be less than the length of the $string.
 
 =head2 init_string
 
-  static method init_string : void ($string : mutable string, $ascii_code = 0 : int, $offset = 0 int, $length = -1);
+  static method init_string : void ($string : mutable string, $ascii_code : int = 0, $offset = 0 int, $length = -1);
 
 Sets the characters in the $string from the $offset to the position proceeded by the $length to the $ascii_code.
 
@@ -659,7 +659,7 @@ If the $base number is 0, the $exponant number cannnot be 0.
 
 =head2 rand
 
-  static method rand : double ($seed : int*, $max = 1 : int);
+  static method rand : double ($seed : int*, $max : int = 1);
 
 Gets a 64bit floating point random number that is greater than or equal to 0 and less than 1 using the $seed.
 
@@ -705,7 +705,7 @@ The $string must be defined. Otherwize an exception is thrown.
 
 =head2 rindex
 
-  static method rindex : int ($string : string, $substring : string, $end = -1 : int, $begin = 0 : int);
+  static method rindex : int ($string : string, $substring : string, $end : int = -1, $begin : int = 0);
 
 Searches for the $substring in the range of the $string from the $begin to the $end.
 
@@ -772,7 +772,7 @@ B<Example:>
   
 =head2 split
 
-  static method split : string[] ($separator : string, $string : string, $limit = -1 : int);
+  static method split : string[] ($separator : string, $string : string, $limit : int = -1);
 
 If the $limit is less than 0, split the $string by the specific $separator and convert them to an string array and return it.
 
@@ -788,7 +788,7 @@ The $limit cannnot be 0. Otherwize an exception is thrown.
 
 =head2 substr
 
-  static method substr : string ($string : string, $offset : int, $length = -1 : int);
+  static method substr : string ($string : string, $offset : int, $length : int = -1);
 
 Gets the substring from the $string. The extracting range of the string is from the $offset to the position proceeded by the $length, and returns it.
 
@@ -1039,7 +1039,7 @@ Examples:
 
 =head2 utf8_substr
 
-  static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length = -1 : int);
+  static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length : int = -1);
 
 Gets the substring from the $string. The extracting range of the string is from the $utf8_offset to the position proceeded by the $utf8_length, and returns it.
 

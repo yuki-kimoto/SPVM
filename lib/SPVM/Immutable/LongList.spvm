@@ -10,7 +10,7 @@ class Immutable::LongList {
   has values : long[];
   
   # Class methods
-  static method new : Immutable::LongList ($array = undef : long[]) {
+  static method new : Immutable::LongList ($array : long[] = undef) {
     my $length : int;
     if ($array) {
       $length = @$array;

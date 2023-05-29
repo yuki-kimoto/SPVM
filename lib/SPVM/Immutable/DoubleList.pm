@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::DoubleList ($array = undef : double[]);
+  static method new : Immutable::DoubleList ($array : double[] = undef);
 
 Create a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object using L</"new_len">.
 

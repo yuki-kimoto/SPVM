@@ -94,7 +94,7 @@ The values. This is the elements in the internally used array, but it can be man
 
 =head2 new
 
-  static method new : List ($array = undef : object[], $capacity = -1 : int);
+  static method new : List ($array : object[] = undef, $capacity : int = -1);
 
 Creates a new C<List> object using L</"new_len">.
 
@@ -110,7 +110,7 @@ The element's addresses of the object array are copied to the values of the the 
 
 =head2 new_len
 
-  static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int);
+  static method new_len : List ($proto_array : object[], $length : int, $capacity : int = -1);
 
 Creates a new C<StringList> object with the $protot_array, the $length and the $capacity.
 

@@ -1111,75 +1111,75 @@ class TestCase::Method {
     return 1;
   }
   
-  static method optional_args_byte_three_optional : Int[]  ($args0 = 1 : int, $args1 = 2 : int, $args2 = 3 : int) {
+  static method optional_args_byte_three_optional : Int[]  ($args0 : int = 1, $args1 : int = 2, $args2 : int = 3) {
     return [(Int)$args0, $args1, $args2];
   }
   
-  static method optional_args_byte_one_required_tow_optional : Int[]  ($args0 : int, $args1 = 2 : int, $args2 = 3 : int) {
+  static method optional_args_byte_one_required_tow_optional : Int[]  ($args0 : int, $args1 : int = 2, $args2 : int = 3) {
     return [(Int)$args0, $args1, $args2];
   }
   
-  static method optional_args_byte0 : byte ($arg = 0 : byte) {
+  static method optional_args_byte0 : byte ($arg : byte = 0) {
     return $arg;
   }
-  static method optional_args_byte_min : byte ($arg = 127 : byte) {
+  static method optional_args_byte_min : byte ($arg : byte = 127) {
     return $arg;
   }
-  static method optional_args_byte_max : byte ($arg = -128 : byte) {
-    return $arg;
-  }
-
-  static method optional_args_short0 : short ($arg = 0 : short) {
-    return $arg;
-  }
-  static method optional_args_short_min : short ($arg = 32767 : short) {
-    return $arg;
-  }
-  static method optional_args_short_max : short ($arg = -32768 : short) {
+  static method optional_args_byte_max : byte ($arg : byte = -128) {
     return $arg;
   }
 
-  static method optional_args_int0 : int ($arg = 0 : int) {
+  static method optional_args_short0 : short ($arg : short = 0) {
     return $arg;
   }
-  static method optional_args_int_min : int ($arg = 2147483647 : int) {
+  static method optional_args_short_min : short ($arg : short = 32767) {
     return $arg;
   }
-  static method optional_args_int_max : int ($arg = -2147483648 : int) {
+  static method optional_args_short_max : short ($arg : short = -32768) {
     return $arg;
   }
 
-  static method optional_args_long0 : long ($arg = 0 : long) {
+  static method optional_args_int0 : int ($arg : int = 0) {
     return $arg;
   }
-  static method optional_args_long_min : long ($arg = 9223372036854775807L : long) {
+  static method optional_args_int_min : int ($arg : int = 2147483647) {
+    return $arg;
+  }
+  static method optional_args_int_max : int ($arg : int = -2147483648) {
+    return $arg;
+  }
+
+  static method optional_args_long0 : long ($arg : long = 0) {
+    return $arg;
+  }
+  static method optional_args_long_min : long ($arg : long = 9223372036854775807L) {
     return $arg;
   }
   static method optional_args_long_min_new_syntax : long ($arg : long = 9223372036854775807L) {
     return $arg;
   }
-  static method optional_args_long_max : long ($arg = -9223372036854775808L : long) {
+  static method optional_args_long_max : long ($arg : long = -9223372036854775808L) {
     return $arg;
   }
   
-  static method optional_args_float0 : float ($arg = 1.5f : float) {
+  static method optional_args_float0 : float ($arg : float = 1.5f) {
     return $arg;
   }
   
-  static method optional_args_double0 : double ($arg = 2147483647.5 : double) {
+  static method optional_args_double0 : double ($arg : double = 2147483647.5) {
     return $arg;
   }
   
-  static method optional_args_object : object ($arg = undef : object) {
+  static method optional_args_object : object ($arg : object = undef) {
     return $arg;
   }
-  static method optional_args_object_dim1 : object ($arg = undef : object[]) {
+  static method optional_args_object_dim1 : object ($arg : object[] = undef) {
     return $arg;
   }
-  static method optional_args_string_dim2 : object ($arg = undef : string[][]) {
+  static method optional_args_string_dim2 : object ($arg : string[][] = undef) {
     return $arg;
   }
-  static method optional_args_string : string ($arg = undef : string) {
+  static method optional_args_string : string ($arg : string = undef) {
     return $arg;
   }
   
@@ -1485,19 +1485,19 @@ class TestCase::Method {
     return $items;
   }
   
-  static method items_2 : int ($args0 : int, $args1 = 0 : int) {
+  static method items_2 : int ($args0 : int, $args1 : int = 0) {
     my $items = items;
     
     return $items;
   }
   
-  static method items_4 : int ($args_2d : Complex_2d, $args0 = 0 : int, $args1 = 0 : int) {
+  static method items_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0) {
     my $items = items;
     
     return $items;
   }
 
-  method instance_method_items_2 : int ($args0 : int, $args1 = 0 : int) {
+  method instance_method_items_2 : int ($args0 : int, $args1 : int = 0) {
     my $items = items;
     
     return $items;

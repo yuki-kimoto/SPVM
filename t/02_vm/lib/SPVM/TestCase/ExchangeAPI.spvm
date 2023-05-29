@@ -1345,7 +1345,7 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method optional_args_int : int ($args0 : int, $args1 = 5 : int) {
+  static method optional_args_int : int ($args0 : int, $args1 : int = 5) {
     return $args0 + $args1;
   }
   

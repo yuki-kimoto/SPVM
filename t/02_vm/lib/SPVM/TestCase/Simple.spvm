@@ -75,7 +75,7 @@ class TestCase::Simple : public {
     return "interface_shared1 $num";
   }
   
-  static method new_options : TestCase::Simple ($options = undef : object[]) {
+  static method new_options : TestCase::Simple ($options : object[] = undef) {
     my $options_h = Hash->new($options);
     
     my $x = $options_h->delete_or_default_int("x", 0);

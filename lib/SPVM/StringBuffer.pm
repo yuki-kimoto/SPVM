@@ -61,7 +61,7 @@ The value. This is the internally used string, but it can be manipulated directl
 
 =head2 new
 
-  static method new : StringBuffer ($string = undef : string, $capacity = -1 : int);
+  static method new : StringBuffer ($string : string = undef, $capacity : int = -1);
 
 Creates a new C<StringBuffer> object using L</"new_len">.
 
@@ -71,7 +71,7 @@ The $string is copied to the value of the the created string buffer.
 
 =head2 new_len
 
-  static method new_len : StringBuffer ($length : int, $capacity = -1 : int);
+  static method new_len : StringBuffer ($length : int, $capacity : int = -1);
 
 Creates a new C<StringBuffer> object with the $length and the $capacity.
 
@@ -87,7 +87,7 @@ The $length must be greater than or equal to 0. Otherwize an exception is thrown
 
 =head2 push
 
-  method push : void ($string : string, $offset = 0 : int, $length = -1 : int);
+  method push : void ($string : string, $offset : int = 0, $length : int = -1);
 
 Adds a $string from the $offset to the position proceeded by the $length after the end of the string in the string buffer.
 

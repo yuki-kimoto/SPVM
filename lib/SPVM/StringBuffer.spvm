@@ -16,7 +16,7 @@ class StringBuffer {
   has value : ro mutable string;
   
   # Class methods
-  static method new : StringBuffer ($string = undef : string, $capacity = -1 : int) {
+  static method new : StringBuffer ($string : string = undef, $capacity : int = -1) {
     my $length : int;
     if ($string) {
       $length = length $string;
@@ -34,7 +34,7 @@ class StringBuffer {
     return $self;
   }
   
-  static method new_len : StringBuffer ($length : int, $capacity = -1 : int) {
+  static method new_len : StringBuffer ($length : int, $capacity : int = -1) {
     
     unless ($length >= 0) {
       die "The \$length must be greater than or equal to 0.";
@@ -57,7 +57,7 @@ class StringBuffer {
   }
   
   # Instance methods
-  method push : void ($string : string, $offset = 0 : int, $length = -1 : int) {
+  method push : void ($string : string, $offset : int = 0, $length : int = -1) {
     
     unless ($string) {
       die "The \$string must be defined.";

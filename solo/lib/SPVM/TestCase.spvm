@@ -97,7 +97,7 @@ SPVM::Test - SPVM test class
     
   }
   
-  static method optional_args_byte0 : byte ($value = 0 : byte) {
+  static method optional_args_byte0 : byte ($value : byte = 0) {
     return $value;
   }
 

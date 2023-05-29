@@ -88,7 +88,7 @@ The elements of the list. This is the internally used array, but it can be manip
 
 =head2 new
 
-  static method new : IntList ($array = undef : int[], $capacity = -1 : int);
+  static method new : IntList ($array : int[] = undef, $capacity : int = -1);
 
 Create a new C<IntList> object using L</"new_len">.
 
@@ -103,7 +103,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : IntList ($length : int, $capacity = -1 : int);
+  static method new_len : IntList ($length : int, $capacity : int = -1);
 
 Creates a new C<IntList> object with the $length and the $capacity.
 

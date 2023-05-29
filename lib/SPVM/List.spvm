@@ -16,7 +16,7 @@ class List {
   has values : ro object[];
   
   # Class methods
-  static method new : List ($array = undef : object[], $capacity = -1 : int) {
+  static method new : List ($array : object[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class List {
     return $self;
   }
   
-  static method new_len : List ($proto_array : object[], $length : int, $capacity = -1 : int) {
+  static method new_len : List ($proto_array : object[], $length : int, $capacity : int = -1) {
     my $self = new List;
     
     unless ($proto_array) {

@@ -68,7 +68,7 @@ Gets the parent class name and returns it.
 
 =head2 get_method_names
 
-  method get_method_names : string[] ($class_name : string, $options = undef : object[]);
+  method get_method_names : string[] ($class_name : string, $options : object[] = undef);
 
 Gets method names and returns it.
 

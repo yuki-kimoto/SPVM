@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::FloatList ($array = undef : float[]);
+  static method new : Immutable::FloatList ($array : float[] = undef);
 
 Create a new L<Immutable::FloatList|SPVM::Immutable::FloatList> object using L</"new_len">.
 

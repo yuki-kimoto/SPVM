@@ -10,7 +10,7 @@ class Immutable::ByteList {
   has values : byte[];
   
   # Class methods
-  static method new : Immutable::ByteList ($array = undef : byte[]) {
+  static method new : Immutable::ByteList ($array : byte[] = undef) {
     my $length : int;
     if ($array) {
       $length = @$array;

@@ -52,7 +52,7 @@ C<y>.
 
 =head2 new
 
-  static method new : Point ($x = 0 : int, $y = 0 : int);
+  static method new : Point ($x : int = 0, $y : int = 0);
 
 Create a new C<Point> object with $x and $y.
 
@@ -60,7 +60,7 @@ Create a new C<Point> object with $x and $y.
 
 =head2 init
 
-  protected method init : Point ($x = 0 : int, $y = 0 : int)
+  protected method init : Point ($x : int = 0, $y : int = 0)
 
 Initializes L</"x"> and L</"y">.
 

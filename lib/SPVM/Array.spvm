@@ -7,7 +7,7 @@ class Array {
   use EqualityChecker;
   use Format;
   
-  static method copy_byte : byte[] ($array : byte[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_byte : byte[] ($array : byte[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -33,7 +33,7 @@ class Array {
     return $new_array;
   }
   
-  static method copy_double : double[] ($array : double[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_double : double[] ($array : double[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -59,7 +59,7 @@ class Array {
     return $new_array;
   }
   
-  static method copy_float : float[] ($array : float[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_float : float[] ($array : float[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -85,7 +85,7 @@ class Array {
     return $new_array;
   }
   
-  static method copy_int : int[] ($array : int[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_int : int[] ($array : int[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -111,7 +111,7 @@ class Array {
     return $new_array;
   }
   
-  static method copy_long : long[] ($array : long[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_long : long[] ($array : long[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -137,7 +137,7 @@ class Array {
     return $new_array;
   }
   
-  precompile static method copy_object : object[] ($array : object[], $cloner = undef : Cloner, $offset = 0 : int, $length = -1 : int) {
+  precompile static method copy_object : object[] ($array : object[], $cloner : Cloner = undef, $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -170,11 +170,11 @@ class Array {
     return $new_array;
   }
   
-  static method copy_object_address : object[] ($array : object[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_object_address : object[] ($array : object[], $offset : int = 0, $length : int = -1) {
     return &copy_object($array, undef, $offset, $length);
   }
   
-  static method copy_short : short[] ($array : short[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_short : short[] ($array : short[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
       die "The \$array must be defined.";
@@ -200,7 +200,7 @@ class Array {
     return $new_array;
   }
   
-  precompile static method copy_string : string[] ($array : string[], $offset = 0 : int, $length = -1 : int) {
+  precompile static method copy_string : string[] ($array : string[], $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -227,7 +227,7 @@ class Array {
     return $new_array;
   }
   
-  static method copy_string_address : string[] ($array : string[], $offset = 0 : int, $length = -1 : int) {
+  static method copy_string_address : string[] ($array : string[], $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -682,7 +682,7 @@ class Array {
     }
   }
   
-  precompile static method memset_byte : void ($array : byte[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_byte : void ($array : byte[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -704,7 +704,7 @@ class Array {
       $array->[$offset + $i] = (byte)$element;
     }
   }
-  precompile static method memset_double : void ($array : double[], $element : double, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_double : void ($array : double[], $element : double, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -726,7 +726,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_float : void ($array : float[], $element : float, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_float : void ($array : float[], $element : float, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -748,7 +748,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_int : void ($array : int[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_int : void ($array : int[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -770,7 +770,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_long : void ($array : long[], $element : long, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_long : void ($array : long[], $element : long, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -792,7 +792,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
-  precompile static method memset_object : void ($array : object[], $element : object, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_object : void ($array : object[], $element : object, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -815,7 +815,7 @@ class Array {
     }
   }
   
-  precompile static method memset_short : void ($array : short[], $element : int, $offset = 0 : int, $length = -1 : int) {
+  precompile static method memset_short : void ($array : short[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
     }
@@ -838,7 +838,7 @@ class Array {
     }
   }
   
-  static method memset_string : void ($array : string[], $element : string, $offset = 0 : int, $length = -1 : int) {
+  static method memset_string : void ($array : string[], $element : string, $offset : int = 0, $length : int = -1) {
     &memset_object($array, $element, $offset, $length);
   }
   

@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::LongList ($array = undef : long[]);
+  static method new : Immutable::LongList ($array : long[] = undef);
 
 Create a new L<Immutable::LongList|SPVM::Immutable::LongList> object using L</"new_len">.
 

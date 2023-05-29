@@ -14,7 +14,7 @@ class Runtime : pointer {
   
   native method get_parent_class_name : string ($class_name : string);
   
-  method get_method_names : string[] ($class_name : string, $options = undef : object[]) {
+  method get_method_names : string[] ($class_name : string, $options : object[] = undef) {
     
     my $native_flag = 0;
     my $precompile_flag = 0;

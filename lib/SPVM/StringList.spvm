@@ -16,7 +16,7 @@ class StringList {
   has values : ro string[];
   
   # Class methods
-  static method new : StringList ($array = undef : string[], $capacity = -1 : int) {
+  static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class StringList {
     return $self;
   }
   
-  static method new_len : StringList ($length : int, $capacity = -1 : int) {
+  static method new_len : StringList ($length : int, $capacity : int = -1) {
     my $self = new StringList;
     
     unless ($length >= 0) {

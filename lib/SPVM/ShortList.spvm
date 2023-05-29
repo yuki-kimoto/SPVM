@@ -16,7 +16,7 @@ class ShortList {
   has values : ro short[];
   
   # Class methods
-  static method new : ShortList ($array = undef : short[], $capacity = -1 : int) {
+  static method new : ShortList ($array : short[] = undef, $capacity : int = -1) {
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -34,7 +34,7 @@ class ShortList {
     return $self;
   }
   
-  static method new_len : ShortList ($length : int, $capacity = -1 : int) {
+  static method new_len : ShortList ($length : int, $capacity : int = -1) {
     my $self = new ShortList;
     
     unless ($length >= 0) {

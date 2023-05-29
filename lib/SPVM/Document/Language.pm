@@ -2517,7 +2517,7 @@ Examples:
     
     has z : rw protected int;
     
-    static method new : Point3D ($x = 0 : int, $y = 0 : int, $z = 0 : int) {
+    static method new : Point3D ($x : int = 0, $y : int = 0, $z : int = 0) {
       my $self = new Point3D;
       
       $self->{x} = $x;
@@ -9079,7 +9079,7 @@ If an argument is a multi-numeric type, the stack length of the argument becomes
 
 Examples:
   
-  static method my_static_method : int ($args : int, $bar = 0 : int) {
+  static method my_static_method : int ($args : int, $bar : int = 0) {
     my $items = items;
     
     return $items;
@@ -9091,7 +9091,7 @@ Examples:
   # 2
   &my_static_method(1, 2);
   
-  static method my_instance_method : int ($args : int, $bar = 0 : int) {
+  static method my_instance_method : int ($args : int, $bar : int = 0) {
     my $items = items;
     
     return $items;
@@ -9103,7 +9103,7 @@ Examples:
   # 3 (2 + the invocant)
   &my_instance_method(1, 2);
 
-  static method my_mulnum_method : int ($z : Complex_2d, $bar = 0 : int) {
+  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
     my $items = items;
     
     return $items;
