@@ -1,3 +1,16 @@
+0.986 2023-05-29
+  [Incompatible Changes]
+    * The syntax of the optional argument is changed. The before syntax is deprecated and will be removed.
+    [Before]
+    static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 = DEFAULT_VALUE : ARG_TYPE2) {
+      
+    }
+    
+    [After]
+    static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2 = DEFAULT_VALUE) {
+      
+    }
+    
 0.985 2023-05-26
   [Bug Fix]
     * The bug that scopes does not work well in some cases.

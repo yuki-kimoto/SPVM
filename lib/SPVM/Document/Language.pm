@@ -3131,13 +3131,18 @@ A method has L</"Method Block"> except for the case that the method has the C<na
 
 The optional argument is the syntax to specify optional arguments.
 
+  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2 = DEFAULT_VALUE) {
+  
+  }
+  
+  # Deprecated
   static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 = DEFAULT_VALUE : ARG_TYPE2) {
   
   }
 
 Examples:
 
-  static method substr ($string : string, $offset : int, $length = -1 : int) {
+  static method substr ($string : string, $offset : int, $length : int = -1) {
     # ...
   }
   

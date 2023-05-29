@@ -397,6 +397,10 @@ arg
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
     }
+  | var ':' qualified_type opt_type_comment ASSIGN operator
+    {
+      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
+    }
 
 anon_method_has_list
   : anon_method_has_list ',' anon_method_has

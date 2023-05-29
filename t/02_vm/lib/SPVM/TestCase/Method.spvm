@@ -945,6 +945,12 @@ class TestCase::Method {
         }
       }
       {
+        my $value = &optional_args_long_min_new_syntax;
+        unless ($value == 9223372036854775807L) {
+          return 0;
+        }
+      }
+      {
         my $value = &optional_args_long_max;
         unless ($value == -9223372036854775808L) {
           return 0;
@@ -1147,6 +1153,9 @@ class TestCase::Method {
     return $arg;
   }
   static method optional_args_long_min : long ($arg = 9223372036854775807L : long) {
+    return $arg;
+  }
+  static method optional_args_long_min_new_syntax : long ($arg : long = 9223372036854775807L) {
     return $arg;
   }
   static method optional_args_long_max : long ($arg = -9223372036854775808L : long) {
