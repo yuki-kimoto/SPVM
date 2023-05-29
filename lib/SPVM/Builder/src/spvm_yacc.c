@@ -2976,7 +2976,7 @@ yyreduce:
   case 59:
 #line 397 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      spvm_warn("[Deprecated]Old optional argument syntax is deprecated.\n %s line %d", compiler->cur_file, compiler->cur_line);
+      spvm_warn("[Deprecated]Old optional argument syntax is deprecated.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
       (yyval.opval) = SPVM_OP_build_arg(compiler, (yyvsp[-5].opval), (yyvsp[-1].opval), NULL, (yyvsp[-3].opval));
     }
 #line 2983 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
