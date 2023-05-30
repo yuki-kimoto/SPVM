@@ -147,7 +147,7 @@ int32_t SPVM__Hash__build_seed128(SPVM_ENV* env, SPVM_VALUE* stack) {
   char* seed128 = (char*)env->get_chars(env, stack, obj_seed128);
   int32_t seed128_length = env->length(env, stack, obj_seed128);
   
-  lcg_urandom((unsigned int)seed_int32, seed128, seed128_length);
+  lcg_urandom((unsigned int)seed_int32, (unsigned char*)seed128, seed128_length);
   
   return 0;
 }
