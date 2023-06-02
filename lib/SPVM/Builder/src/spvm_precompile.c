@@ -5045,7 +5045,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_INTERFACE_METHOD: {
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t method_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
         
@@ -5068,7 +5068,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INTERFACE_METHOD(env, stack, object, class_name, method_name, args_stack_length, &error, tmp_buffer, sizeof(tmp_buffer));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, class_name, method_name, args_stack_length, &error, tmp_buffer, sizeof(tmp_buffer));\n");
         
         break;
       }
