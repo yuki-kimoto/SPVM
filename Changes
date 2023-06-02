@@ -1,4 +1,6 @@
 0.988 2023-05-29
+  [Changed]
+    * An exception is thrown when the invocant of the instance method call is undef.
   [Exception Message Improvement]
     The following exception message is changed.
       -  "The implementation of the \"%s\" instance method defined in \"%s\" is not found.",

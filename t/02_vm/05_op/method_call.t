@@ -246,7 +246,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # Interface Methods
 {
   {
-    ok(SPVM::TestCase::Method->call_not_implemented_method);
+    ok(SPVM::TestCase::Method->call_interface_method_exception);
   }
 }
 

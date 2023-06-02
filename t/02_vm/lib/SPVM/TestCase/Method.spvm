@@ -1573,16 +1573,27 @@ class TestCase::Method {
     return undef;
   }
   
-  static method call_not_implemented_method : int () {
-    my $self = new TestCase::Method;
-    my $interface = (TestCase::InterfaceType)$self;
-    
-    eval { $interface->to_string; }
-    
-    unless (Fn->contains($@, "The implementation of the \"to_string\" method in the \"TestCase::InterfaceType\" interface is not found.")) {
-      return 0;
+  static method call_interface_method_exception : int () {
+    {
+      my $self = new TestCase::Method;
+      my $interface = (TestCase::InterfaceType)$self;
+      
+      eval { $interface->to_string; }
+      
+      unless (Fn->contains($@, "The implementation of the \"to_string\" method in the \"TestCase::InterfaceType\" interface is not found.")) {
+        return 0;
+      }
     }
     
+    {
+      my $interface = (TestCase::InterfaceType)undef;
+      
+      eval { $interface->to_string; }
+      
+      unless (Fn->contains($@, "The invocant must be defined.")) {
+        return 0;
+      }
+    }
     $@ = undef;
     
     return 1;
