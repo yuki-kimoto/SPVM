@@ -1,3 +1,8 @@
+0.988 2023-05-29
+  [Exception Message Improvement]
+    The following exception message is changed.
+      -  "The implementation of the \"%s\" instance method defined in \"%s\" is not found.",
+      +  "The implementation of the \"%s\" method in the \"%s\" class/interface is not found.",
 0.987 2023-05-29
   [Changes]
     * INIT block in precompile class is not precompiled.

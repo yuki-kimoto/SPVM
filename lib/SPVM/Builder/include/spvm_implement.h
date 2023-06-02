@@ -60,7 +60,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The error code must be greater than or equal to 1.",
   "\n  at %s%s%s line %d\n",
   "Warning\n  at %s%s%s line %d\n",
-  "The implementation of the \"%s\" instance method defined in \"%s\" is not found.",
+  "The implementation of the \"%s\" method in the \"%s\" class/interface is not found.",
   "The %s basic type is not found.",
   "The %s field is not found.",
   "The %s class variable in the %s class is not found.",
