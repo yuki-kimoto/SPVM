@@ -481,7 +481,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
       {
         method_id = opcode->operand0;
         break;
@@ -5011,7 +5011,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                               "  }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
         int32_t method_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
         
@@ -5040,7 +5040,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 
         SPVM_STRING_BUFFER_add(string_buffer,
                                               "  if (__builtin_expect(error == 0, 1)) {\n"
-                                              "    SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error, method_id, args_stack_length);\n"
+                                              "    SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error, method_id, args_stack_length);\n"
                                               "  }\n");
     
         break;

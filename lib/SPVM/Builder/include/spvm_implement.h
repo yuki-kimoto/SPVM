@@ -29,7 +29,7 @@ enum {
   SPVM_IMPLEMENT_C_STRING_ERROR_CODE_TOO_SMALL,
   SPVM_IMPLEMENT_C_STRING_WARN_AT,
   SPVM_IMPLEMENT_C_STRING_WARN_UNDEF,
-  SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND,
+  SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_STATIC_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND,
@@ -2668,12 +2668,13 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 }
 
 #define SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error, method_id, args_stack_length) (error = env->call_method_raw(env, stack, method_id, args_stack_length))
-#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error, method_id, args_stack_length) (error = env->call_method_raw(env, stack, method_id, args_stack_length))
+
+#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error, method_id, args_stack_length) (error = env->call_method_raw(env, stack, method_id, args_stack_length))
 
 static inline void SPVM_IMPLEMENT_CALL_INTERFACE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_name, const char* method_name, int32_t args_stack_length, int32_t* error, char* tmp_buffer, int32_t tmp_buffer_length) {
   int32_t entity_method_id = env->get_instance_method_id(env, stack, object, method_name);
   if (entity_method_id < 0) {
-    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_NOT_FOUND], method_name, interface_name);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_STATIC_NOT_FOUND], method_name, interface_name);
     void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error = 1;
