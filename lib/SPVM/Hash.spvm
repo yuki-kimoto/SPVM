@@ -152,6 +152,16 @@ class Hash {
     return $keys;
   }
 
+  precompile method has_keys : int () {
+    
+    my $has_keys = 0;
+    if ($self->{count} > 0) {
+      $has_keys = 1;
+    }
+    
+    return $has_keys;
+  }
+
   precompile method values : object[] () {
     my $retval = new object[$self->{count}];
     # iterate entries

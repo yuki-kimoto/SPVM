@@ -23,6 +23,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Hash->delete_with_no_hash_collision);
   ok(SPVM::TestCase::Module::Hash->delete_with_hash_collision);
   ok(SPVM::TestCase::Module::Hash->keys);
+  ok(SPVM::TestCase::Module::Hash->has_keys);
   ok(SPVM::TestCase::Module::Hash->values);
   ok(SPVM::TestCase::Module::Hash->copy);
   ok(SPVM::TestCase::Module::Hash->clone);

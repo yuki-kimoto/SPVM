@@ -410,37 +410,53 @@ class TestCase::Module::Hash {
     
     my $key2 = (mutable string)new_string_len(1);
     $key2->[0] = 'c';
-
+    
     $hash->set_int($key0 => 1);
     $hash->set_int($key1 => 2);
     $hash->set_int($key2 => 3);
-
+    
     my $keys = $hash->keys;
-
+    
     unless (@$keys == 3) {
       return 0;
     }
-
+    
     Sort->sort_string_asc($keys);
-
+    
     unless ($keys->[0] == $key0) {
       return 0;
     }
-
+    
     unless ($keys->[1] == $key1) {
       return 0;
     }
-
+    
     unless ($keys->[2] eq $key2) {
       return 0;
     }
     unless ($keys->[2] != $key2) {
       return 0;
     }
-
+    
     return 1;
   }
-
+  
+  static method has_keys : int () {
+    my $hash = Hash->new;
+    
+    if ($hash->has_keys) {
+      return 0;
+    }
+    
+    $hash->set("key0" => 1);
+    
+    unless ($hash->has_keys) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method values : int () {
     my $hash = Hash->new({});
     my $key0 = "a";

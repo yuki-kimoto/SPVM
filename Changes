@@ -1,4 +1,6 @@
 0.988 2023-05-29
+  [New Features]
+    * The has_keys method in the Hash class is added.
   [Changed]
     * An exception is thrown when the invocant of the instance method call is undef.
   [Exception Message Improvement]
