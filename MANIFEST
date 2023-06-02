@@ -706,6 +706,7 @@ t/02_vm/lib/SPVM/TestCase/Matrix4_16i.spvm
 t/02_vm/lib/SPVM/TestCase/Matrix4_16l.spvm
 t/02_vm/lib/SPVM/TestCase/Matrix4_16s.spvm
 t/02_vm/lib/SPVM/TestCase/Method.spvm
+t/02_vm/lib/SPVM/TestCase/MethodChild.pm
 t/02_vm/lib/SPVM/TestCase/Minimal.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Array.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Bool.spvm

@@ -1,4 +1,6 @@
 class TestCase::Method {
+  interface TestCase::InterfaceType;
+  
   use TestCase::Minimal;
   use TestCase::Point_3b;
   use TestCase::Point_3s;
@@ -1563,6 +1565,25 @@ class TestCase::Method {
         return 0;
       }
     }
+    
+    return 1;
+  }
+  
+  method interface_shared1 : string ($num : int) {
+    return undef;
+  }
+  
+  static method call_not_implemented_method : int () {
+    my $self = new TestCase::Method;
+    my $interface = (TestCase::InterfaceType)$self;
+    
+    eval { $interface->to_string; }
+    
+    unless (Fn->contains($@, "The implementation of the \"to_string\" method in the \"TestCase::InterfaceType\" interface is not found.")) {
+      return 0;
+    }
+    
+    $@ = undef;
     
     return 1;
   }
