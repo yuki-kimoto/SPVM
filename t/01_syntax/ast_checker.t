@@ -1284,4 +1284,13 @@ use Test::More;
   }
 }
 
+# Extra
+{
+   {
+    my $source = [
+      'class MyClass { use Point; static method main : int () { my $point = Point->new; warn "AAA " . type_name $point . " " . $point can splitpath; } }',
+    ];
+    compile_not_ok($source, 'The right operand of the . operator must be the string type or the byte[] type');
+  }
+}
 done_testing;
