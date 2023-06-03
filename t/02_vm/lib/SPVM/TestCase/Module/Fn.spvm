@@ -3401,6 +3401,17 @@ class TestCase::Module::Fn {
     }
     
     {
+      my $string = "abcde";
+      my $replaced = Fn->substr($string, 1, 2, "XYZ");
+      
+      warn $replaced;
+      
+      unless ($replaced eq "aXYZde") {
+        return 0;
+      }
+    }
+    
+    {
       eval { Fn->substr(undef, 0); };
       unless (Fn->contains($@, "The \$string must be defined")) {
         return 0;

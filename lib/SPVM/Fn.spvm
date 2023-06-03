@@ -790,7 +790,7 @@ class Fn {
     return $parts;
   }
   
-  static method substr : string ($string : string, $offset : int, $length : int = -1) {
+  static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef) {
     
     unless ($string) {
       die "The \$string must be defined.";
@@ -809,9 +809,15 @@ class Fn {
       die "The \$offset + the \$length must be less than or equal to the length of the \$string.";
     }
     
-    my $substring = (mutable string)new_string_len($length);
-    
-    Fn->memcpy($substring, 0, $string, $offset, $length);
+    my $substring = (string)undef;
+    if ($replacement) {
+      my $replacement_length = length $replacement;
+      $substring = Fn->substr($string, 0, $offset) . $replacement . Fn->substr($string, $offset + $length);
+    }
+    else {
+      $substring = (mutable string)new_string_len($length);
+      Fn->memcpy($substring, 0, $string, $offset, $length);
+    }
     
     return $substring;
   }

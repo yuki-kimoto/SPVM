@@ -788,11 +788,25 @@ The $limit cannnot be 0. Otherwize an exception is thrown.
 
 =head2 substr
 
-  static method substr : string ($string : string, $offset : int, $length : int = -1);
+  static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef);
 
-Gets the substring from the $string. The extracting range of the string is from the $offset to the position proceeded by the $length, and returns it.
+Cuts a substring of the $length from the $offset of the $string, and returns it.
+
+If the $length is ommited, the $length is the length of the $string minus $offset.
 
 If the length is less than 0, the length to the end of the string is calculated from the length of the $string and the $offset.
+
+Replacement:
+
+If The $replacement is given, returns a string that is the replacement string $replacement of the $string from the $offset to the $length.
+
+Exceptions:
+
+The $string must be defined. Otherwise an exception is thrown.
+
+The $offset must be greater than or equal to 0. Otherwise an exception is thrown.
+
+The $offset + the $length must be less than or equal to the length of the $string. Otherwise an exception is thrown.
 
 =head2 to_code_points
 

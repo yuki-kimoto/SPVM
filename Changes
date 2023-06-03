@@ -1,6 +1,10 @@
-0.988 2023-05-29
+0.988 2023-06-04
   [New Features]
     * The has_keys method in the Hash class is added.
+    * The replacement argument is added to the substr method in the Fn class.
+    
+      static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef);
+    
   [Changed]
     * An exception is thrown when the invocant of the instance method call is undef.
   [Exception Message Improvement]
