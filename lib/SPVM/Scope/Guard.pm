@@ -55,7 +55,7 @@ The $handler is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
 
 Exceptions:
 
-The $handler must be defined. Otherwize an exception is thrown.
+The $handler must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 

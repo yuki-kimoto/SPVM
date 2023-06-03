@@ -65,7 +65,7 @@ Creates a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object with t
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwize an exception is thrown.
+The $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
@@ -77,7 +77,7 @@ Gets the element of the position of the $index.
 
 Exceptions:
 
-The $index must be greater than or equal to 0. Otherwize an exception is thrown.
+The $index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 The $index must be less than the length of the $list.
 
