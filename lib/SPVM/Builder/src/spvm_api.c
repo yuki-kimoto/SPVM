@@ -2306,17 +2306,13 @@ void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string
 }
 
 SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
-  (void)env;
-
+  
   int32_t string1_length = SPVM_API_length(env, stack, string1);
   int32_t string2_length = SPVM_API_length(env, stack, string2);
   
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_API_new_string_raw(env, stack, NULL, string3_length);
-
-  string3->basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_STRING;
-  string3->type_dimension = 0;
-
+  
   const char* string1_bytes = SPVM_API_get_chars(env, stack, string1);
   const char* string2_bytes = SPVM_API_get_chars(env, stack, string2);
   char* string3_bytes = (char*)SPVM_API_get_chars(env, stack, string3);
