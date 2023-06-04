@@ -2844,6 +2844,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   }
 
   object->basic_type_id = basic_type->id;
+  object->basic_type_name_id = basic_type->name_id;
   object->type_dimension = 1;
 
   // Set array length
@@ -2929,6 +2930,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   }
 
   object->basic_type_id = basic_type->id;
+  object->basic_type_name_id = basic_type->name_id;
   object->type_dimension = 1;
 
   // Set array length
@@ -2967,6 +2969,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   }
   
   object->basic_type_id = basic_type->id;
+  object->basic_type_name_id = basic_type->name_id;
   object->type_dimension = 0;
   
   object->length = fields_length;
