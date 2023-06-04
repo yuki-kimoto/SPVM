@@ -16,6 +16,7 @@ struct spvm_object {
   uint8_t type_dimension;
   uint8_t flag;
   int32_t length;
+  int32_t basic_type_name_id;
 };
 
 enum {
