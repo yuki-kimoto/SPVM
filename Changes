@@ -1,4 +1,4 @@
-0.988 2023-06-04
+0.988 2023-06-05
   [New Features]
     * The has_keys method in the Hash class is added.
     * The replacement argument is added to the substr method in the Fn class.
