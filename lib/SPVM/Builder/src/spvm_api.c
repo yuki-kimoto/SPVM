@@ -2625,10 +2625,24 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, const c
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_set_object_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension, int32_t length) {
+void SPVM_API_set_object_info (SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension, int32_t length) {
   object->basic_type_id = basic_type_id;
   object->type_dimension = type_dimension;
   object->length = length;
+}
+
+SPVM_OBJECT* SPVM_API_new_object_common (SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, int32_t basic_type_id, int32_t type_dimension, int32_t length, int32_t flag) {
+  
+  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
+  
+  if (object) {
+    object->basic_type_id = basic_type_id;
+    object->type_dimension = type_dimension;
+    object->length = length;
+    object->flag = flag;
+  }
+  
+  return object;
 }
 
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length) {
