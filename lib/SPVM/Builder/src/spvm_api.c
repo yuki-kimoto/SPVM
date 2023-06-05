@@ -2627,7 +2627,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, const c
 
 SPVM_OBJECT* SPVM_API_set_object_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension, int32_t length) {
   object->basic_type_id = basic_type_id;
-  object->type_dimension = 0;
+  object->type_dimension = type_dimension;
   object->length = length;
 }
 
@@ -2696,7 +2696,7 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32
   if (!object) {
     return NULL;
   }
-
+  
   object->type_dimension = 1;
   object->basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE;
   object->length = length;
