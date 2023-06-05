@@ -637,7 +637,7 @@ int32_t SPVM__TestCase__NativeAPI__has_interface_test(SPVM_ENV* env, SPVM_VALUE*
   
   void* object = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::AnonMethod::AnonMethod");
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::AnonMethod::AnonMethod");
   if (basic_type_id < 0) {
     assert(0);
   }
@@ -655,7 +655,7 @@ int32_t SPVM__TestCase__NativeAPI__is_type_test_minimals(SPVM_ENV* env, SPVM_VAL
   
   void* object = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
   if (basic_type_id < 0) {
     assert(0);
   }
@@ -904,7 +904,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name(SPVM_ENV* env
   int32_t e;
   void* object_simple = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
   if (basic_type_id < 0) {
     return 1;
   }
@@ -928,7 +928,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name_exception(SPV
   int32_t e;
   void* object_simple = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
   if (basic_type_id < 0) {
     return 1;
   }
@@ -1555,7 +1555,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 8
   {
-    int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
     if (basic_type_id < 0) {
       return 1;
     }
@@ -1564,7 +1564,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 9
   {
-    int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
     if (basic_type_id < 0) {
       return 1;
     }
@@ -1573,7 +1573,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 10
   {
-    int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
     if (basic_type_id < 0) {
       return 1;
     }
@@ -1582,7 +1582,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 11
   {
-    int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Pointer");
+    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Pointer");
     if (basic_type_id < 0) {
       return 1;
     }
@@ -2705,28 +2705,18 @@ int32_t SPVM__TestCase__NativeAPI__get_basic_type_id_by_name(SPVM_ENV* env, SPVM
   int32_t e;
   
   {
-    int32_t int_basic_type_id = env->get_basic_type_id_by_name(env, stack, "int", &e, __func__, FILE_NAME, __LINE__);
+    int32_t int_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "int");
     
     if (!(int_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    if (!(e == 0)) {
       stack[0].ival = 0;
       return 0;
     }
   }
 
   {
-    int32_t not_found_basic_type_id = env->get_basic_type_id_by_name(env, stack, "NotFoundBasicType", &e, __func__, FILE_NAME, __LINE__);
+    int32_t not_found_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "NotFoundBasicType");
     
     if (!(not_found_basic_type_id < 0)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    if (!(e == 1)) {
       stack[0].ival = 0;
       return 0;
     }
