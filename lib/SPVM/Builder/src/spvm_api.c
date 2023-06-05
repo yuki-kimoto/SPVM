@@ -3337,31 +3337,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
-  (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Method ID
-  int32_t method_id = -1;
-  
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
-  if (basic_type) {
-    
-    // Class
-    SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-    if (class) {
-
-      // Method
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, class->id, method_name);
-      if (method) {
-        // Instance method
-        if (!method->is_class_method) {
-          method_id = method->id;
-        }
-      }
-    }
-  }
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   return method_id;
 }
