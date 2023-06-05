@@ -1677,8 +1677,12 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
   
   // Object must be not null
   assert(object);
+
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
+  assert(basic_type);
+  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type->name_id);
   
-  if (object->basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
+  if (strcmp(object->basic_type_name, basic_type_name) == 0 && object->type_dimension == type_dimension) {
     return 1;
   }
   else {
