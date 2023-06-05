@@ -2807,7 +2807,12 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
   
-  SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type_id, type_dimension, length, 0);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
+  if (!basic_type) {
+    return NULL;
+  }
+  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type->name_id);
+  SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, type_dimension, length, 0);
   
   return object;
 }
@@ -2854,7 +2859,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   size_t alloc_size = (size_t)env->object_header_size + unit_size * fields_length * (length + 1);
   
-  SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type->id, 1, length, 0);
+  SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, 1, length, 0);
   
   return object;
 }
@@ -2881,7 +2886,11 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   
   size_t alloc_size = (size_t)env->object_header_size + class->fields_size + 1;
   
-  SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type->id, 0, fields_length, 0);
+  if (!basic_type) {
+    return NULL;
+  }
+  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type->name_id);
+  SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, 0, fields_length, 0);
   
   return object;
 }
@@ -3799,7 +3808,12 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   
   size_t alloc_size = (size_t)env->object_header_size + element_size * (length + 1);
   
-  SPVM_OBJECT* new_array = SPVM_API_new_object_common(env, stack, alloc_size, array->basic_type_id, array->type_dimension, length, 0);
+  SPVM_RUNTIME_BASIC_TYPE* array_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, array->basic_type_id);
+  if (!array_basic_type) {
+    return NULL;
+  }
+  const char* array_basic_type_name = env->api->runtime->get_name(env->runtime, array_basic_type->name_id);
+  SPVM_OBJECT* new_array = SPVM_API_new_object_common_by_name(env, stack, alloc_size, array_basic_type_name, array->type_dimension, length, 0);
   
   return new_array;
 }
