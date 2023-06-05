@@ -118,7 +118,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->remove_mortal != &env_array[97]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_type != &env_array[98]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_object_array != &env_array[99]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_object_basic_type_id != &env_array[100]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved100 != &env_array[100]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->weaken != &env_array[102]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isweak != &env_array[103]) { stack[0].ival = 0; return 0; }
