@@ -465,7 +465,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
             
       const char* basic_type_name = object->basic_type_name;
-      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);;
+      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
           
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
     
@@ -1696,8 +1696,11 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
   
   // Object must be not null
   assert(object);
+
+  const char* object_basic_type_name = object->basic_type_name;
+  int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
   
-  if (object->basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
+  if (object_basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
     return 1;
   }
   else {
