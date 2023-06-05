@@ -472,7 +472,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
         }
-
+        
         if (SPVM_API_is_mulnum_array(env, stack, object)) {
 
           SPVM_STRING_BUFFER_add(string_buffer, "{\n");
@@ -1787,6 +1787,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = object->basic_type_id;
+      const char* object_basic_type_name_ = SPVM_API_RUNTIME_get_basic_type_name(runtime, object_basic_type_id);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
@@ -2766,6 +2767,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   SPVM_OBJECT object_for_type_check;
   object_for_type_check.basic_type_id = basic_type_id;
+  object_for_type_check.basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type_id);
   object_for_type_check.type_dimension = 1;
   
   int32_t is_object_array = SPVM_API_is_object_array(env, stack, &object_for_type_check);
@@ -2783,6 +2785,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
   
   const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type->name_id);
+  
   SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, 1, length, 0);
   
   return object;
