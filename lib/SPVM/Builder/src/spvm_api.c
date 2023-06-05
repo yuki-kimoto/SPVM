@@ -112,7 +112,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_isa,
     SPVM_API_elem_isa,
     NULL, // runtime
-    SPVM_API_get_basic_type_id,
+    SPVM_API_get_basic_type_id, // Asserted
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
     SPVM_API_get_class_var_id,
@@ -267,7 +267,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_print_stderr,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
-    SPVM_API_get_class_id,
+    SPVM_API_get_class_id, // Asserted
     SPVM_API_new_stack,
     SPVM_API_free_stack,
     SPVM_API_new_memory_env,
@@ -278,7 +278,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_memory_blocks_count_stack,
     SPVM_API_set_command_info_program_name,
     SPVM_API_set_command_info_argv,
-    SPVM_API_get_class_id_by_name,
+    SPVM_API_get_class_id_by_name, // Asserted
     SPVM_API_strerror,
     SPVM_API_new_string_array,
     SPVM_API_get_args_stack_length,
@@ -292,7 +292,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
     SPVM_API_strerror_string,
-    SPVM_API_get_basic_type_id_by_name,
+    SPVM_API_get_basic_type_id_by_name, // Asserted
     SPVM_API_get_field_id_static,
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
