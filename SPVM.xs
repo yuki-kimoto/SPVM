@@ -1232,7 +1232,7 @@ _xs_call_method(...)
   else {
     class_method_call = 1;
     class_name = SvPV_nolen(sv_invocant);
-    method_id = env->get_class_method_id(env, stack, class_name, method_name);
+    method_id =env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
   }
   
   // Runtime
