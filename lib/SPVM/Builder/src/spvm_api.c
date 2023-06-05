@@ -2814,10 +2814,6 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
     return NULL;
   }
   
-  for (int32_t index = 0; index < length; index++) {
-    SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_size))[index];
-  }
-  
   SPVM_API_set_object_info(env, stack, object, basic_type->id, 1, length);
   
   return object;
@@ -2841,20 +2837,16 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
     return NULL;
   }
   
-  object->basic_type_id = basic_type_id;
-  object->type_dimension = type_dimension;
-  
-  // Set array length
-  object->length = length;
+  SPVM_API_set_object_info(env, stack, object, basic_type_id, type_dimension, length);
   
   return object;
 }
 
 SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length) {
   (void)env;
-
+  
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
   // valut_t array dimension must be 1
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type->id);
@@ -2863,11 +2855,11 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
   int32_t fields_length = class->fields_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, class->fields_base_id + 0);
-
+  
   SPVM_RUNTIME_TYPE* first_field_type =SPVM_API_RUNTIME_get_type(runtime, field_first->type_id);
-
+  
   int32_t field_basic_type_id = first_field_type->basic_type_id;
-
+  
   int32_t unit_size;
   if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
     unit_size = sizeof(int8_t);
@@ -2890,7 +2882,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   else {
     assert(0);
   }
-
+  
   size_t alloc_size = (size_t)env->object_header_size + unit_size * fields_length * (length + 1);
   
   // Create object
@@ -2898,14 +2890,9 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   if (!object) {
     return NULL;
   }
-
-  object->basic_type_id = basic_type->id;
-  object->basic_type_name_id = basic_type->name_id;
-  object->type_dimension = 1;
-
-  // Set array length
-  object->length = length;
-
+  
+  SPVM_API_set_object_info(env, stack, object, basic_type->id, 1, length);
+  
   return object;
 }
 
@@ -2938,11 +2925,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
     return NULL;
   }
   
-  object->basic_type_id = basic_type->id;
-  object->basic_type_name_id = basic_type->name_id;
-  object->type_dimension = 0;
-  
-  object->length = fields_length;
+  SPVM_API_set_object_info(env, stack, object, basic_type->id, 0, fields_length);
   
   return object;
 }
@@ -3865,10 +3848,8 @@ SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   if (!new_array) {
     return NULL;
   }
-
-  new_array->basic_type_id = array->basic_type_id;
-  new_array->type_dimension = array->type_dimension;
-  new_array->length = length;
+  
+  SPVM_API_set_object_info(env, stack, new_array, array->basic_type_id, array->type_dimension, length);
   
   return new_array;
 }
