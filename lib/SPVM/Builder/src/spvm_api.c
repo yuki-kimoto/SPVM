@@ -3121,7 +3121,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 }
 
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name) {
-  
+  assert(0);
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;
