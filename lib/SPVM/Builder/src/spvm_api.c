@@ -247,7 +247,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_free_env_prepared,
     SPVM_API_dump_raw,
     SPVM_API_dump,
-    SPVM_API_get_instance_method_id_static,
+    SPVM_API_get_instance_method_id_static, // Asserted
     SPVM_API_get_bool_object_value,
     SPVM_API_cleanup_global_vars,
     SPVM_API_make_read_only,
@@ -769,7 +769,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);;
   if (method_id < 0) {
     env->die(env, stack, "The %s instance method in the %s class is not found", class_name, method_name, func_name, file, line);
     return 1;
@@ -3337,6 +3337,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
+  
+  assert(0);
   
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   

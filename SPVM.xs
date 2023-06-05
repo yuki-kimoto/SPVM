@@ -1218,7 +1218,7 @@ _xs_call_method(...)
         croak("The invocant must be assinged to the \"%s\" class\n    %s at %s line %d\n", class_name, __func__, FILE_NAME, __LINE__);
       }
       
-      method_id = env->get_instance_method_id_static(env, stack, class_name, method_name);
+      method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
       
       *(found_char - 1) = ':';
     }
