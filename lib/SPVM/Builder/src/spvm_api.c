@@ -95,8 +95,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
 
 
-
-
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -326,7 +324,7 @@ SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
   
   if (object) {
-    int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+    int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
     assert(basic_type_id >= 0);
     
     object->basic_type_name = basic_type_name;
@@ -466,7 +464,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
             
       const char* basic_type_name = object->basic_type_name;
-      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+      int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
           
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
     
@@ -632,7 +630,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       }
       else {
         const char* basic_type_name = object->basic_type_name;
-        int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+        int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
         
         SPVM_HASH_set(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
         
@@ -1701,7 +1699,7 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
   assert(object);
 
   const char* object_basic_type_name = object->basic_type_name;
-  int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+  int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
   
   if (object_basic_type_id == basic_type_id && object->type_dimension == type_dimension) {
     return 1;
@@ -1748,7 +1746,7 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
       is_numeric_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
@@ -1819,7 +1817,7 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_mulnum_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -1854,7 +1852,7 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
@@ -1886,7 +1884,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
@@ -1932,7 +1930,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
     }
     else if (SPVM_API_is_numeric_array(env, stack, array)) {
 
-      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, array->basic_type_name);
+      int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, array->basic_type_name);
       
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
@@ -1955,7 +1953,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       }
     }
     else if (SPVM_API_is_mulnum_array(env, stack, array)) {
-      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, array->basic_type_name);
+      int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, array->basic_type_name);
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
@@ -2011,7 +2009,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   }
   else {
     const char* object_basic_type_name = object->basic_type_name;
-    int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+    int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
     has_interface = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, interface_basic_type_id);
   }
   
@@ -3026,7 +3024,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     // Free object
     else {
       const char* object_basic_type_name = object->basic_type_name;
-      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       if (object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
         // Class
@@ -3193,7 +3191,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   
   // Basic type
   const char* object_basic_type_name = object->basic_type_name;
-  int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+  int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
 
@@ -3392,7 +3390,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   
   // Basic type
   const char* basic_type_name = object->basic_type_name;
-  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
@@ -4009,7 +4007,7 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
   assert(array);
   
   const char* array_basic_type_name = array->basic_type_name;
-  int32_t array_basic_type_id = SPVM_API_get_basic_type_id(env, stack, array_basic_type_name);
+  int32_t array_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, array_basic_type_name);
   int32_t array_type_dimension = array->type_dimension;
   
   assert(array_type_dimension > 0);
@@ -4030,7 +4028,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
 
     int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type_id);
     const char* object_basic_type_name = object->basic_type_name;
-    int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+    int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
     int32_t object_type_dimension = object->type_dimension;
     int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
     
