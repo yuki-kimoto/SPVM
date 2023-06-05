@@ -2648,23 +2648,18 @@ SPVM_OBJECT* SPVM_API_new_object_common (SPVM_ENV* env, SPVM_VALUE* stack, size_
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length) {
   (void)env;
   
-  // If lenght is less than 0, return NULL.
   if (length < 0) {
     return NULL;
   }
   
   size_t alloc_size = (size_t)env->object_header_size + sizeof(char) * (length + 1);
   
-  // Create object
-  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
-  if (!object) {
-    return NULL;
-  }
+  SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 0, length, 0);
   
-  SPVM_API_set_object_info(env, stack, object, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 0, length);
-  
-  if (bytes != NULL && length > 0) {
-    memcpy((void*)((intptr_t)object + env->object_header_size), (char*)bytes, length);
+  if (object) {
+    if (bytes != NULL && length > 0) {
+      memcpy((void*)((intptr_t)object + env->object_header_size), (char*)bytes, length);
+    }
   }
   
   return object;
