@@ -3995,10 +3995,11 @@ void SPVM_API_free_env_prepared(SPVM_ENV* env) {
 int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
   assert(array);
-
-  int32_t array_basic_type_id = array->basic_type_id;
+  
+  const char* array_basic_type_name = array->basic_type_name;
+  int32_t array_basic_type_id = SPVM_API_get_basic_type_id(env, stack, array_basic_type_name);
   int32_t array_type_dimension = array->type_dimension;
   
   assert(array_type_dimension > 0);
