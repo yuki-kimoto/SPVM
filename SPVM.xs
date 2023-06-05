@@ -4327,7 +4327,8 @@ _xs_get(...)
     croak("The $index must be greater than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+  const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
   assert(type_dimension >= 1);
@@ -4438,9 +4439,7 @@ get_class_name(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
-  int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
-  const char* class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
+  const char* class_name = env->get_object_basic_type_name(env, stack, object);
   
   SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
   
