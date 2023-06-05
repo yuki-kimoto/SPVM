@@ -800,7 +800,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
   int32_t method_id = env->get_instance_method_id(env, stack, object, method_name);
   if (method_id < 0) {
     int32_t basic_type_id = object->basic_type_id;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s instance method is not found in the %s class or its super class", method_name, class_name, func_name, file, line);
     return 1;
   };
@@ -860,7 +860,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   }
@@ -883,7 +883,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -906,7 +906,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -929,7 +929,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -951,7 +951,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -974,7 +974,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -997,7 +997,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return;
   };
@@ -1020,7 +1020,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1044,7 +1044,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1068,7 +1068,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1092,7 +1092,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1116,7 +1116,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1140,7 +1140,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return 0;
   };
@@ -1164,7 +1164,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   int32_t id = env->get_field_id(env, stack, object, field_name);
   if (id < 0) {
     *error = 1;
-    const char* class_name = SPVM_API_RUNTIME_get_basic_type_name(env->runtime, object->basic_type_id);
+    const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, class_name, func_name, file, line);
     return NULL;
   };
