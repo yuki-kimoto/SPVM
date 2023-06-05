@@ -1914,9 +1914,9 @@ int32_t SPVM__TestCase__NativeAPI__new_string_raw(SPVM_ENV* env, SPVM_VALUE* sta
   {
     void* string = env->new_string_raw(env, stack, "abc", 3);
 
-    int32_t string_basic_type_id = env->get_object_basic_type_id(env, stack, string);
+    const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
-    if (!(string_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string_type_dimension == 0)) {
+    if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       env->inc_ref_count(env, stack, string);
       env->dec_ref_count(env, stack, string);
@@ -2073,9 +2073,9 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
   {
     void* string = env->new_string(env, stack, "abc", 3);
 
-    int32_t string_basic_type_id = env->get_object_basic_type_id(env, stack, string);
+    const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
-    if (!(string_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string_type_dimension == 0)) {
+    if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       return 0;
     }
@@ -2187,9 +2187,9 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_raw(SPVM_ENV* env, SPVM_VALU
   {
     void* string = env->new_string_nolen_raw(env, stack, "abc");
 
-    int32_t string_basic_type_id = env->get_object_basic_type_id(env, stack, string);
+    const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
-    if (!(string_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string_type_dimension == 0)) {
+    if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       env->inc_ref_count(env, stack, string);
       env->dec_ref_count(env, stack, string);
@@ -2253,9 +2253,9 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* s
   {
     void* string = env->new_string_nolen(env, stack, "abc");
 
-    int32_t string_basic_type_id = env->get_object_basic_type_id(env, stack, string);
+    const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
-    if (!(string_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string_type_dimension == 0)) {
+    if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       return 0;
     }
