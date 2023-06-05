@@ -3913,7 +3913,7 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return env->die(env, stack, "The obj_program_name must be defined", __func__, FILE_NAME, __LINE__);
   }
   
-  if (!(obj_program_name->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_program_name->type_dimension == 0)) {
+  if (!(strcmp(obj_program_name->basic_type_name, "string") == 0 && obj_program_name->type_dimension == 0)) {
     return env->die(env, stack, "The obj_program_name must be a string", __func__, FILE_NAME, __LINE__);
   }
   
@@ -3931,7 +3931,7 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return env->die(env, stack, "The obj_argv must be defined", __func__, FILE_NAME, __LINE__);
   }
   
-  if (!(obj_argv->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && obj_argv->type_dimension == 1)) {
+  if (!(strcmp(obj_argv->basic_type_name, "string") == 0 && obj_argv->type_dimension == 1)) {
     return env->die(env, stack, "The obj_argv must be a string array", __func__, FILE_NAME, __LINE__);
   }
   
