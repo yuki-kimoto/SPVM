@@ -320,6 +320,24 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   return env;
 }
 
+SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t flag) {
+  
+  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
+  
+  if (object) {
+    int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+    assert(basic_type_id >= 0);
+    
+    object->basic_type_name = basic_type_name;
+    object->basic_type_id = basic_type_id;
+    object->type_dimension = type_dimension;
+    object->length = length;
+    object->flag = flag;
+  }
+  
+  return object;
+}
+
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -431,11 +449,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     SPVM_STRING_BUFFER_add(string_buffer, "undef");
   }
   else {
-    int32_t basic_type_id = object->basic_type_id;
     int32_t type_dimension = object->type_dimension;
-    
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-    const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type->id);
     
     if (SPVM_API_is_string(env, stack, object)) {
       const char* chars = env->get_chars(env, stack, object);
@@ -450,6 +464,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
 
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
             
+      const char* basic_type_name = object->basic_type_name;
+      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);;
+          
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
     
         for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
@@ -612,6 +629,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
+        const char* basic_type_name = object->basic_type_name;
+        int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+        
         SPVM_HASH_set(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -2621,24 +2641,6 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, const c
   SPVM_OBJECT* object = SPVM_API_new_string_nolen_raw(env, stack, bytes);
   
   SPVM_API_push_mortal(env, stack, object);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t flag) {
-  
-  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
-  
-  if (object) {
-    int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
-    assert(basic_type_id >= 0);
-    
-    object->basic_type_name = basic_type_name;
-    object->basic_type_id = basic_type_id;
-    object->type_dimension = type_dimension;
-    object->length = length;
-    object->flag = flag;
-  }
   
   return object;
 }

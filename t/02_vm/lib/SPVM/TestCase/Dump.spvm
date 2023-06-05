@@ -208,7 +208,7 @@ class TestCase::Dump {
     weaken $object->{object_value};
     
     my $array = [(object)$object, $object, $object];
-
+    
     my $dump = dump $array;
     
     $object->{object_value} = undef;
