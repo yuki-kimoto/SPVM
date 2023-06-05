@@ -445,10 +445,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   char tmp_buffer[256];
   
   SPVM_OBJECT* dump;
+  
   if (object == NULL) {
     SPVM_STRING_BUFFER_add(string_buffer, "undef");
   }
   else {
+    // If the object is weaken most lower bit is turned on, so get the real address
+    object = (SPVM_OBJECT*)((intptr_t)object & ~1);
+    
     int32_t type_dimension = object->type_dimension;
     
     if (SPVM_API_is_string(env, stack, object)) {
@@ -614,18 +618,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         SPVM_STRING_BUFFER_add(string_buffer, "[]");
       }
       
-      // If the object is weaken, this get the real address
-      sprintf(tmp_buffer, "(%p)", (void*)((intptr_t)object & ~1));
+      sprintf(tmp_buffer, "(%p)", (void*)((intptr_t)object));
       SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else {
-
-      // If the object is weaken, this get the real address
-      sprintf(tmp_buffer, "%p", (void*)((intptr_t)object & ~1));
+      sprintf(tmp_buffer, "%p", (void*)((intptr_t)object));
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
-        // If the object is weaken, this get the real address
-        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", (void*)((intptr_t)object & ~1));
+        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", (void*)((intptr_t)object));
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
@@ -719,12 +719,11 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             SPVM_STRING_BUFFER_add(string_buffer, ",\n");
           }
         }
-
+        
         for (int32_t depth_index = 0; depth_index < *depth; depth_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "}");
-
       }
     }
   }
@@ -1725,7 +1724,10 @@ int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   
   int32_t is_string;
   if (object) {
-    is_string = (object->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && object->type_dimension == 0);
+    const char* object_basic_type_name = object->basic_type_name;
+    int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
+    
+    is_string = (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && object->type_dimension == 0);
   }
   else {
     is_string = 0;
