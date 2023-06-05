@@ -116,7 +116,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
     SPVM_API_get_class_var_id,
-    SPVM_API_get_class_method_id,
+    SPVM_API_get_class_method_id, // Asserted
     SPVM_API_get_instance_method_id,
     SPVM_API_new_object_raw,
     SPVM_API_new_object,
@@ -3249,32 +3249,10 @@ int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name) {
-  (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
+  int32_t class_var_id = SPVM_API_RUNTIME_get_class_var_id_by_name(env->runtime, class_name, class_var_name);
   
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
-  
-  // Class name
-  SPVM_RUNTIME_CLASS* class;
-  if (!basic_type) {
-    return -1;
-  }
-  else if (!SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id)) {
-    return -1;
-  }
-  else {
-    class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  }
-  
-  // Class variable name
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
-  if (!class_var) {
-    return -1;
-  }
-  
-  return class_var->id;
+  return class_var_id;
 }
 
 int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
