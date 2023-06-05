@@ -615,17 +615,17 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       }
       
       // If the object is weaken, this get the real address
-      sprintf(tmp_buffer, "(%p)", (void*)((intptr_t)object & ~1));
+      sprintf(tmp_buffer, "(%p)", SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object));
       SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else {
 
       // If the object is weaken, this get the real address
-      sprintf(tmp_buffer, "%p", (void*)((intptr_t)object & ~1));
+      sprintf(tmp_buffer, "%p", SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object));
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
         // If the object is weaken, this get the real address
-        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", (void*)((intptr_t)object & ~1));
+        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object));
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
@@ -1927,7 +1927,9 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       elem_size = sizeof(void*);
     }
     else if (SPVM_API_is_numeric_array(env, stack, array)) {
-      int32_t basic_type_id = array->basic_type_id;
+
+      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, array->basic_type_name);
+      
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
@@ -1949,7 +1951,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       }
     }
     else if (SPVM_API_is_mulnum_array(env, stack, array)) {
-      int32_t basic_type_id = array->basic_type_id;
+      int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, array->basic_type_name);
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
