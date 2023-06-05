@@ -3142,6 +3142,8 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char*
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name) {
   
+  assert(0);
+  
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
   
   return class_id;
@@ -4056,9 +4058,12 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
 }
 
 int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  
+  assert(0);
+  
   *error = 0;
   
-  int32_t class_id = env->get_class_id(env, stack, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
   if (class_id < 0) {
     *error = 1;
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);

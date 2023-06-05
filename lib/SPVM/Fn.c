@@ -655,7 +655,7 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  int32_t class_id = env->get_class_id(env, stack, class_name);
+  int32_t class_id = env->api->runtime->get_class_id_by_name(env->runtime, class_name);
   if (class_id < 0) {
     return env->die(env, stack, "The class specified by the $class_name must be loaded", __func__, FILE_NAME, __LINE__);
   }
@@ -690,7 +690,7 @@ int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  int32_t class_id = env->get_class_id(env, stack, class_name);
+  int32_t class_id = env->api->runtime->get_class_id_by_name(env->runtime, class_name);
   if (class_id < 0) {
     return env->die(env, stack, "The class specified by the $class_name must be loaded", __func__, FILE_NAME, __LINE__);
   }
