@@ -3141,22 +3141,10 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char*
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name) {
-  (void)env;
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  if (class_name == NULL) {
-    return -1;
-  }
-
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
-  if (class) {
-    int32_t class_id = class->id;
-    return class_id;
-  }
-  else {
-    return -1;
-  }
+  
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
+  
+  return class_id;
 }
 
 int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
