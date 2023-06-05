@@ -234,9 +234,9 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "byte") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type"));
         return &PL_sv_undef;
       }
@@ -292,9 +292,9 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "byte") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type"));
         return &PL_sv_undef;
       }
@@ -350,9 +350,9 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "short") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the short[] type"));
         return &PL_sv_undef;
       }
@@ -408,9 +408,9 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "short") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the short[] type"));
         return &PL_sv_undef;
       }
@@ -466,9 +466,9 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "int") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the int[] type"));
         return &PL_sv_undef;
       }
@@ -524,9 +524,9 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_st
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "int") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the int[] type"));
         return &PL_sv_undef;
       }
@@ -582,9 +582,9 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "long") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the long[] type"));
         return &PL_sv_undef;
       }
@@ -640,9 +640,9 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "long") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the long[] type"));
         return &PL_sv_undef;
       }
@@ -698,9 +698,9 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "float") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the float[] type"));
         return &PL_sv_undef;
       }
@@ -756,9 +756,9 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "double") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the double[] type"));
         return &PL_sv_undef;
       }
@@ -814,9 +814,9 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t spvm_array_basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+      const char* spvm_array_basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
       int32_t spvm_array_type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
-      if (!(spvm_array_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && spvm_array_type_dimension == 1)) {
+      if (!(strcmp(spvm_array_basic_type_name, "string") == 0 && spvm_array_type_dimension == 1)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be the string[] type"));
         return &PL_sv_undef;
       }
