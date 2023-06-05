@@ -11,12 +11,12 @@
 struct spvm_object {
   SPVM_WEAKEN_BACKREF* weaken_backref_head;
   void* pointer;
+  const char* basic_type_name;
   int32_t ref_count;
   int32_t basic_type_id;
   uint8_t type_dimension;
   uint8_t flag;
   int32_t length;
-  const char* basic_type_name;
 };
 
 enum {
