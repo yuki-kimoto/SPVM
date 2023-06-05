@@ -3822,7 +3822,7 @@ _xs_to_elems(...)
   int32_t length = env->length(env, stack, spvm_array);
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
   
@@ -4036,7 +4036,7 @@ _xs_to_bin(...)
   int32_t length = env->length(env, stack, spvm_array);
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
   assert(is_array_type);
@@ -4195,7 +4195,7 @@ _xs_set(...)
   }
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
   if (type_dimension == 1) {
@@ -4329,7 +4329,7 @@ _xs_get(...)
   }
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
   assert(type_dimension >= 1);
