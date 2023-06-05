@@ -819,7 +819,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_basic_type_id(env, stack, class_name);
+  int32_t id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
   if (id < 0) {
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
     *error = 1;
@@ -834,7 +834,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->get_basic_type_id(env, stack, class_name);
+  int32_t id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
   if (id < 0) {
     *error = 1;
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
