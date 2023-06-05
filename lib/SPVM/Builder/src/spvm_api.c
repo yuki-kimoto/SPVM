@@ -354,7 +354,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
 }
 
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
-  if (string && (string->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0)) {
+  if (string && strcmp(string->basic_type_name, "string") == 0 && string->type_dimension == 0) {
     string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
   }
 }
