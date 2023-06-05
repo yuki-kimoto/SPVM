@@ -1745,7 +1745,7 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
       is_numeric_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
@@ -1815,7 +1815,7 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_mulnum_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -1850,7 +1850,7 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
@@ -1882,7 +1882,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = object->basic_type_id;
+      int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object->basic_type_name);
       int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
