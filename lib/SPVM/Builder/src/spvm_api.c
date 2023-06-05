@@ -799,7 +799,6 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
   
   int32_t method_id = env->get_instance_method_id(env, stack, object, method_name);
   if (method_id < 0) {
-    int32_t basic_type_id = object->basic_type_id;
     const char* class_name = object->basic_type_name;
     env->die(env, stack, "The %s instance method is not found in the %s class or its super class", method_name, class_name, func_name, file, line);
     return 1;
@@ -2002,7 +2001,8 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
     has_interface = 0;
   }
   else {
-    int32_t object_basic_type_id = object->basic_type_id;
+    const char* object_basic_type_name = object->basic_type_name;
+    int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
     has_interface = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, interface_basic_type_id);
   }
   
