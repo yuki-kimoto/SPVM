@@ -1197,9 +1197,7 @@ _xs_call_method(...)
     }
     
     void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_invocant);
-    int32_t object_basic_type_id = env->get_object_basic_type_id(env, stack, object);
-    int32_t object_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, object_basic_type_id);
-    class_name = env->api->runtime->get_name(env->runtime, object_basic_type_name_id);
+    class_name = env->get_object_basic_type_name(env, stack, object);
     
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
@@ -1907,7 +1905,6 @@ _xs_call_method(...)
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, stack, return_value);
-          int32_t return_value_basic_type_id = env->get_object_basic_type_id(env, stack, return_value);
           sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
         }
         // undef
@@ -1923,13 +1920,13 @@ _xs_call_method(...)
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, stack, return_value);
-          int32_t return_value_basic_type_id = env->get_object_basic_type_id(env, stack, return_value);
+          const char* return_value_basic_type_name = env->get_object_basic_type_name(env, stack, return_value);
           int32_t return_value_type_dimension = env->get_object_type_dimension(env, stack, return_value);
           if (return_value_type_dimension > 0) {
             sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
           }
           else {
-            if (return_value_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING) {
+            if (strcmp(return_value_basic_type_name, "string") == 0) {
               sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
             }
             else {
@@ -3824,7 +3821,8 @@ _xs_to_elems(...)
   
   int32_t length = env->length(env, stack, spvm_array);
   
-  int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+  const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
   
@@ -3840,7 +3838,8 @@ _xs_to_elems(...)
     if (array_is_mulnum_array) {
       
       for (int32_t index = 0; index < length; index++) {
-        int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, env->get_object_basic_type_id(env, stack, spvm_array));
+        
+        int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
         int32_t class_fields_length = env->api->runtime->get_class_fields_length(env->runtime, class_id);
         int32_t class_fields_base_id = env->api->runtime->get_class_fields_base_id(env->runtime, class_id);
         
@@ -4036,7 +4035,8 @@ _xs_to_bin(...)
   
   int32_t length = env->length(env, stack, spvm_array);
   
-  int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+  const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   int32_t is_array_type = dimension > 0;
   assert(is_array_type);
@@ -4194,7 +4194,8 @@ _xs_set(...)
     croak("The $index must be greatr than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t basic_type_id = env->get_object_basic_type_id(env, stack, spvm_array);
+  const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
   if (type_dimension == 1) {
