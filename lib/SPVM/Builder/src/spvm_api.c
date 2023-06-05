@@ -4016,8 +4016,10 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
     isa = 1;
   }
   else {
+
     int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type_id);
-    int32_t object_basic_type_id = object->basic_type_id;
+    const char* object_basic_type_name = object->basic_type_name;
+    int32_t object_basic_type_id = SPVM_API_get_basic_type_id(env, stack, object_basic_type_name);
     int32_t object_type_dimension = object->type_dimension;
     int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
     
