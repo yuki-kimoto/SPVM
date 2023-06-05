@@ -318,6 +318,10 @@ ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
   ok(SPVM::TestCase::NativeAPI->call_method_in_precompile_class);
 }
 
+{
+  ok(SPVM::TestCase::NativeAPI->get_object_basic_type_name);
+}
+
 # Clear exception
 SPVM::api->set_exception(undef);
 

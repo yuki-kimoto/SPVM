@@ -308,6 +308,7 @@ struct spvm_env {
   double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
   int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
   void* class_init_flags;
+  const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_env_runtime {

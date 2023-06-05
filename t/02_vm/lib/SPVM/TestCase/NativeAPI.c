@@ -229,6 +229,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_version_number != &env_array[208]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_method != &env_array[209]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->class_init_flags != &env_array[210]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_object_basic_type_name != &env_array[211]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -3259,6 +3260,27 @@ int32_t SPVM__TestCase__NativeAPI__floating_point_constant_native(SPVM_ENV* env,
   
   if (!(double_value1 == 1.5e+300)) {
     spvm_warn("Warning:SPVM floating point literal is differenct from C floatin point literal. Got:%.20f,Expected:%.20f line %d", double_value1, 1.5e+300, __LINE__);
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  {
+    void* string = env->new_string_nolen(env, stack, "abc");
+    
+    const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
+    if (!(strcmp(string_basic_type_name, "string") == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
   }
   
   stack[0].ival = 1;

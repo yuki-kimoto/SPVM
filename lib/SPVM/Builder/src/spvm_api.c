@@ -310,6 +310,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_version_number,
     SPVM_API_call_method,
     NULL, // class_init_flags
+    SPVM_API_get_object_basic_type_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2902,6 +2903,10 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, i
 
 int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   return object->basic_type_id;
+}
+
+const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  return object->basic_type_name;
 }
 
 int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

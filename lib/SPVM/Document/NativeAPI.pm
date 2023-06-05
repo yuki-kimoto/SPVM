@@ -225,6 +225,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   208 get_version_number
   209 call_method
   210 class_init_flags
+  211 get_object_basic_type_name
 
 =head2 class_vars_heap
 
@@ -2267,6 +2268,12 @@ The return value of the method is set to stack[0].
 If stack[0] is a value of an object type, the object is pushed to the mortal stack.
 
 =head2 class_init_flags
+
+=head2 get_object_basic_type_name
+
+  const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Gets the basic type name of the object.
 
 Internally Used.
 
