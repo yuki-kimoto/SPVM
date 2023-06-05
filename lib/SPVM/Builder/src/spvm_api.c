@@ -587,6 +587,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         }
         else if (SPVM_API_is_object_array(env, stack, object)) {
           SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + env->object_header_size))[array_index]);
+          element = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, element);
           (*depth)++;
           SPVM_API_dump_recursive(env, stack, element, depth, string_buffer, address_symtable);
           (*depth)--;
@@ -707,6 +708,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           }
           else  {
             SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (size_t)env->object_header_size + field_offset);
+            field_value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, field_value);
             (*depth)++;
             SPVM_API_dump_recursive(env, stack, field_value, depth, string_buffer, address_symtable);
             (*depth)--;

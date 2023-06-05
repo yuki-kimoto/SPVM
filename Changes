@@ -1,3 +1,6 @@
+0.989 2023-06-05
+  [Bug Fix]
+    * The bug that the dump operator does not work well weaken fields and elements.
 0.988 2023-06-05
   [New Features]
     * The has_keys method in the Hash class is added.
