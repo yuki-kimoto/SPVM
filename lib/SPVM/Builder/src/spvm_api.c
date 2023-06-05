@@ -1727,7 +1727,7 @@ int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   
   int32_t is_string;
   if (object) {
-    is_string = (object->basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && object->type_dimension == 0);
+    is_string = (strcmp(object->basic_type_name, "string") == 0 && object->type_dimension == 0);
   }
   else {
     is_string = 0;
