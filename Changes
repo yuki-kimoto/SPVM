@@ -5,7 +5,7 @@
     * Many Native APIs will be changed in this release.
       The IDs of the symbol will not be published to the user.
       Risky operations such as ID will be moved from Native APIs to Native Runtime APIs.
-    * The get_object_basic_type_id Native API is removed.
+      
   [Bug Fix]
     * The bug that the dump operator does not work well weaken fields and elements.
 0.988 2023-06-05

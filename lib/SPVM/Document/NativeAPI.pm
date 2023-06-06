@@ -114,7 +114,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    97 remove_mortal
    98 is_type
    99 is_object_array
-  100 reserved100
+  100 get_object_basic_type_id
   101 get_object_type_dimension
   102 weaken
   103 isweak
@@ -1142,6 +1142,12 @@ Given an object and a base type ID and a type dimension, returns a nonzero value
 If the object is a object array, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
+
+=head2 get_object_basic_type_id
+
+  int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Gets the base type ID of the object.
 
 =head2 get_object_type_dimension
 

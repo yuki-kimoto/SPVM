@@ -197,7 +197,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_remove_mortal,
     SPVM_API_is_type,
     SPVM_API_is_object_array,
-    NULL, // reserved100,
+    SPVM_API_get_object_basic_type_id,
     SPVM_API_get_object_type_dimension,
     SPVM_API_weaken,
     SPVM_API_isweak,
@@ -2897,6 +2897,11 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, i
   env->set_pointer(env, stack, obj_object, pointer);
   
   return obj_object;
+}
+
+int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  assert(0);
+  return object->basic_type_id;
 }
 
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
