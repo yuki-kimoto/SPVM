@@ -131,6 +131,6 @@ SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime);
 void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes);
 
 // Unsorted
-int32_t SPVM_API_RUNTIME_isa(SPVM_RUNTIME* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t src_basic_type_id, int32_t src_type_dimension);
+int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
 
 #endif

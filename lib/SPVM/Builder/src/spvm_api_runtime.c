@@ -1308,7 +1308,7 @@ int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, int32_t basic_typ
   return is_object_type;
 }
 
-int32_t SPVM_API_RUNTIME_isa(SPVM_RUNTIME* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t src_basic_type_id, int32_t src_type_dimension) {
+int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag) {
   
   int32_t isa = 0;
   
