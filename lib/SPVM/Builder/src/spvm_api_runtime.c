@@ -759,7 +759,7 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
 
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
   
-  int32_t class_var_id;
+  int32_t class_var_id = -1;
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
   if (class) {
@@ -781,12 +781,11 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
   (void)runtime;
   
   // Method ID
-  int32_t class_var_id;
+  int32_t class_var_id = -1;
   
-  // Class
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
+  
   if (class) {
-    // Class variable
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
     if (class_var) {
       class_var_id = class_var->id;
@@ -798,19 +797,14 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
 
 int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
   
-  int32_t field_id;
+  int32_t field_id = -1;
   
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
   if (class) {
     if (field_index >= 0 && field_index < class->fields_length) {
       field_id = class->fields_base_id + field_index;
     }
-    else {
-      field_id = -1;
-    }
-  }
-  else {
-    field_id = -1;
   }
   
   return field_id;
