@@ -630,7 +630,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     const char* class_name = "$class_name";
     
     // Class
-    int32_t method_id = env->get_class_method_id(env, stack, class_name, "main");
+    int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, "main");
     
     if (method_id < 0) {
       fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
