@@ -3909,42 +3909,11 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
     isa = 1;
   }
   else {
-
-    int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type_id);
     const char* object_basic_type_name = object->basic_type_name;
     int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
     int32_t object_type_dimension = object->type_dimension;
-    int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
     
-    if (dist_basic_type_id == object_basic_type_id && dist_type_dimension == object_type_dimension) {
-      isa = 1;
-    }
-    else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      assert(object_type_dimension >= 0);
-      isa = 1;
-    }
-    else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      if (object_type_dimension >= 1) {
-        isa = 1;
-      }
-      else {
-        isa = 0;
-      }
-    }
-    else if (dist_type_dimension == object_type_dimension) {
-      if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-        isa = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, dist_basic_type_id);
-      }
-      else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-        isa = SPVM_API_RUNTIME_is_super_class_by_id(runtime, dist_basic_type_id, object_basic_type_id);
-      }
-      else {
-        isa = 0;
-      }
-    }
-    else {
-      isa = 0;
-    }
+    isa = SPVM_API_RUNTIME_isa(env->runtime, dist_basic_type_id, dist_type_dimension, object_basic_type_id, object_type_dimension);
   }
   
   return isa;
