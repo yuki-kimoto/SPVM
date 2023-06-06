@@ -124,7 +124,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VAL
 
 static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, char* message, int32_t* error) {
   
-  int32_t class_var_id = env->get_class_var_id(env, stack, class_name, class_var_name);
+  int32_t class_var_id = env->api->runtime->get_class_var_id_by_name(env->runtime, class_name, class_var_name);
   
   if (class_var_id < 0) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
