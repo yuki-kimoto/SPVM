@@ -5089,7 +5089,6 @@ void SPVM_OPCODE_BUILDER_push_goto_on_exception(
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO_END_OF_EVAL_ON_EXCEPTION);
     
-    opcode.operand1 = method->id;
     opcode.operand2 = line;
     
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -5102,7 +5101,6 @@ void SPVM_OPCODE_BUILDER_push_goto_on_exception(
     SPVM_OPCODE opcode = {0};
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO_END_OF_METHOD_ON_EXCEPTION);
-    opcode.operand1 = method->id;
     opcode.operand2 = line;
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 

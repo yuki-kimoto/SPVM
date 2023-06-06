@@ -217,11 +217,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
       }
       case SPVM_OPCODE_C_ID_GOTO_END_OF_EVAL_ON_EXCEPTION: {
         if (__builtin_expect(error, 0)) {
-          int32_t method_id = opcode->operand1;
           int32_t line = opcode->operand2;
           eval_error = error;
           error = 0;
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
+          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_id, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -229,9 +228,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
       }
       case SPVM_OPCODE_C_ID_GOTO_END_OF_METHOD_ON_EXCEPTION: {
         if (__builtin_expect(error, 0)) {
-          int32_t method_id = opcode->operand1;
           int32_t line = opcode->operand2;
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), method_id, line));
+          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_id, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
