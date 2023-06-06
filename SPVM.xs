@@ -1226,6 +1226,13 @@ _xs_call_method(...)
       method_id = env->get_instance_method_id(env, stack, object, method_name);
     }
     
+    if (method_id >= 0) {
+      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
+      if (is_class_method) {
+        method_id = -1;
+      }
+    }
+    
     ST(1) = sv_method_name;
     ST(2) = sv_invocant;
   }
@@ -1233,6 +1240,13 @@ _xs_call_method(...)
     class_method_call = 1;
     class_name = SvPV_nolen(sv_invocant);
     method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+    
+    if (method_id >= 0) {
+      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
+      if (!is_class_method) {
+        method_id = -1;
+      }
+    }
   }
   
   // Runtime
