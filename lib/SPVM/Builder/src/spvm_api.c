@@ -293,7 +293,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_is_pointer_class,
     SPVM_API_strerror_string,
     SPVM_API_get_basic_type_id_by_name, // Asserted
-    SPVM_API_get_field_id_static,
+    SPVM_API_get_field_id_static, // Asserted
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
     SPVM_API_get_method_id,
@@ -3220,32 +3220,10 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
 }
 
 int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name) {
-  (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
+  int32_t field_id = SPVM_API_RUNTIME_get_field_id_by_name(env->runtime, class_name, field_name);
   
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
-  
-  // Class name
-  SPVM_RUNTIME_CLASS* class;
-  if (!basic_type) {
-    return -1;
-  }
-  else if (!SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id)) {
-    return -1;
-  }
-  else {
-    class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  }
-  
-  // Class variable name
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_class_id_and_field_name(runtime, class->id, field_name);
-  if (!field) {
-    return -1;
-  }
-  
-  return field->id;
+  return field_id;
 }
 
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name) {
