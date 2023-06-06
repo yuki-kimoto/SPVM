@@ -1804,9 +1804,8 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_object_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = object->basic_type_id;
-      const char* object_basic_type_name_ = SPVM_API_RUNTIME_get_basic_type_name(runtime, object_basic_type_id);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
+      assert(object_basic_type_id >= 0);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
       is_object_array = SPVM_API_RUNTIME_is_object_type(env->runtime, object_basic_type_id, element_type_dimension, type_flag);
