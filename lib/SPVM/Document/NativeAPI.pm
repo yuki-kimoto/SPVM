@@ -2208,17 +2208,17 @@ The same as L</"strerror_string"> given the length to 0.
 
 =head2 get_compile_type_name_raw
 
-  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
 
-Gets a new C<string> object that is the compile-time type name with a basic type id, a type dimension, a type flag.
+Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
 This function does not add the returned object to the mortal stack, so use the L<get_compile_type_name> Native API for normal use to avoid memory leaks.
 
 =head2 get_compile_type_name
 
-  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
 
-Gets a new C<string> object that is the compile-time type name with a basic type id, a type dimension, a type flag.
+Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
 =head2 set_command_info_base_time
 

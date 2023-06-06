@@ -6,6 +6,13 @@
     * The new_stack_trace_by_name Native API was added.
     * The new_stack_trace_raw_by_name Native API was added.
     * The can_assign Native Runtime API was added.
+  [Incompatible Changes]
+    * The definition of the get_compile_type_name_raw Native API was changed.
+      -  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+      +  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
+    * The definition of the get_compile_type_name Native API was changed.
+      -  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag);
+      +  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
   [Warning]
     * Many Native APIs will be changed in the nearly release.
       The IDs of the symbol will not be published to the user.

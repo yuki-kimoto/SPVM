@@ -2123,10 +2123,7 @@ SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   return obj_type_name;
 }
 
-int32_t SPVM_API_get_compile_type_name_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag) {
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
-  int32_t basic_type_name_id = basic_type->name_id;
-  const char* basic_type_name = SPVM_API_RUNTIME_get_name(env->runtime, basic_type_name_id);
+int32_t SPVM_API_get_compile_type_name_length(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag) {
   
   int32_t compile_type_name_length = 0;
   
@@ -2149,15 +2146,10 @@ int32_t SPVM_API_get_compile_type_name_length(SPVM_ENV* env, SPVM_VALUE* stack, 
   return compile_type_name_length;
 }
 
-SPVM_OBJECT* SPVM_API_get_compile_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag) {
+SPVM_OBJECT* SPVM_API_get_compile_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag) {
   
-  SPVM_RUNTIME* runtime = env->runtime;
+  int32_t compile_type_name_length = SPVM_API_get_compile_type_name_length(env, stack, basic_type_name, type_dimension, type_flag);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type->id);
-  
-  int32_t compile_type_name_length = SPVM_API_get_compile_type_name_length(env, stack, basic_type_id, type_dimension, type_flag);
-
   void* obj_compile_type_name = env->new_string_raw(env, stack, NULL, compile_type_name_length);
   
   char* compile_type_name = (char*)env->get_chars(env, stack, obj_compile_type_name);
@@ -2174,7 +2166,7 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack
     sprintf(compile_type_name, "[]");
     compile_type_name += 2;
   }
-
+  
   // Reference
   if (type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
     sprintf(compile_type_name, "*");
@@ -2187,10 +2179,9 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name_raw(SPVM_ENV* env, SPVM_VALUE* stack
   return obj_compile_type_name;
 }
 
-SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t type_flag) {
-  (void)env;
+SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag) {
   
-  SPVM_OBJECT* obj_compile_type_name = SPVM_API_get_compile_type_name_raw(env, stack, basic_type_id, type_dimension, type_flag);
+  SPVM_OBJECT* obj_compile_type_name = SPVM_API_get_compile_type_name_raw(env, stack, basic_type_name, type_dimension, type_flag);
   
   SPVM_API_push_mortal(env, stack, obj_compile_type_name);
   
