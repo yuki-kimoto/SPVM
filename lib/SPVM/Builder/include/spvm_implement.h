@@ -2333,9 +2333,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Byte", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int8_t*)&fields[0];
     }
@@ -2354,9 +2352,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Short", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int16_t*)&fields[0];
     }
@@ -2375,9 +2371,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* en
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Int", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int32_t*)&fields[0];
     }
@@ -2396,9 +2390,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* 
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Long", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(int64_t*)&fields[0];
     }
@@ -2417,9 +2409,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Float", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(float*)&fields[0];
     }
@@ -2438,9 +2428,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
     *error = 1;
   }
   else {
-    int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
-    int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-    if (object_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS && object_type_dimension == 0) {
+    if (env->is_type_by_name(env, stack, object, "Double", 0)) {
       SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
       *out = *(double*)&fields[0];
     }
