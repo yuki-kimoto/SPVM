@@ -2234,7 +2234,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   *cur_mortal_stack_top_ptr = original_mortal_stack_top;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t current_method_id, int32_t current_line) {
 
   if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
     return exception;
@@ -2242,7 +2242,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, current_method_id);
   const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
   const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, class->name_id, NULL);
@@ -2264,7 +2264,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
   
   // Class name and method name
-  const char* new_line_part = "\n  ";
+  const char* new_current_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";
 
@@ -2275,7 +2275,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   // Total string length
   int32_t total_length = 0;
   total_length += exception_length;
-  total_length += strlen(new_line_part);
+  total_length += strlen(new_current_line_part);
   total_length += strlen(class_name);
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
@@ -2284,12 +2284,12 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   total_length += strlen(class_path_sep);
   total_length += strlen(class_rel_file);
 
-  const char* line_part = " line ";
-  char line_str[20];
+  const char* current_line_part = " line ";
+  char current_line_str[20];
   
-  sprintf(line_str, "%" PRId32, line);
-  total_length += strlen(line_part);
-  total_length += strlen(line_str);
+  sprintf(current_line_str, "%" PRId32, current_line);
+  total_length += strlen(current_line_part);
+  total_length += strlen(current_line_str);
   
   // Create exception message
   void* new_exception = env->new_string_raw(env, stack, NULL, total_length);
@@ -2304,7 +2304,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   sprintf(
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%s%s%s%s%" PRId32,
-    new_line_part,
+    new_current_line_part,
     class_name,
     arrow_part,
     method_name,
@@ -2312,24 +2312,24 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     class_path,
     class_path_sep,
     class_rel_file,
-    line_part,
-    line
+    current_line_part,
+    current_line
   );
   
   return new_exception;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t current_method_id, int32_t current_line) {
   (void)env;
   
-  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw(env, stack, exception, method_id, line);
+  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw(env, stack, exception, current_method_id, current_line);
   
   SPVM_API_push_mortal(env, stack, stack_trace);
   
   return stack_trace;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* current_class_name, const char* current_method_name, int32_t current_line) {
 
   if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
     return exception;
@@ -2337,7 +2337,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
 
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, current_class_name);
   SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
 
   int32_t class_path_id = class->class_path_id;
@@ -2357,7 +2357,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
   
   // Class name and method name
-  const char* new_line_part = "\n  ";
+  const char* new_current_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";
 
@@ -2368,21 +2368,21 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   // Total string length
   int32_t total_length = 0;
   total_length += exception_length;
-  total_length += strlen(new_line_part);
-  total_length += strlen(class_name);
+  total_length += strlen(new_current_line_part);
+  total_length += strlen(current_class_name);
   total_length += strlen(arrow_part);
-  total_length += strlen(method_name);
+  total_length += strlen(current_method_name);
   total_length += strlen(at_part);
   total_length += strlen(class_path);
   total_length += strlen(class_path_sep);
   total_length += strlen(class_rel_file);
 
-  const char* line_part = " line ";
-  char line_str[20];
+  const char* current_line_part = " line ";
+  char current_line_str[20];
   
-  sprintf(line_str, "%" PRId32, line);
-  total_length += strlen(line_part);
-  total_length += strlen(line_str);
+  sprintf(current_line_str, "%" PRId32, current_line);
+  total_length += strlen(current_line_part);
+  total_length += strlen(current_line_str);
   
   // Create exception message
   void* new_exception = env->new_string_raw(env, stack, NULL, total_length);
@@ -2397,25 +2397,25 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   sprintf(
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%s%s%s%s%" PRId32,
-    new_line_part,
-    class_name,
+    new_current_line_part,
+    current_class_name,
     arrow_part,
-    method_name,
+    current_method_name,
     at_part,
     class_path,
     class_path_sep,
     class_rel_file,
-    line_part,
-    line
+    current_line_part,
+    current_line
   );
   
   return new_exception;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* current_class_name, const char* current_method_name, int32_t current_line) {
   (void)env;
   
-  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw_by_name(env, stack, exception, class_name, method_name, line);
+  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw_by_name(env, stack, exception, current_class_name, current_method_name, current_line);
   
   SPVM_API_push_mortal(env, stack, stack_trace);
   
