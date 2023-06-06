@@ -22,7 +22,9 @@
       -  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
       +  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   [Bug Fix]
-    * The following bug was fiexed. The new_object_array_by_name, new_muldim_array_by_name, and new_mulnum_array_by_name Native APIs could not be called.
+    * A following bug was fiexed. The new_object_array_by_name, new_muldim_array_by_name, and new_mulnum_array_by_name Native APIs could not be called.
+    * A following bug was fiexed. The isa_by_name, is_type_by_name, and has_interface_by_name Native APIs didnot work correctly.
+   
 0.989 2023-06-06
   [New Features]
     * The get_object_basic_type_name Native API was added.
