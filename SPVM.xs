@@ -194,9 +194,8 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
   if (SvOK(sv_address)) {
     if (sv_isobject(sv_address) && sv_derived_from(sv_address, "SPVM::BlessedObject::Class")) {
       void* spvm_address = SPVM_XS_UTIL_get_object(aTHX_ sv_address);
-      int32_t basic_type_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS;
       int32_t type_dimension = 1;
-      if (!env->is_type(env, stack, spvm_address, basic_type_id, type_dimension)) {
+      if (!env->is_type_by_name(env, stack, spvm_address, "Address", type_dimension)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Class object, it must be the Address type"));
         return &PL_sv_undef;
       }
