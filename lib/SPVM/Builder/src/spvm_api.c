@@ -310,6 +310,9 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     NULL, // class_init_flags
     SPVM_API_get_object_basic_type_name,
     SPVM_API_isa_by_name,
+    SPVM_API_is_type_by_name,
+    SPVM_API_new_stack_trace_raw_by_name,
+    SPVM_API_new_stack_trace_by_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -1710,6 +1713,21 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
   }
 }
 
+int32_t SPVM_API_is_type_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name, int32_t type_dimension) {
+  
+  // Object must be not null
+  assert(object);
+  
+  const char* object_basic_type_name = object->basic_type_name;
+  
+  if (strcmp(object_basic_type_name, basic_type_name) == 0 && object->type_dimension == type_dimension) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   int32_t is_array;
@@ -2294,6 +2312,99 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   (void)env;
   
   SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw(env, stack, exception, method_id, line);
+  
+  SPVM_API_push_mortal(env, stack, stack_trace);
+  
+  return stack_trace;
+}
+
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
+
+  if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
+    return exception;
+  }
+
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+
+  int32_t class_path_id = class->class_path_id;
+  int32_t class_rel_file_id = class->class_rel_file_id;
+  
+  const char* class_path;
+  const char* class_path_sep;
+  if (class_path_id >= 0) {
+    class_path = SPVM_API_RUNTIME_get_name(runtime, class_path_id);
+    class_path_sep = "/";
+  }
+  else {
+    class_path = "";
+    class_path_sep = "";
+  }
+  
+  const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
+  
+  // Class name and method name
+  const char* new_line_part = "\n  ";
+  const char* arrow_part = "->";
+  const char* at_part = " at ";
+
+  // Exception
+  const char* exception_bytes = env->get_chars(env, stack, exception);
+  int32_t exception_length = env->length(env, stack, exception);
+  
+  // Total string length
+  int32_t total_length = 0;
+  total_length += exception_length;
+  total_length += strlen(new_line_part);
+  total_length += strlen(class_name);
+  total_length += strlen(arrow_part);
+  total_length += strlen(method_name);
+  total_length += strlen(at_part);
+  total_length += strlen(class_path);
+  total_length += strlen(class_path_sep);
+  total_length += strlen(class_rel_file);
+
+  const char* line_part = " line ";
+  char line_str[20];
+  
+  sprintf(line_str, "%" PRId32, line);
+  total_length += strlen(line_part);
+  total_length += strlen(line_str);
+  
+  // Create exception message
+  void* new_exception = env->new_string_raw(env, stack, NULL, total_length);
+  const char* new_exception_bytes = env->get_chars(env, stack, new_exception);
+  
+  memcpy(
+    (void*)(new_exception_bytes),
+    (void*)(exception_bytes),
+    exception_length
+  );
+
+  sprintf(
+    (char*)new_exception_bytes + exception_length,
+    "%s%s%s%s%s%s%s%s%s%" PRId32,
+    new_line_part,
+    class_name,
+    arrow_part,
+    method_name,
+    at_part,
+    class_path,
+    class_path_sep,
+    class_rel_file,
+    line_part,
+    line
+  );
+  
+  return new_exception;
+}
+
+SPVM_OBJECT* SPVM_API_new_stack_trace_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line) {
+  (void)env;
+  
+  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw_by_name(env, stack, exception, class_name, method_name, line);
   
   SPVM_API_push_mortal(env, stack, stack_trace);
   

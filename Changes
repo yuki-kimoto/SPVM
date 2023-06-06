@@ -2,6 +2,9 @@
   [New Features]
     * The get_object_basic_type_name Native API was added.
     * The isa_by_name Native API was added.
+    * The is_type_by_name Native API was added.
+    * The new_stack_trace_by_name Native API was added.
+    * The new_stack_trace_raw_by_name Native API was added.
     * The can_assign Native Runtime API was added.
   [Warning]
     * Many Native APIs will be changed in the nearly release.

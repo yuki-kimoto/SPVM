@@ -231,6 +231,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->class_init_flags != &env_array[210]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type_name != &env_array[211]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isa_by_name != &env_array[212]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_type_by_name != &env_array[213]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack_trace_raw_by_name != &env_array[214]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack_trace_by_name != &env_array[215]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 

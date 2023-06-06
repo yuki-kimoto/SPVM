@@ -2284,6 +2284,24 @@ Internally Used.
 
 Performs C<isa> operation.
 
+=head2 is_type_by_name
+
+  int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
+
+Given an object and a base type ID\\name and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
+
+=head2 new_stack_trace_raw_by_name
+
+  void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
+
+Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
+
+=head2 new_stack_trace_by_name
+
+  void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
+
+The same as L</"new_stack_trace_raw_by_name">, and push the created object to the mortal stack.
+
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>
