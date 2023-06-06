@@ -398,6 +398,7 @@ struct spvm_env_runtime {
   int32_t (*get_type_flag)(void* runtime, int32_t type_id);
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
   int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
+  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
 };
 
 struct spvm_env_compiler {

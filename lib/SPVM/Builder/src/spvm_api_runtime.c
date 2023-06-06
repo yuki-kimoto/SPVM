@@ -183,6 +183,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_is_object_type,
     SPVM_API_RUNTIME_get_class_version_string_id,
     (void*)NULL, // class_init_flags
+    SPVM_API_RUNTIME_can_assign,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));

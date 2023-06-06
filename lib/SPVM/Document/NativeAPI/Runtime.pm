@@ -106,6 +106,7 @@ Runtime native APIs have its IDs.
   82 get_type_flag
   83 is_object_type
   84 get_class_version_string_id
+  85 can_assign
 
 =head1 Runtime Native APIs
 
@@ -450,6 +451,10 @@ Runtime native APIs have its IDs.
   int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
 
 Gets the ID of the constant string of the version number.
+
+=head2 can_assign
+
+  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
 
 =head1 Copyright & License
 
