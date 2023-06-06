@@ -101,7 +101,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
+    (void*)(intptr_t)-1,
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
@@ -332,7 +332,6 @@ SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack
     assert(basic_type_id >= 0);
     
     object->basic_type_name = basic_type_name;
-    object->basic_type_id = basic_type_id;
     object->type_dimension = type_dimension;
     object->length = length;
     object->flag = flag;
@@ -2836,7 +2835,6 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_OBJECT object_for_type_check;
-  object_for_type_check.basic_type_id = basic_type_id;
   object_for_type_check.basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type_id);
   object_for_type_check.type_dimension = 1;
   
