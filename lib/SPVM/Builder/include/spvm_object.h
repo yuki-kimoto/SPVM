@@ -11,6 +11,7 @@
 struct spvm_object {
   SPVM_WEAKEN_BACKREF* weaken_backref_head;
   void* pointer;
+  int32_t basic_type_id;
   const char* basic_type_name;
   int32_t ref_count;
   uint8_t type_dimension;

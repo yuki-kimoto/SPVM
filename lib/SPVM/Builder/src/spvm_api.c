@@ -333,6 +333,7 @@ SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack
     int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
     assert(basic_type_id >= 0);
     
+    object->basic_type_id = basic_type_id;
     object->basic_type_name = basic_type_name;
     object->type_dimension = type_dimension;
     object->length = length;
@@ -351,6 +352,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     assert(basic_type_name_id >= 0);
     const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
     
+    object->basic_type_id = basic_type_id;
     object->basic_type_name = basic_type_name;
     object->type_dimension = type_dimension;
     object->length = length;
