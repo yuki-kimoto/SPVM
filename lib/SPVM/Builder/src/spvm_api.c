@@ -342,6 +342,24 @@ SPVM_OBJECT* SPVM_API_new_object_common_by_name(SPVM_ENV* env, SPVM_VALUE* stack
   return object;
 }
 
+SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, int32_t basic_type_id, int32_t type_dimension, int32_t length, int32_t flag) {
+  
+  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
+  
+  if (object) {
+    int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
+    assert(basic_type_name_id >= 0);
+    const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
+    
+    object->basic_type_name = basic_type_name;
+    object->type_dimension = type_dimension;
+    object->length = length;
+    object->flag = flag;
+  }
+  
+  return object;
+}
+
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
