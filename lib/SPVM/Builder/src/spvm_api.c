@@ -752,7 +752,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t method_id = env->get_class_method_id(env, stack, class_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The %s class method in the %s class is not found", class_name, method_name, func_name, file, line);
     return 1;
@@ -3245,6 +3245,8 @@ int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* cla
 }
 
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
+  
+  assert(0);
   
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   

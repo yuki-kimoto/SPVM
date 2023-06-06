@@ -1639,7 +1639,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
   (void)env;
   (void)stack;
   
-  int32_t method_id = env->get_class_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
   if (method_id < 0) {
     return 1;
   }
@@ -1660,7 +1660,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
     stack[0].ival = 1;
   }
 
-  int32_t method_id2 = env->get_method_id(env, stack, "TestCase::NativeAPI", "my_value");
+  int32_t method_id2 = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
   if (method_id2 != method_id) {
     return 1;
   }
@@ -1674,7 +1674,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   
   int32_t e = 0;
   
-  int32_t method_id = env->get_class_method_id(env, stack, "Point", "new");
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "Point", "new");
   if (method_id < 0) {
     return 1;
   }
@@ -3172,7 +3172,7 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
 
   stack[0].ival = 1;
   
-  int32_t method_id = env->get_method_id(env, stack, "TestCase::NativeAPI", "VALUE0");
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "VALUE0");
   assert(method_id >= 0);
   
   int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method_id);
