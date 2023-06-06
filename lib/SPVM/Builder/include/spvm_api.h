@@ -245,24 +245,18 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, SPVM_VALUE* stack, con
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t length);
 
-SPVM_OBJECT* SPVM_API_new_object_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-SPVM_OBJECT* SPVM_API_new_muldim_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length);
-SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length);
-SPVM_OBJECT* SPVM_API_new_mulnum_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-
 // New object by name
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env, SPVM_VALUE* stack);
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
 SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line);
-SPVM_OBJECT* SPVM_API_new_stack_trace_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* class_name, const char* method_name, int32_t line);
 int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
 
 // Reference count

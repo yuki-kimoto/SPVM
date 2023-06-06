@@ -1,3 +1,28 @@
+0.989001 2023-06-07
+  [Incompatible Changes]
+    * The new_stack_trace_by_name Native API was removed.
+    * The new_stack_trace_raw_by_name Native API was removed.
+    * The following Native APIs were removed.
+      void* (*new_object_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+      void* (*new_muldim_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+      void* (*new_mulnum_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+      int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_basic_type_name);
+    * The IDs of the following Native APIs were changed.
+      new_object_array_by_name
+      new_muldim_array_by_name
+      new_mulnum_array_by_name
+      has_interface_by_name
+    * The definition of the following Native APIs were changed.
+      -  void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+      +  void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
+      
+      -  void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+      +  void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
+      
+      -  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+      +  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
+  [Bug Fix]
+    * The following bug was fiexed. The new_object_array_by_name, new_muldim_array_by_name, and new_mulnum_array_by_name Native APIs could not be called.
 0.989 2023-06-06
   [New Features]
     * The get_object_basic_type_name Native API was added.

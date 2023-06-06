@@ -228,15 +228,10 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   211 get_object_basic_type_name
   212 isa_by_name
   213 is_type_by_name
-  214 new_stack_trace_raw_by_name
-  215 new_stack_trace_by_name
-  216 new_object_array_raw_by_name
-  217 new_object_array_by_name
-  218 new_muldim_array_raw_by_name
-  219 new_muldim_array_by_name
-  220 new_mulnum_array_raw_by_name
-  221 new_mulnum_array_by_name
-  222 has_interface_by_name
+  214 new_object_array_by_name
+  215 new_muldim_array_by_name
+  216 new_mulnum_array_by_name
+  217 has_interface_by_name
   
 =head2 class_vars_heap
 

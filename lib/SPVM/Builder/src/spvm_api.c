@@ -311,8 +311,9 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_object_basic_type_name,
     SPVM_API_isa_by_name,
     SPVM_API_is_type_by_name,
-    SPVM_API_new_stack_trace_raw_by_name,
-    SPVM_API_new_stack_trace_by_name,
+    SPVM_API_new_object_array_by_name,
+    SPVM_API_new_muldim_array_by_name,
+    SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -823,14 +824,14 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
+  if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
     *error = 1;
     return NULL;
   };
   
-  void* object = env->new_object(env, stack, id);
+  void* object = env->new_object(env, stack, basic_type_id);
   
   return object;
 }
@@ -838,13 +839,58 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
+  if (basic_type_id < 0) {
     *error = 1;
     env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
     return NULL;
   };
-  SPVM_OBJECT* object = env->new_pointer_object(env, stack, id, pointer);
+  SPVM_OBJECT* object = env->new_pointer_object(env, stack, basic_type_id, pointer);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    *error = 1;
+    return NULL;
+  };
+  
+  void* object = env->new_object_array(env, stack, basic_type_id, length);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {  *error = 0;
+  
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    *error = 1;
+    return NULL;
+  };
+  
+  void* object = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  *error = 0;
+  
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    *error = 1;
+    return NULL;
+  };
+  
+  void* object = env->new_mulnum_array(env, stack, basic_type_id, length);
+  
   return object;
 }
 
@@ -2989,92 +3035,6 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* st
   size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, 1, length, 0);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length) {
-  
-  SPVM_OBJECT* object = SPVM_API_new_object_array_raw_by_name(env, stack, basic_type_name, length);
-  
-  SPVM_API_push_mortal(env, stack, object);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_muldim_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length) {
-  
-  if (type_dimension < 2) {
-    return NULL;
-  }
-  else if (strcmp(basic_type_name, "object") == 0) {
-    return NULL;
-  }
-  
-  size_t alloc_size = (size_t)env->object_header_size + sizeof(void*) * (length + 1);
-  
-  SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, type_dimension, length, 0);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length) {
-  
-  SPVM_OBJECT* object = SPVM_API_new_muldim_array_raw_by_name(env, stack, basic_type_name, type_dimension, length);
-  
-  SPVM_API_push_mortal(env, stack, object);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_mulnum_array_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, basic_type_name);
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  int32_t fields_length = class->fields_length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, class->fields_base_id + 0);
-  
-  SPVM_RUNTIME_TYPE* first_field_type =SPVM_API_RUNTIME_get_type(runtime, field_first->type_id);
-  
-  int32_t field_basic_type_id = first_field_type->basic_type_id;
-  
-  int32_t unit_size;
-  if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-    unit_size = sizeof(int8_t);
-  }
-  else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
-    unit_size = sizeof(int16_t);
-  }
-  else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-    unit_size = sizeof(int32_t);
-  }
-  else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-    unit_size = sizeof(int64_t);
-  }
-  else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-    unit_size = sizeof(float);
-  }
-  else if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-    unit_size = sizeof(double);
-  }
-  else {
-    assert(0);
-  }
-  
-  size_t alloc_size = (size_t)env->object_header_size + unit_size * fields_length * (length + 1);
-  
-  SPVM_OBJECT* object = SPVM_API_new_object_common_by_name(env, stack, alloc_size, basic_type_name, 1, length, 0);
-  
-  return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length) {
-  
-  SPVM_OBJECT* object = SPVM_API_new_mulnum_array_raw_by_name(env, stack, basic_type_name, length);
-  
-  SPVM_API_push_mortal(env, stack, object);
   
   return object;
 }
