@@ -309,6 +309,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_call_method,
     NULL, // class_init_flags
     SPVM_API_get_object_basic_type_name,
+    SPVM_API_isa_by_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -3900,7 +3901,7 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
   return runtime_assignability;
 }
 
-int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
+int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension) {
   
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -3913,7 +3914,28 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
     int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
     int32_t object_type_dimension = object->type_dimension;
     
-    isa = SPVM_API_RUNTIME_isa(env->runtime, dist_basic_type_id, dist_type_dimension, object_basic_type_id, object_type_dimension);
+    isa = SPVM_API_RUNTIME_isa(env->runtime, basic_type_id, type_dimension, object_basic_type_id, object_type_dimension);
+  }
+  
+  return isa;
+}
+
+int32_t SPVM_API_isa_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name, int32_t type_dimension) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t isa;
+  if (object == NULL) {
+    isa = 1;
+  }
+  else {
+    int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
+    
+    const char* object_basic_type_name = object->basic_type_name;
+    int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object_basic_type_name);
+    int32_t object_type_dimension = object->type_dimension;
+    
+    isa = SPVM_API_RUNTIME_isa(env->runtime, basic_type_id, type_dimension, object_basic_type_id, object_type_dimension);
   }
   
   return isa;

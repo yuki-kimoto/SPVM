@@ -226,6 +226,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   209 call_method
   210 class_init_flags
   211 get_object_basic_type_name
+  212 isa_by_name
 
 =head2 class_vars_heap
 
@@ -2276,6 +2277,12 @@ If stack[0] is a value of an object type, the object is pushed to the mortal sta
 Gets the basic type name of the object.
 
 Internally Used.
+
+=head2 isa_by_name
+
+  int32_t (*isa_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
+
+Performs C<isa> operation.
 
 =head1 Compiler Native API
 
