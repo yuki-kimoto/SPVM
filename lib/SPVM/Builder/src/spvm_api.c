@@ -197,7 +197,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_remove_mortal,
     SPVM_API_is_type,
     SPVM_API_is_object_array,
-    SPVM_API_get_object_basic_type_id,
+    NULL, // reserved100,
     SPVM_API_get_object_type_dimension,
     SPVM_API_weaken,
     SPVM_API_isweak,
@@ -2899,11 +2899,6 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, i
   return obj_object;
 }
 
-int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  assert(0);
-  return object->basic_type_id;
-}
-
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   return object->basic_type_name;
 }
@@ -3126,7 +3121,6 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 }
 
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name) {
-  assert(0);
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3146,9 +3140,6 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char*
 }
 
 int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name) {
-  
-  assert(0);
-  
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
   
   return class_id;
@@ -3225,36 +3216,24 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
 }
 
 int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name) {
-  
-  assert(0);
-  
   int32_t field_id = SPVM_API_RUNTIME_get_field_id_by_name(env->runtime, class_name, field_name);
   
   return field_id;
 }
 
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name) {
-  
-  assert(0);
-  
   int32_t class_var_id = SPVM_API_RUNTIME_get_class_var_id_by_name(env->runtime, class_name, class_var_name);
   
   return class_var_id;
 }
 
 int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
-  
-  assert(0);
-  
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   return method_id;
 }
 
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
-  
-  assert(0);
-  
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   if (method_id >= 0) {
@@ -3268,9 +3247,6 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name) {
-  
-  assert(0);
-  
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   if (method_id >= 0) {
@@ -3975,9 +3951,6 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
 }
 
 int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
-  
-  assert(0);
-  
   *error = 0;
   
   int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
@@ -3989,7 +3962,6 @@ int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const ch
 }
 
 int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
-  assert(0);
   *error = 0;
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
