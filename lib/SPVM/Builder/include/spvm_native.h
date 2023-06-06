@@ -313,6 +313,12 @@ struct spvm_env {
   int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
   void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
   void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
+  void* (*new_object_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+  void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+  void* (*new_muldim_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+  void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+  void* (*new_mulnum_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
 };
 
 struct spvm_env_runtime {

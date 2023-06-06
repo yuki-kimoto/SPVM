@@ -227,6 +227,15 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   210 class_init_flags
   211 get_object_basic_type_name
   212 isa_by_name
+  213 is_type_by_name
+  214 new_stack_trace_raw_by_name
+  215 new_stack_trace_by_name
+  216 new_object_array_raw_by_name
+  217 new_object_array_by_name
+  218 new_muldim_array_raw_by_name
+  219 new_muldim_array_by_name
+  220 new_mulnum_array_raw_by_name
+  221 new_mulnum_array_by_name
 
 =head2 class_vars_heap
 
@@ -2301,6 +2310,30 @@ Creates a string object that represents a stack trace by adding the file and lin
   void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
 
 The same as L</"new_stack_trace_raw_by_name">, and push the created object to the mortal stack.
+
+=head2 new_object_array_raw_by_name
+
+  void* (*new_object_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+
+=head2 new_object_array_by_name
+
+  void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+
+=head2 new_muldim_array_raw_by_name
+
+  void* (*new_muldim_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+
+=head2 new_muldim_array_by_name
+
+  void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+
+=head2 new_mulnum_array_raw_by_name
+
+  void* (*new_mulnum_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+
+=head2 new_mulnum_array_by_name
+
+  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
 
 =head1 Compiler Native API
 
