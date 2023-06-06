@@ -3221,6 +3221,8 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
 
 int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name) {
   
+  assert(0);
+  
   int32_t field_id = SPVM_API_RUNTIME_get_field_id_by_name(env->runtime, class_name, field_name);
   
   return field_id;

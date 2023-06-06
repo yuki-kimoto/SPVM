@@ -110,7 +110,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_CLASS_ID_RET(SPVM_ENV* env, SPVM_VALUE*
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name, char* message, int32_t* error) {
 
-  int32_t field_id = env->get_field_id_static(env, stack, class_name, field_name);
+  int32_t field_id = env->api->runtime->get_field_id_by_name(env->runtime, class_name, field_name);
   
   if (field_id < 0) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
