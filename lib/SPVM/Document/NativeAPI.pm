@@ -236,7 +236,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   219 new_muldim_array_by_name
   220 new_mulnum_array_raw_by_name
   221 new_mulnum_array_by_name
-
+  222 has_interface_by_name
+  
 =head2 class_vars_heap
 
   void* class_vars_heap;
@@ -2334,6 +2335,12 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 =head2 new_mulnum_array_by_name
 
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+
+=head2 has_interface_by_name
+
+  int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_basic_type_name);
+
+Check the type of the object has the interface.
 
 =head1 Compiler Native API
 
