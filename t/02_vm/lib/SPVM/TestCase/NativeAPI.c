@@ -1890,7 +1890,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   int32_t ret;
   {
     int32_t args_stack_length = 0;
-    env->call_method_raw(env, stack, method_id, args_stack_length);
+    env->call_method(env, stack, method_id, args_stack_length);
     if (e) { return e; }
     ret = stack[0].ival;
   }
