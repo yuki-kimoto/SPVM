@@ -2883,7 +2883,7 @@ SPVM_OP* SPVM_OP_build_operator_statement(SPVM_COMPILER* compiler, SPVM_OP* op_o
   return op_operator;
 }
 
-SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_operand) {
+SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
   if (!op_operand || op_operand->id == SPVM_OP_C_ID_UNDEF) {
     // Default error message
@@ -2898,7 +2898,15 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_build_assign(compiler, op_assign, op_exception_var, op_operand);
   
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
-
+  
+  if (!op_type) {
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, "Error", strlen("Error"));
+    SPVM_TYPE* type = SPVM_TYPE_new(compiler, found_basic_type->id, 0, 0);
+    op_type = SPVM_OP_new_op_type(compiler, type, op_die->file, op_die->line);
+  }
+  
+  SPVM_OP_insert_child(compiler, op_die, op_die->last, op_type);
+  
   return op_die;
 }
 

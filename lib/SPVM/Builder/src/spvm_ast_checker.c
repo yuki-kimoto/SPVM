@@ -2558,7 +2558,12 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             break;
           }
           case SPVM_OP_C_ID_DIE: {
-            // Nothing to do
+            SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+            
+            if (!SPVM_TYPE_is_class_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The error class of the die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+            }
+            
             break;
           }
           case SPVM_OP_C_ID_WARN: {

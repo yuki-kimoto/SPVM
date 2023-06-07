@@ -535,11 +535,19 @@ statement
 die
   : DIE operator
     {
-      $$ = SPVM_OP_build_die(compiler, $1, $2);
+      $$ = SPVM_OP_build_die(compiler, $1, $2, NULL);
     }
   | DIE
     {
-      $$ = SPVM_OP_build_die(compiler, $1, NULL);
+      $$ = SPVM_OP_build_die(compiler, $1, NULL, NULL);
+    }
+  | DIE type operator
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, $3, $2);
+    }
+  | DIE type
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, NULL, $2);
     }
 
 void_return_operator
