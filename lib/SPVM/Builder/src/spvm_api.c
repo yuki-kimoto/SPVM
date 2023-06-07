@@ -2829,7 +2829,6 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   SPVM_OBJECT object_for_type_check;
   object_for_type_check.basic_type_id = basic_type_id;
-  object_for_type_check.basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type_id);
   object_for_type_check.type_dimension = 1;
   
   int32_t is_object_array = SPVM_API_is_object_array(env, stack, &object_for_type_check);
