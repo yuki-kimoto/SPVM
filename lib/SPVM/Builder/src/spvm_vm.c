@@ -1183,8 +1183,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_SET_DIE_ERROR_CODE(env, stack, &int_vars[opcode->operand0], &die_error_code, int_vars[opcode->operand1], &error_code);
         break;
       }
-      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
-        SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error_code);
+      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_CODE: {
+        SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_CODE(eval_error_code);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {

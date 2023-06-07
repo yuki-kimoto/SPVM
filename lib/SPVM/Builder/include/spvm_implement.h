@@ -1505,7 +1505,7 @@ static inline void SPVM_IMPLEMENT_SET_DIE_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* 
   }
 }
 
-#define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error_code) (eval_error_code = 0)
+#define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_CODE(eval_error_code) (eval_error_code = 0)
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR(out, eval_error_code) (out = eval_error_code)
 
