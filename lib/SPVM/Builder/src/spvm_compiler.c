@@ -284,7 +284,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
-  int32_t error_code = 0;
+  int32_t die_error_code = 0;
 
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
 
@@ -310,17 +310,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {
-    error_code = 1;
+    die_error_code = 1;
   }
   else {
     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-      error_code = 2;
+      die_error_code = 2;
     }
     else {
       // Check syntax
       SPVM_AST_CHECKER_check(compiler);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-        error_code = 3;
+        die_error_code = 3;
       }
       else {
         // Build operation code
@@ -328,7 +328,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
         assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_array_start_memory_blocks_count_tmp);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          error_code = 4;
+          die_error_code = 4;
         }
       }
     }
@@ -457,7 +457,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
-  return error_code;
+  return die_error_code;
 }
 
 int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {

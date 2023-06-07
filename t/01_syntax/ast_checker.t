@@ -108,11 +108,11 @@ use Test::More;
   }
 }
 
-# set_error_code
+# set_die_error_code
 {
   {
-    my $source = 'class MyClass { static method main : void () { set_error_code 1d; } }';
-    compile_not_ok($source, qr'The operand of the set_error_code operator must be the int type');
+    my $source = 'class MyClass { static method main : void () { set_die_error_code 1d; } }';
+    compile_not_ok($source, qr'The operand of the set_die_error_code operator must be the int type');
   }
 }
 

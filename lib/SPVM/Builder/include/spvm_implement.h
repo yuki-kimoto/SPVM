@@ -26,7 +26,7 @@ enum {
   SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE,
   SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED,
   SPVM_IMPLEMENT_C_STRING_COPY_OPERAND_INVALID,
-  SPVM_IMPLEMENT_C_STRING_ERROR_CODE_TOO_SMALL,
+  SPVM_IMPLEMENT_C_STRING_DIE_ERROR_CODE_TOO_SMALL,
   SPVM_IMPLEMENT_C_STRING_WARN_AT,
   SPVM_IMPLEMENT_C_STRING_WARN_UNDEF,
   SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND,
@@ -1491,17 +1491,17 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
   fflush(stderr);
 }
 
-#define SPVM_IMPLEMENT_GET_ERROR_CODE(out, error_code) (out = error_code)
+#define SPVM_IMPLEMENT_GET_DIE_ERROR_CODE(out, die_error_code) (out = die_error_code)
 
-static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* error_code, int32_t in, int32_t* error) {
+static inline void SPVM_IMPLEMENT_SET_DIE_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* die_error_code, int32_t in, int32_t* error) {
   if (in < 1) {
-    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CODE_TOO_SMALL]);
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIE_ERROR_CODE_TOO_SMALL]);
     env->set_exception(env, stack, exception);
     *error = 1;
   }
   else {
-    *error_code = in;
-    *out = *error_code;
+    *die_error_code = in;
+    *out = *die_error_code;
   }
 }
 
@@ -1509,7 +1509,7 @@ static inline void SPVM_IMPLEMENT_SET_ERROR_CODE(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR(out, eval_error) (out = eval_error)
 
-#define SPVM_IMPLEMENT_SET_ERROR(error, error_code) (error = error_code)
+#define SPVM_IMPLEMENT_SET_ERROR(error, die_error_code) (error = die_error_code)
 
 #define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->items(env, stack))
 

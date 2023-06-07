@@ -1794,13 +1794,13 @@ _xs_call_method(...)
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t error_code_ret = env->call_method_raw(env, stack, method_id, args_native_stack_length);
+  int32_t die_error_code_ret = env->call_method_raw(env, stack, method_id, args_native_stack_length);
   
-  if (error_code_ret) {
+  if (die_error_code_ret) {
     if (SvOK(sv_error_ret)) {
       HV* hv_error_ret = (HV*)SvRV(sv_error_ret);
-      SV* sv_error_code_ret = sv_2mortal(newSViv(error_code_ret));
-      (void)hv_store(hv_error_ret, "code", strlen("code"), SvREFCNT_inc(sv_error_code_ret), 0);
+      SV* sv_die_error_code_ret = sv_2mortal(newSViv(die_error_code_ret));
+      (void)hv_store(hv_error_ret, "code", strlen("code"), SvREFCNT_inc(sv_die_error_code_ret), 0);
     }
     
     void* exception = env->get_exception(env, stack);
@@ -4575,10 +4575,10 @@ compile(...)
   }
 
   // Compile SPVM
-  int32_t compile_error_code = api_env->api->compiler->compile(compiler, class_name);
+  int32_t compile_die_error_code = api_env->api->compiler->compile(compiler, class_name);
   
   SV* sv_success = &PL_sv_undef;
-  if (compile_error_code == 0) {
+  if (compile_die_error_code == 0) {
     sv_success = sv_2mortal(newSViv(1));
   }
 

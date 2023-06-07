@@ -1698,6 +1698,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIE);
                   keyword_token = DIE;
                 }
+                else if (strcmp(symbol_name, "die_error_code") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIE_ERROR_CODE);
+                  keyword_token = DIE_ERROR_CODE;
+                }
                 else if (strcmp(symbol_name, "divui") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT);
                   keyword_token = DIVIDE_UNSIGNED_INT;
@@ -1736,10 +1740,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "error") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ERROR);
                   keyword_token = ERROR;
-                }
-                else if (strcmp(symbol_name, "error_code") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ERROR_CODE);
-                  keyword_token = ERROR_CODE;
                 }
                 else if (strcmp(symbol_name, "eval") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EVAL);
@@ -2001,9 +2001,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SAY);
                   keyword_token = SAY;
                 }
-                else if (strcmp(symbol_name, "set_error_code") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_ERROR_CODE);
-                  keyword_token = SET_ERROR_CODE;
+                else if (strcmp(symbol_name, "set_die_error_code") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_DIE_ERROR_CODE);
+                  keyword_token = SET_DIE_ERROR_CODE;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);

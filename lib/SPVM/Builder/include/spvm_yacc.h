@@ -61,7 +61,7 @@ extern int SPVM_yydebug;
     ATTRIBUTE = 271,
     MAKE_READ_ONLY = 272,
     INTERFACE = 273,
-    ERROR_CODE = 274,
+    DIE_ERROR_CODE = 274,
     ERROR = 275,
     ITEMS = 276,
     VERSION_DECL = 277,
@@ -162,7 +162,7 @@ extern int SPVM_yydebug;
     NEW_STRING_LEN = 372,
     IS_READ_ONLY = 373,
     COPY = 374,
-    SET_ERROR_CODE = 375,
+    SET_DIE_ERROR_CODE = 375,
     INC = 376,
     DEC = 377,
     ARROW = 378

@@ -28,7 +28,7 @@ class TestCase::ErrorCode {
         unless (error == 0) {
           return 0;
         }
-        set_error_code 3;
+        set_die_error_code 3;
         die;
       };
       unless (error == 3) {
@@ -45,9 +45,9 @@ class TestCase::ErrorCode {
         return 0;
       }
       
-      set_error_code 5;
+      set_die_error_code 5;
       &foo;
-      unless (error_code == 5) {
+      unless (die_error_code == 5) {
         return 0;
       }
       unless (error == 0) {
@@ -61,11 +61,11 @@ class TestCase::ErrorCode {
         return 0;
       }
       
-      set_error_code 5;
+      set_die_error_code 5;
       eval {
         &foo;
       };
-      unless (error_code == 5) {
+      unless (die_error_code == 5) {
         return 0;
       }
       unless (error == 0) {
@@ -75,7 +75,7 @@ class TestCase::ErrorCode {
     
     {
       eval {
-        set_error_code class_id Point;
+        set_die_error_code class_id Point;
         die;
       };
       unless (error == class_id Point) {
@@ -84,47 +84,47 @@ class TestCase::ErrorCode {
     }
     
     {
-      set_error_code 5;
-      unless (error_code == 5) {
+      set_die_error_code 5;
+      unless (die_error_code == 5) {
         return 0;
       }
-      set_error_code 6;
+      set_die_error_code 6;
       eval {
         die;
       };
-      unless (error_code == 6) {
+      unless (die_error_code == 6) {
         return 0;
       }
     }
     
     
     {
-      set_error_code 7;
+      set_die_error_code 7;
       &foo();
-      unless (error_code == 7) {
+      unless (die_error_code == 7) {
         return 0;
       }
-      set_error_code 8;
+      set_die_error_code 8;
       eval {
         &foo_die();
       };
-      unless (error_code == 8) {
+      unless (die_error_code == 8) {
         return 0;
       }
-      set_error_code 900;
+      set_die_error_code 900;
       eval {
         &foo_bar_die();
       };
       unless (error == 100) {
         return 0;
       }
-      unless (error_code == 900) {
+      unless (die_error_code == 900) {
         return 0;
       }
     }
     
     eval {
-      set_error_code 0;
+      set_die_error_code 0;
     };
     unless ($@ && Fn->contains($@, "The error code must be greater than or equal to 1")) {
       
@@ -134,7 +134,7 @@ class TestCase::ErrorCode {
     }
 
     eval {
-      set_error_code -1;
+      set_die_error_code -1;
     };
     unless ($@ && Fn->contains($@, "The error code must be greater than or equal to 1")) {
       warn $@;
@@ -147,21 +147,21 @@ class TestCase::ErrorCode {
   }
   
   static method foo : int () {
-    set_error_code 12;
+    set_die_error_code 12;
   }
   
   static method foo_die : int () {
-    set_error_code 9;
+    set_die_error_code 9;
     die;
   }
 
   static method foo_bar_die : int () {
-    set_error_code 200;
+    set_die_error_code 200;
     &bar_die;
   }
   
   static method bar_die : int () {
-    set_error_code 100;
+    set_die_error_code 100;
     die "Died at bar_die";
   }
 }

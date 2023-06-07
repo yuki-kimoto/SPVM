@@ -42,7 +42,7 @@ The SPVM::ExchangeAPI::Error class has methods to get and set an error code.
   
   my $error = SPVM::ExchangeAPI::Error->new;
   $error->code(2);
-  my $error_code = $error->code;
+  my $die_error_code = $error->code;
 
 =head1 Fields
 

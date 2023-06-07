@@ -198,7 +198,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error = 0;\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_code = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t die_error_code = 1;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error = 0;\n");
 
@@ -289,7 +289,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t string_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* src_string_data;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t tmp_error_code;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t tmp_die_error_code;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t empty_or_undef;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* bytes;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_var_id;\n");
@@ -2765,16 +2765,16 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, class_path, class_path_sep, class_rel_file, line);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_ERROR_CODE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_ERROR_CODE(");
+      case SPVM_OPCODE_C_ID_GET_DIE_ERROR_CODE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_DIE_ERROR_CODE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", error_code);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", die_error_code);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_CODE(env, stack, ");
+      case SPVM_OPCODE_C_ID_SET_DIE_ERROR_CODE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DIE_ERROR_CODE(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", &error_code, ");
+        SPVM_STRING_BUFFER_add(string_buffer, ", &die_error_code, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ", &error);");
         break;
@@ -2791,7 +2791,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR(error, error_code);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR(error, die_error_code);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_ITEMS: {
