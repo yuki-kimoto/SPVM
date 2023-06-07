@@ -1509,7 +1509,7 @@ static inline void SPVM_IMPLEMENT_SET_DIE_ERROR_ID(SPVM_ENV* env, SPVM_VALUE* st
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(out, eval_error_id) (out = eval_error_id)
 
-#define SPVM_IMPLEMENT_SET_ERROR(error_id, die_error_id) (error_id = die_error_id)
+#define SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id) (error_id = die_error_id)
 
 #define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->items(env, stack))
 
