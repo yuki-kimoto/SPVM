@@ -24,7 +24,8 @@
   [Bug Fix]
     * A following bug was fiexed. The new_object_array_by_name, new_muldim_array_by_name, and new_mulnum_array_by_name Native APIs could not be called.
     * A following bug was fiexed. The isa_by_name, is_type_by_name, and has_interface_by_name Native APIs didnot work correctly.
-   
+  [Internale Changes]
+    * The spvm_object structure was restored. The basci_type_name member was removed in the spvm_object strucutre and the basic_type_id member is added again.
 0.989 2023-06-06
   [New Features]
     * The get_object_basic_type_name Native API was added.
