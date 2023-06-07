@@ -498,6 +498,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "CALL_INSTANCE_METHOD_STATIC",
     "CALL_INSTANCE_METHOD_DYNAMIC",
     "CLEAR_EVAL_ERROR_V2",
+    "SET_ERROR_CODE_V2",
   };
   
   return id_names;

@@ -73,6 +73,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   
   // Error code value
   int32_t error_code = 1;
+  int32_t error_code_v2 = 1;
   
   // Operation code base
   int32_t current_method_opcodes_base_id = current_method->opcodes_base_id;
@@ -1181,8 +1182,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_CODE: {
-        int32_t tmp_error_code = int_vars[opcode->operand1];
         SPVM_IMPLEMENT_SET_ERROR_CODE(env, stack, &int_vars[opcode->operand0], &error_code, int_vars[opcode->operand1], &error);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_ERROR_CODE_V2: {
+        SPVM_IMPLEMENT_SET_ERROR_CODE_V2(env, stack, &int_vars[opcode->operand0], &error_code_v2, int_vars[opcode->operand1], &error);
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
