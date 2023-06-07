@@ -1840,7 +1840,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_object_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, object->basic_type_name);
+      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
       assert(object_basic_type_id >= 0);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
@@ -2850,6 +2850,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_OBJECT object_for_type_check;
+  object_for_type_check.basic_type_id = basic_type_id;
   object_for_type_check.basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type_id);
   object_for_type_check.type_dimension = 1;
   
