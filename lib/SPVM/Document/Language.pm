@@ -259,7 +259,7 @@ The list of keywords:
   enum
   eq
   error
-  die_error_code
+  die_error_id
   eval
   extends
   for
@@ -310,7 +310,7 @@ The list of keywords:
   rw
   ro
   say
-  set_die_error_code
+  set_die_error_id
   static
   switch
   string
@@ -1232,7 +1232,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE DIE_ERROR_CODE ERROR ITEMS VERSION_DECL
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE DIE_ERROR_ID ERROR ITEMS VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -1268,7 +1268,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_ID
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1539,8 +1539,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | can
     | logical_operator
     | CLASS_ID class_name
-    | DIE_ERROR_CODE
-    | SET_DIE_ERROR_CODE operator
+    | DIE_ERROR_ID
+    | SET_DIE_ERROR_ID operator
     | ERROR
     | ITEMS
 
@@ -1860,13 +1860,13 @@ The list of syntax parsing tokens:
     <td>ERROR</td><td>error</td>
   </tr>
   <tr>
-    <td>DIE_ERROR_CODE</td><td>die_error_code</td>
+    <td>DIE_ERROR_ID</td><td>die_error_id</td>
   </tr>
   <tr>
     <td>EXTENDS</td><td>extends</td>
   </tr>
   <tr>
-    <td>SET_DIE_ERROR_CODE</td><td>set_die_error_code</td>
+    <td>SET_DIE_ERROR_ID</td><td>set_die_error_id</td>
   </tr>
   <tr>
     <td>EVAL</td><td>eval</td>
@@ -2134,7 +2134,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_CODE
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_ID
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -8840,17 +8840,17 @@ The return value is the class id.
 
 The return type is the L<int type|/"int Type">.
 
-=head2 die_error_code Operator
+=head2 die_error_id Operator
 
-The C<die_error_code> is an L<operator|/"Operator"> to get the value of the error code.
+The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error code.
 
-  die_error_code
+  die_error_id
 
-=head2 set_die_error_code Operator
+=head2 set_die_error_id Operator
 
-The C<set_die_error_code> operator is an L<operator|/"Operator"> to set the value of the error code.
+The C<set_die_error_id> operator is an L<operator|/"Operator"> to set the value of the error code.
 
-  set_die_error_code OPERAND
+  set_die_error_id OPERAND
 
 The type of the OPERAND must be the L<int type|/"int Type">.
 
@@ -8862,7 +8862,7 @@ The C<error> operatoer is an L<operator|/"Operator"> to get the current error co
 
 This value is set to 0 at the beginning of the L<eval block|eval Block>.
 
-If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<die_error_code|/"die_error_code">.
+If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<die_error_id|/"die_error_id">.
 
 =head2 Type Cast
 

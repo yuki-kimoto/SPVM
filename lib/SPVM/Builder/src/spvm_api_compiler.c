@@ -89,8 +89,8 @@ void SPVM_API_COMPILER_clear_class_paths(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
-  int32_t die_error_code = SPVM_COMPILER_compile(compiler, class_name);
-  return die_error_code;
+  int32_t die_error_id = SPVM_COMPILER_compile(compiler, class_name);
+  return die_error_id;
 }
 
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {  

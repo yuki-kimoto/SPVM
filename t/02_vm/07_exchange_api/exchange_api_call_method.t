@@ -109,8 +109,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       my $error = $api->new_error;
       is($error->code, 0);
       my $message = "Error";
-      my $die_error_code = 2;
-      eval { SPVM::TestCase::ExchangeAPI->die_with_die_error_code($message, $die_error_code, $error); };
+      my $die_error_id = 2;
+      eval { SPVM::TestCase::ExchangeAPI->die_with_die_error_id($message, $die_error_id, $error); };
       is($error->code, 2);
     }
   }

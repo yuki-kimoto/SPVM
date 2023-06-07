@@ -54,10 +54,10 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
-  int32_t compile_die_error_code = env->api->compiler->compile(compiler, class_name);
+  int32_t compile_die_error_id = env->api->compiler->compile(compiler, class_name);
   
   int32_t success = 0;
-  if (compile_die_error_code == 0) {
+  if (compile_die_error_id == 0) {
     success = 1;
   }
   
