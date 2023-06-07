@@ -2,6 +2,7 @@ class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
   use Comparator;
+  use Error::System;
   
   our $CALLBACK_DIE_LINE  : rw int;
   our $ZERO_DIVIDE_INT_LINE : rw int;
@@ -217,6 +218,30 @@ class TestCase::Exception {
       eval { die undef; }
       my $error = $@;
       unless (Fn->index($error, "Error\n  ", 0) == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { die "SystemError"; }
+      my $error = $@;
+      unless (Fn->contains($error, "SystemError")) {
+        return 0;
+      }
+      
+      unless (error == class_id Error) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { die Error::System "SystemError"; }
+      my $error = $@;
+      unless (Fn->contains($error, "SystemError")) {
+        return 0;
+      }
+      
+      unless (error == class_id Error::System) {
         return 0;
       }
     }

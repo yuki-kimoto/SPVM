@@ -1,3 +1,8 @@
+0.989002 2023-06-07
+  [New Features and Incompatible Changes]
+    * The following syntax was added. The set_error_code operator was no longer in effect and deprecated and will be removed.
+      die CLASS_NAME OPERAND
+      
 0.989001 2023-06-07
   [Incompatible Changes]
     * The new_stack_trace_by_name Native API was removed.

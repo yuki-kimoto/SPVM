@@ -833,8 +833,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     {
                       SPVM_OPCODE opcode = {0};
                       
+                      SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR);
+                      
+                      opcode.operand0 = last_type->basic_type->class->id;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                     }

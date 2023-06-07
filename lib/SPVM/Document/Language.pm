@@ -6912,6 +6912,8 @@ The C<die> statement throws an L<exception|/"Throwing Exception">.
 
   die OPERAND;
   die;
+  die CLASS_NAME OPERAND;
+  die CLASS_NAME;
 
 The OPERAND is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
@@ -6943,6 +6945,8 @@ Examples:
   if ($@) {
     # ...
   }
+  
+  die Error::System "Error";
 
 =head2 Operator Statement
 
@@ -8842,11 +8846,15 @@ The return type is the L<int type|/"int Type">.
 
 =head2 error_code Operator
 
+The error_code operator is deprecated and will be removed.
+
 The C<error_code> is an L<operator|/"Operator"> to get the value of the error code.
 
   error_code
 
 =head2 set_error_code Operator
+
+The set_error_code operator was no longer in effect and deprecated and will be removed.
 
 The C<set_error_code> operator is an L<operator|/"Operator"> to set the value of the error code.
 

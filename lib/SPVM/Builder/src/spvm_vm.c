@@ -1192,6 +1192,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR: {
+        int32_t error_code = opcode->operand0;
         SPVM_IMPLEMENT_SET_ERROR(error, error_code);
         break;
       }
