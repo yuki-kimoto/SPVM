@@ -3026,12 +3026,18 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, i
   return obj_object;
 }
 
-const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  return object->basic_type_name;
-}
-
 int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   return object->basic_type_id;
+}
+
+const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
+  int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
+  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
+  
+  assert(basic_type_name);
+  
+  return basic_type_name;
 }
 
 int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
