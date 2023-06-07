@@ -5082,17 +5082,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  END_OF_METHOD:\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  return_value = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (error_code) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    return_value = error_code;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (error_code == 0) {\n");
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_get_type_is_object(runtime, current_method_return_type_id);
   if (method_return_type_check_runtime_assignability_to_any_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
-  "  return return_value;\n"
+  "  return error_code;\n"
                                         "}\n"
                                         "\n");
 }

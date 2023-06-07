@@ -2165,12 +2165,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
 
   label_END_OF_METHOD: {
   
-    // Decrement ref count of return value
-    int32_t return_value = 0;
-    if (error_code) {
-      return_value = error_code;
-    }
-    else {
+    if (error_code == 0) {
       int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, current_method->return_type_id);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
@@ -2182,6 +2177,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
     SPVM_API_free_memory_stack(env, stack, call_stack);
     call_stack = NULL;
     
-    return return_value;
+    return error_code;
   }
 }
