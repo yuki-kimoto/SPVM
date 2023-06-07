@@ -13,9 +13,9 @@ void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opc
 void SPVM_OPCODE_BUILDER_push_goto_on_exception(
   SPVM_COMPILER* compiler,
   SPVM_OPCODE_ARRAY* opcode_array,
-  SPVM_LIST* push_eval_opcode_rel_index_stack,
-  SPVM_LIST* if_die_catch_goto_opcode_rel_index_stack,
-  SPVM_LIST* if_die_return_goto_opcode_rel_index_stack,
+  int32_t in_eval_block,
+  SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack,
+  SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack,
   SPVM_OP* op_method,
   int32_t line
 );
