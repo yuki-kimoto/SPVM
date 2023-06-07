@@ -353,7 +353,6 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
     
     object->basic_type_id = basic_type_id;
-    object->basic_type_name = basic_type_name;
     object->type_dimension = type_dimension;
     object->length = length;
     object->flag = flag;
@@ -396,7 +395,8 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
 }
 
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
-  if (string && strcmp(string->basic_type_name, "string") == 0 && string->type_dimension == 0) {
+  int32_t string_basci_type_id = SPVM_API_get_object_basic_type_id(env, stack, string);
+  if (string && string_basci_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0) {
     string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
   }
 }
