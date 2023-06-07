@@ -2783,6 +2783,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error);\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_V2: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error_v2);\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_EVAL_ERROR(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);

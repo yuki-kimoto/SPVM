@@ -69,6 +69,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   // Caught eval error
   int32_t eval_error = 0;
   
+  int32_t eval_error_v2 = 0;
+  
   // Error code value
   int32_t error_code = 1;
   
@@ -1185,6 +1187,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR: {
         SPVM_IMPLEMENT_CLEAR_EVAL_ERROR(eval_error);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_V2: {
+        SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_V2(eval_error_v2);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR: {
