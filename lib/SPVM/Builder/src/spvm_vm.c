@@ -1196,7 +1196,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {
-        SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id);
+        int32_t basic_type_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_ID: {

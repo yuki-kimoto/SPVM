@@ -221,6 +221,39 @@ class TestCase::Exception {
       }
     }
     
+    {
+      eval { die "Error"; }
+      my $error = $@;
+      unless (Fn->index($error, "Error\n  ", 0) == 0) {
+        return 0;
+      }
+      unless (eval_error_id == basic_type_id Error) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { die Error::System "Error Message"; }
+      my $error = $@;
+      unless (Fn->index($error, "Error Message\n  ", 0) == 0) {
+        return 0;
+      }
+      unless (eval_error_id == basic_type_id Error::System) {
+        return 0;
+      }
+    }
+
+    {
+      eval { die Error::System; }
+      my $error = $@;
+      unless (Fn->index($error, "Error\n  ", 0) == 0) {
+        return 0;
+      }
+      unless (eval_error_id == basic_type_id Error::System) {
+        return 0;
+      }
+    }
+    
     $@ = undef;
     
     return 1;
