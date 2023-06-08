@@ -69,9 +69,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   // Caught eval error_id
   int32_t eval_error_id = 0;
   
-  // Error code value
-  int32_t die_error_id = 1;
-  
   // Operation code base
   int32_t current_method_opcodes_base_id = current_method->opcodes_base_id;
 
@@ -1180,10 +1177,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
       }
       case SPVM_OPCODE_C_ID_GET_EVAL_ERROR_ID: {
         SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(int_vars[opcode->operand0], eval_error_id);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_EVAL_ERROR_ID: {
-        SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {

@@ -199,8 +199,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_id = 0;\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t die_error_id = 0;\n");
-
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error_id = 0;\n");
 
   int32_t method_mortal_stack_length = SPVM_API_RUNTIME_get_method_mortal_stack_length(runtime, current_method_id);
@@ -2781,10 +2779,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", eval_error_id);\n");
         
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_EVAL_ERROR_ID: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {

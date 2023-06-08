@@ -299,7 +299,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "SET_DIE_ERROR_ID",
     "CLEAR_EVAL_ERROR_ID",
     "GET_EVAL_ERROR_ID",
-    "SET_EVAL_ERROR_ID",
     "GET_CLASS_ID",
     "GET_BASIC_TYPE_ID",
     "SET_ERROR_ID",
