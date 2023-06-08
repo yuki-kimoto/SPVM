@@ -2795,6 +2795,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_EVAL_ERROR_ID: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id);\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id);\n");
         break;
