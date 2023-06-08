@@ -29,7 +29,7 @@
   [New Features]
     * The basic_type_id operator was added.
   [Incompatible Changes]
-    * The error operator was renamed to the eval_error_id operator.
+    * The error operator was renamed to the eval_error_id operator. The eval_error_id operator returns the basic type id, not the class id.
     * The class_id operator was removed.
     * The code field in the ExchangeAPI::Error class was renamed to the id field.
     * The set_error_code operator was removed.
