@@ -1178,11 +1178,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_GET_DIE_ERROR_ID(int_vars[opcode->operand0], die_error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_DIE_ERROR_ID: {
-        int32_t tmp_die_error_id = int_vars[opcode->operand1];
-        SPVM_IMPLEMENT_SET_DIE_ERROR_ID(env, stack, &int_vars[opcode->operand0], &die_error_id, int_vars[opcode->operand1], &error_id);
-        break;
-      }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
         SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id);
         break;

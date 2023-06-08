@@ -1493,18 +1493,6 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
 
 #define SPVM_IMPLEMENT_GET_DIE_ERROR_ID(out, die_error_id) (out = die_error_id)
 
-static inline void SPVM_IMPLEMENT_SET_DIE_ERROR_ID(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* die_error_id, int32_t in, int32_t* error_id) {
-  if (in < 1) {
-    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIE_ERROR_ID_TOO_SMALL]);
-    env->set_exception(env, stack, exception);
-    *error_id = 1;
-  }
-  else {
-    *die_error_id = in;
-    *out = *die_error_id;
-  }
-}
-
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(out, eval_error_id) (out = eval_error_id)

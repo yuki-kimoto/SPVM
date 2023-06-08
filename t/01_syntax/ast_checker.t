@@ -108,14 +108,6 @@ use Test::More;
   }
 }
 
-# set_die_error_id
-{
-  {
-    my $source = 'class MyClass { static method main : void () { set_die_error_id 1d; } }';
-    compile_not_ok($source, qr'The operand of the set_die_error_id operator must be the int type');
-  }
-}
-
 # switch
 {
   {

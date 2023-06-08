@@ -2777,14 +2777,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", die_error_id);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_DIE_ERROR_ID: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_DIE_ERROR_ID(env, stack, ");
-        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", &die_error_id, ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);");
-        break;
-      }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id);\n");
         break;

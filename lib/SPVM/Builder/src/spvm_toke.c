@@ -2001,10 +2001,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SAY);
                   keyword_token = SAY;
                 }
-                else if (strcmp(symbol_name, "set_die_error_id") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_DIE_ERROR_ID);
-                  keyword_token = SET_DIE_ERROR_ID;
-                }
                 else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_attribute;

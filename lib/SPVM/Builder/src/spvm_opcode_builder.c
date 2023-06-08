@@ -3468,23 +3468,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
-                        case SPVM_OP_C_ID_SET_DIE_ERROR_ID : {
-                          
-                          SPVM_OP* op_number = op_assign_src->first;
-                          
-                          SPVM_OPCODE opcode = {0};
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_DIE_ERROR_ID);
-                          
-                          int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_number);
-                          int32_t call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
-                          opcode.operand0 = call_stack_id_out;
-                          opcode.operand1 = call_stack_id_in;
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-
-                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign->line);
-
-                          break;
-                        }
                         case SPVM_OP_C_ID_ITEMS : {
                           
                           SPVM_OPCODE opcode = {0};

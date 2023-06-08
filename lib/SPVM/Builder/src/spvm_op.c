@@ -2929,13 +2929,6 @@ SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_
   return op_basic_type_id;
 }
 
-SPVM_OP* SPVM_OP_build_set_die_error_id(SPVM_COMPILER* compiler, SPVM_OP* op_set_die_error_id, SPVM_OP* op_number) {
-  
-  SPVM_OP_insert_child(compiler, op_set_die_error_id, op_set_die_error_id->last, op_number);
-  
-  return op_set_die_error_id;
-}
-
 SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand) {
   
   SPVM_OP_insert_child(compiler, op_print, op_print->last, op_operand);

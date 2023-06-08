@@ -65,7 +65,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_ID
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -565,10 +565,6 @@ void_return_operator
   | MAKE_READ_ONLY operator
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
-    }
-  | SET_DIE_ERROR_ID operator
-    {
-      $$ = SPVM_OP_build_set_die_error_id(compiler, $1, $2);
     }
 
 warn

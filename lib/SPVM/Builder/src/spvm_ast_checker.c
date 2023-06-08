@@ -1254,17 +1254,6 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             break;
           }
-          case SPVM_OP_C_ID_SET_DIE_ERROR_ID: {
-            
-            SPVM_OP* op_number = op_cur->first;
-            
-            SPVM_TYPE* number_type = SPVM_OP_get_type(compiler, op_number);
-            if (!SPVM_TYPE_is_int_type(compiler, number_type->basic_type->id, number_type->dimension, number_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand of the set_die_error_id operator must be the int type", op_number->file, op_number->line);
-            }
-            
-            break;
-          }
           case SPVM_OP_C_ID_SWITCH: {
             
             SPVM_OP* op_switch_condition = op_cur->first;
@@ -3152,7 +3141,6 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
             switch (op_cur->id) {
               case SPVM_OP_C_ID_TYPE_CAST:
               case SPVM_OP_C_ID_WARN:
-              case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
               case SPVM_OP_C_ID_PRINT:
               case SPVM_OP_C_ID_SAY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
