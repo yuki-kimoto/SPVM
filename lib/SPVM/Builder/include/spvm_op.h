@@ -355,7 +355,13 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_
 
 SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first);
 
+SPVM_OP* SPVM_OP_build_binary_is(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_first, SPVM_OP* op_last);
+
+SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_operand, SPVM_OP* op_type);
+
 SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_type, SPVM_OP* op_operand, SPVM_OP* op_type);
+
+SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_compile_type, SPVM_OP* op_operand, SPVM_OP* op_compile_type);
 
 SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_OP* op_operand);
 

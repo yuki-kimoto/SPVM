@@ -1046,7 +1046,7 @@ comparison_operator
 isa
   : operator ISA type
     {
-      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
 
 is_type
@@ -1058,7 +1058,7 @@ is_type
 is_compile_type
   : operator IS_COMPILE_TYPE type
     {
-      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_is_compile_type(compiler, $2, $1, $3);
     }
     
 logical_operator
