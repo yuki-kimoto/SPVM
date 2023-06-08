@@ -245,6 +245,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "COPY",
     "CAN",
     "CLASS_ID",
+    "BASIC_TYPE_ID",
     "DIE_ERROR_ID",
     "SET_DIE_ERROR_ID",
     "EVAL_ERROR_ID",
@@ -2929,6 +2930,13 @@ SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, S
   return op_class_id;
 }
 
+SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type) {
+  
+  SPVM_OP_insert_child(compiler, op_basic_type_id, op_basic_type_id->last, op_type);
+  
+  return op_basic_type_id;
+}
+
 SPVM_OP* SPVM_OP_build_set_die_error_id(SPVM_COMPILER* compiler, SPVM_OP* op_set_die_error_id, SPVM_OP* op_number) {
   
   SPVM_OP_insert_child(compiler, op_set_die_error_id, op_set_die_error_id->last, op_number);
@@ -3803,6 +3811,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_CAN:
     case SPVM_OP_C_ID_CLASS_ID:
+    case SPVM_OP_C_ID_BASIC_TYPE_ID:
     case SPVM_OP_C_ID_DIE_ERROR_ID:
     case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:

@@ -80,7 +80,7 @@ enum {
   SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP,
 };
 
-static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error_id) {
+static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID_RET(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error_id) {
 
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
 
@@ -1514,6 +1514,8 @@ static inline void SPVM_IMPLEMENT_SET_DIE_ERROR_ID(SPVM_ENV* env, SPVM_VALUE* st
 #define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->items(env, stack))
 
 #define SPVM_IMPLEMENT_GET_CLASS_ID(out, class_id) (out = class_id)
+
+#define SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(out, basic_type_id) (out = basic_type_id)
 
 static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
   if (object == NULL) {

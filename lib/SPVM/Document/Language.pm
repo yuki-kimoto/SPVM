@@ -239,6 +239,7 @@ The list of keywords:
   alias
   allow
   as
+  basic_type_id
   break
   byte
   can
@@ -1768,6 +1769,9 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>BIT_AND</td><td>&</td>
+  </tr>
+  <tr>
+    <td>BASIC_TYPE_ID</td><td>basic_type_id</td>
   </tr>
   <tr>
     <td>BIT_NOT</td><td>~</td>
@@ -8840,6 +8844,24 @@ The return value is the class id.
 
 The return type is the L<int type|/"int Type">.
 
+=head2 basic_type_id Operator
+
+The C<basic_type_id> operator gets the basic type id from a type.
+
+  basic_type_id TYPE
+
+The return value is the basic type id.
+
+The return type is the L<int type|/"int Type">.
+
+Examples:
+
+  my $basic_type_id = basic_type_id int;
+  
+  my $basic_type_id = basic_type_id int[];
+  
+  my $error_basic_type_id = basic_type_id Error;
+  
 =head2 die_error_id Operator
 
 The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error ID.

@@ -1648,7 +1648,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'b' : {
-                if (strcmp(symbol_name, "break") == 0) {
+                if (strcmp(symbol_name, "basic_type_id") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_BASIC_TYPE_ID);
+                  keyword_token = BASIC_TYPE_ID;
+                }
+                else if (strcmp(symbol_name, "break") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_BREAK);
                   keyword_token = BREAK;
                 }
