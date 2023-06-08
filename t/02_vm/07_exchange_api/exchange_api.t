@@ -1819,13 +1819,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(ref $error, "SPVM::ExchangeAPI::Error");
   
   # Default
-  is($error->code, 0);
+  is($error->id, 0);
   
   # set
-  $error->code(2);
+  $error->id(2);
   
   # get
-  is($error->code, 2);
+  is($error->id, 2);
 }
 
 # SPVM::BlessedObject
