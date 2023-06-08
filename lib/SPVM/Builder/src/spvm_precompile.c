@@ -290,7 +290,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t string_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* src_string_data;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t tmp_die_error_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t empty_or_undef;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* bytes;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_var_id;\n");
