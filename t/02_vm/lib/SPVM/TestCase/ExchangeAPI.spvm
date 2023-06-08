@@ -1350,13 +1350,10 @@ class TestCase::ExchangeAPI {
   }
   
   static method die : void ($message : string) {
-    
     die $message;
   }
   
-  static method die_with_die_error_id : void ($message : string, $die_error_id : int) {
-    
-    set_die_error_id($die_error_id);
-    die $message;
+  static method die_with_die_error_id : void ($message : string) {
+    die Error::System $message;
   }
 }

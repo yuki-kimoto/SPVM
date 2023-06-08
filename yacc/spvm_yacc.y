@@ -31,7 +31,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-%token <opval> FATCAMMA RW RO WO INIT NEW OF CLASS_ID BASIC_TYPE_ID EXTENDS SUPER
+%token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
@@ -566,6 +566,10 @@ void_return_operator
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
     }
+  | SET_DIE_ERROR_ID operator
+    {
+      $$ = SPVM_OP_build_set_die_error_id(compiler, $1, $2);
+    }
 
 warn
   : WARN operator
@@ -816,19 +820,11 @@ operator
   | is_read_only
   | can
   | logical_operator
-  | CLASS_ID class_name
-    {
-      $$ = SPVM_OP_build_class_id(compiler, $1, $2);
-    }
   | BASIC_TYPE_ID type
     {
       $$ = SPVM_OP_build_basic_type_id(compiler, $1, $2);
     }
   | DIE_ERROR_ID
-  | SET_DIE_ERROR_ID operator
-    {
-      $$ = SPVM_OP_build_set_die_error_id(compiler, $1, $2);
-    }
   | EVAL_ERROR_ID
   | ITEMS
 

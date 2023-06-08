@@ -255,7 +255,7 @@ sub class {
 sub new_error {
   my ($self) = @_;
   
-  my $error = SPVM::ExchangeAPI::Error->new(code => 0);
+  my $error = SPVM::ExchangeAPI::Error->new(id => 0);
   
   return $error;
 }
@@ -1106,7 +1106,7 @@ The $object must be a SPVM::BlessedObject object. Otherwise an exception is thro
 
 Creates a new L<SPVM::ExchangeAPI::Error> object, and returns it.
 
-The error code is set to 0.
+The error id is set to 0.
 
 =head2 call_method
   

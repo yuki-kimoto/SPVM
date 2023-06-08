@@ -30,6 +30,8 @@
     * The basic_type_id operator was added.
   [Incompatible Changes]
     * The error operator was renamed to the eval_error_id operator.
+    * The class_id operator was removed.
+    * The code field in the ExchangeAPI::Error class was renamed to the id field.
 0.989001 2023-06-07
   [Incompatible Changes]
     * The new_stack_trace_by_name Native API was removed.

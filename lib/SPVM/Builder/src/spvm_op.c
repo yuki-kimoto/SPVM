@@ -244,7 +244,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MAKE_READ_ONLY",
     "COPY",
     "CAN",
-    "CLASS_ID",
     "BASIC_TYPE_ID",
     "DIE_ERROR_ID",
     "SET_DIE_ERROR_ID",
@@ -2923,13 +2922,6 @@ SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* 
   return op_warn;
 }
 
-SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, SPVM_OP* op_name_class) {
-  
-  SPVM_OP_insert_child(compiler, op_class_id, op_class_id->last, op_name_class);
-  
-  return op_class_id;
-}
-
 SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type) {
   
   SPVM_OP_insert_child(compiler, op_basic_type_id, op_basic_type_id->last, op_type);
@@ -3779,6 +3771,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PRINT:
     case SPVM_OP_C_ID_SAY:
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
+    case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
     {
       // Dummy int variable
       type = SPVM_TYPE_new_int_type(compiler);
@@ -3810,10 +3803,8 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_CAN:
-    case SPVM_OP_C_ID_CLASS_ID:
     case SPVM_OP_C_ID_BASIC_TYPE_ID:
     case SPVM_OP_C_ID_DIE_ERROR_ID:
-    case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:
     case SPVM_OP_C_ID_ITEMS:
     {

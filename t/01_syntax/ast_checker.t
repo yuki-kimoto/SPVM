@@ -100,11 +100,11 @@ use Test::More;
   }
 }
 
-# class_id
+# basic_type_id
 {
   {
-    my $source = 'class MyClass { static method main : void () { class_id NotExists; } }';
-    compile_not_ok($source, qr'The operand of the class_id operator must be an existing class type. The "NotExists" class is not found');
+    my $source = 'class MyClass { static method main : void () { basic_type_id Error; } }';
+    compile_ok($source);
   }
 }
 
@@ -687,6 +687,10 @@ use Test::More;
   {
     my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
     compile_not_ok($source, q|The implicite type conversion from "Int" to "string" in the assignment operator is not allowed|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { die byte; } }';
+    compile_not_ok($source, q|The error class of the die statement must be a class type|);
   }
 }
 

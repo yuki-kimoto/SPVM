@@ -1233,7 +1233,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
           case SPVM_OP_C_ID_NEW_STRING_LEN: {
             
             SPVM_OP* op_length = op_cur->first;
-
+            
             SPVM_TYPE* length_type = SPVM_OP_get_type(compiler, op_length);
             
             assert(length_type);
@@ -1242,25 +1242,12 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               SPVM_COMPILER_error(compiler, "The operand of the new_string_len operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
-
+            
             SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_length);
             
             break;
           }
-
-          case SPVM_OP_C_ID_CLASS_ID: {
-            
-            SPVM_OP* op_name_class = op_cur->first;
-            const char* class_name = op_name_class->uv.name;
-            
-            SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
-            if (!class) {
-              SPVM_COMPILER_error(compiler, "The operand of the class_id operator must be an existing class type. The \"%s\" class is not found.\n  at %s line %d", class_name, op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
+          
           case SPVM_OP_C_ID_BASIC_TYPE_ID: {
             
             // Nothing to do
@@ -3165,6 +3152,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
             switch (op_cur->id) {
               case SPVM_OP_C_ID_TYPE_CAST:
               case SPVM_OP_C_ID_WARN:
+              case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
               case SPVM_OP_C_ID_PRINT:
               case SPVM_OP_C_ID_SAY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
@@ -3191,11 +3179,9 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_ARRAY_LENGTH:
               case SPVM_OP_C_ID_STRING_LENGTH:
               case SPVM_OP_C_ID_NEW:
-              case SPVM_OP_C_ID_CLASS_ID:
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
               case SPVM_OP_C_ID_DIE_ERROR_ID:
-              case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
               case SPVM_OP_C_ID_ITEMS:
               case SPVM_OP_C_ID_CONCAT:
               case SPVM_OP_C_ID_TYPE_NAME:

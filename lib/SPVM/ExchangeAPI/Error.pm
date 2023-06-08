@@ -3,14 +3,14 @@ use strict;
 use warnings;
 
 # Fields
-sub code {
+sub id {
   my $self = shift;
   if (@_) {
-    $self->{code} = $_[0];
+    $self->{id} = $_[0];
     return $self;
   }
   else {
-    return $self->{code};
+    return $self->{id};
   }
 }
 
@@ -19,7 +19,7 @@ sub new {
   my $error = shift;
   
   my $self = {
-    code => 0,
+    id => 0,
     @_
   };
   
@@ -36,27 +36,27 @@ SPVM::ExchangeAPI::Error - Error Code
 
 =head1 Description
 
-The SPVM::ExchangeAPI::Error class has methods to get and set an error code.
+The SPVM::ExchangeAPI::Error class has methods to get and set an error id.
 
 =head1 Usage
   
   my $error = SPVM::ExchangeAPI::Error->new;
-  $error->code(2);
-  my $die_error_id = $error->code;
+  $error->id(2);
+  my $die_error_id = $error->id;
 
 =head1 Fields
 
-=head2 code
+=head2 id
 
-  my $code = $error->code;
-  $error->code($code);
+  my $id = $error->id;
+  $error->id($id);
 
-Gets and sets an error code.
+Gets and sets an error id.
 
 Examples:
 
-  $error->code(2);
-  my $code = $error->code;
+  $error->id(2);
+  my $id = $error->id;
 
 =head1 Class Methods
 
@@ -70,9 +70,9 @@ Options:
 
 =over 2
 
-=item * C<code>
+=item * C<id>
 
-An error code.
+An error id.
 
 =back
 

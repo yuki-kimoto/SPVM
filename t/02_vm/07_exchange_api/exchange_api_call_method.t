@@ -96,25 +96,26 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
   }
 
-  # Error code
+  # Error id
   {
     {
       my $error = $api->new_error;
-      is($error->code, 0);
-      my $message = "Error";
+      is($error->id, 0);
+      my $message = "Error Message";
       eval { SPVM::TestCase::ExchangeAPI->die($message, $error); };
-      is($error->code, 1);
+      # Error
+      is($error->id, 18);
     }
     {
       my $error = $api->new_error;
-      is($error->code, 0);
-      my $message = "Error";
-      my $die_error_id = 2;
-      eval { SPVM::TestCase::ExchangeAPI->die_with_die_error_id($message, $die_error_id, $error); };
-      is($error->code, 2);
+      is($error->id, 0);
+      my $message = "Error Message";
+      eval { SPVM::TestCase::ExchangeAPI->die_with_die_error_id($message, $error); };
+      # Error::System
+      is($error->id, 19);
     }
   }
-
+  
   # Binding SPVM class to Perl class
   {
     # Calls a non-defined method

@@ -246,7 +246,6 @@ The list of keywords:
   case
   cmp
   class
-  class_id
   compile_type_name
   copy
   default
@@ -1237,7 +1236,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> FATCAMMA RW RO WO INIT NEW OF CLASS_ID EXTENDS SUPER
+  %token <opval> FATCAMMA RW RO WO INIT NEW OF EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block version_decl
@@ -1539,7 +1538,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | is_read_only
     | can
     | logical_operator
-    | CLASS_ID class_name
     | DIE_ERROR_ID
     | SET_DIE_ERROR_ID operator
     | EVAL_ERROR_ID
@@ -1793,9 +1791,6 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>CLASS</td><td>class</td>
-  </tr>
-  <tr>
-    <td>CLASS_ID</td><td>class_id</td>
   </tr>
   <tr>
     <td>VAR_NAME</td><td>A variable name</td>
@@ -8831,18 +8826,6 @@ The above example is the same as the following codes.
       print "$bar\n";
     }
   }
-
-=head2 class_id Operator
-
-The C<class_id> operator is an L<operator|/"Operator"> to get the class id from a class name.
-
-  class_id CLASS_NAME
-
-The class name must be an existing class. Otherwise a compilation error occur.
-
-The return value is the class id.
-
-The return type is the L<int type|/"int Type">.
 
 =head2 basic_type_id Operator
 
