@@ -1200,6 +1200,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_GET_CLASS_ID(int_vars[opcode->operand0], class_id);
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_BASIC_TYPE_ID: {
+        int32_t basic_type_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(int_vars[opcode->operand0], basic_type_id);
+        break;
+      }
       case SPVM_OPCODE_C_ID_ITEMS: {
         SPVM_IMPLEMENT_ITEMS(env, stack, int_vars[opcode->operand0]);
         break;

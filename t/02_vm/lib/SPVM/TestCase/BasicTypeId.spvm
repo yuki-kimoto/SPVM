@@ -1,0 +1,113 @@
+class TestCase::BasicTypeId {
+  use Point;
+  static method basic : int () {
+
+=pod
+
+  0  SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
+  1  SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
+  2  SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
+  3  SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE
+  4  SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT
+  5  SPVM_NATIVE_C_BASIC_TYPE_ID_INT
+  6  SPVM_NATIVE_C_BASIC_TYPE_ID_LONG
+  7  SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT
+  8  SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE
+  9  SPVM_NATIVE_C_BASIC_TYPE_ID_STRING
+  10 SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT
+  11 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS
+  12 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS
+  13 SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS
+  14 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS
+  15 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS
+  16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS
+  17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
+  18 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
+  19 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
+  20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
+  21 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
+  22 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
+
+=cut
+    {
+      unless (basic_type_id byte == 3) {
+        return 0;
+      }
+      unless (basic_type_id short == 4) {
+        return 0;
+      }
+      unless (basic_type_id int == 5) {
+        return 0;
+      }
+      unless (basic_type_id long == 6) {
+        return 0;
+      }
+      unless (basic_type_id float == 7) {
+        return 0;
+      }
+      unless (basic_type_id double == 8) {
+        return 0;
+      }
+      unless (basic_type_id string == 9) {
+        return 0;
+      }
+      unless (basic_type_id object == 10) {
+        return 0;
+      }
+      unless (basic_type_id Byte == 11) {
+        return 0;
+      }
+      unless (basic_type_id Short == 12) {
+        return 0;
+      }
+      unless (basic_type_id Int == 13) {
+        return 0;
+      }
+      unless (basic_type_id Long == 14) {
+        return 0;
+      }
+      unless (basic_type_id Float == 15) {
+        return 0;
+      }
+      unless (basic_type_id Double == 16) {
+        return 0;
+      }
+      unless (basic_type_id Bool == 17) {
+        return 0;
+      }
+      unless (basic_type_id Error == 18) {
+        return 0;
+      }
+      unless (basic_type_id Error::System == 19) {
+        return 0;
+      }
+      unless (basic_type_id Error::NotSupported == 20) {
+        return 0;
+      }
+      unless (basic_type_id CommandInfo == 21) {
+        return 0;
+      }
+      unless (basic_type_id Address == 22) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (basic_type_id byte == 3) {
+        return 0;
+      }
+      unless (basic_type_id byte[] == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $basic_type_id_point = basic_type_id Point;
+      if ($basic_type_id_point < 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

@@ -1261,6 +1261,12 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             break;
           }
+          case SPVM_OP_C_ID_BASIC_TYPE_ID: {
+            
+            // Nothing to do
+            
+            break;
+          }
           case SPVM_OP_C_ID_SET_DIE_ERROR_ID: {
             
             SPVM_OP* op_number = op_cur->first;
@@ -3186,6 +3192,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_STRING_LENGTH:
               case SPVM_OP_C_ID_NEW:
               case SPVM_OP_C_ID_CLASS_ID:
+              case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
               case SPVM_OP_C_ID_DIE_ERROR_ID:
               case SPVM_OP_C_ID_SET_DIE_ERROR_ID:

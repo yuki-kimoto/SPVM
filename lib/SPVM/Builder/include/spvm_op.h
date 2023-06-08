@@ -245,6 +245,7 @@ enum {
   SPVM_OP_C_ID_COPY,
   SPVM_OP_C_ID_CAN,
   SPVM_OP_C_ID_CLASS_ID,
+  SPVM_OP_C_ID_BASIC_TYPE_ID,
   SPVM_OP_C_ID_DIE_ERROR_ID,
   SPVM_OP_C_ID_SET_DIE_ERROR_ID,
   SPVM_OP_C_ID_EVAL_ERROR_ID,
@@ -470,6 +471,8 @@ SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* o
 SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias);
 
 SPVM_OP* SPVM_OP_build_class_id(SPVM_COMPILER* compiler, SPVM_OP* op_class_id, SPVM_OP* op_name_class);
+
+SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_set_die_error_id(SPVM_COMPILER* compiler, SPVM_OP* op_set_die_error_id, SPVM_OP* op_number);
 
