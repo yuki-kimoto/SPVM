@@ -199,7 +199,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_id = 0;\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t die_error_id = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t die_error_id = 0;\n");
 
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error_id = 0;\n");
 
