@@ -180,9 +180,9 @@ SPVM::Test - SPVM test class
       warn "$minimal_extend->{x},$minimal_extend->{y},$minimal_extend->{z}";
     }
     
-    my $class_id = class_id TestCase;
+    my $basic_type_id = basic_type_id TestCase;
     
-    warn "$class_id";
+    warn "$basic_type_id";
     
     # Only default
     {
