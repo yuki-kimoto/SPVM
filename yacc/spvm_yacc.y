@@ -393,11 +393,6 @@ arg
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ASSIGN operator ':' qualified_type opt_type_comment
-    {
-      spvm_warn("[Deprecated]Old optional argument syntax is deprecated.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_arg(compiler, $1, $5, NULL, $3);
-    }
   | var ':' qualified_type opt_type_comment ASSIGN operator
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);

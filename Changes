@@ -35,6 +35,10 @@
     * The set_error_code operator was removed.
     * The error_code operator was removed.
     * The die Native API returned the basic type ID of the Error class.
+    * The deprecated following syntax was removed.
+    
+      var ASSIGN operator ':' qualified_type opt_type_comment
+
 0.989001 2023-06-07
   [Incompatible Changes]
     * The new_stack_trace_by_name Native API was removed.
