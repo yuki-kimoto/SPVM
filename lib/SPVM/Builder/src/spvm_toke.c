@@ -1737,13 +1737,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_EQ);
                   keyword_token = STREQ;
                 }
-                else if (strcmp(symbol_name, "error") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ERROR);
-                  keyword_token = ERROR;
-                }
                 else if (strcmp(symbol_name, "eval") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EVAL);
                   keyword_token = EVAL;
+                }
+                else if (strcmp(symbol_name, "eval_error_id") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EVAL_ERROR_ID);
+                  keyword_token = EVAL_ERROR_ID;
                 }
                 else if (strcmp(symbol_name, "extends") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_EXTENDS);

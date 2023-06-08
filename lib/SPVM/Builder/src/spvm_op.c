@@ -247,7 +247,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CLASS_ID",
     "DIE_ERROR_ID",
     "SET_DIE_ERROR_ID",
-    "ERROR",
+    "EVAL_ERROR_ID",
     "ITEMS",
     "VERSION",
   };
@@ -3805,7 +3805,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CLASS_ID:
     case SPVM_OP_C_ID_DIE_ERROR_ID:
     case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
-    case SPVM_OP_C_ID_ERROR:
+    case SPVM_OP_C_ID_EVAL_ERROR_ID:
     case SPVM_OP_C_ID_ITEMS:
     {
       type = SPVM_TYPE_new_int_type(compiler);

@@ -1232,7 +1232,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE DIE_ERROR_ID ERROR ITEMS VERSION_DECL
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE DIE_ERROR_ID EVAL_ERROR_ID ITEMS VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -1541,7 +1541,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | CLASS_ID class_name
     | DIE_ERROR_ID
     | SET_DIE_ERROR_ID operator
-    | ERROR
+    | EVAL_ERROR_ID
     | ITEMS
 
   operators
@@ -1857,7 +1857,7 @@ The list of syntax parsing tokens:
     <td>ENUM</td><td>enum</td>
   </tr>
   <tr>
-    <td>ERROR</td><td>error</td>
+    <td>EVAL_ERROR_ID</td><td>eval_error_id</td>
   </tr>
   <tr>
     <td>DIE_ERROR_ID</td><td>die_error_id</td>
@@ -6915,7 +6915,7 @@ The C<die> statement throws an L<exception|/"Throwing Exception">.
 
 The OPERAND is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error code 255.
+If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error ID 255.
 
 The operand must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
@@ -6929,7 +6929,7 @@ The following one is an example of a stack trace. Each line of the stack trace c
     TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
     TestCase->main at SPVM/TestCase.spvm line 1198
 
-The exception can be catched by the L<eval block|/"Exception Catching">.
+The exception can be caught by the L<eval block|/"Exception Catching">.
 
 Examples:
   
@@ -8842,27 +8842,25 @@ The return type is the L<int type|/"int Type">.
 
 =head2 die_error_id Operator
 
-The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error code.
+The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error ID.
 
   die_error_id
 
 =head2 set_die_error_id Operator
 
-The C<set_die_error_id> operator is an L<operator|/"Operator"> to set the value of the error code.
+The C<set_die_error_id> operator is an L<operator|/"Operator"> to set the value of the error ID.
 
   set_die_error_id OPERAND
 
 The type of the OPERAND must be the L<int type|/"int Type">.
 
-=head2 error Operator
+=head2 eval_error_id Operator
 
-The C<error> operatoer is an L<operator|/"Operator"> to get the current error code.
+The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
 
-  error
+  eval_error_id
 
 This value is set to 0 at the beginning of the L<eval block|eval Block>.
-
-If A L<exception|/"Exception"> is catched, the current error code is set to the value of L<die_error_id|/"die_error_id">.
 
 =head2 Type Cast
 

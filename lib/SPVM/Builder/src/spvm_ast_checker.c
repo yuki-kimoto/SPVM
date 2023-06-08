@@ -3186,7 +3186,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_STRING_LENGTH:
               case SPVM_OP_C_ID_NEW:
               case SPVM_OP_C_ID_CLASS_ID:
-              case SPVM_OP_C_ID_ERROR:
+              case SPVM_OP_C_ID_EVAL_ERROR_ID:
               case SPVM_OP_C_ID_DIE_ERROR_ID:
               case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
               case SPVM_OP_C_ID_ITEMS:
