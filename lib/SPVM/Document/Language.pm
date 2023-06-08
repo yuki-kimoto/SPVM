@@ -310,7 +310,6 @@ The list of keywords:
   rw
   ro
   say
-  set_die_error_id
   static
   switch
   string
@@ -1863,9 +1862,6 @@ The list of syntax parsing tokens:
   </tr>
   <tr>
     <td>EXTENDS</td><td>extends</td>
-  </tr>
-  <tr>
-    <td>SET_DIE_ERROR_ID</td><td>set_die_error_id</td>
   </tr>
   <tr>
     <td>EVAL</td><td>eval</td>
@@ -8850,14 +8846,6 @@ Examples:
 The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error ID.
 
   die_error_id
-
-=head2 set_die_error_id Operator
-
-The C<set_die_error_id> operator is an L<operator|/"Operator"> to set the value of the error ID.
-
-  set_die_error_id OPERAND
-
-The type of the OPERAND must be the L<int type|/"int Type">.
 
 =head2 eval_error_id Operator
 
