@@ -3764,7 +3764,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PRINT:
     case SPVM_OP_C_ID_SAY:
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
-    case SPVM_OP_C_ID_SET_DIE_ERROR_ID:
     {
       // Dummy int variable
       type = SPVM_TYPE_new_int_type(compiler);
@@ -3797,7 +3796,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_CAN:
     case SPVM_OP_C_ID_BASIC_TYPE_ID:
-    case SPVM_OP_C_ID_DIE_ERROR_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:
     case SPVM_OP_C_ID_ITEMS:
     {

@@ -26,7 +26,6 @@ enum {
   SPVM_IMPLEMENT_C_STRING_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE,
   SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED,
   SPVM_IMPLEMENT_C_STRING_COPY_OPERAND_INVALID,
-  SPVM_IMPLEMENT_C_STRING_DIE_ERROR_ID_TOO_SMALL,
   SPVM_IMPLEMENT_C_STRING_WARN_AT,
   SPVM_IMPLEMENT_C_STRING_WARN_UNDEF,
   SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND,
@@ -58,7 +57,6 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The source of the unboxing conversion must be the corresponding numeric object type.",
   "The memory allocation for the weaken back reference failed.",
   "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type.",
-  "The error code must be greater than or equal to 1.",
   "\n  at %s%s%s line %d\n",
   "Warning\n  at %s%s%s line %d\n",
   "The implementation of the \"%s\" method in the \"%s\" interface is not found.",
@@ -1490,8 +1488,6 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
 
   fflush(stderr);
 }
-
-#define SPVM_IMPLEMENT_GET_DIE_ERROR_ID(out, die_error_id) (out = die_error_id)
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)
 
