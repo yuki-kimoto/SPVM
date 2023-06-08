@@ -1277,7 +1277,7 @@ Creates a C<sprintf> formatted message with file name and line number and set it
 
 Last three arguments are the function name, the file name, and the line number.
 
-Returns value is always 1;
+Returns value is the basic type id of the L<Error|SPVM::Error> class. 
 
 Examples:
 
@@ -2536,26 +2536,6 @@ The basic type category for the any object type.
   2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
 
 The type flags.
-
-=head2 Class IDs
-
-  1  SPVM_NATIVE_C_CLASS_ID_ERROR
-  2  SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
-  3  SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
-
-These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
-
-=head3 SPVM_NATIVE_C_CLASS_ID_ERROR
-
-The class id of L<Error|SPVM::Error> class.
-
-=head3 SPVM_NATIVE_C_CLASS_ID_ERROR_SYSTEM
-
-The class id of L<Error::System|SPVM::Error::System> class.
-
-=head3 SPVM_NATIVE_C_CLASS_ID_ERROR_NOT_SUPPORTED
-
-The class id of L<Error::NotSupported|SPVM::Error::NotSupported> class.
 
 =head1 Utility Functions
 

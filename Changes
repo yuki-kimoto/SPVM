@@ -33,6 +33,7 @@
     * The class_id operator was removed.
     * The code field in the ExchangeAPI::Error class was renamed to the id field.
     * The set_error_code operator was removed.
+    * The die Native API returned the basic type ID of the Error class.
 0.989001 2023-06-07
   [Incompatible Changes]
     * The new_stack_trace_by_name Native API was removed.
