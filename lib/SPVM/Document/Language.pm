@@ -258,9 +258,8 @@ The list of keywords:
   else
   enum
   eq
-  error
-  die_error_id
   eval
+  eval_error_id
   extends
   for
   float
@@ -1235,7 +1234,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-  %token <opval> FATCAMMA RW RO WO INIT NEW OF EXTENDS SUPER
+  %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_classes classes class class_block version_decl
@@ -1267,7 +1266,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_ID
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -1384,6 +1383,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   arg
     : var ':' qualified_type opt_type_comment
     | var ASSIGN operator ':' qualified_type opt_type_comment
+    | var ':' qualified_type opt_type_comment ASSIGN operator
 
   anon_method_has_list
     : anon_method_has_list ',' anon_method_has
@@ -1434,6 +1434,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   die
     : DIE operator
     | DIE
+    | DIE type operator
+    | DIE type
 
   void_return_operator
     : warn
@@ -1537,8 +1539,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | is_read_only
     | can
     | logical_operator
+    | BASIC_TYPE_ID type
     | DIE_ERROR_ID
-    | SET_DIE_ERROR_ID operator
     | EVAL_ERROR_ID
     | ITEMS
 
@@ -1858,9 +1860,6 @@ The list of syntax parsing tokens:
     <td>EVAL_ERROR_ID</td><td>eval_error_id</td>
   </tr>
   <tr>
-    <td>DIE_ERROR_ID</td><td>die_error_id</td>
-  </tr>
-  <tr>
     <td>EXTENDS</td><td>extends</td>
   </tr>
   <tr>
@@ -2129,7 +2128,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY SET_DIE_ERROR_ID
+  %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -8841,12 +8840,6 @@ Examples:
   
   my $error_basic_type_id = basic_type_id Error;
   
-=head2 die_error_id Operator
-
-The C<die_error_id> is an L<operator|/"Operator"> to get the value of the error ID.
-
-  die_error_id
-
 =head2 eval_error_id Operator
 
 The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
