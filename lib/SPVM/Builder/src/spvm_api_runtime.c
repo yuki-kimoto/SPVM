@@ -136,7 +136,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_id_by_index,
     SPVM_API_RUNTIME_get_field_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
-    SPVM_API_RUNTIME_get_field_type_id,
+    NULL, // reserved39
     SPVM_API_RUNTIME_get_field_class_id,
     SPVM_API_RUNTIME_get_method_id_by_index,
     SPVM_API_RUNTIME_get_method_id_by_name,
@@ -901,17 +901,6 @@ int32_t SPVM_API_RUNTIME_get_field_class_id(SPVM_RUNTIME* runtime, int32_t field
   int32_t class_id = field->class_id;
   
   return class_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-  
-  assert(field);
-  
-  int32_t field_type_id = field->type_id;
-  
-  return field_type_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {

@@ -60,7 +60,7 @@ Runtime native APIs have its IDs.
   36 get_field_id_by_index
   37 get_field_id_by_name
   38 get_field_name_id
-  39 get_field_type_id
+  39 reserved39
   40 get_field_class_id
   41 get_method_id_by_index
   42 get_method_id_by_name
@@ -108,6 +108,22 @@ Runtime native APIs have its IDs.
   84 get_class_version_string_id
   85 class_init_flags
   86 can_assign
+  87 get_basic_type_class_rel_file_id
+  88 get_basic_type_class_path_id
+  89 get_basic_type_is_anon
+  90 get_basic_type_fields_base_id
+  91 get_basic_type_fields_length
+  92 get_basic_type_methods_base_id
+  93 get_basic_type_methods_length
+  94 get_basic_type_class_vars_base_id
+  95 get_basic_type_class_vars_length
+  96 get_basic_type_anon_methods_base_id
+  97 get_basic_type_anon_methods_length
+  98 get_basic_type_is_class
+  99 get_basic_types_length
+  100 get_field_basic_type_id
+  101 get_field_type_dimension
+  102 get_field_type_flag
 
 =head1 Runtime Native APIs
 
@@ -266,10 +282,6 @@ Runtime native APIs have its IDs.
 =head2 get_field_name_id
 
   int32_t (*get_field_name_id)(void* runtime, int32_t field_id);
-
-=head2 get_field_type_id
-
-  int32_t (*get_field_type_id)(void* runtime, int32_t field_id);
 
 =head2 get_field_class_id
 
@@ -460,6 +472,18 @@ Internally used.
 =head2 can_assign
 
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
+
+=head2 get_field_basic_type_id
+
+  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_id);
+
+=head2 get_field_type_dimension
+
+  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_id);
+
+=head2 get_field_type_flag
+
+  int32_t (*get_field_type_flag)(void* runtime, int32_t field_id);
 
 =head1 Copyright & License
 

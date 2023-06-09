@@ -1,3 +1,10 @@
+0.989004 2023-06-10
+  [New Features]
+    * The get_field_basic_type_id Native Runtime API was added.
+    * The get_field_type_dimension Native Runtime API was added.
+    * The get_field_type_flag Native Runtime API was added.
+  [Incompatible Changes]
+    * The get_field_type_id Native Runtime API was removed.
 0.989003 2023-06-09
   [Bug Fix]
     * The following bug was fixed: The can_assign Native Runtime API didnot work well.

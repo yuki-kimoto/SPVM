@@ -2488,7 +2488,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_field_id_by_index != &env_array[36]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_id_by_name != &env_array[37]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_name_id != &env_array[38]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_type_id != &env_array[39]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved39 != &env_array[39]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_class_id != &env_array[40]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_id_by_index != &env_array[41]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_id_by_name != &env_array[42]) { stack[0].ival = 0; return 0; }
@@ -2536,6 +2536,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_class_version_string_id != &env_array[84]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->class_init_flags != &env_array[85]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->can_assign != &env_array[86]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_field_basic_type_id != &env_array[100]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_field_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_field_type_flag != &env_array[102]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
