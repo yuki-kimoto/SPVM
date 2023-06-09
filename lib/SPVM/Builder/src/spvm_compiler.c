@@ -1067,7 +1067,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_field->id = field->id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
-    runtime_field->type_id = field->type->id;
     runtime_field->basic_type_id = field->type->basic_type->id;
     runtime_field->type_dimension = field->type->dimension;
     runtime_field->type_flag = field->type->flag;
