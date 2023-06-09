@@ -1050,7 +1050,6 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
           int32_t class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, basic_type_id);
           
           int32_t mulnum_field_id = class_fields_base_id;
-          int32_t mulnum_field_type_id = env->api->runtime->get_field_type_id(env->runtime, mulnum_field_id);
           
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
           
@@ -1078,7 +1077,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
               return &PL_sv_undef;
             }
             
-            int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, mulnum_field_type_id);
+            int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field_id);
             switch (mulnum_field_type_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
