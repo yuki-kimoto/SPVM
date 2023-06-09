@@ -4823,28 +4823,31 @@ get_class_file(...)
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
 
   // Copy class load path to builder
-  int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   const char* class_file;
   SV* sv_class_file;
 
-  if (class_id >= 0) {
-    int32_t class_rel_file_id = api_env->api->runtime->get_class_class_rel_file_id(runtime, class_id);
-    int32_t class_path_id = api_env->api->runtime->get_class_class_path_id(runtime, class_id);
-    const char* class_path = NULL;
-    const char* class_path_sep;
-    if (class_path_id >= 0) {
-      class_path_sep = "/";
-      class_path = api_env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
-    }
-    else {
-      class_path_sep = "";
-      class_path = "";
-    }
-    const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
+  if (basic_type_id >= 0) {
+    int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
+    if (is_class) {
+      int32_t class_rel_file_id = api_env->api->runtime->get_basic_type_class_rel_file_id(runtime, basic_type_id);
+      int32_t class_path_id = api_env->api->runtime->get_basic_type_class_path_id(runtime, basic_type_id);
+      const char* class_path = NULL;
+      const char* class_path_sep;
+      if (class_path_id >= 0) {
+        class_path_sep = "/";
+        class_path = api_env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
+      }
+      else {
+        class_path_sep = "";
+        class_path = "";
+      }
+      const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
 
-    sv_class_file = sv_2mortal(newSVpv(class_path, 0));
-    sv_catpv(sv_class_file, class_path_sep);
-    sv_catpv(sv_class_file, class_rel_file);
+      sv_class_file = sv_2mortal(newSVpv(class_path, 0));
+      sv_catpv(sv_class_file, class_path_sep);
+      sv_catpv(sv_class_file, class_rel_file);
+    }
   }
   else {
     sv_class_file = &PL_sv_undef;
