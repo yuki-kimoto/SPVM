@@ -34,6 +34,7 @@ struct spvm_runtime_basic_type {
   int8_t has_init_block;
   int8_t is_anon;
   int8_t is_pointer;
+  int8_t is_class;
 };
 
 #endif
