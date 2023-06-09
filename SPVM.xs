@@ -4787,19 +4787,22 @@ get_class_names(...)
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
+  
   AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
   
-  int32_t classes_length = api_env->api->runtime->get_classes_length(runtime);
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    const char* class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_class_name_id(runtime, class_id));
-    SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-    av_push(av_class_names, SvREFCNT_inc(sv_class_name));
+  int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
+    if (is_class) {
+      const char* class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
+      SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
+      av_push(av_class_names, SvREFCNT_inc(sv_class_name));
+    }
   }
-
+  
   api_env->free_env_raw(api_env);
   
   XPUSHs(sv_class_names);
@@ -4814,19 +4817,19 @@ get_class_file(...)
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   SV* sv_class_name = ST(1);
-
+  
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
   
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-
+  
   // Copy class load path to builder
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   const char* class_file;
   SV* sv_class_file;
-
+  
   if (basic_type_id >= 0) {
     int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
     if (is_class) {
@@ -4843,7 +4846,7 @@ get_class_file(...)
         class_path = "";
       }
       const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
-
+      
       sv_class_file = sv_2mortal(newSVpv(class_path, 0));
       sv_catpv(sv_class_file, class_path_sep);
       sv_catpv(sv_class_file, class_rel_file);
@@ -4852,7 +4855,7 @@ get_class_file(...)
   else {
     sv_class_file = &PL_sv_undef;
   }
-
+  
   api_env->free_env_raw(api_env);
   
   XPUSHs(sv_class_file);
@@ -4867,7 +4870,7 @@ get_runtime_codes(...)
   
   SV* sv_runtime = ST(1);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   // Environment
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
@@ -4882,12 +4885,12 @@ get_runtime_codes(...)
     SV* sv_32bit_code = sv_2mortal(newSViv(spvm_32bit_code));
     av_push(av_runtime_codes, SvREFCNT_inc(sv_32bit_code));
   }
-
+  
   // Free native_env
   api_env->free_env_raw(api_env);
   
   XPUSHs(sv_runtime_codes);
-
+  
   XSRETURN(1);
 }
 

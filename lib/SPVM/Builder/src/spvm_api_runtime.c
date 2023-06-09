@@ -196,6 +196,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id,
     SPVM_API_RUNTIME_get_basic_type_anon_methods_length,
     SPVM_API_RUNTIME_get_basic_type_is_class,
+    SPVM_API_RUNTIME_get_basic_types_length,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -227,6 +228,11 @@ int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime) {
 int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime) {
   
   return runtime->classes_length;
+}
+
+int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
+  
+  return runtime->basic_types_length;
 }
 
 int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime) {

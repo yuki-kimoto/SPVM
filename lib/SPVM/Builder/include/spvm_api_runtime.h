@@ -35,6 +35,7 @@ int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime);
 int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime);
+int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime);
 
 // Basic type
 int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name);
