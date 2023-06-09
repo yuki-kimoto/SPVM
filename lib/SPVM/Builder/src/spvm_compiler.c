@@ -99,14 +99,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add Error::System source
   {
     const char* class_name = "Error::System";
-    const char* source = "class Error::System;";
+    const char* source = "class Error::System extends Error;";
     SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
   }
   
   // Add Error::NotSupported source
   {
     const char* class_name = "Error::NotSupported";
-    const char* source = "class Error::NotSupported;";
+    const char* source = "class Error::NotSupported extends Error;";
     SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
   }
   

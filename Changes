@@ -3,6 +3,9 @@
     * The following bug was fixed: The can_assign Native Runtime API didnot work well.
   [New Features]
     * The isa_error operator and the is_operator were added.
+  [Changes]
+    * The Error::System class extends the Error class.
+    * The Error::NotSupported class extends the Error class.
 0.989002 2023-06-08
   [Document Bug]
     * The basic type IDs were wrong. This was fixed.

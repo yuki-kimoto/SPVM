@@ -14,6 +14,10 @@ SPVM::Error::System - System Error
 
 C<Error::System> is the error class for system errors. The class id is 2.
 
+=head1 Inheritance
+
+L<Error|SPVM::Error>
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
