@@ -40,7 +40,24 @@ int32_t SPVM_API_RUNTIME_get_classes_length(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name);
 int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_name_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_class_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_id_by_name(SPVM_RUNTIME* runtime, const char* class_name);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_path_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_parent_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_version_string_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 
 // String
 int32_t SPVM_API_RUNTIME_get_constant_string_id(SPVM_RUNTIME* runtime, const char* string);
