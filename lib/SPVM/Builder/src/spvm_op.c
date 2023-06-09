@@ -217,7 +217,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "STRING_LE",
     "STRING_CMP",
     "ISA",
+    "ISA_ERROR",
     "IS_TYPE",
+    "IS_ERROR",
     "IS_COMPILE_TYPE",
     "SEQUENCE",
     "SCALAR",
@@ -2385,9 +2387,19 @@ SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op
   return SPVM_OP_build_binary_is(compiler, op_isa, op_operand, op_type);
 }
 
+SPVM_OP* SPVM_OP_build_isa_error(SPVM_COMPILER* compiler, SPVM_OP* op_isa_error, SPVM_OP* op_operand, SPVM_OP* op_type) {
+  
+  return SPVM_OP_build_binary_is(compiler, op_isa_error, op_operand, op_type);
+}
+
 SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_type, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
   return SPVM_OP_build_binary_is(compiler, op_is_type, op_operand, op_type);
+}
+
+SPVM_OP* SPVM_OP_build_is_error(SPVM_COMPILER* compiler, SPVM_OP* op_is_error, SPVM_OP* op_operand, SPVM_OP* op_type) {
+  
+  return SPVM_OP_build_binary_is(compiler, op_is_error, op_operand, op_type);
 }
 
 SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_compile_type, SPVM_OP* op_operand, SPVM_OP* op_compile_type) {
@@ -3617,7 +3629,9 @@ int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_ISA_ERROR:
     case SPVM_OP_C_ID_IS_TYPE:
+    case SPVM_OP_C_ID_IS_ERROR:
     {
       return 1;
     }
@@ -3803,7 +3817,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_ISA_ERROR:
     case SPVM_OP_C_ID_IS_TYPE:
+    case SPVM_OP_C_ID_IS_ERROR:
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:

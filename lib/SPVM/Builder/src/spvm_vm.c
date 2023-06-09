@@ -1125,11 +1125,25 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
         break;
       }
+      case SPVM_OPCODE_C_ID_ISA_ERROR: {
+        int32_t src_basic_type_id = int_vars[opcode->operand1];
+        int32_t basic_type_id = opcode->operand2;
+        int32_t type_dimension = opcode->operand3;
+        SPVM_IMPLEMENT_ISA_ERROR(env, stack, &int_vars[0], src_basic_type_id, basic_type_id, type_dimension);
+        break;
+      }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
         void* object = object_vars[opcode->operand1];
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IS_ERROR: {
+        int32_t src_basic_type_id = int_vars[opcode->operand1];
+        int32_t basic_type_id = opcode->operand2;
+        int32_t type_dimension = opcode->operand3;
+        SPVM_IMPLEMENT_IS_ERROR(env, stack, &int_vars[0], src_basic_type_id, basic_type_id, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_CAN: {

@@ -1803,6 +1803,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ISA);
                   keyword_token = ISA;
                 }
+                else if (strcmp(symbol_name, "isa_error") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ISA_ERROR);
+                  keyword_token = ISA_ERROR;
+                }
                 else if (strcmp(symbol_name, "isweak") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ISWEAK);
                   keyword_token = ISWEAK;
@@ -1814,6 +1818,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "is_type") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_TYPE);
                   keyword_token = IS_TYPE;
+                }
+                else if (strcmp(symbol_name, "is_error") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_ERROR);
+                  keyword_token = IS_ERROR;
                 }
                 else if (strcmp(symbol_name, "is_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_READ_ONLY);

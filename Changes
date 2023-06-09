@@ -1,3 +1,8 @@
+0.989003 2023-06-09
+  [Bug Fix]
+    * The following bug was fixed: The can_assign Native Runtime API didnot work well.
+  [New Features]
+    * The isa_error operator and the is_operator were added.
 0.989002 2023-06-08
   [Document Bug]
     * The basic type IDs were wrong. This was fixed.

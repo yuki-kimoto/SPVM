@@ -363,6 +363,39 @@ use Test::More;
   }
 }
 
+# isa_error
+{
+  {
+    my $source = 'class MyClass { static method main : void () { (byte)1 isa_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { (short)1 isa_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 isa_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1L isa_error Error; } }';
+    compile_not_ok($source, 'The left operand of the isa_error operator must be an integer type within int.');
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 isa_error Error[]; } }';
+    compile_not_ok($source, 'The right operand of the isa_error operator must be a class type.');
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 isa_error byte; } }';
+    compile_not_ok($source, 'The right operand of the isa_error operator must be a class type.');
+  }
+}
+
 # is_type
 {
   {
@@ -384,6 +417,39 @@ use Test::More;
   {
     my $source = 'class MyClass { use Stringable; static method main : void () { Int->new(1) is_type Stringable; } }';
     compile_not_ok($source, q|The right type of the is_type operator cannnot be an interface type|);
+  }
+}
+
+# is_error
+{
+  {
+    my $source = 'class MyClass { static method main : void () { (byte)1 is_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { (short)1 is_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 is_error Error; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1L is_error Error; } }';
+    compile_not_ok($source, 'The left operand of the is_error operator must be an integer type within int.');
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 is_error Error[]; } }';
+    compile_not_ok($source, 'The right operand of the is_error operator must be a class type.');
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { 1 is_error byte; } }';
+    compile_not_ok($source, 'The right operand of the is_error operator must be a class type.');
   }
 }
 

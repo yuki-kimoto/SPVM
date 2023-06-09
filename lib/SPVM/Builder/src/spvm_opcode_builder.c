@@ -4088,7 +4088,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_ISA:
+                        case SPVM_OP_C_ID_ISA_ERROR:
                         case SPVM_OP_C_ID_IS_TYPE:
+                        case SPVM_OP_C_ID_IS_ERROR:
                         {
                           int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src->first);
                           
@@ -4100,8 +4102,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           if (op_assign_src->id == SPVM_OP_C_ID_ISA) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
                           }
+                          else if (op_assign_src->id == SPVM_OP_C_ID_ISA_ERROR) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA_ERROR);
+                          }
                           else if (op_assign_src->id == SPVM_OP_C_ID_IS_TYPE) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
+                          }
+                          else if (op_assign_src->id == SPVM_OP_C_ID_IS_ERROR) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_ERROR);
                           }
                           
                           opcode.operand1 = call_stack_id_in;
@@ -4118,12 +4126,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_CAN: {
                           SPVM_OP* op_var = op_assign_src->first;
                           int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_var);
-
+                          
                           SPVM_TYPE* interface_type = SPVM_OP_get_type(compiler, op_var);
                           SPVM_BASIC_TYPE* interface_basic_type = interface_type->basic_type;
                           SPVM_CLASS* interface = interface_basic_type->class;
                           SPVM_OP* op_name_implement_method = op_assign_src->last;
-
+                          
                           const char* implement_method_name = op_name_implement_method->uv.name;
                           SPVM_METHOD* implement_method = SPVM_HASH_get(interface->method_symtable, implement_method_name, strlen(implement_method_name));
                           
@@ -4131,7 +4139,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
-
+                          
                           opcode.operand0 = call_stack_id_in;
                           opcode.operand1 = implement_method->id;
                           opcode.operand2 = interface_basic_type->id;
@@ -5083,7 +5091,9 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_OP* 
     case SPVM_OP_C_ID_STRING_LE:
     case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
+    case SPVM_OP_C_ID_ISA_ERROR:
     case SPVM_OP_C_ID_IS_TYPE:
+    case SPVM_OP_C_ID_IS_ERROR:
     case SPVM_OP_C_ID_IS_COMPILE_TYPE:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_CAN:

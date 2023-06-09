@@ -7697,6 +7697,32 @@ Examples:
     
   }
 
+=head2 isa_error Operator
+
+The C<isa_error> operator checks whether the basic type id given by the left operand can be assigned to the right type.
+
+  LEFT_OPERAND isa RIGHT_TYPE
+
+The return type is L<int type|/"int Type">.
+
+If the assignability is true, returns 1. Otherwise returns 0.
+
+Compilation Errors:
+
+The left operand of the isa_error operator must be an integer type within int. Otherwise a compilation error occurs.
+
+The right operand of the isa_error operator must be a class type. Otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id isa_error Error) {
+    
+  }
+  
+  if (eval_error_id isa_error Error::System) {
+    
+  }
+  
 =head2 is_type Operator
 
 The C<is_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the type of the instance of the left operand is the right type.
@@ -7731,6 +7757,32 @@ Examples:
     
   }
 
+=head2 is_error Operator
+
+The C<is_error> operator checks whether the basic type id given by the left operand is the basic type of the right type.
+
+  LEFT_OPERAND isa RIGHT_TYPE
+
+The return type is L<int type|/"int Type">.
+
+If it is ok, returns 1. Otherwise returns 0.
+
+Compilation Errors:
+
+The left operand of the is_error operator must be an integer type within int. Otherwise a compilation error occurs.
+
+The right operand of the is_error operator must be a class type. Otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id is_error Error) {
+    
+  }
+  
+  if (eval_error_id is_error Error::System) {
+    
+  }
+  
 =head2 is_compile_type Operator
 
 The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of the left operand is the right type.

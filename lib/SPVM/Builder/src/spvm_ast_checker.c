@@ -1976,35 +1976,73 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             break;
           }
+          case SPVM_OP_C_ID_ISA_ERROR: {
+            
+            SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+            SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+            
+            // Left operand must be a numeric type
+            if (!SPVM_TYPE_is_integer_type_within_int(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The left operand of the isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_class_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The right operand of the isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_IS_TYPE: {
             
             SPVM_TYPE* left_operand_type = SPVM_OP_get_type(compiler, op_cur->first);
             SPVM_OP* op_type = op_cur->last;
             
             SPVM_TYPE* right_type = op_type->uv.type;
-
+            
             if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The left operand of the is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
-
+            
             if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
               SPVM_COMPILER_error(compiler, "The right type of the is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
-
+            
             if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
               SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
-
+            
             if (SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
               SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object array type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
-
+            
             if (SPVM_TYPE_is_interface_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
               SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
+          case SPVM_OP_C_ID_IS_ERROR: {
+            
+            SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+            SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+            
+            // Left operand must be a numeric type
+            if (!SPVM_TYPE_is_integer_type_within_int(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The left operand of the is_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_class_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The right operand of the is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -3236,7 +3274,9 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_STRING_LE:
               case SPVM_OP_C_ID_STRING_CMP:
               case SPVM_OP_C_ID_ISA:
+              case SPVM_OP_C_ID_ISA_ERROR:
               case SPVM_OP_C_ID_IS_TYPE:
+              case SPVM_OP_C_ID_IS_ERROR:
               case SPVM_OP_C_ID_IS_COMPILE_TYPE:
               case SPVM_OP_C_ID_BOOL:
               {

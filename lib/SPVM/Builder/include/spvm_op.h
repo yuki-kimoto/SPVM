@@ -217,7 +217,9 @@ enum {
   SPVM_OP_C_ID_STRING_LE,
   SPVM_OP_C_ID_STRING_CMP,
   SPVM_OP_C_ID_ISA,
+  SPVM_OP_C_ID_ISA_ERROR,
   SPVM_OP_C_ID_IS_TYPE,
+  SPVM_OP_C_ID_IS_ERROR,
   SPVM_OP_C_ID_IS_COMPILE_TYPE,
   SPVM_OP_C_ID_SEQUENCE,
   SPVM_OP_C_ID_SCALAR,
@@ -359,7 +361,11 @@ SPVM_OP* SPVM_OP_build_binary_is(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_O
 
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_operand, SPVM_OP* op_type);
 
+SPVM_OP* SPVM_OP_build_isa_error(SPVM_COMPILER* compiler, SPVM_OP* op_isa_error, SPVM_OP* op_operand, SPVM_OP* op_type);
+
 SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_type, SPVM_OP* op_operand, SPVM_OP* op_type);
+
+SPVM_OP* SPVM_OP_build_is_error(SPVM_COMPILER* compiler, SPVM_OP* op_is_error, SPVM_OP* op_operand, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_compile_type, SPVM_OP* op_operand, SPVM_OP* op_compile_type);
 

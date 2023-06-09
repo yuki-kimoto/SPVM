@@ -4,7 +4,7 @@ class TestCase::Isa {
   use Comparator;
   use Complex_2d;
   use Complex_2f;
-
+  
   static method isa_any_object_type : int () {
     my $num : object;
     
@@ -14,7 +14,7 @@ class TestCase::Isa {
     
     return 1;
   }
-
+  
   static method isa_numeric_type : int () {
     my $num : int;
     
@@ -28,7 +28,7 @@ class TestCase::Isa {
     
     return 1;
   }
-
+  
   static method isa_multi_numeric_type : int () {
     my $num : Complex_2d;
     
@@ -54,7 +54,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_match_array : int () {
     my $minimals = new TestCase::Minimal[3];
     my $nums = new int[3];
@@ -67,7 +67,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_not_match_class : int () {
     my $minimal = TestCase::Minimal->new;
     if (!($minimal isa TestCase::Simple)) {
@@ -76,7 +76,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_not_match_class_undef : int () {
     my $minimal : TestCase::Minimal = undef;
     
@@ -86,7 +86,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_match_callback : int () {
     
     my $comparator = method : int ($object1 : object, $object2 : object) {
@@ -101,7 +101,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_not_match_callback_undef : int () {
     my $comparator : Comparator;
     
@@ -111,7 +111,7 @@ class TestCase::Isa {
     
     return 0;
   }
-
+  
   static method isa_not_match_callback : int () {
     my $minimal : TestCase::Minimal = TestCase::Minimal->new;
     if (!($minimal isa Comparator)) {
@@ -119,4 +119,29 @@ class TestCase::Isa {
     }
     
     return 0;
-  }}
+  }
+  
+  static method isa_error : int () {
+    
+    {
+      my $error_class_basic_type_id = basic_type_id Error;
+      
+      unless ($error_class_basic_type_id isa_error Error) {
+        return 0;
+      }
+    }
+    
+    # Extra
+    {
+      eval { die; }
+      
+      unless (eval_error_id isa_error Error) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+}

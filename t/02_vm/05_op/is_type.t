@@ -16,6 +16,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 # is_type
 {
   ok(SPVM::TestCase::IsType->is_type);
+  ok(SPVM::TestCase::IsType->is_error);
 }
 
 # All object is freed

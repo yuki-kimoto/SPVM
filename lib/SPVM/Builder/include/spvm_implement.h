@@ -1426,6 +1426,10 @@ static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t*
   }
 }
 
+static inline void SPVM_IMPLEMENT_ISA_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t src_basic_type_id, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
+  *out = env->api->runtime->can_assign(env->runtime, dist_basic_type_id, dist_type_dimension, 0, src_basic_type_id, 0, 0);
+}
+
 static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
   if (object) {
     *out = env->is_type(env, stack, object, dist_basic_type_id, dist_type_dimension);
@@ -1433,6 +1437,10 @@ static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int3
   else {
     *out = 0;
   }
+}
+
+static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t src_basic_type_id, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
+  *out = (dist_basic_type_id == src_basic_type_id && dist_type_dimension == 0);
 }
 
 #define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = env->get_instance_method_id(env, stack, object, method_name) >= 0)

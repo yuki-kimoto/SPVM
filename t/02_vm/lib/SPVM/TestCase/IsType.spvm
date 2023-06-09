@@ -71,4 +71,28 @@ class TestCase::IsType {
     
     return 1;
   }
+  
+  static method is_error : int () {
+    
+    {
+      my $error_class_basic_type_id = basic_type_id Error;
+      
+      unless ($error_class_basic_type_id is_error Error) {
+        return 0;
+      }
+    }
+    
+    # Extra
+    {
+      eval { die; }
+      
+      unless (eval_error_id is_error Error) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }
