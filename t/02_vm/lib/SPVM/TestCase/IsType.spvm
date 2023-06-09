@@ -81,6 +81,30 @@ class TestCase::IsType {
         return 0;
       }
     }
+
+    {
+      my $error_system_class_basic_type_id = basic_type_id Error::System;
+      
+      if ($error_system_class_basic_type_id is_error Error) {
+        return 0;
+      }
+      
+      unless ($error_system_class_basic_type_id is_error Error::System) {
+        return 0;
+      }
+    }
+    
+    {
+      my $error_not_supported_class_basic_type_id = basic_type_id Error::NotSupported;
+      
+      if ($error_not_supported_class_basic_type_id is_error Error) {
+        return 0;
+      }
+      
+      unless ($error_not_supported_class_basic_type_id is_error Error::NotSupported) {
+        return 0;
+      }
+    }
     
     # Extra
     {

@@ -129,6 +129,34 @@ class TestCase::Isa {
       unless ($error_class_basic_type_id isa_error Error) {
         return 0;
       }
+      
+      if ($error_class_basic_type_id isa_error Int) {
+        return 0;
+      }
+    }
+    
+    {
+      my $error_system_class_basic_type_id = basic_type_id Error::System;
+      
+      unless ($error_system_class_basic_type_id isa_error Error) {
+        return 0;
+      }
+      
+      unless ($error_system_class_basic_type_id isa_error Error::System) {
+        return 0;
+      }
+    }
+    
+    {
+      my $error_not_supported_class_basic_type_id = basic_type_id Error::NotSupported;
+      
+      unless ($error_not_supported_class_basic_type_id isa_error Error) {
+        return 0;
+      }
+      
+      unless ($error_not_supported_class_basic_type_id isa_error Error::NotSupported) {
+        return 0;
+      }
     }
     
     # Extra
