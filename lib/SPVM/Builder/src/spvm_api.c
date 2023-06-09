@@ -1464,8 +1464,12 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
   
   // Free objects of class variables
   for (int32_t class_var_id = 0; class_var_id < runtime->class_vars_length; class_var_id++) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
-    int32_t class_var_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, class_var->basic_type_id, class_var->type_dimension, class_var->type_flag);
+    
+    int32_t class_var_basic_type_id = env->api->runtime->get_class_var_basic_type_id(runtime, class_var_id);
+    int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var_id);
+    int32_t class_var_type_flag = env->api->runtime->get_class_var_type_flag(runtime, class_var_id);
+    
+    int32_t class_var_type_is_object = env->api->runtime->is_object_type(runtime, class_var_basic_type_id, class_var_type_dimension, class_var_type_flag);
     if (class_var_type_is_object) {
       SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
       if (object) {

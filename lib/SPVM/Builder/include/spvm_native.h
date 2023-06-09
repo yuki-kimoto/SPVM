@@ -420,6 +420,9 @@ struct spvm_env_runtime {
   int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_id);
   int32_t (*get_field_type_dimension)(void* runtime, int32_t field_id);
   int32_t (*get_field_type_flag)(void* runtime, int32_t field_id);
+  int32_t (*get_class_var_basic_type_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_type_dimension)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_type_flag)(void* runtime, int32_t class_var_id);
 };
 
 struct spvm_env_compiler {

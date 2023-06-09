@@ -200,6 +200,9 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_basic_type_id,
     SPVM_API_RUNTIME_get_field_type_dimension,
     SPVM_API_RUNTIME_get_field_type_flag,
+    SPVM_API_RUNTIME_get_class_var_basic_type_id,
+    SPVM_API_RUNTIME_get_class_var_type_dimension,
+    SPVM_API_RUNTIME_get_class_var_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -840,6 +843,57 @@ SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class(SPVM_RUNTIME* runtime, int32_t cl
   return class;
 }
 
+int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
+  
+  int32_t class_var_id = -1;
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  if (class) {
+    if (class_var_index >= 0 && class_var_index < class->class_vars_length) {
+      class_var_id = class->class_vars_base_id + class_var_index;
+    }
+  }
+  
+  return class_var_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* class_var_name) {
+  (void)runtime;
+  
+  int32_t class_var_id = -1;
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
+  
+  if (class) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
+    if (class_var) {
+      class_var_id = class_var->id;
+    }
+  }
+  
+  return class_var_id;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(SPVM_RUNTIME* runtime, int32_t class_id, const char* search_class_var_name) {
+  
+  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  
+  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
+  if (class->class_vars_length > 0) {
+    for (int32_t class_var_id = class->class_vars_base_id; class_var_id <  class->class_vars_base_id + class->class_vars_length; class_var_id++) {
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+      const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
+      if (strcmp(class_var_name, search_class_var_name) == 0) {
+        found_class_var = class_var;
+        break;
+      }
+    }
+  }
+  
+  return found_class_var;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
   
   SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
@@ -875,6 +929,39 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, in
   SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[class_var_id];
   
   return class_var;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_basic_type_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+  
+  assert(class_var);
+  
+  int32_t class_var_type_id = class_var->basic_type_id;
+  
+  return class_var_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+  
+  assert(class_var);
+  
+  int32_t class_var_type_id = class_var->type_dimension;
+  
+  return class_var_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t class_var_id) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+  
+  assert(class_var);
+  
+  int32_t class_var_type_id = class_var->type_flag;
+  
+  return class_var_type_id;
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_id) {
@@ -963,38 +1050,6 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   }
   
   return method_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
-  
-  int32_t class_var_id = -1;
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  if (class) {
-    if (class_var_index >= 0 && class_var_index < class->class_vars_length) {
-      class_var_id = class->class_vars_base_id + class_var_index;
-    }
-  }
-  
-  return class_var_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* class_var_name) {
-  (void)runtime;
-  
-  int32_t class_var_id = -1;
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
-  
-  if (class) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
-    if (class_var) {
-      class_var_id = class_var->id;
-    }
-  }
-  
-  return class_var_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
@@ -1099,25 +1154,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_class_id_and_field_name(SPVM_R
   }
   
   return found_field;
-}
-
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(SPVM_RUNTIME* runtime, int32_t class_id, const char* search_class_var_name) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
-  if (class->class_vars_length > 0) {
-    for (int32_t class_var_id = class->class_vars_base_id; class_var_id <  class->class_vars_base_id + class->class_vars_length; class_var_id++) {
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
-      const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
-      if (strcmp(class_var_name, search_class_var_name) == 0) {
-        found_class_var = class_var;
-        break;
-      }
-    }
-  }
-  
-  return found_class_var;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t method_id) {
