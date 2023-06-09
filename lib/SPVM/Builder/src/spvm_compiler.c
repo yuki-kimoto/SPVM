@@ -961,7 +961,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
 
     runtime_class_var->id = class_var->id;
-    runtime_class_var->type_id = class_var->type->id;
     runtime_class_var->basic_type_id = class_var->type->basic_type->id;
     runtime_class_var->type_dimension = class_var->type->dimension;
     runtime_class_var->type_flag = class_var->type->flag;
