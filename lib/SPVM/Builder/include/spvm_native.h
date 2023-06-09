@@ -417,6 +417,9 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_is_class)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_types_length)(void* runtime);
+  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_id);
+  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_id);
+  int32_t (*get_field_type_flag)(void* runtime, int32_t field_id);
 };
 
 struct spvm_env_compiler {

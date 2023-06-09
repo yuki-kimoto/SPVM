@@ -197,6 +197,9 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_anon_methods_length,
     SPVM_API_RUNTIME_get_basic_type_is_class,
     SPVM_API_RUNTIME_get_basic_types_length,
+    SPVM_API_RUNTIME_get_field_basic_type_id,
+    SPVM_API_RUNTIME_get_field_type_dimension,
+    SPVM_API_RUNTIME_get_field_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -907,6 +910,39 @@ int32_t SPVM_API_RUNTIME_get_field_type_id(SPVM_RUNTIME* runtime, int32_t field_
   assert(field);
   
   int32_t field_type_id = field->type_id;
+  
+  return field_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  
+  assert(field);
+  
+  int32_t field_type_id = field->basic_type_id;
+  
+  return field_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  
+  assert(field);
+  
+  int32_t field_type_id = field->type_dimension;
+  
+  return field_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_id) {
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  
+  assert(field);
+  
+  int32_t field_type_id = field->type_flag;
   
   return field_type_id;
 }
