@@ -15,6 +15,9 @@ struct spvm_runtime_class {
   int32_t destructor_method_id;
   int32_t required_method_id;
   int32_t type_id;
+  int32_t basic_type_id;
+  int32_t type_dimension;
+  int32_t type_flag;
   int32_t methods_base_id;
   int32_t methods_length;
   int32_t anon_methods_base_id;
