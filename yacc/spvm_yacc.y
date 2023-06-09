@@ -44,7 +44,7 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
+%type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type class_of
 %type <opval> call_method
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
@@ -65,7 +65,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY CLASS_OF
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -1043,15 +1043,31 @@ comparison_operator
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
 
+class_of
+  : CLASS_OF operator
+    {
+      $$ = $2;
+    }
+
 isa
   : operator ISA type
     {
+      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+    }
+  | class_of ISA type
+    {
+      $2->flag |= SPVM_OP_C_BINARY_IS_CLASS_OF;
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
 
 is_type
   : operator IS_TYPE type
     {
+      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
+    }
+  | class_of IS_TYPE type
+    {
+      $2->flag |= SPVM_OP_C_BINARY_IS_CLASS_OF;
       $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
     }
     

@@ -250,6 +250,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "EVAL_ERROR_ID",
     "ITEMS",
     "VERSION",
+    "CLASS_OF",
   };
   
   return id_names;
@@ -3811,6 +3812,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BASIC_TYPE_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:
     case SPVM_OP_C_ID_ITEMS:
+    case SPVM_OP_C_ID_CLASS_OF:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;

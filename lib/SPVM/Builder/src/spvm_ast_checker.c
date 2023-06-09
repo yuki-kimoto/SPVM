@@ -1408,6 +1408,30 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             break;
           }
+          case SPVM_OP_C_ID_CLASS_OF: {
+            SPVM_OP* op_first = op_cur->first;
+            SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+            
+            if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+              SPVM_AST_CHECKER_perform_integer_promotional_conversion(compiler, op_cur->first);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              if (first_type->dimension == 0 && first_type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+                SPVM_COMPILER_error(compiler, "The operand of the class_of operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            else {
+              SPVM_COMPILER_error(compiler, "The operand of the class_of operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_NUMERIC_EQ: {
             SPVM_OP* op_first = op_cur->first;
 
@@ -3170,6 +3194,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
               case SPVM_OP_C_ID_ITEMS:
+              case SPVM_OP_C_ID_CLASS_OF:
               case SPVM_OP_C_ID_CONCAT:
               case SPVM_OP_C_ID_TYPE_NAME:
               case SPVM_OP_C_ID_COMPILE_TYPE_NAME:

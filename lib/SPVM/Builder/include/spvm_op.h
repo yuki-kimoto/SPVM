@@ -248,6 +248,7 @@ enum {
   SPVM_OP_C_ID_EVAL_ERROR_ID,
   SPVM_OP_C_ID_ITEMS,
   SPVM_OP_C_ID_VERSION_DECL,
+  SPVM_OP_C_ID_CLASS_OF,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -280,6 +281,11 @@ enum {
   SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN = 2,
   SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK = 4,
 };
+
+enum {
+  SPVM_OP_C_BINARY_IS_CLASS_OF = 1,
+};
+
 enum {
   // ARRAY_ACCESS flag
   SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN = 1,
@@ -299,6 +305,7 @@ enum {
   SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS = 2,
   SPVM_OP_C_FLAG_TYPE_IS_SELF = 4,
 };
+
 
 struct spvm_op {
   SPVM_OP* first;

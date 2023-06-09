@@ -1679,6 +1679,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS);
                   keyword_token = CLASS;
                 }
+                else if (strcmp(symbol_name, "class_of") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS_OF);
+                  keyword_token = CLASS_OF;
+                }
                 else if (strcmp(symbol_name, "compile_type_name") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPILE_TYPE_NAME);
                   keyword_token = COMPILE_TYPE_NAME;

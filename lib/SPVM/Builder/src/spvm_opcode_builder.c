@@ -4090,28 +4090,34 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_IS_TYPE:
                         {
-                          int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src->first);
-                          
-                          SPVM_OP* op_type = op_assign_src->last;
-                          SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
-                          
-                          SPVM_OPCODE opcode = {0};
-                          
-                          if (op_assign_src->id == SPVM_OP_C_ID_ISA) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
+                          if (op_cur->flag & SPVM_OP_C_BINARY_IS_CLASS_OF) {
+                            // TODO
+                            assert(0);
                           }
-                          else if (op_assign_src->id == SPVM_OP_C_ID_IS_TYPE) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
+                          else {
+                            int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src->first);
+                            
+                            SPVM_OP* op_type = op_assign_src->last;
+                            SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
+                            
+                            SPVM_OPCODE opcode = {0};
+                            
+                            if (op_assign_src->id == SPVM_OP_C_ID_ISA) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISA);
+                            }
+                            else if (op_assign_src->id == SPVM_OP_C_ID_IS_TYPE) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
+                            }
+                            
+                            opcode.operand1 = call_stack_id_in;
+                            
+                            opcode.operand2 = type->basic_type->id;
+                            int32_t operand3 = type->dimension;
+                            assert(operand3 < 0xFFFF);
+                            opcode.operand3 = operand3;
+                            
+                            SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
-                          
-                          opcode.operand1 = call_stack_id_in;
-                          
-                          opcode.operand2 = type->basic_type->id;
-                          int32_t operand3 = type->dimension;
-                          assert(operand3 < 0xFFFF);
-                          opcode.operand3 = operand3;
-                          
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
                           break;
                         }
