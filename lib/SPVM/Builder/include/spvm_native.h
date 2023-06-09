@@ -267,7 +267,7 @@ struct spvm_env {
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   int32_t (*init_env)(SPVM_ENV* env);
   int32_t (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
-  int32_t (*get_class_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name);
+  void* reserved170;
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*new_memory_env)(SPVM_ENV* env, size_t size);
@@ -278,7 +278,7 @@ struct spvm_env {
   int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
   int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
-  int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* reserved181;
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);

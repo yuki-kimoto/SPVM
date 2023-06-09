@@ -219,16 +219,6 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_string_nolen);
 }
 
-# get_class_id
-{
-  ok(SPVM::TestCase::NativeAPI->get_class_id);
-}
-
-# get_class_id_by_name
-{
-  ok(SPVM::TestCase::NativeAPI->get_class_id_by_name);
-}
-
 # get_basic_type_id_by_name
 {
   ok(SPVM::TestCase::NativeAPI->get_basic_type_id_by_name);

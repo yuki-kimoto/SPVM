@@ -188,7 +188,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->print_stderr != &env_array[167]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->init_env != &env_array[168]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_init_blocks != &env_array[169]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_id != &env_array[170]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved170 != &env_array[170]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_stack != &env_array[171]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_stack != &env_array[172]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_memory_env != &env_array[173]) { stack[0].ival = 0; return 0; }
@@ -199,7 +199,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_memory_blocks_count_stack != &env_array[178]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_program_name != &env_array[179]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_argv != &env_array[180]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_id_by_name != &env_array[181]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved181 != &env_array[181]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror != &env_array[182]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string_array != &env_array[183]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_args_stack_length != &env_array[184]) { stack[0].ival = 0; return 0; }
@@ -2642,52 +2642,6 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   
   stack[0].ival = 1;
 
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__get_class_id(SPVM_ENV* env, SPVM_VALUE* stack) {
-  {
-    int32_t error_class_id = env->api->runtime->get_class_id_by_name(env->runtime, "Error");
-    if (!(error_class_id == 1)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-  }
-  
-  {
-    int32_t error_class_id = env->api->runtime->get_class_id_by_name(env->runtime, "NotFoundClass");
-    if (!(error_class_id < 0)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-  }
-  
-  stack[0].ival = 1;
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t e;
-  
-  {
-    int32_t error_class_id = env->api->runtime->get_class_id_by_name(env->runtime, "Error");
-    
-    if (!(error_class_id == 1)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-  }
-  
-  {
-    int32_t error_class_id = env->api->runtime->get_class_id_by_name(env->runtime, "NotFoundClass");
-    
-    if (!(error_class_id < 0)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-  }
-  
-  stack[0].ival = 1;
   return 0;
 }
 

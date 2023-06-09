@@ -92,20 +92,6 @@ static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID_RET(SPVM_ENV* env, SPVM_V
   return basic_type_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_CLASS_ID_RET(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, char* message, int32_t* error_id) {
-  
-  int32_t class_id = env->api->runtime->get_class_id_by_name(env->runtime, class_name);
-  
-  if (class_id < 0) {
-    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_NOT_FOUND], class_name);
-    void* exception = env->new_string_nolen_raw(env, stack, message);
-    env->set_exception(env, stack, exception);
-    *error_id = 1;
-  }
-  
-  return class_id;
-}
-
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name, char* message, int32_t* error_id) {
 
   int32_t field_id = env->api->runtime->get_field_id_by_name(env->runtime, class_name, field_name);

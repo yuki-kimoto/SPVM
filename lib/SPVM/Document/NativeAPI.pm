@@ -184,7 +184,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   167 print_stderr
   168 init_env
   169 call_init_blocks
-  170 get_class_id
+  170 reserved170
   171 new_stack
   172 free_stack
   173 new_memory_env
@@ -195,7 +195,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   178 get_memory_blocks_count_stack
   179 set_command_info_program_name
   180 set_command_info_argv
-  181 get_class_id_by_name
+  181 reserved181
   182 strerror
   183 new_string_array
   184 get_args_stack_length
@@ -1944,10 +1944,6 @@ Initialize the environment.
 
 Calls all C<INIT> blocks. If an exception is thrown, returns 1. Otherwise returns 0.
 
-=head2 get_class_id
-
-  int32_t (*get_class_id)(SPVM_ENV* env, const char* class_name);
-
 =head2 new_stack
 
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
@@ -2029,14 +2025,6 @@ Sets the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV"
 If it succeed, return 0.
 
 The argv must be a C<string[]> object. Otherwise return non-zero value.
-
-=head2 get_class_id_by_name
-
-  int32_t (*get_class_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
-
-Gets the class id by the class name.
-
-If the class is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
 =head2 strerror
 

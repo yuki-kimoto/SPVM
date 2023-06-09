@@ -6,6 +6,11 @@
   [Changes]
     * The Error::System class extends the Error class.
     * The Error::NotSupported class extends the Error class.
+  [Incompatible Changes]
+    * The get_class_id Native API was removed. This is internally used now.
+    * The get_class_id_by_name Native API was removed. This is internally used now.
+  [Warnings]
+    * Native Runtime APIs that get and set the class id will be removed in the nearly feature.
 0.989002 2023-06-08
   [Document Bug]
     * The basic type IDs were wrong. This was fixed.

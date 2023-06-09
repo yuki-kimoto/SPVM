@@ -348,19 +348,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, current_class_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-    SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, current_class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    ");
-    SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, current_class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_ID_RET(env, stack, \"");
-    SPVM_STRING_BUFFER_add(string_buffer, current_class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                          "      goto END_OF_METHOD;\n"
-                                          "    }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
     SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, current_class_name, current_method_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
@@ -518,29 +505,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
-        }
-      }
-      else if (class_id >= 0) {
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
-        int32_t found = SPVM_PRECOMPILE_contains_class_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name);
-        if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, class_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_ID_RET(env, stack, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, class_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
-                                                "    }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
       }
       else if (field_id >= 0) {
