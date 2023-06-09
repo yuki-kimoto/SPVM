@@ -666,6 +666,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_RUNTIME_CLASS* runtime_class = (SPVM_RUNTIME_CLASS*)class_32bit_ptr;
     
     runtime_class->type_id = class->type->id;
+    runtime_class->basic_type_id = class->type->basic_type->id;
+    runtime_class->type_dimension = class->type->dimension;
+    runtime_class->type_flag = class->type->flag;
     runtime_class->id = class->id;
     SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
     runtime_class->class_rel_file_id = class_class_rel_file_string->id;
@@ -959,6 +962,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
 
     runtime_class_var->id = class_var->id;
     runtime_class_var->type_id = class_var->type->id;
+    runtime_class_var->basic_type_id = class_var->type->basic_type->id;
+    runtime_class_var->type_dimension = class_var->type->dimension;
+    runtime_class_var->type_flag = class_var->type->flag;
     runtime_class_var->class_id = class_var->class->id;
 
     SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
@@ -1062,6 +1068,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
     runtime_field->type_id = field->type->id;
+    runtime_field->basic_type_id = field->type->basic_type->id;
+    runtime_field->type_dimension = field->type->dimension;
+    runtime_field->type_flag = field->type->flag;
     runtime_field->class_id = field->class->id;
     
     SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
