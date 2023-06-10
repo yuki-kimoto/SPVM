@@ -65,7 +65,7 @@ Runtime native APIs have its IDs.
   41 get_method_id_by_index
   42 get_method_id_by_name
   43 get_method_name_id
-  44 get_method_return_type_id
+  44 reserved44
   45 get_method_class_id
   46 get_method_is_class_method
   47 get_method_is_anon
@@ -304,10 +304,6 @@ Runtime native APIs have its IDs.
 =head2 get_method_name_id
 
   int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
-
-=head2 get_method_return_type_id
-
-  int32_t (*get_method_return_type_id)(void* runtime, int32_t method_id);
 
 =head2 get_method_class_id
 

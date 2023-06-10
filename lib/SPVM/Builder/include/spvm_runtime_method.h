@@ -25,7 +25,6 @@ struct spvm_runtime_method {
   int32_t call_stack_object_vars_length;
   int32_t call_stack_ref_vars_length;
   int32_t mortal_stack_length;
-  int32_t return_type_id;
   int32_t return_basic_type_id;
   int32_t return_type_dimension;
   int32_t return_type_flag;
