@@ -1005,6 +1005,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
     runtime_method->mortal_stack_length  = method->mortal_stack_length;
     runtime_method->return_type_id = method->return_type->id;
+    runtime_method->return_basic_type_id = method->return_type->basic_type->id;
+    runtime_method->return_type_dimension = method->return_type->dimension;
+    runtime_method->return_type_flag = method->return_type->flag;
     runtime_method->is_native = method->is_native;
     runtime_method->is_precompile = method->is_precompile;
     runtime_method->is_destructor = method->is_destructor;
