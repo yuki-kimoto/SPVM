@@ -1268,7 +1268,6 @@ _xs_call_method(...)
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
   int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_id);
   int32_t method_args_base_id = env->api->runtime->get_method_args_base_id(env->runtime, method_id);
-  int32_t method_return_type_id = env->api->runtime->get_method_return_type_id(env->runtime, method_id);
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;
@@ -1785,8 +1784,8 @@ _xs_call_method(...)
   }
   
   // Return
-  int32_t method_return_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, method_return_type_id);
-  int32_t method_return_type_dimension = env->api->runtime->get_type_dimension(env->runtime, method_return_type_id);
+  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_id);
+  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_id);
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
