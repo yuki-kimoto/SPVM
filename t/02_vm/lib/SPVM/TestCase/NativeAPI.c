@@ -2542,6 +2542,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_class_var_basic_type_id != &env_array[103]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_var_type_dimension != &env_array[104]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_var_type_flag != &env_array[105]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_return_basic_type_id != &env_array[106]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_return_type_dimension != &env_array[107]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_return_type_flag != &env_array[108]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");

@@ -127,6 +127,9 @@ Runtime native APIs have its IDs.
   103 get_class_var_basic_type_id
   104 get_class_var_type_dimension
   105 get_class_var_type_flag
+  103 get_method_return_basic_type_id
+  104 get_method_return_type_dimension
+  105 get_method_return_type_flag
 
 =head1 Runtime Native APIs
 
@@ -499,6 +502,18 @@ Internally used.
 =head2 get_class_var_type_flag
 
   int32_t (*get_class_var_type_flag)(void* runtime, int32_t class_var_id);
+
+=head2 get_method_return_basic_type_id
+
+  int32_t (*get_method_return_basic_type_id)(void* runtime, int32_t method_id);
+
+=head2 get_method_return_type_dimension
+
+  int32_t (*get_method_return_type_dimension)(void* runtime, int32_t method_id);
+
+=head2 get_method_return_type_flag
+
+  int32_t (*get_method_return_type_flag)(void* runtime, int32_t method_id);
 
 =head1 Copyright & License
 

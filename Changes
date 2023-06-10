@@ -3,6 +3,12 @@
     * The get_field_basic_type_id Native Runtime API was added.
     * The get_field_type_dimension Native Runtime API was added.
     * The get_field_type_flag Native Runtime API was added.
+    * The get_class_var_basic_type_id Native Runtime API was added.
+    * The get_class_var_type_dimension Native Runtime API was added.
+    * The get_class_var_type_flag Native Runtime API was added.
+    * The get_return_type_basic_type_id Native Runtime API was added.
+    * The get_return_type_type_dimension Native Runtime API was added.
+    * The get_return_type_type_flag Native Runtime API was added.
   [Incompatible Changes]
     * The get_field_type_id Native Runtime API was removed.
 0.989003 2023-06-09

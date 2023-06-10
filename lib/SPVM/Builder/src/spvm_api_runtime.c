@@ -203,6 +203,9 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_basic_type_id,
     SPVM_API_RUNTIME_get_class_var_type_dimension,
     SPVM_API_RUNTIME_get_class_var_type_flag,
+    SPVM_API_RUNTIME_get_method_return_basic_type_id,
+    SPVM_API_RUNTIME_get_method_return_type_dimension,
+    SPVM_API_RUNTIME_get_method_return_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1298,6 +1301,39 @@ int32_t SPVM_API_RUNTIME_get_method_return_type_id(SPVM_RUNTIME* runtime, int32_
   int32_t return_type_id = method->return_type_id;
   
   return return_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_return_basic_type_id(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t return_basic_type_id = method->return_basic_type_id;
+  
+  return return_basic_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t return_type_dimension = method->return_type_dimension;
+  
+  return return_type_dimension;
+}
+
+int32_t SPVM_API_RUNTIME_get_method_return_type_flag(SPVM_RUNTIME* runtime, int32_t method_id) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
+  
+  assert(method);
+  
+  int32_t return_type_flag = method->return_type_flag;
+  
+  return return_type_flag;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length(SPVM_RUNTIME* runtime, int32_t method_id) {
