@@ -7,6 +7,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_runtime_arg.h
+struct spvm_runtime_arg;
+typedef struct spvm_runtime_arg SPVM_RUNTIME_ARG;
+
 // spvm_precompile.h
 struct spvm_precompile;
 typedef struct spvm_precompile SPVM_PRECOMPILE;
