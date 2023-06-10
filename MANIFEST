@@ -103,6 +103,7 @@ lib/SPVM/Builder/include/spvm_opcode_builder.h
 lib/SPVM/Builder/include/spvm_precompile.h
 lib/SPVM/Builder/include/spvm_public_api.h
 lib/SPVM/Builder/include/spvm_runtime.h
+lib/SPVM/Builder/include/spvm_runtime_arg.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
 lib/SPVM/Builder/include/spvm_runtime_class.h
 lib/SPVM/Builder/include/spvm_runtime_class_var.h
