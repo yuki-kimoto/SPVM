@@ -939,7 +939,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_type->dimension = type->dimension;
     runtime_type->flag = type->flag;
     runtime_type->stack_length = type->stack_length;
-    runtime_type->mulnum_field_basic_type_id = SPVM_TYPE_get_mulnum_field_basic_type_id(compiler, type->basic_type->id, type->dimension, type->flag);
 
     type_32bit_ptr += sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t);
   }
