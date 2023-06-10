@@ -69,7 +69,6 @@ const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_st
 int32_t SPVM_API_RUNTIME_get_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t type_id);
 int32_t SPVM_API_RUNTIME_get_type_dimension(SPVM_RUNTIME* runtime, int32_t type_id);
 int32_t SPVM_API_RUNTIME_get_type_flag(SPVM_RUNTIME* runtime, int32_t type_id);
-int32_t SPVM_API_RUNTIME_get_type_stack_length(SPVM_RUNTIME* runtime, int32_t type_id);
 int32_t SPVM_API_RUNTIME_get_type_is_ref(SPVM_RUNTIME* runtime, int32_t type_id);
 int32_t SPVM_API_RUNTIME_get_type_is_object(SPVM_RUNTIME* runtime, int32_t type_id);
 

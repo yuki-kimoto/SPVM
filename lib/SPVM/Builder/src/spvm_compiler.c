@@ -938,7 +938,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_type->basic_type_id = type->basic_type->id;
     runtime_type->dimension = type->dimension;
     runtime_type->flag = type->flag;
-    runtime_type->stack_length = type->stack_length;
 
     type_32bit_ptr += sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t);
   }

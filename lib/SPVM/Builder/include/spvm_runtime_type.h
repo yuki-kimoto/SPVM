@@ -13,7 +13,6 @@ struct spvm_runtime_type {
   int32_t basic_type_id;
   int32_t dimension;
   int32_t flag;
-  int32_t stack_length;
 };
 
 #endif

@@ -113,7 +113,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_category,
     SPVM_API_RUNTIME_get_type_basic_type_id,
     SPVM_API_RUNTIME_get_type_dimension,
-    SPVM_API_RUNTIME_get_type_stack_length,
+    NULL, // reserve16
     SPVM_API_RUNTIME_get_type_is_object,
     SPVM_API_RUNTIME_get_type_is_ref,
     SPVM_API_RUNTIME_get_class_id_by_name,
@@ -573,17 +573,6 @@ int32_t SPVM_API_RUNTIME_get_type_dimension(SPVM_RUNTIME* runtime, int32_t type_
   int32_t type_dimension = type->dimension;
   
   return type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_stack_length(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  
-  assert(type);
-  
-  int32_t type_stack_length = type->stack_length;
-  
-  return type_stack_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_type_is_ref(SPVM_RUNTIME* runtime, int32_t type_id) {
