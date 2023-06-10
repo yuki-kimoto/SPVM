@@ -1585,8 +1585,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
-    int32_t method_return_type_is_object = SPVM_API_RUNTIME_get_type_is_object(runtime, method->return_type_id);
+    int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_id);
+    int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_id);
+    int32_t method_return_type_flag = env->api->runtime->get_method_return_type_flag(env->runtime, method_id);
     
+    int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);    
     int32_t no_need_call = 0;
     if (method->is_init) {
       int32_t* class_init_flags = (int32_t*)env->class_init_flags;
