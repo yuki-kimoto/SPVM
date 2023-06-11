@@ -2463,11 +2463,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_basic_type_name_id != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_class_id != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_category != &env_array[13]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_type_basic_type_id != &env_array[14]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_type_dimension != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved14 != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved15 != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_type_is_object != &env_array[17]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_type_is_ref != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_id_by_name != &env_array[19]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_name_id != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_class_rel_file_id != &env_array[21]) { stack[0].ival = 0; return 0; }
@@ -2531,7 +2531,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_required_args_length != &env_array[79]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_is_pointer != &env_array[80]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_enum != &env_array[81]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_type_flag != &env_array[82]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved82 != &env_array[82]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->is_object_type != &env_array[83]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_version_string_id != &env_array[84]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->class_init_flags != &env_array[85]) { stack[0].ival = 0; return 0; }

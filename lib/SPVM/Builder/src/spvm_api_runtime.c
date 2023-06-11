@@ -111,11 +111,11 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_name_id,
     SPVM_API_RUNTIME_get_basic_type_class_id,
     SPVM_API_RUNTIME_get_basic_type_category,
-    SPVM_API_RUNTIME_get_type_basic_type_id,
-    SPVM_API_RUNTIME_get_type_dimension,
+    NULL, // reserved14
+    NULL, // reserved15
     NULL, // reserve16
-    SPVM_API_RUNTIME_get_type_is_object,
-    SPVM_API_RUNTIME_get_type_is_ref,
+    NULL, // reserved17
+    NULL, // reserved18
     SPVM_API_RUNTIME_get_class_id_by_name,
     SPVM_API_RUNTIME_get_class_name_id,
     SPVM_API_RUNTIME_get_class_class_rel_file_id,
@@ -179,7 +179,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_required_args_length,
     SPVM_API_RUNTIME_get_class_is_pointer,
     SPVM_API_RUNTIME_get_method_is_enum,
-    SPVM_API_RUNTIME_get_type_flag,
+    NULL, // reserved82
     SPVM_API_RUNTIME_is_object_type,
     SPVM_API_RUNTIME_get_class_version_string_id,
     (void*)NULL, // class_init_flags
@@ -539,101 +539,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t 
   int32_t is_class = basic_type->is_class;
   
   return is_class;
-}
-
-SPVM_RUNTIME_TYPE* SPVM_API_RUNTIME_get_type(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  if (type_id < 0) {
-    return NULL;
-  }
-  
-  if (type_id >= runtime->types_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_TYPE* type = &runtime->types[type_id];
-  
-  return type;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  
-  assert(type);
-  
-  int32_t type_basic_type_id = type->basic_type_id;
-  
-  return type_basic_type_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_dimension(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  
-  assert(type);
-  
-  int32_t type_dimension = type->dimension;
-  
-  return type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_is_ref(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  
-  assert(type);
-  
-  int32_t is_ref = type->flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
-  
-  return is_ref;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_flag(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  
-  assert(type);
-  
-  int32_t type_flag = type->flag;
-  
-  return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_type_is_object(SPVM_RUNTIME* runtime, int32_t type_id) {
-  
-  SPVM_RUNTIME_TYPE* type = SPVM_API_RUNTIME_get_type(runtime, type_id);
-  int32_t type_dimension = type->dimension;
-  int32_t basic_type_id = type->basic_type_id;
-  int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, basic_type_id);
-  
-  assert(type);
-  
-  int32_t is_object;
-  
-  if (type_dimension == 0) {
-    switch (basic_type_category) {
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-      {
-        is_object = 1;
-        break;
-      }
-      default: {
-        is_object = 0;
-      }
-    }
-  }
-  else if (type_dimension > 0) {
-    is_object = 1;
-  }
-  else {
-    assert(0);
-  }
-  
-  return is_object;
 }
 
 SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class_by_name(SPVM_RUNTIME* runtime, const char* class_name) {

@@ -17,6 +17,12 @@
     * The get_method_return_type_id Native Runtime API was removed.
     * The get_type_stack_length Native Runtime API was removed.
     * The get_arg_type_id Native Runtime API was removed.
+    * The following Native Runtime APIs were removed.
+      int32_t (*get_type_basic_type_id)(void* runtime, int32_t type_id);
+      int32_t (*get_type_dimension)(void* runtime, int32_t type_id);
+      int32_t (*get_type_is_object)(void* runtime, int32_t type_id);
+      int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
+      int32_t (*get_type_flag)(void* runtime, int32_t type_id);
 0.989003 2023-06-09
   [Bug Fix]
     * The following bug was fixed: The can_assign Native Runtime API didnot work well.

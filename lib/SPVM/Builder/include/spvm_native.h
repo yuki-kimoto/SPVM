@@ -332,11 +332,11 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_type_basic_type_id)(void* runtime, int32_t type_id);
-  int32_t (*get_type_dimension)(void* runtime, int32_t type_id);
+  void* reserved14;
+  void* reserved15;
   void* reserved16;
-  int32_t (*get_type_is_object)(void* runtime, int32_t type_id);
-  int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
+  void* reserved17;
+  void* reserved18;
   int32_t (*get_class_id_by_name)(void* runtime, const char* class_name);
   int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
@@ -400,7 +400,7 @@ struct spvm_env_runtime {
   int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
   int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
   int32_t (*get_method_is_enum)(void* runtime, int32_t method_id);
-  int32_t (*get_type_flag)(void* runtime, int32_t type_id);
+  void* reserved82;
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
   int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
   void* class_init_flags;

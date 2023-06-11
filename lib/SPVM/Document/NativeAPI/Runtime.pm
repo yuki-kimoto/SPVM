@@ -35,11 +35,11 @@ Runtime native APIs have its IDs.
   11 get_basic_type_name_id
   12 get_basic_type_class_id
   13 get_basic_type_category
-  14 get_type_basic_type_id
-  15 get_type_dimension
+  14 reserved14
+  15 reserved15
   16 reserved16
-  17 get_type_is_object
-  18 get_type_is_ref
+  17 reserved17
+  18 reserved18
   19 get_class_id_by_name
   20 get_class_name_id
   21 get_class_class_rel_file_id
@@ -103,7 +103,7 @@ Runtime native APIs have its IDs.
   79 get_method_required_args_length
   80 get_class_is_pointer
   81 get_method_is_enum
-  82 get_type_flag
+  82 reserved82
   83 is_object_type
   84 get_class_version_string_id
   85 class_init_flags
@@ -191,22 +191,6 @@ Runtime native APIs have its IDs.
 =head2 get_basic_type_category
 
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
-
-=head2 get_type_basic_type_id
-
-  int32_t (*get_type_basic_type_id)(void* runtime, int32_t type_id);
-
-=head2 get_type_dimension
-
-  int32_t (*get_type_dimension)(void* runtime, int32_t type_id);
-
-=head2 get_type_is_object
-
-  int32_t (*get_type_is_object)(void* runtime, int32_t type_id);
-
-=head2 get_type_is_ref
-
-  int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
 
 =head2 get_class_id_by_name
 
@@ -447,10 +431,6 @@ Runtime native APIs have its IDs.
 =head2 get_method_is_enum
 
   int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
-
-=head2 get_type_flag
-
-  int32_t (*get_type_flag)(void* runtime, int32_t type_id);
 
 =head2 is_object_type
 
