@@ -40,12 +40,6 @@ struct spvm_runtime {
   // The length of basic types
   int32_t basic_types_length;
   
-  // Types
-  SPVM_RUNTIME_TYPE* types;
-
-  // The length of types
-  int32_t types_length;
-  
   // Classes
   SPVM_RUNTIME_CLASS* classes;
   

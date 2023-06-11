@@ -524,15 +524,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // basic_types
   length += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length + 1);
 
-  // types length
-  length++;
-
-  // types 32bit length
-  length++;
-  
-  // types
-  length += (sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t)) * (compiler->types->length + 1);
-
   // class_vars length
   length++;
 
@@ -927,29 +918,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
   runtime_codes_ptr += basic_types_32bit_length;
-
-  // types length
-  *runtime_codes_ptr = compiler->types->length;
-  runtime_codes_ptr++;
-
-  // types 32bit length
-  int32_t types_32bit_length = (sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t)) * (compiler->types->length + 1);
-  *runtime_codes_ptr = types_32bit_length;
-  runtime_codes_ptr++;
-
-  // types
-  int32_t* type_32bit_ptr = runtime_codes_ptr;
-  for (int32_t type_id = 0; type_id < compiler->types->length; type_id++) {
-    SPVM_TYPE* type = SPVM_LIST_get(compiler->types, type_id);
-    SPVM_RUNTIME_TYPE* runtime_type = (SPVM_RUNTIME_TYPE*)type_32bit_ptr;
-    
-    runtime_type->basic_type_id = type->basic_type->id;
-    runtime_type->dimension = type->dimension;
-    runtime_type->flag = type->flag;
-
-    type_32bit_ptr += sizeof(SPVM_RUNTIME_TYPE) / sizeof(int32_t);
-  }
-  runtime_codes_ptr += types_32bit_length;
 
   // class_vars length
   *runtime_codes_ptr = compiler->class_vars->length;
