@@ -210,6 +210,18 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->fields = (SPVM_RUNTIME_FIELD*)runtime_codes_ptr;
   runtime_codes_ptr += fields_32bit_length;
   
+  // args length
+  runtime->args_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+
+  // args 32bit length
+  int32_t args_32bit_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // args
+  runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
+  runtime_codes_ptr += args_32bit_length;
+
   // Method native addresses
   runtime->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
   
