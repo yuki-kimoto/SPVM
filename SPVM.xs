@@ -1303,13 +1303,10 @@ _xs_call_method(...)
     SV* sv_value = ST(spvm_args_base + args_index);
     
     int32_t arg_id = method_args_base_id + args_index;
-    int32_t arg_type_id = env->api->runtime->get_arg_type_id(env->runtime, arg_id);
-    int32_t arg_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_type_id);
-    int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-    const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, arg_basic_type_name_id);
+    int32_t arg_basic_type_id = env->api->runtime->get_arg_basic_type_id(env->runtime, arg_id);
+    int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg_id);
+    int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg_id);
     int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type_id);
-    int32_t arg_type_dimension = env->api->runtime->get_type_dimension(env->runtime, arg_type_id);
-    int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
     
     int32_t arg_type_is_not_ref = !(arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF);
     
@@ -1418,6 +1415,8 @@ _xs_call_method(...)
             }
             
             if (error) {
+              int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
+              const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, arg_basic_type_name_id);
               void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_name, arg_type_dimension, arg_type_flag);
               const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", args_index_nth, method_name, class_name, compile_type_name, __func__, FILE_NAME, __LINE__);
