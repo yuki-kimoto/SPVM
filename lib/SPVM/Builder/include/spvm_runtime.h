@@ -70,6 +70,10 @@ struct spvm_runtime {
   // The length of methods
   int32_t arg_types_length;
 
+  SPVM_RUNTIME_ARG* args;
+
+  int32_t args_length;
+
   // Anon nethod ids
   int32_t* anon_method_method_ids;
 
