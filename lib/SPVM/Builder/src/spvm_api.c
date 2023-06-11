@@ -25,7 +25,6 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_type.h"
 #include "spvm_runtime_class.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
@@ -83,6 +82,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
+
 
 
 
