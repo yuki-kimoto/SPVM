@@ -48,6 +48,7 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_type.h"
+#include "spvm_runtime_arg.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -1084,6 +1085,30 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
   }
   runtime_codes_ptr += fields_32bit_length;
+  
+  // args length
+  *runtime_codes_ptr = compiler->args->length;
+  runtime_codes_ptr++;
+
+  // args 32bit length
+  int32_t args_32bit_length = (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
+  *runtime_codes_ptr = args_32bit_length;
+  runtime_codes_ptr++;
+
+  // args
+  int32_t* arg_32bit_ptr = runtime_codes_ptr;
+  for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
+    SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(compiler->args, arg_id);
+    SPVM_RUNTIME_ARG* runtime_arg = (SPVM_RUNTIME_ARG*)arg_32bit_ptr;
+    
+    runtime_arg->id = arg_var_decl->id;
+    runtime_arg->basic_type_id = arg_var_decl->type->basic_type->id;
+    runtime_arg->type_dimension = arg_var_decl->type->dimension;
+    runtime_arg->type_flag = arg_var_decl->type->flag;
+    
+    arg_32bit_ptr += sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t);
+  }
+  runtime_codes_ptr += args_32bit_length;
   
   return runtime_codes;
 }
