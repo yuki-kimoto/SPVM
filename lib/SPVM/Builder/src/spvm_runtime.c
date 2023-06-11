@@ -30,7 +30,7 @@ SPVM_ALLOCATOR* SPVM_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
 void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
 
   SPVM_ALLOCATOR* allocator = runtime->allocator;
-
+  
   // Runtime string symtable
   runtime->constant_string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
@@ -38,7 +38,7 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
     runtime_string->value = &runtime->constant_strings_buffer[runtime_string->string_buffer_id];
     SPVM_HASH_set(runtime->constant_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
-
+  
   // Runtime basic type symtable
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
@@ -47,7 +47,7 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
     const char* runtime_basic_type_name = (const char*)&runtime->constant_strings_buffer[basic_type_name_string->string_buffer_id];
     SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
-
+  
   // Runtime class symtable
   runtime->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t class_id = 0; class_id < runtime->classes_length; class_id++) {
@@ -73,11 +73,11 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->runtime_codes = runtime_codes;
   
   int32_t* runtime_codes_ptr = runtime->runtime_codes;
-
+  
   // runtime_codes_length
   runtime->runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // opcodes length
   runtime->opcodes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -93,7 +93,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // constant_strings_buffer length
   runtime->constant_strings_buffer_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // constant_strings_buffer 32bit length
   int32_t constant_strings_buffer_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -105,7 +105,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // constant_strings length
   runtime->constant_strings_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // constant_strings 32bit length
   int32_t constant_strings_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -113,23 +113,23 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // constant_strings
   runtime->constant_strings = (SPVM_RUNTIME_CONSTANT_STRING*)runtime_codes_ptr;
   runtime_codes_ptr += constant_strings_32bit_length;
-
+  
   // anon_method_methods length
   runtime->anon_methods_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // anon_method_methods 32bit length
   int32_t anon_methods_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // anon_method_method_ids
   runtime->anon_method_method_ids = runtime_codes_ptr;
   runtime_codes_ptr += anon_methods_32bit_length;
-
+  
   // classes length
   runtime->classes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // classes 32bit length
   int32_t classes_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -137,11 +137,11 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // classes
   runtime->classes = (SPVM_RUNTIME_CLASS*)runtime_codes_ptr;
   runtime_codes_ptr += classes_32bit_length;
-
+  
   // basic_types length
   runtime->basic_types_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // basic_types 32bit length
   int32_t basic_types_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -149,11 +149,11 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // basic_types
   runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)runtime_codes_ptr;
   runtime_codes_ptr += basic_types_32bit_length;
-
+  
   // class_vars length
   runtime->class_vars_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // class_vars 32bit length
   int32_t class_vars_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -161,11 +161,11 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // class_vars
   runtime->class_vars = (SPVM_RUNTIME_CLASS_VAR*)runtime_codes_ptr;
   runtime_codes_ptr += class_vars_32bit_length;
-
+  
   // methods length
   runtime->methods_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // methods 32bit length
   int32_t methods_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -173,11 +173,11 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // methods
   runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
   runtime_codes_ptr += methods_32bit_length;
-
+  
   // fields length
   runtime->fields_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // fields 32bit length
   int32_t fields_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -189,7 +189,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // args length
   runtime->args_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
-
+  
   // args 32bit length
   int32_t args_32bit_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -197,7 +197,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // args
   runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
   runtime_codes_ptr += args_32bit_length;
-
+  
   // Method native addresses
   runtime->method_native_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
   
