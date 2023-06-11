@@ -16,12 +16,6 @@ struct spvm_runtime {
   // Allocator
   SPVM_ALLOCATOR* allocator;
   
-  // Operation codes
-  SPVM_OPCODE* opcodes;
-  
-  // The length of operation codes
-  int32_t opcodes_length;
-  
   // String buffer
   const char* constant_strings_buffer;
   
@@ -46,14 +40,20 @@ struct spvm_runtime {
   // The length of classes
   int32_t classes_length;
   
+  // Class variables
+  SPVM_RUNTIME_CLASS_VAR* class_vars;
+  
+  // The length of class variables
+  int32_t class_vars_length;
+  
+  // Fields
+  SPVM_RUNTIME_FIELD* fields;
+  
+  // The length of the fields
+  int32_t fields_length;
+  
   // Methods
   SPVM_RUNTIME_METHOD* methods;
-  
-  // Native method addresses
-  void** method_native_addresses;
-  
-  // Precompile method addresses
-  void** method_precompile_addresses;
   
   // The length of methods
   int32_t methods_length;
@@ -68,17 +68,17 @@ struct spvm_runtime {
   // The length of anon methods
   int32_t anon_methods_length;
   
-  // Class variables
-  SPVM_RUNTIME_CLASS_VAR* class_vars;
+  // Operation codes
+  SPVM_OPCODE* opcodes;
   
-  // The length of class variables
-  int32_t class_vars_length;
+  // The length of operation codes
+  int32_t opcodes_length;
   
-  // Fields
-  SPVM_RUNTIME_FIELD* fields;
+  // Native method addresses
+  void** method_native_addresses;
   
-  // The length of the fields
-  int32_t fields_length;
+  // Precompile method addresses
+  void** method_precompile_addresses;
   
   // String symtable
   SPVM_HASH* constant_string_symtable;
