@@ -568,6 +568,12 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // fields
   length += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
   
+  // args 32bit length
+  length++;
+  
+  // args
+  length += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
+  
   return length;
 }
 
