@@ -270,7 +270,7 @@ int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   compiler->cur_class_base = compiler->classes->length;
-
+  
   int32_t cur_basic_type_base = compiler->basic_types->length;
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
@@ -278,21 +278,21 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   //yacc/bison debug mode. The default is off.
   SPVM_yydebug = 0;
-
+  
 #ifdef SPVM_DEBUG_YACC
   // Turn on yacc/bison debug mode
   SPVM_yydebug = 1;
 #endif
 
   compiler->parse_not_started = 1;
-
+ 
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
   int32_t die_error_id = 0;
-
+  
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-
+  
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -446,17 +446,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
       }
     }
   }
-
+  
   // Free
   SPVM_LIST_free(compiler->op_use_stack);
   compiler->op_use_stack = NULL;
   
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
-
+  
   SPVM_HASH_free(compiler->used_class_symtable);
   compiler->used_class_symtable = NULL;
-
+  
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;
   
@@ -466,7 +466,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
 }
 
 int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
-
+  
   int32_t length = 0;
   
   // opcodes length
@@ -477,10 +477,10 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // opcodes
   length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
-
+  
   // constant_strings_buffer length
   length++;
-
+  
   // constant_strings_buffer 32bit length
   length++;
   
@@ -489,22 +489,22 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // constant_strings length
   length++;
-
+  
   // constant_strings 32bit length
   length++;
   
   // constant_strings
   length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
-
+  
   // anon_method_methods length
   length++;
-
+  
   // anon_method_methods 32bit length
   length++;
-
+  
   // anon_method_method_ids
   length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
-
+  
   // classes length
   length++;
   
@@ -513,25 +513,25 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // classes
   length += (sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t)) * (compiler->classes->length + 1);
-
+  
   // basic_types length
   length++;
-
+  
   // basic_types 32bit length
   length++;
   
   // basic_types
   length += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length + 1);
-
+  
   // class_vars length
   length++;
-
+  
   // class_vars 32bit length
   length++;
   
   // class_vars
   length += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (compiler->class_vars->length + 1);
-
+  
   // methods length
   length++;
   
@@ -540,10 +540,10 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // methods
   length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
-
+  
   // fields length
   length++;
-
+  
   // fields 32bit length
   length++;
   
@@ -565,7 +565,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   int32_t runtime_codes_length = SPVM_COMPILER_calculate_runtime_codes_length(compiler);
   int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * runtime_codes_length);
-
+  
   int32_t* runtime_codes_ptr = runtime_codes;
   
   // Total length
@@ -588,7 +588,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   // constant_strings_buffer length
   *runtime_codes_ptr = compiler->constant_strings_buffer->length;
   runtime_codes_ptr++;
-
+  
   // constant_strings_buffer 32bit length
   int32_t constant_strings_buffer_32bit_length = (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
   *runtime_codes_ptr = constant_strings_buffer_32bit_length;
@@ -601,7 +601,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   // constant_strings length
   *runtime_codes_ptr = compiler->constant_strings->length;
   runtime_codes_ptr++;
-
+  
   // constant_strings 32bit length
   int32_t constant_strings_32bit_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
   *runtime_codes_ptr = constant_strings_32bit_length;
@@ -619,16 +619,16 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     constant_string_32bit_ptr += sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t);
   }
   runtime_codes_ptr += constant_strings_32bit_length;
-
+  
   // anon_method_methods length
   *runtime_codes_ptr = compiler->anon_methods->length;
   runtime_codes_ptr++;
-
+  
   // anon_method_methods 32bit length
   int32_t anon_method_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
   *runtime_codes_ptr = anon_method_32bit_length;
   runtime_codes_ptr++;
-
+  
   // anon_method_method_ids
   int32_t* anon_method_32bit_ptr = runtime_codes_ptr;
   for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
@@ -638,16 +638,16 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     anon_method_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
   }
   runtime_codes_ptr += anon_method_32bit_length;
-
+  
   // classes length
   *runtime_codes_ptr = compiler->classes->length;
   runtime_codes_ptr++;
-
+  
   // classes 32bit length
   int32_t classes_32bit_length = (sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t)) * (compiler->classes->length + 1);
   *runtime_codes_ptr = classes_32bit_length;
   runtime_codes_ptr++;
-
+  
   // classes
   int32_t* class_32bit_ptr = runtime_codes_ptr;
   for (int32_t class_id = 0; class_id < compiler->classes->length; class_id++) {
@@ -661,7 +661,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_class->id = class->id;
     SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
     runtime_class->class_rel_file_id = class_class_rel_file_string->id;
-
+    
     if (class->class_path) {
       SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_path, strlen(class->class_path));
       runtime_class->class_path_id = class_class_path_string->id;
@@ -681,7 +681,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     runtime_class->fields_size = class->fields_size;
-
+    
     SPVM_CONSTANT_STRING* class_string = SPVM_HASH_get(compiler->constant_string_symtable, class->name, strlen(class->name));
     runtime_class->name_id = class_string->id;
     
@@ -710,7 +710,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
       assert(class->required_method);
     }
-  
+    
     if (class->required_method) {
       assert(class->required_method->id >= 0);
       runtime_class->required_method_id = class->required_method->id;
@@ -727,7 +727,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_class->methods_base_id = -1;
     }
-
+    
     runtime_class->fields_length = class->fields->length;
     if (class->fields->length > 0) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, 0);
@@ -736,7 +736,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_class->fields_base_id = -1;
     }
-
+    
     runtime_class->class_vars_length = class->class_vars->length;
     if (class->class_vars->length > 0) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, 0);
@@ -745,7 +745,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_class->class_vars_base_id = -1;
     }
-
+    
     runtime_class->interfaces_length = class->interfaces->length;
     if (class->interfaces->length > 0) {
       SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, 0);
@@ -754,7 +754,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_class->interfaces_base_id = -1;
     }
-
+    
     runtime_class->anon_methods_length = class->anon_methods->length;
     if (class->anon_methods->length > 0) {
       SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, 0);
@@ -763,20 +763,20 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_class->anon_methods_base_id = -1;
     }
-
+    
     class_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t);
   }
   runtime_codes_ptr += classes_32bit_length;
-
+  
   // basic_types length
   *runtime_codes_ptr = compiler->basic_types->length;
   runtime_codes_ptr++;
-
+  
   // basic_types 32bit length
   int32_t basic_types_32bit_length = (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length + 1);
   *runtime_codes_ptr = basic_types_32bit_length;
   runtime_codes_ptr++;
-
+  
   // basic_types
   int32_t* basic_type_32bit_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
@@ -793,7 +793,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
-
+    
     if (runtime_basic_type->class_id >= 0) {
       SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type->name, strlen(basic_type->name));
       
@@ -803,7 +803,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->class_id = class->id;
       SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
       runtime_basic_type->class_rel_file_id = class_class_rel_file_string->id;
-
+      
       if (class->class_path) {
         SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_path, strlen(class->class_path));
         runtime_basic_type->class_path_id = class_class_path_string->id;
@@ -823,7 +823,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       }
       
       runtime_basic_type->fields_size = class->fields_size;
-
+      
       if (class->version_string) {
         SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, class->version_string, strlen(class->version_string));
         runtime_basic_type->version_string_id = class_version_string->id;
@@ -849,7 +849,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
         assert(class->required_method);
       }
-    
+      
       if (class->required_method) {
         assert(class->required_method->id >= 0);
         runtime_basic_type->required_method_id = class->required_method->id;
@@ -866,7 +866,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       else {
         runtime_basic_type->methods_base_id = -1;
       }
-
+      
       runtime_basic_type->fields_length = class->fields->length;
       if (class->fields->length > 0) {
         SPVM_FIELD* field = SPVM_LIST_get(class->fields, 0);
@@ -875,7 +875,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       else {
         runtime_basic_type->fields_base_id = -1;
       }
-
+      
       runtime_basic_type->class_vars_length = class->class_vars->length;
       if (class->class_vars->length > 0) {
         SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, 0);
@@ -884,7 +884,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       else {
         runtime_basic_type->class_vars_base_id = -1;
       }
-
+      
       runtime_basic_type->interfaces_length = class->interfaces->length;
       if (class->interfaces->length > 0) {
         SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, 0);
@@ -893,7 +893,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       else {
         runtime_basic_type->interfaces_base_id = -1;
       }
-
+      
       runtime_basic_type->anon_methods_length = class->anon_methods->length;
       if (class->anon_methods->length > 0) {
         SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, 0);
@@ -904,54 +904,54 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       }
       
     }
-
+    
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
   runtime_codes_ptr += basic_types_32bit_length;
-
+  
   // class_vars length
   *runtime_codes_ptr = compiler->class_vars->length;
   runtime_codes_ptr++;
-
+  
   // class_vars 32bit length
   int32_t class_vars_32bit_length = (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (compiler->class_vars->length + 1);
   *runtime_codes_ptr = class_vars_32bit_length;
   runtime_codes_ptr++;
-
+  
   // class_vars
   int32_t* class_var_32bit_ptr = runtime_codes_ptr;
   for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_get(compiler->class_vars, class_var_id);
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
-
+    
     runtime_class_var->id = class_var->id;
     runtime_class_var->basic_type_id = class_var->type->basic_type->id;
     runtime_class_var->type_dimension = class_var->type->dimension;
     runtime_class_var->type_flag = class_var->type->flag;
     runtime_class_var->class_id = class_var->class->id;
-
+    
     SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
     runtime_class_var->name_id = class_var_name_string->id;
-
+    
     class_var_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
   }
   runtime_codes_ptr += class_vars_32bit_length;
-
+  
   // methods length
   *runtime_codes_ptr = compiler->methods->length;
   runtime_codes_ptr++;
-
+  
   // methods 32bit length
   int32_t methods_32bit_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
   *runtime_codes_ptr = methods_32bit_length;
   runtime_codes_ptr++;
-
+  
   // methods
   int32_t* method_32bit_ptr = runtime_codes_ptr;
   for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
     SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_32bit_ptr;
-
+    
     runtime_method->opcodes_base_id = method->opcodes_base_id;
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
@@ -976,10 +976,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_method->is_destructor = method->is_destructor;
     runtime_method->is_required = method->is_required;
     runtime_method->is_enum = method->is_enum;
-
+    
     SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
     runtime_method->name_id = method_name_string->id;
-
+    
     runtime_method->args_length = method->args_length;
     if (method->args_length > 0) {
       SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
@@ -989,26 +989,26 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_method->args_base_id = -1;
     }
     runtime_method->required_args_length = method->required_args_length;
-
+    
     method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }
   runtime_codes_ptr += methods_32bit_length;
-
+  
   // fields length
   *runtime_codes_ptr = compiler->fields->length;
   runtime_codes_ptr++;
-
+  
   // fields 32bit length
   int32_t fields_32bit_length = (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
   *runtime_codes_ptr = fields_32bit_length;
   runtime_codes_ptr++;
-
+  
   // fields
   int32_t* field_32bit_ptr = runtime_codes_ptr;
   for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
     SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
     SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
-
+    
     runtime_field->id = field->id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
@@ -1019,7 +1019,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
     runtime_field->name_id = field_name_string->id;
-
+    
     field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
   }
   runtime_codes_ptr += fields_32bit_length;
@@ -1027,12 +1027,12 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   // args length
   *runtime_codes_ptr = compiler->args->length;
   runtime_codes_ptr++;
-
+  
   // args 32bit length
   int32_t args_32bit_length = (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
   *runtime_codes_ptr = args_32bit_length;
   runtime_codes_ptr++;
-
+  
   // args
   int32_t* arg_32bit_ptr = runtime_codes_ptr;
   for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
@@ -1060,7 +1060,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   
   va_list args;
   va_start(args, message_template);
-
+  
   message_length += message_template_length;
   
   // Argument count
@@ -1100,12 +1100,12 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   va_start(args, message_template);
   vsprintf(message, message_template, args);
   va_end(args);
-
+  
   SPVM_LIST_push(compiler->error_messages, message);
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
-
+  
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
   
