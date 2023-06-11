@@ -84,7 +84,7 @@ Runtime native APIs have its IDs.
   60 get_method_opcodes_length
   61 get_method_args_base_id
   62 get_method_args_length
-  63 get_arg_type_id
+  63 reserved63
   64 get_anon_method_method_id
   65 get_native_method_address
   66 set_native_method_address
@@ -375,10 +375,6 @@ Runtime native APIs have its IDs.
 =head2 get_method_args_length
 
   int32_t (*get_method_args_length)(void* runtime, int32_t method_id);
-
-=head2 get_arg_type_id
-
-  int32_t (*get_arg_type_id)(void* runtime, int32_t arg_id);
 
 =head2 get_anon_method_method_id
 

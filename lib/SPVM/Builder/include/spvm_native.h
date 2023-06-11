@@ -381,7 +381,7 @@ struct spvm_env_runtime {
   int32_t (*get_method_opcodes_length)(void* runtime, int32_t method_id);
   int32_t (*get_method_args_base_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_args_length)(void* runtime, int32_t method_id);
-  int32_t (*get_arg_type_id)(void* runtime, int32_t arg_id);
+  void* reserved63;
   int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
   void* (*get_native_method_address)(void* runtime, int32_t method_id);
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);

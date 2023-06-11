@@ -137,7 +137,6 @@ int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime,
 int32_t SPVM_API_RUNTIME_get_method_return_type_flag(SPVM_RUNTIME* runtime, int32_t method_id);
 
 // Argument
-int32_t SPVM_API_RUNTIME_get_arg_type_id(SPVM_RUNTIME* runtime, int32_t arg_id);
 int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, int32_t arg_id);
 int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t arg_id);
 int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id);

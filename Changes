@@ -16,6 +16,7 @@
     * The get_field_type_id Native Runtime API was removed.
     * The get_method_return_type_id Native Runtime API was removed.
     * The get_type_stack_length Native Runtime API was removed.
+    * The get_arg_type_id Native Runtime API was removed.
 0.989003 2023-06-09
   [Bug Fix]
     * The following bug was fixed: The can_assign Native Runtime API didnot work well.

@@ -160,7 +160,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_opcodes_length,
     SPVM_API_RUNTIME_get_method_args_base_id,
     SPVM_API_RUNTIME_get_method_args_length,
-    SPVM_API_RUNTIME_get_arg_type_id,
+    NULL, // reserved63
     SPVM_API_RUNTIME_get_anon_method_method_id,
     SPVM_API_RUNTIME_get_native_method_address,
     SPVM_API_RUNTIME_set_native_method_address,

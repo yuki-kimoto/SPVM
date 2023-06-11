@@ -1990,10 +1990,9 @@ _xs_call_method(...)
       
       // Argument type
       int32_t arg_id = method_args_base_id + args_index;
-      int32_t arg_type_id = env->api->runtime->get_arg_type_id(env->runtime, arg_id);
-      int32_t arg_basic_type_id = env->api->runtime->get_type_basic_type_id(env->runtime, arg_type_id);
-      int32_t arg_type_dimension = env->api->runtime->get_type_dimension(env->runtime, arg_type_id);
-      int32_t arg_type_flag = env->api->runtime->get_type_flag(env->runtime, arg_type_id);
+      int32_t arg_basic_type_id = env->api->runtime->get_arg_basic_type_id(env->runtime, arg_id);
+      int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg_id);
+      int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg_id);
       int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type_id);
       
       // Restore reference - numeric
