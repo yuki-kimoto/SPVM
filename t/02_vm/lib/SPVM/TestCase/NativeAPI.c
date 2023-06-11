@@ -2512,7 +2512,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_opcodes_length != &env_array[60]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_args_base_id != &env_array[61]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_args_length != &env_array[62]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_arg_type_id != &env_array[63]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved63 != &env_array[63]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_anon_method_method_id != &env_array[64]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_native_method_address != &env_array[65]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->set_native_method_address != &env_array[66]) { stack[0].ival = 0; return 0; }
