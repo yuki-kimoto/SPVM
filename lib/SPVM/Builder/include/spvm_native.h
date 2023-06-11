@@ -426,6 +426,9 @@ struct spvm_env_runtime {
   int32_t (*get_method_return_basic_type_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_return_type_dimension)(void* runtime, int32_t method_id);
   int32_t (*get_method_return_type_flag)(void* runtime, int32_t method_id);
+  int32_t (*get_arg_basic_type_id)(void* runtime, int32_t arg_id);
+  int32_t (*get_arg_type_dimension)(void* runtime, int32_t arg_id);
+  int32_t (*get_arg_type_flag)(void* runtime, int32_t arg_id);
 };
 
 struct spvm_env_compiler {

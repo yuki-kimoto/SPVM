@@ -30,7 +30,7 @@
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_type.h"
 #include "spvm_api_runtime.h"
-
+#include "spvm_runtime_arg.h"
 
 
 
@@ -206,6 +206,9 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_return_basic_type_id,
     SPVM_API_RUNTIME_get_method_return_type_dimension,
     SPVM_API_RUNTIME_get_method_return_type_flag,
+    SPVM_API_RUNTIME_get_arg_basic_type_id,
+    SPVM_API_RUNTIME_get_arg_type_dimension,
+    SPVM_API_RUNTIME_get_arg_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1416,6 +1419,54 @@ int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, i
 int32_t SPVM_API_RUNTIME_get_arg_type_id(SPVM_RUNTIME* runtime, int32_t arg_id) {
 
   int32_t arg_type_id = runtime->arg_type_ids[arg_id];
+  
+  return arg_type_id;
+}
+
+SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, int32_t arg_id) {
+  
+  if (arg_id < 0) {
+    return NULL;
+  }
+  
+  if (arg_id >= runtime->args_length) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_ARG* arg = &runtime->args[arg_id];
+  
+  return arg;
+}
+
+int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, int32_t arg_id) {
+  
+  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
+  
+  assert(arg);
+  
+  int32_t arg_type_id = arg->basic_type_id;
+  
+  return arg_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t arg_id) {
+  
+  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
+  
+  assert(arg);
+  
+  int32_t arg_type_id = arg->type_dimension;
+  
+  return arg_type_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id) {
+  
+  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
+  
+  assert(arg);
+  
+  int32_t arg_type_id = arg->type_flag;
   
   return arg_type_id;
 }

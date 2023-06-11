@@ -130,6 +130,9 @@ Runtime native APIs have its IDs.
   103 get_method_return_basic_type_id
   104 get_method_return_type_dimension
   105 get_method_return_type_flag
+  106 get_arg_basic_type_id
+  107 get_arg_type_dimension
+  108 get_arg_type_flag
 
 =head1 Runtime Native APIs
 
@@ -506,6 +509,18 @@ Internally used.
 =head2 get_method_return_type_flag
 
   int32_t (*get_method_return_type_flag)(void* runtime, int32_t method_id);
+
+=head2 get_arg_basic_type_id
+
+  int32_t (*get_arg_basic_type_id)(void* runtime, int32_t arg_id);
+
+=head2 get_arg_type_dimension
+
+  int32_t (*get_arg_type_dimension)(void* runtime, int32_t arg_id);
+
+=head2 get_arg_type_flag
+
+  int32_t (*get_arg_type_flag)(void* runtime, int32_t arg_id);
 
 =head1 Copyright & License
 
