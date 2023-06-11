@@ -1321,13 +1321,6 @@ int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, i
   return mortal_stack_length;
 }
 
-int32_t SPVM_API_RUNTIME_get_arg_type_id(SPVM_RUNTIME* runtime, int32_t arg_id) {
-
-  int32_t arg_type_id = runtime->arg_type_ids[arg_id];
-  
-  return arg_type_id;
-}
-
 SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, int32_t arg_id) {
   
   if (arg_id < 0) {
@@ -1349,9 +1342,9 @@ int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, int32_t ar
   
   assert(arg);
   
-  int32_t arg_type_id = arg->basic_type_id;
+  int32_t basic_type_id = arg->basic_type_id;
   
-  return arg_type_id;
+  return basic_type_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t arg_id) {
@@ -1360,9 +1353,9 @@ int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t a
   
   assert(arg);
   
-  int32_t arg_type_id = arg->type_dimension;
+  int32_t type_dimension = arg->type_dimension;
   
-  return arg_type_id;
+  return type_dimension;
 }
 
 int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id) {
@@ -1371,9 +1364,9 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id
   
   assert(arg);
   
-  int32_t arg_type_id = arg->type_flag;
+  int32_t type_flag = arg->type_flag;
   
-  return arg_type_id;
+  return type_flag;
 }
 
 int32_t SPVM_API_RUNTIME_get_anon_method_method_id(SPVM_RUNTIME* runtime, int32_t anon_method_id) {

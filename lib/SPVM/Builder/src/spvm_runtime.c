@@ -174,18 +174,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
   runtime_codes_ptr += methods_32bit_length;
 
-  // arg_types length
-  runtime->arg_types_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // arg_types 32bit length
-  int32_t arg_types_32bit_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // arg_type_ids
-  runtime->arg_type_ids = runtime_codes_ptr;
-  runtime_codes_ptr += arg_types_32bit_length;
-  
   // fields length
   runtime->fields_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -228,7 +216,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   fprintf(stderr, "methods size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_METHOD) * runtime->methods_length));
   fprintf(stderr, "method_native_addresses size: %d bytes\n", (int32_t)(sizeof(void*) * runtime->methods_length));
   fprintf(stderr, "method_native_precompile size: %d bytes\n", (int32_t)(sizeof(void*) * runtime->methods_length));
-  fprintf(stderr, "arg_type_ids size: %d bytes\n", (int32_t)(sizeof(int32_t) * runtime->arg_types_length));
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime->fields_length));
 #endif
   

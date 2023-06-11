@@ -541,15 +541,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // methods
   length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
 
-  // arg_types length
-  length++;
-  
-  // arg_types 32bit length
-  length++;
-  
-  // arg_type_ids
-  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->args->length + 1);
-  
   // fields length
   length++;
 
@@ -1002,26 +993,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }
   runtime_codes_ptr += methods_32bit_length;
-
-  // args length
-  *runtime_codes_ptr = compiler->args->length;
-  runtime_codes_ptr++;
-
-  // arg_type_method_ids 32bit length
-  int32_t arg_type_ids_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->args->length + 1);
-  *runtime_codes_ptr = arg_type_ids_32bit_length;
-  runtime_codes_ptr++;
-
-  // arg_type_method_ids
-  int32_t* arg_type_id_32bit_ptr = runtime_codes_ptr;
-  for (int32_t arg_id = 0; arg_id < compiler->args->length; arg_id++) {
-    SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(compiler->args, arg_id);
-    int32_t arg_type_id = arg_var_decl->type->id;
-    *arg_type_id_32bit_ptr = arg_type_id;
-    
-    arg_type_id_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
-  }
-  runtime_codes_ptr += arg_type_ids_32bit_length;
 
   // fields length
   *runtime_codes_ptr = compiler->fields->length;
