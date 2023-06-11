@@ -9,7 +9,7 @@
 struct spvm_runtime {
   // SPVM 32bit codes
   int32_t* runtime_codes;
-
+  
   // SPVM 32bit codes
   int32_t runtime_codes_length;
   
@@ -18,19 +18,19 @@ struct spvm_runtime {
   
   // Operation codes
   SPVM_OPCODE* opcodes;
-
+  
   // The length of operation codes
   int32_t opcodes_length;
-
+  
   // String buffer
   const char* constant_strings_buffer;
-
+  
   // String buffer length
   int32_t constant_strings_buffer_length;
-
+  
   // Strings
   SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
-
+  
   // The length of strings
   int32_t constant_strings_length;
   
@@ -48,32 +48,32 @@ struct spvm_runtime {
   
   // Methods
   SPVM_RUNTIME_METHOD* methods;
-
+  
   // Native method addresses
   void** method_native_addresses;
-
+  
   // Precompile method addresses
   void** method_precompile_addresses;
-
+  
   // The length of methods
   int32_t methods_length;
-
+  
   SPVM_RUNTIME_ARG* args;
-
+  
   int32_t args_length;
-
+  
   // Anon nethod ids
   int32_t* anon_method_method_ids;
-
+  
   // The length of anon methods
   int32_t anon_methods_length;
-
+  
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
-
+  
   // The length of class variables
   int32_t class_vars_length;
-
+  
   // Fields
   SPVM_RUNTIME_FIELD* fields;
   
@@ -82,10 +82,10 @@ struct spvm_runtime {
   
   // String symtable
   SPVM_HASH* constant_string_symtable;
-
+  
   // Runtime Basic type symbol table
   SPVM_HASH* basic_type_symtable;
-
+  
   // Runtime class symbol table
   SPVM_HASH* class_symtable;
 };
