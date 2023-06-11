@@ -937,6 +937,36 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   runtime_codes_ptr += class_vars_32bit_length;
   
+  // fields length
+  *runtime_codes_ptr = compiler->fields->length;
+  runtime_codes_ptr++;
+  
+  // fields 32bit length
+  int32_t fields_32bit_length = (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
+  *runtime_codes_ptr = fields_32bit_length;
+  runtime_codes_ptr++;
+  
+  // fields
+  int32_t* field_32bit_ptr = runtime_codes_ptr;
+  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
+    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
+    SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
+    
+    runtime_field->id = field->id;
+    runtime_field->index = field->index;
+    runtime_field->offset = field->offset;
+    runtime_field->basic_type_id = field->type->basic_type->id;
+    runtime_field->type_dimension = field->type->dimension;
+    runtime_field->type_flag = field->type->flag;
+    runtime_field->class_id = field->class->id;
+    
+    SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
+    runtime_field->name_id = field_name_string->id;
+    
+    field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
+  }
+  runtime_codes_ptr += fields_32bit_length;
+  
   // methods length
   *runtime_codes_ptr = compiler->methods->length;
   runtime_codes_ptr++;
@@ -993,36 +1023,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }
   runtime_codes_ptr += methods_32bit_length;
-  
-  // fields length
-  *runtime_codes_ptr = compiler->fields->length;
-  runtime_codes_ptr++;
-  
-  // fields 32bit length
-  int32_t fields_32bit_length = (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
-  *runtime_codes_ptr = fields_32bit_length;
-  runtime_codes_ptr++;
-  
-  // fields
-  int32_t* field_32bit_ptr = runtime_codes_ptr;
-  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
-    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
-    SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
-    
-    runtime_field->id = field->id;
-    runtime_field->index = field->index;
-    runtime_field->offset = field->offset;
-    runtime_field->basic_type_id = field->type->basic_type->id;
-    runtime_field->type_dimension = field->type->dimension;
-    runtime_field->type_flag = field->type->flag;
-    runtime_field->class_id = field->class->id;
-    
-    SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
-    runtime_field->name_id = field_name_string->id;
-    
-    field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
-  }
-  runtime_codes_ptr += fields_32bit_length;
   
   // args length
   *runtime_codes_ptr = compiler->args->length;

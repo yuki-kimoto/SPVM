@@ -162,18 +162,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->class_vars = (SPVM_RUNTIME_CLASS_VAR*)runtime_codes_ptr;
   runtime_codes_ptr += class_vars_32bit_length;
   
-  // methods length
-  runtime->methods_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // methods 32bit length
-  int32_t methods_32bit_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // methods
-  runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
-  runtime_codes_ptr += methods_32bit_length;
-  
   // fields length
   runtime->fields_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -185,6 +173,18 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // fields
   runtime->fields = (SPVM_RUNTIME_FIELD*)runtime_codes_ptr;
   runtime_codes_ptr += fields_32bit_length;
+  
+  // methods length
+  runtime->methods_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // methods 32bit length
+  int32_t methods_32bit_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // methods
+  runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
+  runtime_codes_ptr += methods_32bit_length;
   
   // args length
   runtime->args_length = *runtime_codes_ptr;
