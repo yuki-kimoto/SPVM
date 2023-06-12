@@ -11,7 +11,6 @@
 #include "spvm_hash.h"
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_class.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_RUNTIME));

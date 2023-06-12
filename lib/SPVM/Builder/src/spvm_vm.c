@@ -27,7 +27,6 @@
 #include "spvm_runtime.h"
 #include "spvm_runtime_constant_string.h"
 #include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_class.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_method.h"

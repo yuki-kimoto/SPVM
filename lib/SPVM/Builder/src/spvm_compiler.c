@@ -40,7 +40,6 @@
 #include "spvm_constant_string.h"
 
 #include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_class.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_arg.h"
@@ -495,15 +494,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // anon_method_method_ids
   length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
-  
-  // classes length
-  length++;
-  
-  // classes 32bit length
-  length++;
-  
-  // classes
-  length += (sizeof(SPVM_RUNTIME_CLASS) / sizeof(int32_t)) * (compiler->classes->length + 1);
   
   // basic_types length
   length++;

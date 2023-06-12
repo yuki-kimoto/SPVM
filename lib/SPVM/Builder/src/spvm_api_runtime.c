@@ -22,7 +22,7 @@
 #include "spvm_object.h"
 #include "spvm_opcode.h"
 #include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_class.h"
+
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime.h"

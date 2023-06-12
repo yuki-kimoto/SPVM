@@ -105,7 +105,6 @@ lib/SPVM/Builder/include/spvm_public_api.h
 lib/SPVM/Builder/include/spvm_runtime.h
 lib/SPVM/Builder/include/spvm_runtime_arg.h
 lib/SPVM/Builder/include/spvm_runtime_basic_type.h
-lib/SPVM/Builder/include/spvm_runtime_class.h
 lib/SPVM/Builder/include/spvm_runtime_class_var.h
 lib/SPVM/Builder/include/spvm_runtime_constant_string.h
 lib/SPVM/Builder/include/spvm_runtime_field.h
