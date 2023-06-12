@@ -1490,7 +1490,7 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
 
 int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t super_class_basic_type_id, int32_t child_class_basic_type_id) {
 
-  int32_t is_super_class = 0;
+  int32_t is_super_class_basic_type = 0;
   
   SPVM_RUNTIME_BASIC_TYPE* super_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, super_class_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* child_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, child_class_basic_type_id);
@@ -1503,28 +1503,25 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
     return 0;
   }
   
-  SPVM_RUNTIME_CLASS* super_class = SPVM_API_RUNTIME_get_class(runtime, super_class_basic_type->class_id);
-  SPVM_RUNTIME_CLASS* child_class = SPVM_API_RUNTIME_get_class(runtime, child_class_basic_type->class_id);
-  
-  int32_t parent_class_id = child_class->parent_class_id;
+  int32_t parent_class_basic_type_id = child_class_basic_type->parent_class_basic_type_id;
   while (1) {
-    if (parent_class_id > 0) {
-      SPVM_RUNTIME_CLASS* parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class_id);
-      if (parent_class->id == super_class->id) {
-        is_super_class = 1;
+    if (parent_class_basic_type_id > 0) {
+      SPVM_RUNTIME_BASIC_TYPE* parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type_id);
+      if (parent_class_basic_type->id == super_class_basic_type->id) {
+        is_super_class_basic_type = 1;
         break;
       }
       else {
-        parent_class_id = parent_class->parent_class_id;
+        parent_class_basic_type_id = parent_class_basic_type->parent_class_basic_type_id;
       }
     }
     else {
-      is_super_class = 0;
+      is_super_class_basic_type = 0;
       break;
     }
   }
   
-  return is_super_class;
+  return is_super_class_basic_type;
 }
 
 SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
