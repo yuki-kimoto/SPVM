@@ -2416,7 +2416,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         else {
           // If class not found and the class is used in require syntax, compilation errors don't occur.
           if (op_use->uv.use->is_require) {
-            SPVM_HASH_set(compiler->not_found_class_symtable, class_name, strlen(class_name), (void*)class_name);
+            SPVM_HASH_set(compiler->not_found_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
             continue;
           }
         }
