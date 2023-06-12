@@ -2889,10 +2889,8 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type->id);
   
-  // Class
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  int32_t fields_length = class->fields_length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, class->fields_base_id + 0);
+  int32_t fields_length = basic_type->fields_length;
+  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, basic_type->fields_base_id + 0);
   
   int32_t field_basic_type_id = field_first->basic_type_id;
   
@@ -2941,21 +2939,18 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  SPVM_RUNTIME_CLASS* class;
-  if (!SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id)) {
-    class = NULL;
+  if (!basic_type) {
+    return NULL;
   }
-  else {
-    class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  }
-  if (!class) {
+  
+  if (!basic_type->is_class) {
     return NULL;
   }
   
   // Alloc body length + 1
-  int32_t fields_length = class->fields_length;
+  int32_t fields_length = basic_type->fields_length;
   
-  size_t alloc_size = (size_t)env->object_header_size + class->fields_size + 1;
+  size_t alloc_size = (size_t)env->object_header_size + basic_type->fields_size + 1;
   
   if (!basic_type) {
     return NULL;
