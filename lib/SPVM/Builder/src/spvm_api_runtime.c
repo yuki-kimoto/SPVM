@@ -768,10 +768,10 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
   
   int32_t class_var_id = -1;
   
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class_by_name(runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* class_baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
   
-  if (class) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var_name(runtime, class->id, class_var_name);
+  if (class_baisc_type) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_address(runtime, class_baisc_type, class_var_name);
     if (class_var) {
       class_var_id = class_var->id;
     }
@@ -787,6 +787,23 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_class_id_and_class_var
   SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
   if (class->class_vars_length > 0) {
     for (int32_t class_var_id = class->class_vars_base_id; class_var_id <  class->class_vars_base_id + class->class_vars_length; class_var_id++) {
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
+      const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
+      if (strcmp(class_var_name, search_class_var_name) == 0) {
+        found_class_var = class_var;
+        break;
+      }
+    }
+  }
+  
+  return found_class_var;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* class_basic_type, const char* search_class_var_name) {
+  
+  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
+  if (class_basic_type->class_vars_length > 0) {
+    for (int32_t class_var_id = class_basic_type->class_vars_base_id; class_var_id <  class_basic_type->class_vars_base_id + class_basic_type->class_vars_length; class_var_id++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
       const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
       if (strcmp(class_var_name, search_class_var_name) == 0) {
