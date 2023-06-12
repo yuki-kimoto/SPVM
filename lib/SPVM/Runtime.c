@@ -377,13 +377,13 @@ int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
-  int32_t parent_class_id = env->api->runtime->get_class_parent_class_id(runtime, class_id);
+  int32_t class_basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
+  int32_t parent_class_basic_type_id = env->api->runtime->get_basic_type_parent_class_basic_type_id(runtime, class_basic_type_id);
   
   void* obj_parent_class_name = NULL;
-  if (parent_class_id >= 0) {
-    int32_t parent_class_name_id = env->api->runtime->get_class_name_id(runtime, parent_class_id);
-    const char* parent_class_name = env->api->runtime->get_name(runtime, parent_class_name_id);
+  if (parent_class_basic_type_id >= 0) {
+    int32_t parent_class_basic_type_name_id = env->api->runtime->get_basic_type_name_id(runtime, parent_class_basic_type_id);
+    const char* parent_class_name = env->api->runtime->get_name(runtime, parent_class_basic_type_name_id);
     obj_parent_class_name = env->new_string_nolen(env, stack, parent_class_name);
   }
   
