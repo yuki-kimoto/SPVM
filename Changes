@@ -13,6 +13,8 @@
     * The get_arg_type_dimension Native Runtime API was added.
     * The get_arg_type_flag Native Runtime API was added.
     * The get_method_class_basic_type_id Native Runtime API was added.
+    * The get_field_class_basic_type_id Native Runtime API was added.
+    * The get_class_var_class_basic_type_id Native Runtime API was added.
   [Incompatible Changes]
     * The get_field_type_id Native Runtime API was removed.
     * The get_method_return_type_id Native Runtime API was removed.

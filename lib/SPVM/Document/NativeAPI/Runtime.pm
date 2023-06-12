@@ -503,6 +503,14 @@ Internally used.
 
   int32_t (*get_method_class_basic_type_id)(void* runtime, int32_t method_id);
 
+=head2 get_field_class_basic_type_id
+
+  int32_t (*get_field_class_basic_type_id)(void* runtime, int32_t field_id);
+
+=head2 get_class_var_class_basic_type_id
+
+  int32_t (*get_class_var_class_basic_type_id)(void* runtime, int32_t class_var_id);
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
