@@ -1462,11 +1462,11 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t clas
   SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, class_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
   
-  if (class_basic_type->class_id < 0) {
+  if (!class_basic_type->is_class) {
     return 0;
   }
   
-  if (interface_basic_type->class_id < 0) {
+  if (!interface_basic_type->is_class) {
     return 0;
   }
   
@@ -1495,11 +1495,11 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
   SPVM_RUNTIME_BASIC_TYPE* super_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, super_class_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* child_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, child_class_basic_type_id);
   
-  if (super_class_basic_type->class_id < 0) {
+  if (!super_class_basic_type->is_class) {
     return 0;
   }
   
-  if (child_class_basic_type->class_id < 0) {
+  if (!child_class_basic_type->is_class) {
     return 0;
   }
   
