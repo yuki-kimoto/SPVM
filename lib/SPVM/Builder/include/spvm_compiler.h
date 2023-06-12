@@ -102,7 +102,7 @@ struct spvm_compiler {
   SPVM_STRING_BUFFER* constant_strings_buffer;
   
   // Used class symtable
-  SPVM_HASH* used_class_symtable;
+  SPVM_HASH* used_class_name_symtable;
 
   // Fail load class symtable
   SPVM_HASH* not_found_class_symtable;

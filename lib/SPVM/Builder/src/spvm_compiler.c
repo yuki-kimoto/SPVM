@@ -295,11 +295,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->used_class_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->used_class_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   for (int32_t i = 0; i < compiler->classes->length; i++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, i);
     const char* class_name = class->name;
-    SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
+    SPVM_HASH_set(compiler->used_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
   }
   
   SPVM_COMPILER_use_default_loaded_classes(compiler);
@@ -453,8 +453,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
   
-  SPVM_HASH_free(compiler->used_class_symtable);
-  compiler->used_class_symtable = NULL;
+  SPVM_HASH_free(compiler->used_class_name_symtable);
+  compiler->used_class_name_symtable = NULL;
   
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;

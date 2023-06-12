@@ -2267,13 +2267,13 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         }
       }
       
-      const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_symtable, class_name, strlen(class_name));
+      const char* used_class_name = (const char*)SPVM_HASH_get(compiler->used_class_name_symtable, class_name, strlen(class_name));
       
       if (used_class_name) {
         continue;
       }
       else {
-        SPVM_HASH_set(compiler->used_class_symtable, class_name, strlen(class_name), (void*)class_name);
+        SPVM_HASH_set(compiler->used_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
         
         // Create moudle relative file name from class name by changing :: to / and add ".spvm"
         int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
