@@ -3873,10 +3873,10 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Call INIT blocks
-  int32_t classes_length = runtime->classes_length;
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-    int32_t init_method_id = class->init_method_id;
+  int32_t basic_types_length = runtime->basic_types_length;
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+    int32_t init_method_id = basic_type->init_method_id;
     if (init_method_id >= 0) {
       int32_t items = 0;
       e = env->call_method_raw(env, stack, init_method_id, items);
