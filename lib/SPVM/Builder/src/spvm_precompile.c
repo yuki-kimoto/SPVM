@@ -42,14 +42,14 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  // Class
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
-  int32_t class_methods_base_id = SPVM_API_RUNTIME_get_class_methods_base_id(runtime, class_id);
-  int32_t class_methods_length = SPVM_API_RUNTIME_get_class_methods_length(runtime, class_id);
+  // Class basic type
+  int32_t class_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, class_name);
+  int32_t class_basic_type_methods_base_id = SPVM_API_RUNTIME_get_basic_type_methods_base_id(runtime, class_basic_type_id);
+  int32_t class_basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, class_basic_type_id);
 
   // Method implementations
-  for (int32_t method_index = 0; method_index < class_methods_length; method_index++) {
-    int32_t method_id = class_methods_base_id + method_index;
+  for (int32_t method_index = 0; method_index < class_basic_type_methods_length; method_index++) {
+    int32_t method_id = class_basic_type_methods_base_id + method_index;
     int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
     const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
     int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method_id);
@@ -59,9 +59,9 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
   }
   
   // If the class has anon methods, the anon methods is merged to this class
-  int32_t class_anon_methods_length = SPVM_API_RUNTIME_get_class_anon_methods_length(runtime, class_id);
+  int32_t class_anon_methods_length = SPVM_API_RUNTIME_get_basic_type_anon_methods_length(runtime, class_basic_type_id);
   if (class_anon_methods_length > 0) {
-    int32_t class_anon_methods_base_id = SPVM_API_RUNTIME_get_class_anon_methods_base_id(runtime, class_id);
+    int32_t class_anon_methods_base_id = SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(runtime, class_basic_type_id);
     for (int32_t anon_method_id = class_anon_methods_base_id; anon_method_id < class_anon_methods_length; anon_method_id++) {
       int32_t anon_method_method_id = SPVM_API_RUNTIME_get_anon_method_method_id(runtime, anon_method_id);
       int32_t anon_method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, anon_method_method_id);
