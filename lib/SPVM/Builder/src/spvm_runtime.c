@@ -48,14 +48,6 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
     SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
   
-  // Runtime class symtable
-  runtime->class_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
-  for (int32_t class_id = 0; class_id < runtime->classes_length; class_id++) {
-    SPVM_RUNTIME_CLASS* runtime_class = &runtime->classes[class_id];
-    SPVM_RUNTIME_CONSTANT_STRING* class_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_class->name_id];
-    const char* runtime_class_name = (const char*)&runtime->constant_strings_buffer[class_name_string->string_buffer_id];
-    SPVM_HASH_set(runtime->class_symtable, runtime_class_name, strlen(runtime_class_name), runtime_class);
-  }
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
@@ -113,18 +105,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // anon_method_method_ids
   runtime->anon_method_method_ids = runtime_codes_ptr;
   runtime_codes_ptr += anon_methods_32bit_length;
-  
-  // classes length
-  runtime->classes_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // classes 32bit length
-  int32_t classes_32bit_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // classes
-  runtime->classes = (SPVM_RUNTIME_CLASS*)runtime_codes_ptr;
-  runtime_codes_ptr += classes_32bit_length;
   
   // basic_types length
   runtime->basic_types_length = *runtime_codes_ptr;
@@ -209,7 +189,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
   fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->constant_strings_buffer_length));
   fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->constant_strings_length));
-  fprintf(stderr, "classes size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS) * runtime->classes_length));
   fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime->basic_types_length));
   fprintf(stderr, "types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_TYPE) * runtime->types_length));
   fprintf(stderr, "class_vars size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CLASS_VAR) * runtime->class_vars_length));

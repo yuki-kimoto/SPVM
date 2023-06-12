@@ -352,7 +352,7 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   env->class_vars_heap = class_vars_heap;
   
   // Initialize class initialized flags
-  void* class_init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->classes_length + 1));
+  void* class_init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->basic_types_length + 1));
   if (class_init_flags == NULL) {
     return 2;
   }

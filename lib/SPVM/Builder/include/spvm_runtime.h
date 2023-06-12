@@ -34,12 +34,6 @@ struct spvm_runtime {
   // The length of basic types
   int32_t basic_types_length;
   
-  // Classes
-  SPVM_RUNTIME_CLASS* classes;
-  
-  // The length of classes
-  int32_t classes_length;
-  
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
   
@@ -85,9 +79,6 @@ struct spvm_runtime {
   
   // Runtime Basic type symbol table
   SPVM_HASH* basic_type_symtable;
-  
-  // Runtime class symbol table
-  SPVM_HASH* class_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
