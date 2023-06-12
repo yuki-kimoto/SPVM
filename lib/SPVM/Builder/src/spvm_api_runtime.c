@@ -508,15 +508,15 @@ int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime,
   return class_class_vars_length;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
   
-  int32_t class_parent_basic_type_id = basic_type->parent_class_id;
+  int32_t parent_class_basic_type_id = basic_type->parent_class_basic_type_id;
   
-  return class_parent_basic_type_id;
+  return parent_class_basic_type_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -528,17 +528,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t 
   int32_t is_class = basic_type->is_class;
   
   return is_class;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type);
-  
-  int32_t class_parent_class_basic_type_id = basic_type->parent_class_basic_type_id;
-  
-  return class_parent_class_basic_type_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index) {

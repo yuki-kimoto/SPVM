@@ -10,7 +10,6 @@ struct spvm_runtime_basic_type {
   int32_t id;
   int32_t category;
   int32_t name_id;
-  int32_t class_id;
   int32_t class_name_id;
   int32_t class_rel_file_id;
   int32_t class_path_id;
@@ -29,7 +28,6 @@ struct spvm_runtime_basic_type {
   int32_t interfaces_base_id;
   int32_t interfaces_length;
   int32_t fields_size;
-  int32_t parent_class_id;
   int32_t parent_class_basic_type_id;
   int32_t version_string_id;
   int8_t has_init_block;

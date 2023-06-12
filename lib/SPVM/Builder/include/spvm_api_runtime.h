@@ -50,7 +50,7 @@ int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_id(SPVM_RUNTIME* runtime, i
 int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_version_string_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t basic_type_id);
