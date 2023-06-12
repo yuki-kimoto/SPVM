@@ -323,7 +323,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_OPCODE* opcode = NULL;
 
-  // Static local variables
   int32_t string_buffer_begin_offset = string_buffer->length;
   {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
