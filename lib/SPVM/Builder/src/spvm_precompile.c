@@ -5273,15 +5273,6 @@ int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, cons
   return found;
 }
 
-int32_t SPVM_PRECOMPILE_contains_class_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name) {
-  
-  // class_id__CLASS_NAME__
-  const char* label = "class_id";
-  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, class_name, NULL);
-  
-  return found;
-}
-
 int32_t SPVM_PRECOMPILE_contains_field_id(SPVM_PRECOMPILE* precompile, const char* string, const char* class_name, const char* field_name) {
   
   // field_id__CLASS_NAME__FIELD_NAME__
