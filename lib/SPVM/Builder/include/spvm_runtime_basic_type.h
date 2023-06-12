@@ -30,6 +30,7 @@ struct spvm_runtime_basic_type {
   int32_t interfaces_length;
   int32_t fields_size;
   int32_t parent_class_id;
+  int32_t parent_class_basic_type_id;
   int32_t version_string_id;
   int8_t has_init_block;
   int8_t is_anon;
