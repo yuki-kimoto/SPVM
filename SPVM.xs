@@ -1043,7 +1043,6 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
         
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
-          int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
           int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
           const char* class_name = env->api->runtime->get_constant_string_value(env->runtime, basic_type_name_id, NULL);
           int32_t class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
@@ -1434,7 +1433,6 @@ _xs_call_method(...)
               croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a hash reference\n    %s at %s line %d\n", args_index_nth, method_name, class_name, __func__, FILE_NAME, __LINE__);
             }
             
-            int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
@@ -1577,7 +1575,6 @@ _xs_call_method(...)
             SV* hv_value_ref = SvRV(sv_value);
             
             HV* hv_value = (HV*)SvRV(hv_value_ref);
-            int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
@@ -1855,7 +1852,6 @@ _xs_call_method(...)
       // Return value conversion - multi-numeric
       case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
       {
-        int32_t method_return_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, method_return_basic_type_id);
         int32_t method_return_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, method_return_basic_type_id);
         int32_t method_return_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, method_return_basic_type_id);
         int32_t method_return_mulnum_field_id = method_return_class_fields_base_id;
@@ -2047,7 +2043,6 @@ _xs_call_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
           {
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
-            int32_t arg_class_id = env->api->runtime->get_basic_type_class_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, arg_basic_type_id);
             int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
@@ -3344,7 +3339,6 @@ _xs_new_mulnum_array_from_bin(...)
     croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
   int32_t class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
   int32_t class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, basic_type_id);
   
@@ -3845,7 +3839,6 @@ _xs_to_elems(...)
       
       for (int32_t index = 0; index < length; index++) {
         
-        int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
         int32_t class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
         int32_t class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, basic_type_id);
         
@@ -4054,7 +4047,6 @@ _xs_to_bin(...)
     int32_t array_is_object_array = env->is_object_array(env, stack, spvm_array);
     
     if (array_is_mulnum_array) {
-      int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
       int32_t class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
       int32_t class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, basic_type_id);
       
