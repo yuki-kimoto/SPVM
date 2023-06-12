@@ -65,9 +65,9 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     int32_t class_anon_methods_base_id = SPVM_API_RUNTIME_get_class_anon_methods_base_id(runtime, class_id);
     for (int32_t anon_method_id = class_anon_methods_base_id; anon_method_id < class_anon_methods_length; anon_method_id++) {
       int32_t anon_method_method_id = SPVM_API_RUNTIME_get_anon_method_method_id(runtime, anon_method_id);
-      int32_t anon_method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, anon_method_method_id);
-      int32_t anon_method_class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, anon_method_class_id);
-      const char* anon_method_class_name = SPVM_API_RUNTIME_get_name(runtime, anon_method_class_name_id);
+      int32_t anon_method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, anon_method_method_id);
+      int32_t anon_method_class_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, anon_method_class_basic_type_id);
+      const char* anon_method_class_name = SPVM_API_RUNTIME_get_name(runtime, anon_method_class_basic_type_name_id);
       SPVM_PRECOMPILE_build_class_source(precompile, string_buffer, anon_method_class_name);
     }
   }
