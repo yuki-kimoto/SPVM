@@ -1986,12 +1986,10 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       assert(type_dimension == 1);
       
       SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-      assert(basic_type->class_id > -1);
-      SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
       
-      int32_t fields_length = class->fields_length;
+      int32_t fields_length = basic_type->fields_length;
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, class->fields_base_id + 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, basic_type->fields_base_id + 0);
       
       int32_t field_basic_type_id = first_field->basic_type_id;
       
