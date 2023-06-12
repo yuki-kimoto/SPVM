@@ -2153,9 +2153,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
-        SPVM_RUNTIME_CLASS* method_class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
-        SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, method->class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class->name_id, NULL);
+        SPVM_RUNTIME_BASIC_TYPE* method_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->class_basic_type_id);
+        const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class_basic_type->name_id, NULL);
         
         void* object = stack[0].oval;
         SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, class_name, method_name, args_stack_length, &error_id, tmp_buffer, sizeof(tmp_buffer));
