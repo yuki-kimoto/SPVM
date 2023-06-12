@@ -55,9 +55,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   const char* current_method_name =  SPVM_API_RUNTIME_get_name(runtime, current_method->name_id);
   
   // Runtime class
-  SPVM_RUNTIME_CLASS* current_class = SPVM_API_RUNTIME_get_class(runtime, current_method->class_id);
+  SPVM_RUNTIME_BASIC_TYPE* current_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method->class_basic_type_id);
 
-  const char* current_class_name =  SPVM_API_RUNTIME_get_name(runtime, current_class->name_id);
+  const char* current_class_name =  SPVM_API_RUNTIME_get_name(runtime, current_class_basic_type->name_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -1169,16 +1169,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         
         const char* class_path = NULL;
         const char* class_path_sep;
-        int32_t class_path_id = current_class->class_path_id;
+        int32_t class_path_id = current_class_basic_type->class_path_id;
         if (class_path_id >= 0) {
           class_path_sep = "/";
-          class_path = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class->class_path_id, NULL);
+          class_path = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class_basic_type->class_path_id, NULL);
         }
         else {
           class_path_sep = "";
           class_path = "";
         }
-        const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class->class_rel_file_id, NULL);
+        const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_class_basic_type->class_rel_file_id, NULL);
 
         SPVM_IMPLEMENT_WARN(env, stack, string, class_path, class_path_sep, class_rel_file, line);
         
