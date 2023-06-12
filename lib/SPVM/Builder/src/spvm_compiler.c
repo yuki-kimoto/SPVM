@@ -469,15 +469,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   int32_t length = 0;
   
-  // opcodes length
-  length++;
-  
-  // opcodes 32bit length
-  length++;
-  
-  // opcodes
-  length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
-  
   // constant_strings_buffer length
   length++;
   
@@ -556,6 +547,15 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // args
   length += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
   
+  // opcodes length
+  length++;
+  
+  // opcodes 32bit length
+  length++;
+  
+  // opcodes
+  length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
+  
   return length;
 }
 
@@ -571,19 +571,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   // Total length
   *runtime_codes_ptr = runtime_codes_length;
   runtime_codes_ptr++;
-  
-  // opcodes length
-  *runtime_codes_ptr = compiler->opcode_array->length;
-  runtime_codes_ptr++;
-  
-  // opcodes 32bit length
-  int32_t opcodes_32bit_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
-  *runtime_codes_ptr = opcodes_32bit_length;
-  runtime_codes_ptr++;
-  
-  // opcodes
-  memcpy(runtime_codes_ptr, compiler->opcode_array->values, sizeof(int32_t) * opcodes_32bit_length);
-  runtime_codes_ptr += opcodes_32bit_length;
   
   // constant_strings_buffer length
   *runtime_codes_ptr = compiler->constant_strings_buffer->length;
@@ -966,6 +953,19 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
   }
   runtime_codes_ptr += fields_32bit_length;
+  
+  // opcodes length
+  *runtime_codes_ptr = compiler->opcode_array->length;
+  runtime_codes_ptr++;
+  
+  // opcodes 32bit length
+  int32_t opcodes_32bit_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
+  *runtime_codes_ptr = opcodes_32bit_length;
+  runtime_codes_ptr++;
+  
+  // opcodes
+  memcpy(runtime_codes_ptr, compiler->opcode_array->values, sizeof(int32_t) * opcodes_32bit_length);
+  runtime_codes_ptr += opcodes_32bit_length;
   
   // methods length
   *runtime_codes_ptr = compiler->methods->length;
