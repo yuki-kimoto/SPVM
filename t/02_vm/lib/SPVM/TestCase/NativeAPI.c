@@ -2468,7 +2468,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_id_by_name != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved19 != &env_array[19]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_name_id != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_class_rel_file_id != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_class_path_id != &env_array[22]) { stack[0].ival = 0; return 0; }

@@ -116,7 +116,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserve16
     NULL, // reserved17
     NULL, // reserved18
-    SPVM_API_RUNTIME_get_class_id_by_name,
+    NULL, // reserved19
     SPVM_API_RUNTIME_get_class_name_id,
     SPVM_API_RUNTIME_get_class_class_rel_file_id,
     SPVM_API_RUNTIME_get_class_class_path_id,
@@ -551,21 +551,6 @@ SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class_by_name(SPVM_RUNTIME* runtime, co
   SPVM_RUNTIME_CLASS* class = (SPVM_RUNTIME_CLASS*)SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
   
   return class;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_id_by_name(SPVM_RUNTIME* runtime, const char* class_name) {
-
-  SPVM_RUNTIME_CLASS* class = SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
-
-  int32_t class_id;
-  if (class) {
-    class_id = class->id;
-  }
-  else {
-    class_id = -1;
-  }
-
-  return class_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_name_id(SPVM_RUNTIME* runtime, int32_t class_id) {

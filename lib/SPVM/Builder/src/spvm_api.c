@@ -267,7 +267,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_print_stderr,
     SPVM_API_init_env,
     SPVM_API_call_init_blocks,
-    SPVM_API_get_class_id, // Asserted
+    NULL, // reserved170
     SPVM_API_new_stack,
     SPVM_API_free_stack,
     SPVM_API_new_memory_env,
@@ -278,7 +278,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_memory_blocks_count_stack,
     SPVM_API_set_command_info_program_name,
     SPVM_API_set_command_info_argv,
-    SPVM_API_get_class_id_by_name, // Asserted
+    NULL, // reserved19
     SPVM_API_strerror,
     SPVM_API_new_string_array,
     SPVM_API_get_args_stack_length,
@@ -3215,12 +3215,6 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, const char*
   }
 }
 
-int32_t SPVM_API_get_class_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name) {
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
-  
-  return class_id;
-}
-
 int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   (void)env;
   
@@ -4055,17 +4049,6 @@ int32_t SPVM_API_has_interface_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t has_interface = SPVM_API_has_interface(env, stack, object, basic_type_id);
   
   return has_interface;
-}
-
-int32_t SPVM_API_get_class_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
-  *error = 0;
-  
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(env->runtime, class_name);
-  if (class_id < 0) {
-    *error = 1;
-    env->die(env, stack, "The %s class is not loaded", class_name, func_name, file, line);
-  };
-  return class_id;
 }
 
 int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line) {

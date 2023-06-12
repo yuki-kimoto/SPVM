@@ -337,7 +337,7 @@ struct spvm_env_runtime {
   void* reserved16;
   void* reserved17;
   void* reserved18;
-  int32_t (*get_class_id_by_name)(void* runtime, const char* class_name);
+  void* reserved19;
   int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
   int32_t (*get_class_class_path_id)(void* runtime, int32_t class_id);
