@@ -59,6 +59,7 @@ int32_t SPVM_API_RUNTIME_get_basic_type_parent_basic_type_id(SPVM_RUNTIME* runti
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_version_string_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 
 // String
 int32_t SPVM_API_RUNTIME_get_constant_string_id(SPVM_RUNTIME* runtime, const char* string);
