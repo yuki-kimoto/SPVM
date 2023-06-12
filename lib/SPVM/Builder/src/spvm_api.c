@@ -3110,17 +3110,10 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         // Class
         SPVM_RUNTIME* runtime = env->runtime;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
-        SPVM_RUNTIME_CLASS* class;
-        if (!SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id)) {
-          class = NULL;
-        }
-        else {
-          class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-        }
         
-        if (class) {
+        if (basic_type) {
           // Call destructor
-          if (class->destructor_method_id >= 0) {
+          if (basic_type->destructor_method_id >= 0) {
             int32_t args_stack_length = 1;
             SPVM_VALUE save_stack0 = stack[0];
             void* save_exception = env->get_exception(env, stack);
@@ -3129,7 +3122,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             }
             
             stack[0].oval = object;
-            int32_t error = SPVM_API_call_method_raw(env, stack, class->destructor_method_id, args_stack_length);
+            int32_t error = SPVM_API_call_method_raw(env, stack, basic_type->destructor_method_id, args_stack_length);
             
             // Exception in destructor is changed to warning
             if (error) {
@@ -3150,8 +3143,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_class_fields_base_id(runtime, class->id);
-        int32_t object_fields_length = SPVM_API_RUNTIME_get_class_fields_length(runtime, class->id);
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_id(runtime, basic_type->id);
+        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, basic_type->id);
         for (int32_t field_id = object_fields_base; field_id < object_fields_base + object_fields_length; field_id++) {
           int32_t field_basic_type_id = SPVM_API_RUNTIME_get_field_basic_type_id(runtime, field_id);
           int32_t field_type_dimension = SPVM_API_RUNTIME_get_field_type_dimension(runtime, field_id);
