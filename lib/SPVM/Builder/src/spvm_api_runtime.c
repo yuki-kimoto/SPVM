@@ -117,18 +117,18 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved17
     NULL, // reserved18
     NULL, // reserved19
-    SPVM_API_RUNTIME_get_class_name_id,
-    SPVM_API_RUNTIME_get_class_class_rel_file_id,
-    SPVM_API_RUNTIME_get_class_class_path_id,
-    SPVM_API_RUNTIME_get_class_is_anon,
-    SPVM_API_RUNTIME_get_class_fields_base_id,
-    SPVM_API_RUNTIME_get_class_fields_length,
-    SPVM_API_RUNTIME_get_class_methods_base_id,
-    SPVM_API_RUNTIME_get_class_methods_length,
-    SPVM_API_RUNTIME_get_class_class_vars_base_id,
-    SPVM_API_RUNTIME_get_class_class_vars_length,
-    SPVM_API_RUNTIME_get_class_anon_methods_base_id,
-    SPVM_API_RUNTIME_get_class_anon_methods_length,
+    NULL, // reserved20
+    NULL, // reserved21
+    NULL, // reserved22
+    NULL, // reserved23
+    NULL, // reserved24
+    NULL, // reserved25
+    NULL, // reserved26
+    NULL, // reserved27
+    NULL, // reserved28
+    NULL, // reserved29
+    NULL, // reserved30
+    NULL, // reserved31
     SPVM_API_RUNTIME_get_class_var_id_by_index,
     SPVM_API_RUNTIME_get_class_var_id_by_name,
     SPVM_API_RUNTIME_get_class_var_name_id,
@@ -175,13 +175,13 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     SPVM_API_RUNTIME_get_allocator,
     SPVM_API_RUNTIME_build,
-    SPVM_API_RUNTIME_get_class_parent_class_id,
+    NULL, // reserved78
     SPVM_API_RUNTIME_get_method_required_args_length,
-    SPVM_API_RUNTIME_get_class_is_pointer,
+    NULL, // reserved80
     SPVM_API_RUNTIME_get_method_is_enum,
     NULL, // reserved82
     SPVM_API_RUNTIME_is_object_type,
-    SPVM_API_RUNTIME_get_class_version_string_id,
+    NULL, // reserved84
     (void*)NULL, // class_init_flags
     SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_get_basic_type_class_rel_file_id,
@@ -544,193 +544,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME*
   int32_t class_parent_class_basic_type_id = basic_type->parent_class_basic_type_id;
   
   return class_parent_class_basic_type_id;
-}
-
-SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class_by_name(SPVM_RUNTIME* runtime, const char* class_name) {
-
-  SPVM_RUNTIME_CLASS* class = (SPVM_RUNTIME_CLASS*)SPVM_HASH_get(runtime->class_symtable, class_name, strlen(class_name));
-  
-  return class;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_name_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_name_id = class->name_id;
-  
-  return class_name_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_version_string_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_version_string_id = class->version_string_id;
-  
-  return class_version_string_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_is_pointer(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_is_pointer = class->is_pointer;
-  
-  return class_is_pointer;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_anon_methods_base_id = class->anon_methods_base_id;
-  
-  return class_anon_methods_base_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_anon_methods_length(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_anon_methods_length = class->anon_methods_length;
-  
-  return class_anon_methods_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_is_anon(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_is_anon = class->is_anon;
-  
-  return class_is_anon;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_class_rel_file_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_rel_file_id = class->class_rel_file_id;
-  
-  return class_class_rel_file_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_class_path_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_path_id = class->class_path_id;
-  
-  return class_class_path_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_fields_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_fields_base_id = class->fields_base_id;
-  
-  return class_fields_base_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_fields_length(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_fields_length = class->fields_length;
-  
-  return class_fields_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_methods_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_methods_base_id = class->methods_base_id;
-  
-  return class_methods_base_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_methods_length(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  // warn("GGG %d", class_id);
-  assert(class);
-  
-  int32_t class_methods_length = class->methods_length;
-  
-  return class_methods_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_class_vars_base_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_vars_base_id = class->class_vars_base_id;
-  
-  return class_class_vars_base_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_class_vars_length(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_class_vars_length = class->class_vars_length;
-  
-  return class_class_vars_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_parent_class_id(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
-  
-  assert(class);
-  
-  int32_t class_parent_class_id = class->parent_class_id;
-  
-  return class_parent_class_id;
-}
-
-SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class(SPVM_RUNTIME* runtime, int32_t class_id) {
-  
-  if (class_id < 0) {
-    return NULL;
-  }
-  
-  if (class_id >= runtime->classes_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_CLASS* class = &runtime->classes[class_id];
-  
-  return class;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index) {

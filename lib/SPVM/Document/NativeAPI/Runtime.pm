@@ -41,18 +41,18 @@ Runtime native APIs have its IDs.
   17 reserved17
   18 reserved18
   19 reserved19
-  20 get_class_name_id
-  21 get_class_class_rel_file_id
-  22 get_class_class_path_id
-  23 get_class_is_anon
-  24 get_class_fields_base_id
-  25 get_class_fields_length
-  26 get_class_methods_base_id
-  27 get_class_methods_length
-  28 get_class_class_vars_base_id
-  29 get_class_class_vars_length
-  30 get_class_anon_methods_base_id
-  31 get_class_anon_methods_length
+  20 reserved20
+  21 reserved21
+  22 reserved22
+  23 reserved23
+  24 reserved24
+  25 reserved25
+  26 reserved26
+  27 reserved27
+  28 reserved28
+  29 reserved29
+  30 reserved30
+  31 reserved31
   32 get_class_var_id_by_index
   33 get_class_var_id_by_name
   34 get_class_var_name_id
@@ -99,13 +99,13 @@ Runtime native APIs have its IDs.
   75 object_length_offset
   76 get_allocator
   77 build
-  78 get_class_parent_class_id
+  78 reserved78
   79 get_method_required_args_length
-  80 get_class_is_pointer
+  80 reserved80
   81 get_method_is_enum
   82 reserved82
   83 is_object_type
-  84 get_class_version_string_id
+  84 reserved84
   85 class_init_flags
   86 can_assign
   87 get_basic_type_class_rel_file_id
