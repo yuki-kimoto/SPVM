@@ -1044,8 +1044,8 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
           int32_t class_id = env->api->runtime->get_basic_type_class_id(env->runtime, basic_type_id);
-          int32_t class_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
-          const char* class_name = env->api->runtime->get_constant_string_value(env->runtime, class_name_id, NULL);
+          int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
+          const char* class_name = env->api->runtime->get_constant_string_value(env->runtime, basic_type_name_id, NULL);
           int32_t class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
           int32_t class_fields_base_id = env->api->runtime->get_basic_type_fields_base_id(env->runtime, basic_type_id);
           
@@ -1452,8 +1452,8 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                int32_t arg_class_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
+                int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
+                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_basic_type_name_id, NULL);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" class must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", args_index_nth, method_name, class_name, mulnum_field_name, mulnum_field_name, arg_class_name, __func__, FILE_NAME, __LINE__);
 
               }
@@ -1592,8 +1592,8 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                int32_t arg_class_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_class_name_id, NULL);
+                int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
+                const char* arg_class_name = env->api->runtime->get_constant_string_value(env->runtime, arg_basic_type_name_id, NULL);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" class must have the \"%s\" key for the \"%s\" field of the \"%s\" class\n    %s at %s line %d\n", args_index_nth, method_name, class_name, mulnum_field_name, mulnum_field_name, arg_class_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_class_field_type_basic_type_id) {
@@ -4756,7 +4756,7 @@ get_anon_class_names(...)
     
     if (is_anon_method) {
       int32_t anon_class_id = api_env->api->runtime->get_method_class_id(runtime, method_id);
-      const char* anon_class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_class_name_id(runtime, anon_class_id));
+      const char* anon_class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, anon_class_id));
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
     }
