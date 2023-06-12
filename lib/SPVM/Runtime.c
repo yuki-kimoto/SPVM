@@ -395,23 +395,21 @@ int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
-
+ 
   void* obj_self = stack[0].oval;
-
+  
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
-
+  
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
+  int32_t class_basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
-  
-  int32_t methods_length = env->api->runtime->get_class_methods_length(runtime, class_id);
+  int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, class_basic_type_id);
   
   int32_t anon_classes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
       anon_classes_length++;
@@ -421,13 +419,13 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_anon_class_names = env->new_string_array(env, stack, anon_classes_length);
   int32_t anon_class_index = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
-      int32_t anon_class_id = env->api->runtime->get_method_class_id(runtime, method_id);
-      const char* anon_class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, anon_class_id));
-      void* obj_anon_class_name = env->new_string_nolen(env, stack, anon_class_name);
-      env->set_elem_object(env, stack, obj_anon_class_names, anon_class_index, obj_anon_class_name);
+      int32_t anon_class_basic_type_id = env->api->runtime->get_method_class_basic_type_id(runtime, method_id);
+      const char* anon_class_basic_type_name = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, anon_class_basic_type_id));
+      void* obj_anon_class_basic_type_name = env->new_string_nolen(env, stack, anon_class_basic_type_name);
+      env->set_elem_object(env, stack, obj_anon_class_names, anon_class_index, obj_anon_class_basic_type_name);
       anon_class_index++;
     }
   }
