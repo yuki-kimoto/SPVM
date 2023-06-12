@@ -119,7 +119,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   // Class
   int32_t current_class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, current_class_name);
-  int32_t current_class_is_anon = SPVM_API_RUNTIME_get_class_is_anon(runtime, current_class_id);
+  int32_t current_class_basic_type_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, current_class_name);
+  int32_t current_class_is_anon = SPVM_API_RUNTIME_get_basic_type_is_anon(runtime, current_class_basic_type_id);
   
   // Method
   int32_t current_method_id = SPVM_API_RUNTIME_get_method_id_by_name(runtime, current_class_name, current_method_name);
@@ -2744,8 +2745,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t class_rel_file_id = SPVM_API_RUNTIME_get_class_class_rel_file_id(runtime, current_class_id);
-        int32_t class_path_id = SPVM_API_RUNTIME_get_class_class_path_id(runtime, current_class_id);
+        int32_t class_rel_file_id = SPVM_API_RUNTIME_get_basic_type_class_rel_file_id(runtime, current_class_basic_type_id);
+        int32_t class_path_id = SPVM_API_RUNTIME_get_basic_type_class_path_id(runtime, current_class_basic_type_id);
         const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, class_rel_file_id, NULL);
         const char* class_path = NULL;
         const char* class_path_sep;
