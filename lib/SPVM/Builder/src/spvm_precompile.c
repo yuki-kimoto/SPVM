@@ -561,9 +561,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       else if (method_id >= 0) {
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-        int32_t class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, method_id);
+        int32_t class_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, method_class_basic_type_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_basic_type_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_method_id(precompile, string_buffer->value + string_buffer_begin_offset, class_name, method_name);
         
         if (!found) {
@@ -5002,9 +5002,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-        int32_t method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, method_class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, method_id);
+        int32_t class_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, method_class_basic_type_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_basic_type_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
@@ -5033,9 +5033,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-        int32_t method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, method_class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, method_id);
+        int32_t class_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, method_class_basic_type_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_basic_type_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
@@ -5066,9 +5066,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-        int32_t method_class_id = SPVM_API_RUNTIME_get_method_class_id(runtime, method_id);
-        int32_t class_name_id = SPVM_API_RUNTIME_get_class_name_id(runtime, method_class_id);
-        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_name_id);
+        int32_t method_class_basic_type_id = SPVM_API_RUNTIME_get_method_class_basic_type_id(runtime, method_id);
+        int32_t class_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, method_class_basic_type_id);
+        const char* class_name = SPVM_API_RUNTIME_get_name(runtime, class_basic_type_name_id);
 
         SPVM_STRING_BUFFER_add(string_buffer, "  class_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
