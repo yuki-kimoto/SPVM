@@ -8,8 +8,6 @@
 static const char* FILE_NAME = "Runtime.c";
 
 int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -23,8 +21,6 @@ int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -52,8 +48,6 @@ int32_t SPVM__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
 
@@ -83,8 +77,6 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
 
@@ -112,8 +104,6 @@ int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* sta
 
 
 int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
 
@@ -143,8 +133,6 @@ int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
 }
 
 int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -172,8 +160,6 @@ int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
 }
 
 int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -214,8 +200,6 @@ int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* 
 }
 
 int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -259,8 +243,6 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
 }
 
 int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
 
@@ -282,16 +264,22 @@ int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
-
+  
   void* obj_self = stack[0].oval;
-
+  
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  int32_t classes_length = env->api->runtime->get_classes_length(runtime);
+  int32_t basic_types_length = env->api->runtime->get_basic_types_length(runtime);
+  
+  int32_t classes_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    int32_t is_class = env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
+    if (is_class) {
+      classes_length++;
+    }
+  }
   
   stack[0].ival = classes_length;
   
@@ -299,22 +287,33 @@ int32_t SPVM__Runtime__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
-
+  
   void* obj_self = stack[0].oval;
-
+  
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  int32_t classes_length = env->api->runtime->get_classes_length(runtime);
+  int32_t basic_types_length = env->api->runtime->get_basic_types_length(runtime);
+  
+  int32_t classes_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    int32_t is_class = env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
+    if (is_class) {
+      classes_length++;
+    }
+  }
   
   void* obj_class_names = env->new_string_array(env, stack, classes_length);
-  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
-    const char* class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_class_name_id(runtime, class_id));
-    void* obj_class_name = env->new_string_nolen(env, stack, class_name);
-    env->set_elem_object(env, stack, obj_class_names, class_id, obj_class_name);
+  int32_t class_index = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    int32_t is_class = env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
+    if (is_class) {
+      const char* basic_type_name = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
+      void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
+      env->set_elem_object(env, stack, obj_class_names, class_index, obj_basic_type_name);
+      class_index++;
+    }
   }
   
   stack[0].oval = obj_class_names;
@@ -322,10 +321,7 @@ int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-
 int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -371,8 +367,6 @@ int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -399,8 +393,6 @@ int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
 
@@ -446,8 +438,6 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -531,8 +521,6 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Runtime__build_env(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
