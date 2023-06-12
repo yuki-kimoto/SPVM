@@ -4701,7 +4701,7 @@ get_method_names(...)
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method_id));
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
@@ -4751,7 +4751,7 @@ get_anon_class_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_id);
     
     if (is_anon_method) {

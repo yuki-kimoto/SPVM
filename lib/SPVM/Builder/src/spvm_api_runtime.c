@@ -743,15 +743,15 @@ SPVM_RUNTIME_CLASS* SPVM_API_RUNTIME_get_class(SPVM_RUNTIME* runtime, int32_t cl
   return class;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t class_var_index) {
+int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index) {
   
   int32_t class_var_id = -1;
   
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  if (class) {
-    if (class_var_index >= 0 && class_var_index < class->class_vars_length) {
-      class_var_id = class->class_vars_base_id + class_var_index;
+  if (basic_type) {
+    if (class_var_index >= 0 && class_var_index < basic_type->class_vars_length) {
+      class_var_id = basic_type->class_vars_base_id + class_var_index;
     }
   }
   
@@ -952,15 +952,15 @@ int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char
   return method_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t field_index) {
+int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
   
   int32_t field_id = -1;
   
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  if (class) {
-    if (field_index >= 0 && field_index < class->fields_length) {
-      field_id = class->fields_base_id + field_index;
+  if (basic_type) {
+    if (field_index >= 0 && field_index < basic_type->fields_length) {
+      field_id = basic_type->fields_base_id + field_index;
     }
   }
   
@@ -984,15 +984,15 @@ int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char*
   return field_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_id_by_index(SPVM_RUNTIME* runtime, int32_t class_id, int32_t method_index) {
+int32_t SPVM_API_RUNTIME_get_method_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
   
   int32_t method_id = -1;
   
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  if (class) {
-    if (method_index >= 0 && method_index < class->methods_length) {
-      method_id = class->methods_base_id + method_index;
+  if (basic_type_id) {
+    if (method_index >= 0 && method_index < basic_type->methods_length) {
+      method_id = basic_type->methods_base_id + method_index;
     }
   }
   

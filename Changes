@@ -23,6 +23,16 @@
       int32_t (*get_type_is_object)(void* runtime, int32_t type_id);
       int32_t (*get_type_is_ref)(void* runtime, int32_t type_id);
       int32_t (*get_type_flag)(void* runtime, int32_t type_id);
+    * The following Native Runtime APIs were changed.
+      -  int32_t (*get_class_var_id_by_index)(void* runtime, int32_t class_id, int32_t class_var_index);
+      +  int32_t (*get_class_var_id_by_index)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
+      
+      -  int32_t (*get_field_id_by_index)(void* runtime, int32_t class_id, int32_t field_index);
+      +  int32_t (*get_field_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
+      
+      -  int32_t (*get_method_id_by_index)(void* runtime, int32_t class_id, int32_t method_index);
+      +  int32_t (*get_method_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
+      
 0.989003 2023-06-09
   [Bug Fix]
     * The following bug was fixed: The can_assign Native Runtime API didnot work well.

@@ -412,12 +412,14 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
-
+  
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
+  
   int32_t methods_length = env->api->runtime->get_class_methods_length(runtime, class_id);
   
   int32_t anon_classes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
       anon_classes_length++;
@@ -427,7 +429,7 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_anon_class_names = env->new_string_array(env, stack, anon_classes_length);
   int32_t anon_class_index = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
       int32_t anon_class_id = env->api->runtime->get_method_class_id(runtime, method_id);
@@ -448,9 +450,9 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)stack;
   
   int32_t e = 0;
-
+  
   void* obj_self = stack[0].oval;
-
+  
   void* obj_class_name = stack[1].oval;
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   int32_t native_flag = stack[2].ival;
@@ -460,12 +462,14 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_id = env->api->runtime->get_class_id_by_name(runtime, class_name);
-
+  
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
+  
   int32_t methods_length = env->api->runtime->get_class_methods_length(runtime, class_id);
   
   int32_t match_methodes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t match = 0;
     if (native_flag) {
       if (env->api->runtime->get_method_is_native(runtime, method_id)) {
@@ -494,7 +498,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_method_names = env->new_string_array(env, stack, match_methodes_length);
   int32_t match_method_index = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_id, method_index);
+    int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t match = 0;
     if (native_flag) {
       if (env->api->runtime->get_method_is_native(runtime, method_id)) {
