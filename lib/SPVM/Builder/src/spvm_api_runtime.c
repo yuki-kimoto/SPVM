@@ -1065,7 +1065,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t 
   if (method_id >= runtime->methods_length) {
     return NULL;
   }
-
+  
   SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
   
   return method;
@@ -1074,9 +1074,9 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t 
 int32_t SPVM_API_RUNTIME_get_method_class_id(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t class_id = method->class_id;
   
   return class_id;
@@ -1085,9 +1085,9 @@ int32_t SPVM_API_RUNTIME_get_method_class_id(SPVM_RUNTIME* runtime, int32_t meth
 int32_t SPVM_API_RUNTIME_get_method_opcodes_base_id(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t opcodes_base_id = method->opcodes_base_id;
   
   return opcodes_base_id;
@@ -1096,9 +1096,9 @@ int32_t SPVM_API_RUNTIME_get_method_opcodes_base_id(SPVM_RUNTIME* runtime, int32
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t opcodes_length = method->opcodes_length;
   
   return opcodes_length;
@@ -1107,9 +1107,9 @@ int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, int32_
 int32_t SPVM_API_RUNTIME_get_method_name_id(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t name_id = method->name_id;
   
   return name_id;
@@ -1118,9 +1118,9 @@ int32_t SPVM_API_RUNTIME_get_method_name_id(SPVM_RUNTIME* runtime, int32_t metho
 int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t is_anon = method->is_anon;
   
   return is_anon;
@@ -1148,9 +1148,9 @@ int32_t SPVM_API_RUNTIME_get_method_is_enum(SPVM_RUNTIME* runtime, int32_t metho
 int32_t SPVM_API_RUNTIME_get_method_args_length(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t args_length = method->args_length;
   
   return args_length;
@@ -1170,9 +1170,9 @@ int32_t SPVM_API_RUNTIME_get_method_required_args_length(SPVM_RUNTIME* runtime, 
 int32_t SPVM_API_RUNTIME_get_method_args_base_id(SPVM_RUNTIME* runtime, int32_t method_id) {
   
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-
+  
   assert(method);
-
+  
   int32_t args_base_id = method->args_base_id;
   
   return args_base_id;
