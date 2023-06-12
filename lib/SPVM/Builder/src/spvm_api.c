@@ -4206,9 +4206,9 @@ double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   return version_number;
 }
 
-const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id){
+const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id){
   
-  int32_t version_string_id = env->api->runtime->get_class_version_string_id(env->runtime, class_id);
+  int32_t version_string_id = env->api->runtime->get_basic_type_version_string_id(env->runtime, basic_type_id);
   
   const char* version_string = NULL;
   if (version_string_id >= 0) {
@@ -4218,9 +4218,9 @@ const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_
   return version_string;
 }
 
-double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id) {
+double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id) {
   
-  const char* version_string = env->get_version_string(env, stack, class_id);
+  const char* version_string = env->get_version_string(env, stack, basic_type_id);
   
   if (!version_string) {
     return -1;

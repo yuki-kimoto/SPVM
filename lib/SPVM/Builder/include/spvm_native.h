@@ -304,8 +304,8 @@ struct spvm_env {
   int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
   const char* (*get_spvm_version_string)(SPVM_ENV* env, SPVM_VALUE* stack);
   double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);
-  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
-  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
+  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
   void* class_init_flags;
   const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -433,6 +433,7 @@ struct spvm_env_runtime {
   int32_t (*get_field_class_basic_type_id)(void* runtime, int32_t method_id);
   int32_t (*get_class_var_class_basic_type_id)(void* runtime, int32_t method_id);
   int32_t (*get_basic_type_parent_class_basic_type_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
 };
 
 struct spvm_env_compiler {

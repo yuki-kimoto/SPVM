@@ -2237,19 +2237,19 @@ Returns the L<version number|SPVM::Document::Language/"Version Number"> of the S
 
 =head2 get_version_string
 
-  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
+  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Returns the version string of a class. The C<class_id> must be a valid class id.
+Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type id.
 
-If the version string in the class is not defined, returns NULL.
+If the version string in the basic_type is not defined, returns NULL.
 
 =head2 get_version_number
 
-  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_id);
+  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Returns the version number of a class. The C<class_id> must be a valid class id.
+Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type id.
 
-If the version string in the class is not defined, returns -1.
+If the version string in the basic_type is not defined, returns -1.
 
 =head2 call_method
 

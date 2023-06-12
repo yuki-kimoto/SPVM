@@ -213,6 +213,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_class_basic_type_id,
     SPVM_API_RUNTIME_get_class_var_class_basic_type_id,
     SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id,
+    SPVM_API_RUNTIME_get_basic_type_version_string_id,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -386,9 +387,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_version_string_id(SPVM_RUNTIME* runtime,
   
   assert(basic_type);
   
-  int32_t class_version_string_id = basic_type->version_string_id;
+  int32_t version_string_id = basic_type->version_string_id;
   
-  return class_version_string_id;
+  return version_string_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
