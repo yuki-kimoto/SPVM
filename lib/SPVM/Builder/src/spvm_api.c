@@ -3364,22 +3364,19 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   }
   
   // Basic type
-  int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
+  int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
   
-  // Class
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, basic_type->class_id);
-  
-  SPVM_RUNTIME_CLASS* parent_class = class;
+  SPVM_RUNTIME_BASIC_TYPE* parent_class_basic_type = object_basic_type;
   
   while (1) {
-    if (!parent_class) {
+    if (!parent_class_basic_type) {
       break;
     }
     
     // Method
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_class_id_and_method_name(runtime, parent_class->id, method_name);
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_address(runtime, parent_class_basic_type, method_name);
     if (method) {
       // Instance method
       if (!method->is_class_method) {
@@ -3388,11 +3385,11 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
       break;
     }
     
-    if (parent_class->parent_class_id != -1) {
-      parent_class = SPVM_API_RUNTIME_get_class(runtime, parent_class->parent_class_id);
+    if (parent_class_basic_type->parent_class_basic_type_id != -1) {
+      parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type->parent_class_basic_type_id);
     }
     else {
-      parent_class = NULL;
+      parent_class_basic_type = NULL;
     }
   }
   
