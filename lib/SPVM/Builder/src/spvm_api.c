@@ -2306,11 +2306,11 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
 
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t class_id = SPVM_API_RUNTIME_get_class_id_by_name(runtime, class_name);
-  SPVM_RUNTIME_CLASS* class = SPVM_API_RUNTIME_get_class(runtime, class_id);
+  int32_t class_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, class_basic_type_id);
 
-  int32_t class_path_id = class->class_path_id;
-  int32_t class_rel_file_id = class->class_rel_file_id;
+  int32_t class_path_id = class_basic_type->class_path_id;
+  int32_t class_rel_file_id = class_basic_type->class_rel_file_id;
   
   const char* class_path;
   const char* class_path_sep;
