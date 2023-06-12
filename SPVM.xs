@@ -4697,7 +4697,6 @@ get_method_names(...)
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
-  int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
@@ -4744,7 +4743,6 @@ get_anon_class_names(...)
   SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
   
   // Copy class load path to builder
-  int32_t class_id = api_env->api->runtime->get_class_id_by_name(runtime, class_name);
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
   
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
