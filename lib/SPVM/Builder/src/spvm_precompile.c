@@ -344,10 +344,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-    SPVM_PRECOMPILE_add_class_id(precompile, string_buffer, current_class_name);
-    SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
     SPVM_PRECOMPILE_add_method_id(precompile, string_buffer, current_class_name, current_method_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
 
@@ -5220,14 +5216,6 @@ void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(basic_type_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "__");
-}
-
-void SPVM_PRECOMPILE_add_class_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_STRING_BUFFER_add(string_buffer, "class_id");
-  SPVM_STRING_BUFFER_add(string_buffer, "__");
-  SPVM_STRING_BUFFER_add(string_buffer, class_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(class_name));
   SPVM_STRING_BUFFER_add(string_buffer, "__");
 }
 
