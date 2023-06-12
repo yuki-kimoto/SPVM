@@ -324,7 +324,7 @@ struct spvm_env_runtime {
   int32_t (*get_opcodes_length)(void* runtime);
   int32_t* (*get_runtime_codes)(void* runtime);
   int32_t (*get_runtime_codes_length)(void* runtime);
-  int32_t (*get_classes_length)(void* runtime);
+  void* reserved6;
   int32_t (*get_constant_string_id)(void* runtime, const char* string);
   const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
   const char* (*get_name)(void* runtime, int32_t constant_string_id);
@@ -396,13 +396,13 @@ struct spvm_env_runtime {
   void* object_length_offset;
   void* (*get_allocator)(void* runtime);
   void (*build)(void* runtime, int32_t* runtime_codes);
-  int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);
+  void* reserved78;
   int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
-  int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+  void* reserved80;
   int32_t (*get_method_is_enum)(void* runtime, int32_t method_id);
   void* reserved82;
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
-  int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
+  void* reserved84;
   void* class_init_flags;
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);  int32_t (*get_basic_type_class_rel_file_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_path_id)(void* runtime, int32_t basic_type_id);
