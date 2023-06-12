@@ -33,7 +33,7 @@ Runtime native APIs have its IDs.
   9  get_name
   10 get_basic_type_id_by_name
   11 get_basic_type_name_id
-  12 get_basic_type_class_id
+  12 reserved12
   13 get_basic_type_category
   14 reserved14
   15 reserved15
@@ -185,10 +185,6 @@ Runtime native APIs have its IDs.
 =head2 get_basic_type_name_id
 
   int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
-
-=head2 get_basic_type_class_id
-
-  int32_t (*get_basic_type_class_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_category
 

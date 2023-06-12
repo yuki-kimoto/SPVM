@@ -109,7 +109,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_name,
     SPVM_API_RUNTIME_get_basic_type_id_by_name,
     SPVM_API_RUNTIME_get_basic_type_name_id,
-    SPVM_API_RUNTIME_get_basic_type_class_id,
+    NULL, // reserved12
     SPVM_API_RUNTIME_get_basic_type_category,
     NULL, // reserved14
     NULL, // reserved15
@@ -346,17 +346,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_name_id(SPVM_RUNTIME* runtime, int32_t b
   int32_t basic_type_name_id = basic_type->name_id;
   
   return basic_type_name_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_class_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type);
-  
-  int32_t basic_type_class_id = basic_type->class_id;
-  
-  return basic_type_class_id;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name) {
