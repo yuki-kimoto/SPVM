@@ -132,17 +132,17 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_id_by_index,
     SPVM_API_RUNTIME_get_class_var_id_by_name,
     SPVM_API_RUNTIME_get_class_var_name_id,
-    SPVM_API_RUNTIME_get_class_var_class_id,
+    NULL, // reserved35
     SPVM_API_RUNTIME_get_field_id_by_index,
     SPVM_API_RUNTIME_get_field_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
     NULL, // reserved39
-    SPVM_API_RUNTIME_get_field_class_id,
+    NULL, // reserved40
     SPVM_API_RUNTIME_get_method_id_by_index,
     SPVM_API_RUNTIME_get_method_id_by_name,
     SPVM_API_RUNTIME_get_method_name_id,
     NULL, // reserved44,
-    SPVM_API_RUNTIME_get_method_class_id,
+    NULL, // reserved45,
     SPVM_API_RUNTIME_get_method_is_class_method,
     SPVM_API_RUNTIME_get_method_is_anon,
     SPVM_API_RUNTIME_get_method_is_native,
@@ -810,17 +810,6 @@ int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t cl
   return name_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_var_class_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
-  
-  assert(class_var);
-  
-  int32_t class_id = class_var->class_id;
-  
-  return class_id;
-}
-
 int32_t SPVM_API_RUNTIME_get_class_var_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t class_var_id) {
   
   SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_id);
@@ -893,17 +882,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t fi
   SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
   
   return field;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_class_id(SPVM_RUNTIME* runtime, int32_t field_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
-  
-  assert(field);
-  
-  int32_t class_id = field->class_id;
-  
-  return class_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {
@@ -1096,17 +1074,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t 
   SPVM_RUNTIME_METHOD* method = &runtime->methods[method_id];
   
   return method;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_class_id(SPVM_RUNTIME* runtime, int32_t method_id) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
-  
-  assert(method);
-  
-  int32_t class_id = method->class_id;
-  
-  return class_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_class_basic_type_id(SPVM_RUNTIME* runtime, int32_t method_id) {
