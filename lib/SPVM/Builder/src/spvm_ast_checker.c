@@ -609,7 +609,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // Copy has_precomile_attribute from anon method defined class
       if (method->anon_method_defined_class_name) {
-        SPVM_CLASS* anon_method_defined_class = SPVM_HASH_get(compiler->class_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
+        SPVM_BASIC_TYPE* anon_method_defined_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
+        SPVM_CLASS* anon_method_defined_class = anon_method_defined_class_basic_type->class;
+
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
         class->is_precompile = anon_method_defined_class->is_precompile;
       }
