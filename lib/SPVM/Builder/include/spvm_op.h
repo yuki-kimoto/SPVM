@@ -295,11 +295,6 @@ enum {
   SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE = 1,
 };
 
-enum {
-  // TYPE flag
-  SPVM_OP_C_FLAG_TYPE_MUTABLE = 1,
-};
-
 struct spvm_op {
   SPVM_OP* first;
   SPVM_OP* last;
