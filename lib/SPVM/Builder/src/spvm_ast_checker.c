@@ -3101,7 +3101,8 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             }
             
             const char* class_name = type->basic_type->name;
-            SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+            SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+            SPVM_CLASS* class = class_basic_type->class;
             
             assert(class);
             
