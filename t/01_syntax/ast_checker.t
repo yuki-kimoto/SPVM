@@ -1050,6 +1050,10 @@ use Test::More;
     compile_not_ok($source, q|The invocant of the "new" method must be a class type or an interface type|);
   }
   {
+    my $source = 'class MyClass { static method main : void () { my $point = Point->new; } }';
+    compile_not_ok($source, q|The "Point" class is not found|);
+  }
+  {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';
     compile_not_ok($source, q|The "not_defined" method in the "Point" class is not found|);
   }
