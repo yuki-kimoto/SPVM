@@ -2288,6 +2288,7 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   SPVM_VAR_DECL* var_decl = op_var_decl->uv.var_decl;
   if (op_type) {
     var_decl->type = op_type->uv.type;
+    SPVM_OP_insert_child(compiler, op_var, op_var->last, op_type);
   }
   
   // Name OP
