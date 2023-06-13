@@ -398,7 +398,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
       }
       case SPVM_OP_C_ID_CALL_METHOD: {
         SPVM_CALL_METHOD* call_method = op->uv.call_method;
-        call_method->op_invocant = NULL;
         call_method->op_name = NULL;
         call_method->method = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, call_method);

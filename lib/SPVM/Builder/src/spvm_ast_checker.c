@@ -2722,10 +2722,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_class_var);
               
               op_class_var_access->is_dist = op_cur->is_dist;
-              if (op_cur->uv.var->call_method) {
-                op_cur->uv.var->call_method->op_invocant = op_class_var_access;
-              }
-
+              
               SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
               if (op_class_var_access->uv.class_var_access->class_var) {
                 

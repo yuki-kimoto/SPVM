@@ -7,7 +7,6 @@
 #include "spvm_typedecl.h"
 
 struct spvm_call_method {
-  SPVM_OP* op_invocant;
   SPVM_OP* op_name;
   SPVM_METHOD* method;
   const char* class_name;
