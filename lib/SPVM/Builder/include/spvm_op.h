@@ -324,7 +324,6 @@ struct spvm_op {
   int8_t moresib;
   int8_t is_dist;
   int8_t is_assigned_to_var;
-  int8_t free_tmp_vars;
   int8_t allow_narrowing_conversion;
   int8_t original_id;
 };
