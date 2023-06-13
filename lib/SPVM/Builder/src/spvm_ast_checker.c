@@ -2728,7 +2728,6 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               if (op_class_var_access->uv.class_var_access->class_var) {
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
                 
                 // Check field name
                 SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
@@ -2746,6 +2745,8 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                     return;
                   }
                 }
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
                 
                 op_cur = op_class_var_access;
               }
