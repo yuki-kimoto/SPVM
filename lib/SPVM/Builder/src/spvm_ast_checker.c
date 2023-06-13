@@ -65,7 +65,7 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
-
+  
   SPVM_LIST* op_types = compiler->op_types;
   
   // Check type names
@@ -73,10 +73,6 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
     SPVM_TYPE* type = op_type->uv.type;
-
-    if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_SELF) {
-      continue;
-    }
     
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
