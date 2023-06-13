@@ -131,7 +131,7 @@ opt_extends
     {
       $$ = NULL;
     }
-  | EXTENDS class_name
+  | EXTENDS basic_type
     {
       $$ = SPVM_OP_build_extends(compiler, $1, $2);
     }

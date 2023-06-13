@@ -273,8 +273,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->class_file = compiler->cur_file;
   
   if (op_extends) {
-    SPVM_OP* op_name_parent_class = op_extends->first;
+    SPVM_OP* op_type_parent_class = op_extends->first;
+    
+    SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->basic_type->name, op_type_parent_class->file, op_type_parent_class->line);
+    
     class->parent_class_name = op_name_parent_class->uv.name;
+    
     // add use stack
     SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
     SPVM_OP* op_name_class_alias = NULL;
@@ -1013,9 +1017,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   return op_class;
 }
 
-SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_name_parent_class) {
+SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_type_parent_class) {
   
-  SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_name_parent_class);
+  SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_type_parent_class);
   
   return op_extends;
 }
