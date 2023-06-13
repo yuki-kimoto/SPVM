@@ -114,13 +114,12 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
   if (call_method->is_class_method_call) {
     SPVM_METHOD* found_method = NULL;
     // Class name + method name
-    assert(call_method->op_invocant);
     const char* class_name;
     if (call_method->is_current_class) {
       class_name = op_class_current->uv.class->name;
     }
     else {
-      const char* class_name_maybe = call_method->op_invocant->uv.name;
+      const char* class_name_maybe = call_method->class_name;
       SPVM_CLASS* class_current = op_class_current->uv.class;
       class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
       if (class_name == NULL) {
