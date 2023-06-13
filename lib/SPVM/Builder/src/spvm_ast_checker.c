@@ -135,12 +135,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     
     SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    assert(found_class);
     
-    // This checking is needed because in the method call the class is not chekced in some cases.
-    if (!found_class) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded(A class method call).\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
-      return;
-    }
     found_method = SPVM_HASH_get(
       found_class->method_symtable,
       method_name,
@@ -1022,13 +1018,16 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // AST traversals
       if (method->op_block) {
         SPVM_AST_CHECKER_traverse_ast_resolve_op_types(compiler, class, method);
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+          return;
+        }
         
         // AST traversal - Check syntax and generate some operations
         SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
-
+        
         // AST traversal - assign an unassigned operator to a variable
         SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
