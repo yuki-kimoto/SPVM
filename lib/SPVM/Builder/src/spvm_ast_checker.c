@@ -77,9 +77,6 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
     if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_SELF) {
       continue;
     }
-    else if (op_type->flag & SPVM_OP_C_FLAG_TYPE_IS_MAYBE_CLASS_ALIAS) {
-      continue;
-    }
     
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
