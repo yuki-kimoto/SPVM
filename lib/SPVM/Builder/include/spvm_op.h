@@ -290,11 +290,6 @@ enum {
   SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK = 8,
 };
 
-enum {
-  // CONVERT flag
-  SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE = 1,
-};
-
 struct spvm_op {
   SPVM_OP* first;
   SPVM_OP* last;
