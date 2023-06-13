@@ -10,9 +10,10 @@ struct spvm_var {
   const char* name;
   SPVM_OP* op_name;
   SPVM_VAR_DECL* var_decl;
+  SPVM_CALL_METHOD* call_method;
+  SPVM_CLASS_VAR* class_var;
   int8_t is_declaration;
   int8_t is_initialized;
-  SPVM_CALL_METHOD* call_method;
 };
 
 SPVM_VAR* SPVM_VAR_new(SPVM_COMPILER* compiler);

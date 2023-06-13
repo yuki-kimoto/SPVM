@@ -2746,6 +2746,8 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                   }
                 }
                 
+                var->class_var = class_var;
+                
                 SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
                 
                 op_cur = op_class_var_access;
