@@ -245,7 +245,8 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
         return 1;
       }
       else {
-        SPVM_CLASS* cur_parent_class = SPVM_HASH_get(compiler->class_symtable, cur_parent_class_name, strlen(cur_parent_class_name));
+        SPVM_BASIC_TYPE* cur_parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, cur_parent_class_name, strlen(cur_parent_class_name));
+        SPVM_CLASS* cur_parent_class = cur_parent_class_basic_type->class;
         assert(cur_parent_class);
         cur_parent_class_name = cur_parent_class->parent_class_name;
       }
