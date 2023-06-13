@@ -346,6 +346,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_LIST_push(compiler->classes, class);
   SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
   
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+  class_basic_type->class = class;
+  
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   class->op_name = op_name_class;
   

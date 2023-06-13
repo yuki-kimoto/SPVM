@@ -47,12 +47,6 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Resolve basic types
-  SPVM_AST_CHECKER_resolve_basic_types(compiler);
-  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-    return;
-  }
-  
   // Resolve classes
   SPVM_AST_CHECKER_resolve_classes(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -395,18 +389,6 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class->class_var_symtable, base_name, strlen(base_name));
     if (found_class_var) {
       op_class_var_access->uv.class_var_access->class_var = found_class_var;
-    }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
-  SPVM_LIST* basic_types = compiler->basic_types;
-  
-  for (int32_t basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, basic_type_index);
-    SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type->name, strlen(basic_type->name));
-    if (class) {
-      basic_type->class = class;
     }
   }
 }
