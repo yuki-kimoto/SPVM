@@ -109,19 +109,19 @@ classes
   | class
 
 class
-  : CLASS basic_type opt_extends class_block END_OF_FILE
+  : CLASS class_name opt_extends class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
+  | CLASS class_name opt_extends ':' opt_attributes class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
-  | CLASS basic_type opt_extends ';' END_OF_FILE
+  | CLASS class_name opt_extends ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
     }
-  | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  | CLASS class_name opt_extends ':' opt_attributes ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }

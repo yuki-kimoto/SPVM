@@ -257,7 +257,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_name_class, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   // Class
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
@@ -288,7 +288,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
   SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
   
-  if (!op_type) {
+  if (!op_name_class) {
     // Class is anon
     class->is_anon = 1;
     
@@ -313,12 +313,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
     const char* name_class = name_class_string->value;
 
-    SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
-    op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
+    op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
     
     op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
   }
   
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
+    
   const char* class_name = op_type->uv.type->basic_type->name;
   class->type = op_type->uv.type;
 
@@ -349,7 +350,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   class_basic_type->class = class;
   
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
   class->op_name = op_name_class;
   
   class->name = op_name_class->uv.name;
