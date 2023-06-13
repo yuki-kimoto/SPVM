@@ -163,17 +163,13 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_AST_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
-
+  
   SPVM_LIST* types = compiler->types;
   
   // Check type names
   for (int32_t i = 0; i < types->length; i++) {
     SPVM_TYPE* type = SPVM_LIST_get(types, i);
     type->stack_length = SPVM_TYPE_get_stack_length(compiler, type->basic_type->id, type->dimension, type->flag);
-    
-    if (type->basic_type->category == 0) {
-      type->basic_type->category = SPVM_BASIC_TYPE_get_category(compiler, type->basic_type->id);
-    }
   }
 }
 

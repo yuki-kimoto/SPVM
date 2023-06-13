@@ -370,6 +370,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
           class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
+          class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_attributes_count++;
           break;
         }
@@ -394,6 +395,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
           class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
+          class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_attributes_count++;
           break;
         }
@@ -408,6 +410,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     if (access_control_attributes_count > 1) {
       SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
+  }
+  
+  if (class_basic_type->category == 0) {
+    class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
   }
   
   // The default of the access controll is private

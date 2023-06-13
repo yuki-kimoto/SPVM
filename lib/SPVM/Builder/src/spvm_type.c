@@ -670,6 +670,7 @@ SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF);
+  
   int32_t type_dimension = 0;
   int32_t type_flag = 0;
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
