@@ -1982,7 +1982,8 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   if (strstr(op_type->uv.type->name, "::anon::")) {
     
     const char* anon_class_name = op_type->uv.type->name;
-    SPVM_CLASS* anon_class = SPVM_HASH_get(compiler->class_symtable, anon_class_name, strlen(anon_class_name));
+    SPVM_BASIC_TYPE* anon_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
+    SPVM_CLASS* anon_class = anon_class_basic_type->class;
     
     // Anon method
     SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class->methods, 0);
