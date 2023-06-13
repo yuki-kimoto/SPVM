@@ -249,7 +249,8 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   SPVM_OP* op_name = field_access->op_name;
   
   SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_operand);
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
+  SPVM_CLASS* class = class_basic_type->class;
   const char* field_name = op_name->uv.name;
 
   // Search the field of the super class
