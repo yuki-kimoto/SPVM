@@ -64,6 +64,39 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
+void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  SPVM_TYPE* type = op_type->uv.type;
+  
+  // Basic type name
+  const char* basic_type_name = type->basic_type->name;
+  
+  // Check if type name is class
+  if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
+    
+    // Unknonw class
+    SPVM_HASH* class_symtable = compiler->class_symtable;
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
+    if (!found_basic_type) {
+      const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
+      
+      if (not_found_class_name) {
+        type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
+      }
+    }
+  }
+  
+  // Reference type must be numeric refernce type or multi-numeric reference type
+  if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+    if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
+    }
+  }
+}
+
 void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_types = compiler->op_types;
@@ -72,34 +105,8 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
   for (int32_t i = 0; i < op_types->length; i++) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
-    SPVM_TYPE* type = op_type->uv.type;
-    
-    // Basic type name
-    const char* basic_type_name = type->basic_type->name;
-    
-    // Check if type name is class
-    if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
-      
-      // Unknonw class
-      SPVM_HASH* class_symtable = compiler->class_symtable;
-      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
-      if (!found_basic_type) {
-        const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
-        
-        if (not_found_class_name) {
-          type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
-        }
-        else {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
-        }
-      }
-    }
-    
-    // Reference type must be numeric refernce type or multi-numeric reference type
-    if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
-      }
+    if (!op_type->uv.type->maybe_class_name_alias) {
+      SPVM_AST_CHECKER_resolve_op_type(compiler, op_type);
     }
   }
 }
@@ -425,7 +432,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
             SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
             SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-            SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+            SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
+            SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
             SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
           }
         }
@@ -437,7 +445,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
         SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
         SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-        SPVM_OP_build_call_method(compiler, op_call_method, op_name_invocant, op_name_method, op_operators);
+        SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
+        SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
       }
     }

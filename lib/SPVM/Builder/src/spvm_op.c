@@ -2312,12 +2312,16 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   const char* method_name = op_name_method->uv.name;
   
   // Class method call
-  if (op_invocant->id == SPVM_OP_C_ID_NAME || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+  assert(op_invocant->id != SPVM_OP_C_ID_NAME);
+  if (op_invocant->id == SPVM_OP_C_ID_TYPE || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
     call_method->is_class_method_call = 1;
     call_method->op_name = op_name_method;
-    if (op_invocant->id == SPVM_OP_C_ID_NAME) {
-      call_method->class_name = op_invocant->uv.name;
+    if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
+      call_method->class_name = op_invocant->uv.type->basic_type->name;
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
+      
+      // Because the type name maybe an alias of a class name
+      op_invocant->uv.type->maybe_class_name_alias = 1;
     }
     else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
       call_method->is_current_class = 1;
@@ -3513,8 +3517,9 @@ SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
   SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "TRUE", op->file, op->line);
   SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op->file, op->line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   
-  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_name_class, op_name_method, op_operators);
+  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type_class, op_name_method, op_operators);
   
   return op_call_method;
 }
@@ -3525,8 +3530,9 @@ SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
   SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "FALSE", op->file, op->line);
   SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op->file, op->line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   
-  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_name_class, op_name_method, op_operators);
+  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type_class, op_name_method, op_operators);
   
   return op_call_method;
 }
