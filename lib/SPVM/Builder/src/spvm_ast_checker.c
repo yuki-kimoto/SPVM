@@ -75,9 +75,9 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
   if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
     
     // Unknonw class
-    SPVM_HASH* class_symtable = compiler->class_symtable;
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
-    if (!found_basic_type) {
+    SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+    SPVM_CLASS* found_class = found_class_basic_type->class;
+    if (!found_class) {
       const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
       
       if (not_found_class_name) {
