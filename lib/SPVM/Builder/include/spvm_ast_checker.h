@@ -8,6 +8,8 @@
 
 void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler);
 
+void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type);
+
 void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler);
 
 void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_class_current);
@@ -17,6 +19,8 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
 void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_OP* op_class);
 
 void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler);
+
+void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 
 void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 

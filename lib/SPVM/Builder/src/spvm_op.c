@@ -2321,7 +2321,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
       
       // Because the type name maybe an alias of a class name
-      op_invocant->uv.type->maybe_class_name_alias = 1;
+      op_invocant->uv.type->resolved_in_ast = 1;
     }
     else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
       call_method->is_current_class = 1;

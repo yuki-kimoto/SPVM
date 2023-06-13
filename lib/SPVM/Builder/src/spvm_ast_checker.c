@@ -105,7 +105,7 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
   for (int32_t i = 0; i < op_types->length; i++) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
-    if (!op_type->uv.type->maybe_class_name_alias) {
+    if (!op_type->uv.type->resolved_in_ast) {
       SPVM_AST_CHECKER_resolve_op_type(compiler, op_type);
     }
   }
@@ -130,12 +130,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       class_name = op_class_current->uv.class->name;
     }
     else {
-      const char* class_name_maybe = call_method->class_name;
-      SPVM_CLASS* class_current = op_class_current->uv.class;
-      class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
-      if (class_name == NULL) {
-        class_name = class_name_maybe;
-      }
+      SPVM_OP* op_type_class = op_call_method->last;
+      class_name = op_type_class->uv.type->basic_type->name;
     }
     
     SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
@@ -1024,6 +1020,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       // AST traversals
       if (method->op_block) {
+        SPVM_AST_CHECKER_traverse_ast_resolve_op_types(compiler, class, method);
+        
         // AST traversal - Check syntax and generate some operations
         SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -1044,6 +1042,82 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
   }
+}
+
+void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+  
+  // Block stack
+  SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  // Run OPs
+  SPVM_OP* op_root = method->op_block;
+  SPVM_OP* op_cur = op_root;
+  int32_t finish = 0;
+  while (op_cur) {
+    // [START]Preorder traversal position
+    switch (op_cur->id) {
+      // Start scope
+      case SPVM_OP_C_ID_BLOCK: {
+        SPVM_BLOCK* block = op_cur->uv.block;
+        
+        // Push block
+        SPVM_LIST_push(op_block_stack, op_cur);
+        
+        break;
+      }
+    }
+    
+    if (op_cur->first) {
+      op_cur = op_cur->first;
+    }
+    else {
+      while (1) {
+        // [START]Postorder traversal position
+        switch (op_cur->id) {
+          case SPVM_OP_C_ID_TYPE: {
+            SPVM_OP* op_type = op_cur;
+            if (op_type->uv.type->resolved_in_ast) {
+              const char* class_name_maybe = op_type->uv.type->basic_type->name;
+              
+              SPVM_CLASS* class_current = class;
+              const char* class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
+              if (class_name == NULL) {
+                class_name = class_name_maybe;
+              }
+              
+              SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+              op_type->uv.type->basic_type = found_basic_type;
+              
+              SPVM_AST_CHECKER_resolve_op_type(compiler, op_type);
+            }
+            break;
+          }
+        }
+        
+        if (op_cur == op_root) {
+          
+          // Finish
+          finish = 1;
+          
+          break;
+        }
+        
+        // Next sibling
+        if (op_cur->moresib) {
+          op_cur = SPVM_OP_sibling(compiler, op_cur);
+          break;
+        }
+        // Next is parent
+        else {
+          op_cur = op_cur->sibparent;
+        }
+      }
+      if (finish) {
+        break;
+      }
+    }
+  }
+  SPVM_LIST_free(op_block_stack);
 }
 
 void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
@@ -1078,7 +1152,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
       
       SPVM_BASIC_TYPE* not_found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
       
-      if (!not_found_class_basic_type || SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_class_basic_type->id)) {
+      if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_class_basic_type->id)) {
         SPVM_OP_cut_op(compiler, op_block_false);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
         SPVM_OP_replace_op(compiler, op_stab, op_block_false);

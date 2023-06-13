@@ -15,7 +15,7 @@ struct spvm_type {
   int32_t flag;
   int32_t stack_length;
   int32_t id;
-  int8_t maybe_class_name_alias;
+  int8_t resolved_in_ast;
 };
 
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
