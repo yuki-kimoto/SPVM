@@ -77,7 +77,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
             
             SPVM_OPCODE opcode = {0};
             
-            int32_t type_stack_length = arg_type->stack_length;
+            int32_t type_stack_length = SPVM_TYPE_get_stack_length(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
             if (arg_type_dimension == 0) {
               if (arg_type_is_ref) {

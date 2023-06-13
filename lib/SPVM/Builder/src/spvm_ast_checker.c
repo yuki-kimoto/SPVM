@@ -53,9 +53,6 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Resolve types
-  SPVM_AST_CHECKER_resolve_types(compiler);
-  
   // Check syntax and generate operations in classes
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
@@ -159,17 +156,6 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
       SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
     }
-  }
-}
-
-void SPVM_AST_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
-  
-  SPVM_LIST* types = compiler->types;
-  
-  // Check type names
-  for (int32_t i = 0; i < types->length; i++) {
-    SPVM_TYPE* type = SPVM_LIST_get(types, i);
-    type->stack_length = SPVM_TYPE_get_stack_length(compiler, type->basic_type->id, type->dimension, type->flag);
   }
 }
 
