@@ -143,24 +143,9 @@ int32_t SPVM_BASIC_TYPE_is_mulnum_type(SPVM_COMPILER* compiler, int32_t basic_ty
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
-  int32_t is_mulnum_t;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-  // Class
-  if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      is_mulnum_t = 1;
-    }
-    else {
-      is_mulnum_t = 0;
-    }
-  }
-  // Numeric type
-  else {
-    is_mulnum_t = 0;
-  }
+  int32_t is_mulnum_type = (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM);
   
-  return is_mulnum_t;
+  return is_mulnum_type;
 }
 
 int32_t SPVM_BASIC_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
@@ -172,22 +157,7 @@ int32_t SPVM_BASIC_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_typ
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
-  int32_t is_class_type;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-  // Class
-  if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
-      is_class_type = 1;
-    }
-    else {
-      is_class_type = 0;
-    }
-  }
-  // Numeric type
-  else {
-    is_class_type = 0;
-  }
+  int32_t is_class_type = (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
   
   return is_class_type;
 }
@@ -195,22 +165,7 @@ int32_t SPVM_BASIC_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_typ
 int32_t SPVM_BASIC_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
-  int32_t is_interface_type;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-  // Class
-  if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-      is_interface_type = 1;
-    }
-    else {
-      is_interface_type = 0;
-    }
-  }
-  // Numeric type
-  else {
-    is_interface_type = 0;
-  }
+  int32_t is_interface_type = (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE);
   
   return is_interface_type;
 }
