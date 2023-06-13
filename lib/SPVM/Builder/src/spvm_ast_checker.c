@@ -84,7 +84,7 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
         type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
       }
     }
   }
@@ -135,6 +135,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     
     SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    
     // This checking is needed because in the method call the class is not chekced in some cases.
     if (!found_class) {
       SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded(A class method call).\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
