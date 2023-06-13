@@ -368,7 +368,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, interface);
         break;
       }
-      case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
+      case SPVM_OP_C_ID_CLASS_VAR: {
         SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
         class_var_access->op_name = NULL;
         class_var_access->class_var = NULL;

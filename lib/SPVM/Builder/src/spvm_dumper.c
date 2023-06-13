@@ -75,7 +75,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         break;
       }
     }
-    else if (id == SPVM_OP_C_ID_CLASS_VAR) {
+    else if (id == SPVM_OP_C_ID_CLASS_VAR_DEFINE) {
       SPVM_CLASS_VAR* class_var = op_cur->uv.class_var;
       fprintf(stderr, " \"%s\"", class_var->name);
       fprintf(stderr, " (id :%d)", class_var->id);
@@ -90,7 +90,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         fprintf(stderr, " (var_decl->id:not yet resolved)");
       }
     }
-    else if (id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
+    else if (id == SPVM_OP_C_ID_CLASS_VAR) {
       SPVM_CLASS_VAR_ACCESS* class_var_access = op_cur->uv.class_var_access;
       fprintf(stderr, " \"%s\"", class_var_access->op_name->uv.name);
       fprintf(stderr, " (id :%d)", class_var_access->class_var->id);

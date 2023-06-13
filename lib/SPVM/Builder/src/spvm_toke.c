@@ -1920,7 +1920,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = OF;
                 }
                 else if (strcmp(symbol_name, "our") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR);
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_DEFINE);
                   keyword_token = OUR;
                 }
                 else if (strcmp(symbol_name, "object") == 0) {

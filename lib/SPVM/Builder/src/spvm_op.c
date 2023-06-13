@@ -197,8 +197,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ISWEAK_FIELD",
     "SPECIAL_ASSIGN",
     "CONCAT",
+    "CLASS_VAR_DEFINE",
     "CLASS_VAR",
-    "CLASS_VAR_ACCESS",
     "ARRAY_INIT",
     "BOOL",
     "CHECK_CONVERT",
@@ -534,7 +534,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_LIST_push(class->interface_decls, op_decl->uv.interface);
       }
       // Class var declarations
-      else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
+      else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR_DEFINE) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
         
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
@@ -3166,7 +3166,7 @@ SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
   
   const char* class_var_name = op_class_var_name->uv.name;
   
-  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, op_class_var_name->file, op_class_var_name->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR, op_class_var_name->file, op_class_var_name->line);
 
   SPVM_CLASS_VAR_ACCESS* class_var_access = SPVM_CLASS_VAR_ACCESS_new(compiler);
   class_var_access->op_name = op_class_var_name;
@@ -3620,7 +3620,7 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   switch (op->id) {
     case SPVM_OP_C_ID_VAR:
-    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+    case SPVM_OP_C_ID_CLASS_VAR:
     case SPVM_OP_C_ID_ARRAY_ACCESS:
     case SPVM_OP_C_ID_FIELD_ACCESS:
     case SPVM_OP_C_ID_DEREF:
@@ -3956,14 +3956,14 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = var->var_decl->type;
       break;
     }
-    case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
+    case SPVM_OP_C_ID_CLASS_VAR: {
       SPVM_CLASS_VAR* class_var = op->uv.class_var_access->class_var;
       if (class_var->type) {
         type = class_var->type;
       }
       break;
     }
-    case SPVM_OP_C_ID_CLASS_VAR: {
+    case SPVM_OP_C_ID_CLASS_VAR_DEFINE: {
       SPVM_CLASS_VAR* class_var = op->uv.class_var;
       if (class_var->type) {
         type = class_var->type;

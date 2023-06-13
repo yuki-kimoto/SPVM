@@ -3161,7 +3161,7 @@ void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* co
               case SPVM_OP_C_ID_DUMP:
               case SPVM_OP_C_ID_NEW_STRING_LEN:
               case SPVM_OP_C_ID_EXCEPTION_VAR:
-              case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+              case SPVM_OP_C_ID_CLASS_VAR:
               case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
               case SPVM_OP_C_ID_CREATE_REF:
               case SPVM_OP_C_ID_DEREF:
