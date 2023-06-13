@@ -638,7 +638,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->name_id = basic_type_string->id;
     
     if (basic_type->class) {
-      SPVM_CLASS* class = SPVM_HASH_get(compiler->class_symtable, basic_type->name, strlen(basic_type->name));
+      SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name));
+      SPVM_CLASS* class = class_basic_type->class;
       
       runtime_basic_type->is_class = 1;
       
