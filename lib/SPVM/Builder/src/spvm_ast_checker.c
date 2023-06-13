@@ -116,7 +116,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     // Class name + method name
     assert(call_method->op_invocant);
     const char* class_name;
-    if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+    if (call_method->is_current_class) {
       class_name = op_class_current->uv.class->name;
     }
     else {

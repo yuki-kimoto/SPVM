@@ -2317,6 +2317,9 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     call_method->is_class_method_call = 1;
     call_method->op_invocant = op_invocant;
     call_method->op_name = op_name_method;
+    if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+      call_method->is_current_class = 1;
+    }
   }
   // Instance method call
   else {
