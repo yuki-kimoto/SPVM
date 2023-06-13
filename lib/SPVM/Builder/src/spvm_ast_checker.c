@@ -134,7 +134,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
     // This checking is needed because in the method call the class is not chekced in some cases.
     if (!found_class) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded(A class method call).\n  at %s line %d", class_name, op_call_method->file, op_call_method->line);
       return;
     }
     found_method = SPVM_HASH_get(

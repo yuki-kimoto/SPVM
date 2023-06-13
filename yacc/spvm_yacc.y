@@ -202,20 +202,20 @@ version_decl
     }
 
 use
-  : USE class_name ';'
+  : USE basic_type ';'
     {
       int32_t is_require = 0;
       SPVM_OP* op_name_class_alias = NULL;
       $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
     }
-  | USE class_name AS class_alias_name ';'
+  | USE basic_type AS class_alias_name ';'
     {
       int32_t is_require = 0;
       $$ = SPVM_OP_build_use(compiler, $1, $2, $4, is_require);
     }
 
 require
-  : REQUIRE class_name
+  : REQUIRE basic_type
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       int32_t is_require = 1;
@@ -223,20 +223,20 @@ require
     }
 
 alias
-  : ALIAS class_name AS class_alias_name ';'
+  : ALIAS basic_type AS class_alias_name ';'
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_alias(compiler, op_use, $2, $4);
     }
 
 allow
-  : ALLOW class_name ';'
+  : ALLOW basic_type ';'
     {
       $$ = SPVM_OP_build_allow(compiler, $1, $2);
     }
 
 interface
-  : INTERFACE class_name ';'
+  : INTERFACE basic_type ';'
     {
       $$ = SPVM_OP_build_implement(compiler, $1, $2);
     }

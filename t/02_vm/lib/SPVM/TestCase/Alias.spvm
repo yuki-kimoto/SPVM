@@ -5,9 +5,6 @@ class TestCase::Alias {
   # require alias
   alias TestCase::Simple as Si;
 
-  # not exists alias 
-  alias NotExist::XXXXXXXXXXXX as No;
-  
   static method alias : int () {
     
     # use alias

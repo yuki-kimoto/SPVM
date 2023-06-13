@@ -283,7 +283,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
     SPVM_OP* op_name_class_alias = NULL;
     int32_t is_require = 0;
-    SPVM_OP_build_use(compiler, op_use, op_name_parent_class, op_name_class_alias, is_require);
+    SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_class_alias, is_require);
   }
   
   if (class->class_path) {
@@ -1031,45 +1031,45 @@ SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version
   return op_version_decl;
 }
 
-SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_name_class) {
+SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type_class) {
   
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
-  allow->class_name = op_name_class->uv.name;
+  allow->class_name = op_type_class->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
   SPVM_OP* op_name_class_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_class_alias, is_require);
   
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias) {
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_class_alias) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
-  use->class_name = op_name_class->uv.name;
+  use->class_name = op_type_class->uv.type->basic_type->name;
   const char* class_alias_name = op_name_class_alias->uv.name;
   use->class_alias_name = class_alias_name;
   
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
   use->is_require = is_require;
-  use->class_name = op_name_class->uv.name;
+  use->class_name = op_type_class->uv.type->basic_type->name;
   
   if (op_name_class_alias) {
     const char* class_alias_name = op_name_class_alias->uv.name;
     use->class_alias_name = class_alias_name;
   }
-
+  
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   
   return op_use;
@@ -2261,18 +2261,18 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   return op_type_cast;
 }
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_name_class) {
+SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type_class) {
   
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;
   interface->op_interface = op_interface;
-  interface->class_name = op_name_class->uv.name;
+  interface->class_name = op_type_class->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
   SPVM_OP* op_name_class_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_name_class, op_name_class_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_class_alias, is_require);
   
   return op_interface;
 }
