@@ -189,7 +189,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         }
       }
       else {
-        SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, abs_method_name, class_name_length);
+        SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, class_name_length);
+        SPVM_CLASS* found_class = found_class_basic_type->class;
         if (!found_class) {
           class = found_method->class;
           SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
