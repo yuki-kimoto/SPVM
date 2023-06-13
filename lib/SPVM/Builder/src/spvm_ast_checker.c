@@ -313,7 +313,8 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
     base_name = (char*)name;
   }
   
-  SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+  SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+  SPVM_CLASS* found_class = found_class_basic_type->class;
   if (found_class) {
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class->class_var_symtable, base_name, strlen(base_name));
     if (found_class_var) {
@@ -418,7 +419,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
         const char* use_class_name = SPVM_LIST_get(use_class_names, i);
         
-        SPVM_CLASS* use_class = SPVM_HASH_get(compiler->class_symtable, use_class_name, strlen(use_class_name));
+        SPVM_BASIC_TYPE* use_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
+        SPVM_CLASS* use_class = use_class_basic_type->class;
         if (use_class) {
           if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
             SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
