@@ -53,48 +53,6 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Check syntax and generate operations in classes
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    SPVM_LIST* methods = class->methods;
-    
-    // Check syntax and generate operations in methods
-    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
-      
-      assert(method->class->class_file);
-      
-      // Add variable declarations if the block does not exist
-      if (!method->op_block) {
-        for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
-          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-          SPVM_LIST_push(method->var_decls, arg_var_decl);
-        }
-      }
-      
-      // AST traversals
-      if (method->op_block) {
-        // AST traversal - Check syntax and generate some operations
-        SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
-        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          return;
-        }
-
-        // AST traversal - assign an unassigned operator to a variable
-        SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class, method);
-        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-        
-        // AST traversal - Check if a block needs "leave scope" operation
-        SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(compiler, class, method);
-        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-        
-        // AST traversal - Resolve call stack ids of variable declarations
-        SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(compiler, class, method);
-        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-      }
-    }
-  }
-
 #ifdef SPVM_DEBUG_COMPILE
   if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
     fprintf(stderr, "\n[Basic types]\n");
@@ -1045,6 +1003,48 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
     class->id = class_index;
+  }
+  
+  // Check syntax and generate operations in classes
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+    SPVM_LIST* methods = class->methods;
+    
+    // Check syntax and generate operations in methods
+    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
+      
+      assert(method->class->class_file);
+      
+      // Add variable declarations if the block does not exist
+      if (!method->op_block) {
+        for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+          SPVM_LIST_push(method->var_decls, arg_var_decl);
+        }
+      }
+      
+      // AST traversals
+      if (method->op_block) {
+        // AST traversal - Check syntax and generate some operations
+        SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+          return;
+        }
+
+        // AST traversal - assign an unassigned operator to a variable
+        SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+        
+        // AST traversal - Check if a block needs "leave scope" operation
+        SPVM_AST_CHECKER_traverse_ast_check_if_block_need_leave_scope(compiler, class, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+        
+        // AST traversal - Resolve call stack ids of variable declarations
+        SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(compiler, class, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+      }
+    }
   }
 }
 
