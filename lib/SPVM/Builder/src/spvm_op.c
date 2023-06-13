@@ -3020,6 +3020,11 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_el
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
+
+  // mutable only allow string type
+  if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
+    SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
+  }
   
   return op_type;
 }
