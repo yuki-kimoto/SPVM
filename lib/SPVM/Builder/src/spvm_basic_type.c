@@ -162,18 +162,8 @@ int32_t SPVM_BASIC_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
-  int32_t is_not_found_class_type;
-  const char* basic_type_name = basic_type->name;
-  SPVM_CLASS* class = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
-  // Class
-  if (class) {
-    is_not_found_class_type = 1;
-  }
-  // Numeric type
-  else {
-    is_not_found_class_type = 0;
-  }
-
+  int32_t is_not_found_class_type = (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS);
+  
   return is_not_found_class_type;
 }
 

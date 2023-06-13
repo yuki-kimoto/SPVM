@@ -82,9 +82,14 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
       
       // Unknonw class
       SPVM_HASH* class_symtable = compiler->class_symtable;
-      SPVM_CLASS* found_class = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
-      if (!found_class) {
-        if (!SPVM_BASIC_TYPE_is_not_found_class_type(compiler, type->basic_type->id)) {
+      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(class_symtable, basic_type_name, strlen(basic_type_name));
+      if (!found_basic_type) {
+        const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
+        
+        if (not_found_class_name) {
+          type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
+        }
+        else {
           SPVM_COMPILER_error(compiler, "The \"%s\" class is not yet loaded.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
         }
       }
@@ -1064,7 +1069,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
       
       SPVM_BASIC_TYPE* not_found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
       
-      if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_class_basic_type->id)) {
+      if (!not_found_class_basic_type || SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_class_basic_type->id)) {
         SPVM_OP_cut_op(compiler, op_block_false);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
         SPVM_OP_replace_op(compiler, op_stab, op_block_false);
