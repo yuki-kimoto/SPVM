@@ -134,7 +134,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       class_name = op_type_class->uv.type->basic_type->name;
     }
     
-    SPVM_CLASS* found_class = SPVM_HASH_get(compiler->class_symtable, class_name, strlen(class_name));
+    SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+    SPVM_CLASS* found_class = found_class_basic_type->class;
     assert(found_class);
     
     found_method = SPVM_HASH_get(
