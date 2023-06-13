@@ -2167,9 +2167,8 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
   
   SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
   
-  field_access->op_invocant = op_invocant;
   field_access->op_name = op_name_field;
-
+  
   return op_field_access;
 }
 

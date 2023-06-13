@@ -7,7 +7,6 @@
 #include "spvm_typedecl.h"
 
 struct spvm_field_access {
-  SPVM_OP* op_invocant;
   SPVM_OP* op_name;
   SPVM_FIELD* field;
 };
