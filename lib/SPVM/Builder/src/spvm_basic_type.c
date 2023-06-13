@@ -74,46 +74,6 @@ const char* SPVM_BASIC_TYPE_get_basic_type_name(int32_t basic_type_id) {
 
 int32_t SPVM_TYPE_get_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-int32_t SPVM_BASIC_TYPE_get_category(SPVM_COMPILER* compiler, int32_t basic_type_id) {
-  
-  int32_t category;
-  if (SPVM_BASIC_TYPE_is_void_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID;
-  }
-  else if (SPVM_BASIC_TYPE_is_numeric_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC;
-  }
-  else if (SPVM_BASIC_TYPE_is_mulnum_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
-  }
-  else if (SPVM_BASIC_TYPE_is_string_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING;
-  }
-  else if (SPVM_BASIC_TYPE_is_class_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
-  }
-  else if (SPVM_BASIC_TYPE_is_interface_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
-  }
-  else if (SPVM_BASIC_TYPE_is_any_object_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT;
-  }
-  else if (SPVM_BASIC_TYPE_is_undef_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF;
-  }
-  else if (SPVM_BASIC_TYPE_is_unknown_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN;
-  }
-  else if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, basic_type_id)) {
-    category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
-  }
-  else {
-    assert(0);
-  }
-  
-  return category;
-}
-
 int32_t SPVM_BASIC_TYPE_is_void_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
   
   if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID) {
