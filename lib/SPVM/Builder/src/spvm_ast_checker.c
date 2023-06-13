@@ -2772,7 +2772,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               return;
             }
             
-            SPVM_OP* op_list_args = op_cur->last;
+            SPVM_OP* op_list_args = op_cur->first;
             
             SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             const char* method_name = call_method->method->name;

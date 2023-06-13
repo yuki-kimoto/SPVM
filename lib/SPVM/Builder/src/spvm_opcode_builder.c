@@ -1118,7 +1118,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method_method_class->method_symtable, call_method_method_name, strlen(call_method_method_name));
                           
                           int32_t first_arg_call_stack_id = -1;
-                          SPVM_OP* op_term_args = op_assign_src->last;
+                          SPVM_OP* op_term_args = op_assign_src->first;
                           SPVM_OP* op_term_arg = op_term_args->first;
 
                           SPVM_LIST* args = method_call_method->var_decls;

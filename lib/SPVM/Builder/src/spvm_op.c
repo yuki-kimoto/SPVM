@@ -2317,6 +2317,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     call_method->op_name = op_name_method;
     if (op_invocant->id == SPVM_OP_C_ID_NAME) {
       call_method->class_name = op_invocant->uv.name;
+      SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
     }
     else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
       call_method->is_current_class = 1;
