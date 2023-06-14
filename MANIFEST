@@ -79,7 +79,6 @@ lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
 lib/SPVM/Builder/include/spvm_call_method.h
 lib/SPVM/Builder/include/spvm_case_info.h
-lib/SPVM/Builder/include/spvm_check_ast_info.h
 lib/SPVM/Builder/include/spvm_class.h
 lib/SPVM/Builder/include/spvm_class_var.h
 lib/SPVM/Builder/include/spvm_class_var_access.h

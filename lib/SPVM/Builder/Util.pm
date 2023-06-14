@@ -489,7 +489,6 @@ sub get_spvm_core_header_file_names {
     spvm_block.h
     spvm_call_method.h
     spvm_case_info.h
-    spvm_check_ast_info.h
     spvm_class.h
     spvm_class_var_access.h
     spvm_class_var.h
