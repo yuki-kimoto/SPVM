@@ -555,7 +555,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->methods, op_method->uv.method);
+          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
         }
         
         // Setter
@@ -621,7 +621,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->methods, op_method->uv.method);
+          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
         }
       }
       // Field declarations
@@ -675,7 +675,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->methods, op_method->uv.method);
+          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
         }
 
         // Setter
@@ -737,7 +737,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->methods, op_method->uv.method);
+          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
         }
       }
       // Enumeration definition
@@ -746,12 +746,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_OP* op_enumeration_values = op_enum_block->first;
         SPVM_OP* op_method = op_enumeration_values->first;
         while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-          SPVM_LIST_push(class->methods, op_method->uv.method);
+          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
         }
       }
       // Method definition
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
-        SPVM_LIST_push(class->methods, op_decl->uv.method);
+        SPVM_LIST_push(class->type->basic_type->methods, op_decl->uv.method);
         
         // Fields of anon method
         SPVM_LIST* anon_method_fields = op_decl->uv.method->anon_method_fields;
@@ -831,8 +831,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   {
     // Check INIT block existance
     int32_t has_init_block = 0;
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+    for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
       if (method->is_init) {
         has_init_block = 1;
         break;
@@ -852,13 +852,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       
       SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
       
-      SPVM_LIST_push(class->methods, op_method->uv.method);
+      SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
     }
   }
   
   // Method declarations
-  for (int32_t i = 0; i < class->methods->length; i++) {
-    SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+  for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
+    SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
     
     SPVM_OP* op_name_method = method->op_name;
     const char* method_name = op_name_method->uv.name;
@@ -970,7 +970,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // mulnum_t
   if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-    if (class->methods->length > 0) {
+    if (class->type->basic_type->methods->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (class->class_vars->length > 0) {
@@ -2002,7 +2002,7 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     SPVM_CLASS* anon_class = anon_class_basic_type->class;
     
     // Anon method
-    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class->methods, 0);
+    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class->type->basic_type->methods, 0);
     if (anon_method->anon_method_fields->length) {
       // [Before]
       // new Foo::anon::Line::Column

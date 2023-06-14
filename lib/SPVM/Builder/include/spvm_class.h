@@ -32,7 +32,6 @@ struct spvm_class {
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_LIST* merged_fields;
-  SPVM_LIST* methods;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

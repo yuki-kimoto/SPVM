@@ -436,7 +436,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     
     SPVM_LIST_free(class_basic_type->allows);
     
-    SPVM_LIST* methods = class->methods;
+    SPVM_LIST* methods = class->type->basic_type->methods;
     {
       int32_t method_index;
       for (method_index = 0; method_index < methods->length; method_index++) {
@@ -703,9 +703,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->required_method_id = -1;
       }
       
-      runtime_basic_type->methods_length = class->methods->length;
-      if (class->methods->length > 0) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, 0);
+      runtime_basic_type->methods_length = class->type->basic_type->methods->length;
+      if (class->type->basic_type->methods->length > 0) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, 0);
         runtime_basic_type->methods_base_id = method->id;
       }
       else {

@@ -204,8 +204,8 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     }
     {
       int32_t j;
-      for (j = 0; j < class->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
+      for (j = 0; j < class->type->basic_type->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method(compiler, method);
       }
@@ -229,8 +229,8 @@ void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIS
     
     {
       int32_t j;
-      for (j = 0; j < class->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
+      for (j = 0; j < class->type->basic_type->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method_opcode_array(compiler, method);
       }

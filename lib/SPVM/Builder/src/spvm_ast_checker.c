@@ -530,8 +530,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     // Check methods
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+    for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
       
       // Argument limit check
       int32_t args_stack_length = 0;
@@ -687,14 +687,14 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     
-    SPVM_LIST* methods = class->methods;
+    SPVM_LIST* methods = class->type->basic_type->methods;
     
     // Sort methods by name
     qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_AST_CHECKER_method_name_compare_cb);
     
     // Create method ids
-    for (int32_t i = 0; i < class->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
+    for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
       
       // Set method precompile flag if class have precompile attribute
       if (class_basic_type->is_precompile) {
@@ -877,8 +877,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
-    for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
+    for (int32_t method_index = 0; method_index < class->type->basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, method_index);
       
       // Interface methods and the method of the super class
       for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length + 1; interface_index++) {
@@ -904,8 +904,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         if (interface) {
-          for (int32_t interface_method_index = 0; interface_method_index < interface->methods->length; interface_method_index++) {
-            SPVM_METHOD* interface_method = SPVM_LIST_get(interface->methods, interface_method_index);
+          for (int32_t interface_method_index = 0; interface_method_index < interface->type->basic_type->methods->length; interface_method_index++) {
+            SPVM_METHOD* interface_method = SPVM_LIST_get(interface->type->basic_type->methods, interface_method_index);
             
             if (strcmp(method->name, interface_method->name) == 0) {
               if (method->is_class_method) {
@@ -1021,7 +1021,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
-    SPVM_LIST* methods = class->methods;
+    SPVM_LIST* methods = class->type->basic_type->methods;
     
     // Check syntax and generate operations in methods
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {

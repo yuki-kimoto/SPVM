@@ -49,7 +49,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
-    SPVM_LIST* methods = class->methods;
+    SPVM_LIST* methods = class->type->basic_type->methods;
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
