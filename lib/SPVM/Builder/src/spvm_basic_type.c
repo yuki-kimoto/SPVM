@@ -8,7 +8,6 @@
 #include "spvm_compiler.h"
 #include "spvm_basic_type.h"
 #include "spvm_allocator.h"
-#include "spvm_class.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_method.h"
@@ -256,13 +255,10 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
   SPVM_BASIC_TYPE* super_basic_type = SPVM_LIST_get(compiler->basic_types, super_basic_type_id);
   SPVM_BASIC_TYPE* child_basic_type = SPVM_LIST_get(compiler->basic_types, child_basic_type_id);
   
-  SPVM_CLASS* super_class = super_basic_type->class;
-  SPVM_CLASS* child_class = child_basic_type->class;
-  
-  const char* cur_parent_class_name = child_class->type->basic_type->parent_class_name;
+  const char* cur_parent_class_name = child_basic_type->parent_class_name;
   while (1) {
     if (cur_parent_class_name) {
-      if (strcmp(super_class->type->basic_type->name, cur_parent_class_name) == 0) {
+      if (strcmp(super_basic_type->name, cur_parent_class_name) == 0) {
         return 1;
       }
       else {
