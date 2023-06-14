@@ -37,8 +37,5 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   class->method_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
-  // Interfaces
-  class->interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  
   return class;
 }

@@ -677,7 +677,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      SPVM_LIST_push(class->interfaces, interface);
+      SPVM_LIST_push(class_basic_type->interfaces, interface);
       SPVM_HASH_set(class_basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
     }
   }
@@ -824,7 +824,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       // All interfaces
-      SPVM_LIST* interfaces = class->interfaces;
+      SPVM_LIST* interfaces = class->type->basic_type->interfaces;
       for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
         SPVM_CLASS* interface = SPVM_LIST_get(interfaces, interface_index);
         SPVM_LIST_push(merged_interfaces, interface);
@@ -834,12 +834,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     class->merged_fields = merged_fields;
     
     // Add parent interfaces
-    class->interfaces = merged_interfaces;
+    class->type->basic_type->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
       SPVM_CLASS* found_interface = SPVM_HASH_get(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name));
       if (!found_interface) {
-        SPVM_LIST_push(class->interfaces, interface);
+        SPVM_LIST_push(class->type->basic_type->interfaces, interface);
         SPVM_HASH_set(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
       }
     }
@@ -855,8 +855,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
-    for (int32_t interface_index = 0; interface_index < class->interfaces->length; interface_index++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
+    for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length; interface_index++) {
+      SPVM_CLASS* interface = SPVM_LIST_get(class->type->basic_type->interfaces, interface_index);
       assert(interface);
       
       SPVM_METHOD* interface_required_method = interface->type->basic_type->required_method;
@@ -881,13 +881,13 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, method_index);
       
       // Interface methods and the method of the super class
-      for (int32_t interface_index = 0; interface_index < class->interfaces->length + 1; interface_index++) {
+      for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length + 1; interface_index++) {
         
         SPVM_CLASS* interface = NULL;
         
         // Super class
         char* class_desc = NULL;
-        if (interface_index == class->interfaces->length) {
+        if (interface_index == class->type->basic_type->interfaces->length) {
           class_desc = "class";
           if (class->parent_class) {
             SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->parent_class, method->name);
@@ -899,7 +899,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         // Interface
         else {
           class_desc = "interface";
-          interface = SPVM_LIST_get(class->interfaces, interface_index);
+          interface = SPVM_LIST_get(class->type->basic_type->interfaces, interface_index);
           assert(interface);
         }
         
