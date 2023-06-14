@@ -299,8 +299,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // Assert
   SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-  SPVM_CLASS* found_class = found_class_basic_type->class;
-  if (found_class) { assert(0); }
 
   SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   class_basic_type->class = class;
@@ -2001,10 +1999,9 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     
     const char* anon_class_name = op_type->uv.type->basic_type->name;
     SPVM_BASIC_TYPE* anon_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
-    SPVM_CLASS* anon_class = anon_class_basic_type->class;
     
     // Anon method
-    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class->type->basic_type->methods, 0);
+    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class_basic_type->methods, 0);
     if (anon_method->anon_method_fields->length) {
       // [Before]
       // new Foo::anon::Line::Column
@@ -4009,8 +4006,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_METHOD: {
       SPVM_CALL_METHOD*call_method = op->uv.call_method;
       const char*call_method_method_name =call_method->method->name;
-      SPVM_CLASS*call_method_method_class =call_method->method->class;
-      SPVM_METHOD* method = SPVM_HASH_get(call_method_method_class->type->basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
+      SPVM_METHOD* method = SPVM_HASH_get(call_method->method->class_basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
       type = method->return_type;
       break;
     }
