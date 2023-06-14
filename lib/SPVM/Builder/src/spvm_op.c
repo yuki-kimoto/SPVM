@@ -814,13 +814,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
     const char* class_var_name = class_var->name;
 
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->class_var_symtable, class_var_name, strlen(class_var_name));
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
     }
     else {
-      SPVM_HASH_set(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
+      SPVM_HASH_set(class->type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
       
       // Add op class
       class_var->class = class;

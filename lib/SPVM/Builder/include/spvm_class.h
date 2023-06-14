@@ -28,7 +28,6 @@ struct spvm_class {
   const char* version_string;
   SPVM_TYPE* type;
   SPVM_LIST* class_vars;
-  SPVM_HASH* class_var_symtable;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
