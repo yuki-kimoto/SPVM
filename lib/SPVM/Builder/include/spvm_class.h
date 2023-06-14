@@ -44,7 +44,6 @@ struct spvm_class {
   SPVM_CLASS* parent_class;
   int32_t merged_fields_original_offset;
   int32_t fields_size;
-  int8_t has_init_block;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

@@ -655,7 +655,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       else {
         runtime_basic_type->class_path_id = -1;
       }
-      runtime_basic_type->has_init_block = class->has_init_block;
+      runtime_basic_type->has_init_block = basic_type->has_init_block;
       runtime_basic_type->is_anon = basic_type->is_anon;
       runtime_basic_type->is_pointer = class_basic_type->is_pointer;
       if (class->parent_class_name) {
