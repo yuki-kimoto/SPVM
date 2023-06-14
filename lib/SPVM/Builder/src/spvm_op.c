@@ -360,7 +360,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
-          class->is_precompile = 1;
+          class_basic_type->is_precompile = 1;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {

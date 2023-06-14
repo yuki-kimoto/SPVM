@@ -618,7 +618,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_CLASS* anon_method_defined_class = anon_method_defined_class_basic_type->class;
 
         SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
-        class->is_precompile = anon_method_defined_class->is_precompile;
+        class_basic_type->is_precompile = anon_method_defined_class_basic_type->is_precompile;
       }
     }
     
@@ -697,7 +697,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(class->methods, i);
       
       // Set method precompile flag if class have precompile attribute
-      if (class->is_precompile) {
+      if (class_basic_type->is_precompile) {
         int32_t can_precompile;
         if (method->is_init) {
           can_precompile = 0;
