@@ -3214,7 +3214,6 @@ SPVM_BASIC_TYPE* SPVM_OP_new_basic_type(SPVM_COMPILER* compiler, const char* bas
 }
 
 SPVM_OP* SPVM_OP_clone_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
-  (void)compiler;
   
   SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, op_var->uv.var->name, op_var->file, op_var->line);
   SPVM_OP* op_var_clone = SPVM_OP_new_op_var(compiler, op_name);
@@ -3226,7 +3225,6 @@ SPVM_OP* SPVM_OP_clone_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
 }
 
 SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign) {
-  (void)compiler;
   
   SPVM_OP* original_op_var;
   if (original_op_var_or_assign->id == SPVM_OP_C_ID_ASSIGN) {
@@ -3275,7 +3273,6 @@ SPVM_OP* SPVM_OP_clone_op_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_arra
 }
 
 SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  (void)compiler;
   
   SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, file, line);
   
@@ -3306,7 +3303,6 @@ SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* o
 }
 
 SPVM_OP* SPVM_OP_clone_op_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
-  (void)compiler;
   
   SPVM_OP* op_deref_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, op_deref->file, op_deref->line);
   
@@ -3618,13 +3614,12 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, i
   return op;
 }
 
-int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist) {
-  (void)compiler;
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_current, SPVM_BASIC_TYPE* basic_type_dist) {
   
-  SPVM_LIST* allows = class_dist->type->basic_type->allows;
+  SPVM_LIST* allows = basic_type_dist->allows;
   
-  const char* current_class_name = class_current->type->basic_type->name;
-  const char* dist_class_name = class_dist->type->basic_type->name;
+  const char* current_class_name = basic_type_current->name;
+  const char* dist_class_name = basic_type_dist->name;
   
   int32_t is_allowed = 0;
   if (strcmp(current_class_name, dist_class_name) == 0) {
@@ -3645,7 +3640,6 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, S
 }
 
 int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
   
   switch (op->id) {
     case SPVM_OP_C_ID_VAR:
@@ -3662,7 +3656,6 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
 }
 
 int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
   
   switch (op->id) {
     case SPVM_OP_C_ID_NUMERIC_EQ:
@@ -3692,7 +3685,6 @@ int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
 }
 
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
-  (void)compiler;
   
   SPVM_OP* op_parent;
   SPVM_OP* op_cur = op_target;
@@ -3738,7 +3730,6 @@ void SPVM_OP_get_before(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP** o
 
 // Replace target op with replace op
 void SPVM_OP_replace_op(SPVM_COMPILER* compiler, SPVM_OP* op_target, SPVM_OP* op_replace) {
-  (void)compiler;
   
   // Get parent op
   SPVM_OP* op_parent = SPVM_OP_get_parent(compiler, op_target);
@@ -4122,7 +4113,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
 
 // Insert child. Child must not have sibling.
 void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert) {
-  (void)compiler;
   
   // del_count not used
   assert(parent);
@@ -4164,7 +4154,6 @@ void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* sta
 }
 
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
   
   return op->moresib ? op->sibparent : NULL;
 }
