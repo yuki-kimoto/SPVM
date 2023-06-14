@@ -298,6 +298,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->type = op_type->uv.type;
   
   if (strstr(class_name, "::anon::")) {
+    class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     class->is_anon = 1;
   }
 
@@ -344,17 +345,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
           access_control_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
           access_control_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
           break;
         }
@@ -386,8 +387,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // The default of the access controll is private
-  if (class->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    class->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+  if (class_basic_type->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
   // Declarations
@@ -1588,7 +1589,6 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Build class
   SPVM_OP_build_class(compiler, op_class, op_name_class, op_class_block, NULL, NULL);
-  op_class->uv.class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
   
   // Type
   SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);

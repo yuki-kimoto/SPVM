@@ -1919,6 +1919,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_new);
             
+            SPVM_BASIC_TYPE* new_class_basic_type = type->basic_type;
             SPVM_CLASS* new_class = type->basic_type->class;
             
             // Array type
@@ -1956,9 +1957,9 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               }
 
               SPVM_CLASS* cur_class = method->class;
-              if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class->access_control_type)) {
+              if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class_basic_type->access_control_type)) {
                 if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class->access_control_type), new_class->name, cur_class->name, op_new->file, op_new->line);
+                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class->name, cur_class->name, op_new->file, op_new->line);
                   return;
                 }
               }
