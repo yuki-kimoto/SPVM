@@ -678,7 +678,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       SPVM_LIST_push(class->interfaces, interface);
-      SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+      SPVM_HASH_set(class_basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
     }
   }
 
@@ -837,10 +837,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     class->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class->interface_symtable, interface->name, strlen(interface->name));
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name));
       if (!found_interface) {
         SPVM_LIST_push(class->interfaces, interface);
-        SPVM_HASH_set(class->interface_symtable, interface->name, strlen(interface->name), interface);
+        SPVM_HASH_set(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
       }
     }
     
