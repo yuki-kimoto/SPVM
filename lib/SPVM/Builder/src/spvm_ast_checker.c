@@ -859,7 +859,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, interface_index);
       assert(interface);
       
-      SPVM_METHOD* interface_required_method = interface->required_method;
+      SPVM_METHOD* interface_required_method = interface->type->basic_type->required_method;
       
       if (interface_required_method) {
         SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);

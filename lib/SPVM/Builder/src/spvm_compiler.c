@@ -692,12 +692,12 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       }
       
       if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
-        assert(class->required_method);
+        assert(basic_type->required_method);
       }
       
-      if (class->required_method) {
-        assert(class->required_method->id >= 0);
-        runtime_basic_type->required_method_id = class->required_method->id;
+      if (basic_type->required_method) {
+        assert(basic_type->required_method->id >= 0);
+        runtime_basic_type->required_method_id = basic_type->required_method->id;
       }
       else {
         runtime_basic_type->required_method_id = -1;

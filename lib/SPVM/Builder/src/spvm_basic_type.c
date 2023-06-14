@@ -12,6 +12,7 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_method.h"
+#include "spvm_type.h"
 
 const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
 
@@ -205,8 +206,8 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
   SPVM_CLASS* interface = interface_basic_type->class;
 
-  assert(interface->required_method);
-  SPVM_METHOD* method_interface = interface->required_method;
+  assert(interface->type->basic_type->required_method);
+  SPVM_METHOD* method_interface = interface->type->basic_type->required_method;
 
   SPVM_CLASS* parent_class = class;
   while (1) {
