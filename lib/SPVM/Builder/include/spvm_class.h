@@ -40,7 +40,6 @@ struct spvm_class {
   SPVM_LIST* allows;
   SPVM_LIST* interface_decls;
   SPVM_LIST* use_class_names;
-  SPVM_HASH* class_alias_symtable;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

@@ -1102,7 +1102,7 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
               const char* class_name_maybe = op_type->uv.type->basic_type->name;
               
               SPVM_CLASS* class_current = class;
-              const char* class_name = SPVM_HASH_get(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
+              const char* class_name = SPVM_HASH_get(class_current->type->basic_type->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
               if (class_name == NULL) {
                 class_name = class_name_maybe;
               }

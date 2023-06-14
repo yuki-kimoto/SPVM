@@ -66,6 +66,29 @@ const char* const* SPVM_BASIC_TYPE_C_CATEGORY_NAMES(void) {
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_BASIC_TYPE));
   
+  // Fields
+  basic_type->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+
+  // Class variables
+  basic_type->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->class_var_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  
+  // Methods
+  basic_type->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->method_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  
+  // Interfaces
+  basic_type->interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+
+  basic_type->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->interface_decls = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->class_alias_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+
+  basic_type->use_class_names = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  
   return basic_type;
 }
 
