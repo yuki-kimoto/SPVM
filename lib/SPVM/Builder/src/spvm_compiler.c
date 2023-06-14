@@ -72,7 +72,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->class_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);

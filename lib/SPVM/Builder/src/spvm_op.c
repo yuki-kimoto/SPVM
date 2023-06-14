@@ -337,8 +337,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
-  SPVM_HASH* class_symtable = compiler->class_symtable;
-  
   // Assert
   SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   SPVM_CLASS* found_class = found_class_basic_type->class;
@@ -346,7 +344,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
   // Add class
   SPVM_LIST_push(compiler->classes, class);
-  SPVM_HASH_set(compiler->class_symtable, class_name, strlen(class_name), class);
   
   SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   class_basic_type->class = class;
