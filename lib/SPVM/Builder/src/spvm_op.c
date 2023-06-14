@@ -269,7 +269,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   op_class->uv.class = class;
   
   class->op_class = op_class;
-  class->op_extends = op_extends;
+  class->type->basic_type->op_extends = op_extends;
   
   class->class_path = compiler->cur_class_path;
   class->class_rel_file = compiler->cur_rel_file;

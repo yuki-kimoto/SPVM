@@ -16,7 +16,6 @@ struct spvm_class {
   int32_t merged_fields_original_offset;
   int32_t fields_size;
   SPVM_OP* op_class;
-  SPVM_OP* op_extends;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

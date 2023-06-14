@@ -629,16 +629,16 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
       SPVM_TYPE* parent_class_type = parent_class->type;
       if (!SPVM_TYPE_is_class_type(compiler, parent_class_type->basic_type->id, parent_class_type->dimension, parent_class_type->flag)) {
-        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
         return;
       }
       if (!SPVM_TYPE_is_class_type(compiler, class->type->basic_type->id, class->type->dimension, class->type->flag)) {
-        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
         return;
       }
       
       if (strcmp(class->type->basic_type->name, parent_class->type->basic_type->name) == 0) {
-        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
+        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
         return;
       }
       class->parent_class = parent_class;
@@ -760,7 +760,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     while (1) {
       if (parent_class) {
         if (strcmp(parent_class->type->basic_type->name, class->type->basic_type->name) == 0) {
-          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->type->basic_type->name, class->op_extends->file, class->op_extends->line);
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->type->basic_type->name, class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
           compile_error = 1;
           break;
         }
