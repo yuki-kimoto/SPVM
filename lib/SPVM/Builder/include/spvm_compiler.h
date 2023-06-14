@@ -80,9 +80,6 @@ struct spvm_compiler {
   // Current enum value
   int32_t current_enum_value;
   
-  // Current class base;
-  int32_t cur_class_base;
-  
   // Current basic type base;
   int32_t cur_basic_type_base;
   
@@ -124,9 +121,6 @@ struct spvm_compiler {
   
   // Types symbol table
   SPVM_HASH* type_symtable;
-  
-  // Classes
-  SPVM_LIST* classes;
   
   // Anon methods
   SPVM_LIST* anon_methods;

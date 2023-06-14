@@ -71,7 +71,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->classes = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
@@ -181,8 +180,6 @@ int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
-  
-  compiler->cur_class_base = compiler->classes->length;
   
   compiler->cur_basic_type_base = compiler->basic_types->length;
   
