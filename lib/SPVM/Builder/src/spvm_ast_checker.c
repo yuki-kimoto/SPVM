@@ -57,9 +57,6 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
   if (SPVM_COMPILER_get_error_messages_length(compiler) == 0) {
     fprintf(stderr, "\n[Basic types]\n");
     SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
-    
-    fprintf(stderr, "\n[Classes]\n");
-    SPVM_DUMPER_dump_classes(compiler, compiler->classes);
   }
 #endif
 }

@@ -176,78 +176,64 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
   }
 }
 
-void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
-  {
-    int32_t i;
-    for (i = 0; i < classes->length; i++) {
-      fprintf(stderr, "classes[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_get(classes, i);
-      
-      fprintf(stderr, "  name => \"%s\"\n", class->name);
-      
-      if (strncmp(class->name, "SPVM", 4) == 0) {
-        fprintf(stderr, "  (omit)\n");
-        continue;
-      }
-      
-      // Field information
-      fprintf(stderr, "  fields\n");
-      SPVM_LIST* fields = class->fields;
-      {
-        int32_t j;
-        for (j = 0; j < fields->length; j++) {
-          SPVM_FIELD* field = SPVM_LIST_get(fields, j);
-          fprintf(stderr, "    fields[%" PRId32 "]\n", j);
-          SPVM_DUMPER_dump_field(compiler, field);
-        }
-      }
-      {
-        int32_t j;
-        for (j = 0; j < class->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
-          fprintf(stderr, "  methods[%" PRId32 "]\n", j);
-          SPVM_DUMPER_dump_method(compiler, method);
-        }
-      }
-    }
-  }
-}
-
-void SPVM_DUMPER_dump_classes_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
-  {
-    int32_t i;
-    for (i = 0; i < classes->length; i++) {
-      fprintf(stderr, "classes[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_get(classes, i);
-      
-      fprintf(stderr, "  name => \"%s\"\n", class->name);
-      
-      if (strncmp(class->name, "SPVM", 4) == 0) {
-        fprintf(stderr, "  (omit)\n");
-        continue;
-      }
-      
-      {
-        int32_t j;
-        for (j = 0; j < class->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
-          fprintf(stderr, "  methods[%" PRId32 "]\n", j);
-          SPVM_DUMPER_dump_method_opcode_array(compiler, method);
-        }
-      }
-    }
-  }
-}
-
 void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
-  (void)compiler;
-  
-  {
-    int32_t i;
-    for (i = 0; i < basic_types->length; i++) {
-      fprintf(stderr, "basic_types[%" PRId32 "]\n", i);
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, i);
-      fprintf(stderr, "    name => %s\n", basic_type->name);
+  for (int32_t i = 0; i < basic_types->length; i++) {
+    fprintf(stderr, "basic_types[%" PRId32 "]\n", i);
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, i);
+    
+    fprintf(stderr, "  name => \"%s\"\n", basic_type->name);
+    
+    SPVM_CLASS* class = basic_type->class;
+    if (!class) { continue; }
+    
+    if (strncmp(class->name, "SPVM", 4) == 0) {
+      fprintf(stderr, "  (omit)\n");
+      continue;
+    }
+    
+    // Field information
+    fprintf(stderr, "  fields\n");
+    SPVM_LIST* fields = class->fields;
+    {
+      int32_t j;
+      for (j = 0; j < fields->length; j++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, j);
+        fprintf(stderr, "    fields[%" PRId32 "]\n", j);
+        SPVM_DUMPER_dump_field(compiler, field);
+      }
+    }
+    {
+      int32_t j;
+      for (j = 0; j < class->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
+        fprintf(stderr, "  methods[%" PRId32 "]\n", j);
+        SPVM_DUMPER_dump_method(compiler, method);
+      }
+    }
+  }
+}
+
+void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
+  for (int32_t i = 0; i < basic_types->length; i++) {
+    fprintf(stderr, "basic_types[%" PRId32 "]\n", i);
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(basic_types, i);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
+    
+    fprintf(stderr, "  name => \"%s\"\n", class->name);
+    
+    if (strncmp(class->name, "SPVM", 4) == 0) {
+      fprintf(stderr, "  (omit)\n");
+      continue;
+    }
+    
+    {
+      int32_t j;
+      for (j = 0; j < class->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(class->methods, j);
+        fprintf(stderr, "  methods[%" PRId32 "]\n", j);
+        SPVM_DUMPER_dump_method_opcode_array(compiler, method);
+      }
     }
   }
 }

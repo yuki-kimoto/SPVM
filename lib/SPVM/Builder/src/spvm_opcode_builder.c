@@ -5019,7 +5019,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
 #ifdef SPVM_DEBUG_COMPILE
   fprintf(stderr, "\n[Opcodes]\n");
-  SPVM_DUMPER_dump_classes_opcode_array(compiler, compiler->classes);
+  SPVM_DUMPER_dump_basic_types_opcode_array(compiler, compiler->basic_types);
 #endif
 
 }
