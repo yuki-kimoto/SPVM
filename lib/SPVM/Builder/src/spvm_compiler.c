@@ -78,93 +78,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->not_found_class_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
-  // Add basic types
-  SPVM_COMPILER_add_basic_types(compiler);
-  
-  // Add Bool source
-  {
-    const char* class_name = "Bool";
-    const char* source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Error source
-  {
-    const char* class_name = "Error";
-    const char* source = "class Error;";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Error::System source
-  {
-    const char* class_name = "Error::System";
-    const char* source = "class Error::System extends Error;";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Error::NotSupported source
-  {
-    const char* class_name = "Error::NotSupported";
-    const char* source = "class Error::NotSupported extends Error;";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Byte source
-  {
-    const char* class_name = "Byte";
-    const char* source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Short source
-  {
-    const char* class_name = "Short";
-    const char* source = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Int source
-  {
-    const char* class_name = "Int";
-    const char* source = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Long source
-  {
-    const char* class_name = "Long";
-    const char* source = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Float source
-  {
-    const char* class_name = "Float";
-    const char* source = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Double source
-  {
-    const char* class_name = "Double";
-    const char* source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add CommandInfo source
-  {
-    const char* class_name = "CommandInfo";
-    const char* source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
-  // Add Address source
-  {
-    const char* class_name = "Address";
-    const char* source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
-  }
-  
   return compiler;
 }
 
@@ -272,6 +185,95 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   compiler->cur_class_base = compiler->classes->length;
   
   compiler->cur_basic_type_base = compiler->basic_types->length;
+  
+  if (compiler->basic_types->length == 0) {
+    // Add basic types
+    SPVM_COMPILER_add_basic_types(compiler);
+    
+    // Add Bool source
+    {
+      const char* class_name = "Bool";
+      const char* source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Error source
+    {
+      const char* class_name = "Error";
+      const char* source = "class Error;";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Error::System source
+    {
+      const char* class_name = "Error::System";
+      const char* source = "class Error::System extends Error;";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Error::NotSupported source
+    {
+      const char* class_name = "Error::NotSupported";
+      const char* source = "class Error::NotSupported extends Error;";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Byte source
+    {
+      const char* class_name = "Byte";
+      const char* source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Short source
+    {
+      const char* class_name = "Short";
+      const char* source = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Int source
+    {
+      const char* class_name = "Int";
+      const char* source = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Long source
+    {
+      const char* class_name = "Long";
+      const char* source = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Float source
+    {
+      const char* class_name = "Float";
+      const char* source = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Double source
+    {
+      const char* class_name = "Double";
+      const char* source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add CommandInfo source
+    {
+      const char* class_name = "CommandInfo";
+      const char* source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+    
+    // Add Address source
+    {
+      const char* class_name = "Address";
+      const char* source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+    }
+  }
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
