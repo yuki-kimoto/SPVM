@@ -398,7 +398,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       // version declaration
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
-        if (class->version_string) {
+        if (class->type->basic_type->version_string) {
           SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
@@ -457,7 +457,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         SPVM_CONSTANT_STRING_new(compiler, version_string, version_string_length);
-        class->version_string = version_string;
+        class->type->basic_type->version_string = version_string;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {

@@ -13,6 +13,7 @@ enum {
 };
 
 struct spvm_class {
+  SPVM_TYPE* type;
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
   int32_t merged_fields_original_offset;
@@ -25,8 +26,6 @@ struct spvm_class {
   const char* class_file;
   const char* class_path;
   const char* class_rel_file;
-  const char* version_string;
-  SPVM_TYPE* type;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
