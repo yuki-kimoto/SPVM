@@ -27,7 +27,6 @@ struct spvm_class {
   const char* class_rel_file;
   const char* version_string;
   SPVM_TYPE* type;
-  SPVM_LIST* class_vars;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

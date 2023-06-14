@@ -504,8 +504,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
 
     // Check class var
-    for (int32_t class_var_index = 0; class_var_index < class->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, class_var_index);
+    for (int32_t class_var_index = 0; class_var_index < class->type->basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, class_var_index);
       SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
@@ -732,8 +732,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
 
-    for (int32_t i = 0; i < class->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
+    for (int32_t i = 0; i < class->type->basic_type->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, i);
 
       // Set class_var id
       class_var->id = compiler->class_vars->length;

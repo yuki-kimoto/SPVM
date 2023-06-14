@@ -721,9 +721,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->fields_base_id = -1;
       }
       
-      runtime_basic_type->class_vars_length = class->class_vars->length;
-      if (class->class_vars->length > 0) {
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, 0);
+      runtime_basic_type->class_vars_length = class->type->basic_type->class_vars->length;
+      if (class->type->basic_type->class_vars->length > 0) {
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, 0);
         runtime_basic_type->class_vars_base_id = class_var->id;
       }
       else {

@@ -510,7 +510,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
+        SPVM_LIST_push(class->type->basic_type->class_vars, op_decl->uv.class_var);
         
         // Getter
         if (class_var->has_getter) {
@@ -810,8 +810,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
 
   // Class variable declarations
-  for (int32_t i = 0; i < class->class_vars->length; i++) {
-    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->class_vars, i);
+  for (int32_t i = 0; i < class->type->basic_type->class_vars->length; i++) {
+    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, i);
     const char* class_var_name = class_var->name;
 
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
@@ -973,7 +973,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     if (class->type->basic_type->methods->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }
-    if (class->class_vars->length > 0) {
+    if (class->type->basic_type->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (class->type->basic_type->fields->length == 0) {

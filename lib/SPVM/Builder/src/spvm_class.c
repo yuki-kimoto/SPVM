@@ -25,8 +25,5 @@ const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   SPVM_CLASS* class = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CLASS));
   
-  // Class variables
-  class->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  
   return class;
 }
