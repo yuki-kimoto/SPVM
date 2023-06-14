@@ -1595,6 +1595,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // New
   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
+  
   SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
   
   return op_anon_method;
@@ -1994,9 +1995,9 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_length);
   }
   
-  if (strstr(op_type->uv.type->name, "::anon::")) {
+  if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->basic_type->name, "::anon::")) {
     
-    const char* anon_class_name = op_type->uv.type->name;
+    const char* anon_class_name = op_type->uv.type->basic_type->name;
     SPVM_BASIC_TYPE* anon_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
     SPVM_CLASS* anon_class = anon_class_basic_type->class;
     
