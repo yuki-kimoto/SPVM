@@ -41,7 +41,6 @@ struct spvm_class {
   SPVM_METHOD* init_method;
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
-  int32_t id;
   int32_t merged_fields_original_offset;
   int32_t fields_size;
   int8_t has_init_block;

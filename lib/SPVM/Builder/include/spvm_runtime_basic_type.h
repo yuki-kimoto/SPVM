@@ -25,8 +25,6 @@ struct spvm_runtime_basic_type {
   int32_t fields_length;
   int32_t class_vars_base_id;
   int32_t class_vars_length;
-  int32_t interfaces_base_id;
-  int32_t interfaces_length;
   int32_t fields_size;
   int32_t parent_class_basic_type_id;
   int32_t version_string_id;

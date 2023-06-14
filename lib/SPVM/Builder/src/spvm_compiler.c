@@ -728,15 +728,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->class_vars_base_id = -1;
       }
       
-      runtime_basic_type->interfaces_length = class->interfaces->length;
-      if (class->interfaces->length > 0) {
-        SPVM_CLASS* interface = SPVM_LIST_get(class->interfaces, 0);
-        runtime_basic_type->interfaces_base_id = interface->id;
-      }
-      else {
-        runtime_basic_type->interfaces_base_id = -1;
-      }
-      
       runtime_basic_type->anon_methods_length = class->anon_methods->length;
       if (class->anon_methods->length > 0) {
         SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, 0);

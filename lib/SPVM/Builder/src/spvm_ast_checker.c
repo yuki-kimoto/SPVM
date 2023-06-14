@@ -1001,12 +1001,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_AST_CHECKER_resolve_field_offset(compiler, class);
   }
   
-  // Create class id
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
-    class->id = class_index;
-  }
-  
   // Check syntax and generate operations in classes
   for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
     SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
@@ -3734,7 +3728,7 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
   int32_t can_access = 0;
   
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-    if (class_from->id == class_to->id) {
+    if (strcmp(class_from->name, class_to->name) == 0) {
       can_access = 1;
     }
     else {
@@ -3742,7 +3736,7 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
     }
   }
   else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-    if (class_from->id == class_to->id) {
+    if (strcmp(class_from->name, class_to->name) == 0) {
       can_access = 1;
     }
     else {
