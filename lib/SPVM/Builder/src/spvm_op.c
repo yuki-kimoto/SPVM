@@ -1580,6 +1580,31 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) {
+  
+  // Class
+  SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
+  
+  // Create class block
+  SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
+  SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
+  SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
+  
+  // Build class
+  SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);
+  op_class->uv.class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+  
+  // Type
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_class->uv.class->type, op_method->file, op_method->line);
+  
+  // New
+  SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
+  SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
+  
+  return op_anon_method;
+}
+
 SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field_definition, SPVM_OP* op_default) {
   
   op_field_definition->uv.field->op_anon_method_field_default = op_default;
