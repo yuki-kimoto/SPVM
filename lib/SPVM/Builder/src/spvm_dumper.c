@@ -19,7 +19,6 @@
 #include "spvm_var.h"
 #include "spvm_op.h"
 #include "spvm_type.h"
-#include "spvm_class.h"
 #include "spvm_type.h"
 #include "spvm_opcode.h"
 #include "spvm_class_var.h"
@@ -183,17 +182,14 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     
     fprintf(stderr, "  name => \"%s\"\n", basic_type->name);
     
-    SPVM_CLASS* class = basic_type->class;
-    if (!class) { continue; }
-    
-    if (strncmp(class->type->basic_type->name, "SPVM", 4) == 0) {
+    if (strncmp(basic_type->name, "SPVM", 4) == 0) {
       fprintf(stderr, "  (omit)\n");
       continue;
     }
     
     // Field information
     fprintf(stderr, "  fields\n");
-    SPVM_LIST* fields = class->type->basic_type->fields;
+    SPVM_LIST* fields = basic_type->fields;
     {
       int32_t j;
       for (j = 0; j < fields->length; j++) {
@@ -204,8 +200,8 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     }
     {
       int32_t j;
-      for (j = 0; j < class->type->basic_type->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, j);
+      for (j = 0; j < basic_type->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method(compiler, method);
       }
@@ -216,21 +212,19 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
 void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
   for (int32_t i = 0; i < basic_types->length; i++) {
     fprintf(stderr, "basic_types[%" PRId32 "]\n", i);
-    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(basic_types, i);
-    SPVM_CLASS* class = class_basic_type->class;
-    if (!class) { continue; }
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, i);
     
-    fprintf(stderr, "  name => \"%s\"\n", class->type->basic_type->name);
+    fprintf(stderr, "  name => \"%s\"\n", basic_type->name);
     
-    if (strncmp(class->type->basic_type->name, "SPVM", 4) == 0) {
+    if (strncmp(basic_type->name, "SPVM", 4) == 0) {
       fprintf(stderr, "  (omit)\n");
       continue;
     }
     
     {
       int32_t j;
-      for (j = 0; j < class->type->basic_type->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, j);
+      for (j = 0; j < basic_type->methods->length; j++) {
+        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method_opcode_array(compiler, method);
       }
@@ -420,9 +414,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       fprintf(stderr, "ref");
     }
     else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_CLASS* value_class =  type->basic_type->class;
-      
-      SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
       assert(first_field);
       
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
