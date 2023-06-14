@@ -224,33 +224,29 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
 int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t interface_basic_type_id) {
   
   SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, class_basic_type_id);
-  SPVM_CLASS* class = class_basic_type->class;
 
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
-  SPVM_CLASS* interface = interface_basic_type->class;
 
-  assert(interface->type->basic_type->required_method);
-  SPVM_METHOD* method_interface = interface->type->basic_type->required_method;
+  assert(interface_basic_type->required_method);
+  SPVM_METHOD* method_interface = interface_basic_type->required_method;
 
-  SPVM_CLASS* parent_class = class;
+  SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type;
   while (1) {
-    if (!parent_class) {
+    if (!parent_class_basic_type) {
       return 0;
     }
     
-    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class->type->basic_type->method_symtable, method_interface->name, strlen(method_interface->name));
+    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class_basic_type->method_symtable, method_interface->name, strlen(method_interface->name));
     if (method_class) {
       return 1;
     }
     
-    const char* parent_class_name = parent_class->type->basic_type->parent_class_name;
+    const char* parent_class_name = parent_class_basic_type->parent_class_name;
     if (parent_class_name) {
-      SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
-      parent_class = parent_class_basic_type->class;
-      assert(parent_class);
+      parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
     }
     else {
-      parent_class = NULL;
+      parent_class_basic_type = NULL;
     }
   }
 }
