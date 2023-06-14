@@ -292,40 +292,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
   SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
   
-  if (!op_name_class) {
-    // Class is anon
-    class->is_anon = 1;
-    
-    SPVM_OP* op_method = op_block->first->last;
-    assert(op_method);
-    assert(op_method->id == SPVM_OP_C_ID_METHOD);
-
-    // int32_t max length is 10(2147483647)
-    int32_t int32_max_length = 10;
-    
-    // Create anon method class name
-    // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-    const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
-    int32_t anon_method_defined_line = op_method->line;
-    int32_t anon_method_defined_column = op_method->column;
-    int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
-    
-    // Anon class name
-    char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
-    sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
-
-    SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
-    const char* name_class = name_class_string->value;
-
-    op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
-    
-    op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
-  }
-  
   SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
     
   const char* class_name = op_type->uv.type->basic_type->name;
   class->type = op_type->uv.type;
+  
+  if (strstr(class_name, "::anon::")) {
+    class->is_anon = 1;
+  }
 
   if (!class->is_anon) {
     assert(!islower(class_name[0]));
@@ -1590,13 +1564,34 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
   SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
+
+  // int32_t max length is 10(2147483647)
+  int32_t int32_max_length = 10;
+  
+  // Create anon method class name
+  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+  const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
+  int32_t anon_method_defined_line = op_method->line;
+  int32_t anon_method_defined_column = op_method->column;
+  int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
+  
+  // Anon class name
+  char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
+  sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
+
+  SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
+  const char* name_class = name_class_string->value;
+
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+  
+  op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
   
   // Build class
-  SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_class, op_name_class, op_class_block, NULL, NULL);
   op_class->uv.class->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
   
   // Type
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_class->uv.class->type, op_method->file, op_method->line);
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
   
   // New
   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
