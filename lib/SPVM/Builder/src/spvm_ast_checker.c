@@ -685,8 +685,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
   }
 
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
     
     SPVM_LIST* methods = class->methods;
     
@@ -746,8 +748,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   
   // Resolve inheritance
   int32_t compile_error = 0;
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
     
     SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(class_stack, class);
@@ -995,9 +999,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   }
   
   // Resolve fields
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    // Class
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
     
     for (int32_t i = 0; i < class->fields->length; i++) {
       // Field
@@ -1015,8 +1020,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   }
   
   // Check syntax and generate operations in classes
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
     SPVM_LIST* methods = class->methods;
     
     // Check syntax and generate operations in methods

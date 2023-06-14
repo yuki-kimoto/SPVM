@@ -45,8 +45,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   // Operation code
   SPVM_OPCODE_ARRAY* opcode_array = compiler->opcode_array;
   
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, class_index);
+  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
     SPVM_LIST* methods = class->methods;
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
