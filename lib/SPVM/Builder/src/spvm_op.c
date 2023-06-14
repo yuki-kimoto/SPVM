@@ -305,8 +305,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   class_basic_type->class = class;
   
-  class->op_name = op_name_class;
-  
   class->type->basic_type->name = op_name_class->uv.name;
 
   if (strstr(class_name, "::anon::")) {
