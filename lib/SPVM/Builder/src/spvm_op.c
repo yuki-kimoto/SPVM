@@ -796,13 +796,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     field->index = i;
     const char* field_name = field->op_name->uv.name;
 
-    SPVM_FIELD* found_field = SPVM_HASH_get(class->field_symtable, field_name, strlen(field_name));
+    SPVM_FIELD* found_field = SPVM_HASH_get(class->type->basic_type->field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
     }
     else {
-      SPVM_HASH_set(class->field_symtable, field_name, strlen(field_name), field);
+      SPVM_HASH_set(class->type->basic_type->field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
       field->class = class;

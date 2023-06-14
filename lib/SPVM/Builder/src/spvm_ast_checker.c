@@ -259,7 +259,7 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   
   while (1) {
     found_field = SPVM_HASH_get(
-      parent_class->field_symtable,
+      parent_class->type->basic_type->field_symtable,
       field_name,
       strlen(field_name)
     );
@@ -991,7 +991,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
       field->index = field_index;
-      SPVM_HASH_set(class->field_symtable, field->name, strlen(field->name), field);
+      SPVM_HASH_set(class->type->basic_type->field_symtable, field->name, strlen(field->name), field);
     }
   }
   
@@ -3723,7 +3723,7 @@ SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* c
     SPVM_CLASS* parent_class = class;
     while (1) {
       found_field = SPVM_HASH_get(
-        parent_class->field_symtable,
+        parent_class->type->basic_type->field_symtable,
         field_name,
         strlen(field_name)
       );
