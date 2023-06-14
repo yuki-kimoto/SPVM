@@ -667,7 +667,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->parent_class_basic_type_id = -1;
       }
       
-      runtime_basic_type->fields_size = class->fields_size;
+      runtime_basic_type->fields_size = class->type->basic_type->fields_size;
       
       if (class->version_string) {
         SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, class->version_string, strlen(class->version_string));
@@ -712,9 +712,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->methods_base_id = -1;
       }
       
-      runtime_basic_type->fields_length = class->fields->length;
-      if (class->fields->length > 0) {
-        SPVM_FIELD* field = SPVM_LIST_get(class->fields, 0);
+      runtime_basic_type->fields_length = class->type->basic_type->fields->length;
+      if (class->type->basic_type->fields->length > 0) {
+        SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, 0);
         runtime_basic_type->fields_base_id = field->id;
       }
       else {

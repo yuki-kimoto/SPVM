@@ -927,7 +927,7 @@ int32_t SPVM_TYPE_get_stack_length(SPVM_COMPILER* compiler, int32_t basic_type_i
     
     assert(class);
     
-    stack_length = class->fields->length;
+    stack_length = class->type->basic_type->fields->length;
   }
   else {
     stack_length = 1;
@@ -946,9 +946,9 @@ int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_
     
     SPVM_CLASS* class = basic_type->class;
     
-    assert(class->fields->length > 0);
+    assert(class->type->basic_type->fields->length > 0);
     
-    SPVM_FIELD* mulnum_field = SPVM_LIST_get(class->fields, 0);
+    SPVM_FIELD* mulnum_field = SPVM_LIST_get(class->type->basic_type->fields, 0);
     
     SPVM_TYPE* mulnum_field_type = mulnum_field->type;
     

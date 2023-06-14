@@ -631,7 +631,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->fields, field);
+        SPVM_LIST_push(class->type->basic_type->fields, field);
         
         // Getter
         if (field->has_getter) {
@@ -758,7 +758,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         for (int32_t i = 0; i < anon_method_fields->length; i++) {
           SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
           
-          SPVM_LIST_push(class->fields, anon_method_field);
+          SPVM_LIST_push(class->type->basic_type->fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
         }
         
@@ -774,8 +774,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // Field declarations
-  for (int32_t i = 0; i < class->fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+  for (int32_t i = 0; i < class->type->basic_type->fields->length; i++) {
+    SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, i);
 
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -976,10 +976,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     if (class->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
-    if (class->fields->length == 0) {
+    if (class->type->basic_type->fields->length == 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
     }
-    else if (class->fields->length > 255) {
+    else if (class->type->basic_type->fields->length > 255) {
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
     }
   }

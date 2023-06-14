@@ -390,12 +390,12 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* 
     offset += offset_size;
   }
 
-  class->fields_size = offset;
+  class->type->basic_type->fields_size = offset;
   
   int32_t merged_fields_original_offset = class->type->basic_type->merged_fields_original_offset;
-  for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+  for (int32_t field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
     SPVM_FIELD* merged_field = SPVM_LIST_get(class->type->basic_type->merged_fields, field_index + merged_fields_original_offset);
-    SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+    SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, field_index);
     
     field->offset = merged_field->offset;
   }
@@ -451,7 +451,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Multi-numeric type limitation
     if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
-      SPVM_LIST* fields = class->fields;
+      SPVM_LIST* fields = class->type->basic_type->fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
@@ -460,7 +460,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       int32_t field_index;
-      for (field_index = 0; field_index < class->fields->length; field_index++) {
+      for (field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
         if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
@@ -498,7 +498,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       
       char* found_pos_ptr = strstr(class_name + class_name_length - tail_name_length, tail_name);
       if (!found_pos_ptr) {
-        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, class->fields->length, tail_name, class->op_class->file, class->op_class->line);
+        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, class->type->basic_type->fields->length, tail_name, class->op_class->file, class->op_class->line);
         return;
       }
     }
@@ -517,8 +517,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     // Check fields
-    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+    for (int32_t field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, field_index);
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
       // valut_t cannnot become field
@@ -590,7 +590,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
-          args_stack_length += arg_type->basic_type->class->fields->length;
+          args_stack_length += arg_type->basic_type->class->type->basic_type->fields->length;
         }
         else {
           args_stack_length++;
@@ -787,7 +787,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
       
       // All fields
-      SPVM_LIST* fields = class->fields;
+      SPVM_LIST* fields = class->type->basic_type->fields;
       int32_t field_index = 0;
       int32_t fields_length = fields->length;
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
@@ -988,8 +988,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
 
-    for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
+    for (int32_t field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, field_index);
       field->index = field_index;
       SPVM_HASH_set(class->type->basic_type->field_symtable, field->name, strlen(field->name), field);
     }
@@ -1001,9 +1001,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     
-    for (int32_t i = 0; i < class->fields->length; i++) {
+    for (int32_t i = 0; i < class->type->basic_type->fields->length; i++) {
       // Field
-      SPVM_FIELD* field = SPVM_LIST_get(class->fields, i);
+      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, i);
 
       // Create field id
       field->id = compiler->fields->length;
@@ -3568,7 +3568,7 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compile
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_CLASS* value_class =  type->basic_type->class;
                 
-                SPVM_FIELD* first_field = SPVM_LIST_get(value_class->fields, 0);
+                SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
                 assert(first_field);
                 
                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
