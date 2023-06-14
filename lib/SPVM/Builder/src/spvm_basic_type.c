@@ -266,7 +266,7 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
   const char* cur_parent_class_name = child_class->parent_class_name;
   while (1) {
     if (cur_parent_class_name) {
-      if (strcmp(super_class->name, cur_parent_class_name) == 0) {
+      if (strcmp(super_class->type->basic_type->name, cur_parent_class_name) == 0) {
         return 1;
       }
       else {

@@ -307,7 +307,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   class->op_name = op_name_class;
   
-  class->name = op_name_class->uv.name;
+  class->type->basic_type->name = op_name_class->uv.name;
 
   if (strstr(class_name, "::anon::")) {
     class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
@@ -497,7 +497,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         const char* interface_name = op_decl->uv.interface->class_name;
         
-        if (strcmp(class->name, interface_name) == 0) {
+        if (strcmp(class->type->basic_type->name, interface_name) == 0) {
           SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         
@@ -955,9 +955,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         assert(method->op_method->file);
         
         // Method absolute name
-        int32_t method_abs_name_length = strlen(class->name) + 2 + strlen(method->name);
+        int32_t method_abs_name_length = strlen(class->type->basic_type->name) + 2 + strlen(method->name);
         char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
-        memcpy(method_abs_name, class->name, strlen(class->name));
+        memcpy(method_abs_name, class->type->basic_type->name, strlen(class->type->basic_type->name));
         memcpy(method_abs_name + strlen(class_name), "->", 2);
         memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
         method->abs_name = method_abs_name;
@@ -3621,8 +3621,8 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, S
   
   SPVM_LIST* allows = class_dist->type->basic_type->allows;
   
-  const char* current_class_name = class_current->name;
-  const char* dist_class_name = class_dist->name;
+  const char* current_class_name = class_current->type->basic_type->name;
+  const char* dist_class_name = class_dist->type->basic_type->name;
   
   int32_t is_allowed = 0;
   if (strcmp(current_class_name, dist_class_name) == 0) {

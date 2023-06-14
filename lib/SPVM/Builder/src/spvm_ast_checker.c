@@ -124,7 +124,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     // Class name + method name
     const char* class_name;
     if (call_method->is_current_class) {
-      class_name = op_class_current->uv.class->name;
+      class_name = op_class_current->uv.class->type->basic_type->name;
     }
     else {
       SPVM_OP* op_type_class = op_call_method->last;
@@ -149,7 +149,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class->name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class->type->basic_type->name, op_call_method->file, op_call_method->line);
       return;
     }
   }
@@ -207,7 +207,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       if (found_method) {
         class = found_method->class;
         if (found_method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class->name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
@@ -224,13 +224,13 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       if (found_method) {
         if (found_method->is_class_method) {
           class = found_method->class;
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class->name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
         return;
       }
     }
@@ -276,7 +276,7 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
     op_field_access->uv.field_access->field = found_field;
   }
   else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class->name, op_field_access->file, op_field_access->line);
+    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class->type->basic_type->name, op_field_access->file, op_field_access->line);
     return;
   }
 }
@@ -310,7 +310,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    class_name = (char*)op_current_class->uv.class->name;
+    class_name = (char*)op_current_class->uv.class->type->basic_type->name;
     base_name = (char*)name;
   }
   
@@ -637,7 +637,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      if (strcmp(class->name, parent_class->name) == 0) {
+      if (strcmp(class->type->basic_type->name, parent_class->type->basic_type->name) == 0) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->op_extends->file, class->op_extends->line);
         return;
       }
@@ -678,7 +678,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       SPVM_LIST_push(class_basic_type->interfaces, interface);
-      SPVM_HASH_set(class_basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
+      SPVM_HASH_set(class_basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name), interface);
     }
   }
 
@@ -759,8 +759,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* parent_class = class->parent_class;
     while (1) {
       if (parent_class) {
-        if (strcmp(parent_class->name, class->name) == 0) {
-          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->name, class->op_extends->file, class->op_extends->line);
+        if (strcmp(parent_class->type->basic_type->name, class->type->basic_type->name) == 0) {
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class->type->basic_type->name, class->op_extends->file, class->op_extends->line);
           compile_error = 1;
           break;
         }
@@ -795,13 +795,13 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
         SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->parent_class, field->name);
         if (found_field_in_suer_class) {
-          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->name, field->name, field->op_field->file, field->op_field->line);
+          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->type->basic_type->name, field->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
           break;
         }
         
         SPVM_FIELD* new_field;
-        if (strcmp(field->class->name, cur_class->name) == 0) {
+        if (strcmp(field->class->type->basic_type->name, cur_class->type->basic_type->name) == 0) {
           new_field = field;
           if (!merged_fields_original_offset_set) {
             class->type->basic_type->merged_fields_original_offset = merged_fields_index;
@@ -837,10 +837,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     class->type->basic_type->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name));
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class->type->basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name));
       if (!found_interface) {
         SPVM_LIST_push(class->type->basic_type->interfaces, interface);
-        SPVM_HASH_set(class->type->basic_type->interface_symtable, interface->name, strlen(interface->name), interface);
+        SPVM_HASH_set(class->type->basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name), interface);
       }
     }
     
@@ -865,7 +865,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);
         
         if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->name, interface_required_method->name, interface->name, class->op_class->file, class->op_class->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->type->basic_type->name, interface_required_method->name, interface->type->basic_type->name, class->op_class->file, class->op_class->line);
           return;
         }
       }
@@ -910,7 +910,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             if (strcmp(method->name, interface_method->name) == 0) {
               if (method->is_class_method) {
                 if (!interface_method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, class->type->basic_type->name, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                   return;
                 }
               }
@@ -921,12 +921,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                 SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
                 
                 if (!(method->required_args_length == interface_method->required_args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->type->basic_type->name, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                   return;
                 }
 
                 if (!(method->args_length >= interface_method->args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->type->basic_type->name, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                   return;
                 }
                 
@@ -938,7 +938,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
                   
                   if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
-                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, class->name, arg_index, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, class->type->basic_type->name, arg_index, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                     return;
                   }
                 }
@@ -965,12 +965,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
                   
                   if (assignability) {
                     if (need_implicite_conversion) {
-                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->type->basic_type->name, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                       return;
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->name, interface_method->name, interface->name, class_desc, class->op_class->file, class->op_class->line);
+                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, class->type->basic_type->name, interface_method->name, interface->type->basic_type->name, class_desc, class->op_class->file, class->op_class->line);
                     return;
                   }
                 }
@@ -1243,7 +1243,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
           }
           case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->type->basic_type->name, strlen(class->type->basic_type->name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant);
             op_cur = op_constant;
             
@@ -1959,7 +1959,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               SPVM_CLASS* cur_class = method->class;
               if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class_basic_type->access_control_type)) {
                 if (!SPVM_OP_is_allowed(compiler, cur_class, new_class)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class->name, cur_class->name, op_new->file, op_new->line);
+                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class->type->basic_type->name, cur_class->type->basic_type->name, op_new->file, op_new->line);
                   return;
                 }
               }
@@ -2853,7 +2853,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                 
                 if (!SPVM_AST_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
                   if (!SPVM_OP_is_allowed(compiler, method->class, class_var_access_class)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->name,  method->class->name, op_class_var_access->file, op_class_var_access->line);
+                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->type->basic_type->name,  method->class->type->basic_type->name, op_class_var_access->file, op_class_var_access->line);
                     return;
                   }
                 }
@@ -2892,7 +2892,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
 
             if (!SPVM_AST_CHECKER_can_access(compiler, method->class, call_method->method->class, call_method->method->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->class, call_method->method->class)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->name,  method->class->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->type->basic_type->name,  method->class->type->basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -2910,7 +2910,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                     args_length_for_user--;
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->class->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->class->type->basic_type->name, op_cur->file, op_cur->line);
                   
                   return;
                 }
@@ -2925,7 +2925,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                 if (!call_method->method->is_class_method) {
                   call_method_args_length_for_user--;
                 }
-                sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" class", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->class->name);
+                sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" class", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->class->type->basic_type->name);
                 
                 // Invocant is not checked.
                 op_operand = SPVM_AST_CHECKER_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
@@ -2942,7 +2942,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                 required_args_length_for_user--;
               }
               
-              SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->class->name, op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->class->type->basic_type->name, op_cur->file, op_cur->line);
               
               return;
             }
@@ -3076,7 +3076,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             if (!SPVM_AST_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->class, field->class)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->name, method->class->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->type->basic_type->name, method->class->type->basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -3746,7 +3746,7 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
   int32_t can_access = 0;
   
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-    if (strcmp(class_from->name, class_to->name) == 0) {
+    if (strcmp(class_from->type->basic_type->name, class_to->type->basic_type->name) == 0) {
       can_access = 1;
     }
     else {
@@ -3754,7 +3754,7 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
     }
   }
   else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-    if (strcmp(class_from->name, class_to->name) == 0) {
+    if (strcmp(class_from->type->basic_type->name, class_to->type->basic_type->name) == 0) {
       can_access = 1;
     }
     else {

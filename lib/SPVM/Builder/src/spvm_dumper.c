@@ -186,7 +186,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     SPVM_CLASS* class = basic_type->class;
     if (!class) { continue; }
     
-    if (strncmp(class->name, "SPVM", 4) == 0) {
+    if (strncmp(class->type->basic_type->name, "SPVM", 4) == 0) {
       fprintf(stderr, "  (omit)\n");
       continue;
     }
@@ -220,9 +220,9 @@ void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIS
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     
-    fprintf(stderr, "  name => \"%s\"\n", class->name);
+    fprintf(stderr, "  name => \"%s\"\n", class->type->basic_type->name);
     
-    if (strncmp(class->name, "SPVM", 4) == 0) {
+    if (strncmp(class->type->basic_type->name, "SPVM", 4) == 0) {
       fprintf(stderr, "  (omit)\n");
       continue;
     }

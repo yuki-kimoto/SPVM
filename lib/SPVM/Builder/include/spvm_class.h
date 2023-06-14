@@ -7,7 +7,6 @@
 #include "spvm_typedecl.h"
 
 struct spvm_class {
-  const char* name;
   const char* class_file;
   const char* class_path;
   const char* class_rel_file;

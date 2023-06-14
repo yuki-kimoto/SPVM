@@ -299,7 +299,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     
-    const char* class_name = class->name;
+    const char* class_name = class->type->basic_type->name;
     SPVM_HASH_set(compiler->used_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
   }
   
