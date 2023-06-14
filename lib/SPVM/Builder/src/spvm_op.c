@@ -333,13 +333,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_POINTER: {
-          class->category = SPVM_CLASS_C_CATEGORY_CLASS;
+          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
           class_basic_type->is_pointer = 1;
           class_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
+          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_attributes_count++;
           break;
@@ -364,7 +364,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
-          class->category = SPVM_CLASS_C_CATEGORY_INTERFACE;
+          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_attributes_count++;
           break;
@@ -492,7 +492,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
-        if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
           SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         const char* interface_name = op_decl->uv.interface->class_name;
@@ -507,7 +507,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
         
-        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->type->basic_type->class_vars, op_decl->uv.class_var);
@@ -628,7 +628,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_FIELD* field = op_decl->uv.field;
         
-        if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->type->basic_type->fields, field);
@@ -784,7 +784,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // If multi-numeric type, field is public
-      else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+      else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // Default is private
@@ -840,7 +840,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
     
     // Add an default INIT block
-    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS && !has_init_block) {
+    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS && !has_init_block) {
       SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
       
       // Statements
@@ -864,7 +864,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     const char* method_name = op_name_method->uv.name;
     
     int32_t must_have_block;
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       must_have_block = 0;
     }
     else {
@@ -904,13 +904,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
 
-    if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       // Method having interface_t attribute must be method
       if (method->is_class_method) {
         SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
     }
-    else if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+    else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       if (method->is_required) {
         SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
@@ -969,7 +969,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // mulnum_t
-  if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+  if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
     if (class->type->basic_type->methods->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }

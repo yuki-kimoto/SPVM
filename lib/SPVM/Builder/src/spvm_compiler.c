@@ -691,7 +691,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->destructor_method_id = -1;
       }
       
-      if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+      if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
         assert(basic_type->required_method);
       }
       

@@ -325,7 +325,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
 }
 
 void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* class) {
-  if (class->category != SPVM_CLASS_C_CATEGORY_CLASS) {
+  if (class->type->basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     return;
   }
   
@@ -425,7 +425,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_BASIC_TYPE* use_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
         SPVM_CLASS* use_class = use_class_basic_type->class;
         if (use_class) {
-          if (use_class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
+          if (use_class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
             SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
             SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
             SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
@@ -450,7 +450,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     // Multi-numeric type limitation
-    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       SPVM_LIST* fields = class->type->basic_type->fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1947,11 +1947,11 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, type->basic_type->name, strlen(type->basic_type->name));
               SPVM_CLASS* class = class_basic_type->class;
               
-              if (class->category == SPVM_CLASS_C_CATEGORY_INTERFACE) {
+              if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
                 SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be an interface type.\n  at %s line %d", op_new->file, op_new->line);
                 return;
               }
-              else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
+              else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
                 SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
                 return;
               }

@@ -6,12 +6,6 @@
 
 #include "spvm_typedecl.h"
 
-enum {
-  SPVM_CLASS_C_CATEGORY_CLASS,
-  SPVM_CLASS_C_CATEGORY_INTERFACE,
-  SPVM_CLASS_C_CATEGORY_MULNUM,
-};
-
 struct spvm_class {
   const char* name;
   const char* class_file;
@@ -22,7 +16,6 @@ struct spvm_class {
   SPVM_CLASS* parent_class;
   int32_t merged_fields_original_offset;
   int32_t fields_size;
-  int8_t category;
   SPVM_OP* op_class;
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
