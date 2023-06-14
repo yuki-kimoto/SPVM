@@ -617,7 +617,6 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
   
   SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-  type->id = compiler->types->length;
   type->basic_type = basic_type;
   type->dimension = dimension;
   type->flag = flag;

@@ -63,8 +63,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   // Eternal information
   compiler->class_paths = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -647,7 +645,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       
       runtime_basic_type->is_class = 1;
       
-      runtime_basic_type->type_id = class->type->id;
       SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
       runtime_basic_type->class_rel_file_id = class_class_rel_file_string->id;
       
