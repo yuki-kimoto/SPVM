@@ -222,7 +222,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
     const char* parent_class_name = parent_class->parent_class_name;
     if (parent_class_name) {
       SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
-      SPVM_CLASS* parent_class = parent_class_basic_type->class;
+      parent_class = parent_class_basic_type->class;
       assert(parent_class);
     }
     else {
