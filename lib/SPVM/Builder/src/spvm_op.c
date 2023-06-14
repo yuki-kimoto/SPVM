@@ -488,7 +488,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // allow statement
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
-        SPVM_LIST_push(class->allows, op_decl->uv.allow);
+        SPVM_LIST_push(class_basic_type->allows, op_decl->uv.allow);
       }
       // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
@@ -3619,7 +3619,7 @@ SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, i
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_CLASS* class_current, SPVM_CLASS* class_dist) {
   (void)compiler;
   
-  SPVM_LIST* allows = class_dist->allows;
+  SPVM_LIST* allows = class_dist->type->basic_type->allows;
   
   const char* current_class_name = class_current->name;
   const char* dist_class_name = class_dist->name;

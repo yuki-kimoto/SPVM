@@ -434,7 +434,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     class->op_class = NULL;
     class->op_name = NULL;
     
-    SPVM_LIST_free(class->allows);
+    SPVM_LIST_free(class_basic_type->allows);
     
     SPVM_LIST* methods = class->methods;
     {
