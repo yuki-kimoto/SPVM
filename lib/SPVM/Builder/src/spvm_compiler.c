@@ -297,8 +297,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->used_class_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  for (int32_t i = 0; i < compiler->classes->length; i++) {
-    SPVM_CLASS* class = SPVM_LIST_get(compiler->classes, i);
+  for (int32_t basic_type_index = 0; basic_type_index < compiler->basic_types->length; basic_type_index++) {
+    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    SPVM_CLASS* class = class_basic_type->class;
+    if (!class) { continue; }
+    
     const char* class_name = class->name;
     SPVM_HASH_set(compiler->used_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
   }
