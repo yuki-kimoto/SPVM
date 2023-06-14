@@ -43,7 +43,6 @@ struct spvm_class {
   SPVM_HASH* class_alias_symtable;
   SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;
-  SPVM_METHOD* init_method;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

@@ -677,8 +677,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->version_string_id = -1;
       }
       
-      if (class->init_method) {
-        runtime_basic_type->init_method_id = class->init_method->id;
+      if (basic_type->init_method) {
+        runtime_basic_type->init_method_id = basic_type->init_method->id;
       }
       else {
         runtime_basic_type->init_method_id = -1;

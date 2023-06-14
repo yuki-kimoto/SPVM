@@ -412,7 +412,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Edit INIT block
     // The INIT mehtods that is the parent class and used classes in the order.
-    SPVM_METHOD* init_method = class->init_method;
+    SPVM_METHOD* init_method = class_basic_type->init_method;
     if (init_method) {
       SPVM_OP* op_block = init_method->op_block;
       SPVM_OP* op_list_statement = op_block->first;

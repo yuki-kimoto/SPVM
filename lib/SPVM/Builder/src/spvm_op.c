@@ -942,7 +942,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         if (method->is_init) {
-          class->init_method = method;
+          class_basic_type->init_method = method;
         }
 
         if (method->is_required) {
