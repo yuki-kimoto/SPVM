@@ -42,6 +42,7 @@ struct spvm_basic_type {
   SPVM_METHOD* init_method;
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
+  SPVM_BASIC_TYPE* parent_class_basic_type;
   int32_t class_id;
   int32_t merged_fields_original_offset;
   int32_t fields_size;

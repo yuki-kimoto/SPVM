@@ -641,6 +641,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       class->type->basic_type->parent_class = parent_class;
+      class->type->basic_type->parent_class_basic_type = parent_class->type->basic_type;
     }
   }
   
