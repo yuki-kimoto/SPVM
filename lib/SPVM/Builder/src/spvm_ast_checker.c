@@ -617,7 +617,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_BASIC_TYPE* anon_method_defined_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
         SPVM_CLASS* anon_method_defined_class = anon_method_defined_class_basic_type->class;
 
-        SPVM_LIST_push(anon_method_defined_class->anon_methods, method);
+        SPVM_LIST_push(anon_method_defined_class_basic_type->anon_methods, method);
         class_basic_type->is_precompile = anon_method_defined_class_basic_type->is_precompile;
       }
     }
@@ -652,8 +652,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     if (!class) { continue; }
     
     // Add the anon method
-    for (int32_t anon_methods_index = 0; anon_methods_index < class->anon_methods->length; anon_methods_index++) {
-      SPVM_METHOD* anon_method = SPVM_LIST_get(class->anon_methods, anon_methods_index);
+    for (int32_t anon_methods_index = 0; anon_methods_index < class->type->basic_type->anon_methods->length; anon_methods_index++) {
+      SPVM_METHOD* anon_method = SPVM_LIST_get(class->type->basic_type->anon_methods, anon_methods_index);
       anon_method->anon_method_id = compiler->anon_methods->length;
       SPVM_LIST_push(compiler->anon_methods, anon_method);
     }
