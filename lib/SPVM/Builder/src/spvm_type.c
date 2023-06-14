@@ -12,9 +12,8 @@
 #include "spvm_allocator.h"
 #include "spvm_hash.h"
 #include "spvm_yacc_util.h"
-#include "spvm_class.h"
-#include "spvm_field.h"
 #include "spvm_basic_type.h"
+#include "spvm_field.h"
 #include "spvm_method.h"
 #include "spvm_constant.h"
 
@@ -923,11 +922,7 @@ int32_t SPVM_TYPE_get_stack_length(SPVM_COMPILER* compiler, int32_t basic_type_i
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    SPVM_CLASS* class = basic_type->class;
-    
-    assert(class);
-    
-    stack_length = class->type->basic_type->fields->length;
+    stack_length = basic_type->fields->length;
   }
   else {
     stack_length = 1;
@@ -944,11 +939,9 @@ int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    SPVM_CLASS* class = basic_type->class;
+    assert(basic_type->fields->length > 0);
     
-    assert(class->type->basic_type->fields->length > 0);
-    
-    SPVM_FIELD* mulnum_field = SPVM_LIST_get(class->type->basic_type->fields, 0);
+    SPVM_FIELD* mulnum_field = SPVM_LIST_get(basic_type->fields, 0);
     
     SPVM_TYPE* mulnum_field_type = mulnum_field->type;
     
