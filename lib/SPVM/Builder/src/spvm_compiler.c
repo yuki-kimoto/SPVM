@@ -273,8 +273,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   compiler->cur_basic_type_base = compiler->basic_types->length;
   
-  int32_t cur_basic_type_base = compiler->basic_types->length;
-  
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
   
