@@ -1113,7 +1113,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       const char* call_method_method_name = call_method->method->name;
                       SPVM_CLASS* call_method_method_class = call_method->method->class;
                       
-                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method_method_class->method_symtable, call_method_method_name, strlen(call_method_method_name));
+                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method_method_class->type->basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
                       
                       int32_t first_arg_call_stack_id = -1;
                       SPVM_OP* op_term_args = op_assign_src->first;
@@ -4131,7 +4131,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_name_implement_method = op_assign_src->last;
                       
                       const char* implement_method_name = op_name_implement_method->uv.name;
-                      SPVM_METHOD* implement_method = SPVM_HASH_get(interface->method_symtable, implement_method_name, strlen(implement_method_name));
+                      SPVM_METHOD* implement_method = SPVM_HASH_get(interface->type->basic_type->method_symtable, implement_method_name, strlen(implement_method_name));
                       
                       SPVM_OPCODE opcode = {0};
                       

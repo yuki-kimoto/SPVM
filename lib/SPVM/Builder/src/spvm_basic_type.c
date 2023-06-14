@@ -238,7 +238,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
       return 0;
     }
     
-    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class->method_symtable, method_interface->name, strlen(method_interface->name));
+    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class->type->basic_type->method_symtable, method_interface->name, strlen(method_interface->name));
     if (method_class) {
       return 1;
     }

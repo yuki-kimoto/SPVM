@@ -136,7 +136,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     assert(found_class);
     
     found_method = SPVM_HASH_get(
-      found_class->method_symtable,
+      found_class->type->basic_type->method_symtable,
       method_name,
       strlen(method_name)
     );
@@ -197,7 +197,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         }
         if (found_class) {
           found_method = SPVM_HASH_get(
-            found_class->method_symtable,
+            found_class->type->basic_type->method_symtable,
             method_name,
             strlen(method_name)
           );
@@ -3132,7 +3132,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             
             const char* method_name = op_name_method->uv.name;
             SPVM_METHOD* found_method = SPVM_HASH_get(
-              class->method_symtable,
+              class->type->basic_type->method_symtable,
               method_name,
               strlen(method_name)
             );
@@ -3699,7 +3699,7 @@ SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS*
   SPVM_CLASS* parent_class = class;
   while (1) {
     found_method = SPVM_HASH_get(
-      parent_class->method_symtable,
+      parent_class->type->basic_type->method_symtable,
       method_name,
       strlen(method_name)
     );

@@ -922,14 +922,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    SPVM_METHOD* found_method = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+    SPVM_METHOD* found_method = SPVM_HASH_get(class->type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
     }
     // Unknown method
     else {
-      const char* found_method_name = SPVM_HASH_get(class->method_symtable, method_name, strlen(method_name));
+      const char* found_method_name = SPVM_HASH_get(class->type->basic_type->method_symtable, method_name, strlen(method_name));
       if (found_method_name) {
         SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
       }
@@ -963,7 +963,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         method->abs_name = method_abs_name;
 
         // Add the method to the method symtable of the class
-        SPVM_HASH_set(class->method_symtable, method->name, strlen(method->name), method);
+        SPVM_HASH_set(class->type->basic_type->method_symtable, method->name, strlen(method->name), method);
       }
     }
   }
@@ -4017,7 +4017,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       SPVM_CALL_METHOD*call_method = op->uv.call_method;
       const char*call_method_method_name =call_method->method->name;
       SPVM_CLASS*call_method_method_class =call_method->method->class;
-      SPVM_METHOD* method = SPVM_HASH_get(call_method_method_class->method_symtable,call_method_method_name, strlen(call_method_method_name));
+      SPVM_METHOD* method = SPVM_HASH_get(call_method_method_class->type->basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
       type = method->return_type;
       break;
     }
