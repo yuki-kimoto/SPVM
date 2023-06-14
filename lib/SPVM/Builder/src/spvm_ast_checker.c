@@ -1027,7 +1027,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
-      assert(method->class->class_file);
+      assert(method->class->type->basic_type->class_file);
       
       // Add variable declarations if the block does not exist
       if (!method->op_block) {

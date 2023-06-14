@@ -61,7 +61,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       assert(method->id > -1);
       assert(method->op_name);
       assert(method->return_type);
-      assert(method->class->class_file);
+      assert(method->class->type->basic_type->class_file);
       
       // Copy arguments to variables
       int32_t stack_index = 0;
