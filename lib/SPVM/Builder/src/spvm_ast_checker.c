@@ -342,8 +342,8 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* 
   int32_t offset_size;
   
   // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < class->merged_fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, merged_field_index);
+  for (int32_t merged_field_index = 0; merged_field_index < class->type->basic_type->merged_fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->type->basic_type->merged_fields, merged_field_index);
     SPVM_TYPE* merged_field_type = merged_field->type;
     
     int32_t next_offset;
@@ -392,9 +392,9 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* 
 
   class->fields_size = offset;
   
-  int32_t merged_fields_original_offset = class->merged_fields_original_offset;
+  int32_t merged_fields_original_offset = class->type->basic_type->merged_fields_original_offset;
   for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class->merged_fields, field_index + merged_fields_original_offset);
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class->type->basic_type->merged_fields, field_index + merged_fields_original_offset);
     SPVM_FIELD* field = SPVM_LIST_get(class->fields, field_index);
     
     field->offset = merged_field->offset;
@@ -804,7 +804,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         if (strcmp(field->class->name, cur_class->name) == 0) {
           new_field = field;
           if (!merged_fields_original_offset_set) {
-            class->merged_fields_original_offset = merged_fields_index;
+            class->type->basic_type->merged_fields_original_offset = merged_fields_index;
             merged_fields_original_offset_set = 1;
           }
         }
@@ -831,7 +831,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    class->merged_fields = merged_fields;
+    class->type->basic_type->merged_fields = merged_fields;
     
     // Add parent interfaces
     class->type->basic_type->interfaces = merged_interfaces;
