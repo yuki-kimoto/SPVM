@@ -644,7 +644,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       
       runtime_basic_type->is_class = 1;
       
-      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->class_rel_file, strlen(class->class_rel_file));
+      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->type->basic_type->class_rel_file, strlen(class->type->basic_type->class_rel_file));
       runtime_basic_type->class_rel_file_id = class_class_rel_file_string->id;
       
       if (class->type->basic_type->class_path) {

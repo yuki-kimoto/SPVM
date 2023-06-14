@@ -272,7 +272,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->type->basic_type->op_extends = op_extends;
   
   class->type->basic_type->class_path = compiler->cur_class_path;
-  class->class_rel_file = compiler->cur_rel_file;
+  class->type->basic_type->class_rel_file = compiler->cur_rel_file;
   class->type->basic_type->class_file = compiler->cur_file;
   
   if (op_extends) {
@@ -292,7 +292,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (class->type->basic_type->class_path) {
     SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_path, strlen(class->type->basic_type->class_path));
   }
-  SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_rel_file, strlen(class->type->basic_type->class_rel_file));
   SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_file, strlen(class->type->basic_type->class_file));
   
   const char* class_name = op_type->uv.type->basic_type->name;
