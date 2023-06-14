@@ -417,7 +417,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_OP* op_block = init_method->op_block;
       SPVM_OP* op_list_statement = op_block->first;
       
-      SPVM_LIST* use_class_names = class->use_class_names;
+      SPVM_LIST* use_class_names = class_basic_type->use_class_names;
       
       for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
         const char* use_class_name = SPVM_LIST_get(use_class_names, i);

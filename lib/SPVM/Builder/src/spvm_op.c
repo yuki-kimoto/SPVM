@@ -463,7 +463,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
         
-        SPVM_LIST_push(class->use_class_names, (void*)op_use->uv.use->class_name);
+        SPVM_LIST_push(class->type->basic_type->use_class_names, (void*)op_use->uv.use->class_name);
         
         // Class alias
         const char* class_alias_name = op_use->uv.use->class_alias_name;
