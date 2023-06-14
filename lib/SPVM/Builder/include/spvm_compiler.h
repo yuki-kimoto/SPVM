@@ -83,6 +83,9 @@ struct spvm_compiler {
   // Current class base;
   int32_t cur_class_base;
   
+  // Current basic type base;
+  int32_t cur_basic_type_base;
+  
   // Starting file the starting class is loaded
   const char* start_file;
   
