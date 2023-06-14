@@ -13,7 +13,6 @@ struct spvm_type {
   const char* name;
   int32_t dimension;
   int32_t flag;
-  int32_t stack_length;
   int32_t id;
   int8_t resolved_in_ast;
 };
