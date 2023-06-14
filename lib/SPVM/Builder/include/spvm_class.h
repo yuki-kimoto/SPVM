@@ -13,6 +13,10 @@ enum {
 };
 
 struct spvm_class {
+  const char* parent_class_name;
+  SPVM_CLASS* parent_class;
+  int32_t merged_fields_original_offset;
+  int32_t fields_size;
   int8_t category;
   SPVM_OP* op_class;
   SPVM_OP* op_name;
@@ -40,10 +44,6 @@ struct spvm_class {
   SPVM_METHOD* required_method;
   SPVM_METHOD* destructor_method;
   SPVM_METHOD* init_method;
-  const char* parent_class_name;
-  SPVM_CLASS* parent_class;
-  int32_t merged_fields_original_offset;
-  int32_t fields_size;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
