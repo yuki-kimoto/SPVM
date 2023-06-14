@@ -13,6 +13,10 @@ enum {
 };
 
 struct spvm_class {
+  const char* name;
+  const char* class_file;
+  const char* class_path;
+  const char* class_rel_file;
   SPVM_TYPE* type;
   const char* parent_class_name;
   SPVM_CLASS* parent_class;
@@ -22,10 +26,6 @@ struct spvm_class {
   SPVM_OP* op_class;
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
-  const char* name;
-  const char* class_file;
-  const char* class_path;
-  const char* class_rel_file;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
