@@ -181,7 +181,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       // SUPER::
       SPVM_METHOD* found_method = NULL;
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
-        SPVM_CLASS* parent_class = class->parent_class;
+        SPVM_CLASS* parent_class = class->type->basic_type->parent_class;
         if (parent_class) {
           // Search the method of the super class
           found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class, method_name);
@@ -266,7 +266,7 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
     if (found_field) {
       break;
     }
-    parent_class = parent_class->parent_class;
+    parent_class = parent_class->type->basic_type->parent_class;
     if (!parent_class) {
       break;
     }
@@ -437,7 +437,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
       }
       
-      const char* parent_class_name = class->parent_class_name;
+      const char* parent_class_name = class->type->basic_type->parent_class_name;
       if (parent_class_name) {
         SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
         SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
@@ -622,7 +622,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    const char* parent_class_name = class->parent_class_name;
+    const char* parent_class_name = class->type->basic_type->parent_class_name;
     if (parent_class_name) {
       SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
       SPVM_CLASS* parent_class = parent_class_basic_type->class;
@@ -641,7 +641,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
         return;
       }
-      class->parent_class = parent_class;
+      class->type->basic_type->parent_class = parent_class;
     }
   }
   
@@ -756,7 +756,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     
-    SPVM_CLASS* parent_class = class->parent_class;
+    SPVM_CLASS* parent_class = class->type->basic_type->parent_class;
     while (1) {
       if (parent_class) {
         if (strcmp(parent_class->type->basic_type->name, class->type->basic_type->name) == 0) {
@@ -773,7 +773,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         SPVM_LIST_push(class_stack, parent_class);
-        parent_class = parent_class->parent_class;
+        parent_class = parent_class->type->basic_type->parent_class;
       }
       else {
         break;
@@ -793,7 +793,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->parent_class, field->name);
+        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class, field->name);
         if (found_field_in_suer_class) {
           SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->type->basic_type->name, field->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
@@ -889,8 +889,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         char* class_desc = NULL;
         if (interface_index == class->type->basic_type->interfaces->length) {
           class_desc = "class";
-          if (class->parent_class) {
-            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->parent_class, method->name);
+          if (class->type->basic_type->parent_class) {
+            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->type->basic_type->parent_class, method->name);
             if (found_method) {
               interface = found_method->class;
             }
@@ -3706,7 +3706,7 @@ SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS*
     if (found_method) {
       break;
     }
-    parent_class = parent_class->parent_class;
+    parent_class = parent_class->type->basic_type->parent_class;
     
     if (!parent_class) {
       break;
@@ -3730,7 +3730,7 @@ SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* c
       if (found_field) {
         break;
       }
-      parent_class = parent_class->parent_class;
+      parent_class = parent_class->type->basic_type->parent_class;
       
       if (!parent_class) {
         break;

@@ -657,8 +657,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->has_init_block = basic_type->has_init_block;
       runtime_basic_type->is_anon = basic_type->is_anon;
       runtime_basic_type->is_pointer = class_basic_type->is_pointer;
-      if (class->parent_class_name) {
-        SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class->parent_class_name, strlen(class->parent_class_name));
+      if (class->type->basic_type->parent_class_name) {
+        SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class->type->basic_type->parent_class_name, strlen(class->type->basic_type->parent_class_name));
         SPVM_CLASS* parent_class = parent_class_basic_type->class;
         runtime_basic_type->parent_class_basic_type_id = parent_class->type->basic_type->id;
       }

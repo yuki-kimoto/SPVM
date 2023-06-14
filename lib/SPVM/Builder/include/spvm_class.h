@@ -8,8 +8,6 @@
 
 struct spvm_class {
   SPVM_TYPE* type;
-  const char* parent_class_name;
-  SPVM_CLASS* parent_class;
   SPVM_OP* op_class;
 };
 

@@ -280,7 +280,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->basic_type->name, op_type_parent_class->file, op_type_parent_class->line);
     
-    class->parent_class_name = op_name_parent_class->uv.name;
+    class->type->basic_type->parent_class_name = op_name_parent_class->uv.name;
     
     // add use stack
     SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
