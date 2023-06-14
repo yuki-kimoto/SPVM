@@ -615,31 +615,13 @@ const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
-  int32_t start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-  
-  const char* type_name = SPVM_TYPE_new_type_name_tmp(compiler,  basic_type_id, dimension, flag);
-  
-  SPVM_TYPE* found_type = SPVM_HASH_get(compiler->type_symtable, type_name, strlen(type_name));
-  SPVM_TYPE* type;
-  if (found_type) {
-    type = found_type;
-  }
-  else {
-    type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    type->id = compiler->types->length;
-    type->basic_type = basic_type;
-    type->dimension = dimension;
-    type->flag = flag;
-    type->name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
-    
-    SPVM_LIST_push(compiler->types, type);
-    SPVM_HASH_set(compiler->type_symtable, type_name, strlen(type_name), type);
-  }
-  
-  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)type_name);
-  type_name = NULL;
-  assert(compiler->allocator->memory_blocks_count_tmp == start_memory_blocks_count_tmp);
+  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+  type->id = compiler->types->length;
+  type->basic_type = basic_type;
+  type->dimension = dimension;
+  type->flag = flag;
+  type->name = SPVM_TYPE_new_type_name(compiler,  basic_type_id, dimension, flag);
   
   return type;
 }
