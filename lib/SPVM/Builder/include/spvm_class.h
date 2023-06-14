@@ -47,7 +47,6 @@ struct spvm_class {
   int8_t is_anon;
   int8_t category;
   int8_t is_precompile;
-  int8_t is_pointer;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);

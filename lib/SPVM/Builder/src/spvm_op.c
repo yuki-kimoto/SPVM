@@ -334,7 +334,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_POINTER: {
           class->category = SPVM_CLASS_C_CATEGORY_CLASS;
-          class->is_pointer = 1;
+          class_basic_type->is_pointer = 1;
           class_attributes_count++;
           break;
         }
