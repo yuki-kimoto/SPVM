@@ -262,6 +262,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Class
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
+  class->type = op_type->uv.type;
+  
   // Set class
   op_class->uv.class = class;
   
@@ -292,10 +295,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CONSTANT_STRING_new(compiler, class->class_rel_file, strlen(class->class_rel_file));
   SPVM_CONSTANT_STRING_new(compiler, class->class_file, strlen(class->class_file));
   
-  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
-    
   const char* class_name = op_type->uv.type->basic_type->name;
-  class->type = op_type->uv.type;
   
   // Assert
   SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
