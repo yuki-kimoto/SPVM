@@ -665,8 +665,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     if (!class) { continue; }
     // Add interfaces
-    for (int32_t i = 0; i < class->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->interface_decls, i);
+    for (int32_t i = 0; i < class->type->basic_type->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->type->basic_type->interface_decls, i);
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
       SPVM_CLASS* interface = interface_basic_type->class;
       assert(interface);
