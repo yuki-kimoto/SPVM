@@ -10,6 +10,7 @@ struct spvm_class_var {
   const char* name;
   SPVM_TYPE* type;
   SPVM_CLASS* class;
+  SPVM_BASIC_TYPE* class_basic_type;
   SPVM_OP* op_class_var;
   SPVM_OP* op_name;
   int32_t id;
