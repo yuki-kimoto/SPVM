@@ -13,6 +13,7 @@ enum {
 };
 
 struct spvm_class {
+  int8_t category;
   SPVM_OP* op_class;
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
@@ -45,7 +46,6 @@ struct spvm_class {
   int32_t fields_size;
   int8_t has_init_block;
   int8_t is_anon;
-  int8_t category;
 };
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
