@@ -125,9 +125,6 @@ struct spvm_compiler {
   // Classes
   SPVM_LIST* classes;
   
-  // OP class symtable
-  SPVM_HASH* class_symtable;
-  
   // Anon methods
   SPVM_LIST* anon_methods;
   
@@ -149,7 +146,7 @@ struct spvm_compiler {
   // class source symtable
   SPVM_HASH* source_symtable;
   
-  // SPVM 32bit codes
+  // SPVM runtime codes
   int32_t* runtime_codes;
 };
 
