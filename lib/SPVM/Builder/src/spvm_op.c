@@ -297,21 +297,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* class_name = op_type->uv.type->basic_type->name;
   class->type = op_type->uv.type;
   
-  if (strstr(class_name, "::anon::")) {
-    class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-    class->is_anon = 1;
-  }
-
-  if (!class->is_anon) {
-    assert(!islower(class_name[0]));
-    
-    // If class name is different from the class name corresponding to the class file, compile error occur.
-    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
-      return op_class;
-    }
-  }
-  
   // Assert
   SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
   SPVM_CLASS* found_class = found_class_basic_type->class;
@@ -324,6 +309,21 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   class->name = op_name_class->uv.name;
 
+  if (strstr(class_name, "::anon::")) {
+    class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+    class_basic_type->is_anon = 1;
+  }
+
+  if (!class_basic_type->is_anon) {
+    assert(!islower(class_name[0]));
+    
+    // If class name is different from the class name corresponding to the class file, compile error occur.
+    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
+      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+      return op_class;
+    }
+  }
+  
   // Class attributes
   int32_t class_attributes_count = 0;
   int32_t access_control_attributes_count = 0;
@@ -780,7 +780,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
       // If anon method, field is public
-      if (class->is_anon) {
+      if (class_basic_type->is_anon) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // If multi-numeric type, field is public
