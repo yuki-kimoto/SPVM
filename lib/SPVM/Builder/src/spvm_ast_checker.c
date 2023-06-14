@@ -766,9 +766,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         // Inherit destructor
-        if (!class->destructor_method) {
-          if (parent_class->destructor_method) {
-            class->destructor_method = parent_class->destructor_method;
+        if (!class_basic_type->destructor_method) {
+          if (parent_class->type->basic_type->destructor_method) {
+            class_basic_type->destructor_method = parent_class->type->basic_type->destructor_method;
           }
         }
         

@@ -938,7 +938,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         method->class = class;
         
         if (method->is_destructor) {
-          class->destructor_method = method;
+          class_basic_type->destructor_method = method;
         }
         
         if (method->is_init) {
