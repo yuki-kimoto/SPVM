@@ -427,14 +427,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   // Clear unused pointers
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    SPVM_CLASS* class = class_basic_type->class;
-    if (!class) { continue; }
-    
-    class->op_class = NULL;
+    if (!class_basic_type->is_class) { continue; }
     
     SPVM_LIST_free(class_basic_type->allows);
     
-    SPVM_LIST* methods = class->type->basic_type->methods;
+    SPVM_LIST* methods = class_basic_type->methods;
     {
       int32_t method_index;
       for (method_index = 0; method_index < methods->length; method_index++) {
@@ -639,15 +636,14 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     if (basic_type->class) {
       SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name));
-      SPVM_CLASS* class = class_basic_type->class;
       
       runtime_basic_type->is_class = 1;
       
-      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, class->type->basic_type->class_rel_file, strlen(class->type->basic_type->class_rel_file));
+      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
       runtime_basic_type->class_rel_file_id = class_class_rel_file_string->id;
       
-      if (class->type->basic_type->class_path) {
-        SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, class->type->basic_type->class_path, strlen(class->type->basic_type->class_path));
+      if (basic_type->class_path) {
+        SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->class_path, strlen(basic_type->class_path));
         runtime_basic_type->class_path_id = class_class_path_string->id;
       }
       else {
@@ -656,19 +652,18 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->has_init_block = basic_type->has_init_block;
       runtime_basic_type->is_anon = basic_type->is_anon;
       runtime_basic_type->is_pointer = class_basic_type->is_pointer;
-      if (class->type->basic_type->parent_class_name) {
-        SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class->type->basic_type->parent_class_name, strlen(class->type->basic_type->parent_class_name));
-        SPVM_CLASS* parent_class = parent_class_basic_type->class;
-        runtime_basic_type->parent_class_basic_type_id = parent_class->type->basic_type->id;
+      if (basic_type->parent_class_name) {
+        SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_class_name, strlen(basic_type->parent_class_name));
+        runtime_basic_type->parent_class_basic_type_id = parent_class_basic_type->id;
       }
       else {
         runtime_basic_type->parent_class_basic_type_id = -1;
       }
       
-      runtime_basic_type->fields_size = class->type->basic_type->fields_size;
+      runtime_basic_type->fields_size = basic_type->fields_size;
       
-      if (class->type->basic_type->version_string) {
-        SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, class->type->basic_type->version_string, strlen(class->type->basic_type->version_string));
+      if (basic_type->version_string) {
+        SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
         runtime_basic_type->version_string_id = class_version_string->id;
       }
       else {
@@ -689,7 +684,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->destructor_method_id = -1;
       }
       
-      if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+      if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
         assert(basic_type->required_method);
       }
       
@@ -701,27 +696,27 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
         runtime_basic_type->required_method_id = -1;
       }
       
-      runtime_basic_type->methods_length = class->type->basic_type->methods->length;
-      if (class->type->basic_type->methods->length > 0) {
-        SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, 0);
+      runtime_basic_type->methods_length = basic_type->methods->length;
+      if (basic_type->methods->length > 0) {
+        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
         runtime_basic_type->methods_base_id = method->id;
       }
       else {
         runtime_basic_type->methods_base_id = -1;
       }
       
-      runtime_basic_type->fields_length = class->type->basic_type->fields->length;
-      if (class->type->basic_type->fields->length > 0) {
-        SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, 0);
+      runtime_basic_type->fields_length = basic_type->fields->length;
+      if (basic_type->fields->length > 0) {
+        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
         runtime_basic_type->fields_base_id = field->id;
       }
       else {
         runtime_basic_type->fields_base_id = -1;
       }
       
-      runtime_basic_type->class_vars_length = class->type->basic_type->class_vars->length;
-      if (class->type->basic_type->class_vars->length > 0) {
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, 0);
+      runtime_basic_type->class_vars_length = basic_type->class_vars->length;
+      if (basic_type->class_vars->length > 0) {
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, 0);
         runtime_basic_type->class_vars_base_id = class_var->id;
       }
       else {
