@@ -823,8 +823,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     class_basic_type->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class_basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
-      if (!found_interface) {
+      SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(class_basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
+      if (!found_interface_basic_type) {
         SPVM_LIST_push(class_basic_type->interfaces, interface_basic_type);
         SPVM_HASH_set(class_basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
       }
