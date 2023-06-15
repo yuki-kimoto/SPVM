@@ -318,7 +318,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
 }
 
 void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type) {
-  if (class_basic_type->class->type->basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+  if (class_basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     return;
   }
   
@@ -335,8 +335,8 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_T
   int32_t offset_size;
   
   // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < class_basic_type->class->type->basic_type->merged_fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class_basic_type->class->type->basic_type->merged_fields, merged_field_index);
+  for (int32_t merged_field_index = 0; merged_field_index < class_basic_type->merged_fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class_basic_type->merged_fields, merged_field_index);
     SPVM_TYPE* merged_field_type = merged_field->type;
     
     int32_t next_offset;
@@ -383,12 +383,12 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_T
     offset += offset_size;
   }
 
-  class_basic_type->class->type->basic_type->fields_size = offset;
+  class_basic_type->fields_size = offset;
   
-  int32_t merged_fields_original_offset = class_basic_type->class->type->basic_type->merged_fields_original_offset;
-  for (int32_t field_index = 0; field_index < class_basic_type->class->type->basic_type->fields->length; field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(class_basic_type->class->type->basic_type->merged_fields, field_index + merged_fields_original_offset);
-    SPVM_FIELD* field = SPVM_LIST_get(class_basic_type->class->type->basic_type->fields, field_index);
+  int32_t merged_fields_original_offset = class_basic_type->merged_fields_original_offset;
+  for (int32_t field_index = 0; field_index < class_basic_type->fields->length; field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(class_basic_type->merged_fields, field_index + merged_fields_original_offset);
+    SPVM_FIELD* field = SPVM_LIST_get(class_basic_type->fields, field_index);
     
     field->offset = merged_field->offset;
   }
