@@ -1944,22 +1944,20 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             // Object type
             else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
               SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, type->basic_type->name, strlen(type->basic_type->name));
-              SPVM_CLASS* class = class_basic_type->class;
               
-              if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+              if (class_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
                 SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be an interface type.\n  at %s line %d", op_new->file, op_new->line);
                 return;
               }
-              else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+              else if (class_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
                 SPVM_COMPILER_error(compiler, "The operand of the new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
                 return;
               }
 
-              SPVM_CLASS* cur_class = method->class;
               SPVM_BASIC_TYPE* cur_class_basic_type = method->class_basic_type;
               if (!SPVM_AST_CHECKER_can_access(compiler, cur_class_basic_type, new_class_basic_type, new_class_basic_type->access_control_type)) {
                 if (!SPVM_OP_is_allowed(compiler, cur_class_basic_type, new_class_basic_type)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class->type->basic_type->name, cur_class->type->basic_type->name, op_new->file, op_new->line);
+                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class_basic_type->name, cur_class_basic_type->name, op_new->file, op_new->line);
                   return;
                 }
               }
