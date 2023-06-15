@@ -415,9 +415,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         const char* use_class_name = SPVM_LIST_get(use_class_names, i);
         
         SPVM_BASIC_TYPE* use_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
-        SPVM_CLASS* use_class = use_class_basic_type->class;
-        if (use_class) {
-          if (use_class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+        if (use_class_basic_type) {
+          if (use_class_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
             SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
             SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
             SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
