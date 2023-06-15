@@ -1018,9 +1018,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   // Check syntax and generate operations in classes
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    SPVM_CLASS* class = class_basic_type->class;
-    if (!class) { continue; }
-    SPVM_LIST* methods = class->type->basic_type->methods;
+    SPVM_LIST* methods = class_basic_type->methods;
     
     // Check syntax and generate operations in methods
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
