@@ -145,10 +145,6 @@ typedef struct spvm_dumper SPVM_DUMPER;
 struct spvm_assign;
 typedef struct spvm_assign SPVM_ASSIGN;
 
-// spvm_class.h
-struct spvm_class;
-typedef struct spvm_class SPVM_CLASS;
-
 // spvm_field_access.h
 struct spvm_field_access;
 typedef struct spvm_field_access SPVM_FIELD_ACCESS;

@@ -310,7 +310,6 @@ struct spvm_op {
     SPVM_VAR_DECL* var_decl;
     SPVM_TYPE* type;
     const char* name;
-    SPVM_CLASS* class;
     SPVM_CLASS_VAR* class_var;
     SPVM_FIELD* field;
     SPVM_METHOD* method;

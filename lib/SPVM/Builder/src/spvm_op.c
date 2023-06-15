@@ -18,7 +18,6 @@
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_type.h"
-#include "spvm_class.h"
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_type.h"
@@ -259,18 +258,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
 
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
-  // Class
-  SPVM_CLASS* class = SPVM_CLASS_new(compiler);
-  
   SPVM_TYPE* type = op_type->uv.type;
   SPVM_BASIC_TYPE* basic_type = type->basic_type;
   
-  class->type = op_type->uv.type;
-  
-  // Set class
-  op_class->uv.class = class;
-  
-  class->op_class = op_class;
   type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
   
@@ -976,10 +966,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (type->basic_type->fields->length == 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
+      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", op_class->file, op_class->line);
     }
     else if (type->basic_type->fields->length > 255) {
-      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
+      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_class->file, op_class->line);
     }
   }
 
