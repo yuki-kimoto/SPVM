@@ -735,8 +735,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     if (!class_basic_type->is_class) { continue; }
     
-    SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-    SPVM_LIST_push(class_stack, class_basic_type->class);
+    SPVM_LIST* basic_type_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    SPVM_LIST_push(basic_type_stack, class_basic_type);
 
     SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -757,7 +757,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           }
         }
         
-        SPVM_LIST_push(class_stack, parent_class_basic_type->class);
+        SPVM_LIST_push(basic_type_stack, parent_class_basic_type);
         parent_class_basic_type = parent_class_basic_type->parent_class_basic_type;
       }
       else {
@@ -768,17 +768,17 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* cur_class_basic_type = class_basic_type;
     int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
-    for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
-      SPVM_CLASS* class = SPVM_LIST_get(class_stack, class_index);
+    for (int32_t basic_type_index = basic_type_stack->length - 1; basic_type_index >= 0; basic_type_index--) {
+      SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(basic_type_stack, basic_type_index);
       
       // All fields
-      SPVM_LIST* fields = class->type->basic_type->fields;
+      SPVM_LIST* fields = class_basic_type->fields;
       int32_t field_index = 0;
       int32_t fields_length = fields->length;
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_super_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class_basic_type, field->name);
+        SPVM_FIELD* found_field_in_super_class = SPVM_AST_CHECKER_search_field(compiler, class_basic_type->parent_class_basic_type, field->name);
         if (found_field_in_super_class) {
           SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" class.\n  at %s line %d", field->name, class_basic_type->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
@@ -789,7 +789,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         if (strcmp(field->class->type->basic_type->name, cur_class_basic_type->name) == 0) {
           new_field = field;
           if (!merged_fields_original_offset_set) {
-            class->type->basic_type->merged_fields_original_offset = merged_fields_index;
+            class_basic_type->merged_fields_original_offset = merged_fields_index;
             merged_fields_original_offset_set = 1;
           }
         }
@@ -810,7 +810,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       // All interfaces
-      SPVM_LIST* interfaces = class->type->basic_type->interfaces;
+      SPVM_LIST* interfaces = class_basic_type->interfaces;
       for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
         SPVM_CLASS* interface = SPVM_LIST_get(interfaces, interface_index);
         SPVM_LIST_push(merged_interfaces, interface);
@@ -830,7 +830,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_LIST_free(class_stack);
+    SPVM_LIST_free(basic_type_stack);
     if (compile_error) {
       return;
     }
