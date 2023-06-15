@@ -447,7 +447,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
     
     // Multi-numeric type limitation
-    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+    if (class_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       SPVM_LIST* fields = class->type->basic_type->fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -502,7 +502,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
     // Check class var
     for (int32_t class_var_index = 0; class_var_index < class->type->basic_type->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, class_var_index);
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class_basic_type->class_vars, class_var_index);
       SPVM_TYPE* class_var_type = SPVM_OP_get_type(compiler, class_var->op_class_var);
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
@@ -515,7 +515,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Check fields
     for (int32_t field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, field_index);
+      SPVM_FIELD* field = SPVM_LIST_get(class_basic_type->fields, field_index);
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, field->op_field);
 
       // valut_t cannnot become field
@@ -528,7 +528,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Check methods
     for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
+      SPVM_METHOD* method = SPVM_LIST_get(class_basic_type->methods, i);
       
       // Argument limit check
       int32_t args_stack_length = 0;
@@ -634,7 +634,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      if (strcmp(class->type->basic_type->name, parent_class->type->basic_type->name) == 0) {
+      if (strcmp(class_basic_type->name, parent_class->type->basic_type->name) == 0) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class->type->basic_type->op_extends->file, class->type->basic_type->op_extends->line);
         return;
       }
@@ -651,7 +651,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Add the anon method
     for (int32_t anon_methods_index = 0; anon_methods_index < class->type->basic_type->anon_methods->length; anon_methods_index++) {
-      SPVM_METHOD* anon_method = SPVM_LIST_get(class->type->basic_type->anon_methods, anon_methods_index);
+      SPVM_METHOD* anon_method = SPVM_LIST_get(class_basic_type->anon_methods, anon_methods_index);
       anon_method->anon_method_id = compiler->anon_methods->length;
       SPVM_LIST_push(compiler->anon_methods, anon_method);
     }
@@ -664,7 +664,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     if (!class) { continue; }
     // Add interfaces
     for (int32_t i = 0; i < class->type->basic_type->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class->type->basic_type->interface_decls, i);
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(class_basic_type->interface_decls, i);
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
       SPVM_CLASS* interface = interface_basic_type->class;
       assert(interface);
@@ -692,7 +692,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     // Create method ids
     for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
+      SPVM_METHOD* method = SPVM_LIST_get(class_basic_type->methods, i);
       
       // Set method precompile flag if class have precompile attribute
       if (class_basic_type->is_precompile) {
@@ -731,7 +731,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     }
 
     for (int32_t i = 0; i < class->type->basic_type->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, i);
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class_basic_type->class_vars, i);
 
       // Set class_var id
       class_var->id = compiler->class_vars->length;
@@ -836,10 +836,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     class->type->basic_type->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_CLASS* found_interface = SPVM_HASH_get(class->type->basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name));
+      SPVM_CLASS* found_interface = SPVM_HASH_get(class_basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name));
       if (!found_interface) {
-        SPVM_LIST_push(class->type->basic_type->interfaces, interface);
-        SPVM_HASH_set(class->type->basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name), interface);
+        SPVM_LIST_push(class_basic_type->interfaces, interface);
+        SPVM_HASH_set(class_basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name), interface);
       }
     }
     
@@ -855,7 +855,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length; interface_index++) {
-      SPVM_CLASS* interface = SPVM_LIST_get(class->type->basic_type->interfaces, interface_index);
+      SPVM_CLASS* interface = SPVM_LIST_get(class_basic_type->interfaces, interface_index);
       assert(interface);
       
       SPVM_METHOD* interface_required_method = interface->type->basic_type->required_method;
@@ -877,7 +877,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_CLASS* class = class_basic_type->class;
     if (!class) { continue; }
     for (int32_t method_index = 0; method_index < class->type->basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, method_index);
+      SPVM_METHOD* method = SPVM_LIST_get(class_basic_type->methods, method_index);
       
       // Interface methods and the method of the super class
       for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length + 1; interface_index++) {
@@ -888,7 +888,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         char* class_desc = NULL;
         if (interface_index == class->type->basic_type->interfaces->length) {
           class_desc = "class";
-          if (class->type->basic_type->parent_class) {
+          if (class_basic_type->parent_class) {
             SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->type->basic_type->parent_class_basic_type, method->name);
             if (found_method) {
               interface = found_method->class;
@@ -898,7 +898,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         // Interface
         else {
           class_desc = "interface";
-          interface = SPVM_LIST_get(class->type->basic_type->interfaces, interface_index);
+          interface = SPVM_LIST_get(class_basic_type->interfaces, interface_index);
           assert(interface);
         }
         
@@ -988,9 +988,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     if (!class) { continue; }
 
     for (int32_t field_index = 0; field_index < class->type->basic_type->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, field_index);
+      SPVM_FIELD* field = SPVM_LIST_get(class_basic_type->fields, field_index);
       field->index = field_index;
-      SPVM_HASH_set(class->type->basic_type->field_symtable, field->name, strlen(field->name), field);
+      SPVM_HASH_set(class_basic_type->field_symtable, field->name, strlen(field->name), field);
     }
   }
   
@@ -1002,7 +1002,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     
     for (int32_t i = 0; i < class->type->basic_type->fields->length; i++) {
       // Field
-      SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, i);
+      SPVM_FIELD* field = SPVM_LIST_get(class_basic_type->fields, i);
 
       // Create field id
       field->id = compiler->fields->length;
