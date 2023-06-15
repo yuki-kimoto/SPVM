@@ -615,9 +615,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     const char* parent_class_name = class_basic_type->parent_class_name;
     if (parent_class_name) {
       SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
-      SPVM_CLASS* parent_class = parent_class_basic_type->class;
 
-      SPVM_TYPE* parent_class_type = parent_class->type;
+      SPVM_TYPE* parent_class_type = parent_class_basic_type->class->type;
       if (!SPVM_TYPE_is_class_type(compiler, parent_class_type->basic_type->id, parent_class_type->dimension, parent_class_type->flag)) {
         SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", class_basic_type->op_extends->file, class_basic_type->op_extends->line);
         return;
@@ -627,12 +626,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      if (strcmp(class_basic_type->name, parent_class->type->basic_type->name) == 0) {
+      if (strcmp(class_basic_type->name, parent_class_basic_type->name) == 0) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class_basic_type->op_extends->file, class_basic_type->op_extends->line);
         return;
       }
-      class_basic_type->parent_class = parent_class;
-      class_basic_type->parent_class_basic_type = parent_class->type->basic_type;
+      class_basic_type->parent_class = parent_class_basic_type->class;
+      class_basic_type->parent_class_basic_type = parent_class_basic_type;
     }
   }
   
