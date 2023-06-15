@@ -1919,7 +1919,6 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_new);
             
             SPVM_BASIC_TYPE* new_class_basic_type = type->basic_type;
-            SPVM_CLASS* new_class = type->basic_type->class;
             
             // Array type
             if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
