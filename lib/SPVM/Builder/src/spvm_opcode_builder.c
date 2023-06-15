@@ -4572,8 +4572,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                    SPVM_CLASS* class = array_type->basic_type->class;
-                    SPVM_FIELD* first_field = SPVM_LIST_get(class->type->basic_type->fields, 0);
+                    SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->fields, 0);
                   
                     SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
 
