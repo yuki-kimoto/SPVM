@@ -309,9 +309,8 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
   }
   
   SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-  SPVM_CLASS* found_class = found_class_basic_type->class;
-  if (found_class) {
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class->type->basic_type->class_var_symtable, base_name, strlen(base_name));
+  if (found_class_basic_type) {
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_class_basic_type->class_var_symtable, base_name, strlen(base_name));
     if (found_class_var) {
       op_class_var_access->uv.class_var_access->class_var = found_class_var;
     }
