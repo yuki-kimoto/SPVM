@@ -21,7 +21,6 @@
 #include "spvm_var.h"
 #include "spvm_var_decl.h"
 #include "spvm_allocator.h"
-#include "spvm_class.h"
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_hash.h"
