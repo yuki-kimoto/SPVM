@@ -1957,7 +1957,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
 
               SPVM_CLASS* cur_class = method->class;
               SPVM_BASIC_TYPE* cur_class_basic_type = method->class_basic_type;
-              if (!SPVM_AST_CHECKER_can_access(compiler, cur_class, new_class, new_class_basic_type->access_control_type)) {
+              if (!SPVM_AST_CHECKER_can_access(compiler, cur_class_basic_type, new_class_basic_type, new_class_basic_type->access_control_type)) {
                 if (!SPVM_OP_is_allowed(compiler, cur_class_basic_type, new_class_basic_type)) {
                   SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_class_basic_type->access_control_type), new_class->type->basic_type->name, cur_class->type->basic_type->name, op_new->file, op_new->line);
                   return;
@@ -2852,7 +2852,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                 SPVM_CLASS* class_var_access_class = class_var->class;
                 SPVM_BASIC_TYPE* class_var_access_class_basic_type = class_var->class_basic_type;
                 
-                if (!SPVM_AST_CHECKER_can_access(compiler, method->class, class_var_access_class, class_var_access->class_var->access_control_type)) {
+                if (!SPVM_AST_CHECKER_can_access(compiler, method->class_basic_type, class_var_access_class_basic_type, class_var_access->class_var->access_control_type)) {
                   if (!SPVM_OP_is_allowed(compiler, method->class_basic_type, class_var_access_class_basic_type)) {
                     SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_class->type->basic_type->name,  method->class->type->basic_type->name, op_class_var_access->file, op_class_var_access->line);
                     return;
@@ -2891,7 +2891,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
             SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             const char* method_name = call_method->method->name;
 
-            if (!SPVM_AST_CHECKER_can_access(compiler, method->class, call_method->method->class, call_method->method->access_control_type)) {
+            if (!SPVM_AST_CHECKER_can_access(compiler, method->class_basic_type, call_method->method->class_basic_type, call_method->method->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->class_basic_type, call_method->method->class_basic_type)) {
                 SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->class->type->basic_type->name,  method->class->type->basic_type->name, op_cur->file, op_cur->line);
                 return;
@@ -3075,7 +3075,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
 
             SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
             
-            if (!SPVM_AST_CHECKER_can_access(compiler, method->class,  field_access->field->class, field_access->field->access_control_type)) {
+            if (!SPVM_AST_CHECKER_can_access(compiler, method->class_basic_type,  field_access->field->class_basic_type, field_access->field->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->class_basic_type, field->class_basic_type)) {
                 SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->class->type->basic_type->name, method->class->type->basic_type->name, op_cur->file, op_cur->line);
                 return;
@@ -3742,12 +3742,12 @@ SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* c
   return found_field;
 }
 
-int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to) {
+int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type_from, SPVM_BASIC_TYPE* class_basic_type_to, int32_t access_controll_flag_to) {
   
   int32_t can_access = 0;
   
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-    if (strcmp(class_from->type->basic_type->name, class_to->type->basic_type->name) == 0) {
+    if (strcmp(class_basic_type_from->name, class_basic_type_to->name) == 0) {
       can_access = 1;
     }
     else {
@@ -3755,11 +3755,11 @@ int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_f
     }
   }
   else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-    if (strcmp(class_from->type->basic_type->name, class_to->type->basic_type->name) == 0) {
+    if (strcmp(class_basic_type_from->name, class_basic_type_to->name) == 0) {
       can_access = 1;
     }
     else {
-      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_to->type->basic_type->id, class_from->type->basic_type->id)) {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, class_basic_type_to->id, class_basic_type_from->id)) {
         can_access = 1;
       }
       else {

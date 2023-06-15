@@ -46,7 +46,7 @@ void SPVM_AST_CHECKER_perform_integer_promotional_conversion(SPVM_COMPILER* comp
 
 void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_first, SPVM_OP* op_last);
 
-int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_CLASS* class_from, SPVM_CLASS* class_to, int32_t access_controll_flag_to);
+int32_t SPVM_AST_CHECKER_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type_from, SPVM_BASIC_TYPE* class_basic_type_to, int32_t access_controll_flag_to);
 
 int32_t SPVM_AST_CHECKER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_VAR_DECL* var_decl);
 
