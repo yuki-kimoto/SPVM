@@ -34,7 +34,7 @@ int SPVM_AST_CHECKER_method_name_compare_cb(const void* method1_ptr, const void*
 
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, const char* method_name);
 
-SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name);
+SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, const char* field_name);
 
 int32_t SPVM_AST_CHECKER_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src);
 

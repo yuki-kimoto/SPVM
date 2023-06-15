@@ -791,7 +791,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_super_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class, field->name);
+        SPVM_FIELD* found_field_in_super_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class_basic_type, field->name);
         if (found_field_in_super_class) {
           SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" class.\n  at %s line %d", field->name, class_basic_type->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
@@ -3717,11 +3717,11 @@ SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_
   return found_method;
 }
 
-SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* field_name) {
+SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, const char* field_name) {
   SPVM_FIELD* found_field = NULL;
   
-  if (class) {
-    SPVM_CLASS* parent_class = class;
+  if (class_basic_type) {
+    SPVM_CLASS* parent_class = class_basic_type->class;
     while (1) {
       found_field = SPVM_HASH_get(
         parent_class->type->basic_type->field_symtable,
