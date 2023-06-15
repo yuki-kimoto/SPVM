@@ -937,7 +937,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       else {
         // Bind standard functions
-        method->class = class;
         method->class_basic_type = type->basic_type;
         
         if (method->is_destructor) {
