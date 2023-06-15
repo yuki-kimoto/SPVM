@@ -181,7 +181,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         SPVM_CLASS* parent_class = class->type->basic_type->parent_class;
         if (parent_class) {
           // Search the method of the super class
-          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class, method_name);
+          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class->type->basic_type, method_name);
         }
       }
       else {
@@ -216,7 +216,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     // Instance method
     else {
-      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class, method_name);
+      SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class_basic_type, method_name);
       
       if (found_method) {
         if (found_method->is_class_method) {
@@ -861,7 +861,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_METHOD* interface_required_method = interface->type->basic_type->required_method;
       
       if (interface_required_method) {
-        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class, interface_required_method->name);
+        SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class_basic_type, interface_required_method->name);
         
         if (!found_required_method) {
           SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->type->basic_type->name, interface_required_method->name, interface->type->basic_type->name, class->op_class->file, class->op_class->line);
@@ -889,7 +889,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         if (interface_index == class->type->basic_type->interfaces->length) {
           class_desc = "class";
           if (class->type->basic_type->parent_class) {
-            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->type->basic_type->parent_class, method->name);
+            SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class->type->basic_type->parent_class_basic_type, method->name);
             if (found_method) {
               interface = found_method->class;
             }
@@ -3694,10 +3694,10 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compile
   SPVM_LIST_free(call_stack_ref_vars);
 }
 
-SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_CLASS* class, const char* method_name) {
+SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, const char* method_name) {
   SPVM_METHOD* found_method = NULL;
   
-  SPVM_CLASS* parent_class = class;
+  SPVM_CLASS* parent_class = class_basic_type->class;
   while (1) {
     found_method = SPVM_HASH_get(
       parent_class->type->basic_type->method_symtable,
