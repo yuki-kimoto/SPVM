@@ -733,11 +733,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   int32_t compile_error = 0;
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    SPVM_CLASS* class = class_basic_type->class;
-    if (!class) { continue; }
+    if (!class_basic_type->is_class) { continue; }
     
     SPVM_LIST* class_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-    SPVM_LIST_push(class_stack, class);
+    SPVM_LIST_push(class_stack, class_basic_type->class);
 
     SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -766,7 +765,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_CLASS* cur_class = class;
+    SPVM_CLASS* cur_class = class_basic_type->class;
     int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
@@ -818,10 +817,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    class->type->basic_type->merged_fields = merged_fields;
+    class_basic_type->merged_fields = merged_fields;
     
     // Add parent interfaces
-    class->type->basic_type->interfaces = merged_interfaces;
+    class_basic_type->interfaces = merged_interfaces;
     for (int32_t i = 0; i < merged_interfaces->length; i++) {
       SPVM_CLASS* interface = SPVM_LIST_get(merged_interfaces, i);
       SPVM_CLASS* found_interface = SPVM_HASH_get(class_basic_type->interface_symtable, interface->type->basic_type->name, strlen(interface->type->basic_type->name));
