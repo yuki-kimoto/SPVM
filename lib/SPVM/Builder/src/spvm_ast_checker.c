@@ -1050,7 +1050,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         // AST traversal - assign an unassigned operator to a variable
-        SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class, method);
+        SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(compiler, class_basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
@@ -3207,7 +3207,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
   }
 }
 
-void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
