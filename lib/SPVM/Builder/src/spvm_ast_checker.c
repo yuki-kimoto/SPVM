@@ -3721,19 +3721,19 @@ SPVM_FIELD* SPVM_AST_CHECKER_search_field(SPVM_COMPILER* compiler, SPVM_BASIC_TY
   SPVM_FIELD* found_field = NULL;
   
   if (class_basic_type) {
-    SPVM_CLASS* parent_class = class_basic_type->class;
+    SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type;
     while (1) {
       found_field = SPVM_HASH_get(
-        parent_class->type->basic_type->field_symtable,
+        parent_class_basic_type->field_symtable,
         field_name,
         strlen(field_name)
       );
       if (found_field) {
         break;
       }
-      parent_class = parent_class->type->basic_type->parent_class;
+      parent_class_basic_type = parent_class_basic_type->parent_class_basic_type;
       
-      if (!parent_class) {
+      if (!parent_class_basic_type) {
         break;
       }
     }
