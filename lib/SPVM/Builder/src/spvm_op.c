@@ -262,24 +262,27 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Class
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
+  SPVM_TYPE* type = op_type->uv.type;
+  SPVM_BASIC_TYPE* basic_type = type->basic_type;
+  
   class->type = op_type->uv.type;
   
   // Set class
   op_class->uv.class = class;
   
   class->op_class = op_class;
-  class->type->basic_type->op_extends = op_extends;
+  type->basic_type->op_extends = op_extends;
   
-  class->type->basic_type->class_path = compiler->cur_class_path;
-  class->type->basic_type->class_rel_file = compiler->cur_rel_file;
-  class->type->basic_type->class_file = compiler->cur_file;
+  type->basic_type->class_path = compiler->cur_class_path;
+  type->basic_type->class_rel_file = compiler->cur_rel_file;
+  type->basic_type->class_file = compiler->cur_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_class = op_extends->first;
     
     SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->basic_type->name, op_type_parent_class->file, op_type_parent_class->line);
     
-    class->type->basic_type->parent_class_name = op_name_parent_class->uv.name;
+    type->basic_type->parent_class_name = op_name_parent_class->uv.name;
     
     // add use stack
     SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
@@ -288,11 +291,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_class_alias, is_require);
   }
   
-  if (class->type->basic_type->class_path) {
-    SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_path, strlen(class->type->basic_type->class_path));
+  if (type->basic_type->class_path) {
+    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_path, strlen(type->basic_type->class_path));
   }
-  SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_rel_file, strlen(class->type->basic_type->class_rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, class->type->basic_type->class_file, strlen(class->type->basic_type->class_file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_rel_file, strlen(type->basic_type->class_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_file, strlen(type->basic_type->class_file));
   
   const char* class_name = op_type->uv.type->basic_type->name;
   
@@ -303,10 +306,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class_basic_type->class = class;
   class_basic_type->is_class = 1;
   
-  class->type->basic_type->name = op_type->uv.type->basic_type->name;
+  type->basic_type->name = op_type->uv.type->basic_type->name;
 
   if (strstr(class_name, "::anon::")) {
-    class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+    type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     class_basic_type->is_anon = 1;
   }
 
@@ -329,13 +332,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_POINTER: {
-          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
+          type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
           class_basic_type->is_pointer = 1;
           class_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
-          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
+          type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_attributes_count++;
           break;
@@ -360,7 +363,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
-          class->type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
+          type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_attributes_count++;
           break;
@@ -394,7 +397,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       // version declaration
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
-        if (class->type->basic_type->version_string) {
+        if (type->basic_type->version_string) {
           SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
@@ -453,13 +456,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         SPVM_CONSTANT_STRING_new(compiler, version_string, version_string_length);
-        class->type->basic_type->version_string = version_string;
+        type->basic_type->version_string = version_string;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
         
-        SPVM_LIST_push(class->type->basic_type->use_class_names, (void*)op_use->uv.use->class_name);
+        SPVM_LIST_push(type->basic_type->use_class_names, (void*)op_use->uv.use->class_name);
         
         // Class alias
         const char* class_alias_name = op_use->uv.use->class_alias_name;
@@ -472,12 +475,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           else {
             const char* use_class_name = op_use->uv.use->class_name;
-            const char* use_class_name_exists = SPVM_HASH_get(class->type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name));
+            const char* use_class_name_exists = SPVM_HASH_get(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name));
             if (use_class_name_exists) {
               SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
             }
             else {
-              SPVM_HASH_set(class->type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
+              SPVM_HASH_set(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
             }
           }
         }
@@ -488,25 +491,25 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
-        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+        if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
           SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         const char* interface_name = op_decl->uv.interface->class_name;
         
-        if (strcmp(class->type->basic_type->name, interface_name) == 0) {
+        if (strcmp(type->basic_type->name, interface_name) == 0) {
           SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         
-        SPVM_LIST_push(class->type->basic_type->interface_decls, op_decl->uv.interface);
+        SPVM_LIST_push(type->basic_type->interface_decls, op_decl->uv.interface);
       }
       // Class var declarations
       else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
         
-        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+        if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->type->basic_type->class_vars, op_decl->uv.class_var);
+        SPVM_LIST_push(type->basic_type->class_vars, op_decl->uv.class_var);
         
         // Getter
         if (class_var->has_getter) {
@@ -551,7 +554,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+          SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
         
         // Setter
@@ -617,17 +620,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+          SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
       }
       // Field declarations
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_FIELD* field = op_decl->uv.field;
         
-        if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+        if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(class->type->basic_type->fields, field);
+        SPVM_LIST_push(type->basic_type->fields, field);
         
         // Getter
         if (field->has_getter) {
@@ -671,7 +674,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+          SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
 
         // Setter
@@ -733,7 +736,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
           
-          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+          SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
       }
       // Enumeration definition
@@ -742,19 +745,19 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_OP* op_enumeration_values = op_enum_block->first;
         SPVM_OP* op_method = op_enumeration_values->first;
         while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-          SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+          SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
       }
       // Method definition
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
-        SPVM_LIST_push(class->type->basic_type->methods, op_decl->uv.method);
+        SPVM_LIST_push(type->basic_type->methods, op_decl->uv.method);
         
         // Fields of anon method
         SPVM_LIST* anon_method_fields = op_decl->uv.method->anon_method_fields;
         for (int32_t i = 0; i < anon_method_fields->length; i++) {
           SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
           
-          SPVM_LIST_push(class->type->basic_type->fields, anon_method_field);
+          SPVM_LIST_push(type->basic_type->fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
         }
         
@@ -770,8 +773,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // Field declarations
-  for (int32_t i = 0; i < class->type->basic_type->fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(class->type->basic_type->fields, i);
+  for (int32_t i = 0; i < type->basic_type->fields->length; i++) {
+    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->fields, i);
 
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -780,7 +783,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // If multi-numeric type, field is public
-      else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+      else if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // Default is private
@@ -792,36 +795,36 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     field->index = i;
     const char* field_name = field->op_name->uv.name;
 
-    SPVM_FIELD* found_field = SPVM_HASH_get(class->type->basic_type->field_symtable, field_name, strlen(field_name));
+    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
     }
     else {
-      SPVM_HASH_set(class->type->basic_type->field_symtable, field_name, strlen(field_name), field);
+      SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
       field->class = class;
-      field->class_basic_type = class->type->basic_type;
+      field->class_basic_type = type->basic_type;
     }
   }
 
   // Class variable declarations
-  for (int32_t i = 0; i < class->type->basic_type->class_vars->length; i++) {
-    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(class->type->basic_type->class_vars, i);
+  for (int32_t i = 0; i < type->basic_type->class_vars->length; i++) {
+    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(type->basic_type->class_vars, i);
     const char* class_var_name = class_var->name;
 
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(class->type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
     }
     else {
-      SPVM_HASH_set(class->type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
+      SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
       
       // Add op class
       class_var->class = class;
-      class_var->class_basic_type = class->type->basic_type;
+      class_var->class_basic_type = type->basic_type;
     }
   }
   
@@ -829,8 +832,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   {
     // Check INIT block existance
     int32_t has_init_block = 0;
-    for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
+    for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
       if (method->is_init) {
         has_init_block = 1;
         break;
@@ -838,7 +841,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
     
     // Add an default INIT block
-    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS && !has_init_block) {
+    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS && !has_init_block) {
       SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
       
       // Statements
@@ -850,19 +853,19 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       
       SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
       
-      SPVM_LIST_push(class->type->basic_type->methods, op_method->uv.method);
+      SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
     }
   }
   
   // Method declarations
-  for (int32_t i = 0; i < class->type->basic_type->methods->length; i++) {
-    SPVM_METHOD* method = SPVM_LIST_get(class->type->basic_type->methods, i);
+  for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
+    SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
     
     SPVM_OP* op_name_method = method->op_name;
     const char* method_name = op_name_method->uv.name;
     
     int32_t must_have_block;
-    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       must_have_block = 0;
     }
     else {
@@ -902,13 +905,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
 
-    if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       // Method having interface_t attribute must be method
       if (method->is_class_method) {
         SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
     }
-    else if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    else if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       if (method->is_required) {
         SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
@@ -920,21 +923,21 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    SPVM_METHOD* found_method = SPVM_HASH_get(class->type->basic_type->method_symtable, method_name, strlen(method_name));
+    SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
     }
     // Unknown method
     else {
-      const char* found_method_name = SPVM_HASH_get(class->type->basic_type->method_symtable, method_name, strlen(method_name));
+      const char* found_method_name = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
       if (found_method_name) {
         SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
       }
       else {
         // Bind standard functions
         method->class = class;
-        method->class_basic_type = class->type->basic_type;
+        method->class_basic_type = type->basic_type;
         
         if (method->is_destructor) {
           class_basic_type->destructor_method = method;
@@ -954,31 +957,31 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         assert(method->op_method->file);
         
         // Method absolute name
-        int32_t method_abs_name_length = strlen(class->type->basic_type->name) + 2 + strlen(method->name);
+        int32_t method_abs_name_length = strlen(type->basic_type->name) + 2 + strlen(method->name);
         char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
-        memcpy(method_abs_name, class->type->basic_type->name, strlen(class->type->basic_type->name));
+        memcpy(method_abs_name, type->basic_type->name, strlen(type->basic_type->name));
         memcpy(method_abs_name + strlen(class_name), "->", 2);
         memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
         method->abs_name = method_abs_name;
 
         // Add the method to the method symtable of the class
-        SPVM_HASH_set(class->type->basic_type->method_symtable, method->name, strlen(method->name), method);
+        SPVM_HASH_set(type->basic_type->method_symtable, method->name, strlen(method->name), method);
       }
     }
   }
   
   // mulnum_t
-  if (class->type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-    if (class->type->basic_type->methods->length > 0) {
+  if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+    if (type->basic_type->methods->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }
-    if (class->type->basic_type->class_vars->length > 0) {
+    if (type->basic_type->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
-    if (class->type->basic_type->fields->length == 0) {
+    if (type->basic_type->fields->length == 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", class->op_class->file, class->op_class->line);
     }
-    else if (class->type->basic_type->fields->length > 255) {
+    else if (type->basic_type->fields->length > 255) {
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", class->op_class->file, class->op_class->line);
     }
   }
