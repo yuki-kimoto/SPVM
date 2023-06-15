@@ -791,9 +791,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_suer_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class, field->name);
-        if (found_field_in_suer_class) {
-          SPVM_COMPILER_error(compiler, "The field in the \"%s\" class with the same name as the \"%s\" field in the parent class cannot be defined.\n  at %s line %d", class->type->basic_type->name, field->name, field->op_field->file, field->op_field->line);
+        SPVM_FIELD* found_field_in_super_class = SPVM_AST_CHECKER_search_field(compiler, class->type->basic_type->parent_class, field->name);
+        if (found_field_in_super_class) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class \"%s\".\n  at %s line %d", field->name, class_basic_type->parent_class_basic_type->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
           break;
         }

@@ -1305,7 +1305,7 @@ use Test::More;
       'class MyClass extends MyClass2 { has x : int; }',
       'class MyClass2 { has x : int; }',
     ];
-    compile_not_ok($source, qr|The field in the "MyClass" class with the same name as the "x" field in the parent class cannot be defined|);
+    compile_not_ok($source, 'The "x" field cannot be defined. This field is already defined in the super class "MyClass2"');
   }
   {
     my $source = [
@@ -1313,7 +1313,7 @@ use Test::More;
       'class MyClass2 extends MyClass3 {  }',
       'class MyClass3 { has x : int; }',
     ];
-    compile_not_ok($source, qr|The field in the "MyClass" class with the same name as the "x" field in the parent class cannot be defined|);
+    compile_not_ok($source, 'The "x" field cannot be defined. This field is already defined in the super class "MyClass2"');
   }
   {
     my $source = [
