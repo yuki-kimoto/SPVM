@@ -72,8 +72,7 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
     
     // Unknonw class
     SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-    SPVM_CLASS* found_class = found_class_basic_type->class;
-    if (!found_class) {
+    if (!found_class_basic_type->is_class) {
       const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
       
       if (not_found_class_name) {
@@ -131,11 +130,10 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     
     SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-    SPVM_CLASS* found_class = found_class_basic_type->class;
-    assert(found_class);
+    assert(found_class_basic_type->is_class);
     
     found_method = SPVM_HASH_get(
-      found_class->type->basic_type->method_symtable,
+      found_class_basic_type->method_symtable,
       method_name,
       strlen(method_name)
     );
@@ -148,7 +146,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class->type->basic_type->name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_class_basic_type->name, op_call_method->file, op_call_method->line);
       return;
     }
   }
