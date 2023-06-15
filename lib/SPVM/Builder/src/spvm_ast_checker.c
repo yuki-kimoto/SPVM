@@ -3697,19 +3697,19 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compile
 SPVM_METHOD* SPVM_AST_CHECKER_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, const char* method_name) {
   SPVM_METHOD* found_method = NULL;
   
-  SPVM_CLASS* parent_class = class_basic_type->class;
+  SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type;
   while (1) {
     found_method = SPVM_HASH_get(
-      parent_class->type->basic_type->method_symtable,
+      parent_class_basic_type->method_symtable,
       method_name,
       strlen(method_name)
     );
     if (found_method) {
       break;
     }
-    parent_class = parent_class->type->basic_type->parent_class;
+    parent_class_basic_type = parent_class_basic_type->parent_class_basic_type;
     
-    if (!parent_class) {
+    if (!parent_class_basic_type) {
       break;
     }
   }
