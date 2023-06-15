@@ -59,7 +59,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       assert(method->id > -1);
       assert(method->op_name);
       assert(method->return_type);
-      assert(method->class->type->basic_type->class_file);
+      assert(method->class_basic_type->class_file);
       
       // Copy arguments to variables
       int32_t stack_index = 0;
@@ -1471,7 +1471,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
                       int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
                       
-                      int32_t fields_length = array_basic_type->class->type->basic_type->fields->length;
+                      int32_t fields_length = array_basic_type->fields->length;
                       int32_t field_offset = field->index;
 
                       opcode.operand0 = call_stack_id_out;
@@ -1739,7 +1739,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         int32_t call_stack_id_array = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_array);
                         int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
-                        int32_t fields_length = array_type->basic_type->class->type->basic_type->fields->length;
+                        int32_t fields_length = array_type->basic_type->fields->length;
 
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_array;
@@ -1860,7 +1860,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                       
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->class->type->basic_type->fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->fields, 0);
                       
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
 
@@ -1898,7 +1898,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
 
                         int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src);
-                        int32_t fields_length = src_type->basic_type->class->type->basic_type->fields->length;
+                        int32_t fields_length = src_type->basic_type->fields->length;
                         
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_in;
@@ -4586,7 +4586,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     int32_t call_stack_id_array = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_array);
                     int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
-                    int32_t fields_length = array_type->basic_type->class->type->basic_type->fields->length;
+                    int32_t fields_length = array_type->basic_type->fields->length;
                     
                     opcode.operand0 = call_stack_id_array;
                     opcode.operand1 = call_stack_id_index;
@@ -4917,7 +4917,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
                   int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
 
-                  int32_t fields_length = array_basic_type->class->type->basic_type->fields->length;
+                  int32_t fields_length = array_basic_type->fields->length;
                   int32_t field_offset = field->index;
                   
                   opcode.operand0 = call_stack_id_invocant;
