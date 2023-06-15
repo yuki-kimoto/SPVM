@@ -164,8 +164,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     const char* class_name = type->basic_type->name;
     
     SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-    SPVM_CLASS* class = class_basic_type->class;
-    assert(class);
+    assert(class_basic_type->is_class);
 
     // Static instance method call
     char* last_colon_pos = strrchr(method_name, ':');
@@ -178,7 +177,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       // SUPER::
       SPVM_METHOD* found_method = NULL;
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
-        SPVM_CLASS* parent_class = class->type->basic_type->parent_class;
+        SPVM_CLASS* parent_class = class_basic_type->parent_class;
         if (parent_class) {
           // Search the method of the super class
           found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class->type->basic_type, method_name);
@@ -188,7 +187,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, class_name_length);
         SPVM_CLASS* found_class = found_class_basic_type->class;
         if (!found_class) {
-          class = found_method->class;
+          class_basic_type = found_method->class_basic_type;
           SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
           return;
         }
@@ -202,9 +201,9 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       }
       
       if (found_method) {
-        class = found_method->class;
+        class_basic_type = found_method->class_basic_type;
         if (found_method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, class_basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
@@ -220,14 +219,14 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       
       if (found_method) {
         if (found_method->is_class_method) {
-          class = found_method->class;
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
+          class_basic_type = found_method->class_basic_type;
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, class_basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class->type->basic_type->name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class or its super classes .\n  at %s line %d", method_name, class_basic_type->name, op_call_method->file, op_call_method->line);
         return;
       }
     }
