@@ -177,10 +177,10 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       // SUPER::
       SPVM_METHOD* found_method = NULL;
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
-        SPVM_CLASS* parent_class = class_basic_type->parent_class;
-        if (parent_class) {
+        SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type->parent_class_basic_type;
+        if (parent_class_basic_type) {
           // Search the method of the super class
-          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class->type->basic_type, method_name);
+          found_method = SPVM_AST_CHECKER_search_method(compiler, parent_class_basic_type, method_name);
         }
       }
       else {
