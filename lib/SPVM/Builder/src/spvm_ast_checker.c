@@ -245,24 +245,23 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   
   SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_operand);
   SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
-  SPVM_CLASS* class = class_basic_type->class;
   const char* field_name = op_name->uv.name;
 
   // Search the field of the super class
   SPVM_FIELD* found_field = NULL;
-  SPVM_CLASS* parent_class = class;
+  SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type;
   
   while (1) {
     found_field = SPVM_HASH_get(
-      parent_class->type->basic_type->field_symtable,
+      parent_class_basic_type->field_symtable,
       field_name,
       strlen(field_name)
     );
     if (found_field) {
       break;
     }
-    parent_class = parent_class->type->basic_type->parent_class;
-    if (!parent_class) {
+    parent_class_basic_type = parent_class_basic_type->parent_class_basic_type;
+    if (!parent_class_basic_type) {
       break;
     }
   }
@@ -271,7 +270,7 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
     op_field_access->uv.field_access->field = found_field;
   }
   else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class->type->basic_type->name, op_field_access->file, op_field_access->line);
+    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class or its super classes.\n  at %s line %d", field_name, class_basic_type->name, op_field_access->file, op_field_access->line);
     return;
   }
 }
