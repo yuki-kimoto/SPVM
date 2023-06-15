@@ -1585,7 +1585,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
   const char* name_class = name_class_string->value;
   
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   
   op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
@@ -1594,7 +1594,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP_build_class(compiler, op_class, op_type_class, op_class_block, NULL, NULL);
   
   // Type
-  SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+  SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
   SPVM_OP* op_type_new = SPVM_OP_build_basic_type(compiler, op_name_new);
   
   // New
