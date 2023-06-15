@@ -26,7 +26,6 @@
 #include "spvm_var_decl.h"
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
-#include "spvm_class.h"
 #include "spvm_constant_string.h"
 
 // Get token
