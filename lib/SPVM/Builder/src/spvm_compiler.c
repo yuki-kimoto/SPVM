@@ -9,7 +9,6 @@
 #include "spvm_compiler.h"
 #include "spvm_type.h"
 #include "spvm_class.h"
-#include "spvm_type.h"
 #include "spvm_op.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
@@ -757,7 +756,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_class_var->basic_type_id = class_var->type->basic_type->id;
     runtime_class_var->type_dimension = class_var->type->dimension;
     runtime_class_var->type_flag = class_var->type->flag;
-    runtime_class_var->class_basic_type_id = class_var->class->type->basic_type->id;
+    runtime_class_var->class_basic_type_id = class_var->class_basic_type->id;
     
     SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
     runtime_class_var->name_id = class_var_name_string->id;
@@ -787,7 +786,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_field->basic_type_id = field->type->basic_type->id;
     runtime_field->type_dimension = field->type->dimension;
     runtime_field->type_flag = field->type->flag;
-    runtime_field->class_basic_type_id = field->class->type->basic_type->id;
+    runtime_field->class_basic_type_id = field->class_basic_type->id;
     
     SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
     runtime_field->name_id = field_name_string->id;
@@ -827,7 +826,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_method->opcodes_base_id = method->opcodes_base_id;
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
-    runtime_method->class_basic_type_id = method->class->type->basic_type->id;
+    runtime_method->class_basic_type_id = method->class_basic_type->id;
     runtime_method->is_class_method = method->is_class_method;
     runtime_method->is_init = method->is_init;
     runtime_method->is_anon = method->is_anon;
