@@ -823,7 +823,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
       
       // Add op class
-      class_var->class = class;
       class_var->class_basic_type = type->basic_type;
     }
   }
