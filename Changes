@@ -1,3 +1,6 @@
+0.989005 2023-06-15
+  [Changes]
+    * include/spvm_class.h and src/spvm_class.c were removed.
 0.989004 2023-06-14
   [New Features]
     * The get_field_basic_type_id Native Runtime API was added.
