@@ -3839,11 +3839,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
-    case SPVM_OP_C_ID_CLASS: {
-      SPVM_CLASS* class = op->uv.class;
-      type = class->type;
-      break;
-    }
     case SPVM_OP_C_ID_NUMERIC_EQ:
     case SPVM_OP_C_ID_NUMERIC_NE:
     case SPVM_OP_C_ID_NUMERIC_GT:
@@ -4105,6 +4100,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
         }
       }
       break;
+    }
+    default: {
+      assert(0);
     }
   }
   
