@@ -765,7 +765,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_CLASS* cur_class = class_basic_type->class;
+    SPVM_BASIC_TYPE* cur_class_basic_type = class_basic_type;
     int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
     for (int32_t class_index = class_stack->length - 1; class_index >= 0; class_index--) {
@@ -786,7 +786,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         SPVM_FIELD* new_field;
-        if (strcmp(field->class->type->basic_type->name, cur_class->type->basic_type->name) == 0) {
+        if (strcmp(field->class->type->basic_type->name, cur_class_basic_type->name) == 0) {
           new_field = field;
           if (!merged_fields_original_offset_set) {
             class->type->basic_type->merged_fields_original_offset = merged_fields_index;
@@ -797,8 +797,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         else {
           new_field = SPVM_FIELD_new(compiler);
           new_field->name = field->name;
-          new_field->class = cur_class;
-          new_field->class_basic_type = cur_class->type->basic_type;
+          new_field->class = cur_class_basic_type->class;
+          new_field->class_basic_type = cur_class_basic_type;
           new_field->type = field->type;
           new_field->access_control_type = field->access_control_type;
         }
