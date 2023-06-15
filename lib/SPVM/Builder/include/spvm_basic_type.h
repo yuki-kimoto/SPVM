@@ -12,7 +12,6 @@ enum {
 
 struct spvm_basic_type {
   const char* name;
-  SPVM_CLASS* class;
   int32_t id;
   int32_t category;
   SPVM_OP* op_class;
