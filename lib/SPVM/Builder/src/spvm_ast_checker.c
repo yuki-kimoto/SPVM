@@ -839,9 +839,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   // Check required method
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    SPVM_CLASS* class = class_basic_type->class;
-    if (!class) { continue; }
-    for (int32_t interface_index = 0; interface_index < class->type->basic_type->interfaces->length; interface_index++) {
+    if (!class_basic_type->is_class) { continue; }
+    for (int32_t interface_index = 0; interface_index < class_basic_type->interfaces->length; interface_index++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(class_basic_type->interfaces, interface_index);
       assert(interface_basic_type);
       
@@ -851,7 +850,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_METHOD* found_required_method = SPVM_AST_CHECKER_search_method(compiler, class_basic_type, interface_required_method->name);
         
         if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class->type->basic_type->name, interface_required_method->name, interface_basic_type->name, class->op_class->file, class->op_class->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" interface.\n  at %s line %d", class_basic_type->name, interface_required_method->name, interface_basic_type->name, class_basic_type->class->op_class->file, class_basic_type->class->op_class->line);
           return;
         }
       }
