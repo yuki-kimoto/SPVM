@@ -257,12 +257,11 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_name_class, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   // Class
   SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
-  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
   class->type = op_type->uv.type;
   
   // Set class
@@ -304,7 +303,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class_basic_type->class = class;
   class_basic_type->is_class = 1;
   
-  class->type->basic_type->name = op_name_class->uv.name;
+  class->type->basic_type->name = op_type->uv.type->basic_type->name;
 
   if (strstr(class_name, "::anon::")) {
     class->type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
@@ -1582,21 +1581,23 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
 
   SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
   const char* name_class = name_class_string->value;
-
+  
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   
   op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
   
   // Build class
-  SPVM_OP_build_class(compiler, op_class, op_name_class, op_class_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_class, op_type_class, op_class_block, NULL, NULL);
   
   // Type
-  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+  SPVM_OP* op_type_new = SPVM_OP_build_basic_type(compiler, op_name_new);
   
   // New
   SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
   
-  SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
+  SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type_new, NULL);
   
   return op_anon_method;
 }
