@@ -190,8 +190,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
               {
-                SPVM_CLASS* arg_class = arg_basic_type->class;
-                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_class->type->basic_type->fields, 0);
+                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_basic_type->fields, 0);
                 SPVM_TYPE* arg_mulnum_field_type = arg_mulnum_field->type;
                 SPVM_BASIC_TYPE* arg_mulnum_field_basic_type = arg_mulnum_field_type->basic_type;
                 
@@ -756,10 +755,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_cur->first);
                     }
                     else if (SPVM_TYPE_is_mulnum_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-                      SPVM_CLASS* value_class = return_type->basic_type->class;
-                      assert(class);
-                      
-                      SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                      SPVM_FIELD* first_field = SPVM_LIST_get(return_type->basic_type->fields, 0);
                       assert(first_field);
                       
                       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -868,10 +864,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->var_decl->is_arg) {
                     // Multi numeric type
                     if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                      SPVM_CLASS* value_class = type->basic_type->class;
-                      assert(class);
-                      
-                      SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                       assert(first_field);
                       
                       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -917,7 +910,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
-                      int32_t fields_length = value_class->type->basic_type->fields->length;
+                      int32_t fields_length = type->basic_type->fields->length;
 
                       opcode.operand0 = call_stack_id_out;
                       opcode.operand2 = fields_length;
