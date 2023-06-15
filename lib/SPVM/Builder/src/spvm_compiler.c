@@ -8,7 +8,6 @@
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
-#include "spvm_class.h"
 #include "spvm_op.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
