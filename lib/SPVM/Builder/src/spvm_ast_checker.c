@@ -741,10 +741,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     
-    SPVM_CLASS* parent_class = class_basic_type->parent_class;
+    SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type->parent_class_basic_type;
     while (1) {
-      if (parent_class) {
-        if (strcmp(parent_class->type->basic_type->name, class_basic_type->name) == 0) {
+      if (parent_class_basic_type) {
+        if (strcmp(parent_class_basic_type->name, class_basic_type->name) == 0) {
           SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", class_basic_type->name, class_basic_type->op_extends->file, class_basic_type->op_extends->line);
           compile_error = 1;
           break;
@@ -752,13 +752,13 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         
         // Inherit destructor
         if (!class_basic_type->destructor_method) {
-          if (parent_class->type->basic_type->destructor_method) {
-            class_basic_type->destructor_method = parent_class->type->basic_type->destructor_method;
+          if (parent_class_basic_type->destructor_method) {
+            class_basic_type->destructor_method = parent_class_basic_type->destructor_method;
           }
         }
         
-        SPVM_LIST_push(class_stack, parent_class);
-        parent_class = parent_class->type->basic_type->parent_class;
+        SPVM_LIST_push(class_stack, parent_class_basic_type->class);
+        parent_class_basic_type = parent_class_basic_type->parent_class_basic_type;
       }
       else {
         break;
