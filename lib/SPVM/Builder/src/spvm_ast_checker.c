@@ -658,8 +658,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
       assert(interface_basic_type->is_class);
       
-      SPVM_TYPE* interface_type = interface_basic_type->class->type;
-      if (!SPVM_TYPE_is_interface_type(compiler, interface_type->basic_type->id, interface_type->dimension, interface_type->flag)) {
+      if (!SPVM_TYPE_is_interface_type(compiler, interface_basic_type->id, 0, 0)) {
         SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
         return;
       }
