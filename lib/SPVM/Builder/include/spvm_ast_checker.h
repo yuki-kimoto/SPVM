@@ -16,6 +16,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
 
 void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
 
+void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type);
+
 void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_OP* op_class);
 
 void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler);
