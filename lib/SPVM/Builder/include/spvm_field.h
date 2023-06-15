@@ -12,7 +12,6 @@ struct spvm_field {
   SPVM_OP* op_anon_method_field_default;
   const char* name;
   SPVM_TYPE* type;
-  SPVM_CLASS* class;
   SPVM_BASIC_TYPE* class_basic_type;
   int32_t id;
   int32_t index;

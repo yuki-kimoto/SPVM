@@ -805,7 +805,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
-      field->class = class;
       field->class_basic_type = type->basic_type;
     }
   }

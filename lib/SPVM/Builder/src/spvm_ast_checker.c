@@ -794,7 +794,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         else {
           new_field = SPVM_FIELD_new(compiler);
           new_field->name = field->name;
-          new_field->class = cur_class_basic_type->class;
           new_field->class_basic_type = cur_class_basic_type;
           new_field->type = field->type;
           new_field->access_control_type = field->access_control_type;
