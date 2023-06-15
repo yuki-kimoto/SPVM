@@ -1111,9 +1111,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_CALL_METHOD* call_method = op_assign_src->uv.call_method;
                       const char* call_method_method_name = call_method->method->name;
-                      SPVM_CLASS* call_method_method_class = call_method->method->class;
                       
-                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method_method_class->type->basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
+                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method->method->class_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
                       
                       int32_t first_arg_call_stack_id = -1;
                       SPVM_OP* op_term_args = op_assign_src->first;
@@ -1158,10 +1157,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             else if (SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
 
-                              SPVM_CLASS* value_class = arg_type->basic_type->class;
-                              assert(class);
-                              
-                              SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                              SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->fields, 0);
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1203,7 +1199,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   assert(0);
                               }
                               
-                              int32_t fields_length = value_class->type->basic_type->fields->length;
+                              int32_t fields_length = arg_type->basic_type->fields->length;
                               opcode.operand0 = call_stack_id_arg;
                               opcode.operand1 = fields_length;
                               
@@ -1342,10 +1338,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Multi numeric type
                         else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
 
-                          SPVM_CLASS* value_class = call_method_return_type->basic_type->class;
-                          assert(class);
-                          
-                          SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                          SPVM_FIELD* first_field = SPVM_LIST_get(call_method_return_type->basic_type->fields, 0);
                           assert(first_field);
                           
                           SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1717,8 +1710,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
                       if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                        SPVM_CLASS* class = array_type->basic_type->class;
-                        SPVM_FIELD* first_field = SPVM_LIST_get(class->type->basic_type->fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->fields, 0);
                         
                         SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
                         
@@ -1981,10 +1973,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_in;
                       SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                        SPVM_CLASS* value_class = src_type->basic_type->class;
-                        assert(class);
                         
-                        SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->fields, 0);
                         assert(first_field);
                         
                         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -3469,10 +3459,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     case SPVM_OP_C_ID_VAR : {
                       // Multi numeric type
                       if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
-                        SPVM_CLASS* value_class = type_dist->basic_type->class;
-                        assert(class);
                         
-                        SPVM_FIELD* first_field = SPVM_LIST_get(value_class->type->basic_type->fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
                         assert(first_field);
                         
                         SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -3524,7 +3512,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                         }
 
-                        int32_t fields_length = value_class->type->basic_type->fields->length;
+                        int32_t fields_length = type_dist->basic_type->fields->length;
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_in;
                         opcode.operand2 = fields_length;
@@ -4127,11 +4115,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       SPVM_TYPE* interface_type = SPVM_OP_get_type(compiler, op_var);
                       SPVM_BASIC_TYPE* interface_basic_type = interface_type->basic_type;
-                      SPVM_CLASS* interface = interface_basic_type->class;
                       SPVM_OP* op_name_implement_method = op_assign_src->last;
                       
                       const char* implement_method_name = op_name_implement_method->uv.name;
-                      SPVM_METHOD* implement_method = SPVM_HASH_get(interface->type->basic_type->method_symtable, implement_method_name, strlen(implement_method_name));
+                      SPVM_METHOD* implement_method = SPVM_HASH_get(interface_basic_type->method_symtable, implement_method_name, strlen(implement_method_name));
                       
                       SPVM_OPCODE opcode = {0};
                       
