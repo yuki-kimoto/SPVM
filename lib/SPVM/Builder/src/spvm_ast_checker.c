@@ -628,7 +628,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", class_basic_type->op_extends->file, class_basic_type->op_extends->line);
         return;
       }
-      class_basic_type->parent_class = parent_class_basic_type->class;
       class_basic_type->parent_class_basic_type = parent_class_basic_type;
     }
   }
@@ -869,7 +868,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         char* class_desc = NULL;
         if (interface_index == class_basic_type->interfaces->length) {
           class_desc = "class";
-          if (class_basic_type->parent_class) {
+          if (class_basic_type->parent_class_basic_type) {
             SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, class_basic_type->parent_class_basic_type, method->name);
             if (found_method) {
               interface_basic_type = found_method->class_basic_type;
