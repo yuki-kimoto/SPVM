@@ -1044,7 +1044,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
         
         // AST traversal - Check syntax and generate some operations
-        SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class, method);
+        SPVM_AST_CHECKER_traverse_ast_check_syntax(compiler, class_basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
@@ -1141,7 +1141,7 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method) {
+void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -1242,7 +1242,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
           }
           case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->type->basic_type->name, strlen(class->type->basic_type->name), op_cur->file, op_cur->line);
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class_basic_type->name, strlen(class_basic_type->name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant);
             op_cur = op_constant;
             
@@ -2836,13 +2836,13 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
               
               op_class_var_access->is_dist = op_cur->is_dist;
               
-              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
+              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class_basic_type->class->op_class);
               if (op_class_var_access->uv.class_var_access->class_var) {
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 // Check field name
-                SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
+                SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class_basic_type->class->op_class);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2881,7 +2881,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CL
                 
             
             // Resolve method
-            SPVM_AST_CHECKER_resolve_call_method(compiler, op_cur, class->op_class);
+            SPVM_AST_CHECKER_resolve_call_method(compiler, op_cur, class_basic_type->class->op_class);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }

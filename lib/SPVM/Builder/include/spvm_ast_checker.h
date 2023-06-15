@@ -22,7 +22,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler);
 
 void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, SPVM_METHOD* method);
 
-void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
+void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* class_basic_type, SPVM_METHOD* method);
 
 void SPVM_AST_CHECKER_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_CLASS* class, SPVM_METHOD* method);
 
