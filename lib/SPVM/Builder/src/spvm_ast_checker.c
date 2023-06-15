@@ -3127,13 +3127,12 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             
             const char* class_name = type->basic_type->name;
             SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-            SPVM_CLASS* class = class_basic_type->class;
             
-            assert(class);
+            assert(class_basic_type->is_class);
             
             const char* method_name = op_name_method->uv.name;
             SPVM_METHOD* found_method = SPVM_HASH_get(
-              class->type->basic_type->method_symtable,
+              class_basic_type->method_symtable,
               method_name,
               strlen(method_name)
             );
