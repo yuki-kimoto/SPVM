@@ -17,13 +17,8 @@
   #include "spvm_type.h"
   #include "spvm_block.h"
   #include "spvm_list.h"
-  #include "spvm_class.h"
   #include "spvm_attribute.h"
   #include "spvm_constant_string.h"
-  
-  // Temporary
-  #include <assert.h>
-  #include <spvm_var.h>
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
