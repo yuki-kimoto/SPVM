@@ -424,12 +424,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   
   // Clear unused pointers
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    if (!class_basic_type->is_class) { continue; }
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+    if (!basic_type->is_class) { continue; }
     
-    SPVM_LIST_free(class_basic_type->allows);
+    SPVM_LIST_free(basic_type->allows);
     
-    SPVM_LIST* methods = class_basic_type->methods;
+    SPVM_LIST* methods = basic_type->methods;
     {
       int32_t method_index;
       for (method_index = 0; method_index < methods->length; method_index++) {
@@ -633,8 +633,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->name_id = basic_type_string->id;
     
     if (basic_type->is_class) {
-      SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name));
-      
       runtime_basic_type->is_class = 1;
       
       SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->rel_file, strlen(basic_type->rel_file));
@@ -649,7 +647,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       }
       runtime_basic_type->has_init_block = basic_type->has_init_block;
       runtime_basic_type->is_anon = basic_type->is_anon;
-      runtime_basic_type->is_pointer = class_basic_type->is_pointer;
+      runtime_basic_type->is_pointer = basic_type->is_pointer;
       if (basic_type->parent_name) {
         SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_name, strlen(basic_type->parent_name));
         runtime_basic_type->parent_id = parent_basic_type->id;
