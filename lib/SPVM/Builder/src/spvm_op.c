@@ -3072,7 +3072,7 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   type->unresolved_basic_type_name = op_type_elem->uv.type->unresolved_basic_type_name;
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
+  SPVM_OP* op_type = SPVM_OP_new_op_type_v2(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type_elem->file, op_type_elem->line);
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_type_elem);
   
   if (op_length) {
