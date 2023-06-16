@@ -263,6 +263,13 @@ SPVM_OP* SPVM_OP_new_op_unresolved_type(SPVM_COMPILER* compiler, const char* nam
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_new_op_any_object_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
@@ -2086,8 +2093,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
   SPVM_OP* op_new = NULL;
   if (length == 0) {
     op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_array_init->file, op_array_init->line);
-    SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
-    SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_type = SPVM_OP_new_op_any_object_array_type(compiler, op_array_init->file, op_array_init->line);
     SPVM_OP_build_new(compiler, op_new, op_type, op_constant_length);
     op_array_init = op_new;
   }
