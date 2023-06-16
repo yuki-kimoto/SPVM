@@ -90,12 +90,18 @@ void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_ty
 }
 
 SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const char* basic_type_name) {
-   SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-   basic_type->id = compiler->basic_types->length;
-   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
-   basic_type->name = basic_type_name_string->value;
-   SPVM_LIST_push(compiler->basic_types, basic_type);
-   SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  
+   SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+   
+   if (!basic_type) {
+     basic_type = SPVM_BASIC_TYPE_new(compiler);
+     basic_type->id = compiler->basic_types->length;
+     SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
+     basic_type->name = basic_type_name_string->value;
+     SPVM_LIST_push(compiler->basic_types, basic_type);
+     SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+  
    return basic_type;
 }
 
