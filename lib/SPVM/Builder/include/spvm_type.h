@@ -158,7 +158,7 @@ int32_t SPVM_TYPE_get_stack_length(SPVM_COMPILER* compiler, int32_t basic_type_i
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-SPVM_TYPE* SPVM_TYPE_new_unresolved(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, int32_t dimension, int32_t flag);
+SPVM_TYPE* SPVM_TYPE_new_unresolved_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, int32_t dimension, int32_t flag);
 
 SPVM_TYPE* SPVM_TYPE_new_any_object_array_type(SPVM_COMPILER* compiler);
 
