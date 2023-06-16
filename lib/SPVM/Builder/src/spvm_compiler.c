@@ -291,14 +291,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->used_basic_type_names = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->used_basic_type_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   for (int32_t basic_type_index = 0; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     if (!basic_type->is_class) { continue; }
     
     const char* basic_type_name = basic_type->name;
-    SPVM_LIST_push(compiler->used_basic_type_names, (void*)basic_type_name);
     SPVM_HASH_set(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
   }
   
@@ -449,9 +447,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
-  
-  SPVM_LIST_free(compiler->used_basic_type_names);
-  compiler->used_basic_type_names = NULL;
   
   SPVM_HASH_free(compiler->used_basic_type_name_symtable);
   compiler->used_basic_type_name_symtable = NULL;

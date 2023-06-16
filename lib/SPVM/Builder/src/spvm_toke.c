@@ -2272,7 +2272,6 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         continue;
       }
       else {
-        SPVM_LIST_push(compiler->used_basic_type_names, basic_type_name);
         SPVM_HASH_set(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
         
         // Create moudle relative file name from class name by changing :: to / and add ".spvm"
