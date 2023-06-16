@@ -595,7 +595,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_class_basic_type_id(SPVM_RUNTIME* runtime
   
   assert(class_var);
   
-  int32_t class_basic_type_id = class_var->class_basic_type_id;
+  int32_t class_basic_type_id = class_var->current_basic_type_id;
   
   return class_basic_type_id;
 }
@@ -669,7 +669,7 @@ int32_t SPVM_API_RUNTIME_get_field_class_basic_type_id(SPVM_RUNTIME* runtime, in
   
   assert(field);
   
-  int32_t class_basic_type_id = field->class_basic_type_id;
+  int32_t class_basic_type_id = field->current_basic_type_id;
   
   return class_basic_type_id;
 }
@@ -857,7 +857,7 @@ int32_t SPVM_API_RUNTIME_get_method_class_basic_type_id(SPVM_RUNTIME* runtime, i
   
   assert(method);
   
-  int32_t class_basic_type_id = method->class_basic_type_id;
+  int32_t class_basic_type_id = method->current_basic_type_id;
   
   return class_basic_type_id;
 }

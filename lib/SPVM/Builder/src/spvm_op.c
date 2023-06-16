@@ -794,7 +794,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
-      field->class_basic_type = type->basic_type;
+      field->current_basic_type = type->basic_type;
     }
   }
 
@@ -812,7 +812,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
       
       // Add op class
-      class_var->class_basic_type = type->basic_type;
+      class_var->current_basic_type = type->basic_type;
     }
   }
   
@@ -924,7 +924,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       else {
         // Bind standard functions
-        method->class_basic_type = type->basic_type;
+        method->current_basic_type = type->basic_type;
         
         if (method->is_destructor) {
           class_basic_type->destructor_method = method;
@@ -3992,7 +3992,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_METHOD: {
       SPVM_CALL_METHOD*call_method = op->uv.call_method;
       const char*call_method_method_name =call_method->method->name;
-      SPVM_METHOD* method = SPVM_HASH_get(call_method->method->class_basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
+      SPVM_METHOD* method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
       type = method->return_type;
       break;
     }

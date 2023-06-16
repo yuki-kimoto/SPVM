@@ -1587,7 +1587,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     int32_t no_need_call = 0;
     if (method->is_init) {
       int32_t* class_init_flags = (int32_t*)env->class_init_flags;
-      int32_t class_basic_type_id = method->class_basic_type_id;
+      int32_t class_basic_type_id = method->current_basic_type_id;
       int32_t class_init_flag = class_init_flags[class_basic_type_id];
       if (class_init_flag) {
         no_need_call = 1;
@@ -2205,7 +2205,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
   const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
-  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
   const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, class_basic_type->name_id, NULL);
 
   int32_t class_path_id = class_basic_type->dir_id;

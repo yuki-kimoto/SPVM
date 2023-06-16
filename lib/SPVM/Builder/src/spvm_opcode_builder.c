@@ -58,7 +58,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       assert(method->id > -1);
       assert(method->op_name);
       assert(method->return_type);
-      assert(method->class_basic_type->file);
+      assert(method->current_basic_type->file);
       
       // Copy arguments to variables
       int32_t stack_index = 0;
@@ -1102,7 +1102,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_CALL_METHOD* call_method = op_assign_src->uv.call_method;
                       const char* call_method_method_name = call_method->method->name;
                       
-                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method->method->class_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
+                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
                       
                       int32_t first_arg_call_stack_id = -1;
                       SPVM_OP* op_term_args = op_assign_src->first;

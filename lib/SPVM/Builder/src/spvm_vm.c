@@ -54,7 +54,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   const char* current_method_name =  SPVM_API_RUNTIME_get_name(runtime, current_method->name_id);
   
   // Runtime class
-  SPVM_RUNTIME_BASIC_TYPE* current_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method->class_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* current_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method->current_basic_type_id);
 
   const char* current_class_name =  SPVM_API_RUNTIME_get_name(runtime, current_class_basic_type->name_id);
 
@@ -2152,7 +2152,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
-        SPVM_RUNTIME_BASIC_TYPE* method_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->class_basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* method_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
         const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_class_basic_type->name_id, NULL);
         
         void* object = stack[0].oval;
