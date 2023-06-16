@@ -628,6 +628,7 @@ SPVM_TYPE* SPVM_TYPE_new_unresolved(SPVM_COMPILER* compiler, const char* unresol
   
   SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));
   type->unresolved_basic_type_name = unresolved_basic_type_name;
+  type->basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN);
   type->dimension = dimension;
   type->flag = flag;
   
