@@ -3072,17 +3072,6 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_any_object_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_elem) {
-  
-  // Type
-  SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
-  
-  // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_elem->file, op_elem->line);
-
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {
   SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, file, line);
   SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_operand);
