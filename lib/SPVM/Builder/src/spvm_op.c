@@ -1540,6 +1540,8 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_attributes);
   
+  op_type->uv.type->resolved_in_ast = 0;
+  
   return op_var;
 }
 
@@ -2293,6 +2295,7 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   if (op_type) {
     var_decl->type = op_type->uv.type;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_type);
+    op_type->uv.type->resolved_in_ast = 1;
   }
   
   // Name OP
