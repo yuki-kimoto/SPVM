@@ -277,9 +277,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     // add use stack
     SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
-    SPVM_OP* op_name_class_alias = NULL;
+    SPVM_OP* op_name_alias = NULL;
     int32_t is_require = 0;
-    SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_class_alias, is_require);
+    SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_alias, is_require);
   }
   
   if (type->basic_type->dir) {
@@ -454,22 +454,22 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_LIST_push(type->basic_type->use_basic_type_names, (void*)op_use->uv.use->basic_type_name);
         
         // Class alias
-        const char* class_alias_name = op_use->uv.use->class_alias_name;
-        if (class_alias_name) {
+        const char* alias_name = op_use->uv.use->alias_name;
+        if (alias_name) {
     
           // Class name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
-          if (islower(class_alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+          if (islower(alias_name[0])) {
+            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_basic_type_name = op_use->uv.use->basic_type_name;
-            const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name));
+            const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->alias_symtable, alias_name, strlen(alias_name));
             if (use_basic_type_name_exists) {
-              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
             }
             else {
-              SPVM_HASH_set(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_basic_type_name);
+              SPVM_HASH_set(type->basic_type->alias_symtable, alias_name, strlen(alias_name), (void*)use_basic_type_name);
             }
           }
         }
@@ -998,34 +998,34 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
-  SPVM_OP* op_name_class_alias = NULL;
+  SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_class_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
   
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_class_alias) {
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_alias) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
   use->basic_type_name = op_type_class->uv.type->basic_type->name;
-  const char* class_alias_name = op_name_class_alias->uv.name;
-  use->class_alias_name = class_alias_name;
+  const char* alias_name = op_name_alias->uv.name;
+  use->alias_name = alias_name;
   
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_class_alias, int32_t is_require) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_alias, int32_t is_require) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
   use->is_require = is_require;
   use->basic_type_name = op_type_class->uv.type->basic_type->name;
   
-  if (op_name_class_alias) {
-    const char* class_alias_name = op_name_class_alias->uv.name;
-    use->class_alias_name = class_alias_name;
+  if (op_name_alias) {
+    const char* alias_name = op_name_alias->uv.name;
+    use->alias_name = alias_name;
   }
   
   SPVM_LIST_push(compiler->op_use_stack, op_use);
@@ -2276,9 +2276,9 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface,
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
-  SPVM_OP* op_name_class_alias = NULL;
+  SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_class_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
   
   return op_interface;
 }

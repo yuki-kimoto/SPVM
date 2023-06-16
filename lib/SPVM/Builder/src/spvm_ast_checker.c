@@ -1076,7 +1076,7 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
             if (op_type->uv.type->resolved_in_ast) {
               const char* basic_type_name_maybe = op_type->uv.type->basic_type->name;
               
-              const char* basic_type_name = SPVM_HASH_get(basic_type->class_alias_symtable, basic_type_name_maybe, strlen(basic_type_name_maybe));
+              const char* basic_type_name = SPVM_HASH_get(basic_type->alias_symtable, basic_type_name_maybe, strlen(basic_type_name_maybe));
               if (basic_type_name == NULL) {
                 basic_type_name = basic_type_name_maybe;
               }

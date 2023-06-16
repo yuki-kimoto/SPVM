@@ -83,7 +83,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   basic_type->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   basic_type->interface_decls = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   basic_type->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->class_alias_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->alias_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
 
   basic_type->use_basic_type_names = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   

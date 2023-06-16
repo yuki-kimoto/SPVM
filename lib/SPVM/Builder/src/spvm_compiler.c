@@ -144,9 +144,9 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, con
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, basic_type_name, file, line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_class->file, op_name_class->line);
-  SPVM_OP* op_name_class_alias = NULL;
+  SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_class_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
   SPVM_LIST_push(compiler->op_use_stack, op_use);
 }
 
@@ -351,7 +351,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
       }
       case SPVM_OP_C_ID_USE: {
         SPVM_USE* use = op->uv.use;
-        use->class_alias_name = NULL;
+        use->alias_name = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, use);
         break;
       }
