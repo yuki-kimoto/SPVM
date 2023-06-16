@@ -129,7 +129,6 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     }
     
     SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-    assert(found_basic_type->is_class);
     
     found_method = SPVM_HASH_get(
       found_basic_type->method_symtable,
@@ -163,7 +162,6 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     const char* basic_type_name = type->basic_type->name;
     
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-    assert(basic_type->is_class);
 
     // Static instance method call
     char* last_colon_pos = strrchr(method_name, ':');
