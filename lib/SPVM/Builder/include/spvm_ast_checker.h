@@ -56,6 +56,6 @@ SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 
 SPVM_OP* SPVM_AST_CHECKER_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
 
-SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
+SPVM_TYPE* SPVM_AST_CHECKER_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 #endif

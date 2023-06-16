@@ -695,7 +695,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_RETURN: {
                 if (op_cur->first) {
-                  SPVM_TYPE* return_type = SPVM_OP_get_type(compiler, op_cur->first);
+                  SPVM_TYPE* return_type = SPVM_AST_CHECKER_get_type(compiler, op_cur->first);
                   
                   if (SPVM_TYPE_is_undef_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
                     SPVM_OPCODE opcode = {0};
@@ -755,7 +755,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_FIELD* first_field = SPVM_LIST_get(return_type->basic_type->fields, 0);
                       assert(first_field);
                       
-                      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                      SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                       assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
 
                       switch (field_type->basic_type->id) {
@@ -820,7 +820,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_OP_C_ID_DIE: {
                 
-                SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur->last);
+                SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_cur->last);
                 
                 // SET_ERROR_ID
                 {
@@ -841,7 +841,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   
                   SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
                   
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
+                  SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, var_decl->op_var_decl);
                   if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                     
                     SPVM_OPCODE opcode = {0};
@@ -864,7 +864,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                       assert(first_field);
                       
-                      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                      SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                       assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                       
                       SPVM_OPCODE opcode = {0};
@@ -987,11 +987,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 // $var = OPERATOR
                 if (op_assign_dist->id == SPVM_OP_C_ID_VAR) {
-                  SPVM_TYPE* type_dist = SPVM_OP_get_type(compiler, op_assign_dist);
+                  SPVM_TYPE* type_dist = SPVM_AST_CHECKER_get_type(compiler, op_assign_dist);
                   
                   switch (op_assign_src->id) {
                     case SPVM_OP_C_ID_CONCAT: {
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* first_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       assert(SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag));
                       
@@ -1014,7 +1014,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_TYPE_NAME : {
                       
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* first_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -1032,7 +1032,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_DUMP : {
                       
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* first_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -1050,7 +1050,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_NEW_STRING_LEN : {
                       
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* first_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -1070,7 +1070,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_IS_READ_ONLY : {
                       
-                      SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* first_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -1124,7 +1124,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             break;
                           }
                           
-                          SPVM_TYPE* term_arg_type = SPVM_OP_get_type(compiler, op_term_arg);
+                          SPVM_TYPE* term_arg_type = SPVM_AST_CHECKER_get_type(compiler, op_term_arg);
                           
                           SPVM_OPCODE opcode = {0};
                           
@@ -1150,7 +1150,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->fields, 0);
                               assert(first_field);
                               
-                              SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                              SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                               assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                               
                               int32_t call_stack_id_arg;
@@ -1331,7 +1331,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_FIELD* first_field = SPVM_LIST_get(call_method_return_type->basic_type->fields, 0);
                           assert(first_field);
                           
-                          SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                          SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                           assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                           
                           int32_t call_method_return_type_stack_length = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
@@ -1428,11 +1428,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_FIELD* field = array_field_access->field;
                       
                       // Array type
-                      SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
+                      SPVM_TYPE* array_type = SPVM_AST_CHECKER_get_type(compiler, op_array_field_access->first);
                       SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
                       
                       // Element type
-                      SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_field_access);
+                      SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, op_array_field_access);
 
                       SPVM_OPCODE opcode = {0};
                       
@@ -1541,9 +1541,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Call field
                         SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
                         
-                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, op_field_access);
+                        SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, op_field_access);
 
-                        SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
+                        SPVM_TYPE* invocant_type = SPVM_AST_CHECKER_get_type(compiler, op_term_invocant);
 
                         // Value field dereference access
                         if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
@@ -1697,12 +1697,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_array = op_array_access->first;
                       SPVM_OP* op_term_index = op_array_access->last;
                       
-                      SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
+                      SPVM_TYPE* array_type = SPVM_AST_CHECKER_get_type(compiler, op_term_array);
 
                       if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                         SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->fields, 0);
                         
-                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                         
                         SPVM_OPCODE opcode = {0};
                         
@@ -1752,7 +1752,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign->line);
                       }
                       else {
-                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_access);
+                        SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, op_array_access);
                       
                         SPVM_OPCODE opcode = {0};
                         
@@ -1806,7 +1806,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_ID_CLASS_VAR_ACCESS : {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src);
+                      SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                       
                       SPVM_CLASS_VAR_ACCESS* class_var_access = op_assign_src->uv.class_var_access;
                       
@@ -1856,12 +1856,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_ID_DEREF : {
-                      SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
+                      SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                       
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                         SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->fields, 0);
                       
-                        SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
 
                         SPVM_OPCODE opcode = {0};
                         
@@ -1961,13 +1961,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       int32_t call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                       int32_t call_stack_id_in;
-                      SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                         
                         SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->fields, 0);
                         assert(first_field);
                         
-                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                         assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                         
                         switch (field_type->basic_type->id) {
@@ -2712,8 +2712,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_src_term = op_assign_src->first;
                       SPVM_OP* op_cast_type = op_assign_src->last;
                       
-                      SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_src_term);
-                      SPVM_TYPE* cast_type = SPVM_OP_get_type(compiler, op_cast_type);
+                      SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_src_term);
+                      SPVM_TYPE* cast_type = SPVM_AST_CHECKER_get_type(compiler, op_cast_type);
 
                       // Source is undef type
                       if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3204,7 +3204,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       if (op_assign_src->first->id == SPVM_OP_C_ID_TYPE || op_assign_src->first->id == SPVM_OP_C_ID_VAR) {
                         
-                        SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src);
+                        SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                         
                         // Runtime type
                         int32_t basic_type_id = type->basic_type->id;
@@ -3453,7 +3453,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
                         assert(first_field);
                         
-                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                         assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                         
                         SPVM_OPCODE opcode = {0};
@@ -3611,7 +3611,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                       }
                       else {
-                        SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                        SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                         
                         SPVM_OPCODE opcode = {0};
                         
@@ -3691,7 +3691,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       else {
-                        SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                        SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                         SPVM_OPCODE opcode = {0};
                         
@@ -3755,7 +3755,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                       int32_t call_stack_id_in1;
                       int32_t call_stack_id_in2;
@@ -3795,7 +3795,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                       int32_t call_stack_id_in1;
                       int32_t call_stack_id_in2;
@@ -3835,7 +3835,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                       int32_t call_stack_id_in1;
                       int32_t call_stack_id_in2;
@@ -3875,7 +3875,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                       int32_t call_stack_id_in1;
                       int32_t call_stack_id_in2;
@@ -3915,7 +3915,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* operand_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
 
                       int32_t call_stack_id_in1;
                       int32_t call_stack_id_in2;
@@ -4006,7 +4006,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case  SPVM_OP_C_ID_BOOL: {
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src->first);
+                      SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src->first);
                       
                       if (op_assign_src->first->id != SPVM_OP_C_ID_IF) {
 
@@ -4071,7 +4071,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src->first);
                       
                       SPVM_OP* op_type = op_assign_src->last;
-                      SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type);
+                      SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_type);
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -4103,7 +4103,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_var = op_assign_src->first;
                       int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_var);
                       
-                      SPVM_TYPE* interface_type = SPVM_OP_get_type(compiler, op_var);
+                      SPVM_TYPE* interface_type = SPVM_AST_CHECKER_get_type(compiler, op_var);
                       SPVM_BASIC_TYPE* interface_basic_type = interface_type->basic_type;
                       SPVM_OP* op_name_implement_method = op_assign_src->last;
                       
@@ -4304,7 +4304,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
                         assert(first_field);
                         
-                        SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                        SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
                         assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                         
                         SPVM_OPCODE opcode = {0};
@@ -4373,7 +4373,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_class_var_access = op_assign_dist;
                   SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
 
-                  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
+                  SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
 
                   // CLASS_VAR_ACCESS = UNDEF
                   if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -4385,7 +4385,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   // CLASS_VAR_ACCESS = $var
                   else {
-                    SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_class_var_access);
+                    SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_class_var_access);
 
                     SPVM_OPCODE opcode = {0};
                     
@@ -4434,7 +4434,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 else if (op_assign_dist->id == SPVM_OP_C_ID_DEREF) {
                   SPVM_OP* op_deref = op_assign_dist;
 
-                  SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_deref->first);
+                  SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_deref->first);
 
                   SPVM_OPCODE opcode = {0};
                   
@@ -4478,7 +4478,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 // $@ = $var
                 else if (op_assign_dist->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
                   
-                  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
+                  SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                   
                   if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                     // EXCEPTION_VAR = undef
@@ -4506,13 +4506,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_OP* op_term_array = op_array_access->first;
                   SPVM_OP* op_term_index = op_array_access->last;
 
-                  SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
+                  SPVM_TYPE* array_type = SPVM_AST_CHECKER_get_type(compiler, op_term_array);
                   int32_t array_type_dimension = array_type->dimension;
                   int32_t array_basic_type_id = array_type->basic_type->id;
                   int32_t array_basic_type_category = array_type->basic_type->category;
 
                   if (SPVM_TYPE_is_any_object_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                    SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
+                    SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
 
                     if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       SPVM_OPCODE opcode = {0};
@@ -4548,7 +4548,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                     SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->fields, 0);
                   
-                    SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
+                    SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
 
                     SPVM_OPCODE opcode = {0};
                     
@@ -4600,7 +4600,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   else {
                   
-                    SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_assign_src);
+                    SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
 
                     if (SPVM_TYPE_is_undef_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
                       SPVM_OPCODE opcode = {0};
@@ -4698,9 +4698,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   // Call field
                   SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
 
-                  SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
+                  SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                   
-                  SPVM_TYPE* invocant_type = SPVM_OP_get_type(compiler, op_term_invocant);
+                  SPVM_TYPE* invocant_type = SPVM_AST_CHECKER_get_type(compiler, op_term_invocant);
                   
                   if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                     SPVM_FIELD* field = field_access->field;
@@ -4875,11 +4875,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   SPVM_FIELD* field = array_field_access->field;
 
                   // Array type
-                  SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_array_field_access->first);
+                  SPVM_TYPE* array_type = SPVM_AST_CHECKER_get_type(compiler, op_array_field_access->first);
                   SPVM_BASIC_TYPE* array_basic_type = array_type->basic_type;
 
                   // Element type
-                  SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_assign_src);
+                  SPVM_TYPE* element_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
                   
                   SPVM_OPCODE opcode = {0};
                   

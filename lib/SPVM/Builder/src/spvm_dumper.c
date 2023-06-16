@@ -18,6 +18,7 @@
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
+#include "spvm_ast_checker.h"
 #include "spvm_type.h"
 #include "spvm_type.h"
 #include "spvm_opcode.h"
@@ -379,7 +380,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
     fprintf(stderr, "          call_stack_id => ");
     
     if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_TYPE* numeric_type = SPVM_OP_get_type(compiler, var_decl->op_var_decl);
+      SPVM_TYPE* numeric_type = SPVM_AST_CHECKER_get_type(compiler, var_decl->op_var_decl);
       switch(numeric_type->basic_type->id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           fprintf(stderr, "byte");
@@ -417,7 +418,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
       assert(first_field);
       
-      SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
+      SPVM_TYPE* field_type = SPVM_AST_CHECKER_get_type(compiler, first_field->op_field);
       assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
       
       switch (field_type->basic_type->id) {
