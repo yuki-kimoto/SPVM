@@ -3122,16 +3122,6 @@ SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* fi
   return op_var_decl;
 }
 
-// Don't use this method in spvm_op.c because types must not be shared in builiding AST.
-SPVM_OP* SPVM_OP_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  op_type->uv.type = type;
-  
-  SPVM_LIST_push(compiler->op_types, op_type);
-  
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_new_op_attribute(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
   SPVM_OP* op_attribute = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ATTRIBUTE, file, line);
   
@@ -3794,6 +3784,70 @@ SPVM_OP* SPVM_OP_cut_op(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   return op_stab;
 }
 
+// Insert child. Child must not have sibling.
+void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert) {
+  
+  // del_count not used
+  assert(parent);
+  assert(insert);
+  assert(insert->moresib == 0);
+  
+  if (start) {
+    if (start->moresib) {
+      insert->moresib = 1;
+      insert->sibparent = start->sibparent;
+      
+      start->sibparent = insert;
+    }
+    else {
+      parent->last = insert;
+
+      insert->moresib = 0;
+      insert->sibparent = parent;
+      
+      start->moresib = 1;
+      start->sibparent = insert;
+    }
+  }
+  else {
+    if (parent->first) {
+      insert->moresib = 1;
+      insert->sibparent = parent->first;
+      
+      parent->first = insert;
+    }
+    else {
+      insert->moresib = 0;
+      insert->sibparent = parent;
+      
+      parent->first = insert;
+      parent->last = insert;
+    }
+  }
+}
+
+SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  
+  return op->moresib ? op->sibparent : NULL;
+}
+
+const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id) {
+  const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
+  
+  return op_name;
+}
+
+// Don't use this method in spvm_op.c because types must not be shared in builiding AST.
+SPVM_OP* SPVM_OP_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  op_type->uv.type = type;
+  
+  SPVM_LIST_push(compiler->op_types, op_type);
+  
+  return op_type;
+}
+
+// Don't use this method in spvm_op.c because types must not be shared in builiding AST.
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   SPVM_TYPE*  type = NULL;
@@ -4095,55 +4149,3 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return type;
 }
 
-// Insert child. Child must not have sibling.
-void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* start, SPVM_OP* insert) {
-  
-  // del_count not used
-  assert(parent);
-  assert(insert);
-  assert(insert->moresib == 0);
-  
-  if (start) {
-    if (start->moresib) {
-      insert->moresib = 1;
-      insert->sibparent = start->sibparent;
-      
-      start->sibparent = insert;
-    }
-    else {
-      parent->last = insert;
-
-      insert->moresib = 0;
-      insert->sibparent = parent;
-      
-      start->moresib = 1;
-      start->sibparent = insert;
-    }
-  }
-  else {
-    if (parent->first) {
-      insert->moresib = 1;
-      insert->sibparent = parent->first;
-      
-      parent->first = insert;
-    }
-    else {
-      insert->moresib = 0;
-      insert->sibparent = parent;
-      
-      parent->first = insert;
-      parent->last = insert;
-    }
-  }
-}
-
-SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  
-  return op->moresib ? op->sibparent : NULL;
-}
-
-const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id) {
-  const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
-  
-  return op_name;
-}
