@@ -3013,6 +3013,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   if (found_basic_type) {
     // Type op
     SPVM_TYPE* type = SPVM_TYPE_new(compiler, found_basic_type->id, 0, 0);
+    type->unresolved_basic_type_name = name;
     op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
   }
   else {
