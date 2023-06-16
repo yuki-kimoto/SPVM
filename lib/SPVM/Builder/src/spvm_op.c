@@ -1987,6 +1987,10 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_length);
   }
   
+  if (op_type->id == SPVM_OP_C_ID_TYPE) {
+    op_type->uv.type->resolved_in_ast = 1;
+  }
+  
   if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->basic_type->name, "::anon::")) {
     
     const char* anon_basic_type_name = op_type->uv.type->basic_type->name;
