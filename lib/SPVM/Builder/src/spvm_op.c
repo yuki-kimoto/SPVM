@@ -291,19 +291,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* class_name = op_type->uv.type->basic_type->name;
   
   // Assert
-  SPVM_BASIC_TYPE* found_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
 
-  SPVM_BASIC_TYPE* class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
-  class_basic_type->is_class = 1;
+  basic_type->is_class = 1;
   
   type->basic_type->name = op_type->uv.type->basic_type->name;
 
   if (strstr(class_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-    class_basic_type->is_anon = 1;
+    basic_type->is_anon = 1;
   }
 
-  if (!class_basic_type->is_anon) {
+  if (!basic_type->is_anon) {
     assert(!islower(class_name[0]));
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
@@ -323,38 +322,38 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       switch (attribute->id) {
         case SPVM_ATTRIBUTE_C_ID_POINTER: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
-          class_basic_type->is_pointer = 1;
+          basic_type->is_pointer = 1;
           class_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
-          class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
+          basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           class_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
-          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+          basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
           access_control_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PROTECTED: {
-          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+          basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
           access_control_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PUBLIC: {
-          class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+          basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
           access_control_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRECOMPILE: {
-          class_basic_type->is_precompile = 1;
+          basic_type->is_precompile = 1;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
-          class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
+          basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           class_attributes_count++;
           break;
         }
@@ -371,13 +370,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
-  if (class_basic_type->category == 0) {
-    class_basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
+  if (basic_type->category == 0) {
+    basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
   }
   
   // The default of the access controll is private
-  if (class_basic_type->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    class_basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+  if (basic_type->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
+    basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
   // Declarations
@@ -477,7 +476,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // allow statement
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
-        SPVM_LIST_push(class_basic_type->allows, op_decl->uv.allow);
+        SPVM_LIST_push(basic_type->allows, op_decl->uv.allow);
       }
       // interface statement
       else if (op_decl->id == SPVM_OP_C_ID_INTERFACE) {
@@ -753,7 +752,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // INIT block
         if (op_decl->uv.method->is_init) {
-          class_basic_type->has_init_block = 1;
+          basic_type->has_init_block = 1;
         }
       }
       else {
@@ -769,7 +768,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
       // If anon method, field is public
-      if (class_basic_type->is_anon) {
+      if (basic_type->is_anon) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // If multi-numeric type, field is public
@@ -927,18 +926,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         method->current_basic_type = type->basic_type;
         
         if (method->is_destructor) {
-          class_basic_type->destructor_method = method;
+          basic_type->destructor_method = method;
         }
         
         if (method->is_init) {
-          class_basic_type->init_method = method;
+          basic_type->init_method = method;
         }
 
         if (method->is_required) {
-          if (class_basic_type->required_method) {
+          if (basic_type->required_method) {
             SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\".\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
           }
-          class_basic_type->required_method = method;
+          basic_type->required_method = method;
         }
         
         assert(method->op_method->file);
@@ -1989,10 +1988,10 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->basic_type->name, "::anon::")) {
     
     const char* anon_class_name = op_type->uv.type->basic_type->name;
-    SPVM_BASIC_TYPE* anon_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
+    SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
     
     // Anon method
-    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_class_basic_type->methods, 0);
+    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_basic_type->methods, 0);
     if (anon_method->anon_method_fields->length) {
       // [Before]
       // new Foo::anon::Line::Column
