@@ -1020,6 +1020,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
+  use->op_type = op_type;
   use->is_require = is_require;
   use->basic_type_name = op_type->uv.type->basic_type->name;
   
