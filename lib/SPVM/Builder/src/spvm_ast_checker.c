@@ -63,6 +63,14 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
   
   SPVM_TYPE* type = op_type->uv.type;
   
+  if (!type->basic_type) {
+    const char* unresolved_basic_type_name = type->unresolved_basic_type_name;
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, unresolved_basic_type_name, strlen(unresolved_basic_type_name));
+    if (found_basic_type) {
+      type->basic_type = found_basic_type;
+    }
+  }
+  
   // Basic type name
   const char* basic_type_name = type->basic_type->name;
   
