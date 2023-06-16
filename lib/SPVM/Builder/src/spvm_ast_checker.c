@@ -1037,6 +1037,30 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
   int32_t finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
+    if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
+      SPVM_USE* use = op_cur->first->uv.use;
+      SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, op_cur->first);
+      SPVM_OP* op_block_false = op_cur->last;
+      
+      // Execute false block
+      const char* use_basic_type_name = use->basic_type_name;
+      
+      SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
+      
+      if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_basic_type->id)) {
+        SPVM_OP_cut_op(compiler, op_block_false);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+        SPVM_OP_replace_op(compiler, op_stab, op_block_false);
+        op_cur = op_block_false;
+      }
+      // Execute true block
+      else {
+        SPVM_OP_cut_op(compiler, op_block_true);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+        SPVM_OP_replace_op(compiler, op_stab, op_block_true);
+        op_cur = op_block_true;
+      }
+    }
     
     if (op_cur->first) {
       op_cur = op_cur->first;
@@ -1111,30 +1135,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
   int32_t finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
-    if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
-      SPVM_USE* use = op_cur->first->uv.use;
-      SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, op_cur->first);
-      SPVM_OP* op_block_false = op_cur->last;
-      
-      // Execute false block
-      const char* use_basic_type_name = use->basic_type_name;
-      
-      SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
-      
-      if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_basic_type->id)) {
-        SPVM_OP_cut_op(compiler, op_block_false);
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-        SPVM_OP_replace_op(compiler, op_stab, op_block_false);
-        op_cur = op_block_false;
-      }
-      // Execute true block
-      else {
-        SPVM_OP_cut_op(compiler, op_block_true);
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-        SPVM_OP_replace_op(compiler, op_stab, op_block_true);
-        op_cur = op_block_true;
-      }
-    }
+    
     switch (op_cur->id) {
       case SPVM_OP_C_ID_BLOCK: {
         SPVM_BLOCK* block = op_cur->uv.block;
