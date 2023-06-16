@@ -549,6 +549,10 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
 
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+SPVM_OP* SPVM_OP_new_op_unresolved_type(SPVM_COMPILER* compiler, const char* name, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line);
+
+SPVM_OP* SPVM_OP_new_op_any_object_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
+
 SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign);
 
 SPVM_OP* SPVM_OP_clone_op_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_var_invocant, SPVM_OP* op_name_field);
