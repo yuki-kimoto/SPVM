@@ -339,8 +339,8 @@ int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_class_file = NULL;
   if (class_basic_type_id >= 0) {
-    int32_t class_rel_file_id = env->api->runtime->get_basic_type_class_rel_file_id(runtime, class_basic_type_id);
-    int32_t class_path_id = env->api->runtime->get_basic_type_class_path_id(runtime, class_basic_type_id);
+    int32_t class_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, class_basic_type_id);
+    int32_t class_path_id = env->api->runtime->get_basic_type_dir_id(runtime, class_basic_type_id);
     const char* class_path = NULL;
     const char* class_path_sep;
     if (class_path_id >= 0) {
