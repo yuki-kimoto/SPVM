@@ -237,7 +237,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_bas
       return 1;
     }
     
-    const char* parent_class_name = parent_class_basic_type->parent_class_name;
+    const char* parent_class_name = parent_class_basic_type->parent_name;
     if (parent_class_name) {
       parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
     }
@@ -252,7 +252,7 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
   SPVM_BASIC_TYPE* super_basic_type = SPVM_LIST_get(compiler->basic_types, super_basic_type_id);
   SPVM_BASIC_TYPE* child_basic_type = SPVM_LIST_get(compiler->basic_types, child_basic_type_id);
   
-  const char* cur_parent_class_name = child_basic_type->parent_class_name;
+  const char* cur_parent_class_name = child_basic_type->parent_name;
   while (1) {
     if (cur_parent_class_name) {
       if (strcmp(super_basic_type->name, cur_parent_class_name) == 0) {
@@ -261,7 +261,7 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_ba
       else {
         SPVM_BASIC_TYPE* cur_parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, cur_parent_class_name, strlen(cur_parent_class_name));
         assert(cur_parent_class_basic_type);
-        cur_parent_class_name = cur_parent_class_basic_type->parent_class_name;
+        cur_parent_class_name = cur_parent_class_basic_type->parent_name;
       }
     }
     else {
