@@ -473,7 +473,7 @@ SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand
 
 SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
-SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, SPVM_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_new_op_block(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
