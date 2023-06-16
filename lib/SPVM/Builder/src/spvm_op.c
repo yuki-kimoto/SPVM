@@ -3025,14 +3025,11 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   // Add basic type
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
-    // Type op
     op_type = SPVM_OP_new_op_type_v2(compiler, name, found_basic_type, 0, 0, op_name->file, op_name->line);
   }
   else {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_COMPILER_add_basic_type(compiler, name);
-    SPVM_TYPE* type = SPVM_TYPE_new(compiler, new_basic_type->id, 0, 0);
-    type->unresolved_basic_type_name = name;
-    op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
+    op_type = SPVM_OP_new_op_type_v2(compiler, name, new_basic_type, 0, 0, op_name->file, op_name->line);
   }
   
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
