@@ -518,7 +518,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           if (SPVM_TYPE_is_byte_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag)
             || SPVM_TYPE_is_short_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag))
           {
-            return_type = SPVM_TYPE_new_int_type(compiler);
+            return_type = SPVM_OP_new_op_int_type(compiler, op_decl->file, op_decl->line)->uv.type;
           }
           else {
             return_type = class_var->type;
