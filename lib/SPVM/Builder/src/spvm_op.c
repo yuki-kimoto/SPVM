@@ -989,39 +989,39 @@ SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version
   return op_version_decl;
 }
 
-SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type_class) {
+SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type) {
   
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
-  allow->basic_type_name = op_type_class->uv.type->basic_type->name;
+  allow->basic_type_name = op_type->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
   SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type, op_name_alias, is_require);
   
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_alias) {
+SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_name_alias) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
-  use->basic_type_name = op_type_class->uv.type->basic_type->name;
+  use->basic_type_name = op_type->uv.type->basic_type->name;
   const char* alias_name = op_name_alias->uv.name;
   use->alias_name = alias_name;
   
   return op_use;
 }
 
-SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type_class, SPVM_OP* op_name_alias, int32_t is_require) {
+SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_name_alias, int32_t is_require) {
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
   use->is_require = is_require;
-  use->basic_type_name = op_type_class->uv.type->basic_type->name;
+  use->basic_type_name = op_type->uv.type->basic_type->name;
   
   if (op_name_alias) {
     const char* alias_name = op_name_alias->uv.name;
@@ -1574,12 +1574,12 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   const char* name_class = name_class_string->value;
   
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
   
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
   // Build class
-  SPVM_OP_build_class(compiler, op_class, op_type_class, op_class_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_class, op_type, op_class_block, NULL, NULL);
   
   // Type
   SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
@@ -2273,18 +2273,18 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   return op_type_cast;
 }
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type_class) {
+SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
   
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;
   interface->op_interface = op_interface;
-  interface->basic_type_name = op_type_class->uv.type->basic_type->name;
+  interface->basic_type_name = op_type->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
   SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
-  SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
+  SPVM_OP_build_use(compiler, op_use, op_type, op_name_alias, is_require);
   
   return op_interface;
 }
@@ -3526,9 +3526,9 @@ SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
   SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "TRUE", op->file, op->line);
   SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op->file, op->line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
   
-  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type_class, op_name_method, op_operators);
+  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type, op_name_method, op_operators);
   
   return op_call_method;
 }
@@ -3539,9 +3539,9 @@ SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, "Bool", op->file, op->line);
   SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "FALSE", op->file, op->line);
   SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op->file, op->line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
   
-  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type_class, op_name_method, op_operators);
+  op_call_method = SPVM_OP_build_call_method(compiler, op_call_method, op_type, op_name_method, op_operators);
   
   return op_call_method;
 }
