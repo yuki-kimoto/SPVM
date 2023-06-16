@@ -3122,7 +3122,8 @@ SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* fi
   return op_var_decl;
 }
 
-SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+// Don't use this method in spvm_op.c because types must not be shared in builiding AST.
+SPVM_OP* SPVM_OP_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   op_type->uv.type = type;
   
