@@ -1350,6 +1350,7 @@ int32_t SPVM_TYPE_can_assign(
     }
   }
   else {
+    fprintf(stderr, "[Unexpected Error]Basic Type ID:%d, Type Dimension:%d, Type Flag:%d", dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
     assert(0);
   }
   
