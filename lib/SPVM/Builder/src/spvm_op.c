@@ -594,7 +594,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           else {
             arg_type = class_var->type;
           }
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type_v2(compiler, arg_type->unresolved_basic_type_name, arg_type->basic_type, arg_type->dimension, arg_type->flag, op_decl->file, op_decl->line);
           
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, "$value", op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
