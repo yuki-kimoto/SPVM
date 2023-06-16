@@ -256,6 +256,19 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
+SPVM_OP* SPVM_OP_new_op_type_v2(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, SPVM_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line) {
+  
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
+  op_type->uv.type->basic_type = basic_type;
+  op_type->uv.type->dimension = type_dimension;
+  op_type->uv.type->flag = type_flag;
+  
+  SPVM_LIST_push(compiler->op_types, op_type);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
