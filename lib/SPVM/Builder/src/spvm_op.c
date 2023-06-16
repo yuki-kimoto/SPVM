@@ -757,11 +757,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (op_decl->uv.method->is_init) {
           basic_type->has_init_block = 1;
         }
-        
-        if (!method->is_class_method) {
-          SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
-          arg_var_decl_first->type->unresolved_basic_type_name = basic_type_name;
-        }
       }
       else {
         assert(0);
@@ -855,6 +850,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Method declarations
   for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
     SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
+    
+    if (!method->is_class_method) {
+      SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
+      arg_var_decl_first->type->unresolved_basic_type_name = basic_type_name;
+    }
     
     SPVM_OP* op_name_method = method->op_name;
     const char* method_name = op_name_method->uv.name;
@@ -1413,7 +1413,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   if (!method->is_class_method) {
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
-    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler, 0, 0, 0);
+    SPVM_TYPE* self_type = SPVM_TYPE_new_unresolved_type(compiler, NULL, 0, 0);
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL, NULL);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
