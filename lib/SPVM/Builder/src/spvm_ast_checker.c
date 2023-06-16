@@ -1031,26 +1031,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
 
 void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
-  // Block stack
-  SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  
   // Run OPs
   SPVM_OP* op_root = method->op_block;
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
-    switch (op_cur->id) {
-      // Start scope
-      case SPVM_OP_C_ID_BLOCK: {
-        SPVM_BLOCK* block = op_cur->uv.block;
-        
-        // Push block
-        SPVM_LIST_push(op_block_stack, op_cur);
-        
-        break;
-      }
-    }
     
     if (op_cur->first) {
       op_cur = op_cur->first;
@@ -1101,7 +1087,6 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
       }
     }
   }
-  SPVM_LIST_free(op_block_stack);
 }
 
 void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
