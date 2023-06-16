@@ -1537,7 +1537,8 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
         op_name->uv.name = name;
         SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
         SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_type = SPVM_OP_new_op_type_v2(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_list_statement->file, op_list_statement->last->line + 1);
+        
         op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
         SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
