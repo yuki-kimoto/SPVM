@@ -1914,8 +1914,6 @@ SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op
   }
   SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block_false);
   
-  op_use->uv.use->op_type->uv.type->resolved_in_ast = 1;
-  
   return op_if_require;
 }
 
