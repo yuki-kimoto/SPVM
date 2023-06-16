@@ -1009,6 +1009,7 @@ SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* 
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
+  use->op_type = op_type;
   const char* alias_name = op_name_alias->uv.name;
   use->alias_name = alias_name;
   
