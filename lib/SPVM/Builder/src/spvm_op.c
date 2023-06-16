@@ -2112,8 +2112,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       SPVM_OP* op_first_element = SPVM_OP_sibling(compiler, op_pushmark);
       if (is_key_value_pairs) {
         SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_array_init->file, op_array_init->line);
-        SPVM_TYPE* type_for_cast = SPVM_TYPE_new_any_object_type(compiler);
-        SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, type_for_cast, op_array_init->file, op_array_init->line);
+        SPVM_OP* op_type_for_cast = SPVM_OP_new_op_any_object_type(compiler, op_array_init->file, op_array_init->line);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first_element);
         SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_first_element, NULL);
         SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
