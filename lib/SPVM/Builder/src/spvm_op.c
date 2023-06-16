@@ -740,6 +740,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // Method definition
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
+        SPVM_METHOD* method = op_decl->uv.method;
+        
         SPVM_LIST_push(type->basic_type->methods, op_decl->uv.method);
         
         // Fields of anon method
@@ -754,6 +756,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // INIT block
         if (op_decl->uv.method->is_init) {
           basic_type->has_init_block = 1;
+        }
+        
+        if (!method->is_class_method) {
+          SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
+          arg_var_decl_first->type->unresolved_basic_type_name = basic_type_name;
         }
       }
       else {
