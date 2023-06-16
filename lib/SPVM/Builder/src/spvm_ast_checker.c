@@ -976,7 +976,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   // Resolve fields
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    if (!basic_type->is_class) { continue; }
     
     for (int32_t i = 0; i < basic_type->fields->length; i++) {
       // Field
