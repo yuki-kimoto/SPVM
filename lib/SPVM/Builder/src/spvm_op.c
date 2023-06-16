@@ -1420,8 +1420,8 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   if (!method->is_class_method) {
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
-    SPVM_TYPE* self_type = SPVM_TYPE_new_unresolved_type(compiler, NULL, 0, 0);
-    SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
+    SPVM_OP* op_self_type = SPVM_OP_new_op_unresolved_type(compiler, NULL, 0, 0, op_method->file, op_method->line);
+    SPVM_TYPE* self_type = op_self_type->uv.type;
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL, NULL);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
