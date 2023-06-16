@@ -3042,11 +3042,6 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_el
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
 
-  // mutable only allow string type
-  if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-    SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
-  }
-  
   return op_type;
 }
 
@@ -3066,11 +3061,6 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   else {
     SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_type_elem->file, op_type_elem->line);
     SPVM_OP_insert_child(compiler, op_type, op_type->last, op_do_nothing);
-  }
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
-    const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-    SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
   }
   
   return op_type;
