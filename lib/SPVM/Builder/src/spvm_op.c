@@ -258,8 +258,11 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
 
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
+  const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  
   SPVM_TYPE* type = op_type->uv.type;
-  SPVM_BASIC_TYPE* basic_type = type->basic_type;
+  SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);
+  type->basic_type = basic_type;
   
   type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
@@ -287,8 +290,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->rel_file, strlen(type->basic_type->rel_file));
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
-  
-  const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
