@@ -103,7 +103,10 @@ struct spvm_compiler {
   
   // Used class symtable
   SPVM_HASH* used_basic_type_name_symtable;
-
+  
+  // Used class symtable
+  SPVM_LIST* used_basic_type_names;
+  
   // Fail load class symtable
   SPVM_HASH* not_found_basic_type_name_symtable;
   
