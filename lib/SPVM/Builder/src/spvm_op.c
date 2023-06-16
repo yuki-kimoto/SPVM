@@ -288,14 +288,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->rel_file, strlen(type->basic_type->rel_file));
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
   
-  const char* basic_type_name = op_type->uv.type->basic_type->name;
+  const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
 
   basic_type->is_class = 1;
   
-  type->basic_type->name = op_type->uv.type->basic_type->name;
+  type->basic_type->name = op_type->uv.type->unresolved_basic_type_name;
 
   if (strstr(basic_type_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
@@ -994,7 +994,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
-  allow->basic_type_name = op_type->uv.type->basic_type->name;
+  allow->basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
@@ -1991,9 +1991,9 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     op_type->uv.type->resolved_in_ast = 1;
   }
   
-  if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->basic_type->name, "::anon::")) {
+  if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->unresolved_basic_type_name, "::anon::")) {
     
-    const char* anon_basic_type_name = op_type->uv.type->basic_type->name;
+    const char* anon_basic_type_name = op_type->uv.type->unresolved_basic_type_name;
     SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_basic_type_name, strlen(anon_basic_type_name));
     
     // Anon method
@@ -2278,7 +2278,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface,
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;
   interface->op_interface = op_interface;
-  interface->basic_type_name = op_type->uv.type->basic_type->name;
+  interface->basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
