@@ -55,7 +55,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);
 
 const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void);
 
-const char* SPVM_BASIC_TYPE_get_basic_type_name(int32_t basic_type_id);
+const char* SPVM_BASIC_TYPE_get_basic_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id);
 
 int32_t SPVM_BASIC_TYPE_is_void_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
 
