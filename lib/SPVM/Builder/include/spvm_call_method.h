@@ -9,7 +9,7 @@
 struct spvm_call_method {
   SPVM_OP* op_name;
   SPVM_METHOD* method;
-  const char* class_name;
+  const char* basic_type_name;
   int32_t args_length;
   int8_t is_class_method_call;
   int8_t call_super;

@@ -72,9 +72,9 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
     // Unknonw class
     SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
     if (!found_basic_type->is_class) {
-      const char* not_found_class_name = SPVM_HASH_get(compiler->not_found_class_name_symtable, basic_type_name, strlen(basic_type_name));
+      const char* not_found_basic_type_name = SPVM_HASH_get(compiler->not_found_basic_type_name_symtable, basic_type_name, strlen(basic_type_name));
       
-      if (not_found_class_name) {
+      if (not_found_basic_type_name) {
         type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
       }
       else {
@@ -105,7 +105,7 @@ void SPVM_AST_CHECKER_resolve_op_types(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_class_name) {
+void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -119,16 +119,16 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
   if (call_method->is_class_method_call) {
     SPVM_METHOD* found_method = NULL;
     // Class name + method name
-    const char* class_name;
+    const char* basic_type_name;
     if (call_method->is_current_class) {
-      class_name = current_class_name;
+      basic_type_name = current_basic_type_name;
     }
     else {
       SPVM_OP* op_type_class = op_call_method->last;
-      class_name = op_type_class->uv.type->basic_type->name;
+      basic_type_name = op_type_class->uv.type->basic_type->name;
     }
     
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
     assert(found_basic_type->is_class);
     
     found_method = SPVM_HASH_get(
@@ -160,9 +160,9 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       return;
     }
     
-    const char* class_name = type->basic_type->name;
+    const char* basic_type_name = type->basic_type->name;
     
-    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
     assert(basic_type->is_class);
 
     // Static instance method call
@@ -171,7 +171,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       const char* abs_method_name = method_name;
       call_method->is_static_instance_method_call = 1;
       method_name = last_colon_pos + 1;
-      int32_t class_name_length = (last_colon_pos - 1) - abs_method_name;
+      int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
       
       // SUPER::
       SPVM_METHOD* found_method = NULL;
@@ -183,7 +183,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
         }
       }
       else {
-        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, class_name_length);
+        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
         if (!found_basic_type) {
           basic_type = found_method->current_basic_type;
           SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
@@ -274,7 +274,7 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   }
 }
 
-void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_class_name) {
+void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
   
   if (op_class_var_access->uv.class_var_access->class_var) {
     return;
@@ -283,7 +283,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
   
   SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
   
-  char* class_name;
+  char* basic_type_name;
   char* base_name;
   
   const char* name = op_name->uv.name;
@@ -292,9 +292,9 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
   if (colon_ptr) {
     // Class name
     // (end - start + 1) - $ - colon * 2
-    int32_t class_name_length = (colon_ptr - name + 1) - 1 - 2;
-    class_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, class_name_length + 1);
-    memcpy(class_name, name + 1, class_name_length);
+    int32_t basic_type_name_length = (colon_ptr - name + 1) - 1 - 2;
+    basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, basic_type_name_length + 1);
+    memcpy(basic_type_name, name + 1, basic_type_name_length);
     
     // Base name($foo)
     int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
@@ -303,11 +303,11 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    class_name = (char*)current_class_name;
+    basic_type_name = (char*)current_basic_type_name;
     base_name = (char*)name;
   }
   
-  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   if (found_basic_type) {
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_basic_type->class_var_symtable, base_name, strlen(base_name));
     if (found_class_var) {
@@ -399,7 +399,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     if (!basic_type->is_class) { continue; }
     
-    const char* class_name = basic_type->name;
+    const char* basic_type_name = basic_type->name;
     
     // Edit INIT block
     // The INIT mehtods that is the parent class and used classes in the order.
@@ -408,16 +408,16 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       SPVM_OP* op_block = init_method->op_block;
       SPVM_OP* op_list_statement = op_block->first;
       
-      SPVM_LIST* use_class_names = basic_type->use_class_names;
+      SPVM_LIST* use_basic_type_names = basic_type->use_basic_type_names;
       
-      for (int32_t i = use_class_names->length - 1; i >= 0; i--) {
-        const char* use_class_name = SPVM_LIST_get(use_class_names, i);
+      for (int32_t i = use_basic_type_names->length - 1; i >= 0; i--) {
+        const char* use_basic_type_name = SPVM_LIST_get(use_basic_type_names, i);
         
-        SPVM_BASIC_TYPE* use_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
+        SPVM_BASIC_TYPE* use_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
         if (use_basic_type) {
           if (use_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
             SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_class_name, op_block->file, op_block->line);
+            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_basic_type_name, op_block->file, op_block->line);
             SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
             SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
             SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
@@ -427,10 +427,10 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         }
       }
       
-      const char* parent_class_name = basic_type->parent_name;
-      if (parent_class_name) {
+      const char* parent_basic_type_name = basic_type->parent_name;
+      if (parent_basic_type_name) {
         SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_class_name, op_block->file, op_block->line);
+        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_basic_type_name, op_block->file, op_block->line);
         SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
         SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
         SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
@@ -484,9 +484,9 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
           assert(0);
       }
       int32_t tail_name_length = (int32_t)strlen(tail_name);
-      int32_t class_name_length = strlen(class_name);
+      int32_t basic_type_name_length = strlen(basic_type_name);
       
-      char* found_pos_ptr = strstr(class_name + class_name_length - tail_name_length, tail_name);
+      char* found_pos_ptr = strstr(basic_type_name + basic_type_name_length - tail_name_length, tail_name);
       if (!found_pos_ptr) {
         SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, basic_type->fields->length, tail_name, basic_type->op_class->file, basic_type->op_class->line);
         return;
@@ -603,17 +603,17 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       }
       
       // Copy has_precomile_attribute from anon method defined class
-      if (method->anon_method_defined_class_name) {
-        SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_class_name, strlen(method->anon_method_defined_class_name));
+      if (method->anon_method_defined_basic_type_name) {
+        SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_basic_type_name, strlen(method->anon_method_defined_basic_type_name));
 
         SPVM_LIST_push(anon_method_defined_basic_type->anon_methods, method);
         basic_type->is_precompile = anon_method_defined_basic_type->is_precompile;
       }
     }
     
-    const char* parent_class_name = basic_type->parent_name;
-    if (parent_class_name) {
-      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_class_name, strlen(parent_class_name));
+    const char* parent_basic_type_name = basic_type->parent_name;
+    if (parent_basic_type_name) {
+      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
 
       if (!SPVM_BASIC_TYPE_is_class_type(compiler, parent_basic_type->id)) {
         SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
@@ -652,7 +652,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     // Add interfaces
     for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
       SPVM_INTERFACE* interface_decl = SPVM_LIST_get(basic_type->interface_decls, i);
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->class_name, strlen(interface_decl->class_name));
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->basic_type_name, strlen(interface_decl->basic_type_name));
       assert(interface_basic_type->is_class);
       
       if (!SPVM_BASIC_TYPE_is_interface_type(compiler, interface_basic_type->id)) {
@@ -1074,14 +1074,14 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
           case SPVM_OP_C_ID_TYPE: {
             SPVM_OP* op_type = op_cur;
             if (op_type->uv.type->resolved_in_ast) {
-              const char* class_name_maybe = op_type->uv.type->basic_type->name;
+              const char* basic_type_name_maybe = op_type->uv.type->basic_type->name;
               
-              const char* class_name = SPVM_HASH_get(basic_type->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
-              if (class_name == NULL) {
-                class_name = class_name_maybe;
+              const char* basic_type_name = SPVM_HASH_get(basic_type->class_alias_symtable, basic_type_name_maybe, strlen(basic_type_name_maybe));
+              if (basic_type_name == NULL) {
+                basic_type_name = basic_type_name_maybe;
               }
               
-              SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+              SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
               op_type->uv.type->basic_type = found_basic_type;
               
               SPVM_AST_CHECKER_resolve_op_type(compiler, op_type);
@@ -1144,9 +1144,9 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
       SPVM_OP* op_block_false = op_cur->last;
       
       // Execute false block
-      const char* use_class_name = use->class_name;
+      const char* use_basic_type_name = use->basic_type_name;
       
-      SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_class_name, strlen(use_class_name));
+      SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
       
       if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_basic_type->id)) {
         SPVM_OP_cut_op(compiler, op_block_false);
@@ -3096,8 +3096,8 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
               return;
             }
             
-            const char* class_name = type->basic_type->name;
-            SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+            const char* basic_type_name = type->basic_type->name;
+            SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
             
             assert(basic_type->is_class);
             
@@ -3109,7 +3109,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             );
             
             if (!found_method) {
-              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined.\n  at %s line %d", method_name, class_name, op_name_method->file, op_name_method->line);
+              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined.\n  at %s line %d", method_name, basic_type_name, op_name_method->file, op_name_method->line);
               return;
             }
             

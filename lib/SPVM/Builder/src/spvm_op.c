@@ -288,26 +288,26 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->rel_file, strlen(type->basic_type->rel_file));
   SPVM_CONSTANT_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
   
-  const char* class_name = op_type->uv.type->basic_type->name;
+  const char* basic_type_name = op_type->uv.type->basic_type->name;
   
   // Assert
-  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, class_name, strlen(class_name));
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
 
   basic_type->is_class = 1;
   
   type->basic_type->name = op_type->uv.type->basic_type->name;
 
-  if (strstr(class_name, "::anon::")) {
+  if (strstr(basic_type_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
   }
 
   if (!basic_type->is_anon) {
-    assert(!islower(class_name[0]));
+    assert(!islower(basic_type_name[0]));
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
-    if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+    if (strcmp(basic_type_name, compiler->cur_rel_file_basic_type_name) != 0) {
+      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_basic_type_name, op_class->file, op_class->line);
       return op_class;
     }
   }
@@ -451,7 +451,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
         
-        SPVM_LIST_push(type->basic_type->use_class_names, (void*)op_use->uv.use->class_name);
+        SPVM_LIST_push(type->basic_type->use_basic_type_names, (void*)op_use->uv.use->basic_type_name);
         
         // Class alias
         const char* class_alias_name = op_use->uv.use->class_alias_name;
@@ -463,13 +463,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
-            const char* use_class_name = op_use->uv.use->class_name;
-            const char* use_class_name_exists = SPVM_HASH_get(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name));
-            if (use_class_name_exists) {
+            const char* use_basic_type_name = op_use->uv.use->basic_type_name;
+            const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name));
+            if (use_basic_type_name_exists) {
               SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", class_alias_name, op_decl->file, op_decl->line);
             }
             else {
-              SPVM_HASH_set(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
+              SPVM_HASH_set(type->basic_type->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_basic_type_name);
             }
           }
         }
@@ -483,7 +483,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
           SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        const char* interface_name = op_decl->uv.interface->class_name;
+        const char* interface_name = op_decl->uv.interface->basic_type_name;
         
         if (strcmp(type->basic_type->name, interface_name) == 0) {
           SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
@@ -787,7 +787,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, class_name, field->op_field->file, field->op_field->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, basic_type_name, field->op_field->file, field->op_field->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
@@ -805,7 +805,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, class_name, class_var->op_class_var->file, class_var->op_class_var->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, basic_type_name, class_var->op_class_var->file, class_var->op_class_var->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
@@ -913,7 +913,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, class_name, method->op_method->file, method->op_method->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, basic_type_name, method->op_method->file, method->op_method->line);
     }
     // Unknown method
     else {
@@ -946,8 +946,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         int32_t method_abs_name_length = strlen(type->basic_type->name) + 2 + strlen(method->name);
         char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
         memcpy(method_abs_name, type->basic_type->name, strlen(type->basic_type->name));
-        memcpy(method_abs_name + strlen(class_name), "->", 2);
-        memcpy(method_abs_name + strlen(class_name) + 2, method_name, strlen(method_name));
+        memcpy(method_abs_name + strlen(basic_type_name), "->", 2);
+        memcpy(method_abs_name + strlen(basic_type_name) + 2, method_name, strlen(method_name));
         method->abs_name = method_abs_name;
 
         // Add the method to the method symtable of the class
@@ -994,7 +994,7 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   SPVM_ALLOW* allow = SPVM_ALLOW_new(compiler);
   op_allow->uv.allow = allow;
   allow->op_allow = op_allow;
-  allow->class_name = op_type_class->uv.type->basic_type->name;
+  allow->basic_type_name = op_type_class->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_allow->file, op_allow->line);
@@ -1009,7 +1009,7 @@ SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* 
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
-  use->class_name = op_type_class->uv.type->basic_type->name;
+  use->basic_type_name = op_type_class->uv.type->basic_type->name;
   const char* class_alias_name = op_name_class_alias->uv.name;
   use->class_alias_name = class_alias_name;
   
@@ -1021,7 +1021,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
   use->is_require = is_require;
-  use->class_name = op_type_class->uv.type->basic_type->name;
+  use->basic_type_name = op_type_class->uv.type->basic_type->name;
   
   if (op_name_class_alias) {
     const char* class_alias_name = op_name_class_alias->uv.name;
@@ -1559,14 +1559,14 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Create anon method class name
   // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-  const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
+  const char* anon_method_defined_rel_file_basic_type_name = compiler->cur_rel_file_basic_type_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
-  int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
+  int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
   // Anon class name
-  char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_class_name_length + 1);
-  sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_column);
+  char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
+  sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
   SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
   const char* name_class = name_class_string->value;
@@ -1574,7 +1574,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   
-  op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
+  op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
   // Build class
   SPVM_OP_build_class(compiler, op_class, op_type_class, op_class_block, NULL, NULL);
@@ -1987,8 +1987,8 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   
   if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->basic_type->name, "::anon::")) {
     
-    const char* anon_class_name = op_type->uv.type->basic_type->name;
-    SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_class_name, strlen(anon_class_name));
+    const char* anon_basic_type_name = op_type->uv.type->basic_type->name;
+    SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_basic_type_name, strlen(anon_basic_type_name));
     
     // Anon method
     SPVM_METHOD* anon_method = SPVM_LIST_get(anon_basic_type->methods, 0);
@@ -2272,7 +2272,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface,
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;
   interface->op_interface = op_interface;
-  interface->class_name = op_type_class->uv.type->basic_type->name;
+  interface->basic_type_name = op_type_class->uv.type->basic_type->name;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
@@ -2323,7 +2323,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     call_method->is_class_method_call = 1;
     call_method->op_name = op_name_method;
     if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
-      call_method->class_name = op_invocant->uv.type->basic_type->name;
+      call_method->basic_type_name = op_invocant->uv.type->basic_type->name;
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
       
       // Because the type name maybe an alias of a class name
@@ -3605,18 +3605,18 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_
   
   SPVM_LIST* allows = basic_type_dist->allows;
   
-  const char* current_class_name = basic_type_current->name;
-  const char* dist_class_name = basic_type_dist->name;
+  const char* current_basic_type_name = basic_type_current->name;
+  const char* dist_basic_type_name = basic_type_dist->name;
   
   int32_t is_allowed = 0;
-  if (strcmp(current_class_name, dist_class_name) == 0) {
+  if (strcmp(current_basic_type_name, dist_basic_type_name) == 0) {
     is_allowed = 1;
   }
   else {
     for (int32_t i = 0; i < allows->length; i++) {
       SPVM_ALLOW* allow = SPVM_LIST_get(allows, i);
-      const char* allow_basic_type_name = allow->class_name;
-      if (strcmp(current_class_name, allow_basic_type_name) == 0) {
+      const char* allow_basic_type_name = allow->basic_type_name;
+      if (strcmp(current_basic_type_name, allow_basic_type_name) == 0) {
         is_allowed = 1;
         break;
       }

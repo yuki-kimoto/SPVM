@@ -71,15 +71,15 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->not_found_class_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  compiler->not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
   return compiler;
 }
 
-void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* class_name, const char* source, int32_t length) {
+void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, int32_t length) {
   SPVM_STRING_BUFFER* source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, length, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_STRING_BUFFER_add_len(source_buffer, (char*)source, strlen(source));
-  SPVM_HASH_set(compiler->source_symtable, class_name, strlen(class_name), (void*)source_buffer);
+  SPVM_HASH_set(compiler->source_symtable, basic_type_name, strlen(basic_type_name), (void*)source_buffer);
 }
 
 void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {
@@ -140,8 +140,8 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   }
 }
 
-void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* class_name, const char* file, int32_t line) {
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, class_name, file, line);
+void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, const char* file, int32_t line) {
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, basic_type_name, file, line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_class->file, op_name_class->line);
   SPVM_OP* op_name_class_alias = NULL;
@@ -175,7 +175,7 @@ int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
 }
 
-int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
   compiler->cur_basic_type_base = compiler->basic_types->length;
   
@@ -185,86 +185,86 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
     
     // Add Bool source
     {
-      const char* class_name = "Bool";
+      const char* basic_type_name = "Bool";
       const char* source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Error source
     {
-      const char* class_name = "Error";
+      const char* basic_type_name = "Error";
       const char* source = "class Error;";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Error::System source
     {
-      const char* class_name = "Error::System";
+      const char* basic_type_name = "Error::System";
       const char* source = "class Error::System extends Error;";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Error::NotSupported source
     {
-      const char* class_name = "Error::NotSupported";
+      const char* basic_type_name = "Error::NotSupported";
       const char* source = "class Error::NotSupported extends Error;";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Byte source
     {
-      const char* class_name = "Byte";
+      const char* basic_type_name = "Byte";
       const char* source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Short source
     {
-      const char* class_name = "Short";
+      const char* basic_type_name = "Short";
       const char* source = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Int source
     {
-      const char* class_name = "Int";
+      const char* basic_type_name = "Int";
       const char* source = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Long source
     {
-      const char* class_name = "Long";
+      const char* basic_type_name = "Long";
       const char* source = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Float source
     {
-      const char* class_name = "Float";
+      const char* basic_type_name = "Float";
       const char* source = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Double source
     {
-      const char* class_name = "Double";
+      const char* basic_type_name = "Double";
       const char* source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add CommandInfo source
     {
-      const char* class_name = "CommandInfo";
+      const char* basic_type_name = "CommandInfo";
       const char* source = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
     
     // Add Address source
     {
-      const char* class_name = "Address";
+      const char* basic_type_name = "Address";
       const char* source = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-      SPVM_COMPILER_add_source(compiler, class_name, source, strlen(source));
+      SPVM_COMPILER_add_source(compiler, basic_type_name, source, strlen(source));
     }
   }
   
@@ -291,22 +291,22 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->used_class_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->used_basic_type_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   for (int32_t basic_type_index = 0; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     if (!basic_type->is_class) { continue; }
     
-    const char* class_name = basic_type->name;
-    SPVM_HASH_set(compiler->used_class_name_symtable, class_name, strlen(class_name), (void*)class_name);
+    const char* basic_type_name = basic_type->name;
+    SPVM_HASH_set(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
   }
   
   SPVM_COMPILER_use_default_loaded_classes(compiler);
    
   // Use the class that is specified at the argument
-  if (class_name) {
-    SPVM_CONSTANT_STRING* class_name_string = SPVM_CONSTANT_STRING_new(compiler, class_name, strlen(class_name));
-    class_name = class_name_string->value;
-    SPVM_COMPILER_use(compiler, class_name, start_file, start_line);
+  if (basic_type_name) {
+    SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
+    basic_type_name = basic_type_name_string->value;
+    SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
   }
   
   /* Tokenize and Parse */
@@ -448,8 +448,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
   
-  SPVM_HASH_free(compiler->used_class_name_symtable);
-  compiler->used_class_name_symtable = NULL;
+  SPVM_HASH_free(compiler->used_basic_type_name_symtable);
+  compiler->used_basic_type_name_symtable = NULL;
   
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;

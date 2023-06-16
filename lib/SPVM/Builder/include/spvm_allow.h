@@ -8,7 +8,7 @@
 
 struct spvm_allow {
   SPVM_OP* op_allow;
-  const char* class_name;
+  const char* basic_type_name;
 };
 
 SPVM_ALLOW* SPVM_ALLOW_new(SPVM_COMPILER* compiler);

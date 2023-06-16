@@ -17,7 +17,7 @@ struct spvm_method {
   SPVM_LIST* anon_method_fields;
   const char* abs_name;
   SPVM_BASIC_TYPE* current_basic_type;
-  const char* anon_method_defined_class_name;
+  const char* anon_method_defined_basic_type_name;
   int32_t enum_value;
   int32_t args_length;
   int32_t required_args_length;

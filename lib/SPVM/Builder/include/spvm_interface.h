@@ -8,7 +8,7 @@
 
 struct spvm_interface {
   SPVM_OP* op_interface;
-  const char* class_name;
+  const char* basic_type_name;
 };
 
 SPVM_INTERFACE* SPVM_INTERFACE_new(SPVM_COMPILER* compiler);

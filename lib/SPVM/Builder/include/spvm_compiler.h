@@ -33,7 +33,7 @@ struct spvm_compiler {
   const char* cur_rel_file;
   
   // Current parsed class name
-  const char* cur_rel_file_class_name;
+  const char* cur_rel_file_basic_type_name;
   
   // Current parsed source
   char* cur_source;
@@ -102,10 +102,10 @@ struct spvm_compiler {
   SPVM_STRING_BUFFER* constant_strings_buffer;
   
   // Used class symtable
-  SPVM_HASH* used_class_name_symtable;
+  SPVM_HASH* used_basic_type_name_symtable;
 
   // Fail load class symtable
-  SPVM_HASH* not_found_class_name_symtable;
+  SPVM_HASH* not_found_basic_type_name_symtable;
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
@@ -143,7 +143,7 @@ struct spvm_compiler {
 
 SPVM_COMPILER* SPVM_COMPILER_new();
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
-void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* class_name, const char* source, int32_t length);
+void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, int32_t length);
 void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
@@ -164,7 +164,7 @@ void SPVM_COMPILER_clear_class_paths(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
-int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name);
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 
 int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler);
 int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
