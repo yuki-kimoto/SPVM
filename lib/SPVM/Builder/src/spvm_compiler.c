@@ -86,8 +86,8 @@ void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id
    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
    basic_type->id = basic_type_id;
    basic_type->category = basic_type_category;
-   const char* basic_type_name_tmp = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
-   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name_tmp, strlen(basic_type_name_tmp));
+   const char* basic_type_name = SPVM_BASIC_TYPE_get_basic_type_name(compiler, basic_type->id);
+   SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
    basic_type->name = basic_type_name_string->value;
    SPVM_LIST_push(compiler->basic_types, basic_type);
    SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
