@@ -1043,7 +1043,7 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
       SPVM_OP* op_block_false = op_cur->last;
       
       // Execute false block
-      const char* use_basic_type_name = use->basic_type_name;
+      const char* use_basic_type_name = use->op_type->uv.type->unresolved_basic_type_name;
       
       SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
       
