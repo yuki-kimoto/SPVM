@@ -14,6 +14,7 @@
 #include "spvm_opcode_array.h"
 #include "spvm_constant.h"
 #include "spvm_op.h"
+#include "spvm_ast_checker.h"
 #include "spvm_type.h"
 #include "spvm_list.h"
 #include "spvm_method.h"
