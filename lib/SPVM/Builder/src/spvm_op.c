@@ -264,9 +264,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->class_path = compiler->cur_class_path;
-  type->basic_type->class_rel_file = compiler->cur_rel_file;
-  type->basic_type->class_file = compiler->cur_file;
+  type->basic_type->dir = compiler->cur_class_path;
+  type->basic_type->rel_file = compiler->cur_rel_file;
+  type->basic_type->file = compiler->cur_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_class = op_extends->first;
@@ -282,11 +282,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_class_alias, is_require);
   }
   
-  if (type->basic_type->class_path) {
-    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_path, strlen(type->basic_type->class_path));
+  if (type->basic_type->dir) {
+    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->dir, strlen(type->basic_type->dir));
   }
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_rel_file, strlen(type->basic_type->class_rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->class_file, strlen(type->basic_type->class_file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->rel_file, strlen(type->basic_type->rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
   
   const char* class_name = op_type->uv.type->basic_type->name;
   

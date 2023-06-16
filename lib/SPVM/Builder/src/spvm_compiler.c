@@ -637,25 +637,25 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       
       runtime_basic_type->is_class = 1;
       
-      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
-      runtime_basic_type->class_rel_file_id = class_class_rel_file_string->id;
+      SPVM_CONSTANT_STRING* class_class_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->rel_file, strlen(basic_type->rel_file));
+      runtime_basic_type->rel_file_id = class_class_rel_file_string->id;
       
-      if (basic_type->class_path) {
-        SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->class_path, strlen(basic_type->class_path));
-        runtime_basic_type->class_path_id = class_class_path_string->id;
+      if (basic_type->dir) {
+        SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
+        runtime_basic_type->dir_id = class_class_path_string->id;
       }
       else {
-        runtime_basic_type->class_path_id = -1;
+        runtime_basic_type->dir_id = -1;
       }
       runtime_basic_type->has_init_block = basic_type->has_init_block;
       runtime_basic_type->is_anon = basic_type->is_anon;
       runtime_basic_type->is_pointer = class_basic_type->is_pointer;
       if (basic_type->parent_name) {
         SPVM_BASIC_TYPE* parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_name, strlen(basic_type->parent_name));
-        runtime_basic_type->parent_class_basic_type_id = parent_class_basic_type->id;
+        runtime_basic_type->parent_id = parent_class_basic_type->id;
       }
       else {
-        runtime_basic_type->parent_class_basic_type_id = -1;
+        runtime_basic_type->parent_id = -1;
       }
       
       runtime_basic_type->fields_size = basic_type->fields_size;

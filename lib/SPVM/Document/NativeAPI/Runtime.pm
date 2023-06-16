@@ -108,8 +108,8 @@ Runtime native APIs have its IDs.
   84 reserved84
   85 class_init_flags
   86 can_assign
-  87 get_basic_type_class_rel_file_id
-  88 get_basic_type_class_path_id
+  87 get_basic_type_rel_file_id
+  88 get_basic_type_dir_id
   89 get_basic_type_is_anon
   90 get_basic_type_fields_base_id
   91 get_basic_type_fields_length

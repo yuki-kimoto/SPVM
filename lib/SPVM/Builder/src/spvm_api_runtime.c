@@ -183,8 +183,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved84
     (void*)NULL, // class_init_flags
     SPVM_API_RUNTIME_can_assign,
-    SPVM_API_RUNTIME_get_basic_type_class_rel_file_id,
-    SPVM_API_RUNTIME_get_basic_type_class_path_id,
+    SPVM_API_RUNTIME_get_basic_type_rel_file_id,
+    SPVM_API_RUNTIME_get_basic_type_dir_id,
     SPVM_API_RUNTIME_get_basic_type_is_anon,
     SPVM_API_RUNTIME_get_basic_type_fields_base_id,
     SPVM_API_RUNTIME_get_basic_type_fields_length,
@@ -419,24 +419,24 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t b
   return class_is_anon;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_class_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_basic_type_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
   
-  int32_t class_class_rel_file_id = basic_type->class_rel_file_id;
+  int32_t class_class_rel_file_id = basic_type->rel_file_id;
   
   return class_class_rel_file_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_class_path_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_basic_type_dir_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
   
-  int32_t class_class_path_id = basic_type->class_path_id;
+  int32_t class_class_path_id = basic_type->dir_id;
   
   return class_class_path_id;
 }
@@ -513,7 +513,7 @@ int32_t SPVM_API_RUNTIME_get_basic_type_parent_class_basic_type_id(SPVM_RUNTIME*
   
   assert(basic_type);
   
-  int32_t parent_class_basic_type_id = basic_type->parent_class_basic_type_id;
+  int32_t parent_class_basic_type_id = basic_type->parent_id;
   
   return parent_class_basic_type_id;
 }
@@ -1229,7 +1229,7 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
     return 0;
   }
   
-  int32_t parent_class_basic_type_id = child_class_basic_type->parent_class_basic_type_id;
+  int32_t parent_class_basic_type_id = child_class_basic_type->parent_id;
   while (1) {
     if (parent_class_basic_type_id > 0) {
       SPVM_RUNTIME_BASIC_TYPE* parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type_id);
@@ -1238,7 +1238,7 @@ int32_t SPVM_API_RUNTIME_is_super_class_by_id(SPVM_RUNTIME* runtime, int32_t sup
         break;
       }
       else {
-        parent_class_basic_type_id = parent_class_basic_type->parent_class_basic_type_id;
+        parent_class_basic_type_id = parent_class_basic_type->parent_id;
       }
     }
     else {

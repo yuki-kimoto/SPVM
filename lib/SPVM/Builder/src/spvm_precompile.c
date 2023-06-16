@@ -2738,8 +2738,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t class_rel_file_id = SPVM_API_RUNTIME_get_basic_type_class_rel_file_id(runtime, current_class_basic_type_id);
-        int32_t class_path_id = SPVM_API_RUNTIME_get_basic_type_class_path_id(runtime, current_class_basic_type_id);
+        int32_t class_rel_file_id = SPVM_API_RUNTIME_get_basic_type_rel_file_id(runtime, current_class_basic_type_id);
+        int32_t class_path_id = SPVM_API_RUNTIME_get_basic_type_dir_id(runtime, current_class_basic_type_id);
         const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, class_rel_file_id, NULL);
         const char* class_path = NULL;
         const char* class_path_sep;

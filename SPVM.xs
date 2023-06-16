@@ -4812,8 +4812,8 @@ get_class_file(...)
   if (basic_type_id >= 0) {
     int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
     if (is_class) {
-      int32_t class_rel_file_id = api_env->api->runtime->get_basic_type_class_rel_file_id(runtime, basic_type_id);
-      int32_t class_path_id = api_env->api->runtime->get_basic_type_class_path_id(runtime, basic_type_id);
+      int32_t class_rel_file_id = api_env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
+      int32_t class_path_id = api_env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
       const char* class_path = NULL;
       const char* class_path_sep;
       if (class_path_id >= 0) {

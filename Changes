@@ -1,3 +1,9 @@
+0.989006 2023-06-16
+  [Incompatible Changes]
+    * The followin Native Runtime APIs were changed.
+      -  int32_t (*get_basic_type_class_path_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_dir_id)(void* runtime, int32_t basic_type_id);
+
 0.989005 2023-06-15
   [Changes]
     * include/spvm_class.h and src/spvm_class.c were removed.

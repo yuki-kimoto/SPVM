@@ -2208,8 +2208,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->class_basic_type_id);
   const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, class_basic_type->name_id, NULL);
 
-  int32_t class_path_id = class_basic_type->class_path_id;
-  int32_t class_rel_file_id = class_basic_type->class_rel_file_id;
+  int32_t class_path_id = class_basic_type->dir_id;
+  int32_t class_rel_file_id = class_basic_type->rel_file_id;
   
   const char* class_path;
   const char* class_path_sep;
@@ -2301,8 +2301,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t class_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, class_name);
   SPVM_RUNTIME_BASIC_TYPE* class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, class_basic_type_id);
 
-  int32_t class_path_id = class_basic_type->class_path_id;
-  int32_t class_rel_file_id = class_basic_type->class_rel_file_id;
+  int32_t class_path_id = class_basic_type->dir_id;
+  int32_t class_rel_file_id = class_basic_type->rel_file_id;
   
   const char* class_path;
   const char* class_path_sep;
@@ -3269,8 +3269,8 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
       break;
     }
     
-    if (parent_class_basic_type->parent_class_basic_type_id != -1) {
-      parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type->parent_class_basic_type_id);
+    if (parent_class_basic_type->parent_id != -1) {
+      parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type->parent_id);
     }
     else {
       parent_class_basic_type = NULL;
@@ -3359,8 +3359,8 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
       break;
     }
     
-    if (parent_class_basic_type->parent_class_basic_type_id != -1) {
-      parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type->parent_class_basic_type_id);
+    if (parent_class_basic_type->parent_id != -1) {
+      parent_class_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_class_basic_type->parent_id);
     }
     else {
       parent_class_basic_type = NULL;
