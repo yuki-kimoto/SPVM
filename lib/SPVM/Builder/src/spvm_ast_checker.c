@@ -3767,7 +3767,7 @@ void SPVM_AST_CHECKER_perform_numeric_to_string_conversion(SPVM_COMPILER* compil
   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
   
   SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand->file, op_operand->line);
-  SPVM_OP* op_dist_type = SPVM_OP_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
+  SPVM_OP* op_dist_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
   SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand, NULL);
   
   SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
@@ -3790,7 +3790,7 @@ void SPVM_AST_CHECKER_perform_integer_promotional_conversion(SPVM_COMPILER* comp
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand->file, op_operand->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
+    SPVM_OP* op_dist_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
     SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand, NULL);
     
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_type_cast);
@@ -3826,7 +3826,7 @@ void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler,
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_first->file, op_first->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_type_shared(compiler, dist_type, op_first->file, op_first->line);
+    SPVM_OP* op_dist_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, dist_type, op_first->file, op_first->line);
     SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_first, NULL);
     
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
@@ -3836,7 +3836,7 @@ void SPVM_AST_CHECKER_perform_binary_numeric_conversion(SPVM_COMPILER* compiler,
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_last);
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_last->file, op_last->line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_type_shared(compiler, dist_type, op_last->file, op_last->line);
+    SPVM_OP* op_dist_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, dist_type, op_last->file, op_last->line);
     SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_last, NULL);
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
@@ -3970,7 +3970,7 @@ SPVM_OP* SPVM_AST_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_src);
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, file, line);
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_type_shared(compiler, dist_type, file, line);
+    SPVM_OP* op_dist_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, dist_type, file, line);
     SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_src, NULL);
     
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
@@ -4037,7 +4037,7 @@ SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
   SPVM_OP* op_var_tmp = SPVM_OP_build_var(compiler, op_name);
   SPVM_OP* op_var_tmp_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
   assert(type);
-  SPVM_OP* op_type = SPVM_OP_new_op_type_shared(compiler, type, file, line);
+  SPVM_OP* op_type = SPVM_AST_CHECKER_new_op_type_shared(compiler, type, file, line);
   
   SPVM_OP_build_var_decl(compiler, op_var_tmp_decl, op_var_tmp, op_type, NULL);
   
@@ -4050,7 +4050,7 @@ SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* typ
 }
 
 // Don't use this method in spvm_op.c because types must not be shared in builiding AST.
-SPVM_OP* SPVM_OP_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
+SPVM_OP* SPVM_AST_CHECKER_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
   op_type->uv.type = type;
   

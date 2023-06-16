@@ -54,7 +54,7 @@ int32_t SPVM_AST_CHECKER_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* m
 
 SPVM_OP* SPVM_AST_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line);
 
-SPVM_OP* SPVM_OP_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
+SPVM_OP* SPVM_AST_CHECKER_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);
 
 SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
