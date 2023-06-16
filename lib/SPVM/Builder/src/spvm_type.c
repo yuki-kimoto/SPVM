@@ -626,6 +626,13 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
   return type;
 }
 
+SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler) {
+  
+  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));
+  
+  return type;
+}
+
 SPVM_TYPE* SPVM_TYPE_new_unresolved_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, int32_t dimension, int32_t flag) {
   
   SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_TYPE));

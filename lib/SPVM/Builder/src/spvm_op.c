@@ -259,10 +259,14 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
 SPVM_OP* SPVM_OP_new_op_type_v2(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, SPVM_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line) {
   
   SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
-  op_type->uv.type->basic_type = basic_type;
-  op_type->uv.type->dimension = type_dimension;
-  op_type->uv.type->flag = type_flag;
+  SPVM_TYPE* type = SPVM_TYPE_new_uninitialized(compiler);
+  
+  type->unresolved_basic_type_name = unresolved_basic_type_name;
+  type->basic_type = basic_type;
+  type->dimension = type_dimension;
+  type->flag = type_flag;
+  
+  op_type->uv.type = type;
   
   SPVM_LIST_push(compiler->op_types, op_type);
   
@@ -3022,9 +3026,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, name, strlen(name));
   if (found_basic_type) {
     // Type op
-    SPVM_TYPE* type = SPVM_TYPE_new(compiler, found_basic_type->id, 0, 0);
-    type->unresolved_basic_type_name = name;
-    op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
+    op_type = SPVM_OP_new_op_type_v2(compiler, name, found_basic_type, 0, 0, op_name->file, op_name->line);
   }
   else {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_COMPILER_add_basic_type(compiler, name);

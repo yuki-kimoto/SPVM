@@ -16,6 +16,8 @@ struct spvm_type {
   int8_t resolved_in_ast;
 };
 
+SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler);
+
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler);
