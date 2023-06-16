@@ -2210,7 +2210,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
     else if (op_use_stack->length > 0) {
       SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
       
-      const char* basic_type_name = op_use->uv.use->basic_type_name;
+      const char* basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
       int32_t basic_type_name_length = strlen(basic_type_name);
       
       // Check the class name

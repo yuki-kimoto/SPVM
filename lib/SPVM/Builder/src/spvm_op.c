@@ -451,7 +451,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
         SPVM_OP* op_use = op_decl;
         
-        SPVM_LIST_push(type->basic_type->use_basic_type_names, (void*)op_use->uv.use->basic_type_name);
+        SPVM_LIST_push(type->basic_type->use_basic_type_names, (void*)op_use->uv.use->op_type->uv.type->unresolved_basic_type_name);
         
         // Class alias
         const char* alias_name = op_use->uv.use->alias_name;
@@ -463,7 +463,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
           }
           else {
-            const char* use_basic_type_name = op_use->uv.use->basic_type_name;
+            const char* use_basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
             const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->alias_symtable, alias_name, strlen(alias_name));
             if (use_basic_type_name_exists) {
               SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
@@ -1009,7 +1009,6 @@ SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* 
   
   SPVM_USE* use = op_use->uv.use;
   use->op_use = op_use;
-  use->basic_type_name = op_type->uv.type->basic_type->name;
   const char* alias_name = op_name_alias->uv.name;
   use->alias_name = alias_name;
   
@@ -1022,7 +1021,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   use->op_use = op_use;
   use->op_type = op_type;
   use->is_require = is_require;
-  use->basic_type_name = op_type->uv.type->basic_type->name;
   
   if (op_name_alias) {
     const char* alias_name = op_name_alias->uv.name;
