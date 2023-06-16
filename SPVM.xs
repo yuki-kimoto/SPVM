@@ -4745,7 +4745,7 @@ get_anon_class_names(...)
     int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_id);
     
     if (is_anon_method) {
-      int32_t anon_class_basic_type_id = api_env->api->runtime->get_method_class_basic_type_id(runtime, method_id);
+      int32_t anon_class_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method_id);
       const char* anon_class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, anon_class_basic_type_id));
       SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
       av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));

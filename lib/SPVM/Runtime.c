@@ -422,7 +422,7 @@ int32_t SPVM__Runtime__get_anon_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
     int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, class_basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
-      int32_t anon_class_basic_type_id = env->api->runtime->get_method_class_basic_type_id(runtime, method_id);
+      int32_t anon_class_basic_type_id = env->api->runtime->get_method_current_basic_type_id(runtime, method_id);
       const char* anon_class_name = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, anon_class_basic_type_id));
       void* obj_anon_class_name = env->new_string_nolen(env, stack, anon_class_name);
       env->set_elem_object(env, stack, obj_anon_class_names, anon_class_index, obj_anon_class_name);
