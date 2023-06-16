@@ -144,7 +144,8 @@ struct spvm_compiler {
 SPVM_COMPILER* SPVM_COMPILER_new();
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, int32_t length);
-void SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
+void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
+SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const char* basic_type_name);
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
