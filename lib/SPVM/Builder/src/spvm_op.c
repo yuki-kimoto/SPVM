@@ -3010,6 +3010,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   else {
     SPVM_BASIC_TYPE* new_basic_type = SPVM_OP_new_basic_type(compiler, name);
     SPVM_TYPE* type = SPVM_TYPE_new(compiler, new_basic_type->id, 0, 0);
+    type->unresolved_basic_type_name = name;
     op_type = SPVM_OP_new_op_type(compiler, type, op_name->file, op_name->line);
   }
   
@@ -3022,6 +3023,7 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_original->uv.type->basic_type->id, op_type_original->uv.type->dimension, SPVM_NATIVE_C_TYPE_FLAG_REF);
+  type->unresolved_basic_type_name = op_type_original->uv.type->unresolved_basic_type_name;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_original->file, op_type_original->line);
@@ -3034,6 +3036,7 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_el
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension, op_type_elem->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
+  type->unresolved_basic_type_name = op_type_elem->uv.type->unresolved_basic_type_name;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
@@ -3050,6 +3053,7 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension + 1, 0);
+  type->unresolved_basic_type_name = op_type_elem->uv.type->unresolved_basic_type_name;
   
   // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_type_elem->file, op_type_elem->line);
