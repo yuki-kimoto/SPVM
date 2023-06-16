@@ -901,12 +901,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_OP* op_arg_first_type = NULL;
       if (!method->is_class_method) {
         SPVM_TYPE* arg_invocant_type = op_type->uv.type;
-        op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
+        op_arg_first_type = SPVM_OP_new_op_type_v2(compiler, arg_invocant_type->unresolved_basic_type_name, arg_invocant_type->basic_type, arg_invocant_type->dimension, arg_invocant_type->flag, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
         arg_var_decl_first->type = op_arg_first_type->uv.type;
         assert(arg_invocant_type->basic_type);
       }
       else {
-        SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type(compiler, arg_var_decl_first->type, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
+        SPVM_OP* op_type_new_arg_var_decl_first = SPVM_OP_new_op_type_v2(compiler, arg_var_decl_first->type->unresolved_basic_type_name, arg_var_decl_first->type->basic_type, arg_var_decl_first->type->dimension, arg_var_decl_first->type->flag, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
+        
         op_arg_first_type = op_type_new_arg_var_decl_first;
         assert(op_arg_first_type->uv.type->basic_type);
       }
