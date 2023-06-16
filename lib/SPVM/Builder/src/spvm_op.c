@@ -612,7 +612,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
           
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
-          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, class_var_type, op_decl->file, op_decl->line);
+          SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type_v2(compiler, class_var_type->unresolved_basic_type_name, class_var_type->basic_type, class_var_type->dimension, class_var_type->flag, op_decl->file, op_decl->line);
+          
           SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
           
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
