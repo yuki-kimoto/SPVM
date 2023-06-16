@@ -834,7 +834,6 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   // Check required method
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    if (!basic_type->is_class) { continue; }
     for (int32_t interface_index = 0; interface_index < basic_type->interfaces->length; interface_index++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interfaces, interface_index);
       assert(interface_basic_type);
