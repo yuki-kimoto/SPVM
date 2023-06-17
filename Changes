@@ -36,7 +36,7 @@
       6 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
       7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
       8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
-      
+    * The get_classes_length method in the Runtime class was removed.
   [Breaking Binary Compatibility]
     * Binary compatibility was broken.
     

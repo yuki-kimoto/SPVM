@@ -263,29 +263,6 @@ int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Runtime__get_classes_length(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t e = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  int32_t basic_types_length = env->api->runtime->get_basic_types_length(runtime);
-  
-  int32_t classes_length = 0;
-  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    int32_t is_class = env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
-    if (is_class) {
-      classes_length++;
-    }
-  }
-  
-  stack[0].ival = classes_length;
-  
-  return 0;
-}
-
 int32_t SPVM__Runtime__get_class_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;

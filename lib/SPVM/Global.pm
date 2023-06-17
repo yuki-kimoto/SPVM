@@ -219,7 +219,8 @@ sub build_class {
   
   my $start_classes_length = 0;
   if ($RUNTIME) {
-    $start_classes_length = $RUNTIME->get_classes_length;
+    my $classes = $RUNTIME->get_class_names;
+    $start_classes_length = @$classes;
   }
   
   &init_runtime();
