@@ -544,12 +544,12 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_
   return class_var_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* class_var_name) {
+int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* class_var_name) {
   (void)runtime;
   
   int32_t class_var_id = -1;
   
-  SPVM_RUNTIME_BASIC_TYPE* class_baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* class_baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (class_baisc_type) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_address(runtime, class_baisc_type, class_var_name);
@@ -718,12 +718,12 @@ int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_
   return name_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* method_name) {
+int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* method_name) {
   (void)runtime;
   
   int32_t method_id = -1;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (basic_type) {
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_address(runtime, basic_type, method_name);
@@ -751,12 +751,12 @@ int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t ba
   return field_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char* class_name, const char* field_name) {
+int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name) {
   (void)runtime;
   
   int32_t field_id = -1;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, class_name);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (basic_type) {
     SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_address(runtime, basic_type, field_name);
