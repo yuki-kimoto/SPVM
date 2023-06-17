@@ -24,13 +24,13 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$build_dir/work/exe";
   mkpath $exe_dir;
   
-  my $class_name = 'MyExe';
+  my $basic_type_name = 'MyExe';
   my $class_paths = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
   my $config_file = "$test_dir/myexe.config";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    class_name => $class_name,
+    class_name => $basic_type_name,
     output_file => $output_file,
     build_dir => $build_dir,
     class_paths => $class_paths,
@@ -76,12 +76,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$test_dir/.spvm_build/work/exe";
   mkpath $exe_dir;
   
-  my $class_name = 'MyExe::Foo::Bar';
+  my $basic_type_name = 'MyExe::Foo::Bar';
   my $class_paths = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    class_name => $class_name,
+    class_name => $basic_type_name,
     output_file => $output_file,
     build_dir => $build_dir,
     class_paths => $class_paths,

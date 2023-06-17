@@ -8723,7 +8723,7 @@ Examples:
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $class_name = __CLASS__;
+      my $basic_type_name = __CLASS__;
     }
   }
 

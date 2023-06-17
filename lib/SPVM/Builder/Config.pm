@@ -674,12 +674,12 @@ sub use_resource {
     $resource = $first_arg;
   }
   else {
-    my $class_name = $first_arg;
+    my $basic_type_name = $first_arg;
     my %args = @args;
     if (exists $args{class_name}) {
-      $class_name = delete $args{class_name};
+      $basic_type_name = delete $args{class_name};
     }
-    $resource = SPVM::Builder::Resource->new(class_name => $class_name, %args);
+    $resource = SPVM::Builder::Resource->new(class_name => $basic_type_name, %args);
   }
   
   my $resource_class_name = $resource->class_name;
@@ -1084,8 +1084,8 @@ If this field is undef, whether the messages are output or not is determined by 
 
 =head2 class_name
 
-  my $class_name = $config->class_name;
-  $config->class_name($class_name);
+  my $basic_type_name = $config->class_name;
+  $config->class_name($basic_type_name);
 
 Gets and sets the C<class_name> field.
 

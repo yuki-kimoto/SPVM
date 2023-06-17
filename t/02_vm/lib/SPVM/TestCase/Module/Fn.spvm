@@ -4422,13 +4422,13 @@ class TestCase::Module::Fn {
     {
       {
         eval { Fn->get_version_string(undef); };
-        unless (Fn->contains($@, "The \$class_name must be defined")) {
+        unless (Fn->contains($@, "The \$basic_type_name must be defined")) {
           return 0;
         }
       }
       {
         eval { Fn->get_version_string("NotFoundClass"); };
-        unless (Fn->contains($@, "The class specified by the \$class_name must be loaded")) {
+        unless (Fn->contains($@, "The class specified by the \$basic_type_name must be loaded")) {
           return 0;
         }
       }

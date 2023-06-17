@@ -154,7 +154,7 @@ sub new {
   bless $self, $class;
 
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   unless (defined $self->class_name) {
     confess "Class name must be specified";
   }
@@ -166,7 +166,7 @@ sub new {
     $self->output_dir($output_dir);
   }
   else {
-    my $default_output_dir = "SPVM::$class_name";
+    my $default_output_dir = "SPVM::$basic_type_name";
     $default_output_dir =~ s/::/-/g;
     $self->output_dir($default_output_dir);
   }
@@ -248,7 +248,7 @@ sub generate_spvm_class_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -277,13 +277,13 @@ sub generate_spvm_class_file {
 # Copyright (c) $year $user_name
 # MIT License
 
-class $class_name ${attributes}{
+class $basic_type_name ${attributes}{
   $version_decl
 }
 EOS
   
   # Generate file
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
   my $lib_dir = $self->lib_dir;
   $spvm_class_rel_file = $self->create_lib_rel_file($spvm_class_rel_file);
   $self->generate_file($spvm_class_rel_file, $spvm_class_content);
@@ -293,7 +293,7 @@ sub generate_perl_class_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Year
   my $year = $self->_year;
@@ -317,11 +317,11 @@ sub generate_perl_class_file {
   my $description;
   my $main_doc;
   if ($interface) {
-    $description = "The $class_name interface of L<SPVM> has interface methods for someting.";
+    $description = "The $basic_type_name interface of L<SPVM> has interface methods for someting.";
     $main_doc  = <<"EOS";
 =head1 Usage
 
-  interface $class_name;
+  interface $basic_type_name;
 
 =head1 Interface Methods
 
@@ -330,7 +330,7 @@ sub generate_perl_class_file {
 EOS
   }
   elsif ($resource) {
-    $description = "The $class_name resource of L<SPVM> is a L<resouce|SPVM::Document::Resource> for someting.";
+    $description = "The $basic_type_name resource of L<SPVM> is a L<resouce|SPVM::Document::Resource> for someting.";
     
     my $native = $self->native;
     my $new_method;
@@ -370,7 +370,7 @@ MyClass.config:
   
   my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
   
-  \$config->use_resource('$class_name');
+  \$config->use_resource('$basic_type_name');
   
   \$config;
 
@@ -449,11 +449,11 @@ MyClass.$native_class_ext:
 EOS
   }
   else {
-    $description = "The $class_name class of L<SPVM> has methods for someting.";
+    $description = "The $basic_type_name class of L<SPVM> has methods for someting.";
     $main_doc  = <<"EOS";
 =head1 Usage
 
-  use $class_name;
+  use $basic_type_name;
 
 =head1 Fields
 
@@ -480,7 +480,7 @@ EOS
   # Content
   my $perl_class_content = "";
   $perl_class_content = <<"EOS";
-package SPVM::$class_name;
+package SPVM::$basic_type_name;
 
 $version_decl
 
@@ -488,7 +488,7 @@ $version_decl
 
 =head1 Name
 
-SPVM::$class_name - Short Description
+SPVM::$basic_type_name - Short Description
 
 =head1 Description
 
@@ -512,7 +512,7 @@ MIT License
 EOS
 
   # Generate file
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
   $self->generate_file($perl_class_rel_file, $perl_class_content);
 }
@@ -521,7 +521,7 @@ sub generate_native_config_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # C or C++
   my $native = $self->native;
@@ -557,7 +557,7 @@ my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 EOS
 
   # Generate file
-  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'config');
   $native_config_rel_file =  $self->create_lib_rel_file($native_config_rel_file);
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
@@ -566,7 +566,7 @@ sub generate_native_class_file {
   my ($self) = @_;
 
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # extern C for C++
   my $native = $self->native;
@@ -593,9 +593,9 @@ sub generate_native_class_file {
   }
   
   # Content
-  my $native_class_name = $class_name;
+  my $native_class_name = $basic_type_name;
   $native_class_name =~ s/::/__/g;
-  my $native_class_file = $class_name;
+  my $native_class_file = $basic_type_name;
   $native_class_file =~ s/::/\//g;
   $native_class_file .= ".$native_class_ext";
 
@@ -628,7 +628,7 @@ int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 $extern_c_end
 EOS
   
-  my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $native_class_ext);
+  my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, $native_class_ext);
   $native_class_rel_file =  $self->create_lib_rel_file($native_class_rel_file);
   $self->generate_file($native_class_rel_file, $native_class_content);
 }
@@ -637,10 +637,10 @@ sub generate_gitkeep_file_for_native_class_include_dir {
   my ($self) = @_;
 
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native');
+  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'native');
   $gitkeep_rel_file_for_native_class_include_dir .= '/include/.gitkeep';
   $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
@@ -650,10 +650,10 @@ sub generate_gitkeep_file_for_native_class_src_dir {
   my ($self) = @_;
 
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'native');
+  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'native');
   $gitkeep_rel_file_for_native_class_include_dir .= '/src/.gitkeep';
   $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
@@ -740,13 +740,13 @@ sub generate_readme_markdown_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Content
   my $readme_markdown_content = <<"EOS";
-# SPVM::$class_name
+# SPVM::$basic_type_name
 
-<a href="https://metacpan.org/pod/SPVM::$class_name">SPVM::$class_name</a>
+<a href="https://metacpan.org/pod/SPVM::$basic_type_name">SPVM::$basic_type_name</a>
 
 EOS
   
@@ -759,21 +759,21 @@ sub generate_makefile_pl_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
   
   # Native make rule
-  my $make_rule_native = $self->native && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$class_name');" : '';
+  my $make_rule_native = $self->native && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$basic_type_name');" : '';
   
   # Precompile make rule
-  my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$class_name');" : '';
+  my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$basic_type_name');" : '';
 
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
+  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
 
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
   # User name
@@ -812,7 +812,7 @@ unless (\$meta) {
 
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
-  NAME => 'SPVM::$class_name',
+  NAME => 'SPVM::$basic_type_name',
   VERSION_FROM => '$perl_class_rel_file',
   LICENSE => 'mit',
   (\$] >= 5.005 ?
@@ -871,9 +871,9 @@ sub generate_basic_test_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
   # Content
@@ -886,18 +886,18 @@ use FindBin;
 use lib "\$FindBin::Bin/lib";
 BEGIN { \$ENV{SPVM_BUILD_DIR} = "\$FindBin::Bin/.spvm_build"; }
 
-use SPVM 'TestCase::$class_name';
+use SPVM 'TestCase::$basic_type_name';
 
-use SPVM '$class_name';
-use SPVM::$class_name;
+use SPVM '$basic_type_name';
+use SPVM::$basic_type_name;
 use SPVM 'Fn';
 
-ok(SPVM::TestCase::$class_name->test);
+ok(SPVM::TestCase::$basic_type_name->test);
 
 # Version
 {
-  my \$version_string = SPVM::Fn->get_version_string("$class_name");
-  is(\$SPVM::${class_name}::VERSION, \$version_string);
+  my \$version_string = SPVM::Fn->get_version_string("$basic_type_name");
+  is(\$SPVM::${basic_type_name}::VERSION, \$version_string);
 }
 
 done_testing;
@@ -912,7 +912,7 @@ sub generate_license_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -957,7 +957,7 @@ sub generate_basic_test_spvm_class_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -967,15 +967,15 @@ sub generate_basic_test_spvm_class_file {
   
   if ($resource) {
     $basic_test_spvm_class_content = <<"EOS";
-class TestCase::$class_name {
+class TestCase::$basic_type_name {
   native static method test : int ();
 }
 EOS
   }
   else {
     $basic_test_spvm_class_content = <<"EOS";
-class TestCase::$class_name {
-  use $class_name;
+class TestCase::$basic_type_name {
+  use $basic_type_name;
   static method test : int () {
     
     return 1;
@@ -985,7 +985,7 @@ EOS
   }
   
   # Generate file
-  my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", 'spvm');
+  my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
   $basic_test_spvm_class_rel_file = "t/lib/$basic_test_spvm_class_rel_file";
   $self->generate_file($basic_test_spvm_class_rel_file, $basic_test_spvm_class_content);
 }
@@ -994,7 +994,7 @@ sub generate_basic_test_native_config_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1016,13 +1016,13 @@ use warnings;
 
 my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 
-\$config->use_resource('$class_name');
+\$config->use_resource('$basic_type_name');
 
 \$config;
 EOS
   
   # Generate file
-  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", 'config');
+  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", 'config');
   $basic_test_native_config_rel_file = "t/lib/$basic_test_native_config_rel_file";
   $self->generate_file($basic_test_native_config_rel_file, $basic_test_native_config_content);
 }
@@ -1031,7 +1031,7 @@ sub generate_basic_test_native_class_file {
   my ($self) = @_;
   
   # Class name
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1050,7 +1050,7 @@ sub generate_basic_test_native_class_file {
   }
   
   # Content
-  my $native_class_name = $class_name;
+  my $native_class_name = $basic_type_name;
   $native_class_name =~ s/::/__/g;
   my $basic_test_native_class_content = <<"EOS";
 #include "spvm_native.h"
@@ -1079,7 +1079,7 @@ EOS
       $native_class_ext = 'cpp';
     }
   }
-  my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", $native_class_ext);
+  my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", $native_class_ext);
   $basic_test_native_class_rel_file = "t/lib/$basic_test_native_class_rel_file";
   $self->generate_file($basic_test_native_class_rel_file, $basic_test_native_class_content);
 }
@@ -1087,13 +1087,13 @@ EOS
 sub generate_dist {
   my ($self) = @_;
   
-  my $class_name = $self->class_name;
+  my $basic_type_name = $self->class_name;
   
-  unless (length $class_name) {
+  unless (length $basic_type_name) {
     confess "The class name must be specified";
   }
   
-  if ($class_name =~ /-/) {
+  if ($basic_type_name =~ /-/) {
     confess "The class name cannnot contain \"-\"";
   }
   
@@ -1105,8 +1105,8 @@ sub generate_dist {
     die "The --interface option and the --resource option cannot be specified at the same time"
   }
   
-  my $class_name_rel_file = $class_name;
-  $class_name_rel_file =~ s|::|/|g;
+  my $basic_type_name_rel_file = $basic_type_name;
+  $basic_type_name_rel_file =~ s|::|/|g;
   
   # Generate output directory
   my $output_dir = $self->output_dir;

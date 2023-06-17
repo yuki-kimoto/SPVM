@@ -31,19 +31,19 @@ sub compile_not_ok {
     
   my $first_class_name;
   for my $source (@$sources) {
-    my $class_name;
+    my $basic_type_name;
     if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
-      $class_name = $1;
+      $basic_type_name = $1;
     }
-    unless (defined $class_name) {
+    unless (defined $basic_type_name) {
       die "Can't find class name in the source";
     }
     
     unless (defined $first_class_name) {
-      $first_class_name = $class_name;
+      $first_class_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_class_path/$class_name.spvm";
+    my $class_file = "$tmp_class_path/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -58,7 +58,7 @@ sub compile_not_ok {
 }
 
 sub compile_not_ok_file {
-  my ($class_name, $error_message_re, $options) = @_;
+  my ($basic_type_name, $error_message_re, $options) = @_;
   
   unless ($options) {
     $options = {};
@@ -93,7 +93,7 @@ sub compile_not_ok_file {
     class_paths => $builder->class_paths
   );
   
-  my $success = $compiler->compile($class_name, $file, $line);
+  my $success = $compiler->compile($basic_type_name, $file, $line);
   ok(!$success);
   my $error_messages = $compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
@@ -122,19 +122,19 @@ sub compile_ok {
     
   my $first_class_name;
   for my $source (@$sources) {
-    my $class_name;
+    my $basic_type_name;
     if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
-      $class_name = $1;
+      $basic_type_name = $1;
     }
-    unless (defined $class_name) {
+    unless (defined $basic_type_name) {
       die "Can't find class name in the source";
     }
     
     unless (defined $first_class_name) {
-      $first_class_name = $class_name;
+      $first_class_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_class_path/$class_name.spvm";
+    my $class_file = "$tmp_class_path/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -149,7 +149,7 @@ sub compile_ok {
 }
 
 sub compile_ok_file {
-  my ($class_name, $options) = @_;
+  my ($basic_type_name, $options) = @_;
   
   unless ($options) {
     $options = {};
@@ -183,7 +183,7 @@ sub compile_ok_file {
   my $compiler = SPVM::Builder::Compiler->new(
     class_paths => $builder->class_paths
   );
-  my $success = $compiler->compile($class_name, $file, $line);
+  my $success = $compiler->compile($basic_type_name, $file, $line);
   ok($success);
   
   if (!$success) {

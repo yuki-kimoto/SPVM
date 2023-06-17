@@ -47,9 +47,9 @@ sub new {
 }
 
 sub use {
-  my ($self, $class_name, $file, $line) = @_;
+  my ($self, $basic_type_name, $file, $line) = @_;
   
-  my $success = $self->compile($class_name, __FILE__, __LINE__);
+  my $success = $self->compile($basic_type_name, __FILE__, __LINE__);
   unless ($success) {
     $self->print_error_messages(*STDERR);
     exit(255);

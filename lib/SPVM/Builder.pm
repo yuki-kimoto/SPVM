@@ -53,30 +53,30 @@ sub new {
 }
 
 sub build_dynamic_lib_dist {
-  my ($self, $class_name, $category) = @_;
+  my ($self, $basic_type_name, $category) = @_;
   
   # Create the compiler
   my $compiler = SPVM::Builder::Compiler->new(
     class_paths => $self->class_paths
   );
   
-  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
+  my $success = $compiler->compile($basic_type_name, __FILE__, __LINE__);
   unless ($success) {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
   my $runtime = $compiler->build_runtime;
-  my $class_file = $runtime->get_file($class_name);
-  my $method_names = $runtime->get_method_names($class_name, $category);
-  my $anon_class_names = $runtime->get_anon_class_names($class_name);
-  my $precompile_source = $runtime->build_precompile_source($class_name);
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, $anon_class_names, {category => $category});
+  my $class_file = $runtime->get_file($basic_type_name);
+  my $method_names = $runtime->get_method_names($basic_type_name, $category);
+  my $anon_class_names = $runtime->get_anon_class_names($basic_type_name);
+  my $precompile_source = $runtime->build_precompile_source($basic_type_name);
+  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
   
-  $self->build_dist($class_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+  $self->build_dist($basic_type_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
 
 sub build_dist {
-  my ($self, $class_name, $options) = @_;
+  my ($self, $basic_type_name, $options) = @_;
   
   $options ||= {};
   
@@ -98,7 +98,7 @@ sub build_dist {
     );
     
     $cc->build_precompile_source_file(
-      $class_name,
+      $basic_type_name,
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
@@ -116,7 +116,7 @@ sub build_dist {
   my $build_lib_dir = 'blib/lib';
   
   $self->build(
-    $class_name,
+    $basic_type_name,
     {
       compile_input_dir => $build_src_dir,
       compile_output_dir => $build_object_dir,
@@ -129,19 +129,19 @@ sub build_dist {
 }
 
 sub build_dynamic_lib_dist_precompile {
-  my ($self, $class_name) = @_;
+  my ($self, $basic_type_name) = @_;
   
-  $self->build_dynamic_lib_dist($class_name, 'precompile');
+  $self->build_dynamic_lib_dist($basic_type_name, 'precompile');
 }
 
 sub build_dynamic_lib_dist_native {
-  my ($self, $class_name) = @_;
+  my ($self, $basic_type_name) = @_;
   
-  $self->build_dynamic_lib_dist($class_name, 'native');
+  $self->build_dynamic_lib_dist($basic_type_name, 'native');
 }
 
 sub build_at_runtime {
-  my ($self, $class_name, $options) = @_;
+  my ($self, $basic_type_name, $options) = @_;
   
   $options ||= {};
   
@@ -173,7 +173,7 @@ sub build_at_runtime {
     );
     
     $cc->build_precompile_source_file(
-      $class_name,
+      $basic_type_name,
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
@@ -183,7 +183,7 @@ sub build_at_runtime {
   }
   elsif ($category eq 'native') {
     my $class_file = $options->{class_file};
-    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($class_file, $class_name);
+    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($class_file, $basic_type_name);
   }
   
   # Object directory
@@ -195,7 +195,7 @@ sub build_at_runtime {
   mkpath $build_lib_dir;
   
   my $build_file = $self->build(
-    $class_name,
+    $basic_type_name,
     {
       compile_input_dir => $build_src_dir,
       compile_output_dir => $build_object_dir,
@@ -211,7 +211,7 @@ sub build_at_runtime {
 }
 
 sub build {
-  my ($self, $class_name, $options) = @_;
+  my ($self, $basic_type_name, $options) = @_;
   
   $options ||= {};
   
@@ -230,7 +230,7 @@ sub build {
   # Class file
   my $class_file = $options->{class_file};
   unless (defined $class_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($basic_type_name);
     if ($config_file) {
       $class_file = $config_file;
       $class_file =~ s/\.config$/\.spvm/;
@@ -248,7 +248,7 @@ sub build {
     $config = SPVM::Builder::Util::API::create_default_config();
   }
   
-  $config->class_name($class_name);
+  $config->class_name($basic_type_name);
   
   # Compile source file and create object files
   my $compile_options = {
@@ -258,7 +258,7 @@ sub build {
     category => $category,
   };
 
-  my $object_files = $cc->compile_source_files($class_name, $compile_options);
+  my $object_files = $cc->compile_source_files($basic_type_name, $compile_options);
   
   # Link object files and create dynamic library
   my $link_options = {
@@ -268,7 +268,7 @@ sub build {
     dl_func_list => $dl_func_list,
   };
   my $output_file = $cc->link(
-    $class_name,
+    $basic_type_name,
     $object_files,
     $link_options
   );

@@ -8,7 +8,7 @@ class Compiler : pointer {
   native static method new : Compiler ();
   
   # Instance Methods
-  native method compile : int ($class_name : string);
+  native method compile : int ($basic_type_name : string);
   
   native method build_runtime : Runtime ();
   

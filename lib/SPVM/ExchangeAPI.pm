@@ -245,9 +245,9 @@ sub new_muldim_array_len {
 }
 
 sub class {
-  my ($self, $class_name) = @_;
+  my ($self, $basic_type_name) = @_;
   
-  my $class = SPVM::ExchangeAPI::Class->__new(__class_name => $class_name, __api => $self);
+  my $class = SPVM::ExchangeAPI::Class->__new(__class_name => $basic_type_name, __api => $self);
   
   return $class;
 }
@@ -1081,9 +1081,9 @@ Examples:
 
 =head2 class
 
-  my $class = $api->class($class_name);
+  my $class = $api->class($basic_type_name);
 
-Creates a new L<SPVM::ExchangeAPI::Class> object with the class name $class_name, and returns it.
+Creates a new L<SPVM::ExchangeAPI::Class> object with the class name $basic_type_name, and returns it.
 
 Examples:
   
