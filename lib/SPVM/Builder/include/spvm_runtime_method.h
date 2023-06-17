@@ -28,7 +28,7 @@ struct spvm_runtime_method {
   int32_t return_basic_type_id;
   int32_t return_type_dimension;
   int32_t return_type_flag;
-  int8_t is_class_method;
+  int8_t is_static;
   int8_t is_init;
   int8_t is_anon;
   int8_t is_precompile;

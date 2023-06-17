@@ -835,7 +835,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->id = method->id;
     runtime_method->current_basic_type_id = method->current_basic_type->id;
-    runtime_method->is_class_method = method->is_class_method;
+    runtime_method->is_static = method->is_static;
     runtime_method->is_init = method->is_init;
     runtime_method->is_anon = method->is_anon;
     runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;

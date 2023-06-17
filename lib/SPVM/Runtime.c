@@ -76,7 +76,7 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
-int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_method_is_static(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
 
@@ -95,9 +95,9 @@ int32_t SPVM__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VALUE* sta
   // Method id
   int32_t method_id = env->api->runtime->get_method_id_by_name(runtime, class_name, method_name);
   
-  int32_t is_class_method = env->api->runtime->get_method_is_class_method(runtime, method_id);
+  int32_t is_static = env->api->runtime->get_method_is_static(runtime, method_id);
   
-  stack[0].ival = is_class_method;
+  stack[0].ival = is_static;
   
   return 0;
 }

@@ -2494,7 +2494,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_name_id != &env_array[43]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved44 != &env_array[44]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved45 != &env_array[45]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_class_method != &env_array[46]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_is_static != &env_array[46]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_anon != &env_array[47]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_native != &env_array[48]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_precompile != &env_array[49]) { stack[0].ival = 0; return 0; }

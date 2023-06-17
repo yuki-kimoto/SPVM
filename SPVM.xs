@@ -1224,8 +1224,8 @@ _xs_call_method(...)
     }
     
     if (method_id >= 0) {
-      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
-      if (is_class_method) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
+      if (is_static) {
         method_id = -1;
       }
     }
@@ -1239,8 +1239,8 @@ _xs_call_method(...)
     method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
     
     if (method_id >= 0) {
-      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
-      if (!is_class_method) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
+      if (!is_static) {
         method_id = -1;
       }
     }
@@ -1263,7 +1263,7 @@ _xs_call_method(...)
     spvm_args_base = 2;
   }
 
-  int32_t method_is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method_id);
+  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
   int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_id);
   int32_t method_args_base_id = env->api->runtime->get_method_args_base_id(env->runtime, method_id);

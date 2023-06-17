@@ -3302,8 +3302,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   if (method_id >= 0) {
-    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, method_id);
-    if (!is_class_method) {
+    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_id);
+    if (!is_static) {
       method_id = -1;
     }
   }
@@ -3315,8 +3315,8 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack,
   int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, class_name, method_name);
   
   if (method_id >= 0) {
-    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, method_id);
-    if (is_class_method) {
+    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_id);
+    if (is_static) {
       method_id = -1;
     }
   }
@@ -3353,7 +3353,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_address(runtime, parent_basic_type, method_name);
     if (method) {
       // Instance method
-      if (!method->is_class_method) {
+      if (!method->is_static) {
         method_id = method->id;
       }
       break;

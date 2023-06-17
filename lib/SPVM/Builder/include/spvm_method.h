@@ -35,7 +35,7 @@ struct spvm_method {
   int32_t mortal_stack_length;
   int32_t anon_method_id;
   int32_t tmp_vars_length;
-  int8_t is_class_method;
+  int8_t is_static;
   int8_t is_init;
   int8_t is_destructor;
   int8_t is_enum;

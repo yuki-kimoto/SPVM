@@ -131,7 +131,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
   const char* method_name = call_method->op_name->uv.name;
   
   // Class method call
-  if (call_method->is_class_method_call) {
+  if (call_method->is_static) {
     SPVM_METHOD* found_method = NULL;
     // Class name + method name
     const char* basic_type_name;
@@ -151,7 +151,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       strlen(method_name)
     );
     
-    if (found_method && !found_method->is_class_method) {
+    if (found_method && !found_method->is_static) {
       found_method = NULL;
     }
   
@@ -213,7 +213,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       
       if (found_method) {
         basic_type = found_method->current_basic_type;
-        if (found_method->is_class_method) {
+        if (found_method->is_static) {
           SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
@@ -229,7 +229,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       SPVM_METHOD* found_method = SPVM_AST_CHECKER_search_method(compiler, basic_type, method_name);
       
       if (found_method) {
-        if (found_method->is_class_method) {
+        if (found_method->is_static) {
           basic_type = found_method->current_basic_type;
           SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
@@ -892,8 +892,8 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
             SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
             
             if (strcmp(method->name, interface_method->name) == 0) {
-              if (method->is_class_method) {
-                if (!interface_method->is_class_method) {
+              if (method->is_static) {
+                if (!interface_method->is_static) {
                   SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, class_desc, basic_type->op_class->file, basic_type->op_class->line);
                   return;
                 }
@@ -2868,7 +2868,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
                 call_method_args_length++;
                 if (call_method_args_length > args_length) {
                   int32_t args_length_for_user = args_length;
-                  if (!call_method->method->is_class_method) {
+                  if (!call_method->method->is_static) {
                     args_length_for_user--;
                   }
                   
@@ -2884,7 +2884,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
                 // If needed, numeric conversion op is added
                 char place[255];
                 int32_t call_method_args_length_for_user = call_method_args_length;
-                if (!call_method->method->is_class_method) {
+                if (!call_method->method->is_static) {
                   call_method_args_length_for_user--;
                 }
                 sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" class", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->current_basic_type->name);
@@ -2900,7 +2900,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             
             if (call_method_args_length < call_method->method->required_args_length) {
               int32_t required_args_length_for_user = call_method->method->required_args_length;
-              if (!call_method->method->is_class_method) {
+              if (!call_method->method->is_static) {
                 required_args_length_for_user--;
               }
               
