@@ -376,7 +376,7 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
 =head2 get_class_var_id
 
-  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name);
+  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 
 Gets the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
@@ -386,7 +386,7 @@ Examples:
 
 =head2 get_class_method_id
 
-  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
+  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
 Gets a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
 
@@ -1285,7 +1285,7 @@ Examples:
 
 =head2 new_object_by_name
 
-  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<new_object> function, but you can specify class name directly.
 
@@ -1524,7 +1524,7 @@ Examples:
 =head2 set_class_var_byte_by_name
 
   void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, int8_t value,
+    const char* basic_type_name, const char* class_var_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_byte> function, but you can specify the class name directly.
@@ -1540,7 +1540,7 @@ Examples:
 =head2 set_class_var_short_by_name
 
   void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, int16_t value,
+    const char* basic_type_name, const char* class_var_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_short> function, but you can specify the class name directly.
@@ -1556,7 +1556,7 @@ Examples:
 =head2 set_class_var_int_by_name
 
   void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, int32_t value,
+    const char* basic_type_name, const char* class_var_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_int> function, but you can specify the class name directly.
@@ -1572,7 +1572,7 @@ Examples:
 =head2 set_class_var_long_by_name
 
   void (*set_class_var_long_by_name)(SPVM_ENV* env
-    const char* class_name, const char* class_var_name, int64_t value,
+    const char* basic_type_name, const char* class_var_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_long> function, but you can specify the class name directly.
@@ -1588,7 +1588,7 @@ Examples:
 =head2 set_class_var_float_by_name
 
   void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, float value,
+    const char* basic_type_name, const char* class_var_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_float> function, but you can specify the class name directly.
@@ -1604,7 +1604,7 @@ Examples:
 =head2 set_class_var_double_by_name
 
   void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, double value,
+    const char* basic_type_name, const char* class_var_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_double> function, but you can specify the class name directly.
@@ -1620,7 +1620,7 @@ Examples:
 =head2 set_class_var_object_by_name
 
   void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name, void* value,
+    const char* basic_type_name, const char* class_var_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<set_class_var_object> function, but you can specify the class name directly.
@@ -1636,7 +1636,7 @@ Examples:
 =head2 get_class_var_byte_by_name
 
   int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_byte> function, but you can specify the class name directly.
@@ -1652,7 +1652,7 @@ Examples:
 =head2 get_class_var_short_by_name
 
   int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_short> function, but you can specify the class name directly.
@@ -1668,7 +1668,7 @@ Examples:
 =head2 get_class_var_int_by_name
 
   int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_int> function, but you can specify the class name directly.
@@ -1684,7 +1684,7 @@ Examples:
 =head2 get_class_var_long_by_name
 
   int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_long> function, but you can specify the class name directly.
@@ -1700,7 +1700,7 @@ Examples:
 =head2 get_class_var_float_by_name
 
   float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_float> function, but you can specify the class name directly.
@@ -1716,7 +1716,7 @@ Examples:
 =head2 get_class_var_double_by_name
 
   double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_double> function, but you can specify the class name directly.
@@ -1732,7 +1732,7 @@ Examples:
 =head2 get_class_var_object_by_name
 
   void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* class_var_name,
+    const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as C<get_class_var_object> function, but you can specify the class name directly.
@@ -1748,7 +1748,7 @@ Examples:
 =head2 call_class_method_by_name
 
   int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* method_name, int32_t args_stack_length,
+    const char* basic_type_name, const char* method_name, int32_t args_stack_length,
     const char* func_name, const char* file, int32_t line);
 
 This is same as C<call_method_raw> function, but you can specify the class name and method name directly.
@@ -1800,7 +1800,7 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
 =head2 get_instance_method_id_static
 
-  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name);
+  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* basic_type_name, const char* method_name);
 
 Gets a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
 
@@ -2082,7 +2082,7 @@ Examples:
 
 =head2 new_pointer_object_by_name
 
-  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 This is same as L</"new_pointer"> function, but you can specify class name directly.
 
@@ -2136,7 +2136,7 @@ If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
 =head2 get_field_id_static
 
-  int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name);
+  int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
 
 Gets the ID of the field given an class name and field name. If the field does not exist, a value less than 0 is returned.
 
@@ -2157,7 +2157,7 @@ Examples:
 =head2 call_instance_method_static_by_name
 
   int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* class_name, const char* method_name, int32_t args_stack_length,
+    const char* basic_type_name, const char* method_name, int32_t args_stack_length,
     const char* func_name, const char* file, int32_t line);
 
 Calls a instance method by the class name and the method name.
@@ -2177,7 +2177,7 @@ Examples:
 
 =head2 get_method_id
 
-  int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name);
+  int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
 Gets a method ID by the class name and the method name. If the method does not exists, a negative value is returned.
 
@@ -2285,13 +2285,13 @@ The feature is the same as the L</"is_type">, but the basic type name can be giv
 
 =head2 new_stack_trace_raw_by_name
 
-  void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
+  void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);
 
 Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace_by_name
 
-  void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* class_name, const char* method_name, int32_t line);
+  void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);
 
 The same as L</"new_stack_trace_raw_by_name">, and push the created object to the mortal stack.
 

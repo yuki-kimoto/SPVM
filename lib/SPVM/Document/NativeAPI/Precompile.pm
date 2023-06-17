@@ -56,13 +56,13 @@ Gets the runtime from the Precompile Native API object.
 
 =head2 build_source
 
-  void (*build_source)(void* precompile, void* string_buffer, const char* class_name);
+  void (*build_source)(void* precompile, void* string_buffer, const char* basic_type_name);
 
 Builds a precompiled class source. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 
 =head2 build_method_source
 
-  void (*build_method_source)(void* precompile, void* string_buffer, const char* class_name, const char* method_name);
+  void (*build_method_source)(void* precompile, void* string_buffer, const char* basic_type_name, const char* method_name);
 
 Builds a precompiled method source. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 

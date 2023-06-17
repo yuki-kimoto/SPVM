@@ -17,7 +17,7 @@ void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* incl
 int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t index);
 void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler);
-int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name);
+int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 void SPVM_API_COMPILER_free_object(SPVM_COMPILER* compiler);
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);

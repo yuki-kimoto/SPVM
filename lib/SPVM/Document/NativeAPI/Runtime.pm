@@ -186,9 +186,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_name_id
+=head2 get_basic_type_name_id
 
-  int32_t (*get_class_name_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_name_id)(void* runtime, int32_t class_id);
 
 =head2 get_class_class_rel_file_id
 
@@ -240,7 +240,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_class_var_id_by_name
 
-  int32_t (*get_class_var_id_by_name)(void* runtime, const char* class_name, const char* class_var_name);
+  int32_t (*get_class_var_id_by_name)(void* runtime, const char* basic_type_name, const char* class_var_name);
 
 =head2 get_class_var_name_id
 
@@ -252,7 +252,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_field_id_by_name
 
-  int32_t (*get_field_id_by_name)(void* runtime, const char* class_name, const char* field_name);
+  int32_t (*get_field_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
 
 =head2 get_field_name_id
 
@@ -264,7 +264,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_method_id_by_name
 
-  int32_t (*get_method_id_by_name)(void* runtime, const char* class_name, const char* method_name);
+  int32_t (*get_method_id_by_name)(void* runtime, const char* basic_type_name, const char* method_name);
 
 =head2 get_method_name_id
 

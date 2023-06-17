@@ -99,7 +99,7 @@ Gets a searching directory.
 
 =head2 compile
   
-  int32_t (*compile)(void* compiler, const char* class_name);
+  int32_t (*compile)(void* compiler, const char* basic_type_name);
 
 Compile SPVM classes.
 
