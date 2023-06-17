@@ -2942,7 +2942,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t b
     return NULL;
   }
   
-  if (!basic_type->is_class) {
+  if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     return NULL;
   }
   
