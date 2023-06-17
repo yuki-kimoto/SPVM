@@ -26,7 +26,7 @@ A execution environemt is build by the L<build_env|/"build_env"> method in this 
   
   my $runtime = $compiler->build_runtime;
   
-  my $basic_type_names = $runtime->get_class_names;
+  my $basic_type_names = $runtime->get_basic_type_names;
   
   my $method_names = $runtime->get_method_names("Foo");
   
@@ -53,6 +53,12 @@ Gets the runtime codes and returns it.
   method get_class_names : string[] ();
 
 Gets the class names and returns it.
+
+=head2 get_basic_type_name
+
+  method get_basic_type_name : string[] ();
+
+Gets the all basic type names in the runtime and returns it.
 
 =head2 get_parent_class_name
 
