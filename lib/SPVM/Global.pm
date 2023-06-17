@@ -217,12 +217,6 @@ sub build_class {
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
   
-  my $start_classes_length = 0;
-  if ($RUNTIME) {
-    my $classes = $RUNTIME->get_class_names;
-    $start_classes_length = @$classes;
-  }
-  
   &init_runtime();
   
   # Add class informations
