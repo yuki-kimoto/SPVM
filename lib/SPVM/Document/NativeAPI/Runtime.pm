@@ -194,9 +194,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
 
-=head2 get_class_class_path_id
+=head2 get_class_include_dir_id
 
-  int32_t (*get_class_class_path_id)(void* runtime, int32_t class_id);
+  int32_t (*get_class_include_dir_id)(void* runtime, int32_t class_id);
 
 =head2 get_class_is_anon
 

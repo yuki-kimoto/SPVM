@@ -2208,18 +2208,18 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
   const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, basic_type->name_id, NULL);
 
-  int32_t class_path_id = basic_type->dir_id;
+  int32_t include_dir_id = basic_type->dir_id;
   int32_t class_rel_file_id = basic_type->rel_file_id;
   
-  const char* class_path;
-  const char* class_path_sep;
-  if (class_path_id >= 0) {
-    class_path = SPVM_API_RUNTIME_get_name(runtime, class_path_id);
-    class_path_sep = "/";
+  const char* include_dir;
+  const char* include_dir_sep;
+  if (include_dir_id >= 0) {
+    include_dir = SPVM_API_RUNTIME_get_name(runtime, include_dir_id);
+    include_dir_sep = "/";
   }
   else {
-    class_path = "";
-    class_path_sep = "";
+    include_dir = "";
+    include_dir_sep = "";
   }
   
   const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
@@ -2241,8 +2241,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(class_path);
-  total_length += strlen(class_path_sep);
+  total_length += strlen(include_dir);
+  total_length += strlen(include_dir_sep);
   total_length += strlen(class_rel_file);
 
   const char* line_part = " line ";
@@ -2270,8 +2270,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     arrow_part,
     method_name,
     at_part,
-    class_path,
-    class_path_sep,
+    include_dir,
+    include_dir_sep,
     class_rel_file,
     line_part,
     line
@@ -2301,18 +2301,18 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, class_name);
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
 
-  int32_t class_path_id = basic_type->dir_id;
+  int32_t include_dir_id = basic_type->dir_id;
   int32_t class_rel_file_id = basic_type->rel_file_id;
   
-  const char* class_path;
-  const char* class_path_sep;
-  if (class_path_id >= 0) {
-    class_path = SPVM_API_RUNTIME_get_name(runtime, class_path_id);
-    class_path_sep = "/";
+  const char* include_dir;
+  const char* include_dir_sep;
+  if (include_dir_id >= 0) {
+    include_dir = SPVM_API_RUNTIME_get_name(runtime, include_dir_id);
+    include_dir_sep = "/";
   }
   else {
-    class_path = "";
-    class_path_sep = "";
+    include_dir = "";
+    include_dir_sep = "";
   }
   
   const char* class_rel_file = SPVM_API_RUNTIME_get_name(runtime, class_rel_file_id);
@@ -2334,8 +2334,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(class_path);
-  total_length += strlen(class_path_sep);
+  total_length += strlen(include_dir);
+  total_length += strlen(include_dir_sep);
   total_length += strlen(class_rel_file);
 
   const char* line_part = " line ";
@@ -2363,8 +2363,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     arrow_part,
     method_name,
     at_part,
-    class_path,
-    class_path_sep,
+    include_dir,
+    include_dir_sep,
     class_rel_file,
     line_part,
     line

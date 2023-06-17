@@ -20,7 +20,7 @@ The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_run
   
   my $compiler = Compiler->new;
   
-  $compiler->add_class_path("lib");
+  $compiler->add_include_dir("lib");
   
   $compiler->set_start_file(__FILE__);
   
@@ -68,9 +68,9 @@ Creates a new C<Compiler> object and returns it.
 
 =head1 Instance Methods
 
-=head2 add_class_path
+=head2 add_include_dir
 
-  native method add_class_path : void ($class_path : string);
+  native method add_include_dir : void ($include_dir : string);
 
 Adds a class directory to search for classes.
 

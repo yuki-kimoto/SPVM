@@ -24,14 +24,14 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_get_start_line,
     SPVM_API_COMPILER_set_start_file,
     SPVM_API_COMPILER_get_start_file,
-    SPVM_API_COMPILER_add_class_path,
-    SPVM_API_COMPILER_get_class_paths_length,
-    SPVM_API_COMPILER_get_class_path,
+    SPVM_API_COMPILER_add_include_dir,
+    SPVM_API_COMPILER_get_include_dirs_length,
+    SPVM_API_COMPILER_get_include_dir,
     SPVM_API_COMPILER_compile,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_create_runtime_codes,
-    SPVM_API_COMPILER_clear_class_paths,
+    SPVM_API_COMPILER_clear_include_dirs,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -68,22 +68,22 @@ const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
   return start_file;
 }
 
-void SPVM_API_COMPILER_add_class_path(SPVM_COMPILER* compiler, const char* class_path) {  
-  SPVM_COMPILER_add_class_path(compiler, class_path);
+void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
+  SPVM_COMPILER_add_include_dir(compiler, include_dir);
 }
 
-int32_t SPVM_API_COMPILER_get_class_paths_length (SPVM_COMPILER* compiler) {
-  int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
-  return class_paths_length;
+int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
+  int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
+  return include_dirs_length;
 }
 
-const char* SPVM_API_COMPILER_get_class_path (SPVM_COMPILER* compiler, int32_t class_path_id) {  
-  const char* class_path = SPVM_COMPILER_get_class_path(compiler, class_path_id);
-  return class_path;
+const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t include_dir_id) {  
+  const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, include_dir_id);
+  return include_dir;
 }
 
-void SPVM_API_COMPILER_clear_class_paths(SPVM_COMPILER* compiler) {
-  SPVM_COMPILER_clear_class_paths(compiler);
+void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
+  SPVM_COMPILER_clear_include_dirs(compiler);
 }
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {

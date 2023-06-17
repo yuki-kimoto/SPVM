@@ -306,25 +306,25 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_class_file = NULL;
   if (class_basic_type_id >= 0) {
     int32_t class_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, class_basic_type_id);
-    int32_t class_path_id = env->api->runtime->get_basic_type_dir_id(runtime, class_basic_type_id);
-    const char* class_path = NULL;
-    const char* class_path_sep;
-    if (class_path_id >= 0) {
-      class_path_sep = "/";
-      class_path = env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
+    int32_t include_dir_id = env->api->runtime->get_basic_type_dir_id(runtime, class_basic_type_id);
+    const char* include_dir = NULL;
+    const char* include_dir_sep;
+    if (include_dir_id >= 0) {
+      include_dir_sep = "/";
+      include_dir = env->api->runtime->get_constant_string_value(runtime, include_dir_id, NULL);
     }
     else {
-      class_path_sep = "";
-      class_path = "";
+      include_dir_sep = "";
+      include_dir = "";
     }
     const char* class_rel_file = env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
     
-    int32_t class_file_length = strlen(class_path) + strlen(class_path_sep) + strlen(class_rel_file);
+    int32_t class_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(class_rel_file);
     obj_class_file = env->new_string(env, stack, NULL, class_file_length);
     char* class_file = (char*)env->get_chars(env, stack, obj_class_file);
-    memcpy(class_file, class_path, strlen(class_path));
-    memcpy(class_file + strlen(class_path), class_path_sep, strlen(class_path_sep));
-    memcpy(class_file + strlen(class_path) + strlen(class_path_sep), class_rel_file, strlen(class_rel_file));
+    memcpy(class_file, include_dir, strlen(include_dir));
+    memcpy(class_file + strlen(include_dir), include_dir_sep, strlen(include_dir_sep));
+    memcpy(class_file + strlen(include_dir) + strlen(include_dir_sep), class_rel_file, strlen(class_rel_file));
   }
   
   stack[0].oval = obj_class_file;

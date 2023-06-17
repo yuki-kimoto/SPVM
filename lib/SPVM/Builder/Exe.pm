@@ -38,14 +38,14 @@ sub builder {
   }
 }
 
-sub class_paths {
+sub include_dirs {
   my $self = shift;
   if (@_) {
-    $self->builder->class_paths($_[0]);
+    $self->builder->include_dirs($_[0]);
     return $self;
   }
   else {
-    return $self->builder->class_paths;
+    return $self->builder->include_dirs;
   }
 }
 
@@ -154,15 +154,15 @@ sub new {
   }
 
   # Class paths
-  my $class_paths = delete $self->{class_paths};
-  unless (defined $class_paths) {
-    $class_paths = [];
+  my $include_dirs = delete $self->{include_dirs};
+  unless (defined $include_dirs) {
+    $include_dirs = [];
   }
   
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     build_dir => $build_dir,
-    class_paths => $class_paths
+    include_dirs => $include_dirs
   );
   
   # Config file
@@ -359,7 +359,7 @@ sub compile {
   
   # Compile SPVM
   my $compiler = SPVM::Builder::Compiler->new(
-    class_paths => $builder->class_paths
+    include_dirs => $builder->include_dirs
   );
   my $success = $compiler->compile($basic_type_name, __FILE__, __LINE__);
   unless ($success) {

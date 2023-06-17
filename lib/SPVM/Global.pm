@@ -100,7 +100,7 @@ sub init_runtime {
     }
     
     my $builder_compiler = SPVM::Builder::Compiler->new(
-      class_paths => $BUILDER->class_paths
+      include_dirs => $BUILDER->include_dirs
     );
     # Load SPVM Compilers
     $builder_compiler->use("Compiler", __FILE__, __LINE__);
@@ -129,8 +129,8 @@ sub init_runtime {
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
     $COMPILER = $BUILDER_API->class("Compiler")->new;
-    for my $class_path (@{$BUILDER->class_paths}) {
-      $COMPILER->add_class_path($class_path);
+    for my $include_dir (@{$BUILDER->include_dirs}) {
+      $COMPILER->add_include_dir($include_dir);
     }
     $RUNTIME = $COMPILER->build_runtime;
     

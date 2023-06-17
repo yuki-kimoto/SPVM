@@ -181,10 +181,10 @@ sub build_precompile_source_file {
   my $source_file = "$output_dir/$source_rel_file";
   
   # Check if generating is needed
-  my $spvm_class_path = $INC{'SPVM/Builder.pm'};
-  $spvm_class_path =~ s/\.pm$//;
-  $spvm_class_path .= '/src';
-  my $spvm_precompile_soruce_file = "$spvm_class_path/spvm_precompile.c";
+  my $spvm_include_dir = $INC{'SPVM/Builder.pm'};
+  $spvm_include_dir =~ s/\.pm$//;
+  $spvm_include_dir .= '/src';
+  my $spvm_precompile_soruce_file = "$spvm_include_dir/spvm_precompile.c";
   unless (-f $spvm_precompile_soruce_file) {
     confess "Can't find $spvm_precompile_soruce_file";
   }

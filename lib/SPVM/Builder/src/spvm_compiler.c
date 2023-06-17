@@ -60,7 +60,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->constant_strings_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Eternal information
-  compiler->class_paths = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -650,8 +650,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->rel_file_id = class_class_rel_file_string->id;
       
       if (basic_type->dir) {
-        SPVM_CONSTANT_STRING* class_class_path_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
-        runtime_basic_type->dir_id = class_class_path_string->id;
+        SPVM_CONSTANT_STRING* class_include_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
+        runtime_basic_type->dir_id = class_include_dir_string->id;
       }
       else {
         runtime_basic_type->dir_id = -1;
@@ -964,7 +964,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
     SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)start_file);
   }
   
-  SPVM_COMPILER_clear_class_paths(compiler);
+  SPVM_COMPILER_clear_include_dirs(compiler);
   
   // Free allocator
   SPVM_ALLOCATOR_free(compiler->allocator);
@@ -1000,32 +1000,32 @@ void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
   compiler->start_line = start_line;
 }
 
-int32_t SPVM_COMPILER_get_class_paths_length(SPVM_COMPILER* compiler) {
-  SPVM_LIST* class_paths = compiler->class_paths;
-  int32_t class_paths_length = class_paths->length;
-  return class_paths_length;
+int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler) {
+  SPVM_LIST* include_dirs = compiler->include_dirs;
+  int32_t include_dirs_length = include_dirs->length;
+  return include_dirs_length;
 }
 
-void SPVM_COMPILER_add_class_path(SPVM_COMPILER* compiler, const char* class_path) {  
-  int32_t class_path_length = strlen(class_path);
-  char* compiler_class_path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, class_path_length + 1);
-  memcpy(compiler_class_path, class_path, class_path_length);
-  SPVM_LIST_push(compiler->class_paths, (void*)compiler_class_path);
+void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
+  int32_t include_dir_length = strlen(include_dir);
+  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, include_dir_length + 1);
+  memcpy(compiler_include_dir, include_dir, include_dir_length);
+  SPVM_LIST_push(compiler->include_dirs, (void*)compiler_include_dir);
 }
 
-void SPVM_COMPILER_clear_class_paths(SPVM_COMPILER* compiler) {
-  int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
+void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
+  int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
   
-  for (int32_t i = 0; i < class_paths_length; i++) {
-    const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)class_path);
-    class_path = NULL;
+  for (int32_t i = 0; i < include_dirs_length; i++) {
+    const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)include_dir);
+    include_dir = NULL;
   }
   
-  SPVM_LIST_clear(compiler->class_paths);
+  SPVM_LIST_clear(compiler->include_dirs);
 }
 
-const char* SPVM_COMPILER_get_class_path (SPVM_COMPILER* compiler, int32_t class_path_id) {
-  const char* class_path = SPVM_LIST_get(compiler->class_paths, class_path_id);
-  return class_path;
+const char* SPVM_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t include_dir_id) {
+  const char* include_dir = SPVM_LIST_get(compiler->include_dirs, include_dir_id);
+  return include_dir;
 }

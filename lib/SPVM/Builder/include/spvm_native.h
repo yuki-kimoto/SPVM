@@ -443,14 +443,14 @@ struct spvm_env_compiler {
   int32_t (*get_start_line)(void* compiler);
   void (*set_start_file)(void* compiler, const char* start_file);
   const char* (*get_start_file)(void* compiler);
-  void (*add_class_path)(void* compiler, const char* class_path);
-  int32_t (*get_class_paths_length )(void* compiler);
-  const char* (*get_class_path )(void* compiler, int32_t index);
+  void (*add_include_dir)(void* compiler, const char* include_dir);
+  int32_t (*get_include_dirs_length )(void* compiler);
+  const char* (*get_include_dir )(void* compiler, int32_t index);
   int32_t (*compile)(void* compiler, const char* class_name);
   int32_t (*get_error_messages_length)(void* compiler);
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
-  void (*clear_class_paths)(void* compiler);
+  void (*clear_include_dirs)(void* compiler);
 };
 
 struct spvm_env_precompile {

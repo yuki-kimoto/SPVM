@@ -284,7 +284,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->dir = compiler->cur_class_path;
+  type->basic_type->dir = compiler->cur_include_dir;
   type->basic_type->rel_file = compiler->cur_rel_file;
   type->basic_type->file = compiler->cur_file;
   

@@ -1454,7 +1454,7 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
   fprintf(stdout, "\n");
 }
 
-static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_path, const char* class_path_sep, const char* class_rel_file, int32_t line) {
+static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* include_dir, const char* include_dir_sep, const char* class_rel_file, int32_t line) {
   int32_t empty_or_undef = 0;
   if (string) {
     const char* bytes = env->get_chars(env, stack, string);
@@ -1465,7 +1465,7 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
       // Add line and file information if last character is not '\n'
       int32_t add_line_file;
       if (bytes[string_length - 1] != '\n') {
-        fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], class_path, class_path_sep, class_rel_file, line);
+        fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], include_dir, include_dir_sep, class_rel_file, line);
       }
     }
     else {
@@ -1477,7 +1477,7 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
   }
 
   if (empty_or_undef) {
-    fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], class_path, class_path_sep, class_rel_file, line);
+    fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], include_dir, include_dir_sep, class_rel_file, line);
   }
 
   fflush(stderr);

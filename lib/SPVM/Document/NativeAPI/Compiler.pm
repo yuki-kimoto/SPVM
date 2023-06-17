@@ -8,7 +8,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
   void* compiler = env->api->compiler->new_object();
   
   // @INC
-  env->api->compiler->add_class_path(compiler, "lib");
+  env->api->compiler->add_include_dir(compiler, "lib");
   
   // Compile SPVM
   env->api->compiler->set_start_file(compiler, __FILE__);
@@ -32,14 +32,14 @@ Compiler native APIs have its IDs.
   3  get_start_line
   4  set_start_file
   5  get_start_file
-  6  add_class_path
-  7  get_class_paths_length
-  8  get_class_path
+  6  add_include_dir
+  7  get_include_dirs_length
+  8  get_include_dir
   9  compile
   10 get_error_messages_length
   11 get_error_message
   12 create_runtime_codes
-  13 clear_class_paths
+  13 clear_include_dirs
 
 =head1 Compiler Native APIs
 
@@ -79,21 +79,21 @@ Set the start file of the caller. C<start_file> is copied.
 
 Gets the start file of the caller.
 
-=head2 add_class_path
+=head2 add_include_dir
   
-  void (*add_class_path)(void* compiler, const char* class_path);
+  void (*add_include_dir)(void* compiler, const char* include_dir);
 
-Adds a class searching directory. C<class_path> is copied.
+Adds a class searching directory. C<include_dir> is copied.
 
-=head2 get_class_paths_length
+=head2 get_include_dirs_length
   
-  int32_t (*get_class_paths_length)(void* compiler);
+  int32_t (*get_include_dirs_length)(void* compiler);
 
 Gets the length of the class searching directories.
 
-=head2 get_class_path
+=head2 get_include_dir
 
-  const char* (*get_class_path)(void* compiler, int32_t index);
+  const char* (*get_include_dir)(void* compiler, int32_t index);
 
 Gets a searching directory.
 
@@ -121,9 +121,9 @@ Gets the compiler error messages.
 
 Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocator> object and returns the address.
 
-=head2 clear_class_paths
+=head2 clear_include_dirs
   
-  void (*clear_class_paths)(SPVM_COMPILER* compiler);
+  void (*clear_include_dirs)(SPVM_COMPILER* compiler);
 
 Clear the class searching directories. The class searching directories are freed.
 

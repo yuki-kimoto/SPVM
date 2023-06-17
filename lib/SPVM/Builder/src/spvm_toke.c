@@ -2299,19 +2299,19 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         
         SPVM_STRING_BUFFER* found_source_buffer = SPVM_HASH_get(compiler->source_symtable, basic_type_name, strlen(basic_type_name));
         
-        const char* class_path = NULL;
+        const char* include_dir = NULL;
         if (!found_source_buffer) {
           
           // Search class file
           FILE* fh = NULL;
-          int32_t class_paths_length = SPVM_COMPILER_get_class_paths_length(compiler);
-          for (int32_t i = 0; i < class_paths_length; i++) {
-            class_path = SPVM_COMPILER_get_class_path(compiler, i);
+          int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
+          for (int32_t i = 0; i < include_dirs_length; i++) {
+            include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
             
             // File name
-            int32_t file_name_length = (int32_t)(strlen(class_path) + 1 + strlen(cur_rel_file));
+            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(cur_rel_file));
             cur_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
-            sprintf(cur_file, "%s/%s", class_path, cur_rel_file);
+            sprintf(cur_file, "%s/%s", include_dir, cur_rel_file);
             cur_file[file_name_length] = '\0';
             
             // \ is replaced to /
@@ -2333,17 +2333,17 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           if (!fh) {
             if (!op_use->uv.use->is_require) {
               int32_t classr_dirs_str_length = 0;
-              for (int32_t i = 0; i < class_paths_length; i++) {
-                const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
-                classr_dirs_str_length += 1 + strlen(class_path);
+              for (int32_t i = 0; i < include_dirs_length; i++) {
+                const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
+                classr_dirs_str_length += 1 + strlen(include_dir);
               }
               char* classr_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, classr_dirs_str_length + 1);
               int32_t classr_dirs_str_offset = 0;
-              for (int32_t i = 0; i < class_paths_length; i++) {
-                const char* class_path = SPVM_COMPILER_get_class_path(compiler, i);
-                sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", class_path);
-                classr_dirs_str_offset += strlen(class_path);
-                if (i != class_paths_length - 1) {
+              for (int32_t i = 0; i < include_dirs_length; i++) {
+                const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
+                sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", include_dir);
+                classr_dirs_str_offset += strlen(include_dir);
+                if (i != include_dirs_length - 1) {
                   classr_dirs_str[classr_dirs_str_offset] = ' ';
                   classr_dirs_str_offset++;
                 }
@@ -2389,7 +2389,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
           compiler->cur_source = (char*)found_source_buffer->value;
           compiler->cur_source_length = found_source_buffer->length;
-          compiler->cur_class_path = class_path;
+          compiler->cur_include_dir = include_dir;
           compiler->cur_rel_file = cur_rel_file;
           compiler->cur_rel_file_basic_type_name = basic_type_name;
           

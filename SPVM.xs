@@ -4517,8 +4517,8 @@ compile(...)
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   // Include directries
-  SV** sv_class_paths_ptr = hv_fetch(hv_self, "class_paths", strlen("class_paths"), 0);
-  SV* sv_class_paths = sv_class_paths_ptr ? *sv_class_paths_ptr : &PL_sv_undef;
+  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
+  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
   
   // Name
   const char* class_name = SvPV_nolen(sv_class_name);
@@ -4540,19 +4540,19 @@ compile(...)
   api_env->api->compiler->set_start_line(compiler, start_line);
   
   // Add include paths
-  AV* av_class_paths;
-  if (SvOK(sv_class_paths)) {
-    av_class_paths = (AV*)SvRV(sv_class_paths);
+  AV* av_include_dirs;
+  if (SvOK(sv_include_dirs)) {
+    av_include_dirs = (AV*)SvRV(sv_include_dirs);
   }
   else {
-    av_class_paths = (AV*)sv_2mortal((SV*)newAV());
+    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
   }
-  int32_t av_class_paths_length = (int32_t)av_len(av_class_paths) + 1;
-  for (int32_t i = 0; i < av_class_paths_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_class_paths, i, 0);
+  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
+  for (int32_t i = 0; i < av_include_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    api_env->api->compiler->add_class_path(compiler, include_dir);
+    api_env->api->compiler->add_include_dir(compiler, include_dir);
   }
 
   // Compile SPVM
@@ -4813,21 +4813,21 @@ get_file(...)
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       int32_t class_rel_file_id = api_env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
-      int32_t class_path_id = api_env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
-      const char* class_path = NULL;
-      const char* class_path_sep;
-      if (class_path_id >= 0) {
-        class_path_sep = "/";
-        class_path = api_env->api->runtime->get_constant_string_value(runtime, class_path_id, NULL);
+      int32_t include_dir_id = api_env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
+      const char* include_dir = NULL;
+      const char* include_dir_sep;
+      if (include_dir_id >= 0) {
+        include_dir_sep = "/";
+        include_dir = api_env->api->runtime->get_constant_string_value(runtime, include_dir_id, NULL);
       }
       else {
-        class_path_sep = "";
-        class_path = "";
+        include_dir_sep = "";
+        include_dir = "";
       }
       const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
       
-      sv_class_file = sv_2mortal(newSVpv(class_path, 0));
-      sv_catpv(sv_class_file, class_path_sep);
+      sv_class_file = sv_2mortal(newSVpv(include_dir, 0));
+      sv_catpv(sv_class_file, include_dir_sep);
       sv_catpv(sv_class_file, class_rel_file);
     }
   }

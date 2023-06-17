@@ -436,9 +436,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_dir_id(SPVM_RUNTIME* runtime, int32_t ba
   
   assert(basic_type);
   
-  int32_t class_class_path_id = basic_type->dir_id;
+  int32_t class_include_dir_id = basic_type->dir_id;
   
-  return class_class_path_id;
+  return class_include_dir_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {

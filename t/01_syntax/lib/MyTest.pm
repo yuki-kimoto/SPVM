@@ -27,7 +27,7 @@ sub compile_not_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_class_path = File::Temp->newdir;
+  my $tmp_include_dir = File::Temp->newdir;
     
   my $first_class_name;
   for my $source (@$sources) {
@@ -43,7 +43,7 @@ sub compile_not_ok {
       $first_class_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_class_path/$basic_type_name.spvm";
+    my $class_file = "$tmp_include_dir/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -54,7 +54,7 @@ sub compile_not_ok {
     close $class_fh;
   }
   
-  compile_not_ok_file($first_class_name, $error_message_re, {class_path => "$tmp_class_path", file => $file, line => $line});
+  compile_not_ok_file($first_class_name, $error_message_re, {include_dir => "$tmp_include_dir", file => $file, line => $line});
 }
 
 sub compile_not_ok_file {
@@ -64,7 +64,7 @@ sub compile_not_ok_file {
     $options = {};
   }
   
-  my $class_path = $options->{class_path};
+  my $include_dir = $options->{include_dir};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -85,12 +85,12 @@ sub compile_not_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $class_path) {
-    unshift @{$builder->class_paths}, $class_path;
+  if (defined $include_dir) {
+    unshift @{$builder->include_dirs}, $include_dir;
   }
 
   my $compiler = SPVM::Builder::Compiler->new(
-    class_paths => $builder->class_paths
+    include_dirs => $builder->include_dirs
   );
   
   my $success = $compiler->compile($basic_type_name, $file, $line);
@@ -118,7 +118,7 @@ sub compile_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_class_path = File::Temp->newdir;
+  my $tmp_include_dir = File::Temp->newdir;
     
   my $first_class_name;
   for my $source (@$sources) {
@@ -134,7 +134,7 @@ sub compile_ok {
       $first_class_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_class_path/$basic_type_name.spvm";
+    my $class_file = "$tmp_include_dir/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -145,7 +145,7 @@ sub compile_ok {
     close $class_fh;
   }
   
-  compile_ok_file($first_class_name, {class_path => "$tmp_class_path", file => $file, line => $line});
+  compile_ok_file($first_class_name, {include_dir => "$tmp_include_dir", file => $file, line => $line});
 }
 
 sub compile_ok_file {
@@ -155,7 +155,7 @@ sub compile_ok_file {
     $options = {};
   }
   
-  my $class_path = $options->{class_path};
+  my $include_dir = $options->{include_dir};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -176,12 +176,12 @@ sub compile_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $class_path) {
-    unshift @{$builder->class_paths}, $class_path;
+  if (defined $include_dir) {
+    unshift @{$builder->include_dirs}, $include_dir;
   }
   
   my $compiler = SPVM::Builder::Compiler->new(
-    class_paths => $builder->class_paths
+    include_dirs => $builder->include_dirs
   );
   my $success = $compiler->compile($basic_type_name, $file, $line);
   ok($success);

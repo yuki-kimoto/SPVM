@@ -14,14 +14,14 @@ sub compiler {
   }
 }
 
-sub class_paths {
+sub include_dirs {
   my $self = shift;
   if (@_) {
-    $self->{class_paths} = $_[0];
+    $self->{include_dirs} = $_[0];
     return $self;
   }
   else {
-    return $self->{class_paths};
+    return $self->{include_dirs};
   }
 }
 

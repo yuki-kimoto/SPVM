@@ -15,7 +15,7 @@ struct spvm_compiler {
   SPVM_LIST* ops;
   
   // Class paths
-  SPVM_LIST* class_paths;
+  SPVM_LIST* include_dirs;
   
   // Class loading stack
   SPVM_LIST* op_use_stack;
@@ -24,7 +24,7 @@ struct spvm_compiler {
   SPVM_LIST* op_types;
   
   // Directory of curreparsed file
-  const char* cur_class_path;
+  const char* cur_include_dir;
   
   // Current parsed file name
   const char* cur_file;
@@ -157,10 +157,10 @@ void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_fil
 int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 
-void SPVM_COMPILER_add_class_path(SPVM_COMPILER* compiler, const char* class_path);
-int32_t SPVM_COMPILER_get_class_paths_length(SPVM_COMPILER* compiler);
-const char* SPVM_COMPILER_get_class_path(SPVM_COMPILER* compiler, int32_t index);
-void SPVM_COMPILER_clear_class_paths(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir);
+int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler);
+const char* SPVM_COMPILER_get_include_dir(SPVM_COMPILER* compiler, int32_t index);
+void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler);
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);

@@ -28,14 +28,14 @@ sub build_dir {
   }
 }
 
-sub class_paths {
+sub include_dirs {
   my $self = shift;
   if (@_) {
-    $self->{class_paths} = $_[0];
+    $self->{include_dirs} = $_[0];
     return $self;
   }
   else {
-    return $self->{class_paths};
+    return $self->{include_dirs};
   }
 }
 
@@ -43,7 +43,7 @@ sub new {
   my $class = shift;
   
   my $self = {
-    class_paths => [map { "$_/SPVM" } @INC],
+    include_dirs => [map { "$_/SPVM" } @INC],
     @_
   };
   
@@ -57,7 +57,7 @@ sub build_dynamic_lib_dist {
   
   # Create the compiler
   my $compiler = SPVM::Builder::Compiler->new(
-    class_paths => $self->class_paths
+    include_dirs => $self->include_dirs
   );
   
   my $success = $compiler->compile($basic_type_name, __FILE__, __LINE__);

@@ -50,6 +50,19 @@
       -  void (*build_class_source)(void* precompile, void* string_buffer, const char* class_name);
       +  void (*build_source)(void* precompile, void* string_buffer, const char* class_name);
     
+    * The following Native Compiler API were changed.
+    
+      -  void (*add_class_path)(void* compiler, const char* class_path);
+      +  void (*add_include_dir)(void* compiler, const char* include_dir);
+
+      -  int32_t (*get_class_paths_length )(void* compiler);
+      +  int32_t (*get_include_dirs_length )(void* compiler);
+
+      -  const char* (*get_class_path )(void* compiler, int32_t index);
+      +  const char* (*get_include_dir )(void* compiler, int32_t index);
+
+      -  void (*clear_class_paths)(void* compiler);
+      +  void (*clear_include_dirs)(void* compiler);    
   [Breaking Binary Compatibility]
     * Binary compatibility was broken.
     
