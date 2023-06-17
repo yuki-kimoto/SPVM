@@ -51,7 +51,7 @@ sub load_dynamic_libs {
         unless (-f $dynamic_lib_file) {
           my $class_file = $runtime->get_file($basic_type_name)->to_string;
           my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-          my $anon_class_names = $runtime->get_anon_class_names($basic_type_name)->to_strings;
+          my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_source($basic_type_name)->to_string;
           
@@ -76,7 +76,8 @@ sub load_dynamic_libs {
       
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
       my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-      my $anon_class_names = $runtime->get_anon_class_names($basic_type_name)->to_strings;
+      my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
+      
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_class_names, $category);
       
       for my $method_name (sort keys %$method_addresses) {

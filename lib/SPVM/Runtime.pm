@@ -98,9 +98,9 @@ Gets the class file name and returns it.
 
 Builds the C source code of the class that contains C<precompile> methods and return it.
 
-=head2 get_anon_class_names
+=head2 get_basic_type_anon_basic_type_names
 
-  method get_anon_class_names : string[] ($basic_type_name : string);
+  method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
 
 Gets the anon class names and returns it.
 
