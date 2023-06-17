@@ -1095,17 +1095,18 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
           case SPVM_OP_C_ID_TYPE: {
             SPVM_OP* op_type = op_cur;
             if (op_type->uv.type->resolved_in_ast) {
-              const char* basic_type_name_maybe = op_type->uv.type->basic_type->name;
+              const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
               
-              const char* basic_type_name = SPVM_HASH_get(basic_type->alias_symtable, basic_type_name_maybe, strlen(basic_type_name_maybe));
-              if (basic_type_name == NULL) {
-                basic_type_name = basic_type_name_maybe;
+              const char* unresolved_basic_type_name = SPVM_HASH_get(basic_type->alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
+              if (unresolved_basic_type_name) {
+                op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
+                op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);
               }
               
-              SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-              op_type->uv.type->basic_type = found_basic_type;
-              
               SPVM_AST_CHECKER_resolve_op_type(compiler, op_type);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
             }
             break;
           }
