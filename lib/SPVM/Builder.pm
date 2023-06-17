@@ -66,7 +66,7 @@ sub build_dynamic_lib_dist {
     exit(255);
   }
   my $runtime = $compiler->build_runtime;
-  my $class_file = $runtime->get_class_file($class_name);
+  my $class_file = $runtime->get_file($class_name);
   my $method_names = $runtime->get_method_names($class_name, $category);
   my $anon_class_names = $runtime->get_anon_class_names($class_name);
   my $precompile_source = $runtime->build_precompile_class_source($class_name);

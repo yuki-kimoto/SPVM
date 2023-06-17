@@ -287,7 +287,7 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
   

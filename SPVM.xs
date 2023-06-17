@@ -4789,7 +4789,7 @@ get_class_names(...)
 }
 
 SV*
-get_class_file(...)
+get_file(...)
   PPCODE:
 {
   (void)RETVAL;

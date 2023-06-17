@@ -86,9 +86,9 @@ Get only C<enum> methods if this option is true.
 
 =back
 
-=head2 get_class_file
+=head2 get_file
 
-  method get_class_file : string ($basic_type_name : string);
+  method get_file : string ($basic_type_name : string);
 
 Gets the class file name and returns it.
 
