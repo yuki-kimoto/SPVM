@@ -93,6 +93,7 @@
 
 
 
+
 SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
   
   void* env_runtime_init[]  = {
@@ -194,7 +195,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_class_vars_length,
     SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id,
     SPVM_API_RUNTIME_get_basic_type_anon_methods_length,
-    SPVM_API_RUNTIME_get_basic_type_is_class,
+    NULL, // reserved98
     SPVM_API_RUNTIME_get_basic_types_length,
     SPVM_API_RUNTIME_get_field_basic_type_id,
     SPVM_API_RUNTIME_get_field_type_dimension,
@@ -516,17 +517,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_parent_id(SPVM_RUNTIME* runtime, int32_t
   int32_t parent_basic_type_id = basic_type->parent_id;
   
   return parent_basic_type_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_is_class(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type);
-  
-  int32_t is_class = basic_type->is_class;
-  
-  return is_class;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index) {

@@ -119,7 +119,7 @@ Runtime native APIs have its IDs.
   95 get_basic_type_class_vars_length
   96 get_basic_type_anon_methods_base_id
   97 get_basic_type_anon_methods_length
-  98 get_basic_type_is_class
+  98 reserved98
   99 get_basic_types_length
   100 get_field_basic_type_id
   101 get_field_type_dimension
