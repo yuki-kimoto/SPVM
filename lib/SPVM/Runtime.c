@@ -332,7 +332,7 @@ int32_t SPVM__Runtime__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Runtime__get_parent_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
   

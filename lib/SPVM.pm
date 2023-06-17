@@ -13,13 +13,13 @@ require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
 sub import {
-  my ($class, $class_name) = @_;
+  my ($class, $basic_type_name) = @_;
 
   my ($file, $line) = (caller)[1, 2];
   
-  if (defined $class_name) {
-    SPVM::Global::build_class($class_name, $file, $line);
-    SPVM::Global::bind_to_perl($class_name);
+  if (defined $basic_type_name) {
+    SPVM::Global::build($basic_type_name, $file, $line);
+    SPVM::Global::bind_to_perl($basic_type_name);
   }
 }
 

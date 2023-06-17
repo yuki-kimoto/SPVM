@@ -147,7 +147,7 @@ sub bind_to_perl {
   
   unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
     
-    my $parent_class_name = $RUNTIME->get_parent_class_name($basic_type_name);
+    my $parent_class_name = $RUNTIME->get_basic_type_parent_name($basic_type_name);
     my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
     
     # The inheritance
@@ -209,7 +209,7 @@ sub bind_to_perl {
 }
 
 
-sub build_class {
+sub build {
   my ($basic_type_name, $file, $line) = @_;
   
   unless ($BUILDER) {

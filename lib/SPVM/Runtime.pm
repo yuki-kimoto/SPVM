@@ -54,9 +54,9 @@ Gets the runtime codes and returns it.
 
 Gets the all basic type names in the runtime and returns it.
 
-=head2 get_parent_class_name
+=head2 get_basic_type_parent_name
 
-  method get_parent_class_name : string ($basic_type_name : string);
+  method get_basic_type_parent_name : string ($basic_type_name : string);
 
 Gets the parent class name and returns it.
 
