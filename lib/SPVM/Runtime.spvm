@@ -10,9 +10,9 @@ class Runtime : pointer {
   
   native method get_class_names : string[] ();
   
-  native method get_parent_class_name : string ($class_name : string);
+  native method get_parent_class_name : string ($basic_type_name : string);
   
-  method get_method_names : string[] ($class_name : string, $options : object[] = undef) {
+  method get_method_names : string[] ($basic_type_name : string, $options : object[] = undef) {
     
     my $native_flag = 0;
     my $precompile_flag = 0;
@@ -34,30 +34,30 @@ class Runtime : pointer {
       }
     }
     
-    my $method_names = $self->_get_method_names($class_name, $native_flag, $precompile_flag, $enum_flag);
+    my $method_names = $self->_get_method_names($basic_type_name, $native_flag, $precompile_flag, $enum_flag);
     
     return $method_names;
   }
   
-  private native method _get_method_names : string[] ($class_name : string, $native_flag : int, $precompile_flag : int, $enum_flag : int);
+  private native method _get_method_names : string[] ($basic_type_name : string, $native_flag : int, $precompile_flag : int, $enum_flag : int);
   
-  native method get_class_file : string ($class_name : string);
+  native method get_class_file : string ($basic_type_name : string);
   
-  native method build_precompile_class_source : string ($class_name : string);
+  native method build_precompile_class_source : string ($basic_type_name : string);
   
-  native method get_anon_class_names : string[] ($class_name : string);
+  native method get_anon_class_names : string[] ($basic_type_name : string);
   
-  native method get_method_is_class_method : int ($class_name : string, $method_name : string);
+  native method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
   
-  native method build_precompile_method_source : string ($class_name : string, $method_name : string);
+  native method build_precompile_method_source : string ($basic_type_name : string, $method_name : string);
   
-  native method get_native_method_address : Address ($class_name : string, $method_name : string);
+  native method get_native_method_address : Address ($basic_type_name : string, $method_name : string);
   
-  native method set_native_method_address : string ($class_name : string, $method_name : string, $address : Address);
+  native method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
   
-  native method get_precompile_method_address : Address ($class_name : string, $method_name : string);
+  native method get_precompile_method_address : Address ($basic_type_name : string, $method_name : string);
   
-  native method set_precompile_method_address : string ($class_name : string, $method_name : string, $address : Address);
+  native method set_precompile_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
   
   native method build_env : Env ();
   

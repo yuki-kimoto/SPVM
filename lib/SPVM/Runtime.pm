@@ -26,7 +26,7 @@ A execution environemt is build by the L<build_env|/"build_env"> method in this 
   
   my $runtime = $compiler->build_runtime;
   
-  my $class_names = $runtime->get_class_names;
+  my $basic_type_names = $runtime->get_class_names;
   
   my $method_names = $runtime->get_method_names("Foo");
   
@@ -56,13 +56,13 @@ Gets the class names and returns it.
 
 =head2 get_parent_class_name
 
-  method get_parent_class_name : string ($class_name : string);
+  method get_parent_class_name : string ($basic_type_name : string);
 
 Gets the parent class name and returns it.
 
 =head2 get_method_names
 
-  method get_method_names : string[] ($class_name : string, $options : object[] = undef);
+  method get_method_names : string[] ($basic_type_name : string, $options : object[] = undef);
 
 Gets method names and returns it.
 
@@ -88,37 +88,37 @@ Get only C<enum> methods if this option is true.
 
 =head2 get_class_file
 
-  method get_class_file : string ($class_name : string);
+  method get_class_file : string ($basic_type_name : string);
 
 Gets the class file name and returns it.
 
 =head2 build_precompile_class_source
 
-  method build_precompile_class_source : string ($class_name : string);
+  method build_precompile_class_source : string ($basic_type_name : string);
 
 Builds the C source code of the class that contains C<precompile> methods and return it.
 
 =head2 get_anon_class_names
 
-  method get_anon_class_names : string[] ($class_name : string);
+  method get_anon_class_names : string[] ($basic_type_name : string);
 
 Gets the anon class names and returns it.
 
 =head2 get_method_is_class_method
 
-  method get_method_is_class_method : int ($class_name : string, $method_name : string);
+  method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
 
 Checks if the method is a class method. If it is so, returns 1, otherwise returns 0.
 
 =head2 build_precompile_method_source
 
-  method build_precompile_method_source : string ($class_name : string, $method_name : string);
+  method build_precompile_method_source : string ($basic_type_name : string, $method_name : string);
 
 Builds the C source code of a C<precompile> method and return it.
 
 =head2 get_native_method_address
 
-  method get_native_method_address : Address ($class_name : string, $method_name : string);
+  method get_native_method_address : Address ($basic_type_name : string, $method_name : string);
 
 Gets the address of a C<native> method and returns it.
 
@@ -126,7 +126,7 @@ The return type is the L<Address|SPVM::Address> class.
 
 =head2 set_native_method_address
 
-  method set_native_method_address : string ($class_name : string, $method_name : string, $address : Address);
+  method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
 
 Sets the address of a C<native> method.
 
@@ -134,7 +134,7 @@ The address is the L<Address|SPVM::Address> class.
 
 =head2 get_precompile_method_address
 
-  method get_precompile_method_address : Address ($class_name : string, $method_name : string);
+  method get_precompile_method_address : Address ($basic_type_name : string, $method_name : string);
 
 Gets the address of a C<precompile> method and returns it.
 
@@ -142,7 +142,7 @@ The return type is the L<Address|SPVM::Address> class.
 
 =head2 set_precompile_method_address
 
-  method set_precompile_method_address : string ($class_name : string, $method_name : string, $address : Address);
+  method set_precompile_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
 
 Sets the address of a C<precompile> method.
 
