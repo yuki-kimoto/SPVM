@@ -4,7 +4,7 @@
 #ifndef SPVM_API_H
 #define SPVM_API_H
 
-#define SPVM_VERSION "0.989005"
+#define SPVM_VERSION "0.989006"
 
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
