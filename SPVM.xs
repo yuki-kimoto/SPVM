@@ -4759,7 +4759,7 @@ get_anon_class_names(...)
 }
 
 SV*
-get_class_names(...)
+get_basic_type_names(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -4769,22 +4769,22 @@ get_class_names(...)
   
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
-  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
+  AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
   
   int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      const char* class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
-      SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-      av_push(av_class_names, SvREFCNT_inc(sv_class_name));
+      const char* basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
+      SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+      av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
     }
   }
   
   api_env->free_env_raw(api_env);
   
-  XPUSHs(sv_class_names);
+  XPUSHs(sv_basic_type_names);
   XSRETURN(1);
 }
 

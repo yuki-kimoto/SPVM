@@ -264,7 +264,7 @@ sub get_required_resources {
     force => $self->force,
   );
   
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   my $all_object_files = [];
   for my $class_name (@$class_names_without_anon) {
@@ -375,7 +375,7 @@ sub compile {
 sub compile_classes {
   my ($self) = @_;
 
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   my $object_files = [];
@@ -477,7 +477,7 @@ sub create_bootstrap_header_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
@@ -560,7 +560,7 @@ sub create_bootstrap_main_func_source {
   my $class_name = $self->class_name;
 
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
 
   my $source = '';
@@ -700,7 +700,7 @@ sub create_bootstrap_new_env_prepared_func_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   my $source = '';
@@ -759,7 +759,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
 
   my $source = '';
 
@@ -790,7 +790,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
 
   my $source = '';
 
@@ -824,7 +824,7 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Class names
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->runtime->get_basic_type_names;
   my $class_names_without_anon = [grep { $_ !~ /::anon::/ } @$class_names];
   
   # Class files - Input
