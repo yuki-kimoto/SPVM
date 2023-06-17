@@ -549,10 +549,10 @@ int32_t SPVM_API_RUNTIME_get_class_var_id_by_name(SPVM_RUNTIME* runtime, const c
   
   int32_t class_var_id = -1;
   
-  SPVM_RUNTIME_BASIC_TYPE* class_baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
-  if (class_baisc_type) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_address(runtime, class_baisc_type, class_var_name);
+  if (baisc_type) {
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_address(runtime, baisc_type, class_var_name);
     if (class_var) {
       class_var_id = class_var->id;
     }
