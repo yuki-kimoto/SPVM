@@ -12,6 +12,34 @@
       
       -  int32_t (*get_class_var_class_basic_type_id)(void* runtime, int32_t method_id);
       +  int32_t (*get_class_var_current_basic_type_id)(void* runtime, int32_t method_id);
+    * The following Native API contant values were changed.
+    
+      [Before]
+      0 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
+      1 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS
+      2 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
+      3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
+      4 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
+      5 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
+      6 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
+      7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
+      8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
+      9 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
+      
+      [After]
+      0 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
+      1 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
+      2 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
+      3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
+      4 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
+      5 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
+      6 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
+      7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
+      8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
+      
+  [Breaking Binary Compatibility]
+    * Binary compatibility was broken.
+    
 0.989005 2023-06-15
   [Changes]
     * include/spvm_class.h and src/spvm_class.c were removed.

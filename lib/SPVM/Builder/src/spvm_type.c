@@ -328,22 +328,6 @@ int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   return is_class_type;
 }
 
-int32_t SPVM_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  (void)compiler;
-  
-  int32_t is_not_found_class_type;
-  int32_t basic_type_is_not_found_class_type = SPVM_BASIC_TYPE_is_not_found_class_type(compiler, basic_type_id);
-  if (dimension == 0 && basic_type_is_not_found_class_type && !(flag & SPVM_NATIVE_C_TYPE_FLAG_REF)) {
-    is_not_found_class_type = 1;
-  }
-  // Array
-  else {
-    is_not_found_class_type = 0;
-  }
-  
-  return is_not_found_class_type;
-}
-
 int32_t SPVM_TYPE_is_interface_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   

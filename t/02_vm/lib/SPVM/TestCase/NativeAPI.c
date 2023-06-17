@@ -2337,15 +2337,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
   // Constant Values of Basic Type Categories
   {
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN != 0) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS != 1) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF != 2) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID != 3) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC != 4) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM != 5) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING != 6) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS != 7) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE != 8) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 9) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF != 1) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID != 2) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC != 3) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM != 4) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING != 5) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS != 6) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE != 7) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 8) { stack[0].ival = 0; return 0; }
   }
   
   // Type flags

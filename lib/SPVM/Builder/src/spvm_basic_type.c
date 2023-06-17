@@ -47,7 +47,6 @@ const char* const* SPVM_BASIC_TYPE_C_CATEGORY_NAMES(void) {
 
   static const char* const id_names[] = {
     "unknown"
-    "not_found_class",
     "undef"
     "void"
     "numeric"
@@ -177,15 +176,6 @@ int32_t SPVM_BASIC_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_t
   }
 }
 
-
-int32_t SPVM_BASIC_TYPE_is_not_found_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-  
-  int32_t is_not_found_class_type = (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS);
-  
-  return is_not_found_class_type;
-}
 
 int32_t SPVM_BASIC_TYPE_is_numeric_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
   
