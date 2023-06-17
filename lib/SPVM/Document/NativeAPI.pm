@@ -224,7 +224,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   207 get_version_string
   208 get_version_number
   209 call_method
-  210 class_init_flags
+  210 init_flags
   211 get_object_basic_type_name
   212 isa_by_name
   213 is_type_by_name
@@ -2261,7 +2261,7 @@ The return value of the method is set to stack[0].
 
 If stack[0] is a value of an object type, the object is pushed to the mortal stack.
 
-=head2 class_init_flags
+=head2 init_flags
 
 =head2 get_object_basic_type_name
 

@@ -106,7 +106,7 @@ Runtime native APIs have its IDs.
   82 reserved82
   83 is_object_type
   84 reserved84
-  85 class_init_flags
+  85 init_flags
   86 can_assign
   87 get_basic_type_rel_file_id
   88 get_basic_type_dir_id
@@ -420,7 +420,7 @@ Runtime native APIs have its IDs.
 
 Gets the ID of the constant string of the version number.
 
-=head2 class_init_flags
+=head2 init_flags
 
 Internally used.
 

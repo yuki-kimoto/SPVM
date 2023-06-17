@@ -228,7 +228,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_version_string != &env_array[207]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_version_number != &env_array[208]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_method != &env_array[209]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->class_init_flags != &env_array[210]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->init_flags != &env_array[210]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type_name != &env_array[211]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isa_by_name != &env_array[212]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_type_by_name != &env_array[213]) { stack[0].ival = 0; return 0; }
@@ -2533,7 +2533,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved82 != &env_array[82]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->is_object_type != &env_array[83]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved84 != &env_array[84]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->class_init_flags != &env_array[85]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->init_flags != &env_array[85]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->can_assign != &env_array[86]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_basic_type_id != &env_array[100]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }

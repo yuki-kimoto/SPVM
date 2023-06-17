@@ -306,7 +306,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
     SPVM_API_call_method,
-    NULL, // class_init_flags
+    NULL, // init_flags
     SPVM_API_get_object_basic_type_name,
     SPVM_API_isa_by_name,
     SPVM_API_is_type_by_name,
@@ -351,12 +351,12 @@ int32_t SPVM_API_init_env(SPVM_ENV* env) {
   env->class_vars_heap = class_vars_heap;
   
   // Initialize class initialized flags
-  void* class_init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->basic_types_length + 1));
-  if (class_init_flags == NULL) {
+  void* init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->basic_types_length + 1));
+  if (init_flags == NULL) {
     return 2;
   }
   
-  env->class_init_flags = class_init_flags;
+  env->init_flags = init_flags;
   
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
@@ -1482,9 +1482,9 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   }
   
   // Free class initialized flags
-  if (env->class_init_flags != NULL) {
-    free(env->class_init_flags);
-    env->class_init_flags = NULL;
+  if (env->init_flags != NULL) {
+    free(env->init_flags);
+    env->init_flags = NULL;
   }
   
   // Free env api
@@ -1586,14 +1586,14 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);    
     int32_t no_need_call = 0;
     if (method->is_init) {
-      int32_t* class_init_flags = (int32_t*)env->class_init_flags;
+      int32_t* init_flags = (int32_t*)env->init_flags;
       int32_t basic_type_id = method->current_basic_type_id;
-      int32_t class_init_flag = class_init_flags[basic_type_id];
+      int32_t class_init_flag = init_flags[basic_type_id];
       if (class_init_flag) {
         no_need_call = 1;
       }
       else {
-        class_init_flags[basic_type_id]++;
+        init_flags[basic_type_id]++;
       }
     }
     

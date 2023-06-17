@@ -181,7 +181,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved82
     SPVM_API_RUNTIME_is_object_type,
     NULL, // reserved84
-    (void*)NULL, // class_init_flags
+    (void*)NULL, // init_flags
     SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_get_basic_type_rel_file_id,
     SPVM_API_RUNTIME_get_basic_type_dir_id,
