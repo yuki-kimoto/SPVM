@@ -159,7 +159,7 @@ int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
-int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__build_precompile_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
   
@@ -180,13 +180,13 @@ int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* 
   
   env->api->precompile->set_runtime(precompile, runtime);
   
-  env->api->precompile->build_class_source(precompile, string_buffer, class_name);
+  env->api->precompile->build_source(precompile, string_buffer, class_name);
   
   env->api->precompile->free_object(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
-  void* obj_precompile_class_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
+  void* obj_precompile_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
   
   // Free string buffer
   env->api->string_buffer->free_object(string_buffer);
@@ -194,7 +194,7 @@ int32_t SPVM__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* 
   // Free allocator
   env->api->allocator->free_object(allocator);
 
-  stack[0].oval = obj_precompile_class_source;
+  stack[0].oval = obj_precompile_source;
   
   return 0;
 }

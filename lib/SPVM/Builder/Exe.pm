@@ -1004,9 +1004,9 @@ sub compile_class_precompile_source_file {
     mkpath $build_src_dir;
     
     my $class_file = $self->runtime->get_file($class_name);
-    my $precompile_source = $self->runtime->build_precompile_class_source($class_name);
+    my $precompile_source = $self->runtime->build_precompile_source($class_name);
     
-    $builder_cc->build_precompile_class_source_file(
+    $builder_cc->build_precompile_source_file(
       $class_name,
       {
         output_dir => $build_src_dir,

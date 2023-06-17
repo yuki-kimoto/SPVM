@@ -15,7 +15,7 @@ SPVM_ENV_PRECOMPILE* SPVM_API_PRECOMPILE_new_env() {
     SPVM_API_PRECOMPILE_free_object,
     SPVM_API_PRECOMPILE_set_runtime,
     SPVM_API_PRECOMPILE_get_runtime,
-    SPVM_API_PRECOMPILE_build_class_source,
+    SPVM_API_PRECOMPILE_build_source,
     SPVM_API_PRECOMPILE_build_method_source,
   };
   SPVM_ENV_PRECOMPILE* env_precompile = calloc(1, sizeof(env_precompile_init));
@@ -41,8 +41,8 @@ SPVM_RUNTIME* SPVM_API_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
   return SPVM_PRECOMPILE_get_runtime(precompile);
 }
 
-void SPVM_API_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
-  SPVM_PRECOMPILE_build_class_source(precompile, string_buffer, class_name);
+void SPVM_API_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name) {
+  SPVM_PRECOMPILE_build_source(precompile, string_buffer, class_name);
 }
 
 void SPVM_API_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_name, const char* method_name) {

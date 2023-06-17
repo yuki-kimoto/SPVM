@@ -4911,7 +4911,7 @@ set_native_method_address(...)
 }
 
 SV*
-build_precompile_class_source(...)
+build_precompile_source(...)
   PPCODE:
 {
   SV* sv_runtime = ST(0);
@@ -4933,7 +4933,7 @@ build_precompile_class_source(...)
   
   env->api->precompile->set_runtime(precompile, runtime);
   
-  env->api->precompile->build_class_source(precompile, string_buffer, class_name);
+  env->api->precompile->build_source(precompile, string_buffer, class_name);
   
   env->api->precompile->free_object(precompile);
 

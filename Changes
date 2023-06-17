@@ -43,6 +43,13 @@
     * The get_class_names in the Runtime class was removed.
     * The get_parent_class_name in the Runtime class was renamed to the get_basic_type_parent_name method.
     * The get_class_file in the Runtime class was renamed to the get_file method.
+    * The build_precompile_class_source in the Runtime class was renamed to the build_precompile_source method.
+    
+    * The following Native Precompile API were changed.
+    
+      -  void (*build_class_source)(void* precompile, void* string_buffer, const char* class_name);
+      +  void (*build_source)(void* precompile, void* string_buffer, const char* class_name);
+    
   [Breaking Binary Compatibility]
     * Binary compatibility was broken.
     

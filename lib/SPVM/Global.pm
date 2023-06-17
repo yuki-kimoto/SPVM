@@ -53,7 +53,7 @@ sub load_dynamic_libs {
           my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
           my $anon_class_names = $runtime->get_anon_class_names($basic_type_name)->to_strings;
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
-          my $precompile_source = $runtime->build_precompile_class_source($basic_type_name)->to_string;
+          my $precompile_source = $runtime->build_precompile_source($basic_type_name)->to_string;
           
           $dynamic_lib_file = $BUILDER->build_at_runtime($basic_type_name, {class_file => $class_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }

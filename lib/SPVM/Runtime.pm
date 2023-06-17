@@ -92,9 +92,9 @@ Get only C<enum> methods if this option is true.
 
 Gets the class file name and returns it.
 
-=head2 build_precompile_class_source
+=head2 build_precompile_source
 
-  method build_precompile_class_source : string ($basic_type_name : string);
+  method build_precompile_source : string ($basic_type_name : string);
 
 Builds the C source code of the class that contains C<precompile> methods and return it.
 

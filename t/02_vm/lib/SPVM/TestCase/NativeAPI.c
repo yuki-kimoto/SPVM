@@ -2370,7 +2370,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_precompile_indexes(SPVM_ENV*
   if ((void*)&env->api->precompile->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->set_runtime != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->get_runtime != &env_array[3]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->build_class_source != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->precompile->build_source != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->build_method_source != &env_array[5]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
