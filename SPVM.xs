@@ -4774,8 +4774,8 @@ get_class_names(...)
   
   int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
-    if (is_class) {
+    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
+    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       const char* class_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
       SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
       av_push(av_class_names, SvREFCNT_inc(sv_class_name));
@@ -4810,8 +4810,8 @@ get_class_file(...)
   SV* sv_class_file;
   
   if (basic_type_id >= 0) {
-    int32_t is_class = api_env->api->runtime->get_basic_type_is_class(runtime, basic_type_id);
-    if (is_class) {
+    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
+    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       int32_t class_rel_file_id = api_env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
       int32_t class_path_id = api_env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
       const char* class_path = NULL;
