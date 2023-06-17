@@ -1111,7 +1111,7 @@ int32_t SPVM_TYPE_can_assign(
       if (src_type_basic_type_id == dist_type_basic_type_id) {
         assignability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
         assignability = 1;
       }
       else {
@@ -1237,7 +1237,7 @@ int32_t SPVM_TYPE_can_assign(
       if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         assignability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
         assignability = 1;
       }
       else {
@@ -1303,7 +1303,7 @@ int32_t SPVM_TYPE_can_assign(
           assignability = 1;
         }
         // Source basic type is a sub class of dist type
-        else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+        else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
           assignability = 1;
         }
         else {
@@ -1461,10 +1461,10 @@ int32_t SPVM_TYPE_can_cast(
       if (src_type_basic_type_id == dist_type_basic_type_id) {
         castability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
         castability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
         castability = 1;
       }
       else {
@@ -1625,10 +1625,10 @@ int32_t SPVM_TYPE_can_cast(
       if (src_type_basic_type_id == dist_type_basic_type_id) {
         castability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
         castability = 1;
       }
-      else if (SPVM_BASIC_TYPE_is_super_class(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
+      else if (SPVM_BASIC_TYPE_is_super(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
         castability = 1;
       }
       else {
@@ -1713,11 +1713,11 @@ int32_t SPVM_TYPE_can_cast(
           castability = 1;
         }
         // Source basic type is a sub class of dist type
-        else if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
+        else if (SPVM_BASIC_TYPE_is_super(compiler, dist_type_basic_type_id, src_type_basic_type_id)) {
           castability = 1;
         }
         // Source basic type is a super class of dist type
-        else if (SPVM_BASIC_TYPE_is_super_class(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
+        else if (SPVM_BASIC_TYPE_is_super(compiler, src_type_basic_type_id, dist_type_basic_type_id)) {
           castability = 1;
         }
         else {
