@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
-  'I|class-path=s' => \my @class_paths,
+  'I|include-dir=s' => \my @include_dirs,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
@@ -32,13 +32,13 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
-  my @original_class_paths = @class_paths;
-  push @class_paths, map { "$_/SPVM" } @INC;
-  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_class_paths;
+  my @original_include_dirs = @include_dirs;
+  push @include_dirs, map { "$_/SPVM" } @INC;
+  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
 
   my $build_exe = SPVM::Builder::Exe->new(
     build_dir => $build_dir,
-    class_paths => \@class_paths,
+    include_dirs => \@include_dirs,
     output_file => $output_file,
     class_name => $class_name,
     quiet => $quiet,
@@ -75,7 +75,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -h, --help                     Shows this message
     -v, --version                  Shows the version
     -o, --output                   The output file name
-    -I, --class-path <directory>   Adds a class path
+    -I, --include-dir <directory>   Adds a class path
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Stops the output of messages
     -f, --force                    Forces the compile and link

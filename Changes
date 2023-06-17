@@ -63,7 +63,8 @@
       +  const char* (*get_include_dir )(void* compiler, int32_t index);
 
       -  void (*clear_class_paths)(void* compiler);
-      +  void (*clear_include_dirs)(void* compiler);    
+      +  void (*clear_include_dirs)(void* compiler);
+    * The class-path option in the spvmcc command was renamed to include-dir.
   [Breaking Binary Compatibility]
     * Binary compatibility was broken.
     
