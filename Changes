@@ -1,6 +1,6 @@
 0.989006 2023-06-16
   [New Features]
-    * The get_classes_length method in the Runtime class was added.
+    * The get_basic_type_name method in the Runtime class was added.
     
   [Incompatible Changes]
     * The following Native Runtime APIs were changed.
@@ -40,6 +40,7 @@
       7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
       8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
     * The get_classes_length method in the Runtime class was removed.
+    * The get_class_names in the Runtime class was removed.
   [Breaking Binary Compatibility]
     * Binary compatibility was broken.
     

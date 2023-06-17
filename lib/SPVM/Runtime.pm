@@ -48,12 +48,6 @@ Its insntace has a pointer to a L<runtime|SPVM::Document::NativeAPI::Runtime> ob
 
 Gets the runtime codes and returns it.
 
-=head2 get_class_names
-
-  method get_class_names : string[] ();
-
-Gets the class names and returns it.
-
 =head2 get_basic_type_name
 
   method get_basic_type_name : string[] ();
