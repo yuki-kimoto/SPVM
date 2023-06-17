@@ -78,9 +78,9 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
   const char* basic_type_name = type->basic_type->name;
   
   if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* not_found_basic_type_name = SPVM_HASH_get(compiler->not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
+    const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
     
-    if (!not_found_basic_type_name) {
+    if (!if_require_not_found_basic_type_name) {
       SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
       return;
     }

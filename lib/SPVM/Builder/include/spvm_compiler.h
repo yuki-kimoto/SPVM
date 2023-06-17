@@ -105,7 +105,7 @@ struct spvm_compiler {
   SPVM_HASH* used_basic_type_name_symtable;
   
   // Fail load class symtable
-  SPVM_HASH* not_found_basic_type_name_symtable;
+  SPVM_HASH* if_require_not_found_basic_type_name_symtable;
   
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
