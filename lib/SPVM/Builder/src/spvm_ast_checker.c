@@ -77,20 +77,12 @@ void SPVM_AST_CHECKER_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type)
   // Basic type name
   const char* basic_type_name = type->basic_type->name;
   
-  // Check if type name is class
-  if (type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS) {
+  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
+    const char* not_found_basic_type_name = SPVM_HASH_get(compiler->not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
     
-    // Unknonw class
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-    if (!found_basic_type->is_class) {
-      const char* not_found_basic_type_name = SPVM_HASH_get(compiler->not_found_basic_type_name_symtable, basic_type_name, strlen(basic_type_name));
-      
-      if (not_found_basic_type_name) {
-        type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NOT_FOUND_CLASS;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", basic_type_name, op_type->file, op_type->line);
-      }
+    if (!not_found_basic_type_name) {
+      SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
+      return;
     }
   }
   
@@ -670,7 +662,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     // Add interfaces
     for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
       SPVM_INTERFACE* interface_decl = SPVM_LIST_get(basic_type->interface_decls, i);
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->basic_type_name, strlen(interface_decl->basic_type_name));
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->op_type->uv.type->unresolved_basic_type_name, strlen(interface_decl->op_type->uv.type->unresolved_basic_type_name));
       
       if (!SPVM_BASIC_TYPE_is_interface_type(compiler, interface_basic_type->id)) {
         SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
@@ -1068,20 +1060,20 @@ void SPVM_AST_CHECKER_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPV
       // Execute false block
       const char* use_basic_type_name = use->op_type->uv.type->unresolved_basic_type_name;
       
-      SPVM_BASIC_TYPE* not_found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
+      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
       
-      if (SPVM_BASIC_TYPE_is_not_found_class_type(compiler, not_found_basic_type->id)) {
-        SPVM_OP_cut_op(compiler, op_block_false);
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-        SPVM_OP_replace_op(compiler, op_stab, op_block_false);
-        op_cur = op_block_false;
-      }
-      // Execute true block
-      else {
+      if (found_basic_type) {
         SPVM_OP_cut_op(compiler, op_block_true);
         SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
         SPVM_OP_replace_op(compiler, op_stab, op_block_true);
         op_cur = op_block_true;
+      }
+      // Execute true block
+      else {
+        SPVM_OP_cut_op(compiler, op_block_false);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+        SPVM_OP_replace_op(compiler, op_stab, op_block_false);
+        op_cur = op_block_false;
       }
     }
     

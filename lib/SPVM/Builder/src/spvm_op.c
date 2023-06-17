@@ -291,7 +291,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (op_extends) {
     SPVM_OP* op_type_parent_class = op_extends->first;
     
-    SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->basic_type->name, op_type_parent_class->file, op_type_parent_class->line);
+    SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->unresolved_basic_type_name, op_type_parent_class->file, op_type_parent_class->line);
     
     type->basic_type->parent_name = op_name_parent_class->uv.name;
     
@@ -313,8 +313,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
   basic_type->is_class = 1;
   
-  type->basic_type->name = op_type->uv.type->unresolved_basic_type_name;
-
   if (strstr(basic_type_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
@@ -501,9 +499,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
           SPVM_COMPILER_error(compiler, "The interface statement cannnot be used in the definition of the multi-numeric type.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        const char* interface_name = op_decl->uv.interface->basic_type_name;
+        const char* interface_name = op_decl->uv.interface->op_type->uv.type->unresolved_basic_type_name;
         
-        if (strcmp(type->basic_type->name, interface_name) == 0) {
+        if (strcmp(type->unresolved_basic_type_name, interface_name) == 0) {
           SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         
@@ -973,9 +971,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         assert(method->op_method->file);
         
         // Method absolute name
-        int32_t method_abs_name_length = strlen(type->basic_type->name) + 2 + strlen(method->name);
+        int32_t method_abs_name_length = strlen(type->unresolved_basic_type_name) + 2 + strlen(method->name);
         char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
-        memcpy(method_abs_name, type->basic_type->name, strlen(type->basic_type->name));
+        memcpy(method_abs_name, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
         memcpy(method_abs_name + strlen(basic_type_name), "->", 2);
         memcpy(method_abs_name + strlen(basic_type_name) + 2, method_name, strlen(method_name));
         method->abs_name = method_abs_name;
@@ -2308,7 +2306,7 @@ SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface,
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;
   interface->op_interface = op_interface;
-  interface->basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  interface->op_type = op_type;
   
   // add use stack
   SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_interface->file, op_interface->line);
@@ -2360,7 +2358,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     call_method->is_class_method_call = 1;
     call_method->op_name = op_name_method;
     if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
-      call_method->basic_type_name = op_invocant->uv.type->basic_type->name;
+      call_method->basic_type_name = op_invocant->uv.type->unresolved_basic_type_name;
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
       
       // Because the type name maybe an alias of a class name
@@ -3035,7 +3033,7 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
     op_type = SPVM_OP_new_op_type(compiler, name, found_basic_type, 0, 0, op_name->file, op_name->line);
   }
   else {
-    SPVM_BASIC_TYPE* new_basic_type = SPVM_COMPILER_add_basic_type(compiler, name);
+    SPVM_BASIC_TYPE* new_basic_type = SPVM_LIST_get(compiler->basic_types, 0);
     op_type = SPVM_OP_new_op_type(compiler, name, new_basic_type, 0, 0, op_name->file, op_name->line);
   }
   
