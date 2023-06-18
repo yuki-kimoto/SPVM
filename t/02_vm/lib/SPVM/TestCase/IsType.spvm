@@ -75,33 +75,33 @@ class TestCase::IsType {
   static method is_error : int () {
     
     {
-      my $error_class_basic_type_id = basic_type_id Error;
+      my $error_basic_type_id = basic_type_id Error;
       
-      unless ($error_class_basic_type_id is_error Error) {
+      unless ($error_basic_type_id is_error Error) {
         return 0;
       }
     }
 
     {
-      my $error_system_class_basic_type_id = basic_type_id Error::System;
+      my $error_system_basic_type_id = basic_type_id Error::System;
       
-      if ($error_system_class_basic_type_id is_error Error) {
+      if ($error_system_basic_type_id is_error Error) {
         return 0;
       }
       
-      unless ($error_system_class_basic_type_id is_error Error::System) {
+      unless ($error_system_basic_type_id is_error Error::System) {
         return 0;
       }
     }
     
     {
-      my $error_not_supported_class_basic_type_id = basic_type_id Error::NotSupported;
+      my $error_not_supported_basic_type_id = basic_type_id Error::NotSupported;
       
-      if ($error_not_supported_class_basic_type_id is_error Error) {
+      if ($error_not_supported_basic_type_id is_error Error) {
         return 0;
       }
       
-      unless ($error_not_supported_class_basic_type_id is_error Error::NotSupported) {
+      unless ($error_not_supported_basic_type_id is_error Error::NotSupported) {
         return 0;
       }
     }

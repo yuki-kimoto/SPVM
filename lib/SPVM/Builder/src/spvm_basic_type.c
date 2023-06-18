@@ -207,32 +207,32 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
   }
 }
 
-int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t class_basic_type_id, int32_t interface_basic_type_id) {
+int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id) {
   
-  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_get(compiler->basic_types, class_basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
 
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
 
   assert(interface_basic_type->required_method);
   SPVM_METHOD* method_interface = interface_basic_type->required_method;
 
-  SPVM_BASIC_TYPE* parent_class_basic_type = class_basic_type;
+  SPVM_BASIC_TYPE* parent_basic_type = basic_type;
   while (1) {
-    if (!parent_class_basic_type) {
+    if (!parent_basic_type) {
       return 0;
     }
     
-    SPVM_METHOD* method_class = SPVM_HASH_get(parent_class_basic_type->method_symtable, method_interface->name, strlen(method_interface->name));
+    SPVM_METHOD* method_class = SPVM_HASH_get(parent_basic_type->method_symtable, method_interface->name, strlen(method_interface->name));
     if (method_class) {
       return 1;
     }
     
-    const char* parent_basic_type_name = parent_class_basic_type->parent_name;
+    const char* parent_basic_type_name = parent_basic_type->parent_name;
     if (parent_basic_type_name) {
-      parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
+      parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
     }
     else {
-      parent_class_basic_type = NULL;
+      parent_basic_type = NULL;
     }
   }
 }
@@ -249,9 +249,9 @@ int32_t SPVM_BASIC_TYPE_is_super(SPVM_COMPILER* compiler, int32_t super_basic_ty
         return 1;
       }
       else {
-        SPVM_BASIC_TYPE* cur_parent_class_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, cur_parent_basic_type_name, strlen(cur_parent_basic_type_name));
-        assert(cur_parent_class_basic_type);
-        cur_parent_basic_type_name = cur_parent_class_basic_type->parent_name;
+        SPVM_BASIC_TYPE* cur_parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, cur_parent_basic_type_name, strlen(cur_parent_basic_type_name));
+        assert(cur_parent_basic_type);
+        cur_parent_basic_type_name = cur_parent_basic_type->parent_name;
       }
     }
     else {
