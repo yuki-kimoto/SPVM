@@ -27,8 +27,8 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my $class_name = shift;
-  unless (defined $class_name) {
+  my $basic_type_name = shift;
+  unless (defined $basic_type_name) {
     die SPVM::Builder::Util::extract_usage;
   }
   
@@ -37,13 +37,14 @@ else {
   unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
 
   my $build_exe = SPVM::Builder::Exe->new(
+    basic_type_name => $basic_type_name,
     build_dir => $build_dir,
     include_dirs => \@include_dirs,
     output_file => $output_file,
-    class_name => $class_name,
     quiet => $quiet,
     force => $force,
     config_file => $config_file,
+    class_name => $basic_type_name, # Will be removed.
   );
   if ($print_required_resources) {
     my $lines = $build_exe->get_required_resource_json_lines;
@@ -67,7 +68,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <class_name>
+  usage: spvmcc [<options>] <basic type name>
     
     spvmcc -I lib/SPVM -o myapp Myapp
   
@@ -75,7 +76,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -h, --help                     Shows this message
     -v, --version                  Shows the version
     -o, --output                   The output file name
-    -I, --include-dir <directory>   Adds a class path
+    -I, --include-dir <directory>  Adds a include directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Stops the output of messages
     -f, --force                    Forces the compile and link
