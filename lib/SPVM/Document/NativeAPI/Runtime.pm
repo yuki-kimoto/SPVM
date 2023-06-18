@@ -190,9 +190,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_class_rel_file_id
+=head2 get_basic_type_rel_file_id
 
-  int32_t (*get_basic_type_class_rel_file_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_rel_file_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_include_dir_id
 
