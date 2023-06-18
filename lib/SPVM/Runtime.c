@@ -373,17 +373,17 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
   
   int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   
-  int32_t anon_classes_length = 0;
+  int32_t anon_basic_types_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
     if (is_anon_method) {
-      anon_classes_length++;
+      anon_basic_types_length++;
     }
   }
   
-  void* obj_anon_basic_type_names = env->new_string_array(env, stack, anon_classes_length);
-  int32_t anon_class_index = 0;
+  void* obj_anon_basic_type_names = env->new_string_array(env, stack, anon_basic_types_length);
+  int32_t anon_basic_type_index = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     int32_t method_id = env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method_id);
@@ -391,8 +391,8 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
       int32_t anon_basic_type_id = env->api->runtime->get_method_current_basic_type_id(runtime, method_id);
       const char* anon_basic_type = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, anon_basic_type_id));
       void* obj_anon_basic_type = env->new_string_nolen(env, stack, anon_basic_type);
-      env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_class_index, obj_anon_basic_type);
-      anon_class_index++;
+      env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_basic_type_index, obj_anon_basic_type);
+      anon_basic_type_index++;
     }
   }
   
