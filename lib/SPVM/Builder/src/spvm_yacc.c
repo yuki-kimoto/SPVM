@@ -641,7 +641,7 @@ static const char *const yytname[] =
   "var_decl", "var", "qualified_type", "type", "basic_type", "ref_type",
   "array_type", "array_type_with_length", "return_type",
   "opt_type_comment", "type_comment", "union_type", "field_name",
-  "method_name", "class_alias_name", YY_NULLPTR
+  "method_name", "alias_name", YY_NULLPTR
 };
 #endif
 

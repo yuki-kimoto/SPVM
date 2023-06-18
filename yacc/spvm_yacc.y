@@ -46,7 +46,7 @@
 %type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-%type <opval> field_name method_name class_alias_name is_read_only
+%type <opval> field_name method_name alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
 
@@ -203,7 +203,7 @@ use
       SPVM_OP* op_name_class_alias = NULL;
       $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
     }
-  | USE basic_type AS class_alias_name ';'
+  | USE basic_type AS alias_name ';'
     {
       int32_t is_require = 0;
       $$ = SPVM_OP_build_use(compiler, $1, $2, $4, is_require);
@@ -218,7 +218,7 @@ require
     }
 
 alias
-  : ALIAS basic_type AS class_alias_name ';'
+  : ALIAS basic_type AS alias_name ';'
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_alias(compiler, op_use, $2, $4);
@@ -1427,7 +1427,7 @@ field_name
 method_name
   : SYMBOL_NAME
 
-class_alias_name
+alias_name
   : SYMBOL_NAME
 
 %%

@@ -1253,7 +1253,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> new array_init die warn opt_extends
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-  %type <opval> field_name method_name class_name class_alias_name is_read_only
+  %type <opval> field_name method_name class_name alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -1322,13 +1322,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   use
     : USE class_name ';'
-    | USE class_name AS class_alias_name ';'
+    | USE class_name AS alias_name ';'
 
   require
     : REQUIRE class_name
 
   alias
-    : ALIAS class_name AS class_alias_name ';'
+    : ALIAS class_name AS alias_name ';'
 
   allow
     : ALLOW class_name ';'
@@ -1738,7 +1738,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   class_name
     : SYMBOL_NAME
 
-  class_alias_name
+  alias_name
     : SYMBOL_NAME
 
 =head2 Syntax Parsing Token
