@@ -344,7 +344,7 @@ int32_t SPVM__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* sta
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t class_basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
-  int32_t parent_class_basic_type_id = env->api->runtime->get_basic_type_parent_class_basic_type_id(runtime, class_basic_type_id);
+  int32_t parent_class_basic_type_id = env->api->runtime->get_basic_type_parent_id(runtime, class_basic_type_id);
   
   void* obj_parent_basic_type_name = NULL;
   if (parent_class_basic_type_id >= 0) {

@@ -4,6 +4,11 @@
       This had been wrongly changed.
   [Incompatibe Changes]
     * The class_name methods and fields in the all classes(.spvm and .pm) were renamed to the basic_type_name methods and fields.
+    * The following Native Runtime APIs were changed.
+      -  int32_t (*get_basic_type_parent_class_basic_type_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
+      
+
 0.989006 2023-06-18
   [New Features]
     * The get_basic_type_name method in the Runtime class was added.
