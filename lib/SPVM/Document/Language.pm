@@ -1237,7 +1237,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
-  %type <opval> opt_classes classes class class_block version_decl
+  %type <opval> opt_classes classes class module_block version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
   %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
@@ -1282,8 +1282,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | class
 
   class
-    : CLASS basic_type opt_extends class_block END_OF_FILE
-    | CLASS basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
+    : CLASS basic_type opt_extends module_block END_OF_FILE
+    | CLASS basic_type opt_extends ':' opt_attributes module_block END_OF_FILE
     | CLASS basic_type opt_extends ';' END_OF_FILE
     | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
 
@@ -1291,7 +1291,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : /* Empty */
     | EXTENDS basic_type_name
 
-  class_block
+  module_block
     : '{' opt_definitions '}'
 
   opt_definitions

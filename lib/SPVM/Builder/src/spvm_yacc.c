@@ -621,7 +621,7 @@ static const char *const yytname[] =
   "COMPILE_TYPE_NAME", "DUMP", "NEW_STRING_LEN", "IS_READ_ONLY", "COPY",
   "INC", "DEC", "ARROW", "':'", "';'", "'}'", "','", "')'", "']'",
   "$accept", "grammar", "opt_classes", "classes", "class", "opt_extends",
-  "class_block", "opt_definitions", "definitions", "definition",
+  "module_block", "opt_definitions", "definitions", "definition",
   "init_block", "version_decl", "use", "require", "alias", "allow",
   "interface", "enumeration", "enumeration_block",
   "opt_enumeration_values", "enumeration_values", "enumeration_value",
@@ -2707,9 +2707,9 @@ yyreduce:
   case 13:
 #line 136 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
-      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, (yyvsp[-1].opval));
-      (yyval.opval) = op_class_block;
+      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
+      SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, (yyvsp[-1].opval));
+      (yyval.opval) = op_module_block;
     }
 #line 2715 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

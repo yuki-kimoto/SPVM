@@ -30,7 +30,7 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classes classes class class_block version_decl
+%type <opval> opt_classes classes class module_block version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
@@ -104,11 +104,11 @@ classes
   | class
 
 class
-  : CLASS basic_type opt_extends class_block END_OF_FILE
+  : CLASS basic_type opt_extends module_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
+  | CLASS basic_type opt_extends ':' opt_attributes module_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
@@ -131,12 +131,12 @@ opt_extends
       $$ = SPVM_OP_build_extends(compiler, $1, $2);
     }
 
-class_block
+module_block
   : '{' opt_definitions '}'
     {
-      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
-      $$ = op_class_block;
+      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, $2);
+      $$ = op_module_block;
     }
 
 opt_definitions

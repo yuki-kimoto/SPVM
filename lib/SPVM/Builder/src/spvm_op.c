@@ -105,7 +105,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CURRENT_CLASS",
     "CLASS",
     "EXTENDS",
-    "CLASS_BLOCK",
+    "MODULE_BLOCK",
     "END_OF_FILE",
     "IF",
     "UNLESS",
@@ -1581,10 +1581,10 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
   
   // Create class block
-  SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
+  SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, op_method->file, op_method->line);
   SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
-  SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
+  SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, op_list_definitions);
 
   // int32_t max length is 10(2147483647)
   int32_t int32_max_length = 10;
@@ -1609,7 +1609,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
   // Build class
-  SPVM_OP_build_class(compiler, op_class, op_type, op_class_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_class, op_type, op_module_block, NULL, NULL);
   
   // Type
   SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
