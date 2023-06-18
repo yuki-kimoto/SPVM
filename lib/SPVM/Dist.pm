@@ -512,9 +512,9 @@ MIT License
 EOS
 
   # Generate file
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
-  $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
-  $self->generate_file($perl_class_rel_file, $perl_class_content);
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
+  $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
+  $self->generate_file($perl_module_rel_file, $perl_class_content);
 }
 
 sub generate_native_config_file {
@@ -770,8 +770,8 @@ sub generate_makefile_pl_file {
   # Precompile make rule
   my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$basic_type_name');" : '';
 
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
-  $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
+  $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
 
   my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
@@ -813,10 +813,10 @@ unless (\$meta) {
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME => 'SPVM::$basic_type_name',
-  VERSION_FROM => '$perl_class_rel_file',
+  VERSION_FROM => '$perl_module_rel_file',
   LICENSE => 'mit',
   (\$] >= 5.005 ?
-    (ABSTRACT_FROM => '$perl_class_rel_file',
+    (ABSTRACT_FROM => '$perl_module_rel_file',
      AUTHOR => '$user_name<$user_email>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build']},
