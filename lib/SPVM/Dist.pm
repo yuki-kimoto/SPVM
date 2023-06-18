@@ -478,8 +478,8 @@ EOS
   }
   
   # Content
-  my $perl_class_content = "";
-  $perl_class_content = <<"EOS";
+  my $perl_module_content = "";
+  $perl_module_content = <<"EOS";
 package SPVM::$basic_type_name;
 
 $version_decl
@@ -514,7 +514,7 @@ EOS
   # Generate file
   my $perl_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
   $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
-  $self->generate_file($perl_module_rel_file, $perl_class_content);
+  $self->generate_file($perl_module_rel_file, $perl_module_content);
 }
 
 sub generate_native_config_file {
