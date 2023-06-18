@@ -283,10 +283,10 @@ class $basic_type_name ${attributes}{
 EOS
   
   # Generate file
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   my $lib_dir = $self->lib_dir;
-  $spvm_class_rel_file = $self->create_lib_rel_file($spvm_class_rel_file);
-  $self->generate_file($spvm_class_rel_file, $spvm_module_content);
+  $spvm_module_rel_file = $self->create_lib_rel_file($spvm_module_rel_file);
+  $self->generate_file($spvm_module_rel_file, $spvm_module_content);
 }
 
 sub generate_perl_module_file {
@@ -773,8 +773,8 @@ sub generate_makefile_pl_file {
   my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
 
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
-  $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
+  $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
   
   # User name
   my $user_name = $self->user_name;
@@ -873,8 +873,8 @@ sub generate_basic_test_file {
   # Class name
   my $basic_type_name = $self->basic_type_name;
   
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
-  $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
+  $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
   
   # Content
   my $basic_test_content = <<"EOS";
@@ -985,9 +985,9 @@ EOS
   }
   
   # Generate file
-  my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
-  $basic_test_spvm_class_rel_file = "t/lib/$basic_test_spvm_class_rel_file";
-  $self->generate_file($basic_test_spvm_class_rel_file, $basic_test_spvm_module_content);
+  my $basic_test_spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
+  $basic_test_spvm_module_rel_file = "t/lib/$basic_test_spvm_module_rel_file";
+  $self->generate_file($basic_test_spvm_module_rel_file, $basic_test_spvm_module_content);
 }
 
 sub generate_basic_test_native_config_file {
