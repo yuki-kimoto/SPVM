@@ -799,7 +799,7 @@ use Getopt::Long 'GetOptions';
 
 GetOptions(
   'meta' => \\my \$meta,
-  'no-build-spvm-classes' => \\my \$no_build_spvm_classes,
+  'no-build-spvm-modules' => \\my \$no_build_spvm_classes,
 );
 
 if (\$meta) {
