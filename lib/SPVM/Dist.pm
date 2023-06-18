@@ -24,14 +24,14 @@ sub force {
   }
 }
 
-sub class_name {
+sub basic_type_name {
   my $self = shift;
   if (@_) {
-    $self->{class_name} = $_[0];
+    $self->{basic_type_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{class_name};
+    return $self->{basic_type_name};
   }
 }
 
@@ -154,8 +154,8 @@ sub new {
   bless $self, $class;
 
   # Class name
-  my $basic_type_name = $self->class_name;
-  unless (defined $self->class_name) {
+  my $basic_type_name = $self->basic_type_name;
+  unless (defined $self->basic_type_name) {
     confess "Class name must be specified";
   }
   
@@ -248,7 +248,7 @@ sub generate_spvm_module_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -283,7 +283,7 @@ class $basic_type_name ${attributes}{
 EOS
   
   # Generate file
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   my $lib_dir = $self->lib_dir;
   $spvm_class_rel_file = $self->create_lib_rel_file($spvm_class_rel_file);
   $self->generate_file($spvm_class_rel_file, $spvm_class_content);
@@ -293,7 +293,7 @@ sub generate_perl_module_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Year
   my $year = $self->_year;
@@ -512,7 +512,7 @@ MIT License
 EOS
 
   # Generate file
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'pm');
+  my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
   $self->generate_file($perl_class_rel_file, $perl_class_content);
 }
@@ -521,7 +521,7 @@ sub generate_native_config_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # C or C++
   my $native = $self->native;
@@ -557,7 +557,7 @@ my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 EOS
 
   # Generate file
-  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'config');
+  my $native_config_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'config');
   $native_config_rel_file =  $self->create_lib_rel_file($native_config_rel_file);
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
@@ -566,7 +566,7 @@ sub generate_native_module_file {
   my ($self) = @_;
 
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # extern C for C++
   my $native = $self->native;
@@ -593,8 +593,8 @@ sub generate_native_module_file {
   }
   
   # Content
-  my $native_class_name = $basic_type_name;
-  $native_class_name =~ s/::/__/g;
+  my $native_basic_type_name = $basic_type_name;
+  $native_basic_type_name =~ s/::/__/g;
   my $native_module_file = $basic_type_name;
   $native_module_file =~ s/::/\//g;
   $native_module_file .= ".$native_class_ext";
@@ -618,7 +618,7 @@ $extern_c_start
 
 static const char* FILE_NAME = "$native_module_file";
 
-int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -628,7 +628,7 @@ int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 $extern_c_end
 EOS
   
-  my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, $native_class_ext);
+  my $native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, $native_class_ext);
   $native_class_rel_file =  $self->create_lib_rel_file($native_class_rel_file);
   $self->generate_file($native_class_rel_file, $native_class_content);
 }
@@ -637,10 +637,10 @@ sub generate_gitkeep_file_for_native_class_include_dir {
   my ($self) = @_;
 
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'native');
+  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
   $gitkeep_rel_file_for_native_class_include_dir .= '/include/.gitkeep';
   $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
@@ -650,10 +650,10 @@ sub generate_gitkeep_file_for_native_class_src_dir {
   my ($self) = @_;
 
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'native');
+  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
   $gitkeep_rel_file_for_native_class_include_dir .= '/src/.gitkeep';
   $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
@@ -740,7 +740,7 @@ sub generate_readme_markdown_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Content
   my $readme_markdown_content = <<"EOS";
@@ -759,7 +759,7 @@ sub generate_makefile_pl_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Resource
   my $resource = $self->resource;
@@ -770,10 +770,10 @@ sub generate_makefile_pl_file {
   # Precompile make rule
   my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$basic_type_name');" : '';
 
-  my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'pm');
+  my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
 
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
   # User name
@@ -871,9 +871,9 @@ sub generate_basic_test_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
-  my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($basic_type_name, 'spvm');
+  my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
   # Content
@@ -912,7 +912,7 @@ sub generate_license_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -957,7 +957,7 @@ sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Resource
   my $resource = $self->resource;
@@ -985,7 +985,7 @@ EOS
   }
   
   # Generate file
-  my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
+  my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
   $basic_test_spvm_class_rel_file = "t/lib/$basic_test_spvm_class_rel_file";
   $self->generate_file($basic_test_spvm_class_rel_file, $basic_test_spvm_class_content);
 }
@@ -994,7 +994,7 @@ sub generate_basic_test_native_config_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1022,7 +1022,7 @@ my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 EOS
   
   # Generate file
-  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", 'config');
+  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", 'config');
   $basic_test_native_config_rel_file = "t/lib/$basic_test_native_config_rel_file";
   $self->generate_file($basic_test_native_config_rel_file, $basic_test_native_config_content);
 }
@@ -1031,7 +1031,7 @@ sub generate_basic_test_native_module_file {
   my ($self) = @_;
   
   # Class name
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1050,14 +1050,14 @@ sub generate_basic_test_native_module_file {
   }
   
   # Content
-  my $native_class_name = $basic_type_name;
-  $native_class_name =~ s/::/__/g;
+  my $native_basic_type_name = $basic_type_name;
+  $native_basic_type_name =~ s/::/__/g;
   my $basic_test_native_class_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
 
-int32_t SPVM__TestCase__${native_class_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__${native_basic_type_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1079,7 +1079,7 @@ EOS
       $native_class_ext = 'cpp';
     }
   }
-  my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$basic_type_name", $native_class_ext);
+  my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", $native_class_ext);
   $basic_test_native_class_rel_file = "t/lib/$basic_test_native_class_rel_file";
   $self->generate_file($basic_test_native_class_rel_file, $basic_test_native_class_content);
 }
@@ -1087,7 +1087,7 @@ EOS
 sub generate_dist {
   my ($self) = @_;
   
-  my $basic_type_name = $self->class_name;
+  my $basic_type_name = $self->basic_type_name;
   
   unless (length $basic_type_name) {
     confess "The class name must be specified";
@@ -1196,7 +1196,7 @@ The SPVM::Dist class has methods to generate a SPVM Distrubution.
 =head2 Usage
 
   my $dist = SPVM::Dist->new(
-    class_name => 'Math',
+    basic_type_name => 'Math',
   );
   
   $dist->generate_dist;

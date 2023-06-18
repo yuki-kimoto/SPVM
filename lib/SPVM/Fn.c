@@ -647,15 +647,15 @@ int32_t SPVM__Fn__object_to_long(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* obj_class_name = stack[0].oval;
+  void* obj_basic_type_name = stack[0].oval;
   
-  if (!obj_class_name) {
+  if (!obj_basic_type_name) {
     return env->die(env, stack, "The $basic_type_name must be defined", __func__, FILE_NAME, __LINE__);
   }
   
-  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
     return env->die(env, stack, "The class specified by the $basic_type_name must be loaded", __func__, FILE_NAME, __LINE__);
   }
@@ -682,15 +682,15 @@ int32_t SPVM__Fn__get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* obj_class_name = stack[0].oval;
+  void* obj_basic_type_name = stack[0].oval;
   
-  if (!obj_class_name) {
+  if (!obj_basic_type_name) {
     return env->die(env, stack, "The $basic_type_name must be defined", __func__, FILE_NAME, __LINE__);
   }
   
-  const char* class_name = env->get_chars(env, stack, obj_class_name);
+  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, class_name);
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
     return env->die(env, stack, "The class specified by the $basic_type_name must be loaded", __func__, FILE_NAME, __LINE__);
   }

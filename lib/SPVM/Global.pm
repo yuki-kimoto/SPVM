@@ -51,8 +51,8 @@ sub load_dynamic_libs {
         unless (-f $dynamic_lib_file) {
           my $module_file = $runtime->get_file($basic_type_name)->to_string;
           my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-          my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
-          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
+          my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
+          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_source($basic_type_name)->to_string;
           
           $dynamic_lib_file = $BUILDER->build_at_runtime($basic_type_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
@@ -76,9 +76,9 @@ sub load_dynamic_libs {
       
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
       my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-      my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
+      my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
       
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_class_names, $category);
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
       
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
@@ -143,23 +143,23 @@ my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
   my ($basic_type_name) = @_;
   
-  my $perl_class_name_base = "SPVM::";
-  my $perl_class_name = "$perl_class_name_base$basic_type_name";
+  my $perl_basic_type_name_base = "SPVM::";
+  my $perl_basic_type_name = "$perl_basic_type_name_base$basic_type_name";
   
-  unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
+  unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_basic_type_name}) {
     
-    my $parent_class_name = $RUNTIME->get_basic_type_parent_name($basic_type_name);
-    my $parent_class_name_str = defined $parent_class_name ? "($parent_class_name)" : "()";
+    my $parent_basic_type_name = $RUNTIME->get_basic_type_parent_name($basic_type_name);
+    my $parent_basic_type_name_str = defined $parent_basic_type_name ? "($parent_basic_type_name)" : "()";
     
     # The inheritance
     my @isa;
-    if (defined $parent_class_name) {
-      push @isa, "$perl_class_name_base$parent_class_name";
+    if (defined $parent_basic_type_name) {
+      push @isa, "$perl_basic_type_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_class_name; $isa";
+    my $code = "package $perl_basic_type_name; $isa";
     eval $code;
     
     if (my $error = $@) {
@@ -179,7 +179,7 @@ sub bind_to_perl {
         next;
       }
       
-      my $perl_method_abs_name = "${perl_class_name}::$method_name";
+      my $perl_method_abs_name = "${perl_basic_type_name}::$method_name";
       my $is_static = $RUNTIME->get_method_is_static($basic_type_name, $method_name);
       
       if ($is_static) {
@@ -191,7 +191,7 @@ sub bind_to_perl {
         my $method_name_string = "$method_name";
         
         *{"$perl_method_abs_name"} = sub {
-          my $perl_class_name = shift;
+          my $perl_basic_type_name = shift;
           
           my $return_value;
           
@@ -205,7 +205,7 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name} = 1;
+    $BIND_TO_PERL_CLASS_NAME_H->{$perl_basic_type_name} = 1;
   }
 }
 

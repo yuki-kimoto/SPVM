@@ -9,7 +9,7 @@ use SPVM::Dist;
 {
   {
     my $dist = SPVM::Dist->new(
-      class_name => '',
+      basic_type_name => '',
     );
     
     eval { $dist->generate_dist };
@@ -18,7 +18,7 @@ use SPVM::Dist;
 
   {
     my $dist = SPVM::Dist->new(
-      class_name => 'Foo-Bar',
+      basic_type_name => 'Foo-Bar',
     );
     
     eval { $dist->generate_dist };

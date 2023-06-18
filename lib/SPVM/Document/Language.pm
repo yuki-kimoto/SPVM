@@ -1253,7 +1253,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> new array_init die warn opt_extends
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-  %type <opval> field_name method_name class_name alias_name is_read_only
+  %type <opval> field_name method_name basic_type_name alias_name is_read_only
   %type <opval> type qualified_type basic_type array_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -1289,7 +1289,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   opt_extends
     : /* Empty */
-    | EXTENDS class_name
+    | EXTENDS basic_type_name
 
   class_block
     : '{' opt_definitions '}'
@@ -1321,20 +1321,20 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : VERSION_DECL CONSTANT ';'
 
   use
-    : USE class_name ';'
-    | USE class_name AS alias_name ';'
+    : USE basic_type_name ';'
+    | USE basic_type_name AS alias_name ';'
 
   require
-    : REQUIRE class_name
+    : REQUIRE basic_type_name
 
   alias
-    : ALIAS class_name AS alias_name ';'
+    : ALIAS basic_type_name AS alias_name ';'
 
   allow
-    : ALLOW class_name ';'
+    : ALLOW basic_type_name ';'
 
   interface
-    : INTERFACE class_name ';'
+    : INTERFACE basic_type_name ';'
 
   enumeration
     : opt_attributes ENUM enumeration_block
@@ -1641,8 +1641,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   call_method
     : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     | CURRENT_CLASS SYMBOL_NAME
-    | class_name ARROW method_name '(' opt_operators  ')'
-    | class_name ARROW method_name
+    | basic_type_name ARROW method_name '(' opt_operators  ')'
+    | basic_type_name ARROW method_name
     | operator ARROW method_name '(' opt_operators ')'
     | operator ARROW method_name
     | operator ARROW '(' opt_operators ')'
@@ -1735,7 +1735,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   method_name
     : SYMBOL_NAME
 
-  class_name
+  basic_type_name
     : SYMBOL_NAME
 
   alias_name

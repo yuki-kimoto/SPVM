@@ -10,14 +10,14 @@ use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 
 # Fields
-sub class_name {
+sub basic_type_name {
   my $self = shift;
   if (@_) {
-    $self->{class_name} = $_[0];
+    $self->{basic_type_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{class_name};
+    return $self->{basic_type_name};
   }
 }
 
@@ -676,20 +676,20 @@ sub use_resource {
   else {
     my $basic_type_name = $first_arg;
     my %args = @args;
-    if (exists $args{class_name}) {
-      $basic_type_name = delete $args{class_name};
+    if (exists $args{basic_type_name}) {
+      $basic_type_name = delete $args{basic_type_name};
     }
-    $resource = SPVM::Builder::Resource->new(class_name => $basic_type_name, %args);
+    $resource = SPVM::Builder::Resource->new(basic_type_name => $basic_type_name, %args);
   }
   
-  my $resource_class_name = $resource->class_name;
+  my $resource_basic_type_name = $resource->basic_type_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($resource_basic_type_name, $ext);
   
-  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($resource_basic_type_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
@@ -698,7 +698,7 @@ sub use_resource {
   
   my $index = keys %{$self->{resources}};
   
-  $self->{resources}->{$resource_class_name} = {resource => $resource, index => $index};
+  $self->{resources}->{$resource_basic_type_name} = {resource => $resource, index => $index};
   
   return $resource;
 }
@@ -715,13 +715,13 @@ sub disable_resource {
 }
 
 sub get_resource {
-  my ($self, $resource_class_name) = @_;
+  my ($self, $resource_basic_type_name) = @_;
   
-  unless (defined $self->{resources}{$resource_class_name}) {
+  unless (defined $self->{resources}{$resource_basic_type_name}) {
     return;
   }
   
-  my $resource = $self->{resources}{$resource_class_name}{resource};
+  my $resource = $self->{resources}{$resource_basic_type_name}{resource};
   
   return $resource;
 }
@@ -1082,12 +1082,12 @@ If this field is a false value, the messages are not output.
 
 If this field is undef, whether the messages are output or not is determined by other conditions.
 
-=head2 class_name
+=head2 basic_type_name
 
-  my $basic_type_name = $config->class_name;
-  $config->class_name($basic_type_name);
+  my $basic_type_name = $config->basic_type_name;
+  $config->basic_type_name($basic_type_name);
 
-Gets and sets the C<class_name> field.
+Gets and sets the C<basic_type_name> field.
 
 This field is the class to use this config.
 
@@ -1145,7 +1145,7 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"class_name">
+=item * L</"basic_type_name">
 
 undef
 
@@ -1407,13 +1407,13 @@ Examples:
   my $resource = $config->use_resource($resource_name, %options);
 
 Loads a resource by the resource name $resource_name using the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class, and returns a L<SPVM::Builder::Resource> object.
-  my $resource = SPVM::Builder::Resource->new(class_name => $resource_name);
+  my $resource = SPVM::Builder::Resource->new(basic_type_name => $resource_name);
   $config->use_resource($resource);
 
 If the options %options are given, they are used as the options of the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class.
 
   my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib',
+    basic_type_name => 'Resource::Zlib',
     mode => 'production',
     argv => ['foo', 'bar'],
   );

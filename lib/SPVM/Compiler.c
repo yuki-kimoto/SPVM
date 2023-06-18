@@ -45,16 +45,16 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
 
-  void* obj_class_name = stack[1].oval;
-  const char* class_name = NULL;
-  if (obj_class_name) {
-    class_name = env->get_chars(env, stack, obj_class_name);
+  void* obj_basic_type_name = stack[1].oval;
+  const char* basic_type_name = NULL;
+  if (obj_basic_type_name) {
+    basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   }
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
-  int32_t compile_die_error_id = env->api->compiler->compile(compiler, class_name);
+  int32_t compile_die_error_id = env->api->compiler->compile(compiler, basic_type_name);
   
   int32_t success = 0;
   if (compile_die_error_id == 0) {

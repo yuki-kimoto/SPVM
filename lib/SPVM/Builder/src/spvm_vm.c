@@ -56,7 +56,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   // Runtime class
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method->current_basic_type_id);
 
-  const char* current_class_name =  SPVM_API_RUNTIME_get_name(runtime, current_basic_type->name_id);
+  const char* current_basic_type_name =  SPVM_API_RUNTIME_get_name(runtime, current_basic_type->name_id);
 
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
@@ -2153,10 +2153,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
         SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
-        const char* class_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_current_basic_type->name_id, NULL);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_current_basic_type->name_id, NULL);
         
         void* object = stack[0].oval;
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, class_name, method_name, args_stack_length, &error_id, tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, basic_type_name, method_name, args_stack_length, &error_id, tmp_buffer, sizeof(tmp_buffer));
         break;
       }
     }

@@ -44,7 +44,6 @@ else {
     quiet => $quiet,
     force => $force,
     config_file => $config_file,
-    class_name => $basic_type_name, # Will be removed.
   );
   if ($print_required_resources) {
     my $lines = $build_exe->get_required_resource_json_lines;

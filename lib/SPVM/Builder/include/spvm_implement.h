@@ -92,9 +92,9 @@ static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID_RET(SPVM_ENV* env, SPVM_V
   return basic_type_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* field_name, char* message, int32_t* error_id) {
+static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, char* message, int32_t* error_id) {
 
-  int32_t field_id = env->api->runtime->get_field_id_by_name(env->runtime, class_name, field_name);
+  int32_t field_id = env->api->runtime->get_field_id_by_name(env->runtime, basic_type_name, field_name);
   
   if (field_id < 0) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
@@ -106,9 +106,9 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VAL
   return field_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* class_var_name, char* message, int32_t* error_id) {
+static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, char* message, int32_t* error_id) {
   
-  int32_t class_var_id = env->api->runtime->get_class_var_id_by_name(env->runtime, class_name, class_var_name);
+  int32_t class_var_id = env->api->runtime->get_class_var_id_by_name(env->runtime, basic_type_name, class_var_name);
   
   if (class_var_id < 0) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
@@ -120,9 +120,9 @@ static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_ID(SPVM_ENV* env, SPVM_VALUE*
   return class_var_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_METHOD_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* class_name, const char* method_name, char* message, int32_t* error_id) {
+static inline int32_t SPVM_IMPLEMENT_GET_METHOD_ID(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, char* message, int32_t* error_id) {
 
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, class_name, method_name);
+  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_id < 0) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], method_name);

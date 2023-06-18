@@ -54,7 +54,6 @@ else {
     resource => $resource,
     user_name => $user_name,
     user_email => $user_email,
-    class_name => $basic_type_name, # Will be removed.
   );
   
   $gendist->generate_dist;

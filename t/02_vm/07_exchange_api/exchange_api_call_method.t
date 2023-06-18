@@ -1053,7 +1053,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # Return value conversion - object
     {
       my $value = SPVM::TestCase::ExchangeAPI->return_object;
-      is($value->get_class_name, 'TestCase::Minimal');
+      is($value->get_basic_type_name, 'TestCase::Minimal');
       isa_ok($value, 'SPVM::BlessedObject::Class');
       is($value->x, 1);
       is($value->y, 2);
@@ -1107,7 +1107,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       # Return value conversion - any object - class
       {
         my $value = SPVM::TestCase::ExchangeAPI->return_any_object;
-        is($value->get_class_name, 'TestCase::Minimal');
+        is($value->get_basic_type_name, 'TestCase::Minimal');
         isa_ok($value, 'SPVM::BlessedObject::Class');
         is($value->x, 1);
         is($value->y, 2);
@@ -1379,7 +1379,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     my $get_int = $hash->get("int");
     
     is(ref $get_biases, 'SPVM::BlessedObject::Array');
-    is($get_int->get_class_name, 'Int');
+    is($get_int->get_basic_type_name, 'Int');
   }
 
   # Numeric value to numeric object
@@ -1464,7 +1464,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Byte->new(-128);
-        is($spvm_value->get_class_name, 'Byte');
+        is($spvm_value->get_basic_type_name, 'Byte');
         is(ref $spvm_value, 'SPVM::BlessedObject::Class');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, -128);
@@ -1475,7 +1475,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Short->new(-32768);
-        is($spvm_value->get_class_name, 'Short');
+        is($spvm_value->get_basic_type_name, 'Short');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, -32768);
       }
@@ -1485,7 +1485,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Int->new(-2147483648);
-        is($spvm_value->get_class_name, 'Int');
+        is($spvm_value->get_basic_type_name, 'Int');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, -2147483648);
       }
@@ -1494,7 +1494,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Long->new(-9223372036854775808);
-        is($spvm_value->get_class_name, 'Long');
+        is($spvm_value->get_basic_type_name, 'Long');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, -9223372036854775808);
       }
@@ -1504,7 +1504,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Float->new($FLT_MAX);
-        is($spvm_value->get_class_name, 'Float');
+        is($spvm_value->get_basic_type_name, 'Float');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, $FLT_MAX);
       }
@@ -1514,7 +1514,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $spvm_value = SPVM::Double->new($DBL_MAX);
-        is($spvm_value->get_class_name, 'Double');
+        is($spvm_value->get_basic_type_name, 'Double');
         ok($spvm_value->isa('SPVM::BlessedObject::Class'));
         is($spvm_value->value, $DBL_MAX);
       }

@@ -29,7 +29,7 @@ sub compile_not_ok {
   
   my $tmp_include_dir = File::Temp->newdir;
     
-  my $first_class_name;
+  my $first_basic_type_name;
   for my $source (@$sources) {
     my $basic_type_name;
     if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
@@ -39,8 +39,8 @@ sub compile_not_ok {
       die "Can't find class name in the source";
     }
     
-    unless (defined $first_class_name) {
-      $first_class_name = $basic_type_name;
+    unless (defined $first_basic_type_name) {
+      $first_basic_type_name = $basic_type_name;
     }
     
     my $module_file = "$tmp_include_dir/$basic_type_name.spvm";
@@ -54,7 +54,7 @@ sub compile_not_ok {
     close $class_fh;
   }
   
-  compile_not_ok_file($first_class_name, $error_message_re, {include_dir => "$tmp_include_dir", file => $file, line => $line});
+  compile_not_ok_file($first_basic_type_name, $error_message_re, {include_dir => "$tmp_include_dir", file => $file, line => $line});
 }
 
 sub compile_not_ok_file {
@@ -120,7 +120,7 @@ sub compile_ok {
   
   my $tmp_include_dir = File::Temp->newdir;
     
-  my $first_class_name;
+  my $first_basic_type_name;
   for my $source (@$sources) {
     my $basic_type_name;
     if ($source =~ /\bclass\s+([\w+:]+)\s*/) {
@@ -130,8 +130,8 @@ sub compile_ok {
       die "Can't find class name in the source";
     }
     
-    unless (defined $first_class_name) {
-      $first_class_name = $basic_type_name;
+    unless (defined $first_basic_type_name) {
+      $first_basic_type_name = $basic_type_name;
     }
     
     my $module_file = "$tmp_include_dir/$basic_type_name.spvm";
@@ -145,7 +145,7 @@ sub compile_ok {
     close $class_fh;
   }
   
-  compile_ok_file($first_class_name, {include_dir => "$tmp_include_dir", file => $file, line => $line});
+  compile_ok_file($first_basic_type_name, {include_dir => "$tmp_include_dir", file => $file, line => $line});
 }
 
 sub compile_ok_file {

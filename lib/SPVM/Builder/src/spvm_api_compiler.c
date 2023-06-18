@@ -86,9 +86,9 @@ void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_clear_include_dirs(compiler);
 }
 
-int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* class_name) {
+int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  int32_t die_error_id = SPVM_COMPILER_compile(compiler, class_name);
+  int32_t die_error_id = SPVM_COMPILER_compile(compiler, basic_type_name);
   return die_error_id;
 }
 

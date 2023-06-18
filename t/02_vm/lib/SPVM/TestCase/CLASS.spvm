@@ -1,5 +1,5 @@
 class TestCase::CLASS {
-  static method class_name : int () {
+  static method basic_type_name : int () {
     my $basic_type_name = __CLASS__;
     
     unless ($basic_type_name eq "TestCase::CLASS") {

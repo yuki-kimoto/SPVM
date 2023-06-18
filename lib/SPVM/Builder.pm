@@ -68,9 +68,9 @@ sub build_dynamic_lib_dist {
   my $runtime = $compiler->build_runtime;
   my $module_file = $runtime->get_file($basic_type_name);
   my $method_names = $runtime->get_method_names($basic_type_name, $category);
-  my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name);
+  my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name);
   my $precompile_source = $runtime->build_precompile_source($basic_type_name);
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
+  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
   
   $self->build_dist($basic_type_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
@@ -230,7 +230,7 @@ sub build {
   # Class file
   my $module_file = $options->{module_file};
   unless (defined $module_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($basic_type_name);
+    my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
     if ($config_file) {
       $module_file = $config_file;
       $module_file =~ s/\.config$/\.spvm/;
@@ -248,7 +248,7 @@ sub build {
     $config = SPVM::Builder::Util::API::create_default_config();
   }
   
-  $config->class_name($basic_type_name);
+  $config->basic_type_name($basic_type_name);
   
   # Compile source file and create object files
   my $compile_options = {
