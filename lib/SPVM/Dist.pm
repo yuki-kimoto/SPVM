@@ -341,13 +341,13 @@ EOS
       $new_method = 'new_cpp';
     }
     
-    my $native_class_ext;
+    my $native_module_ext;
     if (defined $native) {
       if ($native eq 'c') {
-        $native_class_ext = 'c';
+        $native_module_ext = 'c';
       }
       elsif ($native eq 'c++') {
-        $native_class_ext = 'cpp';
+        $native_module_ext = 'cpp';
       }
     }
     
@@ -374,7 +374,7 @@ MyClass.config:
   
   \$config;
 
-MyClass.$native_class_ext:
+MyClass.$native_module_ext:
 
   #include "spvm_native.h"
   #include "foo.h"
@@ -582,13 +582,13 @@ sub generate_native_module_file {
   }
 
   # Generate file
-  my $native_class_ext;
+  my $native_module_ext;
   if (defined $native) {
     if ($native eq 'c') {
-      $native_class_ext = 'c';
+      $native_module_ext = 'c';
     }
     elsif ($native eq 'c++') {
-      $native_class_ext = 'cpp';
+      $native_module_ext = 'cpp';
     }
   }
   
@@ -597,7 +597,7 @@ sub generate_native_module_file {
   $native_basic_type_name =~ s/::/__/g;
   my $native_module_file = $basic_type_name;
   $native_module_file =~ s/::/\//g;
-  $native_module_file .= ".$native_class_ext";
+  $native_module_file .= ".$native_module_ext";
 
   # User name
   my $user_name = $self->user_name;
@@ -608,7 +608,7 @@ sub generate_native_module_file {
   # Year
   my $year = $self->_year;
   
-  my $native_class_content = <<"EOS";
+  my $native_module_content = <<"EOS";
 // Copyright (c) $year $user_name
 // MIT License
 
@@ -628,35 +628,35 @@ int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 $extern_c_end
 EOS
   
-  my $native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, $native_class_ext);
-  $native_class_rel_file =  $self->create_lib_rel_file($native_class_rel_file);
-  $self->generate_file($native_class_rel_file, $native_class_content);
+  my $native_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, $native_module_ext);
+  $native_module_rel_file =  $self->create_lib_rel_file($native_module_rel_file);
+  $self->generate_file($native_module_rel_file, $native_module_content);
 }
 
-sub generate_gitkeep_file_for_native_class_include_dir {
+sub generate_gitkeep_file_for_native_module_include_dir {
   my ($self) = @_;
 
   # Class name
   my $basic_type_name = $self->basic_type_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
-  $gitkeep_rel_file_for_native_class_include_dir .= '/include/.gitkeep';
-  $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
-  $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
+  $gitkeep_rel_file_for_native_module_include_dir .= '/include/.gitkeep';
+  $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
+  $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
 }
 
-sub generate_gitkeep_file_for_native_class_src_dir {
+sub generate_gitkeep_file_for_native_module_src_dir {
   my ($self) = @_;
 
   # Class name
   my $basic_type_name = $self->basic_type_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_class_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
-  $gitkeep_rel_file_for_native_class_include_dir .= '/src/.gitkeep';
-  $gitkeep_rel_file_for_native_class_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_class_include_dir);
-  $self->generate_file($gitkeep_rel_file_for_native_class_include_dir, '');
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
+  $gitkeep_rel_file_for_native_module_include_dir .= '/src/.gitkeep';
+  $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
+  $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
 }
 
 sub generate_gitignore_file {
@@ -1052,7 +1052,7 @@ sub generate_basic_test_native_module_file {
   # Content
   my $native_basic_type_name = $basic_type_name;
   $native_basic_type_name =~ s/::/__/g;
-  my $basic_test_native_class_content = <<"EOS";
+  my $basic_test_native_module_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
@@ -1070,18 +1070,18 @@ $extern_c_end
 EOS
   
   # Generate file
-  my $native_class_ext;
+  my $native_module_ext;
   if (defined $native) {
     if ($native eq 'c') {
-      $native_class_ext = 'c';
+      $native_module_ext = 'c';
     }
     elsif ($native eq 'c++') {
-      $native_class_ext = 'cpp';
+      $native_module_ext = 'cpp';
     }
   }
-  my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", $native_class_ext);
-  $basic_test_native_class_rel_file = "t/lib/$basic_test_native_class_rel_file";
-  $self->generate_file($basic_test_native_class_rel_file, $basic_test_native_class_content);
+  my $basic_test_native_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", $native_module_ext);
+  $basic_test_native_module_rel_file = "t/lib/$basic_test_native_module_rel_file";
+  $self->generate_file($basic_test_native_module_rel_file, $basic_test_native_module_content);
 }
 
 sub generate_dist {
@@ -1131,10 +1131,10 @@ sub generate_dist {
     }
     
     # Generate ".gitkeep" file for native class include directory
-    $self->generate_gitkeep_file_for_native_class_include_dir;
+    $self->generate_gitkeep_file_for_native_module_include_dir;
     
     # Generate ".gitkeep" file for native class src directory
-    $self->generate_gitkeep_file_for_native_class_src_dir;
+    $self->generate_gitkeep_file_for_native_module_src_dir;
   }
   
   my $only_lib_files = $self->only_lib_files;

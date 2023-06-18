@@ -258,18 +258,18 @@ sub compile_source_files {
   # Force compile
   my $force = $self->detect_force($config);
 
-  my $ignore_native_class = $options->{ignore_native_class};
+  my $ignore_native_module = $options->{ignore_native_module};
   
   # Native class file
   my $native_module_file;
-  unless ($ignore_native_class) {
+  unless ($ignore_native_module) {
     # Native class file
-    my $native_class_ext = $config->ext;
-    unless (defined $native_class_ext) {
+    my $native_module_ext = $config->ext;
+    unless (defined $native_module_ext) {
       confess "Source extension is not specified";
     }
-    my $native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $category, $native_class_ext);
-    $native_module_file = "$input_dir/$native_class_rel_file";
+    my $native_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $category, $native_module_ext);
+    $native_module_file = "$input_dir/$native_module_rel_file";
     
     unless (-f $native_module_file) {
       confess "Can't find source file $native_module_file";
@@ -286,17 +286,17 @@ sub compile_source_files {
   
   # Compile source files
   my $object_files = [];
-  my $is_native_class = 1;
+  my $is_native_module = 1;
   for my $source_file ($native_module_file, @$resource_src_files) {
-    my $cur_is_native_class = $is_native_class;
-    $is_native_class = 0;
+    my $cur_is_native_module = $is_native_module;
+    $is_native_module = 0;
     
     next unless defined $source_file;
     
     my $object_file_name;
     
     # Object file of native class
-    if ($cur_is_native_class) {
+    if ($cur_is_native_module) {
       my $object_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $category, 'o');
       $object_file_name = "$output_dir/$object_rel_file";
     }
@@ -339,7 +339,7 @@ sub compile_source_files {
       if (defined $config->file) {
         push @$input_files, $config->file;
       };
-      if ($cur_is_native_class) {
+      if ($cur_is_native_module) {
         my $module_file = $source_file;
         $module_file =~ s/\.[^\/\\]+$//;
         $module_file .= '.spvm';
@@ -501,7 +501,7 @@ sub create_link_info {
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      ignore_native_class => 1,
+      ignore_native_module => 1,
       config => $resource_config,
       category => $category,
     };
