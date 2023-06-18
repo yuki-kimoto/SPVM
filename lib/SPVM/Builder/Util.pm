@@ -25,13 +25,13 @@ sub get_spvm_core_files {
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
     
     # SPVM::Builder class files
-    my $spvm_builder_class_file_names = &get_spvm_builder_class_file_names();
-    for my $spvm_builder_class_file_name (@$spvm_builder_class_file_names) {
-      my $class_file = "$builder_loaded_dir/$spvm_builder_class_file_name";
-      unless (-f $class_file) {
-        confess "Can't find $class_file";
+    my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
+    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
+      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
+      unless (-f $module_file) {
+        confess "Can't find $module_file";
       }
-      push @spvm_core_files, $class_file;
+      push @spvm_core_files, $module_file;
     }
     
     # SPVM core header files
@@ -209,12 +209,12 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub convert_class_file_to_dynamic_lib_file {
-  my ($class_file, $category) = @_;
+sub convert_module_file_to_dynamic_lib_file {
+  my ($module_file, $category) = @_;
   
   my $dlext = $Config{dlext};
-  $class_file =~ s/\.[^.]+$//;
-  my $dynamic_lib_category_file = $class_file;
+  $module_file =~ s/\.[^.]+$//;
+  my $dynamic_lib_category_file = $module_file;
   $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dynamic_lib_category_file;
@@ -279,9 +279,9 @@ sub remove_class_part_from_file {
   $basic_type_name =~ s/^SPVM:://;
   
   $file =~ s/\.spvm$//;
-  my $class_file = "SPVM::$basic_type_name";
-  $class_file =~ s/::/\//g;
-  $file =~ s/$class_file$//;
+  my $module_file = "SPVM::$basic_type_name";
+  $module_file =~ s/::/\//g;
+  $file =~ s/$module_file$//;
   $file =~ s/[\\\/]$//;
   
   return $file;
@@ -337,11 +337,11 @@ sub create_make_rule {
     push @deps, $config_file;
     
     # Native class
-    my $native_class_file = $noext_file;
-    my $native_class_file_ext = $config->ext;
-    $native_class_file .= ".$native_class_file_ext";
-    $native_class_file = "$lib_dir/$native_class_file";
-    push @deps, $native_class_file;
+    my $native_module_file = $noext_file;
+    my $native_module_file_ext = $config->ext;
+    $native_module_file .= ".$native_module_file_ext";
+    $native_module_file = "$lib_dir/$native_module_file";
+    push @deps, $native_module_file;
     
     # Native include
     my $native_include_dir = "$lib_dir/$noext_file.native/include";
@@ -377,8 +377,8 @@ sub create_make_rule {
   return $make_rule;
 }
 
-sub get_spvm_builder_class_file_names {
-  my @spvm_builder_class_file_names = qw(
+sub get_spvm_builder_module_file_names {
+  my @spvm_builder_module_file_names = qw(
     SPVM/Builder/API.pm
     SPVM/Builder/CC.pm
     SPVM/Builder/CompileInfo.pm
@@ -394,7 +394,7 @@ sub get_spvm_builder_class_file_names {
     SPVM/Builder/Util.pm
   );
   
-  return \@spvm_builder_class_file_names;
+  return \@spvm_builder_module_file_names;
 }
 
 sub get_spvm_core_source_file_names {
@@ -641,9 +641,9 @@ sub create_dl_func_list {
 }
 
 sub get_dynamic_lib_file_dist {
-  my ($class_file, $category) = @_;
+  my ($module_file, $category) = @_;
 
-  my $dynamic_lib_file = SPVM::Builder::Util::convert_class_file_to_dynamic_lib_file($class_file, $category);
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_module_file_to_dynamic_lib_file($module_file, $category);
   
   return $dynamic_lib_file;
 }
@@ -739,9 +739,9 @@ sub get_normalized_env {
 }
 
 sub get_version_string {
-  my ($spvm_class_file) = @_;
+  my ($spvm_module_file) = @_;
   
-  open my $spvm_class_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
+  open my $spvm_class_fh, '<', $spvm_module_file or die "Can't open the file \"$spvm_module_file\": $!";
   local $/;
   my $content = <$spvm_class_fh>;
   my $version_string;
@@ -750,7 +750,7 @@ sub get_version_string {
   }
 
   unless (defined $version_string) {
-    confess "The version string can't be find in the $spvm_class_file file";
+    confess "The version string can't be find in the $spvm_module_file file";
   }
   
   return $version_string;

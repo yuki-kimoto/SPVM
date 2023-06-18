@@ -188,55 +188,55 @@ Runtime native APIs have its IDs.
 
 =head2 get_basic_type_name_id
 
-  int32_t (*get_basic_type_name_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_class_rel_file_id
+=head2 get_basic_type_class_rel_file_id
 
-  int32_t (*get_class_class_rel_file_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_class_rel_file_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_include_dir_id
+=head2 get_basic_type_include_dir_id
 
-  int32_t (*get_class_include_dir_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_include_dir_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_is_anon
+=head2 get_basic_type_is_anon
 
-  int32_t (*get_class_is_anon)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_fields_base_id
+=head2 get_basic_type_fields_base_id
 
-  int32_t (*get_class_fields_base_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_fields_base_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_fields_length
+=head2 get_basic_type_fields_length
 
-  int32_t (*get_class_fields_length)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_methods_base_id
+=head2 get_basic_type_methods_base_id
 
-  int32_t (*get_class_methods_base_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_methods_base_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_methods_length
+=head2 get_basic_type_methods_length
 
-  int32_t (*get_class_methods_length)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_class_vars_base_id
+=head2 get_basic_type_class_vars_base_id
 
-  int32_t (*get_class_class_vars_base_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_class_vars_base_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_class_vars_length
+=head2 get_basic_type_class_vars_length
 
-  int32_t (*get_class_class_vars_length)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_anon_methods_base_id
+=head2 get_basic_type_anon_methods_base_id
 
-  int32_t (*get_class_anon_methods_base_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_anon_methods_length
+=head2 get_basic_type_anon_methods_length
 
-  int32_t (*get_class_anon_methods_length)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
 
 =head2 get_class_var_id_by_index
 
-  int32_t (*get_class_var_id_by_index)(void* runtime, int32_t class_id, int32_t class_var_index);
+  int32_t (*get_class_var_id_by_index)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
 
 =head2 get_class_var_id_by_name
 
@@ -248,7 +248,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_field_id_by_index
 
-  int32_t (*get_field_id_by_index)(void* runtime, int32_t class_id, int32_t field_index);
+  int32_t (*get_field_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
 
 =head2 get_field_id_by_name
 
@@ -260,7 +260,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_method_id_by_index
 
-  int32_t (*get_method_id_by_index)(void* runtime, int32_t class_id, int32_t method_index);
+  int32_t (*get_method_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
 
 =head2 get_method_id_by_name
 
@@ -394,29 +394,29 @@ Runtime native APIs have its IDs.
 
   void (*build)(void* runtime, int32_t* runtime_codes);
 
-=head2 get_class_parent_class_id
+=head2 get_basic_type_parent_basic_type_id
 
-  int32_t (*get_class_parent_class_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_parent_basic_type_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_method_required_args_length
 
   int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
 
-=head2 get_class_is_pointer
+=head2 get_basic_type_is_pointer
 
-  int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_is_pointer)(void* runtime, int32_t basic_type_id);
 
 =head2 get_method_is_enum
 
-  int32_t (*get_class_is_pointer)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_is_pointer)(void* runtime, int32_t basic_type_id);
 
 =head2 is_object_type
 
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
 
-=head2 get_class_version_string_id
+=head2 get_basic_type_version_string_id
 
-  int32_t (*get_class_version_string_id)(void* runtime, int32_t class_id);
+  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
 
 Gets the ID of the constant string of the version number.
 

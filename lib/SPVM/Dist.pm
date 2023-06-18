@@ -244,7 +244,7 @@ sub generate_dir {
   }
 }
 
-sub generate_spvm_class_file {
+sub generate_spvm_module_file {
   my ($self) = @_;
   
   # Class name
@@ -289,7 +289,7 @@ EOS
   $self->generate_file($spvm_class_rel_file, $spvm_class_content);
 }
 
-sub generate_perl_class_file {
+sub generate_perl_module_file {
   my ($self) = @_;
   
   # Class name
@@ -562,7 +562,7 @@ EOS
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
 
-sub generate_native_class_file {
+sub generate_native_module_file {
   my ($self) = @_;
 
   # Class name
@@ -595,9 +595,9 @@ sub generate_native_class_file {
   # Content
   my $native_class_name = $basic_type_name;
   $native_class_name =~ s/::/__/g;
-  my $native_class_file = $basic_type_name;
-  $native_class_file =~ s/::/\//g;
-  $native_class_file .= ".$native_class_ext";
+  my $native_module_file = $basic_type_name;
+  $native_module_file =~ s/::/\//g;
+  $native_module_file .= ".$native_class_ext";
 
   # User name
   my $user_name = $self->user_name;
@@ -616,7 +616,7 @@ sub generate_native_class_file {
 
 $extern_c_start
 
-static const char* FILE_NAME = "$native_class_file";
+static const char* FILE_NAME = "$native_module_file";
 
 int32_t SPVM__${native_class_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
@@ -953,7 +953,7 @@ EOS
   $self->generate_file($license_rel_file, $license_content);
 }
 
-sub generate_basic_test_spvm_class_file {
+sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
   # Class name
@@ -1027,7 +1027,7 @@ EOS
   $self->generate_file($basic_test_native_config_rel_file, $basic_test_native_config_content);
 }
 
-sub generate_basic_test_native_class_file {
+sub generate_basic_test_native_module_file {
   my ($self) = @_;
   
   # Class name
@@ -1113,12 +1113,12 @@ sub generate_dist {
   $self->generate_dir($output_dir);
   
   # Generate SPVM class file
-  $self->generate_spvm_class_file;
+  $self->generate_spvm_module_file;
   
   # Generate Perl class file
   my $no_pm_file = $self->no_pm_file;
   unless ($no_pm_file) {
-    $self->generate_perl_class_file;
+    $self->generate_perl_module_file;
   }
   
   if ($native) {
@@ -1127,7 +1127,7 @@ sub generate_dist {
     
     # Generate native class file
     unless ($resource) {
-      $self->generate_native_class_file;
+      $self->generate_native_module_file;
     }
     
     # Generate ".gitkeep" file for native class include directory
@@ -1158,14 +1158,14 @@ sub generate_dist {
     $self->generate_basic_test_file;
 
     # Generate basic test SPVM class file
-    $self->generate_basic_test_spvm_class_file;
+    $self->generate_basic_test_spvm_module_file;
 
     # Generate license file
     $self->generate_license_file;
     
     if ($resource) {
       # Generate basic test native class file
-      $self->generate_basic_test_native_class_file;
+      $self->generate_basic_test_native_module_file;
 
       # Generate basic test native config file
       $self->generate_basic_test_native_config_file;

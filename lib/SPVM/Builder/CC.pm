@@ -170,7 +170,7 @@ sub build_precompile_source_file {
   my ($self, $basic_type_name, $options) = @_;
 
   my $precompile_source = $options->{precompile_source};
-  my $class_file = $options->{class_file};
+  my $module_file = $options->{module_file};
   
   # Force
   my $force = $self->detect_force;
@@ -191,7 +191,7 @@ sub build_precompile_source_file {
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
     output_file => $source_file,
-    input_files => [$class_file, $spvm_precompile_soruce_file],
+    input_files => [$module_file, $spvm_precompile_soruce_file],
   });
   
   # Generate precompile C source file
@@ -261,7 +261,7 @@ sub compile_source_files {
   my $ignore_native_class = $options->{ignore_native_class};
   
   # Native class file
-  my $native_class_file;
+  my $native_module_file;
   unless ($ignore_native_class) {
     # Native class file
     my $native_class_ext = $config->ext;
@@ -269,10 +269,10 @@ sub compile_source_files {
       confess "Source extension is not specified";
     }
     my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($basic_type_name, $category, $native_class_ext);
-    $native_class_file = "$input_dir/$native_class_rel_file";
+    $native_module_file = "$input_dir/$native_class_rel_file";
     
-    unless (-f $native_class_file) {
-      confess "Can't find source file $native_class_file";
+    unless (-f $native_module_file) {
+      confess "Can't find source file $native_module_file";
     }
   }
   
@@ -287,7 +287,7 @@ sub compile_source_files {
   # Compile source files
   my $object_files = [];
   my $is_native_class = 1;
-  for my $source_file ($native_class_file, @$resource_src_files) {
+  for my $source_file ($native_module_file, @$resource_src_files) {
     my $cur_is_native_class = $is_native_class;
     $is_native_class = 0;
     
@@ -340,11 +340,11 @@ sub compile_source_files {
         push @$input_files, $config->file;
       };
       if ($cur_is_native_class) {
-        my $class_file = $source_file;
-        $class_file =~ s/\.[^\/\\]+$//;
-        $class_file .= '.spvm';
+        my $module_file = $source_file;
+        $module_file =~ s/\.[^\/\\]+$//;
+        $module_file .= '.spvm';
         
-        push @$input_files, $class_file;
+        push @$input_files, $module_file;
       }
       $need_generate = SPVM::Builder::Util::need_generate({
         force => $force,

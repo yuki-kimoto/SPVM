@@ -15,12 +15,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 SPVM::MinimalMethod->foo;
 
 # Check precompile class file
-my $precompile_class_file = "$build_dir/work/lib/SPVM/MinimalMethod.precompile.$Config{dlext}";
+my $precompile_module_file = "$build_dir/work/lib/SPVM/MinimalMethod.precompile.$Config{dlext}";
 if ($ENV{SPVM_TEST_PRECOMPILE}) {
-  ok(-f $precompile_class_file);
+  ok(-f $precompile_module_file);
 }
 else {
-  ok(!-f $precompile_class_file);
+  ok(!-f $precompile_module_file);
 }
 
 ok(1);

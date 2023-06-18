@@ -4806,8 +4806,8 @@ get_file(...)
   
   // Copy class load path to builder
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
-  const char* class_file;
-  SV* sv_class_file;
+  const char* module_file;
+  SV* sv_module_file;
   
   if (basic_type_id >= 0) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
@@ -4826,18 +4826,18 @@ get_file(...)
       }
       const char* class_rel_file = api_env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
       
-      sv_class_file = sv_2mortal(newSVpv(include_dir, 0));
-      sv_catpv(sv_class_file, include_dir_sep);
-      sv_catpv(sv_class_file, class_rel_file);
+      sv_module_file = sv_2mortal(newSVpv(include_dir, 0));
+      sv_catpv(sv_module_file, include_dir_sep);
+      sv_catpv(sv_module_file, class_rel_file);
     }
   }
   else {
-    sv_class_file = &PL_sv_undef;
+    sv_module_file = &PL_sv_undef;
   }
   
   api_env->free_env_raw(api_env);
   
-  XPUSHs(sv_class_file);
+  XPUSHs(sv_module_file);
   XSRETURN(1);
 }
 

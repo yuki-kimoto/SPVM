@@ -300,10 +300,10 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Copy class load path to builder
   int32_t class_basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, class_name);
-  const char* class_file;
-  void* sv_class_file;
+  const char* module_file;
+  void* sv_module_file;
 
-  void* obj_class_file = NULL;
+  void* obj_module_file = NULL;
   if (class_basic_type_id >= 0) {
     int32_t class_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, class_basic_type_id);
     int32_t include_dir_id = env->api->runtime->get_basic_type_dir_id(runtime, class_basic_type_id);
@@ -319,15 +319,15 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     const char* class_rel_file = env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
     
-    int32_t class_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(class_rel_file);
-    obj_class_file = env->new_string(env, stack, NULL, class_file_length);
-    char* class_file = (char*)env->get_chars(env, stack, obj_class_file);
-    memcpy(class_file, include_dir, strlen(include_dir));
-    memcpy(class_file + strlen(include_dir), include_dir_sep, strlen(include_dir_sep));
-    memcpy(class_file + strlen(include_dir) + strlen(include_dir_sep), class_rel_file, strlen(class_rel_file));
+    int32_t module_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(class_rel_file);
+    obj_module_file = env->new_string(env, stack, NULL, module_file_length);
+    char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
+    memcpy(module_file, include_dir, strlen(include_dir));
+    memcpy(module_file + strlen(include_dir), include_dir_sep, strlen(include_dir_sep));
+    memcpy(module_file + strlen(include_dir) + strlen(include_dir_sep), class_rel_file, strlen(class_rel_file));
   }
   
-  stack[0].oval = obj_class_file;
+  stack[0].oval = obj_module_file;
   
   return 0;
 }

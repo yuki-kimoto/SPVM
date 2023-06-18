@@ -18,8 +18,8 @@ my $wait_time = 1.1;
 
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
-my $class_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
-unless (-f $class_file) {
+my $module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
+unless (-f $module_file) {
   die 'Unexpected error';
 }
 
@@ -28,8 +28,8 @@ unless (-f $config_file) {
   die 'Unexpected error';
 }
 
-my $native_class_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
-unless (-f $native_class_file) {
+my $native_module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
+unless (-f $native_module_file) {
   die 'Unexpected error';
 }
 
@@ -152,7 +152,7 @@ system($compile_native_api_prgoram) == 0 or die;
   # Update class file
   sleep $wait_time;
   my $now = time;
-  utime $now, $now, $class_file;
+  utime $now, $now, $module_file;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Naative object file is cached
@@ -189,7 +189,7 @@ system($compile_native_api_prgoram) == 0 or die;
   # Update src file
   sleep $wait_time;
   my $now = time;
-  utime $now, $now, $native_class_file;
+  utime $now, $now, $native_module_file;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Native object file is cached

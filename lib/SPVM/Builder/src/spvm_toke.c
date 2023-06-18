@@ -76,7 +76,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       
       // Load class file
-      int32_t success = SPVM_TOKE_load_class_file(compiler);
+      int32_t success = SPVM_TOKE_load_module_file(compiler);
       
       if (!success) {
         return success;
@@ -2190,7 +2190,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   }
 }
 
-int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
+int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
 
   // Start parsing a source code
   compiler->cur_file = NULL;

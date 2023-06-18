@@ -16,7 +16,7 @@ enum {
 
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler);
 
-int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler);
+int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler);
 
 SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type);
 

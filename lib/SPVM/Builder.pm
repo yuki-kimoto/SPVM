@@ -66,13 +66,13 @@ sub build_dynamic_lib_dist {
     exit(255);
   }
   my $runtime = $compiler->build_runtime;
-  my $class_file = $runtime->get_file($basic_type_name);
+  my $module_file = $runtime->get_file($basic_type_name);
   my $method_names = $runtime->get_method_names($basic_type_name, $category);
   my $anon_class_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name);
   my $precompile_source = $runtime->build_precompile_source($basic_type_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_class_names, {category => $category});
   
-  $self->build_dist($basic_type_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+  $self->build_dist($basic_type_name, {category => $category, module_file => $module_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
 
 sub build_dist {
@@ -83,7 +83,7 @@ sub build_dist {
   my $build_dir = $self->build_dir;
   
   my $dl_func_list = $options->{dl_func_list};
-  my $class_file = $options->{class_file};
+  my $module_file = $options->{module_file};
   my $precompile_source = $options->{precompile_source};
   
   my $category = $options->{category};
@@ -102,7 +102,7 @@ sub build_dist {
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
-        class_file => $class_file,
+        module_file => $module_file,
       }
     );
   }
@@ -122,7 +122,7 @@ sub build_dist {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
-      class_file => $class_file,
+      module_file => $module_file,
       dl_func_list => $dl_func_list,
     }
   );
@@ -148,7 +148,7 @@ sub build_at_runtime {
   my $build_dir = $self->build_dir;
   
   my $dl_func_list = $options->{dl_func_list};
-  my $class_file = $options->{class_file};
+  my $module_file = $options->{module_file};
   my $precompile_source = $options->{precompile_source};
 
   my $category = $options->{category};
@@ -177,13 +177,13 @@ sub build_at_runtime {
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
-        class_file => $class_file,
+        module_file => $module_file,
       }
     );
   }
   elsif ($category eq 'native') {
-    my $class_file = $options->{class_file};
-    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($class_file, $basic_type_name);
+    my $module_file = $options->{module_file};
+    $build_src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $basic_type_name);
   }
   
   # Object directory
@@ -201,7 +201,7 @@ sub build_at_runtime {
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
-      class_file => $class_file,
+      module_file => $module_file,
       dl_func_list => $dl_func_list,
       at_runtime => 1,
     }
@@ -228,21 +228,21 @@ sub build {
   my $category = $options->{category};
   
   # Class file
-  my $class_file = $options->{class_file};
-  unless (defined $class_file) {
+  my $module_file = $options->{module_file};
+  unless (defined $module_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($basic_type_name);
     if ($config_file) {
-      $class_file = $config_file;
-      $class_file =~ s/\.config$/\.spvm/;
+      $module_file = $config_file;
+      $module_file =~ s/\.config$/\.spvm/;
     }
     else {
-      confess "\"$class_file\" class is not loaded";
+      confess "\"$module_file\" class is not loaded";
     }
   }
   
   my $config;
   if ($category eq 'native') {
-    $config = $self->create_native_config_from_class_file($class_file);
+    $config = $self->create_native_config_from_module_file($module_file);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
@@ -276,11 +276,11 @@ sub build {
   return $output_file;
 }
 
-sub create_native_config_from_class_file {
-  my ($self, $class_file) = @_;
+sub create_native_config_from_module_file {
+  my ($self, $module_file) = @_;
   
   my $config;
-  my $config_file = $class_file;
+  my $config_file = $module_file;
   $config_file =~ s/\.spvm$/.config/;
 
   # Config file
