@@ -1130,15 +1130,15 @@ Returns the L<version number|SPVM::Document::Language/"Version Number"> of the S
 
 =head2 get_version_number
 
-  static method get_version_number : double ($basic_type_name : string);
+  static method get_version_number : double ($module_name : string);
 
 Returns the L<version number|SPVM::Document::Language/"Version Number"> of a class.
 
 Exceptions:
 
-The $basic_type_name must be defined. Otherwise an exception is thrown.
+The $module_name must be defined. Otherwise an exception is thrown.
 
-The class specified by the $basic_type_name must be loaded. Otherwise an exception is thrown.
+The class specified by the $module_name must be loaded. Otherwise an exception is thrown.
 
 =head1 Copyright & License
 
