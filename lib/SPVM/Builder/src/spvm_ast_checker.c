@@ -45,8 +45,8 @@ void SPVM_AST_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Resolve classes
-  SPVM_AST_CHECKER_resolve_classes(compiler);
+  // Resolve basic types
+  SPVM_AST_CHECKER_resolve_basic_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
@@ -139,8 +139,8 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       basic_type_name = current_basic_type_name;
     }
     else {
-      SPVM_OP* op_type_class = op_call_method->last;
-      basic_type_name = op_type_class->uv.type->basic_type->name;
+      SPVM_OP* op_type_basic_type = op_call_method->last;
+      basic_type_name = op_type_basic_type->uv.type->basic_type->name;
     }
     
     SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
@@ -191,7 +191,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
         if (parent_basic_type) {
-          // Search the method of the super class
+          // Search the method of the super basic type
           found_method = SPVM_AST_CHECKER_search_method(compiler, parent_basic_type, method_name);
         }
       }
@@ -406,7 +406,7 @@ void SPVM_AST_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_T
   }
 }
 
-void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
+void SPVM_AST_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
@@ -414,7 +414,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     const char* basic_type_name = basic_type->name;
     
     // Edit INIT block
-    // The INIT mehtods that is the parent class and used classes in the order.
+    // The INIT mehtods that is the parent basic type and used basic types in the order.
     SPVM_METHOD* init_method = basic_type->init_method;
     if (init_method) {
       SPVM_OP* op_block = init_method->op_block;
@@ -614,7 +614,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
         return;
       }
       
-      // Copy has_precomile_attribute from anon method defined class
+      // Copy has_precomile_attribute from anon method defined basic type
       if (method->anon_method_defined_basic_type_name) {
         SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_basic_type_name, strlen(method->anon_method_defined_basic_type_name));
 
@@ -686,7 +686,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     for (int32_t i = 0; i < basic_type->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
       
-      // Set method precompile flag if class have precompile attribute
+      // Set method precompile flag if basic type have precompile attribute
       if (basic_type->is_precompile) {
         int32_t can_precompile;
         if (method->is_init) {
@@ -993,7 +993,7 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     SPVM_AST_CHECKER_resolve_field_offset(compiler, basic_type);
   }
   
-  // Check syntax and generate operations in classes
+  // Check syntax and generate operations in basic types
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
     SPVM_LIST* methods = basic_type->methods;
