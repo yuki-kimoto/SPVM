@@ -1493,8 +1493,6 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
 
 #define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->items(env, stack))
 
-#define SPVM_IMPLEMENT_GET_CLASS_ID(out, class_id) (out = class_id)
-
 #define SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(out, basic_type_id) (out = basic_type_id)
 
 static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
