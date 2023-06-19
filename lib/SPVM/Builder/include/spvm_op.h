@@ -411,7 +411,7 @@ SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 
 SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_field_base_name, SPVM_OP* op_descripters, SPVM_OP* type);
 
-SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* class_var, SPVM_OP* op_module_var_name, SPVM_OP* op_attributes, SPVM_OP* op_type);
+SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* class_var, SPVM_OP* op_class_var_name, SPVM_OP* op_attributes, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes);
 
@@ -479,7 +479,7 @@ SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const ch
 
 SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 
-SPVM_OP* SPVM_OP_new_op_module_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_name);
+SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_name);
 
 SPVM_OP* SPVM_OP_new_op_undef(SPVM_COMPILER* compiler, const char* file, int32_t line);
 

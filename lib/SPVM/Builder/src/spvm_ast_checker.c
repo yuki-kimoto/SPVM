@@ -287,14 +287,14 @@ void SPVM_AST_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_
   }
 }
 
-void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_module_var_access, const char* current_basic_type_name) {
+void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
   
-  if (op_module_var_access->uv.class_var_access->class_var) {
+  if (op_class_var_access->uv.class_var_access->class_var) {
     return;
   }
-  assert(op_module_var_access->uv.class_var_access);
+  assert(op_class_var_access->uv.class_var_access);
   
-  SPVM_OP* op_name = op_module_var_access->uv.class_var_access->op_name;
+  SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
   
   char* basic_type_name;
   char* base_name;
@@ -324,7 +324,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
   if (found_basic_type) {
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_basic_type->class_var_symtable, base_name, strlen(base_name));
     if (found_class_var) {
-      op_module_var_access->uv.class_var_access->class_var = found_class_var;
+      op_class_var_access->uv.class_var_access->class_var = found_class_var;
     }
   }
 }
@@ -508,12 +508,12 @@ void SPVM_AST_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     // Check class var
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_AST_CHECKER_get_type(compiler, class_var->op_module_var);
+      SPVM_TYPE* class_var_type = SPVM_AST_CHECKER_get_type(compiler, class_var->op_class_var);
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
       // valut_t cannnot become class variable
       if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_module_var->file, class_var->op_module_var->line);
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
     }
@@ -2794,37 +2794,37 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             else {
               // Search the class variable
               SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
-              SPVM_OP* op_module_var_access = SPVM_OP_new_op_module_var_access(compiler, op_name_basic_type_var);
+              SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_basic_type_var);
               
-              op_module_var_access->is_dist = op_cur->is_dist;
+              op_class_var_access->is_dist = op_cur->is_dist;
               
-              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_module_var_access, basic_type->name);
-              if (op_module_var_access->uv.class_var_access->class_var) {
+              SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, basic_type->name);
+              if (op_class_var_access->uv.class_var_access->class_var) {
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 // Check field name
-                SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_module_var_access, basic_type->name);
+                SPVM_AST_CHECKER_resolve_class_var_access(compiler, op_class_var_access, basic_type->name);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
                 
-                SPVM_CLASS_VAR_ACCESS* class_var_access = op_module_var_access->uv.class_var_access;
+                SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
                 SPVM_CLASS_VAR* class_var = class_var_access->class_var;
                 SPVM_BASIC_TYPE* class_var_access_basic_type = class_var->current_basic_type;
                 
                 if (!SPVM_AST_CHECKER_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type)) {
                   if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_basic_type->name,  method->current_basic_type->name, op_module_var_access->file, op_module_var_access->line);
+                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_basic_type->name,  method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
                     return;
                   }
                 }
                 
                 var->class_var = class_var;
                 
-                SPVM_OP_replace_op(compiler, op_stab, op_module_var_access);
+                SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
                 
-                op_cur = op_module_var_access;
+                op_cur = op_class_var_access;
               }
               else {
                 SPVM_COMPILER_error(compiler, "The variable \"%s\" is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);

@@ -813,7 +813,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, basic_type_name, class_var->op_module_var->file, class_var->op_module_var->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, basic_type_name, class_var->op_class_var->file, class_var->op_class_var->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
@@ -1159,7 +1159,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   return op_method;
 }
 
-SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op_module_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
   
   SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
   
@@ -1172,9 +1172,9 @@ SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* o
   
   class_var->op_name = op_name;
   class_var->type = op_type->uv.type;
-  class_var->op_module_var = op_module_var;
+  class_var->op_class_var = op_class_var;
 
-  op_module_var->uv.class_var = class_var;
+  op_class_var->uv.class_var = class_var;
 
   // Class variable attributes
   if (op_attributes) {
@@ -1221,10 +1221,10 @@ SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* o
         }
       }
       if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_module_var->file, op_module_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_module_var->file, op_module_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -1234,7 +1234,7 @@ SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* o
     class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
   }
   
-  return op_module_var;
+  return op_class_var;
 }
 
 SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
@@ -3165,17 +3165,17 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_new_op_module_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_module_var_name) {
+SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_name) {
   
-  const char* class_var_name = op_module_var_name->uv.name;
+  const char* class_var_name = op_class_var_name->uv.name;
   
-  SPVM_OP* op_module_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, op_module_var_name->file, op_module_var_name->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, op_class_var_name->file, op_class_var_name->line);
   
   SPVM_CLASS_VAR_ACCESS* class_var_access = SPVM_CLASS_VAR_ACCESS_new(compiler);
-  class_var_access->op_name = op_module_var_name;
-  op_module_var_access->uv.class_var_access = class_var_access;
+  class_var_access->op_name = op_class_var_name;
+  op_class_var_access->uv.class_var_access = class_var_access;
   
-  return op_module_var_access;
+  return op_class_var_access;
 }
 
 SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
