@@ -2222,7 +2222,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         }
         
         // Part names of the class name begin with lower case
-        int32_t class_part_name_is_invalid = 0;
+        int32_t basic_type_part_name_is_invalid = 0;
         int32_t basic_type_name_length = strlen(basic_type_name);
         for (int32_t i = 0; i < basic_type_name_length; i++) {
           if (i > 1) {
