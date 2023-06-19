@@ -30,9 +30,9 @@ The SPVM::Builder::Util::API class defines the public functions of the L<SPVM::B
 
 =head2 create_make_rule_native
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($basic_type_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($module_name);
 
-Creates a rule written by C<make> commands to generate a dynamic library for the class $basic_type_name that contains native methods, and returns the rule.
+Creates a rule written by C<make> commands to generate a dynamic library for the class $module_name that contains native methods, and returns the rule.
 
 Examples:
 
@@ -49,9 +49,9 @@ Examples:
 
 =head2 create_make_rule_precompile
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($basic_type_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($module_name);
 
-Creates a rule written by C<make> commands to generate a dynamic library for the class $basic_type_name that contains precompiled methods, and returns the rule.
+Creates a rule written by C<make> commands to generate a dynamic library for the class $module_name that contains precompiled methods, and returns the rule.
 
 Examples:
 
