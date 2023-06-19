@@ -1588,8 +1588,8 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     if (method->is_init) {
       int32_t* init_flags = (int32_t*)env->init_flags;
       int32_t basic_type_id = method->current_basic_type_id;
-      int32_t class_init_flag = init_flags[basic_type_id];
-      if (class_init_flag) {
+      int32_t init_flag = init_flags[basic_type_id];
+      if (init_flag) {
         no_need_call = 1;
       }
       else {
