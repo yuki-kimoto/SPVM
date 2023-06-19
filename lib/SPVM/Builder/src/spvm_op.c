@@ -462,13 +462,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           // Basic type name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
             const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->alias_symtable, alias_name, strlen(alias_name));
             if (use_basic_type_name_exists) {
-              SPVM_COMPILER_error(compiler, "The class alias name \"%s\" is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "The alias name \"%s\" is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
             }
             else {
               SPVM_HASH_set(type->basic_type->alias_symtable, alias_name, strlen(alias_name), (void*)use_basic_type_name);

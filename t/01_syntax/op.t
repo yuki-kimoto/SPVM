@@ -67,11 +67,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use Point as point; }';
-    compile_not_ok($source, qr/The class alias name "point" must begin with an upper case character/);
+    compile_not_ok($source, qr/The alias name "point" must begin with an upper case character/);
   }
   {
     my $source = 'class MyClass { use Point as Po; use Point as Po; }';
-    compile_not_ok($source, qr/The class alias name "Po" is already used/);
+    compile_not_ok($source, qr/The alias name "Po" is already used/);
   }
 }
 
