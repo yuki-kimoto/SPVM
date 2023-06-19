@@ -278,7 +278,7 @@ sub get_required_resources {
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_basic_type_name);
+      my $input_dir = SPVM::Builder::Util::remove_basic_type_part_from_file($native_module_file, $perl_basic_type_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
 
@@ -1065,7 +1065,7 @@ sub compile_class_native_source_files {
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_basic_type_name);
+    my $input_dir = SPVM::Builder::Util::remove_basic_type_part_from_file($native_module_file, $perl_basic_type_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
