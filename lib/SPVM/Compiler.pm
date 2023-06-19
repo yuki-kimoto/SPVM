@@ -25,28 +25,28 @@ The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_run
   $compiler->set_start_file(__FILE__);
   
   {
-    my $basic_type_name = "Foo";
+    my $module_name = "Foo";
     $compiler->set_start_line(__LINE__ + 1);
-    my $success = $compiler->compile($basic_type_name);
+    my $success = $compiler->compile($module_name);
     unless ($success) {
       my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
         warn "$error_message";
       }
-      die "Can't compile the \"$basic_type_name\" basic type";
+      die "Can't compile the \"$module_name\" basic type";
     }
   }
   
   {
-    my $basic_type_name = "Bar";
+    my $module_name = "Bar";
     $compiler->set_start_line(__LINE__ + 1);
-    my $success = $compiler->compile($basic_type_name);
+    my $success = $compiler->compile($module_name);
     unless ($success) {
       my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
         warn "$error_message";
       }
-      die "Can't compile the \"$basic_type_name\" basic type";
+      die "Can't compile the \"$module_name\" basic type";
     }
   }
   
@@ -88,7 +88,7 @@ Sets the line to start compiling by the L</"compile"> method.
 
 =head2 compile
 
-  native method compile : int ($basic_type_name : string);
+  native method compile : int ($module_name : string);
 
 Compiles the specified class and the classes that are load in the specified class. 
 
