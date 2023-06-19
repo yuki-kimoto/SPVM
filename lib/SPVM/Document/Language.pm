@@ -58,14 +58,14 @@ A basic type name is a L<symbol name|/"Symbol Name">.
 
 The part names of a basic type name must begin uppercase letter. If the basic type name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A basic type name must be the name that the relative class file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the basic type name must be C<Foo::Bar::Baz>.
+A basic type name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the basic type name must be C<Foo::Bar::Baz>.
 
-  # Valid basic type name in the class file "Foo/Bar/Baz.spvm"
+  # Valid basic type name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid basic type name in the class file "Foo/Bar/Baz.spvm"
+  # Invalid basic type name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
@@ -2223,7 +2223,7 @@ In a class block, L<use statements|/"use Statement">, L<class variable definitio
     }
   }
 
-If more than one class is defined in a class file, a compilation error occurs.
+If more than one class is defined in a module file, a compilation error occurs.
 
 =head2 Version Declaration
 
@@ -2611,7 +2611,7 @@ This method is called by the static instance method call.
 
 =head2 Class File Name
 
-A class must be written in the following class file.
+A class must be written in the following module file.
 
 Change C<::> to C</>. Add ".spvm" at the end.
 
@@ -8733,7 +8733,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the basic type name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the basic type name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 Examples:
 

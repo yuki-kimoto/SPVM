@@ -90,7 +90,7 @@ Get only C<enum> methods if this option is true.
 
   method get_file : string ($basic_type_name : string);
 
-Gets the class file name and returns it.
+Gets the module file name and returns it.
 
 =head2 build_precompile_source
 

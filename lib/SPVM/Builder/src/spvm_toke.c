@@ -63,7 +63,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   while(1) {
     
-    // Load class file
+    // Load module file
     int32_t source_index = compiler->ch_ptr - compiler->cur_source;
     if (!compiler->cur_source || source_index >= compiler->cur_source_length) {
       
@@ -75,7 +75,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return END_OF_FILE;
       }
       
-      // Load class file
+      // Load module file
       int32_t success = SPVM_TOKE_load_module_file(compiler);
       
       if (!success) {
@@ -2300,7 +2300,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         const char* include_dir = NULL;
         if (!found_source_buffer) {
           
-          // Search class file
+          // Search module file
           FILE* fh = NULL;
           int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
           for (int32_t i = 0; i < include_dirs_length; i++) {
@@ -2347,7 +2347,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The class file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2358,14 +2358,14 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             fseek(fh, 0, SEEK_END);
             int32_t source_length = (int32_t)ftell(fh);
             if (source_length < 0) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
               return 0;
             }
             fseek(fh, 0, SEEK_SET);
             char* source = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, source_length + 1);
             int32_t read_error = 0;
             if ((int32_t)fread(source, 1, source_length, fh) < source_length) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
               SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, source);
               read_error = 1;
             }
@@ -2391,7 +2391,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           compiler->cur_rel_file = cur_rel_file;
           compiler->cur_rel_file_basic_type_name = basic_type_name;
           
-          // If we get current class file path, set it, otherwise set class relative file path
+          // If we get current module file path, set it, otherwise set class relative file path
           if (cur_file) {
             compiler->cur_file = cur_file;
           }

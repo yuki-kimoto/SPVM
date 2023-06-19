@@ -260,10 +260,10 @@ sub compile_source_files {
 
   my $ignore_native_module = $options->{ignore_native_module};
   
-  # Native class file
+  # Native module file
   my $native_module_file;
   unless ($ignore_native_module) {
-    # Native class file
+    # Native module file
     my $native_module_ext = $config->ext;
     unless (defined $native_module_ext) {
       confess "Source extension is not specified";

@@ -6,7 +6,7 @@ SPVM::Document::Resource - How to write the resource class
 
 A resource is a L<native class|SPVM::Document::NativeClass> that contains a set of sources and headers of native language such as the C language or C<C++>.
 
-A resource doesn't has the native class file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
+A resource doesn't has the native module file such as C<Foo.c>. It has a config file such as C<Foo.config>. Header files are placed at C<Foo.native/include>. Source filies are placed at C<Foo.native/src>. 
 
 Let's see the files of L<Resource::Zlib|SPVM::Resource::Zlib> as an example.
 

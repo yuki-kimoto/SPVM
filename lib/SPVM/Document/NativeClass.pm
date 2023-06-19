@@ -8,7 +8,7 @@ A native class is the class that is implemented by a native language such as the
 
 =head1 Native Method Definition
 
-A native method is defined by the C<native> method attribute in a SPVM class file. It ends with a semicolon. The method cannnot have the block. 
+A native method is defined by the C<native> method attribute in a SPVM module file. It ends with a semicolon. The method cannnot have the block. 
 
   # SPVM/MyClass.spvm
   class MyClass {
@@ -17,7 +17,7 @@ A native method is defined by the C<native> method attribute in a SPVM class fil
 
 =head1 Native Config File
 
-A native config file is needed for a native class. The name of the config file is the SPVM class file extension replaced by the C<.config>.
+A native config file is needed for a native class. The name of the config file is the SPVM module file extension replaced by the C<.config>.
 
   # Native config file
   SPVM/MyClass.config
@@ -96,7 +96,7 @@ Forcing the compilation and the link:
 
 A native class is the class that is implemented by a native language such as the C language or C++.
 
-The name of the native class file is the SPVM class file extension replaced by the L<extension of the native class|/"Native Class File Extension">.
+The name of the native module file is the SPVM module file extension replaced by the L<extension of the native class|/"Native Class File Extension">.
 
   SPVM/MyClass.c
 

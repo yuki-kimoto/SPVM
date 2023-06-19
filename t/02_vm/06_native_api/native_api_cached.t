@@ -121,7 +121,7 @@ system($compile_native_api_prgoram) == 0 or die;
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
 
-# Update class file
+# Update module file
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
@@ -149,7 +149,7 @@ system($compile_native_api_prgoram) == 0 or die;
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
    }
 
-  # Update class file
+  # Update module file
   sleep $wait_time;
   my $now = time;
   utime $now, $now, $module_file;
@@ -174,7 +174,7 @@ system($compile_native_api_prgoram) == 0 or die;
   }
 }
 
-# Update native class file
+# Update native module file
 {
   my $native_object_file;
   my $start_native_object_file_mtime;

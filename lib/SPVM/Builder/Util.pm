@@ -24,7 +24,7 @@ sub get_spvm_core_files {
     my $builder_loaded_dir = $builder_loaded_file;
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
     
-    # SPVM::Builder class files
+    # SPVM::Builder module files
     my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
     for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
       my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
@@ -327,7 +327,7 @@ sub create_make_rule {
 
   push @deps, $spvm_file;
   
-  # Dependency native class file
+  # Dependency native module file
   if ($category eq 'native') {
     # Config
     my $config_file = $noext_file;

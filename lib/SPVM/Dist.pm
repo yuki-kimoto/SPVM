@@ -1112,10 +1112,10 @@ sub generate_dist {
   my $output_dir = $self->output_dir;
   $self->generate_dir($output_dir);
   
-  # Generate SPVM class file
+  # Generate SPVM module file
   $self->generate_spvm_module_file;
   
-  # Generate Perl class file
+  # Generate Perl module file
   my $no_pm_file = $self->no_pm_file;
   unless ($no_pm_file) {
     $self->generate_perl_module_file;
@@ -1125,7 +1125,7 @@ sub generate_dist {
     # Generate native config file
     $self->generate_native_config_file;
     
-    # Generate native class file
+    # Generate native module file
     unless ($resource) {
       $self->generate_native_module_file;
     }
@@ -1157,14 +1157,14 @@ sub generate_dist {
     # Generate t/basic.t file
     $self->generate_basic_test_file;
 
-    # Generate basic test SPVM class file
+    # Generate basic test SPVM module file
     $self->generate_basic_test_spvm_module_file;
 
     # Generate license file
     $self->generate_license_file;
     
     if ($resource) {
-      # Generate basic test native class file
+      # Generate basic test native module file
       $self->generate_basic_test_native_module_file;
 
       # Generate basic test native config file

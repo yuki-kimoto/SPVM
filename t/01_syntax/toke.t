@@ -79,7 +79,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use NotFoundClass; }';
-    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" basic type. The class file "NotFoundClass.spvm" is not found|);
+    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" basic type. The module file "NotFoundClass.spvm" is not found|);
   }
 }
 

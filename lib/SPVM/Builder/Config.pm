@@ -1201,7 +1201,7 @@ undef
 
 =item * L</"spvm_core_include_dir">
 
-The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
+The header including directory of the SPVM core is created from the module file of the loaded L<SPVM::Builder::Config> class. 
 
 The value looks like C<path/SPVM/Builder/include>.
 
