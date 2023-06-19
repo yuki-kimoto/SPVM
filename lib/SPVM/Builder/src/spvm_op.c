@@ -2351,7 +2351,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
       op_invocant->uv.type->resolved_in_ast = 1;
     }
     else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
-      call_method->is_current_class = 1;
+      call_method->is_current = 1;
     }
   }
   // Instance method call

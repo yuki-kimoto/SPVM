@@ -135,7 +135,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
     SPVM_METHOD* found_method = NULL;
     // Class name + method name
     const char* basic_type_name;
-    if (call_method->is_current_class) {
+    if (call_method->is_current) {
       basic_type_name = current_basic_type_name;
     }
     else {
