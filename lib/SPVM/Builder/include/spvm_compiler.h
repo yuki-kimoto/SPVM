@@ -92,12 +92,15 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
+  // Module source symtable
+  SPVM_HASH* source_symtable;
+  
   // Strings - string literals and symbol names
   SPVM_LIST* constant_strings;
   
   // String symtable
   SPVM_HASH* constant_string_symtable;
-
+  
   // String Buffer
   SPVM_STRING_BUFFER* constant_strings_buffer;
   
@@ -113,29 +116,29 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // Anon methods
-  SPVM_LIST* anon_methods;
-  
-  // Method ops
-  SPVM_LIST* methods;
-  
-  // Argments
-  SPVM_LIST* args;
-  
-  // OP our symtable
+  // Class variables
   SPVM_LIST* class_vars;
   
   // Field ops
   SPVM_LIST* fields;
   
+  // Method ops
+  SPVM_LIST* methods;
+  
+  // Anon methods
+  SPVM_LIST* anon_methods;
+  
+  SPVM_LIST* cur_basic_type_anon_basic_types;
+  
+  // Argments
+  SPVM_LIST* args;
+  
   // Switch 
   SPVM_LIST* switch_infos;
   
-  // class source symtable
-  SPVM_HASH* source_symtable;
-  
   // SPVM runtime codes
   int32_t* runtime_codes;
+  
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
