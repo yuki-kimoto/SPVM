@@ -741,9 +741,9 @@ sub get_normalized_env {
 sub get_version_string {
   my ($spvm_module_file) = @_;
   
-  open my $spvm_class_fh, '<', $spvm_module_file or die "Can't open the file \"$spvm_module_file\": $!";
+  open my $spvm_module_fh, '<', $spvm_module_file or die "Can't open the file \"$spvm_module_file\": $!";
   local $/;
-  my $content = <$spvm_class_fh>;
+  my $content = <$spvm_module_fh>;
   my $version_string;
   if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
     $version_string = $1;
@@ -761,9 +761,9 @@ sub get_spvm_version_string {
   my $builder_dir = &get_builder_dir_from_config_class;
   my $spvm_api_header_file = "$builder_dir/include/spvm_api.h";
   
-  open my $spvm_class_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
+  open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
   local $/;
-  my $content = <$spvm_class_fh>;
+  my $content = <$spvm_module_fh>;
   my $version_string;
   if ($content =~ /#define\s+SPVM_VERSION\s*"([\d\._]+)"/) {
     $version_string = $1;
