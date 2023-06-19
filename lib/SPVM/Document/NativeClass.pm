@@ -140,7 +140,7 @@ A native implementation function must have a name created with the following ste
 
 =over 2
 
-=item * 1. C<::> in the SPVM class name is replaced with C<__>.
+=item * 1. C<::> in the SPVM basic type name is replaced with C<__>.
 
 =item * 2. C<SPVM__> is added at the beginning.
 
@@ -208,11 +208,11 @@ If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" direct
 
   ~/.spvm_build
 
-The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM class name is changed to ".o".
+The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM basic type name is changed to ".o".
 
   ~/.spvm_build/work/object/MyClass.o
 
-The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM class name is changed to ".so", or etc corresponding to your os.
+The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM basic type name is changed to ".so", or etc corresponding to your os.
 
   # Unix/Linux
   ~/.spvm_build/work/object/MyClass.so

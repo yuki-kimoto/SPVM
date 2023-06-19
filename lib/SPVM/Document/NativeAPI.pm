@@ -378,7 +378,7 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
   int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 
-Gets the class variable ID given the class name, class variable name. If the class variable does not exist, a value less than 0 is returned.
+Gets the class variable ID given the basic type name, class variable name. If the class variable does not exist, a value less than 0 is returned.
 
 Examples:
 
@@ -388,7 +388,7 @@ Examples:
 
   int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Gets a class method ID by the class name, the method name. If the class method does not exists, a negative value is returned.
+Gets a class method ID by the basic type name, the method name. If the class method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
@@ -1287,7 +1287,7 @@ Examples:
 
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<new_object> function, but you can specify class name directly.
+This is same as C<new_object> function, but you can specify basic type name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1527,7 +1527,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_byte> function, but you can specify the class name directly.
+This is same as C<set_class_var_byte> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1543,7 +1543,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_short> function, but you can specify the class name directly.
+This is same as C<set_class_var_short> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1559,7 +1559,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_int> function, but you can specify the class name directly.
+This is same as C<set_class_var_int> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1575,7 +1575,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_long> function, but you can specify the class name directly.
+This is same as C<set_class_var_long> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1591,7 +1591,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_float> function, but you can specify the class name directly.
+This is same as C<set_class_var_float> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1607,7 +1607,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_double> function, but you can specify the class name directly.
+This is same as C<set_class_var_double> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1623,7 +1623,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_object> function, but you can specify the class name directly.
+This is same as C<set_class_var_object> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1639,7 +1639,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_byte> function, but you can specify the class name directly.
+This is same as C<get_class_var_byte> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1655,7 +1655,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_short> function, but you can specify the class name directly.
+This is same as C<get_class_var_short> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1671,7 +1671,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_int> function, but you can specify the class name directly.
+This is same as C<get_class_var_int> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1687,7 +1687,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_long> function, but you can specify the class name directly.
+This is same as C<get_class_var_long> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1703,7 +1703,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_float> function, but you can specify the class name directly.
+This is same as C<get_class_var_float> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1719,7 +1719,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_double> function, but you can specify the class name directly.
+This is same as C<get_class_var_double> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1735,7 +1735,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_object> function, but you can specify the class name directly.
+This is same as C<get_class_var_object> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1751,7 +1751,7 @@ Examples:
     const char* basic_type_name, const char* method_name, int32_t args_stack_length,
     const char* func_name, const char* file, int32_t line);
 
-This is same as C<call_method_raw> function, but you can specify the class name and method name directly.
+This is same as C<call_method_raw> function, but you can specify the basic type name and method name directly.
 
 Examples:
 
@@ -1802,7 +1802,7 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* basic_type_name, const char* method_name);
 
-Gets a instance method ID by the class name, the method name. If the instance method does not exists, a negative value is returned.
+Gets a instance method ID by the basic type name, the method name. If the instance method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
@@ -2084,7 +2084,7 @@ Examples:
 
   void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as L</"new_pointer"> function, but you can specify class name directly.
+This is same as L</"new_pointer"> function, but you can specify basic type name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -2138,7 +2138,7 @@ If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
   int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
 
-Gets the ID of the field given an class name and field name. If the field does not exist, a value less than 0 is returned.
+Gets the ID of the field given an basic type name and field name. If the field does not exist, a value less than 0 is returned.
 
 Examples:
 
@@ -2160,7 +2160,7 @@ Examples:
     const char* basic_type_name, const char* method_name, int32_t args_stack_length,
     const char* func_name, const char* file, int32_t line);
 
-Calls a instance method by the class name and the method name.
+Calls a instance method by the basic type name and the method name.
 
 Examples:
 
@@ -2179,7 +2179,7 @@ Examples:
 
   int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Gets a method ID by the class name and the method name. If the method does not exists, a negative value is returned.
+Gets a method ID by the basic type name and the method name. If the method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 

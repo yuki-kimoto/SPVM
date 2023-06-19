@@ -133,7 +133,7 @@ void SPVM_AST_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_c
   // Class method call
   if (call_method->is_static) {
     SPVM_METHOD* found_method = NULL;
-    // Class name + method name
+    // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
       basic_type_name = current_basic_type_name;
@@ -303,7 +303,7 @@ void SPVM_AST_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP*
   
   char* colon_ptr = strrchr(name, ':');
   if (colon_ptr) {
-    // Class name
+    // Basic type name
     // (end - start + 1) - $ - colon * 2
     int32_t basic_type_name_length = (colon_ptr - name + 1) - 1 - 2;
     basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, basic_type_name_length + 1);

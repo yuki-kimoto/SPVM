@@ -2213,15 +2213,15 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
       const char* basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
       int32_t basic_type_name_length = strlen(basic_type_name);
       
-      // Check the class name
+      // Check the basic type name
       {
-        // A class name must begin with an upper case character
+        // A basic type name must begin with an upper case character
         if (islower(basic_type_name[0])) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // Part names of the class name begin with lower case
+        // Part names of the basic type name begin with lower case
         int32_t basic_type_part_name_is_invalid = 0;
         int32_t basic_type_name_length = strlen(basic_type_name);
         for (int32_t i = 0; i < basic_type_name_length; i++) {
@@ -2235,33 +2235,33 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           }
         }
         
-        // A class name cannnot conatain "__"
+        // A basic type name cannnot conatain "__"
         if (strstr(basic_type_name, "__")) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot constain \"__\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot constain \"__\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A class name cannnot end with "::"
+        // A basic type name cannnot end with "::"
         if (basic_type_name_length >= 2 && basic_type_name[basic_type_name_length - 2] == ':' && basic_type_name[basic_type_name_length - 1] == ':' ) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot end with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot end with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A class name cannnot contains "::::".
+        // A basic type name cannnot contains "::::".
         if (strstr(basic_type_name, "::::")) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot contains \"::::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot contains \"::::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A class name cannnot begin with \"$::\"
+        // A basic type name cannnot begin with \"$::\"
         if (basic_type_name_length >= 2 && basic_type_name[0] == ':' && basic_type_name[1] == ':') {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot begin with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A class name cannnot begin with a number
+        // A basic type name cannnot begin with a number
         if (basic_type_name_length >= 1 && isdigit(basic_type_name[0])) {
-          SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot begin with a number.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
       }
@@ -2272,7 +2272,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         continue;
       }
       else {
-        // Create moudle relative file name from class name by changing :: to / and add ".spvm"
+        // Create moudle relative file name from basic type name by changing :: to / and add ".spvm"
         int32_t cur_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
         char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);
         const char* ch_ptr_orig = basic_type_name;

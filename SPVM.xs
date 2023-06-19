@@ -1163,7 +1163,7 @@ _xs_call_method(...)
   SV* sv_method_name = ST(2);
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  // Class Name
+  // Basic Type Name
   int32_t method_id;
   const char* basic_type_name;
   int32_t class_method_call;
@@ -4888,7 +4888,7 @@ set_native_method_address(...)
 
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
-  // Class name
+  // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
 
   // Method name

@@ -79,7 +79,7 @@ Create a class object using the L<SPVM::ExchangeAPI|SPVM::ExchangeAPI/"class"> m
   my $__basic_type_name = $self->__basic_type_name;
   $self->__basic_type_name($__basic_type_name);
 
-Gets and sets a class name.
+Gets and sets a basic type name.
 
 =head2 __api
 
@@ -102,7 +102,7 @@ Options:
 
 =item * C<__basic_type_name> : string
 
-A class name
+A basic type name
 
 =item * C<__api> : SPVM::ExchangeAPI
 

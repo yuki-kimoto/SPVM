@@ -128,7 +128,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
-  // The class name
+  // The basic type name
   SPVM_STRING_BUFFER_add(string_buffer,"  const char* current_basic_type_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_basic_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");

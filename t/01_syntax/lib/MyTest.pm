@@ -36,7 +36,7 @@ sub compile_not_ok {
       $basic_type_name = $1;
     }
     unless (defined $basic_type_name) {
-      die "Can't find class name in the source";
+      die "Can't find basic type name in the source";
     }
     
     unless (defined $first_basic_type_name) {
@@ -127,7 +127,7 @@ sub compile_ok {
       $basic_type_name = $1;
     }
     unless (defined $basic_type_name) {
-      die "Can't find class name in the source";
+      die "Can't find basic type name in the source";
     }
     
     unless (defined $first_basic_type_name) {

@@ -1083,7 +1083,7 @@ Examples:
 
   my $class = $api->class($basic_type_name);
 
-Creates a new L<SPVM::ExchangeAPI::Class> object with the class name $basic_type_name, and returns it.
+Creates a new L<SPVM::ExchangeAPI::Class> object with the basic type name $basic_type_name, and returns it.
 
 Examples:
   

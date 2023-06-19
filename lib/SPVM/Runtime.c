@@ -57,7 +57,7 @@ int32_t SPVM__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VALUE* stac
 
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  // Class name
+  // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
 
   // Method name
@@ -86,7 +86,7 @@ int32_t SPVM__Runtime__get_method_is_static(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  // Class name
+  // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
 
   // Method name
@@ -113,7 +113,7 @@ int32_t SPVM__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
 
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  // Class name
+  // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
 
   // Method name

@@ -42,9 +42,9 @@ use Test::More;
   }
 }
 
-# Class Name
+# Basic Type Name
 {
-  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The class name "ClassNameDifferntFromClassFileNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileName"/);
+  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The basic type name "ClassNameDifferntFromClassFileNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileName"/);
 }
 
 # Class Descripter

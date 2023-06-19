@@ -2224,7 +2224,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   
   const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_id);
   
-  // Class name and method name
+  // Basic type name and method name
   const char* new_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";
@@ -2317,7 +2317,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_id);
   
-  // Class name and method name
+  // Basic type name and method name
   const char* new_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";

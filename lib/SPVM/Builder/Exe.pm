@@ -135,7 +135,7 @@ sub new {
   # Target basic type name
   my $basic_type_name = $self->{basic_type_name};
   unless (defined $basic_type_name) {
-    confess "Class name not specified";
+    confess "Basic type name not specified";
   }
   
   # Excutable file name
@@ -194,7 +194,7 @@ sub build_exe_file {
   # Builder
   my $builder = $self->builder;
   
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->{basic_type_name};
   
   # Build runtime
@@ -354,7 +354,7 @@ sub compile {
   # Builder
   my $builder = $self->builder;
   
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->{basic_type_name};
   
   # Compile SPVM
@@ -473,10 +473,10 @@ sub create_bootstrap_header_source {
   # Builder
   my $builder = $self->builder;
 
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->basic_type_name;
 
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
   
   my $basic_type_names_without_anon = [grep { $_ !~ /::anon::/ } @$basic_type_names];
@@ -556,10 +556,10 @@ sub create_bootstrap_main_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->basic_type_name;
 
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
   my $basic_type_names_without_anon = [grep { $_ !~ /::anon::/ } @$basic_type_names];
 
@@ -626,7 +626,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   }
   else {
     
-    // Class name
+    // Basic type name
     const char* basic_type_name = "$basic_type_name";
     
     // Class
@@ -696,10 +696,10 @@ sub create_bootstrap_new_env_prepared_func_source {
   # Builder
   my $builder = $self->builder;
   
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->basic_type_name;
   
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
   my $basic_type_names_without_anon = [grep { $_ !~ /::anon::/ } @$basic_type_names];
   
@@ -758,7 +758,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
 
   my $source = '';
@@ -789,7 +789,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
 
   my $source = '';
@@ -820,10 +820,10 @@ sub create_bootstrap_source {
   # Builder
   my $builder = $self->builder;
   
-  # Class name
+  # Basic type name
   my $basic_type_name = $self->basic_type_name;
   
-  # Class names
+  # Basic type names
   my $basic_type_names = $self->runtime->get_basic_type_names;
   my $basic_type_names_without_anon = [grep { $_ !~ /::anon::/ } @$basic_type_names];
   

@@ -309,7 +309,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     
     // If basic type name is different from the basic type name corresponding to the module file, compile error occur.
     if (strcmp(basic_type_name, compiler->cur_rel_file_basic_type_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_basic_type_name, op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The basic type name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_basic_type_name, op_module->file, op_module->line);
       return op_module;
     }
   }
@@ -459,7 +459,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         const char* alias_name = op_use->uv.use->alias_name;
         if (alias_name) {
     
-          // Class name must begin with upper case, otherwise compiler error occur.
+          // Basic type name must begin with upper case, otherwise compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(alias_name[0])) {
             SPVM_COMPILER_error(compiler, "The class alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);

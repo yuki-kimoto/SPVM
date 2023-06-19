@@ -58,7 +58,7 @@ Gets the all basic type names in the runtime and returns it.
 
   method get_basic_type_parent_name : string ($basic_type_name : string);
 
-Gets the parent class name and returns it.
+Gets the parent basic type name and returns it.
 
 =head2 get_method_names
 
@@ -102,7 +102,7 @@ Builds the C source code of the class that contains C<precompile> methods and re
 
   method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
 
-Gets the anon class names and returns it.
+Gets the anon basic type names and returns it.
 
 =head2 get_method_is_static
 

@@ -39,11 +39,11 @@ use Test::More;
   }
 }
 
-# Class Name
+# Basic Type Name
 {
   {
     my $source = 'class myclass;';
-    compile_not_ok($source, qr|The class name "myclass" must begin with an upper case character|);
+    compile_not_ok($source, qr|The basic type name "myclass" must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::foo;';
@@ -55,23 +55,23 @@ use Test::More;
   }
   {
     my $source = 'class Myclass__Foo;';
-    compile_not_ok($source, qr|The class name "Myclass__Foo" cannnot constain "__"|);
+    compile_not_ok($source, qr|The basic type name "Myclass__Foo" cannnot constain "__"|);
   }
   {
     my $source = 'class Myclass::;';
-    compile_not_ok($source, qr|The class name "Myclass::" cannnot end with "::"|);
+    compile_not_ok($source, qr|The basic type name "Myclass::" cannnot end with "::"|);
   }
   {
     my $source = 'class MyClass::::Foo;';
-    compile_not_ok($source, qr|The class name "MyClass::::Foo" cannnot contains "::::"|);
+    compile_not_ok($source, qr|The basic type name "MyClass::::Foo" cannnot contains "::::"|);
   }
   {
     my $source = 'class ::MyClass;';
-    compile_not_ok($source, qr|The class name "::MyClass" cannnot begin with "::"|);
+    compile_not_ok($source, qr|The basic type name "::MyClass" cannnot begin with "::"|);
   }
   {
     my $source = 'class 6MyClass;';
-    compile_not_ok($source, qr|The class name "6MyClass" cannnot begin with a number|);
+    compile_not_ok($source, qr|The basic type name "6MyClass" cannnot begin with a number|);
   }
 }
 
