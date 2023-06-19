@@ -1,6 +1,6 @@
 class TestCase::CLASS {
   static method basic_type_name : int () {
-    my $basic_type_name = __CLASS__;
+    my $basic_type_name = __PACKAGE__;
     
     unless ($basic_type_name eq "TestCase::CLASS") {
       return 0;

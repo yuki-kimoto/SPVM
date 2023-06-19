@@ -647,7 +647,7 @@ SPVM::Test - SPVM test class
     print TestCase::Simple->file . "\n";
     print __FILE__ . "\n";
     print __LINE__ . "\n";
-    print __CLASS__ . "\n";
+    print __PACKAGE__ . "\n";
     
     {
       my $minimal = TestCase::Minimal->new;

@@ -2107,9 +2107,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = op;
                   keyword_token = END_OF_FILE;
                 }
-                else if (strcmp(symbol_name, "__CLASS__") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS_NAME, compiler->cur_file, compiler->cur_line);
-                  keyword_token = CURRENT_CLASS_NAME;
+                else if (strcmp(symbol_name, "__PACKAGE__") == 0) {
+                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_MODULE_NAME, compiler->cur_file, compiler->cur_line);
+                  keyword_token = CURRENT_MODULE_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->cur_rel_file, strlen(compiler->cur_rel_file), compiler->cur_file, compiler->cur_line);

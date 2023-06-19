@@ -1202,7 +1202,7 @@ void SPVM_AST_CHECKER_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BA
             }
             break;
           }
-          case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
+          case SPVM_OP_C_ID_CURRENT_MODULE_NAME: {
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
             SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, basic_type->name, strlen(basic_type->name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant);

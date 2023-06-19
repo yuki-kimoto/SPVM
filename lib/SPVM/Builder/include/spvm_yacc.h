@@ -110,7 +110,7 @@ extern int SPVM_yydebug;
     WARN = 320,
     PRINT = 321,
     SAY = 322,
-    CURRENT_CLASS_NAME = 323,
+    CURRENT_MODULE_NAME = 323,
     UNWEAKEN = 324,
     ASSIGN = 325,
     SPECIAL_ASSIGN = 326,

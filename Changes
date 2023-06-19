@@ -11,7 +11,8 @@
     * The following Native Runtime APIs were changed.
       -  int32_t (*get_basic_type_parent_class_basic_type_id)(void* runtime, int32_t basic_type_id);
       +  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
-      
+    * The __CLASS__ operator was renamed to __PACKAGE__ operator.
+    
   [Compilation Error Messages]
     * The expression "class name" was reduced.
   [Exception Messages]

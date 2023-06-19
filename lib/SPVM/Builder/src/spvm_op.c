@@ -226,7 +226,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "REFERENCE",
     "DEREF",
     "STRING_LENGTH",
-    "CURRENT_CLASS_NAME",
+    "CURRENT_MODULE_NAME",
     "ALLOW",
     "WARN",
     "PRINT",
