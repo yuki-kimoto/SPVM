@@ -305,8 +305,8 @@ sub create_make_rule {
   $options ||= {};
   $basic_type_name =~ s/^SPVM:://;
   
-  my $class_base_name = $basic_type_name;
-  $class_base_name =~ s/^.+:://;
+  my $module_base_name = $basic_type_name;
+  $module_base_name =~ s/^.+:://;
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
