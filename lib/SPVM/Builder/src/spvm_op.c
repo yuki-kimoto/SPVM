@@ -1758,7 +1758,7 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_condition_
   }
   SPVM_OP* op_condition = SPVM_OP_new_op(compiler, id, op_condition_operand->file, op_condition_operand->line);
   
-  if (SPVM_OP_is_rel_op(compiler, op_condition_operand)) {
+  if (SPVM_OP_is_comparison_op(compiler, op_condition_operand)) {
     assert(op_condition_operand->moresib == 0);
     SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_condition_operand);
   }
@@ -3633,7 +3633,7 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
+int32_t SPVM_OP_is_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   switch (op->id) {
     case SPVM_OP_C_ID_NUMERIC_EQ:
