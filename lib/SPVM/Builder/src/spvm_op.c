@@ -1606,6 +1606,8 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type_new, NULL);
   
+  SPVM_LIST_push(compiler->cur_anon_op_types, op_type);
+  
   return op_anon_method;
 }
 
