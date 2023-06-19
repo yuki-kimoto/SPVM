@@ -649,8 +649,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->rel_file_id = class_module_rel_file_string->id;
       
       if (basic_type->dir) {
-        SPVM_CONSTANT_STRING* class_include_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
-        runtime_basic_type->dir_id = class_include_dir_string->id;
+        SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
+        runtime_basic_type->dir_id = basic_type_dir_string->id;
       }
       else {
         runtime_basic_type->dir_id = -1;
