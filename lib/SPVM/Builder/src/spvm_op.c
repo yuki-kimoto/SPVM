@@ -22,7 +22,7 @@
 #include "spvm_call_method.h"
 #include "spvm_type.h"
 #include "spvm_opcode_builder.h"
-#include "spvm_ast_checker.h"
+#include "spvm_check.h"
 #include "spvm_switch_info.h"
 #include "spvm_attribute.h"
 #include "spvm_allocator.h"

@@ -22,7 +22,7 @@
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
 #include "spvm_use.h"
-#include "spvm_ast_checker.h"
+#include "spvm_check.h"
 #include "spvm_opcode_builder.h"
 #include "spvm_object.h"
 #include "spvm_var_decl.h"
@@ -349,7 +349,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     }
     else {
       // Check syntax
-      SPVM_AST_CHECKER_check(compiler);
+      SPVM_CHECK_check(compiler);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
         die_error_id = 3;
       }

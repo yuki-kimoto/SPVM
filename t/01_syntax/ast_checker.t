@@ -30,7 +30,7 @@ use Test::More;
   use SPVM 'Hash';
 }
 
-# Compilation Errors in spvm_ast_checker.c 
+# Compilation Errors in spvm_check.c 
 
 # Array Initialization
 {
