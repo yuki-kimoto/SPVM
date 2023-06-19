@@ -42,7 +42,6 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  // Class basic type
   int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, basic_type_name);
   int32_t basic_type_methods_base_id = SPVM_API_RUNTIME_get_basic_type_methods_base_id(runtime, basic_type_id);
   int32_t basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, basic_type_id);
@@ -58,7 +57,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     }
   }
   
-  // If the class has anon methods, the anon methods is merged to this class
+  // If the basic type has anon methods, the anon methods is merged to this basic type
   int32_t basic_type_anon_methods_length = SPVM_API_RUNTIME_get_basic_type_anon_methods_length(runtime, basic_type_id);
   if (basic_type_anon_methods_length > 0) {
     int32_t basic_type_anon_methods_base_id = SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(runtime, basic_type_id);
@@ -116,7 +115,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // Headers
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
-  // Class
+  // Current basic type id
   int32_t current_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, current_basic_type_name);
   
   // Method
@@ -288,6 +287,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t empty_or_undef;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* bytes;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t class_var_id;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* class_var_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t is_read_only;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t length1;\n");
@@ -300,7 +300,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  char* class_var_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* method_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
@@ -5252,7 +5251,7 @@ int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, cons
 
 int32_t SPVM_PRECOMPILE_contains_field_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
   
-  // field_id__CLASS_NAME__FIELD_NAME__
+  // field_id__BASIC_TYPE_NAME__FIELD_NAME__
   const char* label = "field_id";
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
   
@@ -5270,7 +5269,7 @@ int32_t SPVM_PRECOMPILE_contains_class_var_id(SPVM_PRECOMPILE* precompile, const
 
 int32_t SPVM_PRECOMPILE_contains_method_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name) {
   
-  // method_id__METHOD_NAME__FIELD_NAME__
+  // method_id__BASIC_TYPE_NAME__METHOD_NAME__
   const char* label = "method_id";
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, method_name);
   
