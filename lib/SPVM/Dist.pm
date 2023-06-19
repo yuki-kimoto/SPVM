@@ -153,10 +153,10 @@ sub new {
   
   bless $self, $class;
 
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   unless (defined $self->module_name) {
-    confess "Basic type name must be specified";
+    confess "A module name must be specified";
   }
   
   if (defined $self->output_dir) {
@@ -247,7 +247,7 @@ sub generate_dir {
 sub generate_spvm_module_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # User name
@@ -292,7 +292,7 @@ EOS
 sub generate_perl_module_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Year
@@ -520,7 +520,7 @@ EOS
 sub generate_native_config_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # C or C++
@@ -565,7 +565,7 @@ EOS
 sub generate_native_module_file {
   my ($self) = @_;
 
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # extern C for C++
@@ -593,8 +593,8 @@ sub generate_native_module_file {
   }
   
   # Content
-  my $native_basic_type_name = $module_name;
-  $native_basic_type_name =~ s/::/__/g;
+  my $native_module_name = $module_name;
+  $native_module_name =~ s/::/__/g;
   my $native_module_file = $module_name;
   $native_module_file =~ s/::/\//g;
   $native_module_file .= ".$native_module_ext";
@@ -618,7 +618,7 @@ $extern_c_start
 
 static const char* FILE_NAME = "$native_module_file";
 
-int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__${native_module_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -636,7 +636,7 @@ EOS
 sub generate_gitkeep_file_for_native_module_include_dir {
   my ($self) = @_;
 
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Generate file
@@ -649,7 +649,7 @@ sub generate_gitkeep_file_for_native_module_include_dir {
 sub generate_gitkeep_file_for_native_module_src_dir {
   my ($self) = @_;
 
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Generate file
@@ -739,7 +739,7 @@ EOS
 sub generate_readme_markdown_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Content
@@ -758,7 +758,7 @@ EOS
 sub generate_makefile_pl_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Resource
@@ -799,11 +799,11 @@ use Getopt::Long 'GetOptions';
 
 GetOptions(
   'meta' => \\my \$meta,
-  'no-build-spvm-modules' => \\my \$no_build_spvm_classes,
+  'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
 );
 
 if (\$meta) {
-  \$no_build_spvm_classes = 1;
+  \$no_build_spvm_modules = 1;
 }
 
 unless (\$meta) {
@@ -849,7 +849,7 @@ sub MY::postamble {
 
   my \$make_rule = '';
   
-  unless (\$no_build_spvm_classes) {
+  unless (\$no_build_spvm_modules) {
     require SPVM::Builder::Util::API;
     
     $make_rule_native
@@ -870,7 +870,7 @@ EOS
 sub generate_basic_test_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   my $spvm_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'spvm');
@@ -911,7 +911,7 @@ EOS
 sub generate_license_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # User name
@@ -956,7 +956,7 @@ EOS
 sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Resource
@@ -993,7 +993,7 @@ EOS
 sub generate_basic_test_native_config_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Resource
@@ -1030,7 +1030,7 @@ EOS
 sub generate_basic_test_native_module_file {
   my ($self) = @_;
   
-  # Basic type name
+  # Module name
   my $module_name = $self->module_name;
   
   # Resource
@@ -1050,14 +1050,14 @@ sub generate_basic_test_native_module_file {
   }
   
   # Content
-  my $native_basic_type_name = $module_name;
-  $native_basic_type_name =~ s/::/__/g;
+  my $native_module_name = $module_name;
+  $native_module_name =~ s/::/__/g;
   my $basic_test_native_module_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
 
-int32_t SPVM__TestCase__${native_basic_type_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__${native_module_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1090,11 +1090,11 @@ sub generate_dist {
   my $module_name = $self->module_name;
   
   unless (length $module_name) {
-    confess "The basic type name must be specified";
+    confess "The module name must be specified";
   }
   
   if ($module_name =~ /-/) {
-    confess "The basic type name cannnot contain \"-\"";
+    confess "The module name cannnot contain \"-\"";
   }
   
   my $native = $self->native;
@@ -1130,10 +1130,10 @@ sub generate_dist {
       $self->generate_native_module_file;
     }
     
-    # Generate ".gitkeep" file for native class include directory
+    # Generate ".gitkeep" file for native module include directory
     $self->generate_gitkeep_file_for_native_module_include_dir;
     
-    # Generate ".gitkeep" file for native class src directory
+    # Generate ".gitkeep" file for native module src directory
     $self->generate_gitkeep_file_for_native_module_src_dir;
   }
   
