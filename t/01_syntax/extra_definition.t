@@ -26,7 +26,7 @@ use Test::More;
 
 # Class
 {
-  # Class attribute
+  # Module attribute
   {
     {
       my $source = 'class MyClass : pointer { has x : int; }';

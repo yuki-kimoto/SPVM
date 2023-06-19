@@ -277,17 +277,17 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   type->basic_type->file = compiler->cur_file;
   
   if (op_extends) {
-    SPVM_OP* op_type_parent_class = op_extends->first;
+    SPVM_OP* op_type_parent_basic_type = op_extends->first;
     
-    SPVM_OP* op_name_parent_class = SPVM_OP_new_op_name(compiler, op_type_parent_class->uv.type->unresolved_basic_type_name, op_type_parent_class->file, op_type_parent_class->line);
+    SPVM_OP* op_name_parent_basic_type = SPVM_OP_new_op_name(compiler, op_type_parent_basic_type->uv.type->unresolved_basic_type_name, op_type_parent_basic_type->file, op_type_parent_basic_type->line);
     
-    type->basic_type->parent_name = op_name_parent_class->uv.name;
+    type->basic_type->parent_name = op_name_parent_basic_type->uv.name;
     
     // add use stack
-    SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_class->file, op_name_parent_class->line);
+    SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_parent_basic_type->file, op_name_parent_basic_type->line);
     SPVM_OP* op_name_alias = NULL;
     int32_t is_require = 0;
-    SPVM_OP_build_use(compiler, op_use, op_type_parent_class, op_name_alias, is_require);
+    SPVM_OP_build_use(compiler, op_use, op_type_parent_basic_type, op_name_alias, is_require);
   }
   
   if (type->basic_type->dir) {
@@ -307,15 +307,15 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   if (!basic_type->is_anon) {
     assert(!islower(basic_type_name[0]));
     
-    // If class name is different from the class name corresponding to the class file, compile error occur.
+    // If basic type name is different from the basic type name corresponding to the module file, compile error occur.
     if (strcmp(basic_type_name, compiler->cur_rel_file_basic_type_name) != 0) {
       SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_basic_type_name, op_module->file, op_module->line);
       return op_module;
     }
   }
   
-  // Class attributes
-  int32_t class_attributes_count = 0;
+  // Module attributes
+  int32_t module_attributes_count = 0;
   int32_t access_control_attributes_count = 0;
   if (op_list_attributes) {
     SPVM_OP* op_attribute = op_list_attributes->first;
@@ -325,13 +325,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         case SPVM_ATTRIBUTE_C_ID_POINTER: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
           basic_type->is_pointer = 1;
-          class_attributes_count++;
+          module_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_MULNUM_T: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
           basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
-          class_attributes_count++;
+          module_attributes_count++;
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_PRIVATE: {
@@ -356,19 +356,19 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         case SPVM_ATTRIBUTE_C_ID_INTERFACE_T: {
           type->basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
           basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE;
-          class_attributes_count++;
+          module_attributes_count++;
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_module->file, op_module->line);
+          SPVM_COMPILER_error(compiler, "Invalid module attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_module->file, op_module->line);
         }
       }
     }
-    if (class_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+    if (module_attributes_count > 1) {
+      SPVM_COMPILER_error(compiler, "Only one of module attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of module attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
   }
   
@@ -989,9 +989,9 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   return op_module;
 }
 
-SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_type_parent_class) {
+SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_type_parent_basic_type) {
   
-  SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_type_parent_class);
+  SPVM_OP_insert_child(compiler, op_extends, op_extends->last, op_type_parent_basic_type);
   
   return op_extends;
 }

@@ -51,15 +51,15 @@ use Test::More;
 {
   {
     my $source = 'class MyClass : native;';
-    compile_not_ok($source, qr/Invalid class attribute "native"/);
+    compile_not_ok($source, qr/Invalid module attribute "native"/);
   }
   {
     my $source = 'class MyClass : mulnum_t pointer interface_t;';
-    compile_not_ok($source, qr/Only one of class attributes "mulnum_t", "pointer" or "interface_t" can be specified/);
+    compile_not_ok($source, qr/Only one of module attributes "mulnum_t", "pointer" or "interface_t" can be specified/);
   }
   {
     my $source = 'class MyClass : private public;';
-    compile_not_ok($source, qr/Only one of class attributes "private", "protected" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of module attributes "private", "protected" or "public" can be specified/);
   }
 }
 
