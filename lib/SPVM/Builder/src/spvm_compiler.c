@@ -669,8 +669,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->fields_size = basic_type->fields_size;
       
       if (basic_type->version_string) {
-        SPVM_CONSTANT_STRING* class_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
-        runtime_basic_type->version_string_id = class_version_string->id;
+        SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
+        runtime_basic_type->version_string_id = basic_type_version_string->id;
       }
       else {
         runtime_basic_type->version_string_id = -1;
