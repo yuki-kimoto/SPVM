@@ -49,10 +49,10 @@ sub new {
 sub _parse_type_name {
   my ($self, $type_name) = @_;
   
-  my $basic_type_name;
+  my $module_name;
   my $type_dimension = 0;
   if ($type_name =~ /^([a-zA-Z_0-9:]+)((\[\])*)$/) {
-    $basic_type_name = $1;
+    $module_name = $1;
     my $type_dimension_part = $2;
     
     while ($type_dimension_part =~ /\[/g) {
@@ -60,16 +60,16 @@ sub _parse_type_name {
     }
   }
   
-  return ($basic_type_name, $type_dimension);
+  return ($module_name, $type_dimension);
 }
 
 sub new_object_array {
   my ($self, $type_name, $array) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension == 1) {
@@ -77,7 +77,7 @@ sub new_object_array {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_object_array($basic_type_name, $array) };
+  eval { $ret = $self->_xs_new_object_array($module_name, $array) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -86,10 +86,10 @@ sub new_object_array {
 sub new_object_array_len {
   my ($self, $type_name, $length) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension == 1) {
@@ -97,7 +97,7 @@ sub new_object_array_len {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_object_array_len($basic_type_name, $length) };
+  eval { $ret = $self->_xs_new_object_array_len($module_name, $length) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -148,10 +148,10 @@ sub new_options {
 sub new_mulnum_array {
   my ($self, $type_name, $array) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension == 1) {
@@ -159,7 +159,7 @@ sub new_mulnum_array {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $array) };
+  eval { $ret = $self->_xs_new_mulnum_array($module_name, $array) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -168,10 +168,10 @@ sub new_mulnum_array {
 sub new_mulnum_array_len {
   my ($self, $type_name, $length) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension == 1) {
@@ -179,7 +179,7 @@ sub new_mulnum_array_len {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array_len($basic_type_name, $length) };
+  eval { $ret = $self->_xs_new_mulnum_array_len($module_name, $length) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -188,17 +188,17 @@ sub new_mulnum_array_len {
 sub new_mulnum_array_from_bin {
   my ($self, $type_name, $binary) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension == 1) {
     confess "The dimension of the type \$type_name must be 1";
   }
   my $ret;
-  eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
+  eval { $ret = $self->_xs_new_mulnum_array_from_bin($module_name, $binary) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -207,10 +207,10 @@ sub new_mulnum_array_from_bin {
 sub new_muldim_array {
   my ($self, $type_name, $array) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
@@ -218,7 +218,7 @@ sub new_muldim_array {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
+  eval { $ret = $self->_xs_new_muldim_array($module_name, $type_dimension, $array) };
   if ($@) { confess $@ }
   
   return $ret;
@@ -227,10 +227,10 @@ sub new_muldim_array {
 sub new_muldim_array_len {
   my ($self, $type_name, $length) = @_;
   
-  my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
+  my ($module_name, $type_dimension) = $self->_parse_type_name($type_name);
   
-  unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the basic type name could not be extracted";
+  unless (defined $module_name) {
+    confess "The type name \$type_name was parsed, but the module name could not be extracted";
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
@@ -238,16 +238,16 @@ sub new_muldim_array_len {
   }
   
   my $ret;
-  eval { $ret = $self->_xs_new_muldim_array_len($basic_type_name, $type_dimension, $length) };
+  eval { $ret = $self->_xs_new_muldim_array_len($module_name, $type_dimension, $length) };
   if ($@) { confess $@ }
   
   return $ret;
 }
 
 sub class {
-  my ($self, $basic_type_name) = @_;
+  my ($self, $module_name) = @_;
   
-  my $class = SPVM::ExchangeAPI::Class->__new(__basic_type_name => $basic_type_name, __api => $self);
+  my $class = SPVM::ExchangeAPI::Class->__new(__module_name => $module_name, __api => $self);
   
   return $class;
 }
@@ -791,7 +791,7 @@ If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
+If the type name $type_name was parsed, but the module name could not be extracted, an exception is thrown.
 
 The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
@@ -817,7 +817,7 @@ Creates a SPVM object array(1-dimensional) with the type name $type_name and the
 
 Exceptions:
 
-If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
+If the type name $type_name was parsed, but the module name could not be extracted, an exception is thrown.
 
 The $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
@@ -888,7 +888,7 @@ Each value of the hash reference is coverted by the conversion of L</"byte Type 
 
 Exceptions:
 
-If the type name $type_name was parsed, but the basic type name could not be extracted, an exception is thrown.
+If the type name $type_name was parsed, but the module name could not be extracted, an exception is thrown.
 
 All fields of the element type of the $type_name must be defined. Otherwise an exception is thrown.
 
@@ -1081,9 +1081,9 @@ Examples:
 
 =head2 class
 
-  my $class = $api->class($basic_type_name);
+  my $class = $api->class($module_name);
 
-Creates a new L<SPVM::ExchangeAPI::Class> object with the basic type name $basic_type_name, and returns it.
+Creates a new L<SPVM::ExchangeAPI::Class> object with the module name $module_name, and returns it.
 
 Examples:
   
