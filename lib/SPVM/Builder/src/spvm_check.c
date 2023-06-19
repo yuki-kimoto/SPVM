@@ -659,7 +659,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
-      assert(method->current_basic_type->file);
+      assert(method->current_basic_type->module_file);
       
       // Add variable declarations if the block does not exist
       if (!method->op_block) {

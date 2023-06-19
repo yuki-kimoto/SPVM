@@ -86,9 +86,9 @@ Get only C<enum> methods if this option is true.
 
 =back
 
-=head2 get_file
+=head2 get_module_file
 
-  method get_file : string ($basic_type_name : string);
+  method get_module_file : string ($basic_type_name : string);
 
 Gets the module file name and returns it.
 

@@ -17,9 +17,9 @@ struct spvm_basic_type {
   SPVM_OP* op_module;
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
-  const char* file;
-  const char* dir;
-  const char* rel_file;
+  const char* module_file;
+  const char* module_dir;
+  const char* module_rel_file;
   const char* version_string;
   SPVM_TYPE* type;
   SPVM_LIST* class_vars;

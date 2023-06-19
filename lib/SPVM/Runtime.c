@@ -285,7 +285,7 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
   
@@ -303,8 +303,8 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_module_file = NULL;
   if (basic_type_id >= 0) {
-    int32_t module_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
-    int32_t include_dir_id = env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
+    int32_t module_rel_file_id = env->api->runtime->get_basic_type_module_rel_file_id(runtime, basic_type_id);
+    int32_t include_dir_id = env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type_id);
     const char* include_dir = NULL;
     const char* include_dir_sep;
     if (include_dir_id >= 0) {

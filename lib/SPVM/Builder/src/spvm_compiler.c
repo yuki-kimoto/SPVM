@@ -657,20 +657,20 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
     
-    if (basic_type->rel_file) {
-      SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->rel_file, strlen(basic_type->rel_file));
-      runtime_basic_type->rel_file_id = basic_type_rel_file_string->id;
+    if (basic_type->module_rel_file) {
+      SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+      runtime_basic_type->module_rel_file_id = basic_type_rel_file_string->id;
     }
     else {
-      runtime_basic_type->rel_file_id = -1;
+      runtime_basic_type->module_rel_file_id = -1;
     }
     
-    if (basic_type->dir) {
-      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
-      runtime_basic_type->dir_id = basic_type_dir_string->id;
+    if (basic_type->module_dir) {
+      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
+      runtime_basic_type->module_dir_id = basic_type_dir_string->id;
     }
     else {
-      runtime_basic_type->dir_id = -1;
+      runtime_basic_type->module_dir_id = -1;
     }
     runtime_basic_type->has_init_block = basic_type->has_init_block;
     

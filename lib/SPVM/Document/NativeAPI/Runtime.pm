@@ -108,8 +108,8 @@ Runtime native APIs have its IDs.
   84 reserved84
   85 init_flags
   86 can_assign
-  87 get_basic_type_rel_file_id
-  88 get_basic_type_dir_id
+  87 get_basic_type_module_rel_file_id
+  88 get_basic_type_module_dir_id
   89 get_basic_type_is_anon
   90 get_basic_type_fields_base_id
   91 get_basic_type_fields_length
@@ -190,9 +190,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_rel_file_id
+=head2 get_basic_type_module_rel_file_id
 
-  int32_t (*get_basic_type_rel_file_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_include_dir_id
 

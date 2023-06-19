@@ -404,8 +404,9 @@ struct spvm_env_runtime {
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
   void* reserved84;
   void* init_flags;
-  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);  int32_t (*get_basic_type_rel_file_id)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_dir_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
+  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_base_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);

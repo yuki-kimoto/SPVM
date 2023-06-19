@@ -184,8 +184,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved84
     (void*)NULL, // init_flags
     SPVM_API_RUNTIME_can_assign,
-    SPVM_API_RUNTIME_get_basic_type_rel_file_id,
-    SPVM_API_RUNTIME_get_basic_type_dir_id,
+    SPVM_API_RUNTIME_get_basic_type_module_rel_file_id,
+    SPVM_API_RUNTIME_get_basic_type_module_dir_id,
     SPVM_API_RUNTIME_get_basic_type_is_anon,
     SPVM_API_RUNTIME_get_basic_type_fields_base_id,
     SPVM_API_RUNTIME_get_basic_type_fields_length,
@@ -420,24 +420,24 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t b
   return is_anon;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_basic_type_module_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
   
-  int32_t rel_file_id = basic_type->rel_file_id;
+  int32_t rel_file_id = basic_type->module_rel_file_id;
   
   return rel_file_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_dir_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_basic_type_module_dir_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
   
-  int32_t include_dir_id = basic_type->dir_id;
+  int32_t include_dir_id = basic_type->module_dir_id;
   
   return include_dir_id;
 }

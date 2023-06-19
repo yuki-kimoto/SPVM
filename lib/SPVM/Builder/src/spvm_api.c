@@ -2208,8 +2208,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
   const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, basic_type->name_id, NULL);
 
-  int32_t include_dir_id = basic_type->dir_id;
-  int32_t module_rel_file_id = basic_type->rel_file_id;
+  int32_t include_dir_id = basic_type->module_dir_id;
+  int32_t module_rel_file_id = basic_type->module_rel_file_id;
   
   const char* include_dir;
   const char* include_dir_sep;
@@ -2301,8 +2301,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, basic_type_name);
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
 
-  int32_t include_dir_id = basic_type->dir_id;
-  int32_t module_rel_file_id = basic_type->rel_file_id;
+  int32_t include_dir_id = basic_type->module_dir_id;
+  int32_t module_rel_file_id = basic_type->module_rel_file_id;
   
   const char* include_dir;
   const char* include_dir_sep;

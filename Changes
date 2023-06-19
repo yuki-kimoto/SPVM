@@ -1,3 +1,13 @@
+0.989008 2023-06-19
+  [Incompatibe Changes]
+    * The following Native Runtime API were changed.
+    
+      -  int32_t (*get_basic_type_rel_file_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
+      
+      -  int32_t (*get_basic_type_dir_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+
 0.989007 2023-06-19
   [Document Changes]
     * The hedding "Class Attribute" was renamed to "Module Attribute"

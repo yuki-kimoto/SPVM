@@ -272,9 +272,9 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   type->basic_type->op_module = op_module;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->dir = compiler->cur_include_dir;
-  type->basic_type->rel_file = compiler->cur_rel_file;
-  type->basic_type->file = compiler->cur_file;
+  type->basic_type->module_dir = compiler->cur_include_dir;
+  type->basic_type->module_rel_file = compiler->cur_rel_file;
+  type->basic_type->module_file = compiler->cur_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_basic_type = op_extends->first;
@@ -290,11 +290,11 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     SPVM_OP_build_use(compiler, op_use, op_type_parent_basic_type, op_name_alias, is_require);
   }
   
-  if (type->basic_type->dir) {
-    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->dir, strlen(type->basic_type->dir));
+  if (type->basic_type->module_dir) {
+    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_dir, strlen(type->basic_type->module_dir));
   }
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->rel_file, strlen(type->basic_type->rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_rel_file, strlen(type->basic_type->module_rel_file));
+  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_file, strlen(type->basic_type->module_file));
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));

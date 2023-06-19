@@ -2736,8 +2736,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_basic_type_rel_file_id(runtime, current_basic_type_id);
-        int32_t include_dir_id = SPVM_API_RUNTIME_get_basic_type_dir_id(runtime, current_basic_type_id);
+        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_basic_type_module_rel_file_id(runtime, current_basic_type_id);
+        int32_t include_dir_id = SPVM_API_RUNTIME_get_basic_type_module_dir_id(runtime, current_basic_type_id);
         const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_rel_file_id, NULL);
         const char* include_dir = NULL;
         const char* include_dir_sep;
