@@ -14,7 +14,7 @@ struct spvm_basic_type {
   const char* name;
   int32_t id;
   int32_t category;
-  SPVM_OP* op_class;
+  SPVM_OP* op_module;
   SPVM_OP* op_name;
   SPVM_OP* op_extends;
   const char* file;

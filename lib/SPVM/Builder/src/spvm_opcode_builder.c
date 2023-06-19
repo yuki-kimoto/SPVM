@@ -4370,8 +4370,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 // $VAR = $var
                 else if (op_assign_dist->id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
-                  SPVM_OP* op_class_var_access = op_assign_dist;
-                  SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
+                  SPVM_OP* op_module_var_access = op_assign_dist;
+                  SPVM_CLASS_VAR_ACCESS* class_var_access = op_module_var_access->uv.class_var_access;
 
                   SPVM_TYPE* src_type = SPVM_AST_CHECKER_get_type(compiler, op_assign_src);
 
@@ -4385,7 +4385,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   }
                   // CLASS_VAR_ACCESS = $var
                   else {
-                    SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_class_var_access);
+                    SPVM_TYPE* type = SPVM_AST_CHECKER_get_type(compiler, op_module_var_access);
 
                     SPVM_OPCODE opcode = {0};
                     
