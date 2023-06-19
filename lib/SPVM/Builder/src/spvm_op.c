@@ -278,7 +278,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   SPVM_TYPE* type = op_type->uv.type;
-  SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  if (!basic_type) {
+    basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);
+  }
+  
   type->basic_type = basic_type;
   
   type->basic_type->op_class = op_class;
