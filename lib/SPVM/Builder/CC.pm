@@ -117,9 +117,9 @@ sub resource_src_dir_from_basic_type_name {
 sub get_resource_object_dir_from_basic_type_name {
   my ($self, $basic_type_name) = @_;
 
-  my $class_rel_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name);
+  my $module_rel_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name);
   
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$class_rel_dir.resource");
+  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
   
   return $resource_object_dir;
 }
@@ -367,8 +367,8 @@ sub compile_source_files {
     
     # Compile a source file
     if ($need_generate) {
-      my $class_rel_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_dir($basic_type_name);
-      my $work_output_dir = "$output_dir/$class_rel_dir";
+      my $module_rel_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_dir($basic_type_name);
+      my $work_output_dir = "$output_dir/$module_rel_dir";
       mkpath dirname $object_file_name;
       
       $self->compile_source_file($compile_info);
