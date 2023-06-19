@@ -3,14 +3,14 @@ use strict;
 use warnings;
 
 # Fields
-sub __module_name {
+sub __basic_type_name {
   my $self = shift;
   if (@_) {
-    $self->{__module_name} = $_[0];
+    $self->{__basic_type_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{__module_name};
+    return $self->{__basic_type_name};
   }
 }
 
@@ -40,12 +40,12 @@ our $AUTOLOAD;
 sub AUTOLOAD {
   my $self = shift;
   
-  my $__module_name = $self->__module_name;
+  my $__basic_type_name = $self->__basic_type_name;
   
   my $method_name = $AUTOLOAD;
   $method_name =~ s/^SPVM::ExchangeAPI::Class:://;
   
-  my $ret = $self->__api->call_method($__module_name, $method_name, @_);
+  my $ret = $self->__api->call_method($__basic_type_name, $method_name, @_);
   
   return $ret;
 }
@@ -64,7 +64,7 @@ C<SPVM::BlessedObject::Class> is a class object to call class methods.
 =head1 Usage
   
   # The same as the Int->__new(1) in SPVM language
-  my $class = SPVM::ExchangeAPI::Class->__new(__module_name => 'Int', __api => $api);
+  my $class = SPVM::ExchangeAPI::Class->__new(__basic_type_name => 'Int', __api => $api);
   my $value = $class->new(1);
 
 Create a class object using the L<SPVM::ExchangeAPI|SPVM::ExchangeAPI/"class"> method in the L<SPVM::ExchangeAPI> class:
@@ -74,10 +74,10 @@ Create a class object using the L<SPVM::ExchangeAPI|SPVM::ExchangeAPI/"class"> m
 
 =head1 Fields
 
-=head2 __module_name
+=head2 __basic_type_name
 
-  my $__module_name = $self->__module_name;
-  $self->__module_name($__module_name);
+  my $__basic_type_name = $self->__basic_type_name;
+  $self->__basic_type_name($__basic_type_name);
 
 Gets and sets a basic type name.
 
@@ -100,7 +100,7 @@ Options:
 
 =over 2
 
-=item * C<__module_name> : string
+=item * C<__basic_type_name> : string
 
 A basic type name
 
@@ -116,7 +116,7 @@ A L<SPVM::ExchangeAPI> object
 
   $class->foo(@args);
 
-Calls L<call_method|SPVM::ExchangeAPI/"call_method"> method in the L<SPVM::ExchangeAPI> class using the L</"__module_name"> field and the method name given in the C<AUTOLOAD> method.
+Calls L<call_method|SPVM::ExchangeAPI/"call_method"> method in the L<SPVM::ExchangeAPI> class using the L</"__basic_type_name"> field and the method name given in the C<AUTOLOAD> method.
 
 =head1 Copyright & License
 
