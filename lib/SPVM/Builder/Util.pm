@@ -611,7 +611,7 @@ sub create_build_lib_path {
 }
 
 sub create_dl_func_list {
-  my ($module_name, $method_names, $anon_basic_type_names, $options) = @_;
+  my ($module_name, $method_names, $anon_module_names, $options) = @_;
   
   $options ||= {};
   
@@ -626,8 +626,8 @@ sub create_dl_func_list {
   }
   
   if ($category eq 'precompile') {
-    for my $anon_basic_type_name (@$anon_basic_type_names) {
-      my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_basic_type_name, "", $category);
+    for my $anon_module_name (@$anon_module_names) {
+      my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_module_name, "", $category);
       push @$dl_func_list, $anon_method_cfunc_name;
     }
   }
@@ -649,7 +649,7 @@ sub get_dynamic_lib_file_dist {
 }
 
 sub get_method_addresses {
-  my ($dynamic_lib_file, $module_name, $method_names, $anon_basic_type_names, $category) = @_;
+  my ($dynamic_lib_file, $module_name, $method_names, $anon_module_names, $category) = @_;
   
   my $method_addresses = {};
   if (@$method_names) {
@@ -663,9 +663,9 @@ sub get_method_addresses {
     
     # Add anon class sub names if precompile
     if ($category eq 'precompile') {
-      for my $anon_basic_type_name (@$anon_basic_type_names) {
+      for my $anon_module_name (@$anon_module_names) {
         my $method_info = {};
-        $method_info->{module_name} = $anon_basic_type_name;
+        $method_info->{module_name} = $anon_module_name;
         $method_info->{method_name} = "";
         push @$method_infos, $method_info;
       }
