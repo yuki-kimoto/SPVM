@@ -52,36 +52,36 @@ A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
   Foo::
   Foo::::Bar
 
-=head2 Basic Type Name
+=head2 Module Name
 
-A basic type name is a L<symbol name|/"Symbol Name">.
+A module name is a L<symbol name|/"Symbol Name">.
 
-The part names of a basic type name must begin uppercase letter. If the basic type name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
+The part names of a module name must begin uppercase letter. If the module name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A basic type name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the basic type name must be C<Foo::Bar::Baz>.
+A module name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the module name must be C<Foo::Bar::Baz>.
 
-  # Valid basic type name in the module file "Foo/Bar/Baz.spvm"
+  # Valid module name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid basic type name in the module file "Foo/Bar/Baz.spvm"
+  # Invalid module name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
 
-If basic type names are invalid, a compilation error occurs.
+If module names are invalid, a compilation error occurs.
 
 Examples:
   
-  # Basic type names
+  # Module names
   Foo
   Foo::Bar
   Foo::Bar::Baz3
   Foo::bar
   Foo_Bar::Baz_Baz
 
-  # Invalid basic type names
+  # Invalid module names
   Foo
   Foo::::Bar
   Foo::Bar::
@@ -272,9 +272,11 @@ The list of keywords:
   int
   interface_t
   isa
+  isa_error
   isweak
   is_compile_type
   is_type
+  is_error
   is_read_only
   items
   last
@@ -1230,14 +1232,14 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE DIE_ERROR_ID EVAL_ERROR_ID ITEMS VERSION_DECL
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ITEMS VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_MODULE_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
-  %type <opval> opt_classes classes class module_block version_decl
+  %type <opval> opt_modules modules module module_block version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
   %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
@@ -1246,15 +1248,15 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_operator binary_operator comparison_operator isa is_type is_compile_type
+  %type <opval> unary_operator binary_operator comparison_operator isa isa_error is_type is_error is_compile_type
   %type <opval> call_method
   %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
   %type <opval> assign inc dec allow can
   %type <opval> new array_init die warn opt_extends
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-  %type <opval> field_name method_name basic_type_name alias_name is_read_only
-  %type <opval> type qualified_type basic_type array_type
+  %type <opval> field_name method_name alias_name is_read_only
+  %type <opval> type qualified_type basic_type array_type module_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
@@ -1262,7 +1264,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
   %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_ERROR IS_TYPE IS_ERROR IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
@@ -1271,25 +1273,25 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> ARROW
 
   grammar
-    : opt_classes
+    : opt_modules
 
-  opt_classes
+  opt_modules
     : /* Empty */
-    | classes
+    | modules
 
-  classes
-    : classes class
-    | class
+  modules
+    : modules module
+    | module
 
-  class
-    : CLASS basic_type opt_extends module_block END_OF_FILE
-    | CLASS basic_type opt_extends ':' opt_attributes module_block END_OF_FILE
-    | CLASS basic_type opt_extends ';' END_OF_FILE
-    | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  module
+    : CLASS module_type opt_extends module_block END_OF_FILE
+    | CLASS module_type opt_extends ':' opt_attributes module_block END_OF_FILE
+    | CLASS module_type opt_extends ';' END_OF_FILE
+    | CLASS module_type opt_extends ':' opt_attributes ';' END_OF_FILE
 
   opt_extends
     : /* Empty */
-    | EXTENDS basic_type_name
+    | EXTENDS basic_type
 
   module_block
     : '{' opt_definitions '}'
@@ -1321,20 +1323,20 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : VERSION_DECL CONSTANT ';'
 
   use
-    : USE basic_type_name ';'
-    | USE basic_type_name AS alias_name ';'
+    : USE basic_type ';'
+    | USE basic_type AS alias_name ';'
 
   require
-    : REQUIRE basic_type_name
+    : REQUIRE basic_type
 
   alias
-    : ALIAS basic_type_name AS alias_name ';'
+    : ALIAS basic_type AS alias_name ';'
 
   allow
-    : ALLOW basic_type_name ';'
+    : ALLOW basic_type ';'
 
   interface
-    : INTERFACE basic_type_name ';'
+    : INTERFACE basic_type ';'
 
   enumeration
     : opt_attributes ENUM enumeration_block
@@ -1382,7 +1384,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   arg
     : var ':' qualified_type opt_type_comment
-    | var ASSIGN operator ':' qualified_type opt_type_comment
     | var ':' qualified_type opt_type_comment ASSIGN operator
 
   anon_method_has_list
@@ -1532,7 +1533,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | isweak_field
     | comparison_operator
     | isa
+    | isa_error
     | is_type
+    | is_error
     | is_compile_type
     | TRUE
     | FALSE
@@ -1540,7 +1543,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | can
     | logical_operator
     | BASIC_TYPE_ID type
-    | DIE_ERROR_ID
     | EVAL_ERROR_ID
     | ITEMS
 
@@ -1609,8 +1611,14 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   isa
     : operator ISA type
 
+  isa_error
+    : operator ISA_ERROR type
+
   is_type
     : operator IS_TYPE type
+
+  is_error
+    : operator IS_ERROR type
 
   is_compile_type
     : operator IS_COMPILE_TYPE type
@@ -1641,8 +1649,8 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   call_method
     : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
     | CURRENT_CLASS SYMBOL_NAME
-    | basic_type_name ARROW method_name '(' opt_operators  ')'
-    | basic_type_name ARROW method_name
+    | basic_type ARROW method_name '(' opt_operators  ')'
+    | basic_type ARROW method_name
     | operator ARROW method_name '(' opt_operators ')'
     | operator ARROW method_name
     | operator ARROW '(' opt_operators ')'
@@ -1692,6 +1700,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | array_type
     | ref_type
 
+  module_type
+    : basic_type
+
   basic_type
     : SYMBOL_NAME
     | BYTE
@@ -1733,9 +1744,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : SYMBOL_NAME
 
   method_name
-    : SYMBOL_NAME
-
-  basic_type_name
     : SYMBOL_NAME
 
   alias_name
@@ -2124,7 +2132,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
   %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA IS_TYPE IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
+  %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_ERROR IS_TYPE IS_ERROR IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
@@ -2157,7 +2165,7 @@ The C<class> keyword defines a class. A class has a L<class block|/"Class Block"
   
   }
 
-The basic type name must follow the naming rule of the L<basic type name|/"Basic Type Name">.
+The module name must follow the naming rule of the L<module name|/"Module Name">.
 
 Examples:
 
@@ -2450,7 +2458,7 @@ Examples:
 
 The anon class is the class that is defined by the L<anon method|/"Anon Method"> syntax.
 
-A anon class has its unique L<basic type name|/"Basic Type Name"> corresponding to the basic type name, the line number and the position of columns the anon class is defined.
+A anon class has its unique L<module name|/"Module Name"> corresponding to the module name, the line number and the position of columns the anon class is defined.
 
 L<Examples:>
 
@@ -2637,7 +2645,7 @@ The C<use> statemenet must be defined directly under the L<class definition|/"Cl
 
 =head2 alias Statement
 
-The C<alias> statemenet creates an alias name for a basic type name.
+The C<alias> statemenet creates an alias name for a module name.
   
   # Create alias
   alias Foo::Bar as FB;
@@ -2740,7 +2748,7 @@ The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object 
 
 The class variable mame must follow the rule defined in the L<class variable name|/"Class Variable Name">, and must not contain C<::>. Otherwise a compilation error occurs.
 
-If a basic type name with the same name is defined, a compilation error occurs.
+If a module name with the same name is defined, a compilation error occurs.
 
 L<Class variable attributes|/"Class Variable Attribute"> can be specified.
 
@@ -3158,7 +3166,7 @@ A class method is defined with the C<static> keyword.
     # ...
   }
 
-A class method can be called from the L<basic type name|/"Basic Type Name">.
+A class method can be called from the L<module name|/"Module Name">.
   
   # Call a class method
   my $total = Foo->sum(1, 2);
@@ -6917,7 +6925,7 @@ If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Val
 
 The return type is the L<void type|/"void Type">.
 
-The following one is an example of a stack trace. Each line of the stack trace constains the basic type name, the method name, the file name and the line number of the caller.
+The following one is an example of a stack trace. Each line of the stack trace constains the module name, the method name, the file name and the line number of the caller.
 
   Error
     TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
@@ -8494,7 +8502,7 @@ The creating object is an L<operator|/"Operator"> to create an object using the 
 
   new CLASS_NAME;
 
-The basic type name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
+The module name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
 
 The fields of the created object are initialized by the L<initial value|/"Initial Value">.
 
@@ -8712,9 +8720,9 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
-=head2 Getting Current Basic Type Name
+=head2 Getting Current Module Name
 
-The getting current basic type name C<__PACKAGE__> is an L<operator|/"Operator"> to get the current basic type name.
+The C<__PACKAGE__> operator gets the current module name.
 
   __PACKAGE__
 
@@ -8723,7 +8731,7 @@ Examples:
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $basic_type_name = __PACKAGE__;
+      my $current_module_name = __PACKAGE__;
     }
   }
 
@@ -8733,7 +8741,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the basic type name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the module name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 Examples:
 
