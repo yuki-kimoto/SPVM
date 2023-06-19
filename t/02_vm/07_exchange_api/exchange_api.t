@@ -1136,7 +1136,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_object_array("&&&", {}); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_object_array("Point[]", {}); };
@@ -1188,7 +1188,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_object_array_len("&&&", -1); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_object_array_len("Point[]", -1); };
@@ -1397,7 +1397,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_mulnum_array("&&&", {}); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[]", {}); };
@@ -1449,7 +1449,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_mulnum_array_len("&&&", -1); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_mulnum_array_len("TestCase::Point_3b[]", -1); };
@@ -1544,7 +1544,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_mulnum_array_from_bin("&&&", ""); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", undef); };
@@ -1664,7 +1664,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_muldim_array("&&&", {}); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_muldim_array("byte[][]", {}); };
@@ -1712,7 +1712,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_muldim_array_len("&&&", -1); };
-      ok(index($@, 'The type name $type_name was parsed, but the basic type name could not be extracted') >= 0);
+      ok(index($@, 'The type name $type_name was parsed, but the module name could not be extracted') >= 0);
     }
     {
       eval { $api->new_muldim_array_len("byte[][]", -1); };
