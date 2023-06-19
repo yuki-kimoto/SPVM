@@ -2028,14 +2028,14 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       {
         my $point = SPVM::Point3D->new(1, 2, 3);
         eval { $point->SPVM::Int::value; };
-        like($@, qr|The invocant must be assinged to the "Int" class|);
+        like($@, qr|The invocant must be assinged to the "Int" basic type|);
       }
       
       # Method not found
       {
         my $point = SPVM::Point->new(1, 2);
         eval { $point->not_found; };
-        like($@, qr|The "not_found" method in the "Point" class is not found|);
+        like($@, qr|The "not_found" method in the "Point" basic type is not found|);
       }
     }
   }

@@ -2228,7 +2228,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           if (i > 1) {
             if (basic_type_name[i - 2] == ':' && basic_type_name[i - 1] == ':') {
               if (islower(basic_type_name[i])) {
-                SPVM_COMPILER_error(compiler, "The part names of the \"%s\" class must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+                SPVM_COMPILER_error(compiler, "The part names of the \"%s\" basic type must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
                 return 0;
               }
             }
@@ -2347,7 +2347,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" class. The class file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The class file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }

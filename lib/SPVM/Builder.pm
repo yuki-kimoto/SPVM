@@ -236,7 +236,7 @@ sub build {
       $module_file =~ s/\.config$/\.spvm/;
     }
     else {
-      confess "\"$module_file\" class is not loaded";
+      confess "\"$module_file\" basic type is not loaded";
     }
   }
   

@@ -112,7 +112,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has foo : int; has foo : int; }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" field in the "MyClass" class/);
+    compile_not_ok($source, qr/Redeclaration of the "foo" field in the "MyClass" basic type/);
   }
 }
 
@@ -120,7 +120,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $FOO : int; our $FOO : int;}';
-    compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the "MyClass" class/);
+    compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the "MyClass" basic type/);
   }
 }
 
@@ -144,7 +144,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" class/);
+    compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" basic type/);
   }
   {
     my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';

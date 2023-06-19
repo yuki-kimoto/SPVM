@@ -291,7 +291,7 @@ sub get_required_resources {
           $module_file =~ s/\.config$/\.spvm/;
         }
         else {
-          confess "\"$module_file\" class is not found";
+          confess "\"$module_file\" basic type is not found";
         }
       }
       my $config_exe = $builder->create_native_config_from_module_file($module_file);
@@ -1078,7 +1078,7 @@ sub compile_module_native_source_files {
         $module_file =~ s/\.config$/\.spvm/;
       }
       else {
-        confess "\"$module_file\" class is not loaded";
+        confess "\"$module_file\" basic type is not loaded";
       }
     }
     my $config = $builder->create_native_config_from_module_file($module_file);

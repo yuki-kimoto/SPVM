@@ -33,7 +33,7 @@ The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_run
       for my $error_message (@$error_messages) {
         warn "$error_message";
       }
-      die "Can't compile the \"$basic_type_name\" class";
+      die "Can't compile the \"$basic_type_name\" basic type";
     }
   }
   
@@ -46,7 +46,7 @@ The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_run
       for my $error_message (@$error_messages) {
         warn "$error_message";
       }
-      die "Can't compile the \"$basic_type_name\" class";
+      die "Can't compile the \"$basic_type_name\" basic type";
     }
   }
   

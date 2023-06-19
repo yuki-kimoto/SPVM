@@ -795,7 +795,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, basic_type_name, field->op_field->file, field->op_field->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" basic type.\n  at %s line %d", field_name, basic_type_name, field->op_field->file, field->op_field->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
@@ -813,7 +813,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" class.\n  at %s line %d", class_var_name + 1, basic_type_name, class_var->op_class_var->file, class_var->op_class_var->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the class variable \"$%s\" in the \"%s\" basic type.\n  at %s line %d", class_var_name + 1, basic_type_name, class_var->op_class_var->file, class_var->op_class_var->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
@@ -927,7 +927,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, basic_type_name, method->op_method->file, method->op_method->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method_name, basic_type_name, method->op_method->file, method->op_method->line);
     }
     // Unknown method
     else {

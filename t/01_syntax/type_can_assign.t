@@ -871,7 +871,7 @@ use Test::More;
       'class MySockaddr : public;',
       'class MyIn_addr : public;',
     ];
-    compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the "main" method in the "MyClass" class is not allowed|);
+    compile_not_ok($source, q|The implicite type conversion from "MySockaddrIn" to "MyIn_addr" in the 1th argument of the "main" method in the "MyClass" basic type is not allowed|);
   }
 }
 

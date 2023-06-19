@@ -20,7 +20,7 @@ sub AUTOLOAD {
     $basic_type_name =~ s/^SPVM:://;
     $method_name =~ s/^.*:://;
     
-    Carp::confess("The \"$method_name\" method in the \"$basic_type_name\" class is not found");
+    Carp::confess("The \"$method_name\" method in the \"$basic_type_name\" basic type is not found");
   }
   
   # For a static instant method call

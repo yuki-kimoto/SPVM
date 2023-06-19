@@ -257,7 +257,7 @@ use Test::More;
     my $source = [
       'class MyClass { use Point; static method main : int () { Point->not_found; } }',
     ];
-    compile_not_ok($source, qr|The "not_found" method in the "Point" class is not found|);
+    compile_not_ok($source, qr|The "not_found" method in the "Point" basic type is not found|);
   }
 }
 

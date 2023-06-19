@@ -121,7 +121,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # Calls a non-defined method
     {
       eval { SPVM::Int->not_defined_method };
-      like($@, qr|The "not_defined_method" method in the "Int" class is not found|);
+      like($@, qr|The "not_defined_method" method in the "Int" basic type is not found|);
     }
   }
 }
@@ -135,7 +135,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval {
         SPVM::Int->new;
       };
-      like($@, qr/Too few arguments are passed to the "new" method in the "Int" class/);
+      like($@, qr/Too few arguments are passed to the "new" method in the "Int" basic type/);
     }
     
     # Argument conversiongeneral exception - too many arguments
@@ -143,7 +143,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval {
         SPVM::Int->new(1, 2);
       };
-      like($@, qr/Too many arguments are passed to the "new" method in the "Int" class/);
+      like($@, qr/Too many arguments are passed to the "new" method in the "Int" basic type/);
     }
   }
 

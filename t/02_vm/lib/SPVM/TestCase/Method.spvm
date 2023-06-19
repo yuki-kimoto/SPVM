@@ -1580,7 +1580,7 @@ class TestCase::Method {
       
       eval { $interface->to_string; }
       
-      unless (Fn->contains($@, "The implementation of the \"to_string\" method in the \"TestCase::InterfaceType\" interface is not found.")) {
+      unless (Fn->contains($@, "The implementation of the \"to_string\" method in the \"TestCase::InterfaceType\" basic type is not found.")) {
         return 0;
       }
     }
