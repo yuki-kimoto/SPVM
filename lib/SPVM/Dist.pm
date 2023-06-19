@@ -283,7 +283,7 @@ class $module_name ${attributes}{
 EOS
   
   # Generate file
-  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'spvm');
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'spvm');
   my $lib_dir = $self->lib_dir;
   $spvm_module_rel_file = $self->create_lib_rel_file($spvm_module_rel_file);
   $self->generate_file($spvm_module_rel_file, $spvm_module_content);
@@ -512,7 +512,7 @@ MIT License
 EOS
 
   # Generate file
-  my $perl_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'pm');
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'pm');
   $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
   $self->generate_file($perl_module_rel_file, $perl_module_content);
 }
@@ -557,7 +557,7 @@ my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 EOS
 
   # Generate file
-  my $native_config_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'config');
+  my $native_config_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'config');
   $native_config_rel_file =  $self->create_lib_rel_file($native_config_rel_file);
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
@@ -628,7 +628,7 @@ int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 $extern_c_end
 EOS
   
-  my $native_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, $native_module_ext);
+  my $native_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, $native_module_ext);
   $native_module_rel_file =  $self->create_lib_rel_file($native_module_rel_file);
   $self->generate_file($native_module_rel_file, $native_module_content);
 }
@@ -640,7 +640,7 @@ sub generate_gitkeep_file_for_native_module_include_dir {
   my $module_name = $self->module_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'native');
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'native');
   $gitkeep_rel_file_for_native_module_include_dir .= '/include/.gitkeep';
   $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
@@ -653,7 +653,7 @@ sub generate_gitkeep_file_for_native_module_src_dir {
   my $module_name = $self->module_name;
   
   # Generate file
-  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'native');
+  my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'native');
   $gitkeep_rel_file_for_native_module_include_dir .= '/src/.gitkeep';
   $gitkeep_rel_file_for_native_module_include_dir =  $self->create_lib_rel_file($gitkeep_rel_file_for_native_module_include_dir);
   $self->generate_file($gitkeep_rel_file_for_native_module_include_dir, '');
@@ -770,10 +770,10 @@ sub generate_makefile_pl_file {
   # Precompile make rule
   my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$module_name');" : '';
 
-  my $perl_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'pm');
+  my $perl_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'pm');
   $perl_module_rel_file =  $self->create_lib_rel_file($perl_module_rel_file);
 
-  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'spvm');
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'spvm');
   $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
   
   # User name
@@ -873,7 +873,7 @@ sub generate_basic_test_file {
   # Basic type name
   my $module_name = $self->module_name;
   
-  my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, 'spvm');
+  my $spvm_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'spvm');
   $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
   
   # Content
@@ -985,7 +985,7 @@ EOS
   }
   
   # Generate file
-  my $basic_test_spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$module_name", 'spvm');
+  my $basic_test_spvm_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file("TestCase::$module_name", 'spvm');
   $basic_test_spvm_module_rel_file = "t/lib/$basic_test_spvm_module_rel_file";
   $self->generate_file($basic_test_spvm_module_rel_file, $basic_test_spvm_module_content);
 }
@@ -1022,7 +1022,7 @@ my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
 EOS
   
   # Generate file
-  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$module_name", 'config');
+  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file("TestCase::$module_name", 'config');
   $basic_test_native_config_rel_file = "t/lib/$basic_test_native_config_rel_file";
   $self->generate_file($basic_test_native_config_rel_file, $basic_test_native_config_content);
 }
@@ -1079,7 +1079,7 @@ EOS
       $native_module_ext = 'cpp';
     }
   }
-  my $basic_test_native_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$module_name", $native_module_ext);
+  my $basic_test_native_module_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file("TestCase::$module_name", $native_module_ext);
   $basic_test_native_module_rel_file = "t/lib/$basic_test_native_module_rel_file";
   $self->generate_file($basic_test_native_module_rel_file, $basic_test_native_module_content);
 }

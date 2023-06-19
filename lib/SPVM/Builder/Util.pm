@@ -220,7 +220,7 @@ sub convert_module_file_to_dynamic_lib_file {
   return $dynamic_lib_category_file;
 }
 
-sub convert_basic_type_name_to_dynamic_lib_rel_file {
+sub convert_module_name_to_dynamic_lib_rel_file {
   my ($module_name, $category) = @_;
   
   my $dlext = $Config{dlext};
@@ -230,7 +230,7 @@ sub convert_basic_type_name_to_dynamic_lib_rel_file {
   return $dynamic_lib_category_rel_file;
 }
 
-sub convert_basic_type_name_to_category_rel_file {
+sub convert_module_name_to_category_rel_file {
   my ($module_name, $category, $ext) = @_;
   
   $module_name =~ s/^SPVM:://;
@@ -245,7 +245,7 @@ sub convert_basic_type_name_to_category_rel_file {
   return $rel_file_with_ext;
 }
 
-sub convert_basic_type_name_to_rel_dir {
+sub convert_module_name_to_rel_dir {
   my ($module_name) = @_;
 
   $module_name =~ s/^SPVM:://;
@@ -258,7 +258,7 @@ sub convert_basic_type_name_to_rel_dir {
   return $rel_dir;
 }
 
-sub convert_basic_type_name_to_rel_file {
+sub convert_module_name_to_rel_file {
   my ($module_name, $ext) = @_;
 
   $module_name =~ s/^SPVM:://;
@@ -543,7 +543,7 @@ sub get_config_file_from_basic_type_name {
     $ext = "$mode.$ext";
   }
   
-  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($module_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, $ext);
   my $config_file;
   for my $inc (@INC) {
     my $config_file_tmp = "$inc/$config_file_base";
