@@ -1564,7 +1564,7 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) {
   
   // Class
-  SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
+  SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE, op_method->file, op_method->line);
   
   // Create module block
   SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, op_method->file, op_method->line);

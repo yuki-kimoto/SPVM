@@ -366,7 +366,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return SPECIAL_ASSIGN;
         }
-        // &foo - Current class
+        // &foo - Current module
         else if (isalpha(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
           compiler->expect_method_name = 1;
@@ -1675,7 +1675,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = STRING_CMP;
                 }
                 else if (strcmp(symbol_name, "class") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CLASS);
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MODULE);
                   keyword_token = CLASS;
                 }
                 else if (strcmp(symbol_name, "compile_type_name") == 0) {
@@ -2200,7 +2200,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
   compiler->before_ch_ptr = NULL;
   compiler->line_begin_ptr = NULL;
   
-  // If there are more class, load it
+  // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
   
   while (1) {
@@ -2330,24 +2330,24 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           // Class not found
           if (!fh) {
             if (!op_use->uv.use->is_require) {
-              int32_t classr_dirs_str_length = 0;
+              int32_t include_dirs_str_length = 0;
               for (int32_t i = 0; i < include_dirs_length; i++) {
                 const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-                classr_dirs_str_length += 1 + strlen(include_dir);
+                include_dirs_str_length += 1 + strlen(include_dir);
               }
-              char* classr_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, classr_dirs_str_length + 1);
-              int32_t classr_dirs_str_offset = 0;
+              char* include_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, include_dirs_str_length + 1);
+              int32_t include_dirs_str_offset = 0;
               for (int32_t i = 0; i < include_dirs_length; i++) {
                 const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-                sprintf(classr_dirs_str + classr_dirs_str_offset, "%s", include_dir);
-                classr_dirs_str_offset += strlen(include_dir);
+                sprintf(include_dirs_str + include_dirs_str_offset, "%s", include_dir);
+                include_dirs_str_offset += strlen(include_dir);
                 if (i != include_dirs_length - 1) {
-                  classr_dirs_str[classr_dirs_str_offset] = ' ';
-                  classr_dirs_str_offset++;
+                  include_dirs_str[include_dirs_str_offset] = ' ';
+                  include_dirs_str_offset++;
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, classr_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
