@@ -1159,7 +1159,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   return op_method;
 }
 
-SPVM_OP* SPVM_OP_build_module_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_class_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
   
   SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
   
@@ -1566,7 +1566,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   // Class
   SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
   
-  // Create class block
+  // Create module block
   SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, op_method->file, op_method->line);
   SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
@@ -1575,14 +1575,14 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   // int32_t max length is 10(2147483647)
   int32_t int32_max_length = 10;
   
-  // Create anon method class name
-  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+  // Create anon method module name
+  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method basic type name become Foo::Bar::anon::123::32. This is uniqe in whole program.
   const char* anon_method_defined_rel_file_basic_type_name = compiler->cur_rel_file_basic_type_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
-  // Anon class name
+  // Anon basic type name
   char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
   sprintf(name_basic_type_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
@@ -1594,7 +1594,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
-  // Build class
+  // Build module
   SPVM_OP_build_module(compiler, op_module, op_type, op_module_block, NULL, NULL);
   
   // Type
@@ -2347,7 +2347,6 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
       call_method->basic_type_name = op_invocant->uv.type->unresolved_basic_type_name;
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
       
-      // Because the type name maybe an alias of a class name
       op_invocant->uv.type->resolved_in_ast = 1;
     }
     else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
