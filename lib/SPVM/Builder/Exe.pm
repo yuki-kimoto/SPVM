@@ -264,10 +264,9 @@ sub get_required_resources {
     force => $self->force,
   );
   
-  my $module_names = $self->runtime->get_basic_type_names;
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
+  my $module_names = $self->get_module_names;
   my $all_object_files = [];
-  for my $module_name (@$module_names_without_anon) {
+  for my $module_name (@$module_names) {
 
     my $perl_module_name = "SPVM::$module_name";
     
@@ -375,11 +374,10 @@ sub compile {
 sub compile_modules {
   my ($self) = @_;
 
-  my $module_names = $self->runtime->get_basic_type_names;
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
+  my $module_names = $self->get_module_names;
   
   my $object_files = [];
-  for my $module_name (@$module_names_without_anon) {
+  for my $module_name (@$module_names) {
     my $precompile_object_files = $self->compile_module_precompile_source_file($module_name);
     push @$object_files, @$precompile_object_files;
     
@@ -477,12 +475,10 @@ sub create_bootstrap_header_source {
   my $module_name = $self->module_name;
 
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
+  my $module_names = $self->get_module_names;
   
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
-
   my $source = '';
-
+  
   $source .= <<'EOS';
 
 #include <stdio.h>
@@ -525,7 +521,7 @@ EOS
   }
   
   $source .= "// native functions declaration\n";
-  for my $method_cname (@$module_names_without_anon) {
+  for my $method_cname (@$module_names) {
     my $native_method_names = $self->runtime->get_method_names($method_cname, 'native');
     for my $method_name (@$native_method_names) {
       my $method_cname = $method_cname;
@@ -560,8 +556,7 @@ sub create_bootstrap_main_func_source {
   my $module_name = $self->module_name;
 
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
+  my $module_names = $self->get_module_names;
 
   my $source = '';
 
@@ -591,7 +586,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
     
     // ARGV - string[]
-    void* obj_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, command_args_length - 1);
+    void* obj_argv = env->new_string_array(env, stack, command_args_length - 1);
     for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
       void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
       env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
@@ -700,8 +695,7 @@ sub create_bootstrap_new_env_prepared_func_source {
   my $module_name = $self->module_name;
   
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
+  my $module_names = $self->get_module_names;
   
   my $source = '';
   
@@ -759,7 +753,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
+  my $module_names = $self->get_module_names;
 
   my $source = '';
 
@@ -790,7 +784,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
+  my $module_names = $self->get_module_names;
 
   my $source = '';
 
@@ -824,12 +818,11 @@ sub create_bootstrap_source {
   my $module_name = $self->module_name;
   
   # Module names
-  my $module_names = $self->runtime->get_basic_type_names;
-  my $module_names_without_anon = [grep { $_ !~ /::anon::/ } @$module_names];
+  my $module_names = $self->get_module_names;
   
   # Class files - Input
   my $module_files = [];
-  for my $module_name (@$module_names_without_anon) {
+  for my $module_name (@$module_names) {
     my $module_file = $self->runtime->get_file($module_name);
     push @$module_files, $module_file;
   }
@@ -1109,6 +1102,16 @@ sub compile_module_native_source_files {
   }
   
   return $all_object_files;
+}
+
+sub get_module_names {
+  my ($self) = @_;
+  
+  my $basic_type_names = $self->runtime->get_basic_type_names;
+  
+  my $module_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
+  
+  return $module_names;
 }
 
 1;
