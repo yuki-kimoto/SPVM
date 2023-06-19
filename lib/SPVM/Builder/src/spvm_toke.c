@@ -2327,7 +2327,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             errno = 0;
           }
           
-          // Class not found
+          // Module not found
           if (!fh) {
             if (!op_use->uv.use->is_require) {
               int32_t include_dirs_str_length = 0;
@@ -2352,7 +2352,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               return 0;
             }
           }
-          // Class found
+          // Module found
           else {
             // Read file content
             fseek(fh, 0, SEEK_END);
@@ -2391,7 +2391,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           compiler->cur_rel_file = cur_rel_file;
           compiler->cur_rel_file_basic_type_name = basic_type_name;
           
-          // If we get current module file path, set it, otherwise set class relative file path
+          // If we get current module file path, set it, otherwise set module relative file path
           if (cur_file) {
             compiler->cur_file = cur_file;
           }
@@ -2411,7 +2411,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           compiler->cur_line = 1;
         }
         else {
-          // If class not found and the class is used in require syntax, compilation errors don't occur.
+          // If module is not found and the module is used in require syntax, compilation errors don't occur.
           if (op_use->uv.use->is_require) {
             SPVM_HASH_set(compiler->if_require_not_found_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
             continue;
