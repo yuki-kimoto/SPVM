@@ -105,7 +105,7 @@ sub new {
 sub resource_src_dir_from_basic_type_name {
   my ($self, $basic_type_name) = @_;
 
-  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($basic_type_name);
   my $config_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($basic_type_name, 'config');
   
   my $resource_src_dir = $config_file;

@@ -535,7 +535,7 @@ sub get_spvm_core_header_file_names {
   return \@spvm_core_header_file_names;
 }
 
-sub get_config_file_from_basic_type_name {
+sub get_config_file_from_module_name {
   my ($module_name, $mode) = @_;
   
   my $ext = 'config';

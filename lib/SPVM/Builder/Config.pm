@@ -689,7 +689,7 @@ sub use_resource {
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
   my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($resource_basic_type_name, $ext);
   
-  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($resource_basic_type_name, $resource_mode);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($resource_basic_type_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
