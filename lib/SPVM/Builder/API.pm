@@ -22,19 +22,19 @@ sub new {
 }
 
 sub build_dynamic_lib_dist_precompile {
-  my ($self, $basic_type_name) = @_;
+  my ($self, $module_name) = @_;
   
   my $builder = $self->{builder};
   
-  $builder->build_dynamic_lib_dist_precompile($basic_type_name);
+  $builder->build_dynamic_lib_dist_precompile($module_name);
 }
 
 sub build_dynamic_lib_dist_native {
-  my ($self, $basic_type_name) = @_;
+  my ($self, $module_name) = @_;
   
   my $builder = $self->{builder};
   
-  $builder->build_dynamic_lib_dist_native($basic_type_name);
+  $builder->build_dynamic_lib_dist_native($module_name);
 }
 
 1;
@@ -78,12 +78,12 @@ The building directory.
 
 =head2 build_dynamic_lib_dist_precompile
 
-  $builder->build_dynamic_lib_dist_precompile($basic_type_name)
+  $builder->build_dynamic_lib_dist_precompile($module_name)
 
-Generates a dynamic library for a class $basic_type_name that has C<precompile> methods, and copies it to the C<blib/lib> directory.
+Generates a dynamic library for a class $module_name that has C<precompile> methods, and copies it to the C<blib/lib> directory.
 
 =head2 build_dynamic_lib_dist_native
 
-  $builder->build_dynamic_lib_dist_native($basic_type_name)
+  $builder->build_dynamic_lib_dist_native($module_name)
 
-Generates a dynamic library for a class $basic_type_name that has C<native> methods, and copies it to the C<blib/lib> directory.
+Generates a dynamic library for a class $module_name that has C<native> methods, and copies it to the C<blib/lib> directory.
