@@ -2774,8 +2774,8 @@ yyreduce:
 #line 201 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       int32_t is_require = 0;
-      SPVM_OP* op_name_class_alias = NULL;
-      (yyval.opval) = SPVM_OP_build_use(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), op_name_class_alias, is_require);
+      SPVM_OP* op_name_alias = NULL;
+      (yyval.opval) = SPVM_OP_build_use(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), op_name_alias, is_require);
     }
 #line 2781 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

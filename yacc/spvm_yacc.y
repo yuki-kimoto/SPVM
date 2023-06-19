@@ -200,8 +200,8 @@ use
   : USE basic_type ';'
     {
       int32_t is_require = 0;
-      SPVM_OP* op_name_class_alias = NULL;
-      $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
+      SPVM_OP* op_name_alias = NULL;
+      $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_alias, is_require);
     }
   | USE basic_type AS alias_name ';'
     {

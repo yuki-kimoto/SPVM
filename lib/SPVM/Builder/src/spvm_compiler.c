@@ -153,9 +153,9 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
 }
 
 void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, const char* file, int32_t line) {
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, basic_type_name, file, line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_class->file, op_name_class->line);
+  SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, basic_type_name, file, line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_basic_type);
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_name_basic_type->file, op_name_basic_type->line);
   SPVM_OP* op_name_alias = NULL;
   int32_t is_require = 0;
   SPVM_OP_build_use(compiler, op_use, op_type_class, op_name_alias, is_require);
