@@ -315,14 +315,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-
-  basic_type->is_class = 1;
   
   if (strstr(basic_type_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
   }
-
+  
   if (!basic_type->is_anon) {
     assert(!islower(basic_type_name[0]));
     

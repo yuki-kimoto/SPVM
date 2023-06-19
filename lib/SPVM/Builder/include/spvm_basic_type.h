@@ -48,7 +48,6 @@ struct spvm_basic_type {
   int8_t is_precompile;
   int8_t is_pointer;
   int8_t access_control_type;
-  int8_t is_class;
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);
