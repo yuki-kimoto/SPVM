@@ -61,8 +61,8 @@ void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
 
 void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     const char* basic_type_name = basic_type->name;
     
@@ -298,8 +298,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
   
   // Add anon methods
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Add the anon method
     for (int32_t anon_methods_index = 0; anon_methods_index < basic_type->anon_methods->length; anon_methods_index++) {
@@ -309,8 +309,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
   }
 
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Add interfaces
     for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
@@ -327,8 +327,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
   }
 
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     SPVM_LIST* methods = basic_type->methods;
     
@@ -388,8 +388,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   
   // Resolve inheritance
   int32_t compile_error = 0;
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     SPVM_LIST* basic_type_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(basic_type_stack, basic_type);
@@ -424,8 +424,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* cur_basic_type = basic_type;
     int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
-    for (int32_t basic_type_index = basic_type_stack->length - 1; basic_type_index >= 0; basic_type_index--) {
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_stack, basic_type_index);
+    for (int32_t basic_type_id = basic_type_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_stack, basic_type_id);
       
       // All fields
       SPVM_LIST* fields = basic_type->fields;
@@ -492,8 +492,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
   
   // Check required method
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t interface_index = 0; interface_index < basic_type->interfaces->length; interface_index++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interfaces, interface_index);
       assert(interface_basic_type);
@@ -512,8 +512,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
   
   // Check method compatibility
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
@@ -617,8 +617,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
 
   // Replace fields
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
 
     for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
@@ -628,8 +628,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
   
   // Resolve fields
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     for (int32_t i = 0; i < basic_type->fields->length; i++) {
       // Field
@@ -647,8 +647,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   }
   
   // Check syntax and generate operations in basic types
-  for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_LIST* methods = basic_type->methods;
     
     // Check syntax and generate operations in methods
