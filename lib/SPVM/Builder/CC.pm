@@ -102,11 +102,11 @@ sub new {
 }
 
 # Instance Methods
-sub resource_src_dir_from_basic_type_name {
-  my ($self, $basic_type_name) = @_;
+sub resource_src_dir_from_module_name {
+  my ($self, $module_name) = @_;
 
-  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($basic_type_name);
-  my $config_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($basic_type_name, 'config');
+  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($module_name);
+  my $config_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'config');
   
   my $resource_src_dir = $config_file;
   $resource_src_dir =~ s|/\Q$config_rel_file\E$||;
@@ -114,10 +114,10 @@ sub resource_src_dir_from_basic_type_name {
   return $resource_src_dir;
 }
 
-sub get_resource_object_dir_from_basic_type_name {
-  my ($self, $basic_type_name) = @_;
+sub get_resource_object_dir_from_module_name {
+  my ($self, $module_name) = @_;
 
-  my $module_rel_dir = SPVM::Builder::Util::convert_module_name_to_rel_file($basic_type_name);
+  my $module_rel_dir = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name);
   
   my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
   
@@ -167,7 +167,7 @@ sub detect_quiet {
 }
 
 sub build_precompile_source_file {
-  my ($self, $basic_type_name, $options) = @_;
+  my ($self, $module_name, $options) = @_;
 
   my $precompile_source = $options->{precompile_source};
   my $module_file = $options->{module_file};
@@ -177,7 +177,7 @@ sub build_precompile_source_file {
 
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
-  my $source_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($basic_type_name, 'precompile.c');
+  my $source_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, 'precompile.c');
   my $source_file = "$output_dir/$source_rel_file";
   
   # Check if generating is needed
@@ -227,7 +227,7 @@ sub compile_source_file {
 }
 
 sub compile_source_files {
-  my ($self, $basic_type_name, $options) = @_;
+  my ($self, $module_name, $options) = @_;
   
   $options ||= {};
   
@@ -268,7 +268,7 @@ sub compile_source_files {
     unless (defined $native_module_ext) {
       confess "Source extension is not specified";
     }
-    my $native_module_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($basic_type_name, $category, $native_module_ext);
+    my $native_module_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($module_name, $category, $native_module_ext);
     $native_module_file = "$input_dir/$native_module_rel_file";
     
     unless (-f $native_module_file) {
@@ -295,14 +295,14 @@ sub compile_source_files {
     
     my $object_file_name;
     
-    # Object file of native class
+    # Object file of native module
     if ($cur_is_native_module) {
-      my $object_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($basic_type_name, $category, 'o');
+      my $object_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($module_name, $category, 'o');
       $object_file_name = "$output_dir/$object_rel_file";
     }
     # Object file of resource source file
     else {
-      my $object_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($basic_type_name, $category, 'native');
+      my $object_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($module_name, $category, 'native');
       
       my $object_file_base = $source_file;
       $object_file_base =~ s/^\Q$native_src_dir//;
@@ -367,7 +367,7 @@ sub compile_source_files {
     
     # Compile a source file
     if ($need_generate) {
-      my $module_rel_dir = SPVM::Builder::Util::convert_module_name_to_rel_dir($basic_type_name);
+      my $module_rel_dir = SPVM::Builder::Util::convert_module_name_to_rel_dir($module_name);
       my $work_output_dir = "$output_dir/$module_rel_dir";
       mkpath dirname $object_file_name;
       
@@ -390,7 +390,7 @@ sub compile_source_files {
 }
 
 sub create_link_info {
-  my ($self, $basic_type_name, $object_files, $config, $options) = @_;
+  my ($self, $module_name, $object_files, $config, $options) = @_;
   
   my $category = $options->{category};
 
@@ -476,23 +476,23 @@ sub create_link_info {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
-    # Build native classes
+    # Build native modules
     my $builder_cc_resource = SPVM::Builder::CC->new(
       build_dir => $self->build_dir,
     );
     
-    my $resource_src_dir = $self->resource_src_dir_from_basic_type_name($resource);
-    my $resource_object_dir = $self->get_resource_object_dir_from_basic_type_name($basic_type_name);
+    my $resource_src_dir = $self->resource_src_dir_from_module_name($resource);
+    my $resource_object_dir = $self->get_resource_object_dir_from_module_name($module_name);
     mkpath $resource_object_dir;
     
-    my $resource_basic_type_name;
+    my $resource_module_name;
     my $resource_config;
     if (ref $resource) {
-      $resource_basic_type_name = $resource->module_name;
+      $resource_module_name = $resource->module_name;
       $resource_config = $resource->config;
     }
     else {
-      $resource_basic_type_name = $resource;
+      $resource_module_name = $resource;
     }
     
     $resource_config->add_include_dir(@$resource_include_dirs);
@@ -506,7 +506,7 @@ sub create_link_info {
       category => $category,
     };
     
-    my $object_files = $builder_cc_resource->compile_source_files($resource_basic_type_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_source_files($resource_module_name, $compile_options);
     
     push @$all_object_files, @$object_files;
   }
@@ -521,7 +521,7 @@ sub create_link_info {
     }
     
     # Dynamic library file
-    my $output_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($basic_type_name, $options->{category});
+    my $output_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($module_name, $options->{category});
     $output_file = "$output_dir/$output_rel_file";
   }
   
@@ -550,7 +550,7 @@ sub create_link_info {
   my $ld_optimize = $config->ld_optimize;
   
   my $link_info = SPVM::Builder::LinkInfo->new(
-    module_name => $basic_type_name,
+    module_name => $module_name,
     config => $config,
     object_files => $all_object_files,
     output_file => $output_file,
@@ -560,7 +560,7 @@ sub create_link_info {
 }
 
 sub link {
-  my ($self, $basic_type_name, $object_files, $options) = @_;
+  my ($self, $module_name, $object_files, $options) = @_;
   
   my $dl_func_list = $options->{dl_func_list};
   
@@ -572,7 +572,7 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    confess "The \"build_dir\" field must be defined to build the native module for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config
@@ -585,7 +585,7 @@ sub link {
   my $force = $self->detect_force($config);
   
   # Link information
-  my $link_info = $self->create_link_info($basic_type_name, $object_files, $config, $options);
+  my $link_info = $self->create_link_info($module_name, $object_files, $config, $options);
   
   # Output file
   my $output_file = $link_info->output_file;
@@ -648,7 +648,7 @@ sub link {
     if ($output_type eq 'dynamic_lib') {
       (undef, @tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
-        module_name => $basic_type_name,
+        module_name => $module_name,
         lib_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
         dl_func_list => $dl_func_list,
@@ -672,7 +672,7 @@ sub link {
     elsif ($output_type eq 'exe') {
       (undef, @tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_file_names,
-        module_name => $basic_type_name,
+        module_name => $module_name,
         exe_file => $link_info_output_file,
         extra_linker_flags => "@$link_command_args",
       );
@@ -720,11 +720,11 @@ sub link {
 
 =head1 Name
 
-SPVM::Builder::CC - Compilation and Link of Native Class
+SPVM::Builder::CC - Compilation and Link of Native Module
 
 =head1 Description
 
-The SPVM::Builder::CC class has methods to compile and link a SPVM native class.
+The SPVM::Builder::CC class has methods to compile and link a SPVM native module.
 
 =head1 Copyright & License
 
