@@ -30,7 +30,7 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_MODULE_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classes classes class module_block version_decl
+%type <opval> opt_modules modules module module_block version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
@@ -67,14 +67,14 @@
 %%
 
 grammar
-  : opt_classes
+  : opt_modules
 
-opt_classes
+opt_modules
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  | classes
+  | modules
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -86,8 +86,8 @@ opt_classes
       }
     }
   
-classes
-  : classes class
+modules
+  : modules module
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -101,9 +101,9 @@ classes
       
       $$ = op_list;
     }
-  | class
+  | module
 
-class
+module
   : CLASS module_type opt_extends module_block END_OF_FILE
     {
       $$ = SPVM_OP_build_module(compiler, $1, $2, $4, NULL, $3);

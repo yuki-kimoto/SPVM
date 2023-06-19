@@ -620,7 +620,7 @@ static const char *const yytname[] =
   "SCALAR", "STRING_LENGTH", "ISWEAK", "REFCNT", "TYPE_NAME",
   "COMPILE_TYPE_NAME", "DUMP", "NEW_STRING_LEN", "IS_READ_ONLY", "COPY",
   "INC", "DEC", "ARROW", "':'", "';'", "'}'", "','", "')'", "']'",
-  "$accept", "grammar", "opt_classes", "classes", "class", "opt_extends",
+  "$accept", "grammar", "opt_modules", "modules", "module", "opt_extends",
   "module_block", "opt_definitions", "definitions", "definition",
   "init_block", "version_decl", "use", "require", "alias", "allow",
   "interface", "enumeration", "enumeration_block",
