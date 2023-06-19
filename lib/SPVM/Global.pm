@@ -27,11 +27,11 @@ our $API;
 sub load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
 
-  my $basic_type_names = $runtime->get_basic_type_names->to_strings;
+  my $module_names = &get_module_names($runtime);
 
   # Set addresses of native methods and precompile methods
-  for my $basic_type_name (@$basic_type_names) {
-    next if $basic_type_name =~ /::anon/;
+  for my $module_name (@$module_names) {
+    next if $module_name =~ /::anon/;
     
     for my $category ('precompile', 'native') {
       
@@ -39,27 +39,27 @@ sub load_dynamic_libs {
         $category => $runtime->__api->class('Int')->new(1)
       });
       
-      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
+      my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
       
       if (@$method_names) {
-        # Build classs - Compile C source codes and link them to SPVM precompile method
+        # Build modules - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
-        my $module_file = $runtime->get_file($basic_type_name)->to_string;
+        my $module_file = $runtime->get_file($module_name)->to_string;
         my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
-          my $module_file = $runtime->get_file($basic_type_name)->to_string;
-          my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-          my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
-          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
-          my $precompile_source = $runtime->build_precompile_source($basic_type_name)->to_string;
+          my $module_file = $runtime->get_file($module_name)->to_string;
+          my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
+          my $anon_module_names = &get_anon_module_names($runtime, $module_name);
+          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($module_name, $method_names, $anon_module_names, {category => $category});
+          my $precompile_source = $runtime->build_precompile_source($module_name)->to_string;
           
-          $dynamic_lib_file = $BUILDER->build_at_runtime($basic_type_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+          $dynamic_lib_file = $BUILDER->build_at_runtime($module_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
         
         if (-f $dynamic_lib_file) {
-          $dynamic_lib_files->{$category}{$basic_type_name} = $dynamic_lib_file;
+          $dynamic_lib_files->{$category}{$module_name} = $dynamic_lib_file;
         }
       }
     }
@@ -71,22 +71,22 @@ sub load_dynamic_libs {
       $category => $runtime->__api->class('Int')->new(1)
     });
     
-    for my $basic_type_name (keys %{$dynamic_lib_files->{$category}}) {
-      next unless grep { "$_" eq $basic_type_name } @$basic_type_names;
+    for my $module_name (keys %{$dynamic_lib_files->{$category}}) {
+      next unless grep { "$_" eq $module_name } @$module_names;
       
-      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
-      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-      my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
+      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
+      my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
+      my $anon_module_names = &get_anon_module_names($runtime, $module_name);
       
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $anon_module_names, $category);
       
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+          $runtime->set_native_method_address($module_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+          $runtime->set_precompile_method_address($module_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
       }
     }
@@ -139,34 +139,34 @@ sub init_runtime {
   }
 }
 
-my $BIND_TO_PERL_CLASS_NAME_H = {};
+my $BIND_TO_PERL_MODULE_NAME_H = {};
 sub bind_to_perl {
-  my ($basic_type_name) = @_;
+  my ($module_name) = @_;
   
-  my $perl_basic_type_name_base = "SPVM::";
-  my $perl_basic_type_name = "$perl_basic_type_name_base$basic_type_name";
+  my $perl_module_name_base = "SPVM::";
+  my $perl_module_name = "$perl_module_name_base$module_name";
   
-  unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_basic_type_name}) {
+  unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name}) {
     
-    my $parent_basic_type_name = $RUNTIME->get_basic_type_parent_name($basic_type_name);
-    my $parent_basic_type_name_str = defined $parent_basic_type_name ? "($parent_basic_type_name)" : "()";
+    my $parent_module_name = &get_parent_module_name($RUNTIME, $module_name);
+    my $parent_module_name_str = defined $parent_module_name ? "($parent_module_name)" : "()";
     
     # The inheritance
     my @isa;
-    if (defined $parent_basic_type_name) {
-      push @isa, "$perl_basic_type_name_base$parent_basic_type_name";
+    if (defined $parent_module_name) {
+      push @isa, "$perl_module_name_base$parent_module_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_basic_type_name; $isa";
+    my $code = "package $perl_module_name; $isa";
     eval $code;
     
     if (my $error = $@) {
       confess $error;
     }
     
-    my $method_names = $RUNTIME->get_method_names($basic_type_name);
+    my $method_names = $RUNTIME->get_method_names($module_name);
 
     for my $method_name (@$method_names) {
       
@@ -179,23 +179,23 @@ sub bind_to_perl {
         next;
       }
       
-      my $perl_method_abs_name = "${perl_basic_type_name}::$method_name";
-      my $is_static = $RUNTIME->get_method_is_static($basic_type_name, $method_name);
+      my $perl_method_abs_name = "${perl_module_name}::$method_name";
+      my $is_static = $RUNTIME->get_method_is_static($module_name, $method_name);
       
       if ($is_static) {
         # Define Perl method
         no strict 'refs';
         
         # Suppress refer to objects
-        my $basic_type_name_string = "$basic_type_name";
+        my $module_name_string = "$module_name";
         my $method_name_string = "$method_name";
         
         *{"$perl_method_abs_name"} = sub {
-          my $perl_basic_type_name = shift;
+          my $perl_module_name = shift;
           
           my $return_value;
           
-          eval { $return_value = SPVM::api()->call_method($basic_type_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::api()->call_method($module_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
@@ -205,13 +205,13 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_CLASS_NAME_H->{$perl_basic_type_name} = 1;
+    $BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name} = 1;
   }
 }
 
 
 sub build {
-  my ($basic_type_name, $file, $line) = @_;
+  my ($module_name, $file, $line) = @_;
   
   unless ($BUILDER) {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
@@ -220,13 +220,13 @@ sub build {
   
   &init_runtime();
   
-  # Add class informations
+  # Add module informations
   my $build_success;
-  if (defined $basic_type_name) {
+  if (defined $module_name) {
     
     $COMPILER->set_start_file($file);
     $COMPILER->set_start_line($line);
-    my $success = $COMPILER->compile($basic_type_name);
+    my $success = $COMPILER->compile($module_name);
     unless ($success) {
       my $error_messages = $COMPILER->get_error_messages;
       for my $error_message (@$error_messages) {
@@ -275,6 +275,30 @@ END {
   }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
+}
+
+sub get_module_names {
+  my ($runtime) = @_;
+  
+  my $module_names = $runtime->get_basic_type_names->to_strings;
+  
+  return $module_names;
+}
+
+sub get_anon_module_names {
+  my ($runtime, $module_name) = @_;
+  
+  my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($module_name)->to_strings;
+  
+  return $anon_module_names;
+}
+
+sub get_parent_module_name {
+  my ($runtime, $module_name) = @_;
+  
+  my $parent_module_name = $runtime->get_basic_type_parent_name($module_name);
+  
+  return $parent_module_name;
 }
 
 =head1 Name
