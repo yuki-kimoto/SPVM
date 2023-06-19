@@ -10,14 +10,14 @@ use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 
 # Fields
-sub basic_type_name {
+sub module_name {
   my $self = shift;
   if (@_) {
-    $self->{basic_type_name} = $_[0];
+    $self->{module_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{basic_type_name};
+    return $self->{module_name};
   }
 }
 
@@ -676,13 +676,13 @@ sub use_resource {
   else {
     my $basic_type_name = $first_arg;
     my %args = @args;
-    if (exists $args{basic_type_name}) {
-      $basic_type_name = delete $args{basic_type_name};
+    if (exists $args{module_name}) {
+      $basic_type_name = delete $args{module_name};
     }
-    $resource = SPVM::Builder::Resource->new(basic_type_name => $basic_type_name, %args);
+    $resource = SPVM::Builder::Resource->new(module_name => $basic_type_name, %args);
   }
   
-  my $resource_basic_type_name = $resource->basic_type_name;
+  my $resource_basic_type_name = $resource->module_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
@@ -1084,8 +1084,8 @@ If this field is undef, whether the messages are output or not is determined by 
 
 =head2 basic_type_name
 
-  my $basic_type_name = $config->basic_type_name;
-  $config->basic_type_name($basic_type_name);
+  my $basic_type_name = $config->module_name;
+  $config->module_name($basic_type_name);
 
 Gets and sets the C<basic_type_name> field.
 
@@ -1407,13 +1407,13 @@ Examples:
   my $resource = $config->use_resource($resource_name, %options);
 
 Loads a resource by the resource name $resource_name using the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class, and returns a L<SPVM::Builder::Resource> object.
-  my $resource = SPVM::Builder::Resource->new(basic_type_name => $resource_name);
+  my $resource = SPVM::Builder::Resource->new(module_name => $resource_name);
   $config->use_resource($resource);
 
 If the options %options are given, they are used as the options of the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class.
 
   my $resource = SPVM::Builder::Resource->new(
-    basic_type_name => 'Resource::Zlib',
+    module_name => 'Resource::Zlib',
     mode => 'production',
     argv => ['foo', 'bar'],
   );

@@ -9,14 +9,14 @@ use File::Basename 'dirname';
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
-sub basic_type_name {
+sub module_name {
   my $self = shift;
   if (@_) {
-    $self->{basic_type_name} = $_[0];
+    $self->{module_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{basic_type_name};
+    return $self->{module_name};
   }
 }
 
@@ -71,7 +71,7 @@ sub new {
 sub to_string {
   my ($self) = @_;
   
-  return $self->basic_type_name;
+  return $self->module_name;
 }
 
 1;
@@ -87,7 +87,7 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 =head1 Usage
 
   my $resource = SPVM::Builder::Resource->new(
-    basic_type_name => 'Resource::Zlib',
+    module_name => 'Resource::Zlib',
     mode => 'high_performance',
     argv => ['foo', 'bar'],
   );
@@ -96,8 +96,8 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 
 =head2 basic_type_name
 
-  my $basic_type_name = $resource->basic_type_name;
-  $resource->basic_type_name($basic_type_name);
+  my $basic_type_name = $resource->module_name;
+  $resource->module_name($basic_type_name);
 
 Gets and sets the C<basic_type_name> field.
 

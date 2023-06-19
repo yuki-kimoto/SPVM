@@ -27,8 +27,8 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my $basic_type_name = shift;
-  unless (defined $basic_type_name) {
+  my $module_name = shift;
+  unless (defined $module_name) {
     die SPVM::Builder::Util::extract_usage;
   }
   
@@ -37,7 +37,7 @@ else {
   unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
 
   my $build_exe = SPVM::Builder::Exe->new(
-    basic_type_name => $basic_type_name,
+    module_name => $module_name,
     build_dir => $build_dir,
     include_dirs => \@include_dirs,
     output_file => $output_file,
@@ -67,7 +67,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <basic type name>
+  usage: spvmcc [<options>] <module name>
     
     spvmcc -I lib/SPVM -o myapp Myapp
   

@@ -488,7 +488,7 @@ sub create_link_info {
     my $resource_basic_type_name;
     my $resource_config;
     if (ref $resource) {
-      $resource_basic_type_name = $resource->basic_type_name;
+      $resource_basic_type_name = $resource->module_name;
       $resource_config = $resource->config;
     }
     else {
@@ -550,7 +550,7 @@ sub create_link_info {
   my $ld_optimize = $config->ld_optimize;
   
   my $link_info = SPVM::Builder::LinkInfo->new(
-    basic_type_name => $basic_type_name,
+    module_name => $basic_type_name,
     config => $config,
     object_files => $all_object_files,
     output_file => $output_file,

@@ -31,8 +31,8 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my ($basic_type_name, $output_dir) = @ARGV;
-  unless (defined $basic_type_name) {
+  my ($module_name, $output_dir) = @ARGV;
+  unless (defined $module_name) {
     die SPVM::Builder::Util::extract_usage;
   }
   
@@ -42,7 +42,7 @@ else {
   }
   
   my $gendist= SPVM::Dist->new(
-    basic_type_name => $basic_type_name,
+    module_name => $module_name,
     quiet => $quiet,
     force => $force,
     output_dir => $output_dir,
@@ -67,7 +67,7 @@ spvmdist - Generating SPVM Distribution
 
 =head1 Usage
 
-  usage: spvmdist [<options>] <basic type name> [<dir>]
+  usage: spvmdist [<options>] <module name> [<dir>]
     
     spvmdist Foo
     spvmdist Foo My-Foo

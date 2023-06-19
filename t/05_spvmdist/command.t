@@ -32,12 +32,12 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   {
     my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path -h);
     my $output = `$spvmdist_cmd`;
-    like($output, qr/\Qusage: spvmdist [<options>] <basic type name> [<dir>]/);
+    like($output, qr/\Qusage: spvmdist [<options>] <module name> [<dir>]/);
   }
   {
     my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --help);
     my $output = `$spvmdist_cmd`;
-    like($output, qr/\Qusage: spvmdist [<options>] <basic type name> [<dir>]/);
+    like($output, qr/\Qusage: spvmdist [<options>] <module name> [<dir>]/);
   }
 }
 

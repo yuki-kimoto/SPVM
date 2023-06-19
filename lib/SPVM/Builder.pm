@@ -248,7 +248,7 @@ sub build {
     $config = SPVM::Builder::Util::API::create_default_config();
   }
   
-  $config->basic_type_name($basic_type_name);
+  $config->module_name($basic_type_name);
   
   # Compile source file and create object files
   my $compile_options = {
