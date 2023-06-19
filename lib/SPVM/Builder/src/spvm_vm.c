@@ -1177,9 +1177,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
           include_dir_sep = "";
           include_dir = "";
         }
-        const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->rel_file_id, NULL);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->rel_file_id, NULL);
 
-        SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, class_rel_file, line);
+        SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, module_rel_file, line);
         
         break;
       }

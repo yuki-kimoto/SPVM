@@ -310,9 +310,9 @@ sub create_make_rule {
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $class_rel_file = convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
+  my $module_rel_file = convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   
-  my $noext_file = $class_rel_file;
+  my $noext_file = $module_rel_file;
   $noext_file =~ s/\.[^\.]+$//;
   
   my $spvm_file = $noext_file;
@@ -323,7 +323,7 @@ sub create_make_rule {
   my @deps;
   
   # Dependency c source files
-  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$class_rel_file/*";
+  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$module_rel_file/*";
 
   push @deps, $spvm_file;
   

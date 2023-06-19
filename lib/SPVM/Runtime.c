@@ -305,7 +305,7 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_module_file = NULL;
   if (basic_type_id >= 0) {
-    int32_t class_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
+    int32_t module_rel_file_id = env->api->runtime->get_basic_type_rel_file_id(runtime, basic_type_id);
     int32_t include_dir_id = env->api->runtime->get_basic_type_dir_id(runtime, basic_type_id);
     const char* include_dir = NULL;
     const char* include_dir_sep;
@@ -317,14 +317,14 @@ int32_t SPVM__Runtime__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
       include_dir_sep = "";
       include_dir = "";
     }
-    const char* class_rel_file = env->api->runtime->get_constant_string_value(runtime, class_rel_file_id, NULL);
+    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
     
-    int32_t module_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(class_rel_file);
+    int32_t module_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(module_rel_file);
     obj_module_file = env->new_string(env, stack, NULL, module_file_length);
     char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
     memcpy(module_file, include_dir, strlen(include_dir));
     memcpy(module_file + strlen(include_dir), include_dir_sep, strlen(include_dir_sep));
-    memcpy(module_file + strlen(include_dir) + strlen(include_dir_sep), class_rel_file, strlen(class_rel_file));
+    memcpy(module_file + strlen(include_dir) + strlen(include_dir_sep), module_rel_file, strlen(module_rel_file));
   }
   
   stack[0].oval = obj_module_file;

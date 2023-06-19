@@ -307,7 +307,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 
   SPVM_STRING_BUFFER_add(string_buffer, "  char* include_dir;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* include_dir_sep;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  char* class_rel_file;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_rel_file;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
@@ -2737,9 +2737,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t class_rel_file_id = SPVM_API_RUNTIME_get_basic_type_rel_file_id(runtime, current_basic_type_id);
+        int32_t module_rel_file_id = SPVM_API_RUNTIME_get_basic_type_rel_file_id(runtime, current_basic_type_id);
         int32_t include_dir_id = SPVM_API_RUNTIME_get_basic_type_dir_id(runtime, current_basic_type_id);
-        const char* class_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, class_rel_file_id, NULL);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_rel_file_id, NULL);
         const char* include_dir = NULL;
         const char* include_dir_sep;
         if (include_dir_id >= 0) {
@@ -2763,15 +2763,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, include_dir_sep);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_rel_file = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, class_rel_file);
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_rel_file = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_rel_file);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, class_rel_file, line);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, module_rel_file, line);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
