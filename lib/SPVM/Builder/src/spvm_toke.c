@@ -2199,7 +2199,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
   compiler->ch_ptr = NULL;
   compiler->before_ch_ptr = NULL;
   compiler->line_begin_ptr = NULL;
-  compiler->cur_basic_type_anon_basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
+  compiler->cur_anon_op_types = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   
   // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
