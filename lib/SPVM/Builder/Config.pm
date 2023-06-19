@@ -674,22 +674,22 @@ sub use_resource {
     $resource = $first_arg;
   }
   else {
-    my $basic_type_name = $first_arg;
+    my $module_name = $first_arg;
     my %args = @args;
     if (exists $args{module_name}) {
-      $basic_type_name = delete $args{module_name};
+      $module_name = delete $args{module_name};
     }
-    $resource = SPVM::Builder::Resource->new(module_name => $basic_type_name, %args);
+    $resource = SPVM::Builder::Resource->new(module_name => $module_name, %args);
   }
   
-  my $resource_basic_type_name = $resource->module_name;
+  my $resource_module_name = $resource->module_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($resource_basic_type_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($resource_module_name, $ext);
   
-  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($resource_basic_type_name, $resource_mode);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($resource_module_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
@@ -698,7 +698,7 @@ sub use_resource {
   
   my $index = keys %{$self->{resources}};
   
-  $self->{resources}->{$resource_basic_type_name} = {resource => $resource, index => $index};
+  $self->{resources}->{$resource_module_name} = {resource => $resource, index => $index};
   
   return $resource;
 }
@@ -715,13 +715,13 @@ sub disable_resource {
 }
 
 sub get_resource {
-  my ($self, $resource_basic_type_name) = @_;
+  my ($self, $resource_module_name) = @_;
   
-  unless (defined $self->{resources}{$resource_basic_type_name}) {
+  unless (defined $self->{resources}{$resource_module_name}) {
     return;
   }
   
-  my $resource = $self->{resources}{$resource_basic_type_name}{resource};
+  my $resource = $self->{resources}{$resource_module_name}{resource};
   
   return $resource;
 }
@@ -822,7 +822,7 @@ The SPVM::Builder::Config class has methods to manipulate a config to compile so
 
 Gets and sets the C<ext> field.
 
-This field is the extension of a native class.
+This field is the extension of a native module.
 
 Examples:
   
@@ -1082,14 +1082,14 @@ If this field is a false value, the messages are not output.
 
 If this field is undef, whether the messages are output or not is determined by other conditions.
 
-=head2 basic_type_name
+=head2 module_name
 
-  my $basic_type_name = $config->module_name;
-  $config->module_name($basic_type_name);
+  my $module_name = $config->module_name;
+  $config->module_name($module_name);
 
-Gets and sets the C<basic_type_name> field.
+Gets and sets the C<module_name> field.
 
-This field is the class to use this config.
+This field is the module name of this config.
 
 =head2 file
 
@@ -1145,7 +1145,7 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"basic_type_name">
+=item * L</"module_name">
 
 undef
 
