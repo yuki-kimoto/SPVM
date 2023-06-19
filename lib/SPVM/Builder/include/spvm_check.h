@@ -22,15 +22,15 @@ void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
 
 void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr);
 

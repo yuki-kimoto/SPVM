@@ -59,353 +59,6 @@ void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-void SPVM_CHECK_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
-  
-  SPVM_TYPE* type = op_type->uv.type;
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* unresolved_basic_type_name = type->unresolved_basic_type_name;
-    
-    assert(unresolved_basic_type_name);
-    
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, unresolved_basic_type_name, strlen(unresolved_basic_type_name));
-    if (found_basic_type) {
-      type->basic_type = found_basic_type;
-    }
-  }
-  
-  // Basic type name
-  const char* basic_type_name = type->basic_type->name;
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
-    
-    if (!if_require_not_found_basic_type_name) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" basic type is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
-      return;
-    }
-  }
-  
-  // Reference type must be numeric refernce type or multi-numeric reference type
-  if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-    if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
-    }
-  }
-
-  // mutable only allow string type
-  if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-    SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
-  }
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
-    const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-    SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
-  }
-  
-
-}
-
-void SPVM_CHECK_resolve_op_types(SPVM_COMPILER* compiler) {
-  
-  SPVM_LIST* op_types = compiler->op_types;
-  
-  // Check type names
-  for (int32_t i = 0; i < op_types->length; i++) {
-    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
-    
-    if (!op_type->uv.type->resolved_in_ast) {
-      SPVM_CHECK_resolve_op_type(compiler, op_type);
-    }
-  }
-}
-
-void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
-  
-  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-  
-  if (call_method->method) {
-    return;
-  }
-  
-  const char* method_name = call_method->op_name->uv.name;
-  
-  // Class method call
-  if (call_method->is_static) {
-    SPVM_METHOD* found_method = NULL;
-    // Basic type name + method name
-    const char* basic_type_name;
-    if (call_method->is_current) {
-      basic_type_name = current_basic_type_name;
-    }
-    else {
-      SPVM_OP* op_type_basic_type = op_call_method->last;
-      basic_type_name = op_type_basic_type->uv.type->basic_type->name;
-    }
-    
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-    
-    found_method = SPVM_HASH_get(
-      found_basic_type->method_symtable,
-      method_name,
-      strlen(method_name)
-    );
-    
-    if (found_method && !found_method->is_static) {
-      found_method = NULL;
-    }
-  
-    if (found_method) {
-      call_method->method = found_method;
-    }
-    else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is not found.\n  at %s line %d", method_name, found_basic_type->name, op_call_method->file, op_call_method->line);
-      return;
-    }
-  }
-  // Instance method call
-  else {
-    SPVM_OP* op_list_args = op_call_method->first;
-    SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
-    
-    SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_invocant);
-    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant of the \"%s\" method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
-      return;
-    }
-    
-    const char* basic_type_name = type->basic_type->name;
-    
-    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-
-    // Static instance method call
-    char* last_colon_pos = strrchr(method_name, ':');
-    if (last_colon_pos) {
-      const char* abs_method_name = method_name;
-      call_method->is_static_instance_method_call = 1;
-      method_name = last_colon_pos + 1;
-      int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
-      
-      // SUPER::
-      SPVM_METHOD* found_method = NULL;
-      if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
-        SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
-        if (parent_basic_type) {
-          // Search the method of the super basic type
-          found_method = SPVM_CHECK_search_method(compiler, parent_basic_type, method_name);
-        }
-      }
-      else {
-        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
-        if (!found_basic_type) {
-          basic_type = found_method->current_basic_type;
-          SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        if (found_basic_type) {
-          found_method = SPVM_HASH_get(
-            found_basic_type->method_symtable,
-            method_name,
-            strlen(method_name)
-          );
-        }
-      }
-      
-      if (found_method) {
-        basic_type = found_method->current_basic_type;
-        if (found_method->is_static) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        call_method->method = found_method;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
-        return;
-      }
-    }
-    // Instance method
-    else {
-      SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
-      
-      if (found_method) {
-        if (found_method->is_static) {
-          basic_type = found_method->current_basic_type;
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
-          return;
-        }
-        call_method->method = found_method;
-      }
-      else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" basic type or its super classes .\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
-        return;
-      }
-    }
-  }
-}
-
-void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
-
-  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-
-  if (field_access->field) {
-    return;
-  }
-
-  SPVM_OP* op_operand = op_field_access->first;
-  SPVM_OP* op_name = field_access->op_name;
-  
-  SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_operand);
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
-  const char* field_name = op_name->uv.name;
-
-  // Search the field of the super class
-  SPVM_FIELD* found_field = NULL;
-  SPVM_BASIC_TYPE* parent_basic_type = basic_type;
-  
-  while (1) {
-    found_field = SPVM_HASH_get(
-      parent_basic_type->field_symtable,
-      field_name,
-      strlen(field_name)
-    );
-    if (found_field) {
-      break;
-    }
-    parent_basic_type = parent_basic_type->parent;
-    if (!parent_basic_type) {
-      break;
-    }
-  }
-  
-  if (found_field) {
-    op_field_access->uv.field_access->field = found_field;
-  }
-  else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" basic type or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
-    return;
-  }
-}
-
-void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
-  
-  if (op_class_var_access->uv.class_var_access->class_var) {
-    return;
-  }
-  assert(op_class_var_access->uv.class_var_access);
-  
-  SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
-  
-  char* basic_type_name;
-  char* base_name;
-  
-  const char* name = op_name->uv.name;
-  
-  char* colon_ptr = strrchr(name, ':');
-  if (colon_ptr) {
-    // Basic type name
-    // (end - start + 1) - $ - colon * 2
-    int32_t basic_type_name_length = (colon_ptr - name + 1) - 1 - 2;
-    basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, basic_type_name_length + 1);
-    memcpy(basic_type_name, name + 1, basic_type_name_length);
-    
-    // Base name($foo)
-    int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
-    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, base_name_length + 1);
-    base_name[0] = '$';
-    memcpy(base_name + 1, colon_ptr + 1, base_name_length);
-  }
-  else {
-    basic_type_name = (char*)current_basic_type_name;
-    base_name = (char*)name;
-  }
-  
-  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-  if (found_basic_type) {
-    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_basic_type->class_var_symtable, base_name, strlen(base_name));
-    if (found_class_var) {
-      op_class_var_access->uv.class_var_access->class_var = found_class_var;
-    }
-  }
-}
-
-void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type) {
-  if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-    return;
-  }
-  
-  int32_t alignment_size;
-  if (sizeof(void*) > sizeof(int64_t)) {
-    alignment_size = sizeof(void*);
-  }
-  else {
-    alignment_size = sizeof(int64_t);
-  }
-  
-  int32_t alignment_index = 0;
-  int32_t offset = 0;
-  int32_t offset_size;
-  
-  // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < basic_type->merged_fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, merged_field_index);
-    SPVM_TYPE* merged_field_type = merged_field->type;
-    
-    int32_t next_offset;
-    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 8;
-    }
-    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 4;
-    }
-    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 2;
-    }
-    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = 1;
-    }
-    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
-      offset_size = sizeof(void*);
-    }
-    else {
-      assert(0);
-    }
-    
-    next_offset = offset + offset_size;
-    
-    if (next_offset % offset_size != 0) {
-      offset += (offset_size - offset % offset_size);
-    }
-    
-    if (next_offset == alignment_size * (alignment_index + 1)) {
-      alignment_index++;
-    }
-    else if (next_offset > alignment_size * (alignment_index + 1)) {
-      alignment_index++;
-      // Next alignment
-      offset += (alignment_size - offset % alignment_size);
-      
-      assert(offset % alignment_size == 0);
-    }
-
-    merged_field->offset = offset;
-    
-    offset += offset_size;
-  }
-
-  basic_type->fields_size = offset;
-  
-  int32_t merged_fields_original_offset = basic_type->merged_fields_original_offset;
-  for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, field_index + merged_fields_original_offset);
-    SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
-    
-    field->offset = merged_field->offset;
-  }
-}
-
 void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_index = compiler->cur_basic_type_base; basic_type_index < compiler->basic_types->length; basic_type_index++) {
@@ -1014,34 +667,381 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       
       // AST traversals
       if (method->op_block) {
-        SPVM_CHECK_traverse_ast_resolve_op_types(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_resolve_op_types(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
         
         // AST traversal - Check syntax and generate some operations
-        SPVM_CHECK_traverse_ast_check_syntax(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_check_syntax(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
         
         // AST traversal - assign an unassigned operator to a variable
-        SPVM_CHECK_traverse_ast_assign_unassigned_op_to_var(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_assign_unassigned_op_to_var(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
-        SPVM_CHECK_traverse_ast_check_if_block_need_leave_scope(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_check_if_block_need_leave_scope(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Resolve call stack ids of variable declarations
-        SPVM_CHECK_traverse_ast_resolve_call_stack_ids(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_resolve_call_stack_ids(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
   }
 }
 
-void SPVM_CHECK_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  SPVM_TYPE* type = op_type->uv.type;
+  
+  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
+    const char* unresolved_basic_type_name = type->unresolved_basic_type_name;
+    
+    assert(unresolved_basic_type_name);
+    
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, unresolved_basic_type_name, strlen(unresolved_basic_type_name));
+    if (found_basic_type) {
+      type->basic_type = found_basic_type;
+    }
+  }
+  
+  // Basic type name
+  const char* basic_type_name = type->basic_type->name;
+  
+  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
+    const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
+    
+    if (!if_require_not_found_basic_type_name) {
+      SPVM_COMPILER_error(compiler, "The \"%s\" basic type is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
+      return;
+    }
+  }
+  
+  // Reference type must be numeric refernce type or multi-numeric reference type
+  if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+    if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
+    }
+  }
+
+  // mutable only allow string type
+  if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
+    SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
+  }
+  
+  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
+    const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+    SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
+  }
+  
+
+}
+
+void SPVM_CHECK_resolve_op_types(SPVM_COMPILER* compiler) {
+  
+  SPVM_LIST* op_types = compiler->op_types;
+  
+  // Check type names
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    
+    if (!op_type->uv.type->resolved_in_ast) {
+      SPVM_CHECK_resolve_op_type(compiler, op_type);
+    }
+  }
+}
+
+void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
+  
+  if (op_class_var_access->uv.class_var_access->class_var) {
+    return;
+  }
+  assert(op_class_var_access->uv.class_var_access);
+  
+  SPVM_OP* op_name = op_class_var_access->uv.class_var_access->op_name;
+  
+  char* basic_type_name;
+  char* base_name;
+  
+  const char* name = op_name->uv.name;
+  
+  char* colon_ptr = strrchr(name, ':');
+  if (colon_ptr) {
+    // Basic type name
+    // (end - start + 1) - $ - colon * 2
+    int32_t basic_type_name_length = (colon_ptr - name + 1) - 1 - 2;
+    basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, basic_type_name_length + 1);
+    memcpy(basic_type_name, name + 1, basic_type_name_length);
+    
+    // Base name($foo)
+    int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
+    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, base_name_length + 1);
+    base_name[0] = '$';
+    memcpy(base_name + 1, colon_ptr + 1, base_name_length);
+  }
+  else {
+    basic_type_name = (char*)current_basic_type_name;
+    base_name = (char*)name;
+  }
+  
+  SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+  if (found_basic_type) {
+    SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(found_basic_type->class_var_symtable, base_name, strlen(base_name));
+    if (found_class_var) {
+      op_class_var_access->uv.class_var_access->class_var = found_class_var;
+    }
+  }
+}
+
+void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
+
+  SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
+
+  if (field_access->field) {
+    return;
+  }
+
+  SPVM_OP* op_operand = op_field_access->first;
+  SPVM_OP* op_name = field_access->op_name;
+  
+  SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_operand);
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, invocant_type->basic_type->name, strlen(invocant_type->basic_type->name));
+  const char* field_name = op_name->uv.name;
+
+  // Search the field of the super class
+  SPVM_FIELD* found_field = NULL;
+  SPVM_BASIC_TYPE* parent_basic_type = basic_type;
+  
+  while (1) {
+    found_field = SPVM_HASH_get(
+      parent_basic_type->field_symtable,
+      field_name,
+      strlen(field_name)
+    );
+    if (found_field) {
+      break;
+    }
+    parent_basic_type = parent_basic_type->parent;
+    if (!parent_basic_type) {
+      break;
+    }
+  }
+  
+  if (found_field) {
+    op_field_access->uv.field_access->field = found_field;
+  }
+  else {
+    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" basic type or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
+    return;
+  }
+}
+
+void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type) {
+  if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    return;
+  }
+  
+  int32_t alignment_size;
+  if (sizeof(void*) > sizeof(int64_t)) {
+    alignment_size = sizeof(void*);
+  }
+  else {
+    alignment_size = sizeof(int64_t);
+  }
+  
+  int32_t alignment_index = 0;
+  int32_t offset = 0;
+  int32_t offset_size;
+  
+  // 8 byte data
+  for (int32_t merged_field_index = 0; merged_field_index < basic_type->merged_fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, merged_field_index);
+    SPVM_TYPE* merged_field_type = merged_field->type;
+    
+    int32_t next_offset;
+    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 8;
+    }
+    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
+      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 4;
+    }
+    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 2;
+    }
+    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = 1;
+    }
+    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+      offset_size = sizeof(void*);
+    }
+    else {
+      assert(0);
+    }
+    
+    next_offset = offset + offset_size;
+    
+    if (next_offset % offset_size != 0) {
+      offset += (offset_size - offset % offset_size);
+    }
+    
+    if (next_offset == alignment_size * (alignment_index + 1)) {
+      alignment_index++;
+    }
+    else if (next_offset > alignment_size * (alignment_index + 1)) {
+      alignment_index++;
+      // Next alignment
+      offset += (alignment_size - offset % alignment_size);
+      
+      assert(offset % alignment_size == 0);
+    }
+
+    merged_field->offset = offset;
+    
+    offset += offset_size;
+  }
+
+  basic_type->fields_size = offset;
+  
+  int32_t merged_fields_original_offset = basic_type->merged_fields_original_offset;
+  for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, field_index + merged_fields_original_offset);
+    SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+    
+    field->offset = merged_field->offset;
+  }
+}
+
+void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
+  
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+  
+  if (call_method->method) {
+    return;
+  }
+  
+  const char* method_name = call_method->op_name->uv.name;
+  
+  // Class method call
+  if (call_method->is_static) {
+    SPVM_METHOD* found_method = NULL;
+    // Basic type name + method name
+    const char* basic_type_name;
+    if (call_method->is_current) {
+      basic_type_name = current_basic_type_name;
+    }
+    else {
+      SPVM_OP* op_type_basic_type = op_call_method->last;
+      basic_type_name = op_type_basic_type->uv.type->basic_type->name;
+    }
+    
+    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+    
+    found_method = SPVM_HASH_get(
+      found_basic_type->method_symtable,
+      method_name,
+      strlen(method_name)
+    );
+    
+    if (found_method && !found_method->is_static) {
+      found_method = NULL;
+    }
+  
+    if (found_method) {
+      call_method->method = found_method;
+    }
+    else {
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is not found.\n  at %s line %d", method_name, found_basic_type->name, op_call_method->file, op_call_method->line);
+      return;
+    }
+  }
+  // Instance method call
+  else {
+    SPVM_OP* op_list_args = op_call_method->first;
+    SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
+    
+    SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_invocant);
+    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+      SPVM_COMPILER_error(compiler, "The invocant of the \"%s\" method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      return;
+    }
+    
+    const char* basic_type_name = type->basic_type->name;
+    
+    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+
+    // Static instance method call
+    char* last_colon_pos = strrchr(method_name, ':');
+    if (last_colon_pos) {
+      const char* abs_method_name = method_name;
+      call_method->is_static_instance_method_call = 1;
+      method_name = last_colon_pos + 1;
+      int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
+      
+      // SUPER::
+      SPVM_METHOD* found_method = NULL;
+      if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
+        SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
+        if (parent_basic_type) {
+          // Search the method of the super basic type
+          found_method = SPVM_CHECK_search_method(compiler, parent_basic_type, method_name);
+        }
+      }
+      else {
+        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
+        if (!found_basic_type) {
+          basic_type = found_method->current_basic_type;
+          SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        if (found_basic_type) {
+          found_method = SPVM_HASH_get(
+            found_basic_type->method_symtable,
+            method_name,
+            strlen(method_name)
+          );
+        }
+      }
+      
+      if (found_method) {
+        basic_type = found_method->current_basic_type;
+        if (found_method->is_static) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        call_method->method = found_method;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+        return;
+      }
+    }
+    // Instance method
+    else {
+      SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
+      
+      if (found_method) {
+        if (found_method->is_static) {
+          basic_type = found_method->current_basic_type;
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+          return;
+        }
+        call_method->method = found_method;
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" basic type or its super classes .\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+        return;
+      }
+    }
+  }
+}
+
+void SPVM_CHECK_check_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -1126,7 +1126,7 @@ void SPVM_CHECK_traverse_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASI
   }
 }
 
-void SPVM_CHECK_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -3162,13 +3162,13 @@ void SPVM_CHECK_traverse_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TY
   }
 }
 
-void SPVM_CHECK_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
   }
   
-  // Traverse AST
+  // check AST
   SPVM_OP* op_root = method->op_block;
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
@@ -3359,7 +3359,7 @@ void SPVM_CHECK_traverse_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler
   }
 }
 
-void SPVM_CHECK_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Block stack
   SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -3459,7 +3459,7 @@ void SPVM_CHECK_traverse_ast_check_if_block_need_leave_scope(SPVM_COMPILER* comp
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_CHECK_traverse_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
