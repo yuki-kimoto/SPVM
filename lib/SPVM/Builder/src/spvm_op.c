@@ -256,23 +256,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, SPVM_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line) {
-  
-  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
-  SPVM_TYPE* type = SPVM_TYPE_new_uninitialized(compiler);
-  
-  type->unresolved_basic_type_name = unresolved_basic_type_name;
-  type->basic_type = basic_type;
-  type->dimension = type_dimension;
-  type->flag = type_flag;
-  
-  op_type->uv.type = type;
-  
-  SPVM_LIST_push(compiler->op_types, op_type);
-  
-  return op_type;
-}
-
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
@@ -3187,12 +3170,23 @@ SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
   const char* class_var_name = op_class_var_name->uv.name;
   
   SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, op_class_var_name->file, op_class_var_name->line);
-
+  
   SPVM_CLASS_VAR_ACCESS* class_var_access = SPVM_CLASS_VAR_ACCESS_new(compiler);
   class_var_access->op_name = op_class_var_name;
   op_class_var_access->uv.class_var_access = class_var_access;
   
   return op_class_var_access;
+}
+
+SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  
+  SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, file, line);
+  
+  SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
+  
+  op_array_field_access->uv.array_field_access = array_field_access;
+  
+  return op_array_field_access;
 }
 
 SPVM_OP* SPVM_OP_clone_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
@@ -3205,29 +3199,6 @@ SPVM_OP* SPVM_OP_clone_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_var) {
   
   return op_var_clone;
 }
-
-SPVM_OP* SPVM_OP_new_op_var_clone_var_or_assign(SPVM_COMPILER* compiler, SPVM_OP* original_op_var_or_assign) {
-  
-  SPVM_OP* original_op_var;
-  if (original_op_var_or_assign->id == SPVM_OP_C_ID_ASSIGN) {
-    if (original_op_var_or_assign->last->id == SPVM_OP_C_ID_VAR) {
-      original_op_var = original_op_var_or_assign->last;
-    }
-    else {
-      assert(0);
-    }
-  }
-  else if (original_op_var_or_assign->id == SPVM_OP_C_ID_VAR) {
-    original_op_var = original_op_var_or_assign;
-  }
-  else {
-    assert(0);
-  }
-  
-  SPVM_OP* op_var = SPVM_OP_clone_op_var(compiler, original_op_var);
-  return op_var;
-}
-
 
 SPVM_OP* SPVM_OP_clone_op_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_var_invocant, SPVM_OP* op_name_field) {
   
@@ -3248,21 +3219,10 @@ SPVM_OP* SPVM_OP_clone_op_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_arra
   SPVM_OP* op_array_access_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_array_access->file, op_array_access->line);
   
   op_array_access_clone = SPVM_OP_build_array_access(compiler, op_array_access_clone, op_var_array_clone, op_var_index_clone);
-
+  
   op_array_access_clone->flag = op_array_access->flag;
-
+  
   return op_array_access_clone;
-}
-
-SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  
-  SPVM_OP* op_array_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_FIELD_ACCESS, file, line);
-  
-  SPVM_ARRAY_FIELD_ACCESS* array_field_access = SPVM_ARRAY_FIELD_ACCESS_new(compiler);
-  
-  op_array_field_access->uv.array_field_access = array_field_access;
-  
-  return op_array_field_access;
 }
 
 SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_name_field, SPVM_OP* op_array_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index) {
@@ -3500,6 +3460,23 @@ SPVM_OP* SPVM_OP_new_op_unresolved_type(SPVM_COMPILER* compiler, const char* nam
 SPVM_OP* SPVM_OP_new_op_any_object_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_TYPE* type = SPVM_TYPE_new_any_object_array_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);
+  
+  return op_type;
+}
+
+SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, SPVM_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line) {
+  
+  SPVM_OP* op_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE, file, line);
+  SPVM_TYPE* type = SPVM_TYPE_new_uninitialized(compiler);
+  
+  type->unresolved_basic_type_name = unresolved_basic_type_name;
+  type->basic_type = basic_type;
+  type->dimension = type_dimension;
+  type->flag = type_flag;
+  
+  op_type->uv.type = type;
+  
+  SPVM_LIST_push(compiler->op_types, op_type);
   
   return op_type;
 }
