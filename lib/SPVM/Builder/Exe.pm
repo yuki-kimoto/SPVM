@@ -132,7 +132,7 @@ sub new {
   
   my $self = {@_};
   
-  # Target class name
+  # Target basic type name
   my $basic_type_name = $self->{basic_type_name};
   unless (defined $basic_type_name) {
     confess "Class name not specified";
@@ -212,8 +212,8 @@ sub build_exe_file {
   my $spvm_core_object_files = $self->compile_spvm_core_source_files;
   push @$object_files, @$spvm_core_object_files;
   
-  my $classes_object_files = $self->compile_classes;
-  push @$object_files, @$classes_object_files;
+  my $modules_object_files = $self->compile_modules;
+  push @$object_files, @$modules_object_files;
   
   # Create bootstrap C source
   $self->create_bootstrap_source;
@@ -257,7 +257,7 @@ sub get_required_resources {
 
   my $build_dir = $self->builder->build_dir;
   
-  # Compiler for native class
+  # Compiler for native module
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -291,7 +291,7 @@ sub get_required_resources {
           $module_file =~ s/\.config$/\.spvm/;
         }
         else {
-          confess "\"$module_file\" class is not loaded";
+          confess "\"$module_file\" class is not found";
         }
       }
       my $config_exe = $builder->create_native_config_from_module_file($module_file);
@@ -372,7 +372,7 @@ sub compile {
   $self->{finish_compile} = 1;
 }
 
-sub compile_classes {
+sub compile_modules {
   my ($self) = @_;
 
   my $basic_type_names = $self->runtime->get_basic_type_names;
@@ -380,10 +380,10 @@ sub compile_classes {
   
   my $object_files = [];
   for my $basic_type_name (@$basic_type_names_without_anon) {
-    my $precompile_object_files = $self->compile_class_precompile_source_file($basic_type_name);
+    my $precompile_object_files = $self->compile_module_precompile_source_file($basic_type_name);
     push @$object_files, @$precompile_object_files;
     
-    my $native_object_files = $self->compile_class_native_source_files($basic_type_name);
+    my $native_object_files = $self->compile_module_native_source_files($basic_type_name);
     push @$object_files, @$native_object_files;
   }
   
@@ -506,10 +506,10 @@ EOS
     for my $basic_type_name (@$basic_type_names) {
       my $precompile_method_names = $self->runtime->get_method_names($basic_type_name, 'precompile');
       for my $method_name (@$precompile_method_names) {
-        my $class_cname = $basic_type_name;
-        $class_cname =~ s/::/__/g;
+        my $basic_type_cname = $basic_type_name;
+        $basic_type_cname =~ s/::/__/g;
         $source .= <<"EOS";
-int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVMPRECOMPILE__${basic_type_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
       }
     }
@@ -525,13 +525,13 @@ EOS
   }
   
   $source .= "// native functions declaration\n";
-  for my $class_cname (@$basic_type_names_without_anon) {
-    my $native_method_names = $self->runtime->get_method_names($class_cname, 'native');
+  for my $basic_type_cname (@$basic_type_names_without_anon) {
+    my $native_method_names = $self->runtime->get_method_names($basic_type_cname, 'native');
     for my $method_name (@$native_method_names) {
-      my $class_cname = $class_cname;
-      $class_cname =~ s/::/__/g;
+      my $basic_type_cname = $basic_type_cname;
+      $basic_type_cname =~ s/::/__/g;
       $source .= <<"EOS";
-int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM__${basic_type_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
@@ -766,14 +766,14 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
-    my $class_cname = $basic_type_name;
-    $class_cname =~ s/::/__/g;
+    my $basic_type_cname = $basic_type_name;
+    $basic_type_cname =~ s/::/__/g;
     
     my $precompile_method_names = $self->runtime->get_method_names($basic_type_name, 'precompile');
     
     for my $precompile_method_name (@$precompile_method_names) {
       $source .= <<"EOS";
-  SPVM_BOOTSTRAP_set_precompile_method_address(env, "$basic_type_name", "$precompile_method_name", &SPVMPRECOMPILE__${class_cname}__$precompile_method_name);
+  SPVM_BOOTSTRAP_set_precompile_method_address(env, "$basic_type_name", "$precompile_method_name", &SPVMPRECOMPILE__${basic_type_cname}__$precompile_method_name);
 EOS
     }
   }
@@ -797,14 +797,14 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
-    my $class_cname = $basic_type_name;
-    $class_cname =~ s/::/__/g;
+    my $basic_type_cname = $basic_type_name;
+    $basic_type_cname =~ s/::/__/g;
     
     my $native_method_names = $self->runtime->get_method_names($basic_type_name, 'native');
     
     for my $native_method_name (@$native_method_names) {
       $source .= <<"EOS";
-  SPVM_BOOTSTRAP_set_native_method_address(env, "$basic_type_name", "$native_method_name", &SPVM__${class_cname}__$native_method_name);
+  SPVM_BOOTSTRAP_set_native_method_address(env, "$basic_type_name", "$native_method_name", &SPVM__${basic_type_cname}__$native_method_name);
 EOS
     }
   }
@@ -892,7 +892,7 @@ sub compile_bootstrap_source_file {
   
   my $config_exe = $self->config;
   
-  # Target class name
+  # Target basic type name
   my $basic_type_name = $self->basic_type_name;
   
   my $target_perl_basic_type_name = "SPVM::$basic_type_name";
@@ -949,7 +949,7 @@ sub compile_spvm_core_source_files {
   # Config
   my $config = $config_exe->config_spvm_core;
   unless ($config) {
-    confess "The config_spvm_core field in the SPVM::Builder::Config class must be defined";
+    confess "The config_spvm_core field in the SPVM::Builder::Config module must be defined";
   }
   
   if ($no_compiler_api) {
@@ -975,7 +975,7 @@ sub compile_spvm_core_source_files {
   return $object_files;
 }
 
-sub compile_class_precompile_source_file {
+sub compile_module_precompile_source_file {
   my ($self, $basic_type_name) = @_;
 
   my $config_exe = $self->config;
@@ -990,7 +990,7 @@ sub compile_class_precompile_source_file {
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  # Build precompile classes
+  # Build precompile modules
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -1036,7 +1036,7 @@ sub compile_class_precompile_source_file {
   return $object_files;
 }
 
-sub compile_class_native_source_files {
+sub compile_module_native_source_files {
   my ($self, $basic_type_name) = @_;
 
   my $config_exe = $self->config;
@@ -1047,7 +1047,7 @@ sub compile_class_native_source_files {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Compiler for native class
+  # Compiler for native module
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
