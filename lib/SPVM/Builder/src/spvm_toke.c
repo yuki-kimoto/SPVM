@@ -2266,14 +2266,12 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         }
       }
       
-      const char* used_basic_type_name = (const char*)SPVM_HASH_get(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name));
+      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
       
-      if (used_basic_type_name) {
+      if (found_basic_type) {
         continue;
       }
       else {
-        SPVM_HASH_set(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
-        
         // Create moudle relative file name from class name by changing :: to / and add ".spvm"
         int32_t cur_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
         char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);

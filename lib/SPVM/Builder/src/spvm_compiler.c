@@ -118,18 +118,6 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC);
   SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING);
   SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
-  SPVM_COMPILER_add_basic_type_core(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS, SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS);
 }
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
@@ -162,6 +150,16 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, con
   SPVM_LIST_push(compiler->op_use_stack, op_use);
 }
 
+void SPVM_COMPILER_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+  const char* basic_type_name_expected = SPVM_BASIC_TYPE_get_basic_type_name(compiler, basic_type_id);
+  
+  if (strcmp(basic_type->name, basic_type_name_expected) != 0) {
+    fprintf(stderr, "[Unexpected Error]Basic Type ID:%d, Basic Type Name:%s, Expected Basic Type Name: %s\n", basic_type_id, basic_type->name, basic_type_name_expected);
+    assert(0);
+  }
+}
+
 const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, const char* name) {
   
   SPVM_RUNTIME_CONSTANT_STRING* string = SPVM_HASH_get(runtime_string_symtable, name, strlen(name));
@@ -173,16 +171,16 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, c
 
 int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   // Use automatically loaded classes
-  SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
-  SPVM_COMPILER_use(compiler, "Error", "Error", 0);
-  SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
-  SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
   SPVM_COMPILER_use(compiler, "Int", "Int", 0);
   SPVM_COMPILER_use(compiler, "Long", "Long", 0);
   SPVM_COMPILER_use(compiler, "Float", "Float", 0);
   SPVM_COMPILER_use(compiler, "Double", "Double", 0);
+  SPVM_COMPILER_use(compiler, "Bool", "Bool", 0);
+  SPVM_COMPILER_use(compiler, "Error", "Error", 0);
+  SPVM_COMPILER_use(compiler, "Error::System", "Error::System", 0);
+  SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
   SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
 }
@@ -303,17 +301,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->used_basic_type_name_symtable = SPVM_HASH_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  for (int32_t basic_type_index = 0; basic_type_index < compiler->basic_types->length; basic_type_index++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_index);
-    if (!basic_type->is_class) { continue; }
-    
-    const char* basic_type_name = basic_type->name;
-    SPVM_HASH_set(compiler->used_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
-  }
   
   SPVM_COMPILER_use_default_loaded_classes(compiler);
-   
+  
   // Use the class that is specified at the argument
   if (basic_type_name) {
     SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
@@ -323,6 +313,33 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
+  
+  {
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_VOID);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS);
+    SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS);
+  }
+  
   if (parse_error_flag) {
     die_error_id = 1;
   }
@@ -458,9 +475,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
-  
-  SPVM_HASH_free(compiler->used_basic_type_name_symtable);
-  compiler->used_basic_type_name_symtable = NULL;
   
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;

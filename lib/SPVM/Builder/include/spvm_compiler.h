@@ -101,9 +101,6 @@ struct spvm_compiler {
   // String Buffer
   SPVM_STRING_BUFFER* constant_strings_buffer;
   
-  // Used class symtable
-  SPVM_HASH* used_basic_type_name_symtable;
-  
   // Fail load class symtable
   SPVM_HASH* if_require_not_found_basic_type_name_symtable;
   
