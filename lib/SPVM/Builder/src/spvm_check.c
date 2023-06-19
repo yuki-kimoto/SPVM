@@ -360,10 +360,12 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
           method->is_precompile = 1;
         }
       }
-
+      
       // Set method id
       method->id = compiler->methods->length;
-
+      
+      method->index = i;
+      
       // Add the method to the compiler
       SPVM_LIST_push(compiler->methods, method);
       
@@ -374,13 +376,15 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         SPVM_LIST_push(compiler->args, arg);
       }
     }
-
+    
     for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
-
+      
       // Set class_var id
       class_var->id = compiler->class_vars->length;
-
+      
+      class_var->index = i;
+      
       // Add the class_var to the compiler
       SPVM_LIST_push(compiler->class_vars, class_var);
     }

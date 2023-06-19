@@ -13,6 +13,7 @@ struct spvm_class_var {
   SPVM_OP* op_class_var;
   SPVM_OP* op_name;
   int32_t id;
+  int32_t index;
   int8_t has_setter;
   int8_t has_getter;
   int8_t access_control_type;
