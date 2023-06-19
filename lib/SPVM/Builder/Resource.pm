@@ -94,14 +94,14 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 
 =head1 Fields
 
-=head2 basic_type_name
+=head2 module_name
 
-  my $basic_type_name = $resource->module_name;
-  $resource->module_name($basic_type_name);
+  my $module_name = $resource->module_name;
+  $resource->module_name($module_name);
 
-Gets and sets the C<basic_type_name> field.
+Gets and sets the C<module_name> field.
 
-This field is a basic type name of a resource.
+This field is a module name of a resource.
 
 =head2 mode
 
@@ -144,7 +144,7 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"basic_type_name">
+=item * L</"module_name">
 
 undef
 
@@ -168,7 +168,7 @@ undef
 
   my $string = $resource->to_string;
 
-Returns the L</"basic_type_name"> field.
+Returns the L</"module_name"> field.
 
 =head1 Operators
 
@@ -182,7 +182,7 @@ Always true.
 
 =head2 stringify
 
-  my $basic_type_name = "$resource";
+  my $module_name = "$resource";
 
 The alias for the L</"to_string"> method.
 
