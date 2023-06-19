@@ -183,7 +183,7 @@ sub build_at_runtime {
   }
   elsif ($category eq 'native') {
     my $module_file = $options->{module_file};
-    $build_src_dir = SPVM::Builder::Util::remove_basic_type_part_from_file($module_file, $basic_type_name);
+    $build_src_dir = SPVM::Builder::Util::remove_module_name_part_from_file($module_file, $basic_type_name);
   }
   
   # Object directory
