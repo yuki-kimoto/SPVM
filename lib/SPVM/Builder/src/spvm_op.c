@@ -1597,13 +1597,13 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
   // Anon class name
-  char* name_class_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
-  sprintf(name_class_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
+  char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
+  sprintf(name_basic_type_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
-  SPVM_CONSTANT_STRING* name_class_string = SPVM_CONSTANT_STRING_new(compiler, name_class_tmp, strlen(name_class_tmp));
-  const char* name_class = name_class_string->value;
+  SPVM_CONSTANT_STRING* name_basic_type_string = SPVM_CONSTANT_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
+  const char* name_basic_type = name_basic_type_string->value;
   
-  SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
+  SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);
   SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_basic_type);
   
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
@@ -1612,7 +1612,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP_build_class(compiler, op_class, op_type, op_module_block, NULL, NULL);
   
   // Type
-  SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_class, op_method->file, op_method->line);
+  SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);
   SPVM_OP* op_type_new = SPVM_OP_build_basic_type(compiler, op_name_new);
   
   // New
