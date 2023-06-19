@@ -643,101 +643,105 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_id = basic_type_string->id;
     
-    if (basic_type->is_class) {
-      
+    if (basic_type->rel_file) {
       SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->rel_file, strlen(basic_type->rel_file));
       runtime_basic_type->rel_file_id = basic_type_rel_file_string->id;
-      
-      if (basic_type->dir) {
-        SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
-        runtime_basic_type->dir_id = basic_type_dir_string->id;
-      }
-      else {
-        runtime_basic_type->dir_id = -1;
-      }
-      runtime_basic_type->has_init_block = basic_type->has_init_block;
-      runtime_basic_type->is_anon = basic_type->is_anon;
-      runtime_basic_type->is_pointer = basic_type->is_pointer;
-      if (basic_type->parent_name) {
-        SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_name, strlen(basic_type->parent_name));
-        runtime_basic_type->parent_id = parent_basic_type->id;
-      }
-      else {
-        runtime_basic_type->parent_id = -1;
-      }
-      
-      runtime_basic_type->fields_size = basic_type->fields_size;
-      
-      if (basic_type->version_string) {
-        SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
-        runtime_basic_type->version_string_id = basic_type_version_string->id;
-      }
-      else {
-        runtime_basic_type->version_string_id = -1;
-      }
-      
-      if (basic_type->init_method) {
-        runtime_basic_type->init_method_id = basic_type->init_method->id;
-      }
-      else {
-        runtime_basic_type->init_method_id = -1;
-      }
-      
-      if (basic_type->destructor_method) {
-        runtime_basic_type->destructor_method_id = basic_type->destructor_method->id;
-      }
-      else {
-        runtime_basic_type->destructor_method_id = -1;
-      }
-      
-      if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-        assert(basic_type->required_method);
-      }
-      
-      if (basic_type->required_method) {
-        assert(basic_type->required_method->id >= 0);
-        runtime_basic_type->required_method_id = basic_type->required_method->id;
-      }
-      else {
-        runtime_basic_type->required_method_id = -1;
-      }
-      
-      runtime_basic_type->methods_length = basic_type->methods->length;
-      if (basic_type->methods->length > 0) {
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
-        runtime_basic_type->methods_base_id = method->id;
-      }
-      else {
-        runtime_basic_type->methods_base_id = -1;
-      }
-      
-      runtime_basic_type->fields_length = basic_type->fields->length;
-      if (basic_type->fields->length > 0) {
-        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
-        runtime_basic_type->fields_base_id = field->id;
-      }
-      else {
-        runtime_basic_type->fields_base_id = -1;
-      }
-      
-      runtime_basic_type->class_vars_length = basic_type->class_vars->length;
-      if (basic_type->class_vars->length > 0) {
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, 0);
-        runtime_basic_type->class_vars_base_id = class_var->id;
-      }
-      else {
-        runtime_basic_type->class_vars_base_id = -1;
-      }
-      
-      runtime_basic_type->anon_methods_length = basic_type->anon_methods->length;
-      if (basic_type->anon_methods->length > 0) {
-        SPVM_METHOD* anon_method = SPVM_LIST_get(basic_type->anon_methods, 0);
-        runtime_basic_type->anon_methods_base_id = anon_method->anon_method_id;
-      }
-      else {
-        runtime_basic_type->anon_methods_base_id = -1;
-      }
-      
+    }
+    else {
+      runtime_basic_type->rel_file_id = -1;
+    }
+    
+    if (basic_type->dir) {
+      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->dir, strlen(basic_type->dir));
+      runtime_basic_type->dir_id = basic_type_dir_string->id;
+    }
+    else {
+      runtime_basic_type->dir_id = -1;
+    }
+    runtime_basic_type->has_init_block = basic_type->has_init_block;
+    
+    runtime_basic_type->is_anon = basic_type->is_anon;
+    
+    runtime_basic_type->is_pointer = basic_type->is_pointer;
+    
+    if (basic_type->parent_name) {
+      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_name, strlen(basic_type->parent_name));
+      runtime_basic_type->parent_id = parent_basic_type->id;
+    }
+    else {
+      runtime_basic_type->parent_id = -1;
+    }
+    
+    runtime_basic_type->fields_size = basic_type->fields_size;
+    
+    if (basic_type->version_string) {
+      SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
+      runtime_basic_type->version_string_id = basic_type_version_string->id;
+    }
+    else {
+      runtime_basic_type->version_string_id = -1;
+    }
+    
+    if (basic_type->init_method) {
+      runtime_basic_type->init_method_id = basic_type->init_method->id;
+    }
+    else {
+      runtime_basic_type->init_method_id = -1;
+    }
+    
+    if (basic_type->destructor_method) {
+      runtime_basic_type->destructor_method_id = basic_type->destructor_method->id;
+    }
+    else {
+      runtime_basic_type->destructor_method_id = -1;
+    }
+    
+    if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+      assert(basic_type->required_method);
+    }
+    
+    if (basic_type->required_method) {
+      assert(basic_type->required_method->id >= 0);
+      runtime_basic_type->required_method_id = basic_type->required_method->id;
+    }
+    else {
+      runtime_basic_type->required_method_id = -1;
+    }
+    
+    runtime_basic_type->methods_length = basic_type->methods->length;
+    if (basic_type->methods->length > 0) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
+      runtime_basic_type->methods_base_id = method->id;
+    }
+    else {
+      runtime_basic_type->methods_base_id = -1;
+    }
+    
+    runtime_basic_type->fields_length = basic_type->fields->length;
+    if (basic_type->fields->length > 0) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
+      runtime_basic_type->fields_base_id = field->id;
+    }
+    else {
+      runtime_basic_type->fields_base_id = -1;
+    }
+    
+    runtime_basic_type->class_vars_length = basic_type->class_vars->length;
+    if (basic_type->class_vars->length > 0) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, 0);
+      runtime_basic_type->class_vars_base_id = class_var->id;
+    }
+    else {
+      runtime_basic_type->class_vars_base_id = -1;
+    }
+    
+    runtime_basic_type->anon_methods_length = basic_type->anon_methods->length;
+    if (basic_type->anon_methods->length > 0) {
+      SPVM_METHOD* anon_method = SPVM_LIST_get(basic_type->anon_methods, 0);
+      runtime_basic_type->anon_methods_base_id = anon_method->anon_method_id;
+    }
+    else {
+      runtime_basic_type->anon_methods_base_id = -1;
     }
     
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
