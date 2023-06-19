@@ -106,19 +106,19 @@ classes
 class
   : CLASS basic_type opt_extends module_block END_OF_FILE
     {
-      $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
+      $$ = SPVM_OP_build_module(compiler, $1, $2, $4, NULL, $3);
     }
   | CLASS basic_type opt_extends ':' opt_attributes module_block END_OF_FILE
     {
-      $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
+      $$ = SPVM_OP_build_module(compiler, $1, $2, $6, $5, $3);
     }
   | CLASS basic_type opt_extends ';' END_OF_FILE
     {
-      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
+      $$ = SPVM_OP_build_module(compiler, $1, $2, NULL, NULL, $3);
     }
   | CLASS basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
     {
-      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
+      $$ = SPVM_OP_build_module(compiler, $1, $2, NULL, $5, $3);
     }
 
 opt_extends
@@ -298,7 +298,7 @@ enumeration_value
 our
   : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_module_var_definition(compiler, $1, $2, $4, $5);
     }
 
 has
