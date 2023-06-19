@@ -224,7 +224,7 @@ sub convert_module_name_to_dynamic_lib_rel_file {
   my ($module_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $dynamic_lib_category_rel_file = convert_basic_type_name_to_rel_file($module_name);
+  my $dynamic_lib_category_rel_file = &convert_module_name_to_rel_file($module_name);
   $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dynamic_lib_category_rel_file;
@@ -310,7 +310,7 @@ sub create_make_rule {
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $module_rel_file = convert_basic_type_name_to_rel_file($module_name, 'spvm');
+  my $module_rel_file = &convert_module_name_to_rel_file($module_name, 'spvm');
   
   my $noext_file = $module_rel_file;
   $noext_file =~ s/\.[^\.]+$//;
@@ -361,7 +361,7 @@ sub create_make_rule {
   }
   
   # Shared library file
-  my $dynamic_lib_rel_file = convert_basic_type_name_to_dynamic_lib_rel_file($module_name, $category);
+  my $dynamic_lib_rel_file = &convert_module_name_to_dynamic_lib_rel_file($module_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
   
   my $make_rule = '';
