@@ -1215,7 +1215,7 @@ _xs_call_method(...)
         croak("The invocant must be assinged to the \"%s\" basic type\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       
-      method_id = env->api->runtime->get_method_id_by_name(env->runtime, basic_type_name, method_name);
+      method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
       
       *(found_char - 1) = ':';
     }
@@ -1236,7 +1236,7 @@ _xs_call_method(...)
   else {
     class_method_call = 1;
     basic_type_name = SvPV_nolen(sv_invocant);
-    method_id = env->api->runtime->get_method_id_by_name(env->runtime, basic_type_name, method_name);
+    method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
     
     if (method_id >= 0) {
       int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
@@ -4692,7 +4692,7 @@ get_method_names(...)
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
+    int32_t method_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
     const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method_id));
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
@@ -4741,7 +4741,7 @@ get_basic_type_anon_basic_type_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_id = api_env->api->runtime->get_method_id_by_index(runtime, basic_type_id, method_index);
+    int32_t method_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
     int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_id);
     
     if (is_anon_method) {
@@ -4895,7 +4895,7 @@ set_native_method_address(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method id
-  int32_t method_id = api_env->api->runtime->get_method_id_by_name(runtime, basic_type_name, method_name);
+  int32_t method_id = api_env->api->runtime->get_method_address_id_by_name(runtime, basic_type_name, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));

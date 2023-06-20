@@ -745,7 +745,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, basic_type_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The %s class method in the %s class is not found", basic_type_name, method_name, func_name, file, line);
     return 1;
@@ -762,7 +762,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, basic_type_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   if (method_id < 0) {
     env->die(env, stack, "The %s instance method in the %s class is not found", basic_type_name, method_name, func_name, file, line);
     return 1;
@@ -3112,7 +3112,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         
         if (basic_type) {
           // Call destructor
-          if (basic_type->destructor_method_id >= 0) {
+          if (basic_type->destructor_method_address_id >= 0) {
             int32_t args_stack_length = 1;
             SPVM_VALUE save_stack0 = stack[0];
             void* save_exception = env->get_exception(env, stack);
@@ -3121,7 +3121,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             }
             
             stack[0].oval = object;
-            int32_t error = SPVM_API_call_method_raw(env, stack, basic_type->destructor_method_id, args_stack_length);
+            int32_t error = SPVM_API_call_method_raw(env, stack, basic_type->destructor_method_address_id, args_stack_length);
             
             // Exception in destructor is changed to warning
             if (error) {
@@ -3293,13 +3293,13 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 }
 
 int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, basic_type_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   return method_id;
 }
 
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, basic_type_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_id >= 0) {
     int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_id);
@@ -3312,7 +3312,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  int32_t method_id = SPVM_API_RUNTIME_get_method_id_by_name(env->runtime, basic_type_name, method_name);
+  int32_t method_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_id >= 0) {
     int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_id);

@@ -1645,7 +1645,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
   (void)env;
   (void)stack;
   
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
+  int32_t method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
   if (method_id < 0) {
     return 1;
   }
@@ -1666,7 +1666,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
     stack[0].ival = 1;
   }
 
-  int32_t method_id2 = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
+  int32_t method_id2 = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::NativeAPI", "my_value");
   if (method_id2 != method_id) {
     return 1;
   }
@@ -1680,7 +1680,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   
   int32_t e = 0;
   
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "Point", "new");
+  int32_t method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "Point", "new");
   if (method_id < 0) {
     return 1;
   }
@@ -1879,7 +1879,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   
   void* minimal = stack[0].oval;
   
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::Minimal", "x");
+  int32_t method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::Minimal", "x");
   if (method_id < 0) { return 0; }
   
   int32_t ret;
@@ -2489,8 +2489,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_field_name_id != &env_array[38]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved39 != &env_array[39]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved40 != &env_array[40]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_id_by_index != &env_array[41]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_id_by_name != &env_array[42]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_address_id_by_index != &env_array[41]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_address_id_by_name != &env_array[42]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_name_id != &env_array[43]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved44 != &env_array[44]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved45 != &env_array[45]) { stack[0].ival = 0; return 0; }
@@ -3145,7 +3145,7 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
 
   stack[0].ival = 1;
   
-  int32_t method_id = env->api->runtime->get_method_id_by_name(env->runtime, "TestCase::NativeAPI", "VALUE0");
+  int32_t method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::NativeAPI", "VALUE0");
   assert(method_id >= 0);
   
   int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method_id);

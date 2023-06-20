@@ -688,10 +688,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method_id = basic_type->destructor_method->id;
+      runtime_basic_type->destructor_method_address_id = basic_type->destructor_method->id;
     }
     else {
-      runtime_basic_type->destructor_method_id = -1;
+      runtime_basic_type->destructor_method_address_id = -1;
     }
     
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
@@ -700,10 +700,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     if (basic_type->required_method) {
       assert(basic_type->required_method->id >= 0);
-      runtime_basic_type->required_method_id = basic_type->required_method->id;
+      runtime_basic_type->required_method_address_id = basic_type->required_method->id;
     }
     else {
-      runtime_basic_type->required_method_id = -1;
+      runtime_basic_type->required_method_address_id = -1;
     }
     
     runtime_basic_type->methods_length = basic_type->methods->length;
