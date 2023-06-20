@@ -32,6 +32,7 @@ struct spvm_basic_type {
   SPVM_LIST* interfaces;
   SPVM_HASH* interface_symtable;
   SPVM_LIST* anon_methods;
+  SPVM_LIST* anon_basic_types;
   SPVM_LIST* allows;
   SPVM_LIST* interface_decls;
   SPVM_LIST* use_basic_type_names;
