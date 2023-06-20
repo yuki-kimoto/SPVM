@@ -53,17 +53,17 @@ Runtime native APIs have its IDs.
   29 reserved29
   30 reserved30
   31 reserved31
-  32 get_class_var_id_by_index
-  33 get_class_var_id_by_name
+  32 get_class_var
+  33 get_class_var_address_id_by_name
   34 get_class_var_name_id
   35 reserved35
-  36 get_field_id_by_index
-  37 get_field_id_by_name
+  36 get_class_var_address_id_by_index
+  37 get_class_var_address_id_by_name
   38 get_field_name_id
   39 reserved39
   40 reserved40
-  41 get_method_id_by_index
-  42 get_method_id_by_name
+  41 get_method_address_id_by_index
+  42 get_method_address_id_by_name
   43 get_method_name_id
   44 reserved44
   45 reserved45
@@ -226,125 +226,125 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_class_var_id_by_index
+=head2 get_class_var
 
-  int32_t (*get_class_var_id_by_index)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
+  void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
 
-=head2 get_class_var_id_by_name
+=head2 get_class_var_address_id_by_name
 
-  int32_t (*get_class_var_id_by_name)(void* runtime, const char* basic_type_name, const char* class_var_name);
+  int32_t (*get_class_var_address_id_by_name)(void* runtime, const char* basic_type_name, const char* class_var_name);
 
 =head2 get_class_var_name_id
 
-  int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_address_id);
 
-=head2 get_field_id_by_index
+=head2 get_class_var_address_id_by_index
 
-  int32_t (*get_field_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
+  int32_t (*get_class_var_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
 
-=head2 get_field_id_by_name
+=head2 get_class_var_address_id_by_name
 
-  int32_t (*get_field_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
+  int32_t (*get_class_var_address_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
 
 =head2 get_field_name_id
 
-  int32_t (*get_field_name_id)(void* runtime, int32_t field_id);
+  int32_t (*get_field_name_id)(void* runtime, int32_t class_var_address_id);
 
-=head2 get_method_id_by_index
+=head2 get_method_address_id_by_index
 
-  int32_t (*get_method_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
+  int32_t (*get_method_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
 
-=head2 get_method_id_by_name
+=head2 get_method_address_id_by_name
 
-  int32_t (*get_method_id_by_name)(void* runtime, const char* basic_type_name, const char* method_name);
+  int32_t (*get_method_address_id_by_name)(void* runtime, const char* basic_type_name, const char* method_name);
 
 =head2 get_method_name_id
 
-  int32_t (*get_method_name_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_name_id)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_is_static
 
-  int32_t (*get_method_is_static)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_static)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_is_anon
 
-  int32_t (*get_method_is_anon)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_anon)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_is_native
 
-  int32_t (*get_method_is_native)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_native)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_is_precompile
 
-  int32_t (*get_method_is_precompile)(void* runtime, int32_t method_id);
+  int32_t (*get_method_is_precompile)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_byte_vars_length
 
-  int32_t (*get_method_call_stack_byte_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_byte_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_short_vars_length
 
-  int32_t (*get_method_call_stack_short_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_short_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_int_vars_length
 
-  int32_t (*get_method_call_stack_int_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_int_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_long_vars_length
 
-  int32_t (*get_method_call_stack_long_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_long_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_float_vars_length
 
-  int32_t (*get_method_call_stack_float_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_float_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_double_vars_length
 
-  int32_t (*get_method_call_stack_double_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_double_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_object_vars_length
 
-  int32_t (*get_method_call_stack_object_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_object_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_call_stack_ref_vars_length
 
-  int32_t (*get_method_call_stack_ref_vars_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_call_stack_ref_vars_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_mortal_stack_length
 
-  int32_t (*get_method_mortal_stack_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_mortal_stack_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_opcodes_base_address_id
 
-  int32_t (*get_method_opcodes_base_address_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_opcodes_base_address_id)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_opcodes_length
 
-  int32_t (*get_method_opcodes_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_opcodes_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_args_base_address_id
 
-  int32_t (*get_method_args_base_address_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_args_base_address_id)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_args_length
 
-  int32_t (*get_method_args_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_args_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_native_method_address
 
-  void* (*get_native_method_address)(void* runtime, int32_t method_id);
+  void* (*get_native_method_address)(void* runtime, int32_t method_address_id);
 
 =head2 set_native_method_address
 
-  void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
+  void (*set_native_method_address)(void* runtime, int32_t method_address_id, void* address);
 
 =head2 get_precompile_method_address
 
-  void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
+  void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_address_id);
 
 =head2 set_precompile_method_address
 
-  void (*set_precompile_method_address)(void* runtime, int32_t method_id, void* address);
+  void (*set_precompile_method_address)(void* runtime, int32_t method_address_id, void* address);
 
 =head2 object_header_size
 
@@ -388,7 +388,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_method_required_args_length
 
-  int32_t (*get_method_required_args_length)(void* runtime, int32_t method_id);
+  int32_t (*get_method_required_args_length)(void* runtime, int32_t method_address_id);
 
 =head2 get_basic_type_is_pointer
 
@@ -418,39 +418,39 @@ Internally used.
 
 =head2 get_field_basic_type_id
 
-  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_field_type_dimension
 
-  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_id);
+  int32_t (*get_field_type_dimension)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_field_type_flag
 
-  int32_t (*get_field_type_flag)(void* runtime, int32_t field_id);
+  int32_t (*get_field_type_flag)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_class_var_basic_type_id
 
-  int32_t (*get_class_var_basic_type_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_basic_type_id)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_class_var_type_dimension
 
-  int32_t (*get_class_var_type_dimension)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_type_dimension)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_class_var_type_flag
 
-  int32_t (*get_class_var_type_flag)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_type_flag)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_method_return_basic_type_id
 
-  int32_t (*get_method_return_basic_type_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_return_basic_type_id)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_return_type_dimension
 
-  int32_t (*get_method_return_type_dimension)(void* runtime, int32_t method_id);
+  int32_t (*get_method_return_type_dimension)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_return_type_flag
 
-  int32_t (*get_method_return_type_flag)(void* runtime, int32_t method_id);
+  int32_t (*get_method_return_type_flag)(void* runtime, int32_t method_address_id);
 
 =head2 get_arg_basic_type_id
 
@@ -466,15 +466,15 @@ Internally used.
 
 =head2 get_method_current_basic_type_id
 
-  int32_t (*get_method_current_basic_type_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_current_basic_type_id)(void* runtime, int32_t method_address_id);
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t field_id);
+  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_class_var_current_basic_type_id
 
-  int32_t (*get_class_var_current_basic_type_id)(void* runtime, int32_t class_var_id);
+  int32_t (*get_class_var_current_basic_type_id)(void* runtime, int32_t class_var_address_id);
 
 =head2 get_basic_type_parent_id
 
