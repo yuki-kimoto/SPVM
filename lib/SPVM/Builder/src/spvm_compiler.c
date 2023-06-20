@@ -570,14 +570,14 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // opcodes
   length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
   
-  // anon_basic_types length
+  // anon_basic_type_basic_types length
   length++;
   
-  // anon_basic_types 32bit length
+  // anon_basic_type_basic_types 32bit length
   length++;
   
-  // anon_basic_type_ids
-  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
+  // anon_basic_type_basic_type_ids
+  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_basic_types->length + 1);
   
   return length;
 }
@@ -938,21 +938,21 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   runtime_codes_ptr += args_32bit_length;
   
-  // anon_basic_types length
-  *runtime_codes_ptr = compiler->anon_methods->length;
+  // anon_basic_type_basic_types length
+  *runtime_codes_ptr = compiler->anon_basic_types->length;
   runtime_codes_ptr++;
   
-  // anon_basic_types 32bit length
-  int32_t anon_basic_type_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
+  // anon_basic_type_basic_types 32bit length
+  int32_t anon_basic_type_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_basic_types->length + 1);
   *runtime_codes_ptr = anon_basic_type_32bit_length;
   runtime_codes_ptr++;
   
-  // anon_basic_type_ids
+  // anon_basic_type_basic_type_ids
   int32_t* anon_basic_type_32bit_ptr = runtime_codes_ptr;
-  for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
-    SPVM_METHOD* anon_method = SPVM_LIST_get(compiler->anon_methods, anon_method_id);
-    int32_t anon_method_id = anon_method->anon_method_id;
-    *anon_basic_type_32bit_ptr = anon_method->id;
+  for (int32_t anon_basic_type_id = 0; anon_basic_type_id < compiler->anon_basic_types->length; anon_basic_type_id++) {
+    SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(compiler->anon_basic_types, anon_basic_type_id);
+    int32_t anon_basic_type_id = anon_basic_type->anon_basic_type_id;
+    *anon_basic_type_32bit_ptr = anon_basic_type->id;
     anon_basic_type_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
   }
   runtime_codes_ptr += anon_basic_type_32bit_length;
