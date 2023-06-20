@@ -128,6 +128,9 @@ struct spvm_compiler {
   // Anon methods
   SPVM_LIST* anon_methods;
   
+  // Anon basic types
+  SPVM_LIST* anon_basic_types;
+  
   SPVM_LIST* cur_anon_op_types;
   
   // Argments
