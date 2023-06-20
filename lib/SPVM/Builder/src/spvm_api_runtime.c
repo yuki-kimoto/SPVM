@@ -826,6 +826,21 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
   return found_field;
 }
 
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
+  
+  if (method_index < 0) {
+    return NULL;
+  }
+  
+  if (method_index >= basic_type->methods_length) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base_id + method_index];
+  
+  return method;
+}
+
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_address_id(SPVM_RUNTIME* runtime, int32_t method_address_id) {
   
   if (method_address_id < 0) {
