@@ -57,17 +57,15 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     }
   }
   
-  if (SPVM_API_RUNTIME_get_basic_type_anon_methods_length(runtime, basic_type_id) > 0) {
-    // If the basic type has anon methods, the anon methods is merged to this basic type
-    int32_t basic_type_anon_basic_types_length = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(runtime, basic_type_id);
-    if (basic_type_anon_basic_types_length > 0) {
-      int32_t basic_type_anon_basic_types_base_id = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(runtime, basic_type_id);
-      for (int32_t anon_basic_type_address_id = basic_type_anon_basic_types_base_id; anon_basic_type_address_id < basic_type_anon_basic_types_length; anon_basic_type_address_id++) {
-        int32_t anon_basic_type_id = SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(runtime, anon_basic_type_address_id);
-        int32_t anon_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, anon_basic_type_id);
-        const char* anon_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, anon_basic_type_name_id);
-        SPVM_PRECOMPILE_build_source(precompile, string_buffer, anon_basic_type_name);
-      }
+  // If the basic type has anon methods, the anon methods is merged to this basic type
+  int32_t basic_type_anon_basic_types_length = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(runtime, basic_type_id);
+  if (basic_type_anon_basic_types_length > 0) {
+    int32_t basic_type_anon_basic_types_base_id = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(runtime, basic_type_id);
+    for (int32_t anon_basic_type_address_id = basic_type_anon_basic_types_base_id; anon_basic_type_address_id < basic_type_anon_basic_types_length; anon_basic_type_address_id++) {
+      int32_t anon_basic_type_id = SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(runtime, anon_basic_type_address_id);
+      int32_t anon_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, anon_basic_type_id);
+      const char* anon_basic_type_name = SPVM_API_RUNTIME_get_name(runtime, anon_basic_type_name_id);
+      SPVM_PRECOMPILE_build_source(precompile, string_buffer, anon_basic_type_name);
     }
   }
   

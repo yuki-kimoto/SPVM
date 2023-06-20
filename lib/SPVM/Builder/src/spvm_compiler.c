@@ -507,15 +507,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // constant_strings
   length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
   
-  // anon_method_methods length
-  length++;
-  
-  // anon_method_methods 32bit length
-  length++;
-  
-  // anon_method_method_ids
-  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
-  
   // basic_types length
   length++;
   
@@ -630,25 +621,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   runtime_codes_ptr += constant_strings_32bit_length;
   
-  // anon_method_methods length
-  *runtime_codes_ptr = compiler->anon_methods->length;
-  runtime_codes_ptr++;
-  
-  // anon_method_methods 32bit length
-  int32_t anon_method_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
-  *runtime_codes_ptr = anon_method_32bit_length;
-  runtime_codes_ptr++;
-  
-  // anon_method_method_ids
-  int32_t* anon_method_32bit_ptr = runtime_codes_ptr;
-  for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
-    SPVM_METHOD* anon_method = SPVM_LIST_get(compiler->anon_methods, anon_method_id);
-    int32_t anon_method_id = anon_method->anon_method_id;
-    *anon_method_32bit_ptr = anon_method->id;
-    anon_method_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
-  }
-  runtime_codes_ptr += anon_method_32bit_length;
-  
   // basic_types length
   *runtime_codes_ptr = compiler->basic_types->length;
   runtime_codes_ptr++;
@@ -760,15 +732,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     else {
       runtime_basic_type->class_vars_base_id = -1;
-    }
-    
-    runtime_basic_type->anon_methods_length = basic_type->anon_methods->length;
-    if (basic_type->anon_methods->length > 0) {
-      SPVM_METHOD* anon_method = SPVM_LIST_get(basic_type->anon_methods, 0);
-      runtime_basic_type->anon_methods_base_id = anon_method->anon_method_id;
-    }
-    else {
-      runtime_basic_type->anon_methods_base_id = -1;
     }
     
     runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;

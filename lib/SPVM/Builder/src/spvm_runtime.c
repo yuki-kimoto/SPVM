@@ -93,18 +93,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->constant_strings = (SPVM_RUNTIME_CONSTANT_STRING*)runtime_codes_ptr;
   runtime_codes_ptr += constant_strings_runtime_codes_length;
   
-  // anon_method_methods length
-  runtime->anon_methods_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // anon_method_methods runtime codes length
-  int32_t anon_methods_runtime_codes_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // anon_method_method_ids
-  runtime->anon_method_method_ids = runtime_codes_ptr;
-  runtime_codes_ptr += anon_methods_runtime_codes_length;
-  
   // basic_types length
   runtime->basic_types_length = *runtime_codes_ptr;
   runtime_codes_ptr++;

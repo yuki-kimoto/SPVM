@@ -389,6 +389,8 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
+  assert(0);
+  
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   assert(basic_type);
@@ -399,6 +401,8 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(SPVM_RUNTIME* runti
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+  
+  assert(0);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
@@ -1162,6 +1166,8 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id
 }
 
 int32_t SPVM_API_RUNTIME_get_anon_method_method_id(SPVM_RUNTIME* runtime, int32_t anon_method_id) {
+  
+  assert(0);
   
   int32_t anon_method_method_id = runtime->anon_method_method_ids[anon_method_id];
   
