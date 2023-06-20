@@ -39,16 +39,16 @@ int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const 
 int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_name_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_address_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_module_dir_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_module_rel_file_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
-int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
-int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_address_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
-int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_address_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_parent_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id);
@@ -90,7 +90,7 @@ int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_
 int32_t SPVM_API_RUNTIME_get_method_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index);
 int32_t SPVM_API_RUNTIME_get_method_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* method_name);
 int32_t SPVM_API_RUNTIME_get_method_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t method_id);
-int32_t SPVM_API_RUNTIME_get_method_opcodes_base_id(SPVM_RUNTIME* runtime, int32_t method_id);
+int32_t SPVM_API_RUNTIME_get_method_opcodes_base_address_id(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_name_id(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_is_static(SPVM_RUNTIME* runtime, int32_t method_id);
@@ -99,7 +99,7 @@ int32_t SPVM_API_RUNTIME_get_method_is_native(SPVM_RUNTIME* runtime, int32_t met
 int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_args_length(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_required_args_length(SPVM_RUNTIME* runtime, int32_t method_id);
-int32_t SPVM_API_RUNTIME_get_method_args_base_id(SPVM_RUNTIME* runtime, int32_t method_id);
+int32_t SPVM_API_RUNTIME_get_method_args_base_address_id(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_call_stack_short_vars_length(SPVM_RUNTIME* runtime, int32_t method_id);
 int32_t SPVM_API_RUNTIME_get_method_call_stack_int_vars_length(SPVM_RUNTIME* runtime, int32_t method_id);

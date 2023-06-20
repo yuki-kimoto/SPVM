@@ -80,9 +80,9 @@ Runtime native APIs have its IDs.
   56 get_method_call_stack_object_vars_length
   57 get_method_call_stack_ref_vars_length
   58 get_method_mortal_stack_length
-  59 get_method_opcodes_base_id
+  59 get_method_opcodes_base_address_id
   60 get_method_opcodes_length
-  61 get_method_args_base_id
+  61 get_method_args_base_address_id
   62 get_method_args_length
   63 reserved63
   64 reserved64
@@ -111,11 +111,11 @@ Runtime native APIs have its IDs.
   87 get_basic_type_module_rel_file_id
   88 get_basic_type_module_dir_id
   89 get_basic_type_is_anon
-  90 get_basic_type_fields_base_id
+  90 get_basic_type_fields_base_address_id
   91 get_basic_type_fields_length
-  92 get_basic_type_methods_base_id
+  92 get_basic_type_methods_base_address_id
   93 get_basic_type_methods_length
-  94 get_basic_type_class_vars_base_id
+  94 get_basic_type_class_vars_base_address_id
   95 get_basic_type_class_vars_length
   96 reserved96
   97 reserved97
@@ -202,25 +202,25 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_fields_base_id
+=head2 get_basic_type_fields_base_address_id
 
-  int32_t (*get_basic_type_fields_base_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_fields_length
 
   int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_methods_base_id
+=head2 get_basic_type_methods_base_address_id
 
-  int32_t (*get_basic_type_methods_base_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_methods_length
 
   int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_class_vars_base_id
+=head2 get_basic_type_class_vars_base_address_id
 
-  int32_t (*get_basic_type_class_vars_base_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_class_vars_base_address_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_class_vars_length
 
@@ -314,17 +314,17 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_method_mortal_stack_length)(void* runtime, int32_t method_id);
 
-=head2 get_method_opcodes_base_id
+=head2 get_method_opcodes_base_address_id
 
-  int32_t (*get_method_opcodes_base_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_opcodes_base_address_id)(void* runtime, int32_t method_id);
 
 =head2 get_method_opcodes_length
 
   int32_t (*get_method_opcodes_length)(void* runtime, int32_t method_id);
 
-=head2 get_method_args_base_id
+=head2 get_method_args_base_address_id
 
-  int32_t (*get_method_args_base_id)(void* runtime, int32_t method_id);
+  int32_t (*get_method_args_base_address_id)(void* runtime, int32_t method_id);
 
 =head2 get_method_args_length
 

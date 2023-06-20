@@ -43,7 +43,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_RUNTIME* runtime = precompile->runtime;
   
   int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, basic_type_name);
-  int32_t basic_type_methods_base_id = SPVM_API_RUNTIME_get_basic_type_methods_base_id(runtime, basic_type_id);
+  int32_t basic_type_methods_base_id = SPVM_API_RUNTIME_get_basic_type_methods_base_address_id(runtime, basic_type_id);
   int32_t basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, basic_type_id);
 
   // Method implementations
@@ -60,7 +60,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   // If the basic type has anon methods, the anon methods is merged to this basic type
   int32_t basic_type_anon_basic_types_length = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(runtime, basic_type_id);
   if (basic_type_anon_basic_types_length > 0) {
-    int32_t basic_type_anon_basic_types_base_id = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(runtime, basic_type_id);
+    int32_t basic_type_anon_basic_types_base_id = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_address_id(runtime, basic_type_id);
     for (int32_t anon_basic_type_address_id = basic_type_anon_basic_types_base_id; anon_basic_type_address_id < basic_type_anon_basic_types_length; anon_basic_type_address_id++) {
       int32_t anon_basic_type_id = SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(runtime, anon_basic_type_address_id);
       int32_t anon_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, anon_basic_type_id);
@@ -311,7 +311,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
-  int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_id(runtime, current_method_id);
+  int32_t method_opcodes_base_id = SPVM_API_RUNTIME_get_method_opcodes_base_address_id(runtime, current_method_id);
   int32_t opcodes_length = SPVM_API_RUNTIME_get_method_opcodes_length(runtime, current_method_id);
   int32_t opcode_index = 0;
   

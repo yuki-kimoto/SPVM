@@ -1,17 +1,31 @@
 0.989008 2023-06-19
   [Incompatibe Changes]
-    * The following Native Runtime API were changed.
+    * The following Native Runtime APIs were changed.
     
       -  int32_t (*get_basic_type_rel_file_id)(void* runtime, int32_t basic_type_id);
       +  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
       
       -  int32_t (*get_basic_type_dir_id)(void* runtime, int32_t basic_type_id);
       +  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+
+      -  int32_t (*get_method_opcodes_base_id)(void* runtime, int32_t method_id);
+      +  int32_t (*get_method_opcodes_base_address_id)(void* runtime, int32_t method_id);
+      
+      -  int32_t (*get_method_args_base_id)(void* runtime, int32_t method_id);
+      +  int32_t (*get_method_args_base_address_id)(void* runtime, int32_t method_id);
+      
+      -  int32_t (*get_basic_type_fields_base_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, int32_t basic_type_id);
+      
+      -  int32_t (*get_basic_type_methods_base_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, int32_t basic_type_id);
+      
+      -  int32_t (*get_basic_type_class_vars_base_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_class_vars_base_address_id)(void* runtime, int32_t basic_type_id);
     * The following Native Runtime API were removed.
       -  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
       -  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
       -  int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
-
 0.989007 2023-06-19
   [Document Changes]
     * The hedding "Class Attribute" was renamed to "Module Attribute"

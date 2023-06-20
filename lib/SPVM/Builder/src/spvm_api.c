@@ -3142,7 +3142,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_id(runtime, basic_type->id);
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, basic_type->id);
         int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, basic_type->id);
         for (int32_t field_id = object_fields_base; field_id < object_fields_base + object_fields_length; field_id++) {
           int32_t field_basic_type_id = SPVM_API_RUNTIME_get_field_basic_type_id(runtime, field_id);
