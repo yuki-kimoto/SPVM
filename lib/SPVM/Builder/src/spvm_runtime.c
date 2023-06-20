@@ -183,6 +183,18 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // Method precompile addresses
   runtime->method_precompile_addresses = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(void*) * runtime->methods_length);
 
+  // anon_basic_type_basic_types length
+  runtime->anon_basic_types_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // anon_basic_type_basic_types runtime codes length
+  int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // anon_basic_type_basic_type_ids
+  runtime->anon_basic_type_basic_type_ids = runtime_codes_ptr;
+  runtime_codes_ptr += anon_basic_types_runtime_codes_length;
+  
 #ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
@@ -196,18 +208,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   fprintf(stderr, "method_native_precompile size: %d bytes\n", (int32_t)(sizeof(void*) * runtime->methods_length));
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime->fields_length));
 #endif
-  
-  // anon_basic_type_basic_types length
-  runtime->anon_basic_types_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // anon_basic_type_basic_types runtime codes length
-  int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // anon_basic_type_basic_type_ids
-  runtime->anon_basic_type_basic_type_ids = runtime_codes_ptr;
-  runtime_codes_ptr += anon_basic_types_runtime_codes_length;
   
   SPVM_RUNTIME_build_symbol_table(runtime);
 }
