@@ -638,7 +638,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t 
   return type_flag;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_address_id) {
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
   if (field_address_id < 0) {
     return NULL;
@@ -655,7 +655,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t fi
 
 int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
   assert(field);
   
@@ -666,7 +666,7 @@ int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, 
 
 int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
   assert(field);
   
@@ -677,7 +677,7 @@ int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t 
 
 int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
   assert(field);
   
@@ -688,7 +688,7 @@ int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t
 
 int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
   assert(field);
   
@@ -699,7 +699,7 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t fiel
 
 int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
   assert(field);
   
@@ -814,7 +814,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
     for (int32_t field_address_id = basic_type->fields_base_id; field_address_id <  basic_type->fields_base_id + basic_type->fields_length; field_address_id++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
       const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
       if (strcmp(field_name_current, field_name) == 0) {
         found_field = field;
