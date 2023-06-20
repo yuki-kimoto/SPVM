@@ -551,6 +551,9 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // fields
   length += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (compiler->fields->length + 1);
   
+  // args length
+  length++;
+  
   // args 32bit length
   length++;
   
@@ -565,6 +568,15 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // opcodes
   length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
+  
+  // anon_basic_types length
+  length++;
+  
+  // anon_basic_types 32bit length
+  length++;
+  
+  // anon_basic_type_ids
+  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
   
   return length;
 }
@@ -758,6 +770,15 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->anon_methods_base_id = -1;
     }
     
+    runtime_basic_type->anon_methods_length = basic_type->anon_methods->length;
+    if (basic_type->anon_methods->length > 0) {
+      SPVM_METHOD* anon_method = SPVM_LIST_get(basic_type->anon_methods, 0);
+      runtime_basic_type->anon_basic_types_base_id = anon_method->anon_method_id;
+    }
+    else {
+      runtime_basic_type->anon_basic_types_base_id = -1;
+    }
+    
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
   runtime_codes_ptr += basic_types_32bit_length;
@@ -915,6 +936,25 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     arg_32bit_ptr += sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t);
   }
   runtime_codes_ptr += args_32bit_length;
+  
+  // anon_basic_types length
+  *runtime_codes_ptr = compiler->anon_methods->length;
+  runtime_codes_ptr++;
+  
+  // anon_basic_types 32bit length
+  int32_t anon_basic_type_32bit_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_methods->length + 1);
+  *runtime_codes_ptr = anon_basic_type_32bit_length;
+  runtime_codes_ptr++;
+  
+  // anon_basic_type_ids
+  int32_t* anon_basic_type_32bit_ptr = runtime_codes_ptr;
+  for (int32_t anon_method_id = 0; anon_method_id < compiler->anon_methods->length; anon_method_id++) {
+    SPVM_METHOD* anon_method = SPVM_LIST_get(compiler->anon_methods, anon_method_id);
+    int32_t anon_method_id = anon_method->anon_method_id;
+    *anon_basic_type_32bit_ptr = anon_method->id;
+    anon_basic_type_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
+  }
+  runtime_codes_ptr += anon_basic_type_32bit_length;
   
   return runtime_codes;
 }
