@@ -1568,7 +1568,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Method
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_address_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id);
   
   int32_t error = 0;
   stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_stack_length;
@@ -2203,7 +2203,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_address_id);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id);
   const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
   const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, basic_type->name_id, NULL);

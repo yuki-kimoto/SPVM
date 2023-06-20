@@ -49,7 +49,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Runtime current_method
-  SPVM_RUNTIME_METHOD* current_method = SPVM_API_RUNTIME_get_method(runtime, current_method_address_id);
+  SPVM_RUNTIME_METHOD* current_method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, current_method_address_id);
   
   const char* current_method_name =  SPVM_API_RUNTIME_get_name(runtime, current_method->name_id);
   
@@ -1147,7 +1147,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
       case SPVM_OPCODE_C_ID_CAN: {
         void* object = object_vars[opcode->operand0];
         int32_t method_address_id = opcode->operand1;
-        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_address_id);
+        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, method_name);
         break;
@@ -2149,7 +2149,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         int32_t method_address_id = opcode->operand0;
         int32_t args_stack_length = opcode->operand1;
         
-        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, method_address_id);
+        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
         SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
