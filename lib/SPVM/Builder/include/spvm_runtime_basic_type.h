@@ -20,6 +20,8 @@ struct spvm_runtime_basic_type {
   int32_t methods_length;
   int32_t anon_methods_base_id;
   int32_t anon_methods_length;
+  int32_t anon_basic_types_base_id;
+  int32_t anon_basic_types_length;
   int32_t fields_base_id;
   int32_t fields_length;
   int32_t class_vars_base_id;
