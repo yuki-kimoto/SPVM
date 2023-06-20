@@ -312,6 +312,15 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
       SPVM_COMPILER_error(compiler, "The basic type name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_basic_type_name, op_module->file, op_module->line);
       return op_module;
     }
+    
+    SPVM_LIST* anon_op_types = compiler->cur_anon_op_types;
+    for (int32_t i = 0; i < anon_op_types->length; i++) {
+      SPVM_OP* anon_op_type = SPVM_LIST_get(anon_op_types, i);
+      const char* anon_unresolved_basic_type_name = anon_op_type->uv.type->unresolved_basic_type_name;
+      SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_unresolved_basic_type_name, strlen(anon_unresolved_basic_type_name));
+      assert(anon_basic_type);
+      SPVM_LIST_push(basic_type->anon_basic_types, anon_basic_type);
+    }
   }
   
   // Module attributes
