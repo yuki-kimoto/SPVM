@@ -197,5 +197,17 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   fprintf(stderr, "fields size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_FIELD) * runtime->fields_length));
 #endif
   
+  // anon_basic_type_basic_types length
+  runtime->anon_basic_types_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // anon_basic_type_basic_types runtime codes length
+  int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // anon_basic_type_basic_type_ids
+  runtime->anon_basic_type_basic_type_ids = runtime_codes_ptr;
+  runtime_codes_ptr += anon_basic_types_runtime_codes_length;
+  
   SPVM_RUNTIME_build_symbol_table(runtime);
 }
