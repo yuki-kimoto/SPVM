@@ -1139,11 +1139,11 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id
   return type_flag;
 }
 
-int32_t SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t anon_basic_type_id) {
+int32_t SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t anon_basic_type_address_id) {
   
-  int32_t anon_basic_type_basic_type_id = runtime->anon_basic_type_ids[anon_basic_type_id];
+  int32_t anon_basic_type_id = runtime->anon_basic_type_ids[anon_basic_type_address_id];
   
-  return anon_basic_type_basic_type_id;
+  return anon_basic_type_id;
 }
 
 void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, int32_t method_id, void* address) {
