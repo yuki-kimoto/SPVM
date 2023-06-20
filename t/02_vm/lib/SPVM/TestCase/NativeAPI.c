@@ -3145,10 +3145,11 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
 
   stack[0].ival = 1;
   
-  int32_t method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::NativeAPI", "VALUE0");
-  assert(method_id >= 0);
+  int32_t method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, "TestCase::NativeAPI", "VALUE0");
+  assert( method_address_id >= 0);
   
-  int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method_id);
+  void* method = env->api->runtime->get_method_by_address_id(env->runtime, method_address_id);
+  int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method);
   if (!is_enum) {
       stack[0].ival = 0;
   }
