@@ -161,7 +161,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_args_base_id,
     SPVM_API_RUNTIME_get_method_args_length,
     NULL, // reserved63
-    SPVM_API_RUNTIME_get_anon_method_method_id,
+    NULL, // reserved64
     SPVM_API_RUNTIME_get_native_method_address,
     SPVM_API_RUNTIME_set_native_method_address,
     SPVM_API_RUNTIME_get_precompile_method_address,
@@ -193,8 +193,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_methods_length,
     SPVM_API_RUNTIME_get_basic_type_class_vars_base_id,
     SPVM_API_RUNTIME_get_basic_type_class_vars_length,
-    SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id,
-    SPVM_API_RUNTIME_get_basic_type_anon_methods_length,
+    NULL, // reserved96
+    NULL, // reserved97
     NULL, // reserved98
     SPVM_API_RUNTIME_get_basic_types_length,
     SPVM_API_RUNTIME_get_field_basic_type_id,
@@ -385,32 +385,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_
   int32_t is_pointer = basic_type->is_pointer;
   
   return is_pointer;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  assert(0);
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type);
-  
-  int32_t anon_methods_base_id = basic_type->anon_methods_base_id;
-  
-  return anon_methods_base_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  assert(0);
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type);
-  
-  int32_t anon_methods_length = basic_type->anon_methods_length;
-  
-  return anon_methods_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -1163,15 +1137,6 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id
   int32_t type_flag = arg->type_flag;
   
   return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_anon_method_method_id(SPVM_RUNTIME* runtime, int32_t anon_method_id) {
-  
-  assert(0);
-  
-  int32_t anon_method_method_id = runtime->anon_method_method_ids[anon_method_id];
-  
-  return anon_method_method_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_anon_basic_type_basic_type_id(SPVM_RUNTIME* runtime, int32_t anon_basic_type_id) {

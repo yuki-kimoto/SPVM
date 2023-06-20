@@ -7,6 +7,10 @@
       
       -  int32_t (*get_basic_type_dir_id)(void* runtime, int32_t basic_type_id);
       +  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+    * The following Native Runtime API were removed.
+      -  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
+      -  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
 
 0.989007 2023-06-19
   [Document Changes]

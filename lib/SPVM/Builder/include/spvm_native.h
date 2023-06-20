@@ -382,7 +382,7 @@ struct spvm_env_runtime {
   int32_t (*get_method_args_base_id)(void* runtime, int32_t method_id);
   int32_t (*get_method_args_length)(void* runtime, int32_t method_id);
   void* reserved63;
-  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
+  void* reserved64;
   void* (*get_native_method_address)(void* runtime, int32_t method_id);
   void (*set_native_method_address)(void* runtime, int32_t method_id, void* address);
   void* (*get_precompile_method_address)(SPVM_ENV*, int32_t method_id);
@@ -414,8 +414,8 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_vars_base_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
+  void* reserved96;
+  void* reserved97;
   void* reserved98;
   int32_t (*get_basic_types_length)(void* runtime);
   int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_id);

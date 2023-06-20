@@ -85,7 +85,7 @@ Runtime native APIs have its IDs.
   61 get_method_args_base_id
   62 get_method_args_length
   63 reserved63
-  64 get_anon_method_method_id
+  64 reserved64
   65 get_native_method_address
   66 set_native_method_address
   67 get_precompile_method_address
@@ -117,8 +117,8 @@ Runtime native APIs have its IDs.
   93 get_basic_type_methods_length
   94 get_basic_type_class_vars_base_id
   95 get_basic_type_class_vars_length
-  96 get_basic_type_anon_methods_base_id
-  97 get_basic_type_anon_methods_length
+  96 reserved96
+  97 reserved97
   98 reserved98
   99 get_basic_types_length
   100 get_field_basic_type_id
@@ -226,14 +226,6 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_anon_methods_base_id
-
-  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
-
-=head2 get_basic_type_anon_methods_length
-
-  int32_t (*get_basic_type_anon_methods_length)(void* runtime, int32_t basic_type_id);
-
 =head2 get_class_var_id_by_index
 
   int32_t (*get_class_var_id_by_index)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
@@ -337,10 +329,6 @@ Runtime native APIs have its IDs.
 =head2 get_method_args_length
 
   int32_t (*get_method_args_length)(void* runtime, int32_t method_id);
-
-=head2 get_anon_method_method_id
-
-  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
 
 =head2 get_native_method_address
 
