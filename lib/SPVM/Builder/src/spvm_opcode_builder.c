@@ -1280,6 +1280,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       opcode.operand0 = call_method->method->id;
                       opcode.operand1 = args_stack_length;
+                      opcode.operand3 = call_method->method->index;
                       
                       SPVM_OPCODE opcode_return = {0};
                       {
@@ -4121,6 +4122,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.operand0 = call_stack_id_in;
                       opcode.operand1 = implement_method->id;
                       opcode.operand2 = interface_basic_type->id;
+                      opcode.operand3 = implement_method->index;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       
