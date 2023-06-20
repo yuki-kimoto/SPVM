@@ -57,12 +57,6 @@ struct spvm_runtime {
   int32_t args_length;
   
   // Anon nethod ids
-  int32_t* anon_method_method_ids;
-  
-  // The length of anon methods
-  int32_t anon_methods_length;
-  
-  // Anon nethod ids
   int32_t* anon_basic_type_basic_type_ids;
   
   // The length of anon basic_types
