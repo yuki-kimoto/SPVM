@@ -638,6 +638,21 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t 
   return type_flag;
 }
 
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t field_index) {
+  
+  if (field_index < 0) {
+    return NULL;
+  }
+  
+  if (field_index >= basic_type->fields_length) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[basic_type->fields_base_id + field_index];
+  
+  return field;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
   if (field_address_id < 0) {
