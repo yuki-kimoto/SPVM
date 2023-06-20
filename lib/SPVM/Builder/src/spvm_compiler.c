@@ -566,7 +566,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // anon_basic_type_basic_types 32bit length
   length++;
   
-  // anon_basic_type_basic_type_ids
+  // anon_basic_type_ids
   length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_basic_types->length + 1);
   
   return length;
@@ -909,7 +909,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   *runtime_codes_ptr = anon_basic_type_32bit_length;
   runtime_codes_ptr++;
   
-  // anon_basic_type_basic_type_ids
+  // anon_basic_type_ids
   int32_t* anon_basic_type_32bit_ptr = runtime_codes_ptr;
   for (int32_t anon_basic_type_id = 0; anon_basic_type_id < compiler->anon_basic_types->length; anon_basic_type_id++) {
     SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(compiler->anon_basic_types, anon_basic_type_id);

@@ -179,8 +179,8 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // anon_basic_type_basic_type_ids
-  runtime->anon_basic_type_basic_type_ids = runtime_codes_ptr;
+  // anon_basic_type_ids
+  runtime->anon_basic_type_ids = runtime_codes_ptr;
   runtime_codes_ptr += anon_basic_types_runtime_codes_length;
   
 #ifdef SPVM_DEBUG_RUNTIME
