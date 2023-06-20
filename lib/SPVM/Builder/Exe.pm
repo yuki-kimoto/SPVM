@@ -515,7 +515,7 @@ EOS
     $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* precompile_address) {
   int32_t method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, module_name, method_name);
-  env->api->runtime->set_precompile_method_address(env->runtime, method_address_id, precompile_address);
+  env->api->runtime->set_precompile_method_address(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id), precompile_address);
 }
 EOS
   }
@@ -539,7 +539,7 @@ EOS
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* native_address) {
   int32_t method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, module_name, method_name);
-  env->api->runtime->set_native_method_address(env->runtime, method_address_id, native_address);
+  env->api->runtime->set_native_method_address(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id), native_address);
 }
 EOS
 
