@@ -556,7 +556,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_address(SPVM_RUNTIME* run
   SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
   if (basic_type->class_vars_length > 0) {
     for (int32_t class_var_address_id = basic_type->class_vars_base_id; class_var_address_id <  basic_type->class_vars_base_id + basic_type->class_vars_length; class_var_address_id++) {
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
       const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
       if (strcmp(class_var_name, search_class_var_name) == 0) {
         found_class_var = class_var;
@@ -570,7 +570,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_address(SPVM_RUNTIME* run
 
 int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
   
   assert(class_var);
   
@@ -581,7 +581,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, int32_t cl
 
 int32_t SPVM_API_RUNTIME_get_class_var_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
   
   assert(class_var);
   
@@ -590,7 +590,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_current_basic_type_id(SPVM_RUNTIME* runti
   return basic_type_id;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_address_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
   if (class_var_address_id < 0) {
     return NULL;
@@ -607,7 +607,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, in
 
 int32_t SPVM_API_RUNTIME_get_class_var_basic_type_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
   
   assert(class_var);
   
@@ -618,7 +618,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_basic_type_id(SPVM_RUNTIME* runtime, int3
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
   
   assert(class_var);
   
@@ -629,7 +629,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, int
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_address_id);
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
   
   assert(class_var);
   
