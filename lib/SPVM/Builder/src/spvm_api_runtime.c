@@ -133,8 +133,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_id_by_name,
     SPVM_API_RUNTIME_get_class_var_name_id,
     NULL, // reserved35
-    SPVM_API_RUNTIME_get_field_id_by_index,
-    SPVM_API_RUNTIME_get_field_id_by_name,
+    SPVM_API_RUNTIME_get_field_address_id_by_index,
+    SPVM_API_RUNTIME_get_field_address_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
     NULL, // reserved39
     NULL, // reserved40
@@ -638,24 +638,24 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t 
   return type_id;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_id) {
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  if (field_id < 0) {
+  if (field_address_id < 0) {
     return NULL;
   }
   
-  if (field_id >= runtime->fields_length) {
+  if (field_address_id >= runtime->fields_length) {
     return NULL;
   }
   
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_address_id];
   
   return field;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {
+int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
   
   assert(field);
   
@@ -664,9 +664,9 @@ int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, 
   return current_basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id) {
+int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
   
   assert(field);
   
@@ -675,9 +675,9 @@ int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t 
   return basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_id) {
+int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
   
   assert(field);
   
@@ -686,9 +686,9 @@ int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t
   return type_dimension;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_id) {
+int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
   
   assert(field);
   
@@ -697,9 +697,9 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t fiel
   return type_flag;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_id) {
+int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
   
   assert(field);
   
@@ -726,36 +726,36 @@ int32_t SPVM_API_RUNTIME_get_method_address_id_by_name(SPVM_RUNTIME* runtime, co
   return method_address_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
   
-  int32_t field_id = -1;
+  int32_t field_address_id = -1;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
   if (basic_type) {
     if (field_index >= 0 && field_index < basic_type->fields_length) {
-      field_id = basic_type->fields_base_id + field_index;
+      field_address_id = basic_type->fields_base_id + field_index;
     }
   }
   
-  return field_id;
+  return field_address_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name) {
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name) {
   (void)runtime;
   
-  int32_t field_id = -1;
+  int32_t field_address_id = -1;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (basic_type) {
     SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_address(runtime, basic_type, field_name);
     if (field) {
-      field_id = field->id;
+      field_address_id = field->id;
     }
   }
   
-  return field_id;
+  return field_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
@@ -813,8 +813,8 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_address(SPVM_RUNTIME* runtime, SP
   
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
-    for (int32_t field_id = basic_type->fields_base_id; field_id <  basic_type->fields_base_id + basic_type->fields_length; field_id++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_id);
+    for (int32_t field_address_id = basic_type->fields_base_id; field_address_id <  basic_type->fields_base_id + basic_type->fields_length; field_address_id++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_address_id);
       const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
       if (strcmp(field_name, search_field_name) == 0) {
         found_field = field;

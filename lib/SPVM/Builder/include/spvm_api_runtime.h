@@ -16,7 +16,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, int32_t 
 SPVM_RUNTIME_TYPE* SPVM_API_RUNTIME_get_type(SPVM_RUNTIME* runtime, int32_t type_id);
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, int32_t class_var_id);
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* search_class_var_name);
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_id);
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t field_address_id);
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type, const char* search_field_name);
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t method_address_id);
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* search_method_name);
@@ -78,13 +78,13 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, int
 int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, int32_t class_var_id);
 
 // Field
-int32_t SPVM_API_RUNTIME_get_field_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index);
-int32_t SPVM_API_RUNTIME_get_field_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name);
-int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id);
-int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_id);
-int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_id) ;
-int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_id);
-int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_id);
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index);
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name);
+int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id);
+int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id);
+int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_address_id) ;
+int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_address_id);
+int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_address_id);
 
 // Method
 int32_t SPVM_API_RUNTIME_get_method_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index);
