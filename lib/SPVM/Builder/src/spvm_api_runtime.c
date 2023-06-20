@@ -409,6 +409,28 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_methods_length(SPVM_RUNTIME* runtim
   return anon_methods_length;
 }
 
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t anon_basic_types_base_id = basic_type->anon_basic_types_base_id;
+  
+  return anon_basic_types_base_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t anon_basic_types_length = basic_type->anon_basic_types_length;
+  
+  return anon_basic_types_length;
+}
+
 int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
