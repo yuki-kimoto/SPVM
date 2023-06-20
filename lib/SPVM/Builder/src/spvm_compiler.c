@@ -771,10 +771,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->anon_methods_base_id = -1;
     }
     
-    runtime_basic_type->anon_methods_length = basic_type->anon_methods->length;
-    if (basic_type->anon_methods->length > 0) {
-      SPVM_METHOD* anon_method = SPVM_LIST_get(basic_type->anon_methods, 0);
-      runtime_basic_type->anon_basic_types_base_id = anon_method->anon_method_id;
+    runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
+    if (basic_type->anon_basic_types->length > 0) {
+      SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, 0);
+      runtime_basic_type->anon_basic_types_base_id = anon_basic_type->anon_basic_type_id;
     }
     else {
       runtime_basic_type->anon_basic_types_base_id = -1;
