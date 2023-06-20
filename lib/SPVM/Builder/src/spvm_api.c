@@ -1581,9 +1581,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
-    int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_address_id);
-    int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_address_id);
-    int32_t method_return_type_flag = env->api->runtime->get_method_return_type_flag(env->runtime, method_address_id);
+    int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
+    int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
+    int32_t method_return_type_flag = env->api->runtime->get_method_return_type_flag(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
     
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);    
     int32_t no_need_call = 0;
@@ -3305,7 +3305,7 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
   int32_t method_address_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_address_id >= 0) {
-    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_address_id);
+    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
     if (!is_static) {
       method_address_id = -1;
     }
@@ -3318,7 +3318,7 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack,
   int32_t method_address_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_address_id >= 0) {
-    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, method_address_id);
+    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
     if (is_static) {
       method_address_id = -1;
     }

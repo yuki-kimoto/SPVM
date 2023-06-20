@@ -1226,7 +1226,7 @@ _xs_call_method(...)
     }
     
     if (method_address_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
       if (is_static) {
         method_address_id = -1;
       }
@@ -1241,7 +1241,7 @@ _xs_call_method(...)
     method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
     
     if (method_address_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
       if (!is_static) {
         method_address_id = -1;
       }
@@ -1265,10 +1265,10 @@ _xs_call_method(...)
     spvm_args_base = 2;
   }
 
-  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
-  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_address_id);
-  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_address_id);
-  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, method_address_id);
+  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;
@@ -1787,8 +1787,8 @@ _xs_call_method(...)
   }
   
   // Return
-  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_address_id);
-  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_address_id);
+  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
@@ -4707,14 +4707,14 @@ get_method_names(...)
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
-    const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method_address_id));
+    const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id)));
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && api_env->api->runtime->get_method_is_native(runtime, method_address_id)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && api_env->api->runtime->get_method_is_native(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id))) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && api_env->api->runtime->get_method_is_precompile(runtime, method_address_id)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && api_env->api->runtime->get_method_is_precompile(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id))) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
@@ -4756,10 +4756,10 @@ get_basic_type_anon_basic_type_names(...)
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
     int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
-    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_address_id);
+    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id));
     
     if (is_anon_method) {
-      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method_address_id);
+      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id));
       const char* anon_basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, anon_basic_type_id));
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
@@ -4914,9 +4914,9 @@ set_native_method_address(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  api_env->api->runtime->set_native_method_address(runtime, method_address_id, native_address);
+  api_env->api->runtime->set_native_method_address(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id), native_address);
 
-  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method_address_id));
+  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id)));
 
   // Free native_env
   api_env->free_env_raw(api_env);
