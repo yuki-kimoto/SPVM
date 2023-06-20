@@ -524,10 +524,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
       }
       else if (class_var_address_id >= 0) {
-        int32_t current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var_address_id);
+        SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
+        
+        int32_t current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, current_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_address_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_class_var_address_id(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
         if (!found) {
@@ -2418,10 +2420,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t class_var_address_id = opcode->operand1;
         
-        int32_t class_var_current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var_address_id);
+        SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
+        int32_t class_var_current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, class_var_current_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_address_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -2499,10 +2502,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t class_var_address_id = opcode->operand0;
         
-        int32_t class_var_current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var_address_id);
+        SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
+        int32_t class_var_current_basic_type_id = SPVM_API_RUNTIME_get_class_var_current_basic_type_id(runtime, class_var);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, class_var_current_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var_address_id);
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
