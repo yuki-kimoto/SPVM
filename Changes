@@ -196,7 +196,37 @@
       -  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t method_address_id);
       +  int32_t (*get_method_current_basic_type_id)(void* runtime, void* method);
       +  int32_t (*get_field_current_basic_type_id)(void* runtime, void* method);
-   
+      
+      -  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_name_id)(void* runtime, void* basic_type);
+      -  int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_category)(void* runtime, void* basic_type);
+      -  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_class_vars_base_address_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_module_dir_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_is_anon)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_fields_length)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_methods_length)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_class_vars_base_address_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_class_vars_length)(void* runtime, void* basic_type);
+      -  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_parent_id)(void* runtime, void* basic_type);
+      +  int32_t (*get_basic_type_version_string_id)(void* runtime, void* basic_type);
+      
     * The following Native Runtime API were removed.
       -  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
       -  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);
