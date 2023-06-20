@@ -397,9 +397,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_address_id(SPVM_RU
   
   assert(basic_type);
   
-  int32_t anon_basic_types_base_id = basic_type->anon_basic_types_base_id;
+  int32_t anon_basic_types_base_address_id = basic_type->anon_basic_types_base_address_id;
   
-  return anon_basic_types_base_id;
+  return anon_basic_types_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -452,9 +452,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(SPVM_RUNTIME* run
   
   assert(basic_type);
   
-  int32_t fields_base_id = basic_type->fields_base_id;
+  int32_t fields_base_address_id = basic_type->fields_base_address_id;
   
-  return fields_base_id;
+  return fields_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -474,9 +474,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_address_id(SPVM_RUNTIME* ru
   
   assert(basic_type);
   
-  int32_t methods_base_id = basic_type->methods_base_id;
+  int32_t methods_base_address_id = basic_type->methods_base_address_id;
   
-  return methods_base_id;
+  return methods_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -496,9 +496,9 @@ int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_address_id(SPVM_RUNTIME*
   
   assert(basic_type);
   
-  int32_t class_vars_base_id = basic_type->class_vars_base_id;
+  int32_t class_vars_base_address_id = basic_type->class_vars_base_address_id;
   
-  return class_vars_base_id;
+  return class_vars_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
@@ -548,7 +548,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, SP
     return NULL;
   }
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[basic_type->class_vars_base_id + class_var_index];
+  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[basic_type->class_vars_base_address_id + class_var_index];
   
   return class_var;
 }
@@ -574,7 +574,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* run
   
   SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
   if (basic_type->class_vars_length > 0) {
-    for (int32_t class_var_address_id = basic_type->class_vars_base_id; class_var_address_id <  basic_type->class_vars_base_id + basic_type->class_vars_length; class_var_address_id++) {
+    for (int32_t class_var_address_id = basic_type->class_vars_base_address_id; class_var_address_id <  basic_type->class_vars_base_address_id + basic_type->class_vars_length; class_var_address_id++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
       const char* class_var_name_current = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
       if (strcmp(class_var_name_current, class_var_name) == 0) {
@@ -632,7 +632,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, SPVM_RUNTI
     return NULL;
   }
   
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[basic_type->fields_base_id + field_index];
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[basic_type->fields_base_address_id + field_index];
   
   return field;
 }
@@ -713,7 +713,7 @@ int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, in
   
   if (basic_type) {
     if (field_index >= 0 && field_index < basic_type->fields_length) {
-      field_address_id = basic_type->fields_base_id + field_index;
+      field_address_id = basic_type->fields_base_address_id + field_index;
     }
   }
   
@@ -745,7 +745,7 @@ int32_t SPVM_API_RUNTIME_get_method_address_id_by_index(SPVM_RUNTIME* runtime, i
   
   if (basic_type_id) {
     if (method_index >= 0 && method_index < basic_type->methods_length) {
-      method_address_id = basic_type->methods_base_id + method_index;
+      method_address_id = basic_type->methods_base_address_id + method_index;
     }
   }
   
@@ -757,7 +757,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (basic_type->methods_length > 0) {
     // Performe binary searching because methods are sorted by the names
-    int32_t cur_min_index = basic_type->methods_base_id;
+    int32_t cur_min_index = basic_type->methods_base_address_id;
     int32_t cur_max_index = cur_min_index + basic_type->methods_length - 1;
     
     while (1) {
@@ -792,7 +792,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
   
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
-    for (int32_t field_address_id = basic_type->fields_base_id; field_address_id <  basic_type->fields_base_id + basic_type->fields_length; field_address_id++) {
+    for (int32_t field_address_id = basic_type->fields_base_address_id; field_address_id <  basic_type->fields_base_address_id + basic_type->fields_length; field_address_id++) {
       SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
       const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
       if (strcmp(field_name_current, field_name) == 0) {
@@ -815,7 +815,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUN
     return NULL;
   }
   
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base_id + method_index];
+  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base_address_id + method_index];
   
   return method;
 }
@@ -852,9 +852,9 @@ int32_t SPVM_API_RUNTIME_get_method_opcodes_base_address_id(SPVM_RUNTIME* runtim
   
   assert(method);
   
-  int32_t opcodes_base_id = method->opcodes_base_id;
+  int32_t opcodes_base_address_id = method->opcodes_base_address_id;
   
-  return opcodes_base_id;
+  return opcodes_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, int32_t method_address_id) {
@@ -937,9 +937,9 @@ int32_t SPVM_API_RUNTIME_get_method_args_base_address_id(SPVM_RUNTIME* runtime, 
   
   assert(method);
   
-  int32_t args_base_id = method->args_base_id;
+  int32_t args_base_address_id = method->args_base_address_id;
   
-  return args_base_id;
+  return args_base_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_static(SPVM_RUNTIME* runtime, int32_t method_address_id) {

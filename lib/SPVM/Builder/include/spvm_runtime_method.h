@@ -11,10 +11,10 @@ struct spvm_runtime_method {
   int32_t id; // Will be removed.
   int32_t index; // Will be used.
   int32_t name_id;
-  int32_t args_base_id;
+  int32_t args_base_address_id;
   int32_t args_length;
   int32_t required_args_length;
-  int32_t opcodes_base_id;
+  int32_t opcodes_base_address_id;
   int32_t opcodes_length;
   int32_t current_basic_type_id;
   int32_t call_stack_byte_vars_length;

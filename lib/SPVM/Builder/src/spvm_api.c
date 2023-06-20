@@ -486,7 +486,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
             }
             
-            SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_id + field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + field_index);
             
             int32_t field_basic_type_id = field->basic_type_id;
             
@@ -647,7 +647,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
           }
           
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_id + field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + field_index);
           
           int32_t field_basic_type_id = field->basic_type_id;
           int32_t field_type_dimension = field->type_dimension;
@@ -1613,13 +1613,13 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
           SPVM_OPCODE* opcodes = runtime->opcodes;
           
           // Operation code base
-          int32_t method_opcodes_base_id = method->opcodes_base_id;
+          int32_t method_opcodes_base_address_id = method->opcodes_base_address_id;
           
           // Execute operation codes
           int32_t opcode_rel_index = 0;
           while (1) {
             
-            SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_id + opcode_rel_index]);
+            SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base_address_id + opcode_rel_index]);
             
             if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
               break;
@@ -1990,7 +1990,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       
       int32_t fields_length = basic_type->fields_length;
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_id + 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + 0);
       
       int32_t field_basic_type_id = first_field->basic_type_id;
       
@@ -2891,7 +2891,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type->id);
   
   int32_t fields_length = basic_type->fields_length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_id + 0);
+  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + 0);
   
   int32_t field_basic_type_id = field_first->basic_type_id;
   
