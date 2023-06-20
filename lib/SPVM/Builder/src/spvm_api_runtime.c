@@ -218,6 +218,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field,
     SPVM_API_RUNTIME_get_method,
     SPVM_API_RUNTIME_get_field_by_address_id,
+    SPVM_API_RUNTIME_get_method_by_address_id,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
