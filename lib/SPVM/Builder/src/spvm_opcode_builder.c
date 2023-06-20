@@ -4384,6 +4384,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF);
                     opcode.operand0 = class_var_access->class_var->id;
+                    opcode.operand3 = class_var_access->class_var->index;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                   // CLASS_VAR_ACCESS = $var
