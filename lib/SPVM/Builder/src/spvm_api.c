@@ -3263,7 +3263,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
     }
     
     // Method
-    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_address(runtime,object_basic_type, field_name);
+    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime,object_basic_type, field_name);
     if (field) {
       field_id = field->id;
       break;
