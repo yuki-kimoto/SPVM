@@ -128,6 +128,16 @@
       -  int32_t (*get_class_var_current_basic_type_id)(void* runtime, int32_t method_address_id);
       +  int32_t (*get_class_var_current_basic_type_id)(void* runtime, void* class_var);
 
+      -  int32_t (*get_field_name_id)(void* runtime, int32_t field_address_id);
+      +  int32_t (*get_field_name_id)(void* runtime, void* field);
+      -  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
+      -  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
+      -  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
+      +  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
+      +  int32_t (*get_field_type_dimension)(void* runtime, void* field);
+      +  int32_t (*get_field_type_flag)(void* runtime, void* field);
+      +  void* (*get_field_by_address_id)(void* runtime, int32_t field_address_id);
+
     * The following Native Runtime API were removed.
       -  int32_t (*get_anon_method_method_id)(void* runtime, int32_t anon_method_id);
       -  int32_t (*get_basic_type_anon_methods_base_id)(void* runtime, int32_t basic_type_id);

@@ -217,6 +217,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_field,
     SPVM_API_RUNTIME_get_method,
+    SPVM_API_RUNTIME_get_field_by_address_id,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -651,59 +652,39 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runti
   return field;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
+int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+  int32_t name_id = field->name_id;
   
-  assert(field);
+  return name_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t current_basic_type_id = field->current_basic_type_id;
   
   return current_basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-  
-  assert(field);
+int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t basic_type_id = field->basic_type_id;
   
   return basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, int32_t field_address_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-  
-  assert(field);
+int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t type_dimension = field->type_dimension;
   
   return type_dimension;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, int32_t field_address_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-  
-  assert(field);
+int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t type_flag = field->type_flag;
   
   return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-  
-  assert(field);
-  
-  int32_t name_id = field->name_id;
-  
-  return name_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* method_name) {

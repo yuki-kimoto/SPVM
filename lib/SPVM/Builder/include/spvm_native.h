@@ -356,7 +356,7 @@ struct spvm_env_runtime {
   void* reserved35;
   int32_t (*get_field_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
   int32_t (*get_field_address_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
-  int32_t (*get_field_name_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_name_id)(void* runtime, void* field);
   void* reserved39;
   void* reserved40;
   int32_t (*get_method_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
@@ -418,9 +418,9 @@ struct spvm_env_runtime {
   void* reserved97;
   void* reserved98;
   int32_t (*get_basic_types_length)(void* runtime);
-  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
-  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
-  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
+  int32_t (*get_field_type_dimension)(void* runtime, void* field);
+  int32_t (*get_field_type_flag)(void* runtime, void* field);
   int32_t (*get_class_var_basic_type_id)(void* runtime, void* class_var);
   int32_t (*get_class_var_type_dimension)(void* runtime, void* class_var);
   int32_t (*get_class_var_type_flag)(void* runtime, void* class_var);
@@ -438,6 +438,7 @@ struct spvm_env_runtime {
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
   void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
   void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
+  void* (*get_field_by_address_id)(void* runtime, int32_t field_address_id);
 };
 
 struct spvm_env_compiler {

@@ -1459,7 +1459,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
   // Free objects of class variables
   for (int32_t class_var_address_id = 0; class_var_address_id < runtime->class_vars_length; class_var_address_id++) {
     
-    SPVM_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
     
     int32_t class_var_basic_type_id = env->api->runtime->get_class_var_basic_type_id(runtime, class_var);
     int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var);
@@ -3147,12 +3147,13 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, basic_type->id);
         int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, basic_type->id);
         for (int32_t field_address_id = object_fields_base; field_address_id < object_fields_base + object_fields_length; field_address_id++) {
-          int32_t field_basic_type_id = SPVM_API_RUNTIME_get_field_basic_type_id(runtime, field_address_id);
-          int32_t field_type_dimension = SPVM_API_RUNTIME_get_field_type_dimension(runtime, field_address_id);
-          int32_t field_type_flag = SPVM_API_RUNTIME_get_field_type_flag(runtime, field_address_id);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+          
+          int32_t field_basic_type_id = SPVM_API_RUNTIME_get_field_basic_type_id(runtime, field);
+          int32_t field_type_dimension = SPVM_API_RUNTIME_get_field_type_dimension(runtime, field);
+          int32_t field_type_flag = SPVM_API_RUNTIME_get_field_type_flag(runtime, field);
           int32_t field_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, field_basic_type_id, field_type_dimension, field_type_flag);
           
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
           if (field_type_is_object) {
             SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)env->object_header_size + field->offset);
             if (*get_field_object_address != NULL) {

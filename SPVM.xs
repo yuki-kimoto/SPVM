@@ -1062,7 +1062,9 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
           
           for (int32_t field_index = 0; field_index < class_fields_length; field_index++) {
             int32_t mulnum_field_id = class_fields_base_id + field_index;
-            int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+            void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+            
+            int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
             
             const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
             
@@ -1076,7 +1078,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
               return &PL_sv_undef;
             }
             
-            int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field_id);
+            int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
             switch (mulnum_field_type_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
@@ -1435,13 +1437,16 @@ _xs_call_method(...)
             
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, arg_basic_type_id);
-            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
+            void* arg_class_field_first = env->api->runtime->get_field_by_address_id(runtime, arg_class_fields_base_id);
+
+            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_field_first);
             assert(arg_class_field_type_basic_type_id >= 0);
             
             HV* hv_value = (HV*)SvRV(sv_value);
             for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
               int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
-              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+              void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
               
               const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
               SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
@@ -1577,11 +1582,13 @@ _xs_call_method(...)
             HV* hv_value = (HV*)SvRV(hv_value_ref);
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, arg_basic_type_id);
-            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
+            void* arg_class_field_first = env->api->runtime->get_field_by_address_id(runtime, arg_class_fields_base_id);
+            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_field_first);
             assert(arg_class_field_type_basic_type_id >= 0);
             for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
               int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
-              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+              void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
               const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
               SV** sv_field_value_ptr = hv_fetch(hv_value, mulnum_field_name, strlen(mulnum_field_name), 0);
               SV* sv_field_value;
@@ -1855,7 +1862,8 @@ _xs_call_method(...)
         int32_t method_return_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, method_return_basic_type_id);
         int32_t method_return_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, method_return_basic_type_id);
         int32_t method_return_mulnum_field_id = method_return_class_fields_base_id;
-        int32_t method_return_mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, method_return_mulnum_field_id);
+        void* method_return_mulnum_field = env->api->runtime->get_field_by_address_id(runtime, method_return_mulnum_field_id);
+        int32_t method_return_mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, method_return_mulnum_field);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
         for (int32_t field_index = 0; field_index < method_return_class_fields_length; field_index++) {
@@ -1897,7 +1905,8 @@ _xs_call_method(...)
           }
           
           int32_t mulnum_field_id = method_return_class_fields_base_id + field_index;
-          int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+          void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+          int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
           const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
           (void)hv_store(hv_value, mulnum_field_name, strlen(mulnum_field_name), SvREFCNT_inc(sv_field_value), 0);
           sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
@@ -2045,12 +2054,14 @@ _xs_call_method(...)
             HV* hv_value = (HV*)SvRV(SvRV(sv_value));
             int32_t arg_class_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, arg_basic_type_id);
             int32_t arg_class_fields_base_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, arg_basic_type_id);
-            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_fields_base_id);
+            void* arg_class_field_first = env->api->runtime->get_field_by_address_id(runtime, arg_class_fields_base_id);
+            int32_t arg_class_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_class_field_first);
             int32_t arg_mulnum_field_id = arg_class_fields_base_id;
-            int32_t arg_mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, arg_mulnum_field_id);
+            int32_t arg_mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, arg_class_field_first);
             for (int32_t field_index = 0; field_index < arg_class_fields_length; field_index++) {
               int32_t mulnum_field_id = arg_class_fields_base_id + field_index;
-              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+              void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+              int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
               const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
               SV* sv_field_value;
               switch (arg_class_field_type_basic_type_id) {
@@ -3347,7 +3358,8 @@ _xs_new_mulnum_array_from_bin(...)
   int32_t field_length = class_fields_length;
   
   int32_t field_native_stack_length;
-  int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field_id);
+  void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+  int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
   switch (mulnum_field_type_basic_type_id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
       field_native_stack_length = 1;
@@ -3850,12 +3862,13 @@ _xs_to_elems(...)
         int32_t field_length = class_fields_length;
         for (int32_t field_index = 0; field_index < class_fields_length; field_index++) {
           int32_t mulnum_field_id = class_fields_base_id + field_index;
-          int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field_id);
+          void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+          int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
           
           const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
           
           SV* sv_field_value;
-          int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field_id);
+          int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
           switch (mulnum_field_type_basic_type_id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
               int8_t field_value = ((int8_t*)elems)[(field_length * index) + field_index];
@@ -4054,7 +4067,8 @@ _xs_to_bin(...)
       
       int32_t field_length = class_fields_length;
       
-      int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field_id);
+      void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_id);
+      int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
       switch (mulnum_field_type_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
