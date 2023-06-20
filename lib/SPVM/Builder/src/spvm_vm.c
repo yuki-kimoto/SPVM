@@ -1030,78 +1030,78 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_me
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE(env, stack, byte_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE(env, stack, byte_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_SHORT(env, stack, short_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_SHORT(env, stack, short_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_INT(env, stack, int_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_INT(env, stack, int_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_LONG(env, stack, long_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_LONG(env, stack, long_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT(env, stack, float_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT(env, stack, float_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, double_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, double_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
-        int32_t class_var_id = opcode->operand1;
-        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &object_vars[opcode->operand0], class_var_id);
+        int32_t class_var_address_id = opcode->operand1;
+        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &object_vars[opcode->operand0], class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var_id, byte_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var_address_id, byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, class_var_id, short_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, class_var_address_id, short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_INT(env, stack, class_var_id, int_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_INT(env, stack, class_var_address_id, int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, class_var_id, long_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, class_var_address_id, long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, class_var_id, float_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, class_var_address_id, float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, class_var_id, double_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, class_var_address_id, double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var_id, object_vars[opcode->operand1]);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var_address_id, object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
-        int32_t class_var_id = opcode->operand0;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var_id);
+        int32_t class_var_address_id = opcode->operand0;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var_address_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
