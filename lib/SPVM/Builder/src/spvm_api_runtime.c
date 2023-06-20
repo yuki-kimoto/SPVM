@@ -542,7 +542,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_address_id_by_name(SPVM_RUNTIME* runtime,
   SPVM_RUNTIME_BASIC_TYPE* baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (baisc_type) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_address(runtime, baisc_type, class_var_name);
+    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(runtime, baisc_type, class_var_name);
     if (class_var) {
       class_var_address_id = class_var->id;
     }
@@ -551,14 +551,14 @@ int32_t SPVM_API_RUNTIME_get_class_var_address_id_by_name(SPVM_RUNTIME* runtime,
   return class_var_address_id;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* search_class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* class_var_name) {
   
   SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
   if (basic_type->class_vars_length > 0) {
     for (int32_t class_var_address_id = basic_type->class_vars_base_id; class_var_address_id <  basic_type->class_vars_base_id + basic_type->class_vars_length; class_var_address_id++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_address_id(runtime, class_var_address_id);
-      const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
-      if (strcmp(class_var_name, search_class_var_name) == 0) {
+      const char* class_var_name_current = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
+      if (strcmp(class_var_name_current, class_var_name) == 0) {
         found_class_var = class_var;
         break;
       }
