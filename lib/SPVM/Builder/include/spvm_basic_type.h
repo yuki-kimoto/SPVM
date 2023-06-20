@@ -45,6 +45,7 @@ struct spvm_basic_type {
   SPVM_BASIC_TYPE* parent;
   int32_t merged_fields_original_offset;
   int32_t fields_size;
+  int32_t anon_basic_type_id;
   int8_t has_init_block;
   int8_t is_anon;
   int8_t is_precompile;

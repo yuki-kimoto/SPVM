@@ -307,6 +307,13 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       anon_method->anon_method_id = compiler->anon_methods->length;
       SPVM_LIST_push(compiler->anon_methods, anon_method);
     }
+
+    // Add the anon basic type
+    for (int32_t anon_basic_types_index = 0; anon_basic_types_index < basic_type->anon_basic_types->length; anon_basic_types_index++) {
+      SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_types_index);
+      anon_basic_type->anon_basic_type_id = compiler->anon_basic_types->length;
+      SPVM_LIST_push(compiler->anon_basic_types, anon_basic_type);
+    }
   }
 
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
