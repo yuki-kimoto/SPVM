@@ -1457,15 +1457,15 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
   SPVM_API_set_exception(env, stack, NULL);
   
   // Free objects of class variables
-  for (int32_t class_var_id = 0; class_var_id < runtime->class_vars_length; class_var_id++) {
+  for (int32_t class_var_address_id = 0; class_var_address_id < runtime->class_vars_length; class_var_address_id++) {
     
-    int32_t class_var_basic_type_id = env->api->runtime->get_class_var_basic_type_id(runtime, class_var_id);
-    int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var_id);
-    int32_t class_var_type_flag = env->api->runtime->get_class_var_type_flag(runtime, class_var_id);
+    int32_t class_var_basic_type_id = env->api->runtime->get_class_var_basic_type_id(runtime, class_var_address_id);
+    int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var_address_id);
+    int32_t class_var_type_flag = env->api->runtime->get_class_var_type_flag(runtime, class_var_address_id);
     
     int32_t class_var_type_is_object = env->api->runtime->is_object_type(runtime, class_var_basic_type_id, class_var_type_dimension, class_var_type_flag);
     if (class_var_type_is_object) {
-      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
+      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_address_id];
       if (object) {
         SPVM_API_dec_ref_count(env, stack, object);
       }
@@ -3287,9 +3287,9 @@ int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const cha
 }
 
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
-  int32_t class_var_id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
+  int32_t class_var_address_id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
   
-  return class_var_id;
+  return class_var_address_id;
 }
 
 int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
