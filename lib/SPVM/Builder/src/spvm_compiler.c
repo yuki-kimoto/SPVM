@@ -66,6 +66,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->anon_methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  compiler->anon_basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
