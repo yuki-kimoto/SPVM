@@ -716,7 +716,7 @@ int32_t SPVM_API_RUNTIME_get_method_address_id_by_name(SPVM_RUNTIME* runtime, co
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (basic_type) {
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_address(runtime, basic_type, method_name);
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_name);
     
     if (method) {
       method_address_id = method->id;
@@ -773,7 +773,7 @@ int32_t SPVM_API_RUNTIME_get_method_address_id_by_index(SPVM_RUNTIME* runtime, i
   return method_address_id;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* search_method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* method_name) {
   
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (basic_type->methods_length > 0) {
@@ -791,7 +791,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_address(SPVM_RUNTIME* runtime, 
       SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, cur_half_index);
       const char* cur_half_method_name = SPVM_API_RUNTIME_get_name(runtime, method->name_id);
       
-      int32_t cmp_result = strcmp(search_method_name, cur_half_method_name);
+      int32_t cmp_result = strcmp(method_name, cur_half_method_name);
       
       if (cmp_result > 0) {
         cur_min_index = cur_half_index + 1;
@@ -1195,7 +1195,7 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
   
   const char* method_interface_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_interface->name_id, NULL);
   
-  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_address(runtime, basic_type, method_interface_name);
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
   if (found_method) {
     return 1;
   }
