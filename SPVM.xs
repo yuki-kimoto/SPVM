@@ -1164,7 +1164,7 @@ _xs_call_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Basic Type Name
-  int32_t method_id;
+  int32_t method_address_id;
   const char* basic_type_name;
   int32_t class_method_call;
   if (sv_isobject(sv_invocant)) {
@@ -1215,18 +1215,18 @@ _xs_call_method(...)
         croak("The invocant must be assinged to the \"%s\" basic type\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       
-      method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
+      method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
       
       *(found_char - 1) = ':';
     }
     else {
-      method_id = env->get_instance_method_id(env, stack, object, method_name);
+      method_address_id = env->get_instance_method_id(env, stack, object, method_name);
     }
     
-    if (method_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
+    if (method_address_id >= 0) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
       if (is_static) {
-        method_id = -1;
+        method_address_id = -1;
       }
     }
     
@@ -1236,12 +1236,12 @@ _xs_call_method(...)
   else {
     class_method_call = 1;
     basic_type_name = SvPV_nolen(sv_invocant);
-    method_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
+    method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
     
-    if (method_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
+    if (method_address_id >= 0) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
       if (!is_static) {
-        method_id = -1;
+        method_address_id = -1;
       }
     }
   }
@@ -1250,7 +1250,7 @@ _xs_call_method(...)
   void* runtime = env->runtime;
   
   // Method not found
-  if (method_id < 0) {
+  if (method_address_id < 0) {
     croak("The \"%s\" method in the \"%s\" basic type is not found\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
@@ -1263,10 +1263,10 @@ _xs_call_method(...)
     spvm_args_base = 2;
   }
 
-  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, method_id);
-  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_id);
-  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_id);
-  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, method_id);
+  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, method_address_id);
+  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method_address_id);
+  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method_address_id);
+  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, method_address_id);
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;
@@ -1780,13 +1780,13 @@ _xs_call_method(...)
   }
   
   // Return
-  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_id);
-  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_id);
+  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method_address_id);
+  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method_address_id);
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t error_id = env->call_method_raw(env, stack, method_id, args_native_stack_length);
+  int32_t error_id = env->call_method_raw(env, stack, method_address_id, args_native_stack_length);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {
@@ -4692,15 +4692,15 @@ get_method_names(...)
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    int32_t method_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
-    const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method_id));
+    int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
+    const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method_address_id));
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && api_env->api->runtime->get_method_is_native(runtime, method_id)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && api_env->api->runtime->get_method_is_native(runtime, method_address_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && api_env->api->runtime->get_method_is_precompile(runtime, method_id)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && api_env->api->runtime->get_method_is_precompile(runtime, method_address_id)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
@@ -4741,11 +4741,11 @@ get_basic_type_anon_basic_type_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
-    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_id);
+    int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
+    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method_address_id);
     
     if (is_anon_method) {
-      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method_id);
+      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method_address_id);
       const char* anon_basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, anon_basic_type_id));
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
@@ -4895,14 +4895,14 @@ set_native_method_address(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method id
-  int32_t method_id = api_env->api->runtime->get_method_address_id_by_name(runtime, basic_type_name, method_name);
+  int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_name(runtime, basic_type_name, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  api_env->api->runtime->set_native_method_address(runtime, method_id, native_address);
+  api_env->api->runtime->set_native_method_address(runtime, method_address_id, native_address);
 
-  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method_id));
+  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method_address_id));
 
   // Free native_env
   api_env->free_env_raw(api_env);
