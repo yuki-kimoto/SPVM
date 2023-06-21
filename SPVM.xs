@@ -1166,8 +1166,9 @@ _xs_call_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Basic Type Name
-  int32_t method_address_id;
-  const char* basic_type_name;
+  int32_t method_address_id = -1;
+  void* method = NULL;
+  const char* basic_type_name = NULL;
   int32_t class_method_call;
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
@@ -1197,6 +1198,7 @@ _xs_call_method(...)
     
     void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_invocant);
     basic_type_name = env->get_object_basic_type_name(env, stack, object);
+    int32_t basic_type_id = env->get_object_basic_type_id(env, stack, object);
     
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
@@ -1217,18 +1219,17 @@ _xs_call_method(...)
         croak("The invocant must be assinged to the \"%s\" basic type\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       
-      method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
-      
+      method = env->api->runtime->get_method_by_name(env->runtime, static_call_basic_type_id, method_name);
       *(found_char - 1) = ':';
     }
     else {
-      method_address_id = env->get_instance_method_id(env, stack, object, method_name);
+      method = env->get_instance_method(env, stack, object, method_name);
     }
     
-    if (method_address_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+    if (method) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method);
       if (is_static) {
-        method_address_id = -1;
+        method = NULL;
       }
     }
     
@@ -1238,12 +1239,14 @@ _xs_call_method(...)
   else {
     class_method_call = 1;
     basic_type_name = SvPV_nolen(sv_invocant);
-    method_address_id = env->api->runtime->get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
+    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
     
-    if (method_address_id >= 0) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+    method = env->api->runtime->get_method_by_name(env->runtime, basic_type_id, method_name);
+    
+    if (method) {
+      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method);
       if (!is_static) {
-        method_address_id = -1;
+        method = NULL;
       }
     }
   }
@@ -1252,7 +1255,7 @@ _xs_call_method(...)
   void* runtime = env->runtime;
   
   // Method not found
-  if (method_address_id < 0) {
+  if (!method) {
     croak("The \"%s\" method in the \"%s\" basic type is not found\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
@@ -1265,10 +1268,9 @@ _xs_call_method(...)
     spvm_args_base = 2;
   }
 
-  int32_t method_is_static = env->api->runtime->get_method_is_static(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
-  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
-  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
-  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
+  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method);
+  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method);
+  int32_t method_args_base_id = env->api->runtime->get_method_args_base_address_id(env->runtime, method);
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;
@@ -1282,15 +1284,15 @@ _xs_call_method(...)
   
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal native_stack.
   int32_t stack_index = 0;
-
+  
   // Arguments have reference type
   int32_t args_have_ref = 0;
-
+  
   // Reference native_stack.
   int32_t ref_stack_index = 0;
   SPVM_VALUE ref_stack[256];
   int32_t ref_stack_indexes[256];
-
+  
   // Arguments conversion
   for (int32_t args_index = 0; args_index < method_args_length; args_index++) {
     
@@ -1787,13 +1789,16 @@ _xs_call_method(...)
   }
   
   // Return
-  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
-  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id));
-  int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, env->api->runtime->get_basic_type_by_id(env->runtime, method_return_basic_type_id));
+  int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method);
+  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method);
+  
+  void* method_return_basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, method_return_basic_type_id);
+  
+  int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type);
   
   // Call method
   int32_t args_native_stack_length = stack_index;
-  int32_t error_id = env->call_method_raw(env, stack, method_address_id, args_native_stack_length);
+  int32_t error_id = env->call_method_raw_v2(env, stack, method, args_native_stack_length);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {
