@@ -314,6 +314,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_muldim_array_by_name,
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
+    SPVM_API_get_instance_method,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -3328,7 +3329,6 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
-  (void)env;
   
   // Method ID
   int32_t method_address_id = -1;
@@ -3371,6 +3371,51 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   }
   
   return method_address_id;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
+  
+  // Method
+  SPVM_RUNTIME_METHOD* method = NULL;
+  
+  // Compiler
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (!object) {
+    return NULL;
+  }
+  
+  // Basic type
+  int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
+  
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, object_basic_type_id);
+  
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
+  
+  while (1) {
+    if (!parent_basic_type) {
+      break;
+    }
+    
+    // Method
+    method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type->id, method_name);
+    if (method) {
+      // Instance method
+      if (method->is_static) {
+        method = NULL;
+      }
+      break;
+    }
+    
+    if (parent_basic_type->parent_id != -1) {
+      parent_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, parent_basic_type->parent_id);
+    }
+    else {
+      parent_basic_type = NULL;
+    }
+  }
+  
+  return method;
 }
 
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_address_id) {
