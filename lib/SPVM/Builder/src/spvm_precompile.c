@@ -5078,7 +5078,19 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(method_address_id >= 0);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method_address_id, args_stack_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
+        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(method_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_method_index = ");
+        SPVM_PRECOMPILE_add_method_address_id(precompile, string_buffer, basic_type_name, method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD_V2(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
         
         break;
       }
