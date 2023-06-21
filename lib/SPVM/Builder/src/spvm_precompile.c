@@ -469,6 +469,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
       {
         method_address_id = opcode->operand0;
+        basic_type_id = opcode->operand2;
+        method_index = opcode->operand3;
         break;
       }
       default: {
