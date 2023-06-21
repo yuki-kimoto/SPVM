@@ -16,6 +16,7 @@
 #include "spvm_api_runtime.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
+#include "spvm_runtime_method.h"
 
 SPVM_PRECOMPILE* SPVM_PRECOMPILE_new() {
   SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
@@ -48,10 +49,10 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
 
   // Method implementations
   for (int32_t method_index = 0; method_index < basic_type_methods_length; method_index++) {
-    int32_t method_address_id = basic_type_methods_base_address_id + method_index;
-    int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id));
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
+    int32_t method_name_id = method->name_id;
     const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
-    int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id));
+    int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method);
     if (method_has_precompile_flag) {
       SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, basic_type_name, method_name);
     }
