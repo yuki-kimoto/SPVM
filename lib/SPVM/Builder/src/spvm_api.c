@@ -3353,7 +3353,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
     }
     
     // Method
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type, method_name);
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type->id, method_name);
     if (method) {
       // Instance method
       if (!method->is_static) {
