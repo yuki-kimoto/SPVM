@@ -362,7 +362,7 @@ struct spvm_env_runtime {
   int32_t (*get_field_name_id)(void* runtime, void* field);
   void* reserved39;
   void* reserved40;
-  int32_t (*get_method_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
+  void* reserved41;
   int32_t (*get_method_address_id_by_name)(void* runtime, const char* basic_type_name, const char* method_name);
   int32_t (*get_method_name_id)(void* runtime, void* method);
   void* reserved44;

@@ -62,7 +62,7 @@ Runtime native APIs have its IDs.
   38 get_field_name_id
   39 reserved39
   40 reserved40
-  41 get_method_address_id_by_index
+  41 reserved41
   42 get_method_address_id_by_name
   43 get_method_name_id
   44 reserved44
@@ -249,10 +249,6 @@ Runtime native APIs have its IDs.
 =head2 get_field_name_id
 
   int32_t (*get_field_name_id)(void* runtime, int32_t class_var_address_id);
-
-=head2 get_method_address_id_by_index
-
-  int32_t (*get_method_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
 
 =head2 get_method_address_id_by_name
 

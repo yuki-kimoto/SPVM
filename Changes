@@ -13,6 +13,8 @@
       
       -  void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
       +  void* (*get_basic_type)(void* runtime, int32_t basic_type_id);
+    * The following Native Runtime APIs were removed.
+      - int32_t (*get_method_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t method_index);
 
   [New Features]
     * The following Native Runtime APIs were added.
