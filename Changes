@@ -7,6 +7,13 @@
       + void* (*get_field)(void* runtime, int32_t basic_type_id, int32_t field_index);
       + void* (*get_class_var)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
       + void* (*get_method)(void* runtime, int32_t basic_type_id, int32_t method_index);
+  [New Features]
+    * The following Native Runtime APIs were added.
+
+      void* (*get_class_var_by_name)(void* runtime, int32_t basic_type_id, const char* class_var_name);
+      void* (*get_field_by_name)(void* runtime, int32_t basic_type_id, const char* field_name);
+      void* (*get_method_by_name)(void* runtime, int32_t basic_type_id, const char* method_name);0.989008 2023-06-20
+  
 0.989008 2023-06-20
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
