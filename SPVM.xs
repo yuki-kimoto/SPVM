@@ -4755,11 +4755,11 @@ get_basic_type_anon_basic_type_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_index(runtime, basic_type_id, method_index);
-    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id));
+    void* method = api_env->api->runtime->get_method(runtime, basic_type_id, method_index);
+    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method);
     
     if (is_anon_method) {
-      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id));
+      int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method);
       const char* anon_basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, api_env->api->runtime->get_basic_type_by_id(runtime, anon_basic_type_id)));
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
