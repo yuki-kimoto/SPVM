@@ -1280,6 +1280,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       opcode.operand0 = call_method->method->address_id;
                       opcode.operand1 = args_stack_length;
+                      opcode.operand2 = call_method->method->current_basic_type->id;
                       opcode.operand3 = call_method->method->index;
                       
                       SPVM_OPCODE opcode_return = {0};
