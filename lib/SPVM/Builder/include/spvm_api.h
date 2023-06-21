@@ -65,7 +65,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name);
 int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id);
+int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
 int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
 // Manipulate memory
@@ -78,8 +78,8 @@ int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 // Call Method
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length, int32_t mortal);
-int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
 int32_t SPVM_API_call_method_raw_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
 int32_t SPVM_API_call_method_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
 int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -100,22 +100,22 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 // Get Class variable
-int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
-SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id);
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
 
 // Set class variable
-void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, int8_t value);
-void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, int16_t value);
-void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, int32_t value);
-void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, int64_t value);
-void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, float value);
-void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, double value);
-void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_id, SPVM_OBJECT* value);
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value);
+void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int16_t value);
+void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int32_t value);
+void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int64_t value);
+void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, float value);
+void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value);
+void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, SPVM_OBJECT* value);
 
 // Get Class variable by name
 int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line);
@@ -254,8 +254,8 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env, SPVM_VALUE* stack);
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_id, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_address_id, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, int32_t method_address_id, int32_t line);
 int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
 
 // Reference count
