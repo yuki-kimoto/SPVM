@@ -135,6 +135,36 @@ static inline int32_t SPVM_IMPLEMENT_GET_METHOD_ID(SPVM_ENV* env, SPVM_VALUE* st
   return env->api->runtime->get_method_address_id(env->runtime, method);
 }
 
+static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_INDEX(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, char* message, int32_t* error_id) {
+
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  void* class_var = env->api->runtime->get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  
+  if (!class_var) {
+    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+  }
+  
+  return env->api->runtime->get_class_var_index(env->runtime, class_var);
+}
+
+static inline int32_t SPVM_IMPLEMENT_GET_FIELD_INDEX(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, char* message, int32_t* error_id) {
+
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  void* field = env->api->runtime->get_field_by_name(env->runtime, basic_type_id, field_name);
+  
+  if (!field) {
+    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+  }
+  
+  return env->api->runtime->get_field_index(env->runtime, field);
+}
+
 static inline int32_t SPVM_IMPLEMENT_GET_METHOD_INDEX(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, char* message, int32_t* error_id) {
 
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
