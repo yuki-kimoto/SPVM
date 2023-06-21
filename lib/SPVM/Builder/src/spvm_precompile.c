@@ -468,9 +468,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
       {
-        method_address_id = opcode->operand0;
-        basic_type_id = opcode->operand2;
-        method_index = opcode->operand3;
+        basic_type_id = opcode->operand0;
+        method_index = opcode->operand1;
         break;
       }
       default: {
@@ -5052,9 +5051,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -5090,9 +5089,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -5129,9 +5128,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);

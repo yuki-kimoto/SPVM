@@ -2134,26 +2134,26 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
-        int32_t args_stack_length = opcode->operand1;
-        int32_t invocant_decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t invocant_decl_basic_type_id = opcode->operand0;
+        int32_t decl_method_index = opcode->operand1;
+        int32_t args_stack_length = opcode->operand2;
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);

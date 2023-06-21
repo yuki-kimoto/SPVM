@@ -1278,10 +1278,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD);
                         }
                       }
-                      opcode.operand0 = call_method->method->address_id;
-                      opcode.operand1 = args_stack_length;
-                      opcode.operand2 = call_method->method->current_basic_type->id;
-                      opcode.operand3 = call_method->method->index;
+                      opcode.operand0 = call_method->method->current_basic_type->id;
+                      opcode.operand1 = call_method->method->index;
+                      opcode.operand2 = args_stack_length;
                       
                       SPVM_OPCODE opcode_return = {0};
                       {
