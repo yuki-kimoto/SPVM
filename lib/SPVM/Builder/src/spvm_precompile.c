@@ -135,11 +135,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer,"  const char* current_basic_type_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_basic_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-
+  
+  SPVM_STRING_BUFFER_add(string_buffer,"  int32_t current_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, current_basic_type_name);\n");
+  
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_method_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->runtime->get_method_by_name(env->runtime, current_basic_type_id, current_method_name);\n");
   
   // Object header byte size
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->object_header_size;\n");
@@ -750,7 +754,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
                                               "    eval_error_id = error_id;\n"
                                               "    error_id = 0;\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_address_id, line = ");
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw_v2(env, stack, env->get_exception(env, stack), current_method, line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
                                               "    goto L");
@@ -764,7 +768,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_address_id, line = ");
+                                              "    env->set_exception(env, stack, env->new_stack_trace_raw_v2(env, stack, env->get_exception(env, stack), current_method, line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
                                               "    goto L");
