@@ -2166,9 +2166,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   label_END_OF_METHOD: {
   
     if (error_id == 0) {
-      int32_t current_method_return_basic_type_id = SPVM_API_RUNTIME_get_method_return_basic_type_id(runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, current_method_address_id));
-      int32_t current_method_return_type_dimension = SPVM_API_RUNTIME_get_method_return_type_dimension(runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, current_method_address_id));
-      int32_t current_method_return_type_flag = SPVM_API_RUNTIME_get_method_return_type_flag(runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, current_method_address_id));
+      int32_t current_method_return_basic_type_id = SPVM_API_RUNTIME_get_method_return_basic_type_id(runtime, current_method);
+      int32_t current_method_return_type_dimension = SPVM_API_RUNTIME_get_method_return_type_dimension(runtime, current_method);
+      int32_t current_method_return_type_flag = SPVM_API_RUNTIME_get_method_return_type_flag(runtime, current_method);
       
       int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, current_method_return_basic_type_id, current_method_return_type_dimension, current_method_return_type_flag);
       if (method_return_type_is_object) {
