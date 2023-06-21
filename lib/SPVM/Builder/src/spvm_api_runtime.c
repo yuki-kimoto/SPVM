@@ -225,6 +225,10 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_id,
     SPVM_API_RUNTIME_get_method_address_id,
     SPVM_API_RUNTIME_get_method_index,
+    SPVM_API_RUNTIME_get_class_var_address_id,
+    SPVM_API_RUNTIME_get_class_var_index,
+    SPVM_API_RUNTIME_get_field_address_id,
+    SPVM_API_RUNTIME_get_field_index,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -521,6 +525,20 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* run
   return found_class_var;
 }
 
+int32_t SPVM_API_RUNTIME_get_class_var_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var) {
+  
+  int32_t address_id = class_var->address_id;
+  
+  return address_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var) {
+  
+  int32_t index = class_var->index;
+  
+  return index;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_var_name_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
   int32_t name_id = class_var->name_id;
@@ -590,6 +608,20 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   }
   
   return found_field;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
+  
+  int32_t address_id = field->address_id;
+  
+  return address_id;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
+  
+  int32_t index = field->index;
+  
+  return index;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
