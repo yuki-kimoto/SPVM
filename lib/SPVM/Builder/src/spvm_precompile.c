@@ -314,6 +314,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_method_index;\n");
 
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_address_id = SPVM_API_RUNTIME_get_method_opcodes_base_address_id(runtime, current_method);
