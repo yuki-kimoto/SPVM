@@ -2138,7 +2138,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t invocant_decl_basic_type_id = opcode->operand2;
         int32_t decl_method_index = opcode->operand3;
         
-        SPVM_IMPLEMENT_CALL_CLASS_METHOD_V2(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
+        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
         
         break;
       }
@@ -2147,7 +2147,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t invocant_decl_basic_type_id = opcode->operand2;
         int32_t decl_method_index = opcode->operand3;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC_V2(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {

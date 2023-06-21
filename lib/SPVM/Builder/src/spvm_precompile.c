@@ -5085,7 +5085,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD_V2(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
         
         break;
       }
@@ -5124,7 +5124,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
-                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC_V2(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
+                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
         
         break;
       }
