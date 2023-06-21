@@ -39,17 +39,15 @@
 
 static const char* FILE_NAME = "spvm_vm.c";
 
-int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t current_method_address_id, int32_t args_stack_length) {
-  (void)env;
-
+int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_stack_length) {
+  
+  int32_t current_method_address_id = current_method->id;
+  
   // Opcode relative index
   register int32_t opcode_rel_index = 0;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
-
-  // Runtime current_method
-  SPVM_RUNTIME_METHOD* current_method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, current_method_address_id);
   
   const char* current_method_name =  SPVM_API_RUNTIME_get_name(runtime, current_method->name_id);
   

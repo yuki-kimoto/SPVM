@@ -1547,31 +1547,31 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length) {
-  (void)env;
   
   int32_t mortal = 0;
-  int32_t e = SPVM_API_call_method_common(env, stack, method_address_id, args_stack_length, mortal);
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id);
+  
+  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
   
   return e;
 }
 
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length) {
-  (void)env;
   
   int32_t mortal = 1;
-  int32_t e = SPVM_API_call_method_common(env, stack, method_address_id, args_stack_length, mortal);
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id);
+  
+  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
   
   return e;
 }
 
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length, int32_t mortal) {
-  (void)env;
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length, int32_t mortal) {
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Method
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, method_address_id);
   
   int32_t error = 0;
   stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_stack_length;
@@ -1582,9 +1582,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
-    int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
-    int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
-    int32_t method_return_type_flag = env->api->runtime->get_method_return_type_flag(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
+    int32_t method_return_basic_type_id = env->api->runtime->get_method_return_basic_type_id(env->runtime, method);
+    int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method);
+    int32_t method_return_type_flag = env->api->runtime->get_method_return_type_flag(env->runtime, method);
     
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);    
     int32_t no_need_call = 0;
@@ -1725,7 +1725,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t me
         }
         // Call sub virtual machine
         else {
-          error = SPVM_API_call_method_vm(env, stack, method_address_id, args_stack_length);
+          error = SPVM_API_call_method_vm(env, stack, method, args_stack_length);
         }
       }
       
@@ -4172,8 +4172,8 @@ void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t ar
   stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_length;
 }
 
-int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length) {
-  return SPVM_VM_call_method(env, stack, method_address_id, args_stack_length);
+int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
+  return SPVM_VM_call_method(env, stack, method, args_stack_length);
 }
 
 const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
