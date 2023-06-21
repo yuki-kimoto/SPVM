@@ -280,7 +280,7 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_basic_type_names = env->new_string_array(env, stack, basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+    void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
     const char* basic_type_name = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, basic_type));
     void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
     env->set_elem_object(env, stack, obj_basic_type_names, basic_type_id, obj_basic_type_name);
@@ -309,7 +309,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_module_file = NULL;
   if (basic_type_id >= 0) {
-    void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+    void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
     int32_t module_rel_file_id = env->api->runtime->get_basic_type_module_rel_file_id(runtime, basic_type);
     int32_t include_dir_id = env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type);
     const char* include_dir = NULL;
@@ -349,12 +349,12 @@ int32_t SPVM__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* sta
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
-  void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+  void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
   int32_t parent_basic_type_id = env->api->runtime->get_basic_type_parent_id(runtime, basic_type);
   
   void* obj_parent_basic_type_name = NULL;
   if (parent_basic_type_id >= 0) {
-    int32_t parent_basic_type_name_id = env->api->runtime->get_basic_type_name_id(runtime, env->api->runtime->get_basic_type_by_id(runtime, parent_basic_type_id));
+    int32_t parent_basic_type_name_id = env->api->runtime->get_basic_type_name_id(runtime, env->api->runtime->get_basic_type(runtime, parent_basic_type_id));
     const char* parent_basic_type_name = env->api->runtime->get_name(runtime, parent_basic_type_name_id);
     obj_parent_basic_type_name = env->new_string_nolen(env, stack, parent_basic_type_name);
   }
@@ -376,8 +376,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+  void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
   int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   int32_t anon_basic_types_length = 0;
@@ -396,7 +395,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method);
     if (is_anon_method) {
       int32_t anon_basic_type_id = env->api->runtime->get_method_current_basic_type_id(runtime, method);
-      const char* anon_basic_type = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, env->api->runtime->get_basic_type_by_id(runtime, anon_basic_type_id)));
+      const char* anon_basic_type = env->api->runtime->get_name(runtime, env->api->runtime->get_basic_type_name_id(runtime, env->api->runtime->get_basic_type(runtime, anon_basic_type_id)));
       void* obj_anon_basic_type = env->new_string_nolen(env, stack, anon_basic_type);
       env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_basic_type_id, obj_anon_basic_type);
       anon_basic_type_id++;
@@ -424,7 +423,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
   
-  void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+  void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
   int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   int32_t match_methodes_length = 0;
