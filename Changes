@@ -5,7 +5,14 @@
       +int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var);
       +int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field);
       +int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field);
-
+    * The following Native APIs were added.
+      +  void* (*new_stack_trace_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+      +  void* (*new_stack_trace_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+  [Warnings]
+    * The beheivior of the following Native APIs were deprecated and will be replaced with version 2 APIs.
+      +  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_address_id, int32_t line);
+      +  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_address_id, int32_t line);
+    
 0.989009 2023-06-21
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

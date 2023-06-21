@@ -2313,6 +2313,100 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   return stack_trace;
 }
 
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, SPVM_RUNTIME_METHOD* method, int32_t line) {
+
+  if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
+    return exception;
+  }
+
+  SPVM_RUNTIME* runtime = env->runtime;
+
+  const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, method->current_basic_type_id);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, basic_type->name_id, NULL);
+
+  int32_t include_dir_id = basic_type->module_dir_id;
+  int32_t module_rel_file_id = basic_type->module_rel_file_id;
+  
+  const char* include_dir;
+  const char* include_dir_sep;
+  if (include_dir_id >= 0) {
+    include_dir = SPVM_API_RUNTIME_get_name(runtime, include_dir_id);
+    include_dir_sep = "/";
+  }
+  else {
+    include_dir = "";
+    include_dir_sep = "";
+  }
+  
+  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_id);
+  
+  // Basic type name and method name
+  const char* new_line_part = "\n  ";
+  const char* arrow_part = "->";
+  const char* at_part = " at ";
+
+  // Exception
+  const char* exception_bytes = env->get_chars(env, stack, exception);
+  int32_t exception_length = env->length(env, stack, exception);
+  
+  // Total string length
+  int32_t total_length = 0;
+  total_length += exception_length;
+  total_length += strlen(new_line_part);
+  total_length += strlen(basic_type_name);
+  total_length += strlen(arrow_part);
+  total_length += strlen(method_name);
+  total_length += strlen(at_part);
+  total_length += strlen(include_dir);
+  total_length += strlen(include_dir_sep);
+  total_length += strlen(module_rel_file);
+
+  const char* line_part = " line ";
+  char line_str[20];
+  
+  sprintf(line_str, "%" PRId32, line);
+  total_length += strlen(line_part);
+  total_length += strlen(line_str);
+  
+  // Create exception message
+  void* new_exception = env->new_string_raw(env, stack, NULL, total_length);
+  const char* new_exception_bytes = env->get_chars(env, stack, new_exception);
+  
+  memcpy(
+    (void*)(new_exception_bytes),
+    (void*)(exception_bytes),
+    exception_length
+  );
+
+  sprintf(
+    (char*)new_exception_bytes + exception_length,
+    "%s%s%s%s%s%s%s%s%s%" PRId32,
+    new_line_part,
+    basic_type_name,
+    arrow_part,
+    method_name,
+    at_part,
+    include_dir,
+    include_dir_sep,
+    module_rel_file,
+    line_part,
+    line
+  );
+  
+  return new_exception;
+}
+
+SPVM_OBJECT* SPVM_API_new_stack_trace_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, SPVM_RUNTIME_METHOD* method, int32_t line) {
+  (void)env;
+  
+  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw_v2(env, stack, exception, method, line);
+  
+  SPVM_API_push_mortal(env, stack, stack_trace);
+  
+  return stack_trace;
+}
+
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* basic_type_name, const char* method_name, int32_t line) {
 
   if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
@@ -2394,16 +2488,6 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   );
   
   return new_exception;
-}
-
-SPVM_OBJECT* SPVM_API_new_stack_trace_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, const char* basic_type_name, const char* method_name, int32_t line) {
-  (void)env;
-  
-  SPVM_OBJECT* stack_trace = SPVM_API_new_stack_trace_raw_by_name(env, stack, exception, basic_type_name, method_name, line);
-  
-  SPVM_API_push_mortal(env, stack, stack_trace);
-  
-  return stack_trace;
 }
 
 void SPVM_API_fprint(SPVM_ENV* env, SPVM_VALUE* stack, FILE* fh, SPVM_OBJECT* string) {

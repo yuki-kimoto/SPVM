@@ -318,6 +318,8 @@ struct spvm_env {
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
   int32_t (*call_method_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
   int32_t (*call_method_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
+  void* (*new_stack_trace_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+  void* (*new_stack_trace_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
 };
 
 struct spvm_env_runtime {
