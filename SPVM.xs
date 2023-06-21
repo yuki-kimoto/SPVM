@@ -4899,28 +4899,30 @@ set_native_method_address(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
-
+  
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
   // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-
+  
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
+  
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  // Method id
-  int32_t method_address_id = api_env->api->runtime->get_method_address_id_by_name(runtime, basic_type_name, method_name);
+  // Method
+  void* method = api_env->api->runtime->get_method_by_name(runtime, basic_type_id, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  api_env->api->runtime->set_native_method_address(runtime, api_env->api->runtime->get_method_by_address_id(runtime, method_address_id), native_address);
-
-  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, env->api->runtime->get_method_by_address_id(env->runtime, method_address_id)));
-
+  api_env->api->runtime->set_native_method_address(runtime, method, native_address);
+  
+  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method));
+  
   // Free native_env
   api_env->free_env_raw(api_env);
-
+  
   XSRETURN(0);
 }
 
