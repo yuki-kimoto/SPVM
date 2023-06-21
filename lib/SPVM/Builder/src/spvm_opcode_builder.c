@@ -4120,9 +4120,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
                       
                       opcode.operand0 = call_stack_id_in;
-                      opcode.operand1 = decl_method->address_id;
-                      opcode.operand2 = invocant_decl_basic_type->id;
-                      opcode.operand3 = decl_method->index;
+                      opcode.operand1 = invocant_decl_basic_type->id;
+                      opcode.operand2 = decl_method->index;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       

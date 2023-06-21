@@ -1144,9 +1144,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_CAN: {
         void* object = object_vars[opcode->operand0];
-        int32_t method_address_id = opcode->operand1;
-        int32_t decl_basic_type_id = opcode->operand2;
-        int32_t decl_method_index = opcode->operand3;
+        int32_t decl_basic_type_id = opcode->operand1;
+        int32_t decl_method_index = opcode->operand2;
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, decl_basic_type_id, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
