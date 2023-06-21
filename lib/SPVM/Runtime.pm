@@ -104,9 +104,9 @@ Builds the C source code of the class that contains C<precompile> methods and re
 
 Gets the anon basic type names and returns it.
 
-=head2 get_method_is_static
+=head2 get_method_is_class_method
 
-  method get_method_is_static : int ($basic_type_name : string, $method_name : string);
+  method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
 
 Checks if the method is a class method. If it is so, returns 1, otherwise returns 0.
 

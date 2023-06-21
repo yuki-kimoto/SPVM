@@ -180,9 +180,9 @@ sub bind_to_perl {
       }
       
       my $perl_method_abs_name = "${perl_module_name}::$method_name";
-      my $is_static = $RUNTIME->get_method_is_static($module_name, $method_name);
+      my $is_class_method = $RUNTIME->get_method_is_class_method($module_name, $method_name);
       
-      if ($is_static) {
+      if ($is_class_method) {
         # Define Perl method
         no strict 'refs';
         

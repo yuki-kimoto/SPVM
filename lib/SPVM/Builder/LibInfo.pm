@@ -31,14 +31,14 @@ sub file {
   }
 }
 
-sub is_static {
+sub is_class_method {
   my $self = shift;
   if (@_) {
-    $self->{is_static} = $_[0];
+    $self->{is_class_method} = $_[0];
     return $self;
   }
   else {
-    return $self->{is_static};
+    return $self->{is_class_method};
   }
 }
 
@@ -72,8 +72,8 @@ sub new {
 
   bless $self, $class;
 
-  unless (defined $self->is_static) {
-    $self->is_static(0);
+  unless (defined $self->is_class_method) {
+    $self->is_class_method(0);
   }
   
   unless (defined $self->is_abs) {
@@ -110,7 +110,7 @@ sub to_arg {
   }
   else {
     my $name = $self->name;
-    if ($self->is_static) {
+    if ($self->is_class_method) {
       $link_command_arg = $self->static_option_cb->($self, $name);
     }
     else {
@@ -168,12 +168,12 @@ Gets and sets the C<file> field.
 
 This field is the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
 
-=head2 is_static
+=head2 is_class_method
 
-  my $is_static = $lib_info->is_static;
-  $lib_info->is_static($is_static);
+  my $is_class_method = $lib_info->is_class_method;
+  $lib_info->is_class_method($is_class_method);
 
-Gets and sets the C<is_static> field.
+Gets and sets the C<is_class_method> field.
 
 If this field is a true value, a static library is linked.
 
@@ -219,7 +219,7 @@ undef
 
 undef
 
-=item * L</"is_static">
+=item * L</"is_class_method">
 
 0
 
@@ -245,7 +245,7 @@ undef
 
   my $link_command_arg = $lib_info->to_arg;
 
-Creates an argument of the link command from the L</"is_abs"> field and L</"is_static"> field, and returns it.
+Creates an argument of the link command from the L</"is_abs"> field and L</"is_class_method"> field, and returns it.
 
 The following ones are examples of the return value.
   

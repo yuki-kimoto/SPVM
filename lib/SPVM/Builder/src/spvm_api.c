@@ -3324,8 +3324,8 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const cha
   int32_t method_address_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_address_id >= 0) {
-    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
-    if (!is_static) {
+    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
+    if (!is_class_method) {
       method_address_id = -1;
     }
   }
@@ -3337,8 +3337,8 @@ int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, SPVM_VALUE* stack,
   int32_t method_address_id = SPVM_API_RUNTIME_get_method_address_id_by_name(env->runtime, basic_type_name, method_name);
   
   if (method_address_id >= 0) {
-    int32_t is_static = SPVM_API_RUNTIME_get_method_is_static(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
-    if (is_static) {
+    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id));
+    if (is_class_method) {
       method_address_id = -1;
     }
   }
@@ -3374,7 +3374,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type->id, method_name);
     if (method) {
       // Instance method
-      if (!method->is_static) {
+      if (!method->is_class_method) {
         method_address_id = method->address_id;
       }
       break;
@@ -3419,7 +3419,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
     method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type->id, method_name);
     if (method) {
       // Instance method
-      if (method->is_static) {
+      if (method->is_class_method) {
         method = NULL;
       }
       break;

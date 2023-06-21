@@ -865,7 +865,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
     SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
     
-    if (!method->is_static) {
+    if (!method->is_class_method) {
       SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
       arg_var_decl_first->type->unresolved_basic_type_name = basic_type_name;
     }
@@ -896,7 +896,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     if (method->args_length > 0) {
       SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
       SPVM_OP* op_arg_first_type = NULL;
-      if (!method->is_static) {
+      if (!method->is_class_method) {
         SPVM_TYPE* arg_invocant_type = op_type->uv.type;
         op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type->unresolved_basic_type_name, arg_invocant_type->basic_type, arg_invocant_type->dimension, arg_invocant_type->flag, arg_var_decl_first->op_var_decl->file, arg_var_decl_first->op_var_decl->line);
         arg_var_decl_first->type = op_arg_first_type->uv.type;
@@ -911,13 +911,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     }
 
     // If Method is anon, method must be method
-    if (strlen(method_name) == 0 && method->is_static) {
+    if (strlen(method_name) == 0 && method->is_class_method) {
       SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
 
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       // Method having interface_t attribute must be method
-      if (method->is_static) {
+      if (method->is_class_method) {
         SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
       }
     }
@@ -1393,7 +1393,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_STATIC: {
-          method->is_static = 1;
+          method->is_class_method = 1;
           break;
         }
         default: {
@@ -1426,7 +1426,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   }
   
   // Add $self : self before the first argument
-  if (!method->is_static) {
+  if (!method->is_class_method) {
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
     SPVM_OP* op_self_type = SPVM_OP_new_op_unresolved_type(compiler, NULL, 0, 0, op_method->file, op_method->line);
@@ -1483,7 +1483,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     }
     
     // DESTROY is instance method
-    if (method->is_static) {
+    if (method->is_class_method) {
       SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
     }
 
@@ -2352,7 +2352,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   // Class method call
   assert(op_invocant->id != SPVM_OP_C_ID_NAME);
   if (op_invocant->id == SPVM_OP_C_ID_TYPE || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
-    call_method->is_static = 1;
+    call_method->is_class_method = 1;
     call_method->op_name = op_name_method;
     if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
       call_method->basic_type_name = op_invocant->uv.type->unresolved_basic_type_name;

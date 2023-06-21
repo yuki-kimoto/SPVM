@@ -67,7 +67,7 @@ Runtime native APIs have its IDs.
   43 get_method_name_id
   44 reserved44
   45 reserved45
-  46 get_method_is_static
+  46 get_method_is_class_method
   47 get_method_is_anon
   48 get_method_is_native
   49 get_method_is_precompile
@@ -262,9 +262,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_method_name_id)(void* runtime, int32_t method_address_id);
 
-=head2 get_method_is_static
+=head2 get_method_is_class_method
 
-  int32_t (*get_method_is_static)(void* runtime, int32_t method_address_id);
+  int32_t (*get_method_is_class_method)(void* runtime, int32_t method_address_id);
 
 =head2 get_method_is_anon
 

@@ -367,7 +367,7 @@ struct spvm_env_runtime {
   int32_t (*get_method_name_id)(void* runtime, void* method);
   void* reserved44;
   void* reserved45;
-  int32_t (*get_method_is_static)(void* runtime, void* method);
+  int32_t (*get_method_is_class_method)(void* runtime, void* method);
   int32_t (*get_method_is_anon)(void* runtime, void* method);
   int32_t (*get_method_is_native)(void* runtime, void* method);
   int32_t (*get_method_is_precompile)(void* runtime, void* method);

@@ -1227,8 +1227,8 @@ _xs_call_method(...)
     }
     
     if (method) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method);
-      if (is_static) {
+      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method);
+      if (is_class_method) {
         method = NULL;
       }
     }
@@ -1244,8 +1244,8 @@ _xs_call_method(...)
     method = env->api->runtime->get_method_by_name(env->runtime, basic_type_id, method_name);
     
     if (method) {
-      int32_t is_static = env->api->runtime->get_method_is_static(env->runtime, method);
-      if (!is_static) {
+      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method);
+      if (!is_class_method) {
         method = NULL;
       }
     }

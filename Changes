@@ -7,6 +7,10 @@
       + void* (*get_field)(void* runtime, int32_t basic_type_id, int32_t field_index);
       + void* (*get_class_var)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
       + void* (*get_method)(void* runtime, int32_t basic_type_id, int32_t method_index);
+      
+      -  int32_t (*get_method_is_static)(void* runtime, void* method);
+      +  int32_t (*get_method_is_class_method)(void* runtime, void* method);
+
   [New Features]
     * The following Native Runtime APIs were added.
     

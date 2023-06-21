@@ -143,7 +143,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_name_id,
     NULL, // reserved44,
     NULL, // reserved45,
-    SPVM_API_RUNTIME_get_method_is_static,
+    SPVM_API_RUNTIME_get_method_is_class_method,
     SPVM_API_RUNTIME_get_method_is_anon,
     SPVM_API_RUNTIME_get_method_is_native,
     SPVM_API_RUNTIME_get_method_is_precompile,
@@ -793,11 +793,11 @@ int32_t SPVM_API_RUNTIME_get_method_args_base_address_id(SPVM_RUNTIME* runtime, 
   return args_base_address_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_is_static(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t is_static = method->is_static;
+  int32_t is_class_method = method->is_class_method;
   
-  return is_static;
+  return is_class_method;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_return_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

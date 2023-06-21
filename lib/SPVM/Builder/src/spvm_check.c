@@ -546,8 +546,8 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
             SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
             
             if (strcmp(method->name, interface_method->name) == 0) {
-              if (method->is_static) {
-                if (!interface_method->is_static) {
+              if (method->is_class_method) {
+                if (!interface_method->is_class_method) {
                   SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                   return;
                 }
@@ -932,7 +932,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
   const char* method_name = call_method->op_name->uv.name;
   
   // Class method call
-  if (call_method->is_static) {
+  if (call_method->is_class_method) {
     SPVM_METHOD* found_method = NULL;
     // Basic type name + method name
     const char* basic_type_name;
@@ -952,7 +952,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
       strlen(method_name)
     );
     
-    if (found_method && !found_method->is_static) {
+    if (found_method && !found_method->is_class_method) {
       found_method = NULL;
     }
   
@@ -983,7 +983,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
     char* last_colon_pos = strrchr(method_name, ':');
     if (last_colon_pos) {
       const char* abs_method_name = method_name;
-      call_method->is_static_instance_method_call = 1;
+      call_method->is_class_method_instance_method_call = 1;
       method_name = last_colon_pos + 1;
       int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
       
@@ -1014,7 +1014,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
       
       if (found_method) {
         basic_type = found_method->current_basic_type;
-        if (found_method->is_static) {
+        if (found_method->is_class_method) {
           SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
@@ -1030,7 +1030,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
       SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
       
       if (found_method) {
-        if (found_method->is_static) {
+        if (found_method->is_class_method) {
           basic_type = found_method->current_basic_type;
           SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
@@ -2869,7 +2869,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 call_method_args_length++;
                 if (call_method_args_length > args_length) {
                   int32_t args_length_for_user = args_length;
-                  if (!call_method->method->is_static) {
+                  if (!call_method->method->is_class_method) {
                     args_length_for_user--;
                   }
                   
@@ -2885,7 +2885,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 // If needed, numeric conversion op is added
                 char place[255];
                 int32_t call_method_args_length_for_user = call_method_args_length;
-                if (!call_method->method->is_static) {
+                if (!call_method->method->is_class_method) {
                   call_method_args_length_for_user--;
                 }
                 sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" basic type", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->current_basic_type->name);
@@ -2901,7 +2901,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             if (call_method_args_length < call_method->method->required_args_length) {
               int32_t required_args_length_for_user = call_method->method->required_args_length;
-              if (!call_method->method->is_static) {
+              if (!call_method->method->is_class_method) {
                 required_args_length_for_user--;
               }
               
