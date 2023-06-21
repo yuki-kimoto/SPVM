@@ -41,7 +41,7 @@ static const char* FILE_NAME = "spvm_vm.c";
 
 int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_stack_length) {
   
-  int32_t current_method_address_id = current_method->id;
+  int32_t current_method_address_id = current_method->address_id;
   
   // Opcode relative index
   register int32_t opcode_rel_index = 0;

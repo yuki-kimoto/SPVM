@@ -362,7 +362,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
       
       // Set method id
-      method->id = compiler->methods->length;
+      method->address_id = compiler->methods->length;
       
       method->index = i;
       
@@ -381,7 +381,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
       
       // Set class_var id
-      class_var->id = compiler->class_vars->length;
+      class_var->address_id = compiler->class_vars->length;
       
       class_var->index = i;
       
@@ -640,7 +640,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
 
       // Create field id
-      field->id = compiler->fields->length;
+      field->address_id = compiler->fields->length;
 
       // Add field to compiler
       SPVM_LIST_push(compiler->fields, field);

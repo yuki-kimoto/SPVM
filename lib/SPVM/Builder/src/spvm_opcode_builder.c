@@ -55,7 +55,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       method->opcodes_base_id = method_opcodes_base_id;
       
       // Check sub information
-      assert(method->id > -1);
+      assert(method->address_id > -1);
       assert(method->op_name);
       assert(method->return_type);
       assert(method->current_basic_type->module_file);
@@ -1278,7 +1278,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD);
                         }
                       }
-                      opcode.operand0 = call_method->method->id;
+                      opcode.operand0 = call_method->method->address_id;
                       opcode.operand1 = args_stack_length;
                       opcode.operand3 = call_method->method->index;
                       
@@ -1499,7 +1499,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
 
                         opcode.operand0 = call_stack_id_invocant;
-                        opcode.operand1 = op_assign_src->uv.field_access->field->id;
+                        opcode.operand1 = op_assign_src->uv.field_access->field->address_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
@@ -1514,7 +1514,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
 
                         opcode.operand0 = call_stack_id_invocant;
-                        opcode.operand1 = op_assign_src->uv.field_access->field->id;
+                        opcode.operand1 = op_assign_src->uv.field_access->field->address_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
@@ -1529,7 +1529,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
 
                         opcode.operand1 = call_stack_id_invocant;
-                        opcode.operand2 = op_assign_src->uv.field_access->field->id;
+                        opcode.operand2 = op_assign_src->uv.field_access->field->address_id;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
@@ -1682,7 +1682,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           opcode.operand0 = call_stack_id_out;
                           opcode.operand1 = call_stack_id_invocant;
-                          opcode.operand2 = field_access->field->id;
+                          opcode.operand2 = field_access->field->address_id;
                           opcode.operand3 = field_access->field->index;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
@@ -1852,7 +1852,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       opcode.operand0 = call_stack_id_out;
-                      opcode.operand1 = class_var_access->class_var->id;
+                      opcode.operand1 = class_var_access->class_var->address_id;
                       opcode.operand2 = class_var_access->class_var->type->basic_type->id;
                       opcode.operand3 = class_var_access->class_var->index;
                       
@@ -4120,7 +4120,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
                       
                       opcode.operand0 = call_stack_id_in;
-                      opcode.operand1 = implement_method->id;
+                      opcode.operand1 = implement_method->address_id;
                       opcode.operand2 = interface_basic_type->id;
                       opcode.operand3 = implement_method->index;
                       
@@ -4385,7 +4385,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE opcode = {0};
                     
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF);
-                    opcode.operand0 = class_var_access->class_var->id;
+                    opcode.operand0 = class_var_access->class_var->address_id;
                     opcode.operand3 = class_var_access->class_var->index;
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
@@ -4431,7 +4431,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                     }
                                       
-                    opcode.operand0 = class_var_access->class_var->id;
+                    opcode.operand0 = class_var_access->class_var->address_id;
                     opcode.operand1 = call_stack_id_in;
                     opcode.operand2 = class_var_access->class_var->type->basic_type->id;
                     opcode.operand3 = class_var_access->class_var->index;
@@ -4813,7 +4813,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
 
                       opcode.operand0 = call_stack_id_invocant;
-                      opcode.operand1 = field_access->field->id;
+                      opcode.operand1 = field_access->field->address_id;
                       opcode.operand3 = field_access->field->index;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -4864,7 +4864,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
                       
                       opcode.operand0 = call_stack_id_invocant;
-                      opcode.operand1 = field_access->field->id;
+                      opcode.operand1 = field_access->field->address_id;
                       opcode.operand2 = call_stack_id_in;
                       opcode.operand3 = field_access->field->index;
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_field {
-  int32_t id; // Will be removed.
+  int32_t address_id; // Will be removed.
   int32_t index; // Will be used.
   int32_t offset;
   int32_t name_id;

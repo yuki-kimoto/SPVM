@@ -8,7 +8,7 @@
 
 // Runtime method information
 struct spvm_runtime_method {
-  int32_t id; // Will be removed.
+  int32_t address_id; // Will be removed.
   int32_t index; // Will be used.
   int32_t name_id;
   int32_t args_base_address_id;

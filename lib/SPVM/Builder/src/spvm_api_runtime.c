@@ -628,7 +628,7 @@ int32_t SPVM_API_RUNTIME_get_method_address_id_by_name(SPVM_RUNTIME* runtime, co
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type->id, method_name);
     
     if (method) {
-      method_address_id = method->id;
+      method_address_id = method->address_id;
     }
   }
   
@@ -660,7 +660,7 @@ int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, con
   if (basic_type) {
     SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, basic_type->id, field_name);
     if (field) {
-      field_address_id = field->id;
+      field_address_id = field->address_id;
     }
   }
   
@@ -941,24 +941,24 @@ int32_t SPVM_API_RUNTIME_get_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t a
 
 void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
   
-  runtime->method_native_addresses[method->id] = address;
+  runtime->method_native_addresses[method->address_id] = address;
 }
 
 void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
 
-  runtime->method_precompile_addresses[method->id] = address;
+  runtime->method_precompile_addresses[method->address_id] = address;
 }
 
 void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
 
-  void* native_method_address = runtime->method_native_addresses[method->id];
+  void* native_method_address = runtime->method_native_addresses[method->address_id];
   
   return native_method_address;
 }
 
 void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
 
-  void* precompile_method_address = runtime->method_precompile_addresses[method->id];
+  void* precompile_method_address = runtime->method_precompile_addresses[method->address_id];
   
   return precompile_method_address;
 }
@@ -1114,7 +1114,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_address_id_by_name(SPVM_RUNTIME* runtime,
   if (baisc_type) {
     SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(runtime, baisc_type->id, class_var_name);
     if (class_var) {
-      class_var_address_id = class_var->id;
+      class_var_address_id = class_var->address_id;
     }
   }
   

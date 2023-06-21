@@ -681,14 +681,14 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->init_method) {
-      runtime_basic_type->init_method_id = basic_type->init_method->id;
+      runtime_basic_type->init_method_id = basic_type->init_method->address_id;
     }
     else {
       runtime_basic_type->init_method_id = -1;
     }
     
     if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method_address_id = basic_type->destructor_method->id;
+      runtime_basic_type->destructor_method_address_id = basic_type->destructor_method->address_id;
     }
     else {
       runtime_basic_type->destructor_method_address_id = -1;
@@ -699,8 +699,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->required_method) {
-      assert(basic_type->required_method->id >= 0);
-      runtime_basic_type->required_method_address_id = basic_type->required_method->id;
+      assert(basic_type->required_method->address_id >= 0);
+      runtime_basic_type->required_method_address_id = basic_type->required_method->address_id;
     }
     else {
       runtime_basic_type->required_method_address_id = -1;
@@ -709,7 +709,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->methods_length = basic_type->methods->length;
     if (basic_type->methods->length > 0) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
-      runtime_basic_type->methods_base_address_id = method->id;
+      runtime_basic_type->methods_base_address_id = method->address_id;
     }
     else {
       runtime_basic_type->methods_base_address_id = -1;
@@ -718,7 +718,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->fields_length = basic_type->fields->length;
     if (basic_type->fields->length > 0) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
-      runtime_basic_type->fields_base_address_id = field->id;
+      runtime_basic_type->fields_base_address_id = field->address_id;
     }
     else {
       runtime_basic_type->fields_base_address_id = -1;
@@ -727,7 +727,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->class_vars_length = basic_type->class_vars->length;
     if (basic_type->class_vars->length > 0) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, 0);
-      runtime_basic_type->class_vars_base_address_id = class_var->id;
+      runtime_basic_type->class_vars_base_address_id = class_var->address_id;
     }
     else {
       runtime_basic_type->class_vars_base_address_id = -1;
@@ -761,7 +761,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_CLASS_VAR* class_var = SPVM_LIST_get(compiler->class_vars, class_var_id);
     SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
     
-    runtime_class_var->id = class_var->id;
+    runtime_class_var->address_id = class_var->address_id;
     runtime_class_var->index = class_var->index;
     runtime_class_var->basic_type_id = class_var->type->basic_type->id;
     runtime_class_var->type_dimension = class_var->type->dimension;
@@ -790,7 +790,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
     SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
     
-    runtime_field->id = field->id;
+    runtime_field->address_id = field->address_id;
     runtime_field->index = field->index;
     runtime_field->offset = field->offset;
     runtime_field->basic_type_id = field->type->basic_type->id;
@@ -835,7 +835,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     runtime_method->opcodes_base_address_id = method->opcodes_base_id;
     runtime_method->opcodes_length = method->opcodes_length;
-    runtime_method->id = method->id;
+    runtime_method->address_id = method->address_id;
     runtime_method->index = method->index;
     runtime_method->current_basic_type_id = method->current_basic_type->id;
     runtime_method->is_static = method->is_static;

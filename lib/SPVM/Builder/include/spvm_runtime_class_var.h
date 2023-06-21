@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_class_var {
-  int32_t id; // Will be removed.
+  int32_t address_id; // Will be removed.
   int32_t index; // Will be used.
   int32_t name_id;
   int32_t current_basic_type_id;
