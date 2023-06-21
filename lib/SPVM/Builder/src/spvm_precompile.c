@@ -362,10 +362,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                           "      goto END_OF_METHOD;\n"
                                           "    }\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t current_method_address_id = ");
-    SPVM_PRECOMPILE_add_method_address_id(precompile, string_buffer, current_basic_type_name, current_method_name);
-    SPVM_STRING_BUFFER_add(string_buffer, ";\n");
   }
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
