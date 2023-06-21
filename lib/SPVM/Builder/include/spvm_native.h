@@ -449,6 +449,10 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_id)(void* runtime, void* basic_type);
   int32_t (*get_method_address_id)(void* runtime, void* method);
   int32_t (*get_method_index)(void* runtime, void* method);
+  int32_t (*get_class_var_address_id)(void* runtime, void* class_var);
+  int32_t (*get_class_var_index)(void* runtime, void* class_var);
+  int32_t (*get_field_address_id)(void* runtime, void* field);
+  int32_t (*get_field_index)(void* runtime, void* field);
 };
 
 struct spvm_env_compiler {
