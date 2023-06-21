@@ -5317,6 +5317,15 @@ int32_t SPVM_PRECOMPILE_contains_method_address_id(SPVM_PRECOMPILE* precompile, 
   return found;
 }
 
+int32_t SPVM_PRECOMPILE_contains_method_index(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name) {
+  
+  // method_address_id__BASIC_TYPE_NAME__METHOD_NAME__
+  const char* label = "method_index";
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, method_name);
+  
+  return found;
+}
+
 int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const char* string, const char* label, const char* name1, const char* name2) {
   
   int32_t label_length = strlen(label);
