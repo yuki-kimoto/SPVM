@@ -123,7 +123,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   void* current_method = SPVM_API_RUNTIME_get_method_by_name(runtime, current_basic_type_id, current_method_name);
   
   // Method
-  int32_t current_method_address_id = SPVM_API_RUNTIME_get_method_address_id_by_name(runtime, current_basic_type_name, current_method_name);
+  int32_t current_method_address_id = SPVM_API_RUNTIME_get_method_address_id(runtime, current_method);
 
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(precompile, string_buffer, current_basic_type_name, current_method_name);

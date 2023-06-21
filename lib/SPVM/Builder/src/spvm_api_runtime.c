@@ -139,7 +139,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved39
     NULL, // reserved40
     NULL, // reserved41
-    SPVM_API_RUNTIME_get_method_address_id_by_name,
+    NULL, // reserved42
     SPVM_API_RUNTIME_get_method_name_id,
     NULL, // reserved44,
     NULL, // reserved45,
@@ -624,24 +624,6 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
   int32_t type_flag = field->type_flag;
   
   return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* method_name) {
-  (void)runtime;
-  
-  int32_t method_address_id = -1;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
-  
-  if (basic_type) {
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type->id, method_name);
-    
-    if (method) {
-      method_address_id = method->address_id;
-    }
-  }
-  
-  return method_address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
