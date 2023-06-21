@@ -575,6 +575,25 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t ba
   return field;
 }
 
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, int32_t basic_type_id, const char* field_name) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+  
+  SPVM_RUNTIME_FIELD* found_field = NULL;
+  if (basic_type->fields_length > 0) {
+    for (int32_t field_address_id = basic_type->fields_base_address_id; field_address_id <  basic_type->fields_base_address_id + basic_type->fields_length; field_address_id++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+      const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
+      if (strcmp(field_name_current, field_name) == 0) {
+        found_field = field;
+        break;
+      }
+    }
+  }
+  
+  return found_field;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
   if (field_address_id < 0) {
@@ -666,30 +685,13 @@ int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, con
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   if (basic_type) {
-    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, basic_type, field_name);
+    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, basic_type->id, field_name);
     if (field) {
       field_address_id = field->id;
     }
   }
   
   return field_address_id;
-}
-
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* field_name) {
-  
-  SPVM_RUNTIME_FIELD* found_field = NULL;
-  if (basic_type->fields_length > 0) {
-    for (int32_t field_address_id = basic_type->fields_base_address_id; field_address_id <  basic_type->fields_base_address_id + basic_type->fields_length; field_address_id++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-      const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
-      if (strcmp(field_name_current, field_name) == 0) {
-        found_field = field;
-        break;
-      }
-    }
-  }
-  
-  return found_field;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
