@@ -41,8 +41,6 @@ static const char* FILE_NAME = "spvm_vm.c";
 
 int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_stack_length) {
   
-  int32_t current_method_address_id = current_method->address_id;
-  
   // Opcode relative index
   register int32_t opcode_rel_index = 0;
   
@@ -213,7 +211,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
           int32_t line = opcode->operand2;
           eval_error_id = error_id;
           error_id = 0;
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_address_id, line));
+          env->set_exception(env, stack, env->new_stack_trace_raw_v2(env, stack, env->get_exception(env, stack), current_method, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -222,7 +220,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_GOTO_END_OF_METHOD_ON_EXCEPTION: {
         if (__builtin_expect(error_id, 0)) {
           int32_t line = opcode->operand2;
-          env->set_exception(env, stack, env->new_stack_trace_raw(env, stack, env->get_exception(env, stack), current_method_address_id, line));
+          env->set_exception(env, stack, env->new_stack_trace_raw_v2(env, stack, env->get_exception(env, stack), current_method, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
