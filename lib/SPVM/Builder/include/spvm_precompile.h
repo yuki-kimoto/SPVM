@@ -94,8 +94,6 @@ int32_t SPVM_PRECOMPILE_contains_field_address_id(SPVM_PRECOMPILE* precompile, c
 
 int32_t SPVM_PRECOMPILE_contains_class_var_address_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* class_var_name);
 
-int32_t SPVM_PRECOMPILE_contains_method_address_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name);
-
 int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const char* string, const char* label, const char* string1, const char* string2);
 
 int32_t SPVM_PRECOMPILE_contains_class_var_index(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* class_var_name);
@@ -111,8 +109,6 @@ void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_
 void SPVM_PRECOMPILE_add_field_address_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
 void SPVM_PRECOMPILE_add_class_var_address_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name);
-
-void SPVM_PRECOMPILE_add_method_address_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
 
 void SPVM_PRECOMPILE_add_class_var_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name);
 
