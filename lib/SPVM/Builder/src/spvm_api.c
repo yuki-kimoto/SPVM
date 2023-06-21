@@ -317,6 +317,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_instance_method,
     SPVM_API_call_method_raw_v2,
     SPVM_API_call_method_v2,
+    SPVM_API_new_stack_trace_raw_v2,
+    SPVM_API_new_stack_trace_v2,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
