@@ -94,6 +94,36 @@
             
       -  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
       +  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
+
+      -  int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
+      -  void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value);
+      -  void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int16_t value);
+      -  void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int32_t value);
+      -  void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int64_t value);
+      -  void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, float value);
+      -  void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value);
+      -  void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, void* value);
+      +  int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+      +  void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);
+      +  void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);
+      +  void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);
+      +  void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);
+      +  void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);
+      +  void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);
+      +  void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
+
     * The following Native Runtime APIs were changed.
       - void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
       - void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
