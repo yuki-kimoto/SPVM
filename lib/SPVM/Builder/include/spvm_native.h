@@ -318,8 +318,8 @@ struct spvm_env {
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
   void* reserved219;
   void* reserved220;
-  void* (*new_stack_trace_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
-  void* (*new_stack_trace_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+  void* reserved221;
+  void* reserved222;
   int8_t (*get_class_var_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
   int16_t (*get_class_var_short_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
   int32_t (*get_class_var_int_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
