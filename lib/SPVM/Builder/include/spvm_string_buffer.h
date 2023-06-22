@@ -37,8 +37,5 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_
 int32_t SPVM_STRING_BUFFER_contains(SPVM_STRING_BUFFER* string_buffer, int32_t offset, const char* string);
 
 void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
-void SPVM_PRECOMPILE_add_field_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
-void SPVM_PRECOMPILE_add_class_var_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name);
-void SPVM_PRECOMPILE_add_method_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
 
 #endif

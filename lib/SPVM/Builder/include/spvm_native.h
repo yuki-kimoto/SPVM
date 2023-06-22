@@ -115,7 +115,7 @@ struct spvm_env {
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   int32_t (*get_field_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
   int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
-  int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
   void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
@@ -334,7 +334,6 @@ struct spvm_env {
   void (*set_class_var_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, float value);
   void (*set_class_var_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, double value);
   void (*set_class_var_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, void* value);
-  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
 };
 
 struct spvm_env_runtime {
