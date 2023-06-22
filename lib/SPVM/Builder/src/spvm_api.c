@@ -766,7 +766,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   if (!method) {
     env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
@@ -784,7 +784,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   if (!method) {
     env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
@@ -835,7 +835,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -850,7 +850,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     *error = 1;
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
@@ -864,7 +864,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stac
 SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -878,7 +878,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {  *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -893,7 +893,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1236,7 +1236,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1256,7 +1256,7 @@ void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
 void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1276,7 +1276,7 @@ void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
 void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1296,7 +1296,7 @@ void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
 void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int64_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1316,7 +1316,7 @@ void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
 void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, float value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1336,7 +1336,7 @@ void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
 void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, double value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -1356,7 +1356,7 @@ void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, SPVM_OBJECT* value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
@@ -4287,7 +4287,7 @@ int32_t SPVM_API_has_interface_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (basic_type_id < 0) {
     *error = 1;
     env->die(env, stack, "The %s basic type is not found", basic_type_name, func_name, file, line);
