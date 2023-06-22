@@ -218,7 +218,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field,
     SPVM_API_RUNTIME_get_method,
     SPVM_API_RUNTIME_get_field_by_address_id,
-    SPVM_API_RUNTIME_get_method_by_address_id,
+    NULL, // reserved121
     SPVM_API_RUNTIME_get_class_var_by_name,
     SPVM_API_RUNTIME_get_field_by_name,
     SPVM_API_RUNTIME_get_method_by_name,
@@ -1203,22 +1203,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runti
   SPVM_RUNTIME_FIELD* field = &runtime->fields[field_address_id];
   
   return field;
-}
-
-// Will be removed
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_address_id(SPVM_RUNTIME* runtime, int32_t method_address_id) {
-  
-  if (method_address_id < 0) {
-    return NULL;
-  }
-  
-  if (method_address_id >= runtime->methods_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[method_address_id];
-  
-  return method;
 }
 
 // Will be removed
