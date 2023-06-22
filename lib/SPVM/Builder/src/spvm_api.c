@@ -740,25 +740,6 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   }
 }
 
-const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
-  *error = 0;
-
-  int32_t id = env->get_field_id(env, stack, object, field_name);
-  if (id < 0) {
-    *error = 1;
-    env->die(env, stack, "The %s field is not found", field_name, func_name, file, line);
-    return NULL;
-  };
-  SPVM_OBJECT* value = env->get_field_object(env, stack, object, id);
-  if (value == NULL) {
-    return NULL;
-  }
-  else {
-    const char* chars = env->get_chars(env, stack, value);
-    return chars;
-  }
-}
-
 int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
   
   int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
@@ -1066,6 +1047,25 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   };
   SPVM_OBJECT* value = env->get_field_object_v2(env, stack, object, field);
   return value;
+}
+
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  *error = 0;
+  
+  SPVM_RUNTIME_FIELD* field = env->get_field(env, stack, object, field_name);
+  if (!field) {
+    *error = 1;
+    env->die(env, stack, "The %s field is not found", field_name, func_name, file, line);
+    return NULL;
+  };
+  SPVM_OBJECT* value = env->get_field_object_v2(env, stack, object, field);
+  if (value == NULL) {
+    return NULL;
+  }
+  else {
+    const char* chars = env->get_chars(env, stack, value);
+    return chars;
+  }
 }
 
 void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int8_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
