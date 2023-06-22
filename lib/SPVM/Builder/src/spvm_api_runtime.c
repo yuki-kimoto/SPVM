@@ -130,7 +130,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved30
     NULL, // reserved31
     SPVM_API_RUNTIME_get_class_var,
-    SPVM_API_RUNTIME_get_class_var_address_id_by_name,
+    NULL, // reserved33,
     SPVM_API_RUNTIME_get_class_var_name_id,
     NULL, // reserved35
     SPVM_API_RUNTIME_get_field_address_id_by_index,
@@ -1148,24 +1148,6 @@ int32_t SPVM_API_RUNTIME_get_class_var_address_id(SPVM_RUNTIME* runtime, SPVM_RU
   int32_t address_id = class_var->address_id;
   
   return address_id;
-}
-
-// Will be removed
-int32_t SPVM_API_RUNTIME_get_class_var_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* class_var_name) {
-  (void)runtime;
-  
-  int32_t class_var_address_id = -1;
-  
-  SPVM_RUNTIME_BASIC_TYPE* baisc_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
-  
-  if (baisc_type) {
-    SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(runtime, baisc_type->id, class_var_name);
-    if (class_var) {
-      class_var_address_id = class_var->address_id;
-    }
-  }
-  
-  return class_var_address_id;
 }
 
 // Will be removed

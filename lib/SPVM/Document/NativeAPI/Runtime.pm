@@ -54,11 +54,11 @@ Runtime native APIs have its IDs.
   30 reserved30
   31 reserved31
   32 get_class_var
-  33 get_class_var_address_id_by_name
+  33 reserved33
   34 get_class_var_name_id
   35 reserved35
-  36 get_class_var_address_id_by_index
-  37 get_class_var_address_id_by_name
+  36 get_field_address_id_by_index
+  37 get_field_address_id_by_name
   38 get_field_name_id
   39 reserved39
   40 reserved40
@@ -230,21 +230,17 @@ Runtime native APIs have its IDs.
 
   void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
 
-=head2 get_class_var_address_id_by_name
-
-  int32_t (*get_class_var_address_id_by_name)(void* runtime, const char* basic_type_name, const char* class_var_name);
-
 =head2 get_class_var_name_id
 
   int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_address_id);
 
-=head2 get_class_var_address_id_by_index
+=head2 get_field_address_id_by_index
 
-  int32_t (*get_class_var_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
+  int32_t (*get_field_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
 
-=head2 get_class_var_address_id_by_name
+=head2 get_field_address_id_by_name
 
-  int32_t (*get_class_var_address_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
+  int32_t (*get_field_address_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
 
 =head2 get_field_name_id
 
