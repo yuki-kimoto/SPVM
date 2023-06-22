@@ -223,7 +223,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_by_name,
     SPVM_API_RUNTIME_get_method_by_name,
     SPVM_API_RUNTIME_get_basic_type_id,
-    SPVM_API_RUNTIME_get_method_address_id,
+    NULL, // reserved126
     SPVM_API_RUNTIME_get_method_index,
     SPVM_API_RUNTIME_get_class_var_address_id,
     SPVM_API_RUNTIME_get_class_var_index,
@@ -795,13 +795,6 @@ int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, SPVM_R
   int32_t opcodes_length = method->opcodes_length;
   
   return opcodes_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  int32_t address_id = method->address_id;
-  
-  return address_id;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

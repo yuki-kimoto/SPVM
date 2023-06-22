@@ -1166,7 +1166,6 @@ _xs_call_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Basic Type Name
-  int32_t method_address_id = -1;
   void* method = NULL;
   const char* basic_type_name = NULL;
   int32_t class_method_call;

@@ -13,7 +13,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env();
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_address_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id);
 int32_t SPVM_API_RUNTIME_get_class_var_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* class_var_name);
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id);
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_address_id(SPVM_RUNTIME* runtime, int32_t method_address_id);
 
 // Runtime
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_object();
@@ -90,7 +89,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
 int32_t SPVM_API_RUNTIME_get_method_current_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_RUNTIME_get_method_opcodes_base_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
-int32_t SPVM_API_RUNTIME_get_method_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_RUNTIME_get_method_name_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);

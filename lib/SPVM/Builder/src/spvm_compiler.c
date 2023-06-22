@@ -690,11 +690,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method_address_id = basic_type->destructor_method->address_id;
       runtime_basic_type->destructor_method_index = basic_type->destructor_method->index;
     }
     else {
-      runtime_basic_type->destructor_method_address_id = -1;
       runtime_basic_type->destructor_method_index = -1;
     }
     
@@ -704,11 +702,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     if (basic_type->required_method) {
       assert(basic_type->required_method->address_id >= 0);
-      runtime_basic_type->required_method_address_id = basic_type->required_method->address_id;
       runtime_basic_type->required_method_index = basic_type->required_method->index;
     }
     else {
-      runtime_basic_type->required_method_address_id = -1;
       runtime_basic_type->required_method_index = -1;
     }
     
