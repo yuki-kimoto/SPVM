@@ -108,13 +108,13 @@ float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t cla
 double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
 SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id);
 
-int8_t SPVM_API_get_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-int16_t SPVM_API_get_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-int32_t SPVM_API_get_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-int64_t SPVM_API_get_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-float SPVM_API_get_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-double SPVM_API_get_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
-SPVM_OBJECT* SPVM_API_get_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
+int8_t SPVM_API_get_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+int16_t SPVM_API_get_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+int32_t SPVM_API_get_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+int64_t SPVM_API_get_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+float SPVM_API_get_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+double SPVM_API_get_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
+SPVM_OBJECT* SPVM_API_get_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);
 
 // Set class variable
 void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value);
@@ -125,13 +125,13 @@ void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t clas
 void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value);
 void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, SPVM_OBJECT* value);
 
-void SPVM_API_set_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, int8_t value);
-void SPVM_API_set_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, int16_t value);
-void SPVM_API_set_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, int32_t value);
-void SPVM_API_set_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, int64_t value);
-void SPVM_API_set_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, float value);
-void SPVM_API_set_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, double value);
-void SPVM_API_set_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, SPVM_OBJECT* value);
+void SPVM_API_set_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int8_t value);
+void SPVM_API_set_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int16_t value);
+void SPVM_API_set_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int32_t value);
+void SPVM_API_set_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int64_t value);
+void SPVM_API_set_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, float value);
+void SPVM_API_set_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, double value);
+void SPVM_API_set_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value);
 
 // Get Class variable by name
 int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line);
