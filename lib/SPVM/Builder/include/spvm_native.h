@@ -144,8 +144,8 @@ struct spvm_env {
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
   void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_address_id, int32_t line);
-  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_address_id, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
   int32_t (*length)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   int8_t* (*get_elems_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   int16_t* (*get_elems_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);

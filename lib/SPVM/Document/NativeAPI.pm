@@ -621,13 +621,13 @@ The same as C<concat_raw>, and push the created object to the mortal stack. Use 
 
 =head2 new_stack_trace_raw
 
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
 
 Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace
 
-  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_id, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
 
 The same as L</"new_stack_trace_raw">, and push the created object to the mortal stack.
 
