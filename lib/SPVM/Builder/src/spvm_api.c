@@ -3248,14 +3248,14 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, object_basic_type_id);
+        int32_t object_fields_base_address_id = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, object_basic_type_id);
         int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, object_basic_type_id);
-        for (int32_t field_address_id = object_fields_base; field_address_id < object_fields_base + object_fields_length; field_address_id++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+        for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, object_basic_type_id, field_index);
           
-          int32_t field_basic_type_id = SPVM_API_RUNTIME_get_field_basic_type_id(runtime, field);
-          int32_t field_type_dimension = SPVM_API_RUNTIME_get_field_type_dimension(runtime, field);
-          int32_t field_type_flag = SPVM_API_RUNTIME_get_field_type_flag(runtime, field);
+          int32_t field_basic_type_id = field->basic_type_id;
+          int32_t field_type_dimension = field->type_dimension;
+          int32_t field_type_flag = field->type_flag;
           int32_t field_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, field_basic_type_id, field_type_dimension, field_type_flag);
           
           if (field_type_is_object) {
