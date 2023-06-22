@@ -1044,7 +1044,7 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
     return 0;
   }
   
-  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method_by_address_id(runtime, interface_basic_type->required_method_address_id);
+  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type_id, interface_basic_type->required_method_index);
   
   const char* method_interface_name =  SPVM_API_RUNTIME_get_constant_string_value(runtime, method_interface->name_id, NULL);
   
