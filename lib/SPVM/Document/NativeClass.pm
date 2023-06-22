@@ -433,21 +433,22 @@ For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
 
 =head1 Calling Method
 
-If you want to call a method, you get a method id using L<get_class_method_id|"get_class_method_id"> or L<get_instance_method_id|"get_instance_method_id">.
+If you want to call a method, you get a method id using L<get_class_method|"get_class_method"> or L<get_instance_method|"get_instance_method">.
 
-L<get_class_method_id|"get_class_method_id"> get a method id of a class method.
+L<get_class_method|"get_class_method"> get a method id of a class method.
 
-L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance method.
+L<get_instance_method|"get_instance_method"> get a method id of a instance method.
 
   // Get method id of class method
-  int32_t method_id = env->get_class_method_id(env, "MyClass", "sum", "int(int,int)");
-
+  int32_t basic_type_id = env->get_basic_type_id(env, "MyClass");
+  void* method = env->get_class_method(env, basic_type_id, "sum");
+  
   // Get method id of instance method
-  int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(int,int)");
+  int32_t method = env->get_instance_method(env, object, "sum");
 
-If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
+If method is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (method_id < 0) { return env->die(env, stack, "Can't find method id", __func__, "MyClass.c", __LINE__); }
+  if (!method) { return env->die(env, stack, "Can't find method id", __func__, "MyClass.c", __LINE__); }
 
 Set the SPVM method argument to stack before calling the method.
 
@@ -456,7 +457,7 @@ Set the SPVM method argument to stack before calling the method.
 
 To call a SPVM method, use the <a href="#native-api-native-sub-api-call_method">call_method</a> function.
 
-  int32_t error = env->call_method(env, method_id, stack);
+  int32_t error = env->call_method(env, method, stack);
 
 Nonzero if the method raised an exception, 0 if no exception occurred.
 

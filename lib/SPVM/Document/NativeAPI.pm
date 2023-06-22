@@ -33,7 +33,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    16 get_field_id
    17 get_field_offset
    18 get_class_var_id
-   19 get_class_method_id
+   19 get_class_method
    20 get_instance_method_id
    21 new_object_raw
    22 new_object
@@ -384,17 +384,17 @@ Examples:
 
   int32_t class_var_id = env->get_class_var_id(env, "Foo", "$VAR");
 
-=head2 get_class_method_id
+=head2 get_class_method
 
-  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+  void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
 
-Gets a class method ID by the basic type name, the method name. If the class method does not exists, a negative value is returned.
+Gets a class method address by the basic type id and the method name. If the class method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
 Examples:
 
-  int32_t method_id = env->get_class_method_id(env, "Foo", "get");
+  int32_t method_id = env->get_class_method(env, basic_type_id, "get");
 
 =head2 get_instance_method_id
 
