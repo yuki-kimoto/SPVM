@@ -616,13 +616,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   return found_field;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
-  
-  int32_t address_id = field->address_id;
-  
-  return address_id;
-}
-
 int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
   
   int32_t index = field->index;
@@ -663,38 +656,6 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
   int32_t type_flag = field->type_flag;
   
   return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
-  
-  int32_t field_address_id = -1;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  if (basic_type) {
-    if (field_index >= 0 && field_index < basic_type->fields_length) {
-      field_address_id = basic_type->fields_base_address_id + field_index;
-    }
-  }
-  
-  return field_address_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name) {
-  (void)runtime;
-  
-  int32_t field_address_id = -1;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
-  
-  if (basic_type) {
-    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, basic_type->id, field_name);
-    if (field) {
-      field_address_id = field->address_id;
-    }
-  }
-  
-  return field_address_id;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
@@ -1156,6 +1117,48 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runti
   SPVM_RUNTIME_FIELD* field = &runtime->fields[field_address_id];
   
   return field;
+}
+
+// Will be removed
+int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
+  
+  int32_t address_id = field->address_id;
+  
+  return address_id;
+}
+
+// Will be removed
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
+  
+  int32_t field_address_id = -1;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  if (basic_type) {
+    if (field_index >= 0 && field_index < basic_type->fields_length) {
+      field_address_id = basic_type->fields_base_address_id + field_index;
+    }
+  }
+  
+  return field_address_id;
+}
+
+// Will be removed
+int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name) {
+  (void)runtime;
+  
+  int32_t field_address_id = -1;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
+  
+  if (basic_type) {
+    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, basic_type->id, field_name);
+    if (field) {
+      field_address_id = field->address_id;
+    }
+  }
+  
+  return field_address_id;
 }
 
 // Will be removed
