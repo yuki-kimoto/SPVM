@@ -1250,7 +1250,7 @@ void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
     return;
   };
   
-  env->set_class_var_byte_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_byte_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1270,7 +1270,7 @@ void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
     return;
   };
   
-  env->set_class_var_short_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_short_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1290,7 +1290,7 @@ void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
     return;
   };
   
-  env->set_class_var_int_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_int_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int64_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1310,7 +1310,7 @@ void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
     return;
   };
   
-  env->set_class_var_long_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_long_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, float value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1330,7 +1330,7 @@ void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
     return;
   };
   
-  env->set_class_var_float_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_float_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, double value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1350,7 +1350,7 @@ void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return;
   };
   
-  env->set_class_var_double_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_double_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, SPVM_OBJECT* value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -1370,97 +1370,153 @@ void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return;
   };
   
-  env->set_class_var_object_v2(env, stack,  basic_type_id, class_var->index, value);
+  env->set_class_var_object_v2(env, stack, basic_type_id, class_var->index, value);
 }
 
 int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  int8_t value = env->get_class_var_byte(env, stack, id);
+  
+  int8_t value = env->get_class_var_byte_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  int16_t value = env->get_class_var_short(env, stack, id);
+  
+  int16_t value = env->get_class_var_short_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  int32_t value = env->get_class_var_int(env, stack, id);
+  
+  int32_t value = env->get_class_var_int_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  int64_t value = env->get_class_var_long(env, stack, id);
+  
+  int64_t value = env->get_class_var_long_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  float value = env->get_class_var_float(env, stack, id);
+  
+  float value = env->get_class_var_float_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  double value = env->get_class_var_double(env, stack, id);
+  
+  double value = env->get_class_var_double_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
 SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return 0;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
-    return NULL;
+    return 0;
   };
-  SPVM_OBJECT* value = env->get_class_var_object(env, stack, id);
+  
+  SPVM_OBJECT* value = env->get_class_var_object_v2(env, stack, basic_type_id, class_var->index);
   return value;
 }
 
