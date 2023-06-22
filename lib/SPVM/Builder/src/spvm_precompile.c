@@ -315,6 +315,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_method_index;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_class_var_index;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_address_id = SPVM_API_RUNTIME_get_method_opcodes_base_address_id(runtime, current_method);
@@ -2502,6 +2504,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(class_var_address_id >= 0);\n");
                                               
+        SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
+        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var_index = ");
+        SPVM_PRECOMPILE_add_class_var_index(precompile, string_buffer, basic_type_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE(env, stack, ");
@@ -2584,6 +2595,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(class_var_address_id >= 0);\n");
                                               
+        SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
+        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var_index = ");
+        SPVM_PRECOMPILE_add_class_var_index(precompile, string_buffer, basic_type_name, class_var_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var_address_id, ");
