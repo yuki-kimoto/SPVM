@@ -94,6 +94,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
 
 
+
   // The impelements of Native APIs
   void* env_init[]  = {
     NULL, // class_vars_heap
@@ -314,6 +315,21 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_muldim_array_by_name,
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
+    SPVM_API_get_field_byte_v2,
+    SPVM_API_get_field_short_v2,
+    SPVM_API_get_field_int_v2,
+    SPVM_API_get_field_long_v2,
+    SPVM_API_get_field_float_v2,
+    SPVM_API_get_field_double_v2,
+    SPVM_API_get_field_object_v2,
+    SPVM_API_set_field_byte_v2,
+    SPVM_API_set_field_short_v2,
+    SPVM_API_set_field_int_v2,
+    SPVM_API_set_field_long_v2,
+    SPVM_API_set_field_float_v2,
+    SPVM_API_set_field_double_v2,
+    SPVM_API_set_field_object_v2,
+    SPVM_API_get_field,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -897,14 +913,14 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     return;
   };
   
-  int32_t id = env->get_field_id(env, stack, object, field_name);
-  if (id < 0) {
+  SPVM_RUNTIME_FIELD* field = env->get_field(env, stack, object, field_name);
+  if (!field) {
     *error = 1;
     const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
     env->die(env, stack, "The %s field is not found in the %s class or its super class", field_name, basic_type_name, func_name, file, line);
     return;
   }
-  env->set_field_byte(env, stack, object, id, value);
+  env->set_field_byte_v2(env, stack, object, field, value);
 }
 
 void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {

@@ -315,6 +315,21 @@ struct spvm_env {
   void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
+  int8_t (*get_field_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int16_t (*get_field_short_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int32_t (*get_field_int_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int64_t (*get_field_long_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  float (*get_field_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  double (*get_field_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  void* (*get_field_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  void (*set_field_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
+  void (*set_field_short_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
+  void (*set_field_int_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
+  void (*set_field_long_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
+  void (*set_field_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
+  void (*set_field_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
+  void (*set_field_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
+  void* (*get_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 };
 
 struct spvm_env_runtime {
