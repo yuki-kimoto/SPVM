@@ -428,6 +428,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT:
       {
         class_var_address_id = opcode->operand1;
+        basic_type_id = opcode->operand2;
+        class_var_index = opcode->operand3;
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE:
@@ -440,6 +442,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF:
       {
         class_var_address_id = opcode->operand0;
+        basic_type_id = opcode->operand2;
+        class_var_index = opcode->operand3;
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
