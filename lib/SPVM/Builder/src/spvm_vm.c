@@ -1075,58 +1075,50 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE_V2(env, stack, class_var_current_basic_type_id, class_var_index, byte_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE_V2(env, stack, class_var_current_basic_type_id, class_var_index, byte_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT_V2(env, stack, class_var_current_basic_type_id, class_var_index, short_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT_V2(env, stack, class_var_current_basic_type_id, class_var_index, short_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_INT_V2(env, stack, class_var_current_basic_type_id, class_var_index, int_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_INT_V2(env, stack, class_var_current_basic_type_id, class_var_index, int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_LONG_V2(env, stack, class_var_current_basic_type_id, class_var_index, long_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_LONG_V2(env, stack, class_var_current_basic_type_id, class_var_index, long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT_V2(env, stack, class_var_current_basic_type_id, class_var_index, float_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT_V2(env, stack, class_var_current_basic_type_id, class_var_index, float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE_V2(env, stack, class_var_current_basic_type_id, class_var_index, double_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE_V2(env, stack, class_var_current_basic_type_id, class_var_index, double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT_V2(env, stack, class_var_current_basic_type_id, class_var_index, object_vars[opcode->operand1]);
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
+        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT_V2(env, stack, class_var_current_basic_type_id, class_var_index, object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
-        int32_t class_var_address_id = opcode->operand0;
-        int32_t class_var_current_basic_type_id = opcode->operand2;
-        int32_t class_var_index = opcode->operand3;
+        int32_t class_var_current_basic_type_id = opcode->operand0;
+        int32_t class_var_index = opcode->operand1;
         SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF_V2(env, stack, class_var_current_basic_type_id, class_var_index);
         break;
       }
