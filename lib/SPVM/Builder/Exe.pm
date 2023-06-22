@@ -637,7 +637,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     
     // Run
     int32_t args_stack_length = 0;
-    error = env->call_method_v2(env, stack, method, args_stack_length);
+    error = env->call_method(env, stack, method, args_stack_length);
     
     if (error) {
       env->print_stderr(env, stack, env->get_exception(env, stack));

@@ -189,9 +189,9 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # Check not creating no needed object file
 ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
-# get_instance_method_id_static
+# get_instance_method_static
 {
-  ok(SPVM::TestCase::NativeAPI->get_instance_method_id_static);
+  ok(SPVM::TestCase::NativeAPI->get_instance_method_static);
 }
 
 # get_bool_object_value

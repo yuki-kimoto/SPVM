@@ -168,7 +168,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->free_env_prepared != &env_array[147]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump_raw != &env_array[148]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump != &env_array[149]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_instance_method_id_static != &env_array[150]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_instance_method_static != &env_array[150]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_bool_object_value != &env_array[151]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->cleanup_global_vars != &env_array[152]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->make_read_only != &env_array[153]) { stack[0].ival = 0; return 0; }
@@ -1654,7 +1654,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
   {
     int32_t args_stack_length = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_method_raw_v2(env, stack, method, args_stack_length);
+    int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
     if (error) {
       return 1;
     }
@@ -1686,7 +1686,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
     int32_t args_stack_length = 2;
     stack[0].ival = 1;
     stack[1].ival = 2;
-    e = env->call_method_v2(env, stack, method, args_stack_length);
+    e = env->call_method(env, stack, method, args_stack_length);
     if (e) { return e; }
     obj_point = stack[0].oval;
   }
@@ -1868,7 +1868,7 @@ int32_t SPVM__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1876,14 +1876,14 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   
   void* minimal = stack[0].oval;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type_id, "x");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
+  void* method = env->get_instance_method_static(env, stack, basic_type_id, "x");
   if (!method) { return 0; }
   
   int32_t ret;
   {
     int32_t args_stack_length = 0;
-    env->call_method_v2(env, stack, method, args_stack_length);
+    env->call_method(env, stack, method, args_stack_length);
     if (e) { return e; }
     ret = stack[0].ival;
   }

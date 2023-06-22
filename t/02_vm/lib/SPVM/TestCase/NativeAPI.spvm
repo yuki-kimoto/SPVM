@@ -1222,19 +1222,19 @@ class TestCase::NativeAPI {
   }
   native static method native_new_pointer_object_by_name_exception : TestCase::Pointer ();
 
-  static method get_instance_method_id_static : int () {
+  static method get_instance_method_static : int () {
     
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(4);
     
-    my $x = &get_instance_method_id_static_native($minimal);
+    my $x = &get_instance_method_static_native($minimal);
     unless ($x == 4) {
       return 0;
     }
     
     return 1;
   }
-  native static method get_instance_method_id_static_native : int ($minimal : TestCase::Minimal);
+  native static method get_instance_method_static_native : int ($minimal : TestCase::Minimal);
   
   static method get_bool_object_value : int () {
     

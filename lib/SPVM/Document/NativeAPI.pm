@@ -164,7 +164,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   147 free_env_prepared
   148 dump_raw
   149 dump
-  150 get_instance_method_id_static
+  150 get_instance_method_static
   151 get_bool_object_value
   152 cleanup_global_vars
   153 make_read_only
@@ -400,7 +400,7 @@ Examples:
 
   int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
 
-Gets a instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
+Gets an instance method ID by the object, the method name. If the instance method does not exist, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
@@ -1798,17 +1798,17 @@ Gets the string which dump the object. The string is the same as the return valu
 
 The same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
 
-=head2 get_instance_method_id_static
+=head2 get_instance_method_static
 
-  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* basic_type_name, const char* method_name);
+  void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
 
-Gets a instance method ID by the basic type name, the method name. If the instance method does not exists, a negative value is returned.
+Gets an instance method by the basic type id and the method name. If the instance method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
 Examples:
-
-  int32_t method_id = env->get_instance_method_id_static(env, "Foo", "get");
+  
+  void* method = env->get_instance_method_static(env, basic_type_id, "get");
 
 =head2 get_bool_object_value
 
@@ -2108,7 +2108,7 @@ The same as L</"set_elem_object">.
 
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a instance of a class, returns 1, otherwise returns 0.
+If the object is an instance of a class, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
 
@@ -2116,7 +2116,7 @@ If the object is C<NULL>, returns 0.
 
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-If the object is a instance of a pointer class, returns 1, otherwise returns 0.
+If the object is an instance of a pointer class, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
 
@@ -2160,7 +2160,7 @@ Examples:
     const char* basic_type_name, const char* method_name, int32_t args_stack_length,
     const char* func_name, const char* file, int32_t line);
 
-Calls a instance method by the basic type name and the method name.
+Calls an instance method by the basic type name and the method name.
 
 Examples:
 

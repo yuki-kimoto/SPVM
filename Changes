@@ -80,7 +80,11 @@
       -  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, int32_t method_address_id, int32_t line);
       +  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
       +  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);0.989009 2023-06-21
-  [Incompatibe Changes]
+      -  int32_t (*get_class_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+      +  void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+      
+      -  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* basic_type_name, const char* method_name);
+      +  void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
     * The following Native Runtime APIs were changed.
       - void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
       - void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
