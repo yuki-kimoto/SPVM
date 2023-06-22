@@ -315,8 +315,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
     SPVM_API_get_instance_method,
-    SPVM_API_call_method_raw,
-    SPVM_API_call_method,
+    NULL, // reserved219,
+    NULL, // reserved220,
     SPVM_API_new_stack_trace_raw_v2,
     SPVM_API_new_stack_trace_v2,
     SPVM_API_get_class_var_byte_v2,
@@ -770,7 +770,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return 1;
   }
-  int32_t e = env->call_method_raw_v2(env, stack, method, args_stack_length);
+  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
@@ -788,7 +788,7 @@ int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* 
     env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return 1;
   }
-  int32_t e = env->call_method_raw_v2(env, stack, method, args_stack_length);
+  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
@@ -819,7 +819,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
     return 1;
   };
   
-  int32_t e = env->call_method_raw_v2(env, stack, method, args_stack_length);
+  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
   
   if (e) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));

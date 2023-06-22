@@ -316,8 +316,8 @@ struct spvm_env {
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
-  int32_t (*call_method_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
-  int32_t (*call_method_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
+  void* reserved219;
+  void* reserved220;
   void* (*new_stack_trace_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
   void* (*new_stack_trace_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
   int8_t (*get_class_var_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index);
