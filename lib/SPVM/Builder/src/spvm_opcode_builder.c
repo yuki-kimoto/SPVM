@@ -1852,9 +1852,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       }
                       
                       opcode.operand0 = call_stack_id_out;
-                      opcode.operand1 = class_var_access->class_var->address_id;
-                      opcode.operand2 = class_var_access->class_var->current_basic_type->id;
-                      opcode.operand3 = class_var_access->class_var->index;
+                      opcode.operand1 = class_var_access->class_var->current_basic_type->id;
+                      opcode.operand2 = class_var_access->class_var->index;
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       break;
@@ -4435,6 +4434,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     opcode.operand1 = call_stack_id_in;
                     opcode.operand2 = class_var_access->class_var->current_basic_type->id;
                     opcode.operand3 = class_var_access->class_var->index;
+                    
                     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                   }
                 }
