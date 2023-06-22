@@ -1421,6 +1421,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, out, class_var_id) (out = *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id])
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, out, class_var_id) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]))
 
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE_V2(env, stack, out, basic_type_id, class_var_index) (out = *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[env->api->runtime->get_basic_type_class_vars_base_address_id(env->runtime, basic_type_id) + class_var_index])
+
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var_id, in) (*(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, class_var_id, in) (*(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_INT(env, stack, class_var_id, in) (*(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = in)
