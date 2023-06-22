@@ -225,7 +225,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_id,
     NULL, // reserved126
     SPVM_API_RUNTIME_get_method_index,
-    SPVM_API_RUNTIME_get_class_var_address_id,
+    NULL, // reserved128,
     SPVM_API_RUNTIME_get_class_var_index,
     SPVM_API_RUNTIME_get_field_address_id,
     SPVM_API_RUNTIME_get_field_index,
@@ -1140,14 +1140,6 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_ty
   }
   
   return isa;
-}
-
-// Will be removed
-int32_t SPVM_API_RUNTIME_get_class_var_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var) {
-  
-  int32_t address_id = class_var->address_id;
-  
-  return address_id;
 }
 
 // Will be removed
