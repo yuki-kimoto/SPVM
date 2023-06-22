@@ -70,7 +70,11 @@
       -  int32_t (*get_basic_type_version_string_id)(void* runtime, void* basic_type);
       +  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
       +  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
-    
+    * The following Native APIs were changed.
+      -  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+      +  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
+      -  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+      +  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);    
 0.989009 2023-06-21
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

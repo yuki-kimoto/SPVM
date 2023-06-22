@@ -682,9 +682,11 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     if (basic_type->init_method) {
       runtime_basic_type->init_method_id = basic_type->init_method->address_id;
+      runtime_basic_type->init_method_index = basic_type->init_method->index;
     }
     else {
       runtime_basic_type->init_method_id = -1;
+      runtime_basic_type->init_method_index = -1;
     }
     
     if (basic_type->destructor_method) {

@@ -1460,7 +1460,7 @@ static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int
   *out = (dist_basic_type_id == src_basic_type_id && dist_type_dimension == 0);
 }
 
-#define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = env->get_instance_method_id(env, stack, object, method_name) >= 0)
+#define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = (env->get_instance_method(env, stack, object, method_name) != NULL))
 
 static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* string) {
   if (string) {
@@ -2676,16 +2676,16 @@ static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE
   
   *error_id = 0;
   
-  int32_t method_id = -1;
+  void* method = NULL;
   if (!object) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_INVOCANT_UNDEF]);
     env->set_exception(env, stack, exception);
     *error_id = 1;
   }
   else {
-    method_id = env->get_instance_method_id(env, stack, object, method_name);
+    method = env->get_instance_method(env, stack, object, method_name);
     
-    if (method_id < 0) {
+    if (!method) {
       snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], method_name, interface_name);
       void* exception = env->new_string_nolen_raw(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
@@ -2694,7 +2694,7 @@ static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE
   }
   
   if (!*error_id) {
-    *error_id = env->call_method_raw(env, stack, method_id, args_stack_length);
+    *error_id = env->call_method_raw(env, stack, method, args_stack_length);
   }
 }
 

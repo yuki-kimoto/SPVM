@@ -315,8 +315,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
     SPVM_API_get_instance_method,
-    SPVM_API_call_method_raw_v2,
-    SPVM_API_call_method_v2,
+    SPVM_API_call_method_raw,
+    SPVM_API_call_method,
     SPVM_API_new_stack_trace_raw_v2,
     SPVM_API_new_stack_trace_v2,
     SPVM_API_get_class_var_byte_v2,
@@ -1566,29 +1566,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack = NULL;
 }
 
-int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length) {
-  
-  int32_t mortal = 0;
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id);
-  
-  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
-  
-  return e;
-}
-
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length) {
-  
-  int32_t mortal = 1;
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(env->runtime, method_address_id);
-  
-  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
-  
-  return e;
-}
-
-int32_t SPVM_API_call_method_raw_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
+int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
   
   int32_t mortal = 0;
   int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
@@ -1596,7 +1574,7 @@ int32_t SPVM_API_call_method_raw_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   return e;
 }
 
-int32_t SPVM_API_call_method_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
   
   int32_t mortal = 1;
   int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
@@ -3233,40 +3211,40 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         SPVM_RUNTIME* runtime = env->runtime;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
         
-        if (basic_type) {
-          // Call destructor
-          if (basic_type->destructor_method_address_id >= 0) {
-            int32_t args_stack_length = 1;
-            SPVM_VALUE save_stack0 = stack[0];
-            void* save_exception = env->get_exception(env, stack);
-            if (save_exception) {
-              env->inc_ref_count(env, stack, save_exception);
-            }
-            
-            stack[0].oval = object;
-            int32_t error = SPVM_API_call_method_raw(env, stack, basic_type->destructor_method_address_id, args_stack_length);
-            
-            // Exception in destructor is changed to warning
-            if (error) {
-              void* exception = env->get_exception(env, stack);
-              const char* exception_chars = env->get_chars(env, stack, exception);
-              fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
-            }
-            
-            // Restore stack and excetpion
-            stack[0] = save_stack0;
-            env->set_exception(env, stack, save_exception);
-            if (save_exception) {
-              env->dec_ref_count(env, stack, save_exception);
-            }
-            
-            assert(object->ref_count > 0);
+        // Call destructor
+        if (basic_type->destructor_method_index >= 0) {
+          int32_t args_stack_length = 1;
+          SPVM_VALUE save_stack0 = stack[0];
+          void* save_exception = env->get_exception(env, stack);
+          if (save_exception) {
+            env->inc_ref_count(env, stack, save_exception);
           }
+          
+          stack[0].oval = object;
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method(env->runtime, object_basic_type_id, basic_type->destructor_method_index);
+          
+          int32_t error = SPVM_API_call_method_raw(env, stack, destructor_method, args_stack_length);
+          
+          // Exception in destructor is changed to warning
+          if (error) {
+            void* exception = env->get_exception(env, stack);
+            const char* exception_chars = env->get_chars(env, stack, exception);
+            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+          }
+          
+          // Restore stack and excetpion
+          stack[0] = save_stack0;
+          env->set_exception(env, stack, save_exception);
+          if (save_exception) {
+            env->dec_ref_count(env, stack, save_exception);
+          }
+          
+          assert(object->ref_count > 0);
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, basic_type->id);
-        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, basic_type->id);
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, object_basic_type_id);
+        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, object_basic_type_id);
         for (int32_t field_address_id = object_fields_base; field_address_id < object_fields_base + object_fields_length; field_address_id++) {
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
           
@@ -4187,10 +4165,11 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t basic_types_length = runtime->basic_types_length;
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
-    int32_t init_method_id = basic_type->init_method_id;
-    if (init_method_id >= 0) {
+    int32_t init_method_index = basic_type->init_method_index;
+    if (init_method_index >= 0) {
+      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method(env->runtime, basic_type_id, init_method_index);
       int32_t items = 0;
-      e = env->call_method_raw(env, stack, init_method_id, items);
+      e = env->call_method_raw(env, stack, init_method, items);
       if (e) { break; }
     }
   }

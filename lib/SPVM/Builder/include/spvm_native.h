@@ -185,7 +185,7 @@ struct spvm_env {
   void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, void* value);
   void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);
   void (*set_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object, void* pointer);
-  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
+  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
   void* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception);
   int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -306,7 +306,7 @@ struct spvm_env {
   double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);
   const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
   void* init_flags;
   const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*isa_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);

@@ -78,10 +78,8 @@ int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 // Call Method
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length, int32_t mortal);
-int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_address_id, int32_t args_stack_length);
-int32_t SPVM_API_call_method_raw_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
-int32_t SPVM_API_call_method_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
+int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
 int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_items(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);

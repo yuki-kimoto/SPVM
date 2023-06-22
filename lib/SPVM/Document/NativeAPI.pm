@@ -1067,9 +1067,9 @@ If you specify a pointer object and a C language pointer, the C language pointer
 
 =head2 call_method_raw
 
-  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
 
-Call a method by specifying the method ID and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
+Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
 The return value of the method is set to stack[0].
 
@@ -2253,9 +2253,9 @@ If the version string in the basic_type is not defined, returns -1.
 
 =head2 call_method
 
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_id, int32_t args_stack_length);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
 
-Call a method by specifying the method ID and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
+Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
 The return value of the method is set to stack[0].
 
