@@ -837,7 +837,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
-    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
     return NULL;
   };
@@ -853,7 +853,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
     *error = 1;
-    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* object = env->new_pointer_object(env, stack, basic_type_id, pointer);
@@ -866,7 +866,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
-    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
     return NULL;
   };
@@ -880,7 +880,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
-    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
     return NULL;
   };
@@ -895,7 +895,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
-    env->die(env, stack, "The %s class is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
     *error = 1;
     return NULL;
   };
@@ -1235,14 +1235,21 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 
 void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
   *error = 0;
+
+  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
+  if (basic_type_id < 0) {
+    env->die(env, stack, "The %s class is not found", basic_type_name, func_name, file, line);
+    *error = 1;
+    return;
+  }
   
-  int32_t id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
-  if (id < 0) {
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  if (!class_var) {
     *error = 1;
     env->die(env, stack, "The %s class variable in the %s class is not found", class_var_name, basic_type_name, func_name, file, line);
     return;
   };
-  env->set_class_var_byte(env, stack, id, value);
+  env->set_class_var_byte_v2(env, stack,  basic_type_id, class_var->index, value);
 }
 
 void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error, const char* func_name, const char* file, int32_t line) {
@@ -4234,7 +4241,7 @@ int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
   if (basic_type_id < 0) {
     *error = 1;
-    env->die(env, stack, "The %s basic type is not loaded", basic_type_name, func_name, file, line);
+    env->die(env, stack, "The %s basic type is not found", basic_type_name, func_name, file, line);
   };
   return basic_type_id;
 }
