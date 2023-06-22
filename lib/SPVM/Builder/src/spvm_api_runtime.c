@@ -740,20 +740,22 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
+  assert(basic_type_id);
+  
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (basic_type->methods_length > 0) {
     // Performe binary searching because methods are sorted by the names
-    int32_t cur_min_index = basic_type->methods_base_address_id;
-    int32_t cur_max_index = cur_min_index + basic_type->methods_length - 1;
+    int32_t cur_min_index = 0;
+    int32_t cur_max_index = basic_type->methods_length - 1;
     
     while (1) {
       if (cur_max_index < cur_min_index) {
         break;
       }
       
-      int32_t cur_half_index = cur_min_index + (cur_max_index - cur_min_index) / 2;
+      int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
       
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_address_id(runtime, cur_half_index);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, cur_half_index);
       const char* cur_half_method_name = SPVM_API_RUNTIME_get_name(runtime, method->name_id);
       
       int32_t cmp_result = strcmp(method_name, cur_half_method_name);
