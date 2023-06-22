@@ -116,7 +116,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_field_offset,
     SPVM_API_get_class_var_id, // Asserted
     SPVM_API_get_class_method,
-    SPVM_API_get_instance_method_id,
+    SPVM_API_get_instance_method,
     SPVM_API_new_object_raw,
     SPVM_API_new_object,
     SPVM_API_new_byte_array_raw,
@@ -314,7 +314,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_muldim_array_by_name,
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
-    SPVM_API_get_instance_method,
+    NULL, // reserved218
     NULL, // reserved219,
     NULL, // reserved220,
     SPVM_API_new_stack_trace_raw,
@@ -3345,51 +3345,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VAL
   }
   
   return method;
-}
-
-int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
-  
-  // Method ID
-  int32_t method_address_id = -1;
-  
-  // Compiler
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (!object) {
-    return -1;
-  }
-  
-  // Basic type
-  int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-  
-  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
-  
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
-  
-  while (1) {
-    if (!parent_basic_type) {
-      break;
-    }
-    
-    // Method
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type->id, method_name);
-    if (method) {
-      // Instance method
-      if (!method->is_class_method) {
-        method_address_id = method->address_id;
-      }
-      break;
-    }
-    
-    if (parent_basic_type->parent_id != -1) {
-      parent_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, parent_basic_type->parent_id);
-    }
-    else {
-      parent_basic_type = NULL;
-    }
-  }
-  
-  return method_address_id;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {

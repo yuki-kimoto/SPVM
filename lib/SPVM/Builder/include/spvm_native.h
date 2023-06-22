@@ -117,7 +117,7 @@ struct spvm_env {
   int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
   int32_t (*get_class_var_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
-  int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
+  void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
   void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   void* (*new_byte_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
@@ -315,7 +315,7 @@ struct spvm_env {
   void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
-  void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
+  void* reserved218;
   void* reserved219;
   void* reserved220;
   void* reserved221;
