@@ -10,7 +10,6 @@
 SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env();
 
 // Private
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_address_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id);
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id);
 
 // Runtime

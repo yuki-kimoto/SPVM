@@ -1151,22 +1151,6 @@ int32_t SPVM_API_RUNTIME_get_class_var_address_id(SPVM_RUNTIME* runtime, SPVM_RU
 }
 
 // Will be removed
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_address_id(SPVM_RUNTIME* runtime, int32_t class_var_address_id) {
-  
-  if (class_var_address_id < 0) {
-    return NULL;
-  }
-  
-  if (class_var_address_id >= runtime->class_vars_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[class_var_address_id];
-  
-  return class_var;
-}
-
-// Will be removed
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
   
   if (field_address_id < 0) {
