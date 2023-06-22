@@ -1600,6 +1600,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     int32_t method_return_type_dimension = method->return_type_dimension;
     int32_t method_return_type_flag = method->return_type_flag;
     
+    int32_t current_basic_type_id = method->current_basic_type_id;
+    SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+    
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);
     int32_t no_need_call = 0;
     if (method->is_init) {
@@ -1699,7 +1702,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         }
         
         // Call native subrotuine
-        int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[method->address_id];
+        int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->method_native_addresses[current_basic_type->methods_base_address_id + method->index];
         assert(native_address != NULL);
         error = (*native_address)(env, stack);
         
@@ -1732,7 +1735,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       }
       else {
         // Call precompiled method
-        void* method_precompile_address = runtime->method_precompile_addresses[method->address_id];
+        void* method_precompile_address = runtime->method_precompile_addresses[current_basic_type->methods_base_address_id + method->index];
         if (method_precompile_address) {
           int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
           error = (*precompile_address)(env, stack);
