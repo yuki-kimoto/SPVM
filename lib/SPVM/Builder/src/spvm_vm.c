@@ -51,21 +51,21 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   
   // Current basic type
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method->current_basic_type_id);
-
+  
   const char* current_basic_type_name =  SPVM_API_RUNTIME_get_name(runtime, current_basic_type->name_id);
-
+  
   // Operation codes
   SPVM_OPCODE* opcodes = runtime->opcodes;
-
+  
   // Error
   int32_t error_id = 0;
-
+  
   // Caught eval error_id
   int32_t eval_error_id = 0;
   
   // Operation code base
   int32_t current_method_opcodes_base_address_id = current_method->opcodes_base_address_id;
-
+  
   // Mortal stack
   int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
@@ -81,13 +81,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   
   // float variables
   float* float_vars = NULL;
-
+  
   // long variables
   int64_t* long_vars = NULL;
-
+  
   // int variables
   int32_t* int_vars = NULL;
-
+  
   // short variables
   int16_t* short_vars = NULL;
   
@@ -2156,8 +2156,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
         
-        SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
-        const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_current_basic_type->name_id, NULL);
+        int32_t method_current_basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, method->current_basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method_current_basic_type_name_id, NULL);
         
         void* object = stack[0].oval;
         SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, basic_type_name, method_name, args_stack_length, &error_id, tmp_buffer, sizeof(tmp_buffer));

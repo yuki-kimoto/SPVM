@@ -1801,7 +1801,7 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
         {
@@ -1871,7 +1871,7 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
@@ -1906,7 +1906,7 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
@@ -1938,11 +1938,11 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
-          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer(runtime, object_basic_type_id);
           
           if (basic_type_is_pointer) {
             is_pointer_class = 1;
@@ -2995,7 +2995,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   // valut_t array dimension must be 1
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type_id);
   
   int32_t fields_length = basic_type->fields_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + 0);
@@ -3084,7 +3084,7 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-  int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id));
+  int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
   const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
   
   assert(basic_type_name);
@@ -3213,7 +3213,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     // Free object
     else {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id));
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
       if (object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
         // Class
         SPVM_RUNTIME* runtime = env->runtime;
@@ -3251,8 +3251,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type->id));
-        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type->id));
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_address_id(runtime, basic_type->id);
+        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, basic_type->id);
         for (int32_t field_address_id = object_fields_base; field_address_id < object_fields_base + object_fields_length; field_address_id++) {
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
           
@@ -3799,82 +3799,161 @@ int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack)
   return memory_blocks_count_stack;
 }
 
-int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
   
-  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval;
-  
-  return value;
-}
-
-int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
-  
-  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval;
+  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval;
   
   return value;
 }
 
-int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
   
-  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival;
-  
-  return value;
-}
-
-int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
-  
-  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval;
+  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval;
   
   return value;
 }
 
-float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
   
-  float value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval;
+  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival;
+  
+  return value;
+}
+
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval;
+  
+  return value;
+}
+
+float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  float value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval;
  
   return value;
 }
 
-double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
   
-  double value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval;
+  double value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval;
   
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
   
-  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
   SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
 }
 
-void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval = value;
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int8_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval = value;
 }
 
-void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int16_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval = value;
+void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int16_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval = value;
 }
 
-void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int32_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival = value;
+void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int32_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival = value;
 }
 
-void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int64_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval = value;
+void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int64_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval = value;
 }
 
-void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, float value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval = value;
+void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, float value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval = value;
 }
 
-void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval = value;
+void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, double value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval = value;
 }
 
-void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, SPVM_OBJECT* value) {
-  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
+void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, SPVM_OBJECT* value) {
+  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+}
+
+int8_t SPVM_API_get_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval;
+  
+  return value;
+}
+
+int16_t SPVM_API_get_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval;
+  
+  return value;
+}
+
+int32_t SPVM_API_get_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival;
+  
+  return value;
+}
+
+int64_t SPVM_API_get_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval;
+  
+  return value;
+}
+
+float SPVM_API_get_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  float value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval;
+ 
+  return value;
+}
+
+double SPVM_API_get_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  double value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval;
+  
+  return value;
+}
+
+SPVM_OBJECT* SPVM_API_get_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+  
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+  SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
+  
+  return value;
+}
+
+void SPVM_API_set_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int8_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval = value;
+}
+
+void SPVM_API_set_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int16_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval = value;
+}
+
+void SPVM_API_set_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int32_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival = value;
+}
+
+void SPVM_API_set_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int64_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval = value;
+}
+
+void SPVM_API_set_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, float value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval = value;
+}
+
+void SPVM_API_set_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, double value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval = value;
+}
+
+void SPVM_API_set_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, SPVM_OBJECT* value) {
+  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
 }
 
@@ -4302,7 +4381,7 @@ double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id){
   
-  int32_t version_string_id = env->api->runtime->get_basic_type_version_string_id(env->runtime, SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id));
+  int32_t version_string_id = env->api->runtime->get_basic_type_version_string_id(env->runtime, basic_type_id);
   
   const char* version_string = NULL;
   if (version_string_id >= 0) {
