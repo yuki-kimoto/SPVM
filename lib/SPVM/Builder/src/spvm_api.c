@@ -3799,161 +3799,161 @@ int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack)
   return memory_blocks_count_stack;
 }
 
-int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval;
-  
-  return value;
-}
-
-int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
-  
-  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval;
+  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval;
   
   return value;
 }
 
-int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival;
-  
-  return value;
-}
-
-int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
-  
-  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval;
+  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval;
   
   return value;
 }
 
-float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  float value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval;
+  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival;
+  
+  return value;
+}
+
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+  
+  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval;
+  
+  return value;
+}
+
+float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+  
+  float value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval;
  
   return value;
 }
 
-double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  double value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval;
+  double value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval;
   
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
   SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
 }
 
-void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int8_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval = value;
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval = value;
 }
 
-void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int16_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval = value;
+void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int16_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval = value;
 }
 
-void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int32_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival = value;
+void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int32_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival = value;
 }
 
-void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int64_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval = value;
+void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int64_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval = value;
 }
 
-void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, float value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval = value;
+void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, float value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval = value;
 }
 
-void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, double value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval = value;
+void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval = value;
 }
 
-void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, SPVM_OBJECT* value) {
-  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, SPVM_OBJECT* value) {
+  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
 }
 
-int8_t SPVM_API_get_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int8_t SPVM_API_get_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval;
-  
-  return value;
-}
-
-int16_t SPVM_API_get_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
-  
-  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval;
+  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval;
   
   return value;
 }
 
-int32_t SPVM_API_get_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int16_t SPVM_API_get_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival;
-  
-  return value;
-}
-
-int64_t SPVM_API_get_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
-  
-  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval;
+  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval;
   
   return value;
 }
 
-float SPVM_API_get_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+int32_t SPVM_API_get_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  float value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval;
+  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival;
+  
+  return value;
+}
+
+int64_t SPVM_API_get_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+  
+  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval;
+  
+  return value;
+}
+
+float SPVM_API_get_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
+  
+  float value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval;
  
   return value;
 }
 
-double SPVM_API_get_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+double SPVM_API_get_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  double value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval;
+  double value = ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval;
   
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id) {
+SPVM_OBJECT* SPVM_API_get_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id) {
   
-  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
   SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
 }
 
-void SPVM_API_set_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int8_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval = value;
+void SPVM_API_set_class_var_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int8_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].bval = value;
 }
 
-void SPVM_API_set_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int16_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval = value;
+void SPVM_API_set_class_var_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int16_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].sval = value;
 }
 
-void SPVM_API_set_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int32_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival = value;
+void SPVM_API_set_class_var_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int32_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].ival = value;
 }
 
-void SPVM_API_set_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, int64_t value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval = value;
+void SPVM_API_set_class_var_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, int64_t value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].lval = value;
 }
 
-void SPVM_API_set_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, float value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval = value;
+void SPVM_API_set_class_var_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, float value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].fval = value;
 }
 
-void SPVM_API_set_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, double value) {
-  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval = value;
+void SPVM_API_set_class_var_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, double value) {
+  ((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].dval = value;
 }
 
-void SPVM_API_set_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t packagke_var_id, SPVM_OBJECT* value) {
-  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
+void SPVM_API_set_class_var_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t class_var_address_id, SPVM_OBJECT* value) {
+  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[class_var_address_id].oval;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
 }
 
