@@ -295,7 +295,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_field_id_static, // Asserted
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
-    SPVM_API_get_method_id,
+    SPVM_API_get_method,
     SPVM_API_strerror_nolen,
     SPVM_API_strerror_string_nolen,
     SPVM_API_get_compile_type_name_raw,
@@ -3302,14 +3302,6 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   int32_t class_var_address_id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
   
   return class_var_address_id;
-}
-
-int32_t SPVM_API_get_method_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
-  
-  return method->address_id;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name) {

@@ -213,7 +213,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   196 get_field_id_static
   197 items
   198 call_instance_method_static_by_name
-  199 get_method_id
+  199 get_method
   200 strerror_nolen
   201 strerror_string_nolen
   202 get_compile_type_name_raw
@@ -2175,17 +2175,17 @@ Examples:
     output = stack[0].ival;
   }
 
-=head2 get_method_id
+=head2 get_method
 
-  int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
 
-Gets a method ID by the basic type name and the method name. If the method does not exists, a negative value is returned.
+Gets a method address by the basic type id and the method name. If the method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
 Examples:
 
-  int32_t method_id = env->get_method_id(env, "Foo", "get");
+  void* method = env->get_method(env, basic_type_id, "get");
 
 =head2 strerror_nolen
 

@@ -88,7 +88,10 @@
       
       -  int32_t (*get_instance_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
       +  void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
-
+      
+      -  int32_t (*get_method_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+      +  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+      
     * The following Native Runtime APIs were changed.
       - void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
       - void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
