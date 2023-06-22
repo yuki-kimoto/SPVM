@@ -3327,18 +3327,6 @@ int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   return object->ref_count;
 }
 
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id) {
-  (void)env;
-  
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Field
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-  
-  return field->offset;
-}
-
 int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
   (void)env;
   
@@ -3659,6 +3647,107 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   // Field
   SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
+  // Get field value
+  void* get_field_object_address = (void**)((intptr_t)object + env->object_header_size + field->offset);
+
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+}
+
+int8_t SPVM_API_get_field_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  int8_t value = *(int8_t*)((intptr_t)object + env->object_header_size + field->offset);
+
+  return value;
+}
+
+int16_t SPVM_API_get_field_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  int16_t value = *(int16_t*)((intptr_t)object + env->object_header_size + field->offset);
+  
+  return value;
+}
+
+int32_t SPVM_API_get_field_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  int32_t value = *(int32_t*)((intptr_t)object + env->object_header_size + field->offset);
+  
+  return value;
+}
+
+int64_t SPVM_API_get_field_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  int64_t value = *(int64_t*)((intptr_t)object + env->object_header_size + field->offset);
+  
+  return value;
+}
+
+float SPVM_API_get_field_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  float value = *(float*)((intptr_t)object + env->object_header_size + field->offset);
+  
+  return value;
+}
+
+double SPVM_API_get_field_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  double value = *(double*)((intptr_t)object + env->object_header_size + field->offset);
+  
+  return value;
+}
+
+SPVM_OBJECT* SPVM_API_get_field_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + env->object_header_size + field->offset);
+  SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
+  
+  return value;
+}
+
+void SPVM_API_set_field_byte_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
+
+  // Get field value
+  *(int8_t*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_short_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int16_t value) {
+
+  // Get field value
+  *(int16_t*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_int_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int32_t value) {
+
+  // Get field value
+  *(int32_t*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_long_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int64_t value) {
+
+  // Get field value
+  *(int64_t*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_float_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, float value) {
+
+  // Get field value
+  *(float*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_double_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, double value) {
+
+  // Get field value
+  *(double*)((intptr_t)object + env->object_header_size + field->offset) = value;
+}
+
+void SPVM_API_set_field_object_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
+
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + env->object_header_size + field->offset);
 
@@ -4410,4 +4499,17 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t bas
   assert(errno == 0);
   
   return version_number;
+}
+
+// Will be removed
+int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id) {
+  (void)env;
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Field
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+  
+  return field->offset;
 }
