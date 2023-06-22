@@ -232,7 +232,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_class_var_name_id
 
-  int32_t (*get_class_var_name_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_class_var_name_id)(void* runtime, void* class_var);
 
 =head2 get_field_address_id_by_index
 
@@ -244,7 +244,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_field_name_id
 
-  int32_t (*get_field_name_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_name_id)(void* runtime, int32_t field_address_id);
 
 =head2 get_method_name_id
 
@@ -406,27 +406,27 @@ Internally used.
 
 =head2 get_field_basic_type_id
 
-  int32_t (*get_field_basic_type_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
 
 =head2 get_field_type_dimension
 
-  int32_t (*get_field_type_dimension)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
 
 =head2 get_field_type_flag
 
-  int32_t (*get_field_type_flag)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
 
-=head2 get_class_var_basic_type_id
+=head2 get_field_basic_type_id
 
-  int32_t (*get_class_var_basic_type_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
 
-=head2 get_class_var_type_dimension
+=head2 get_field_type_dimension
 
-  int32_t (*get_class_var_type_dimension)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
 
-=head2 get_class_var_type_flag
+=head2 get_field_type_flag
 
-  int32_t (*get_class_var_type_flag)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
 
 =head2 get_method_return_basic_type_id
 
@@ -458,11 +458,11 @@ Internally used.
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t field_address_id);
 
-=head2 get_class_var_current_basic_type_id
+=head2 get_field_current_basic_type_id
 
-  int32_t (*get_class_var_current_basic_type_id)(void* runtime, int32_t class_var_address_id);
+  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t field_address_id);
 
 =head2 get_basic_type_parent_id
 
