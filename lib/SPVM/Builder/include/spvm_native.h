@@ -334,6 +334,7 @@ struct spvm_env {
   void (*set_class_var_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, float value);
   void (*set_class_var_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, double value);
   void (*set_class_var_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t class_var_index, void* value);
+  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
 };
 
 struct spvm_env_runtime {

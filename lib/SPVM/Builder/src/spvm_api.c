@@ -333,8 +333,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_set_class_var_float_v2,
     SPVM_API_set_class_var_double_v2,
     SPVM_API_set_class_var_object_v2,
-    SPVM_API_get_method,
-    SPVM_API_get_class_method,
+    SPVM_API_get_class_var,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -3414,6 +3413,13 @@ int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   int32_t class_var_address_id = SPVM_API_RUNTIME_get_class_var_address_id_by_name(env->runtime, basic_type_name, class_var_name);
   
   return class_var_address_id;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name) {
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
+  
+  return class_var;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name) {
