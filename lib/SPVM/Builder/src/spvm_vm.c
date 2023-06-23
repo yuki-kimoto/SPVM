@@ -963,6 +963,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
         SPVM_IMPLEMENT_GET_FIELD_INT(env, stack, &int_vars[opcode->operand0], object, field, &error_id, object_header_size);
+        
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {

@@ -625,24 +625,13 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
   }
 
-  // Replace fields
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-
-    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
-      field->index = field_index;
-      SPVM_HASH_set(basic_type->unmerged_field_symtable, field->name, strlen(field->name), field);
-    }
-  }
-  
   // Resolve fields
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
-    for (int32_t i = 0; i < basic_type->unmerged_fields->length; i++) {
+    for (int32_t i = 0; i < basic_type->fields->length; i++) {
       // Field
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, i);
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
 
       // Create field id
       field->address_id = compiler->fields->length;
