@@ -465,6 +465,7 @@ struct spvm_env_runtime {
   int32_t (*get_class_var_index)(void* runtime, void* class_var);
   int32_t (*get_field_address_id)(void* runtime, void* field);
   int32_t (*get_field_index)(void* runtime, void* field);
+  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 };
 
 struct spvm_env_compiler {

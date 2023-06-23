@@ -330,6 +330,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_set_field_double_v2,
     SPVM_API_set_field_object_v2,
     SPVM_API_get_field,
+    SPVM_API_get_class_var_object_address,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -3772,6 +3773,21 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
+}
+
+SPVM_OBJECT** SPVM_API_get_class_var_object_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, class_var->current_basic_type_id);
+  
+  assert(basic_type);
+  
+  int32_t class_vars_length = basic_type->class_vars_length;
+  
+  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  
+  SPVM_OBJECT** value_address = (SPVM_OBJECT**)&((SPVM_VALUE*)(env->class_vars_heap))[basic_type->class_vars_base_address_id + class_var->index].oval;
+  
+  return value_address;
 }
 
 void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int8_t value) {
