@@ -604,7 +604,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
     for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, basic_type->fields_base_address_id + field_index);
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
       const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
       if (strcmp(field_name_current, field_name) == 0) {
         found_field = field;
