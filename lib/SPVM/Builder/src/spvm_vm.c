@@ -1025,6 +1025,24 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, field_address_id, &error_id, object_header_size);
         break;
       }
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
+        int32_t field_address_id = opcode->operand1;
+        void* object = object_vars[opcode->operand0];
+        SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
+        int32_t field_address_id = opcode->operand1;
+        void* object = object_vars[opcode->operand0];
+        SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
+        int32_t field_address_id = opcode->operand2;
+        void* object = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_address_id, &error_id, object_header_size);
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
         int32_t class_var_current_basic_type_id = opcode->operand1;
         int32_t class_var_index = opcode->operand2;
@@ -1670,24 +1688,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_DOUBLE: {
         int32_t field_index = opcode->operand2;
         SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(ref_vars[opcode->operand0], field_index, double_vars[opcode->operand1]);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t field_address_id = opcode->operand1;
-        void* object = object_vars[opcode->operand0];
-        SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
-        int32_t field_address_id = opcode->operand1;
-        void* object = object_vars[opcode->operand0];
-        SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t field_address_id = opcode->operand2;
-        void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_address_id, &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {

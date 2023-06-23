@@ -2438,6 +2438,102 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
+        int32_t field_address_id = opcode->operand1;
+        
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
+        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
+        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
+        int32_t field_address_id = opcode->operand1;
+        
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
+        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
+        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
+        int32_t field_address_id = opcode->operand2;
+        
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
+        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
+        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
+        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_address_id, &error_id, object_header_size);\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT:
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT:
@@ -3951,102 +4047,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", field_index, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t field_address_id = opcode->operand1;
-        
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
-        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
-        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
-        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
-        int32_t field_address_id = opcode->operand1;
-        
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
-        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
-        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
-        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t field_address_id = opcode->operand2;
-        
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
-        int32_t field_current_basic_type_id = SPVM_API_RUNTIME_get_field_current_basic_type_id(runtime, field);
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
-        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
-        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
-
-        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  field_address_id = ");
-        SPVM_PRECOMPILE_add_field_address_id(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_address_id, &error_id, object_header_size);\n");
-        
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
