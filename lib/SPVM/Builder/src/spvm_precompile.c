@@ -2609,45 +2609,45 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_SHORT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_SHORT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_INT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_INT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_LONG(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_LONG_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT_V2(env, stack, &");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", decl_class_var);\n");
             break;
           }
           default: {
@@ -2697,49 +2697,49 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_INT(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_INT_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_LONG_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, invocant_decl_basic_type_id, decl_class_var_index, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT_V2(env, stack, decl_class_var, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
             SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, invocant_decl_basic_type_id, decl_class_var_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF_V2(env, stack, decl_class_var);\n");
             break;
           }
           default: {
