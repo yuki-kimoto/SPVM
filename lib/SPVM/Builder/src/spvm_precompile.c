@@ -314,6 +314,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_method_index;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
   
@@ -353,6 +354,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     void* class_var = NULL;
     int32_t field_index = -1;
     int32_t method_index = -1;
+    void* method_ = NULL;
     int32_t id_set = 1;
     switch(opcode_id) {
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
@@ -451,6 +453,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         basic_type_id = opcode->operand0;
         method_index = opcode->operand1;
+        method_ = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
         break;
       }
       default: {
@@ -541,6 +544,37 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        }
+      }
+      
+      if (method_) {
+        assert(basic_type_id >= 0);
+        
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_);
+        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, method_name);
+        
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
+          SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_METHOD(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, method_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
                                                 "      goto END_OF_METHOD;\n"
@@ -5051,6 +5085,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
+        SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
         
         break;
@@ -5086,6 +5125,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(decl_method_index >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
+        SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
                                               "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length);\n");
