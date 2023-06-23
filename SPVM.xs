@@ -1048,8 +1048,6 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
           int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
           int32_t basic_type_fields_base_address_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, basic_type_id);
           
-          int32_t mulnum_field_address_id = basic_type_fields_base_address_id;
-          
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
           
           HV* hv_value = (HV*)SvRV(sv_elem);
@@ -1061,8 +1059,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
           }
           
           for (int32_t field_index = 0; field_index < basic_type_fields_length; field_index++) {
-            int32_t mulnum_field_address_id = basic_type_fields_base_address_id + field_index;
-            void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_address_id);
+            void* mulnum_field = env->api->runtime->get_field(runtime, basic_type_id, field_index);
             
             int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
             
