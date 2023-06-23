@@ -809,7 +809,7 @@ void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_
 
   SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
 
-  if (field_access->field) {
+  if (field_access->unmerged_field) {
     return;
   }
 
@@ -840,7 +840,7 @@ void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_
   }
   
   if (found_field) {
-    op_field_access->uv.field_access->field = found_field;
+    op_field_access->uv.field_access->unmerged_field = found_field;
   }
   else {
     SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" basic type or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
@@ -3001,7 +3001,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               return;
             }
             
-            SPVM_FIELD* field = op_cur->uv.field_access->field;
+            SPVM_FIELD* field = op_cur->uv.field_access->unmerged_field;
             
             if (!field) {
               const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
@@ -3033,9 +3033,9 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
 
             SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
             
-            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type)) {
+            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->unmerged_field->current_basic_type, field_access->unmerged_field->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" basic type cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->current_basic_type->name, method->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" basic type cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->unmerged_field->access_control_type), field->name, field->current_basic_type->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -3054,7 +3054,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 op_array_field_access->is_dist = op_cur->is_dist;
 
                 SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
-                array_field_access->field = field;
+                array_field_access->unmerged_field = field;
                 
                 SPVM_OP* op_array = op_array_access->first;
                 SPVM_OP* op_index = op_array_access->last;
@@ -4257,14 +4257,14 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       else {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
-        SPVM_FIELD* field = field_access->field;
+        SPVM_FIELD* field = field_access->unmerged_field;
         type = field->type;
       }
       break;
     }
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
       SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
-      SPVM_FIELD* field = array_field_access->field;
+      SPVM_FIELD* field = array_field_access->unmerged_field;
       type = field->type;
       break;
     }
