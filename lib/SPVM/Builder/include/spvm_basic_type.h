@@ -27,6 +27,7 @@ struct spvm_basic_type {
   SPVM_LIST* unmerged_fields;
   SPVM_HASH* unmerged_field_symtable;
   SPVM_LIST* fields;
+  SPVM_HASH* field_symtable;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
   SPVM_LIST* interfaces;

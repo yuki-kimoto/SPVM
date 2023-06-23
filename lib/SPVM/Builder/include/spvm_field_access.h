@@ -8,7 +8,7 @@
 
 struct spvm_field_access {
   SPVM_OP* op_name;
-  SPVM_FIELD* field;
+  SPVM_FIELD* unmerged_field;
 };
 
 SPVM_FIELD_ACCESS* SPVM_FIELD_ACCESS_new(SPVM_COMPILER* compiler);
