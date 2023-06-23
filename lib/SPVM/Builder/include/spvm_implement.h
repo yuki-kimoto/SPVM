@@ -110,21 +110,6 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_ID_STATIC(SPVM_ENV* env, SPVM_VAL
   return field_address_id;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_CLASS_VAR_INDEX(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, char* message, int32_t* error_id) {
-
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  void* class_var = env->api->runtime->get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
-  
-  if (!class_var) {
-    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
-    void* exception = env->new_string_nolen_raw(env, stack, message);
-    env->set_exception(env, stack, exception);
-    *error_id = 1;
-  }
-  
-  return env->api->runtime->get_class_var_index(env->runtime, class_var);
-}
-
 static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, char* message, int32_t* error_id) {
 
   int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
@@ -153,21 +138,6 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_INDEX(SPVM_ENV* env, SPVM_VALUE* 
   }
   
   return env->api->runtime->get_field_index(env->runtime, field);
-}
-
-static inline int32_t SPVM_IMPLEMENT_GET_METHOD_INDEX(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, char* message, int32_t* error_id) {
-
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type_id, method_name);
-  
-  if (!method) {
-    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], method_name);
-    void* exception = env->new_string_nolen_raw(env, stack, message);
-    env->set_exception(env, stack, exception);
-    *error_id = 1;
-  }
-  
-  return env->api->runtime->get_method_index(env->runtime, method);
 }
 
 static inline void* SPVM_IMPLEMENT_GET_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, char* message, int32_t* error_id) {
