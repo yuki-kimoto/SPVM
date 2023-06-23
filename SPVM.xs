@@ -2045,7 +2045,7 @@ _xs_call_method(...)
             int32_t arg_basic_type_field_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, arg_basic_type_field_first);
             int32_t arg_mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, arg_basic_type_field_first);
             for (int32_t field_index = 0; field_index < arg_basic_type_fields_length; field_index++) {
-              void* mulnum_field = env->api->runtime->get_field(runtime, arg_basic_type_id, 0);
+              void* mulnum_field = env->api->runtime->get_field(runtime, arg_basic_type_id, field_index);
               int32_t mulnum_field_name_id = env->api->runtime->get_field_name_id(env->runtime, mulnum_field);
               const char* mulnum_field_name = env->api->runtime->get_constant_string_value(env->runtime, mulnum_field_name_id, NULL);
               SV* sv_field_value;
