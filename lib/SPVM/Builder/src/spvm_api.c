@@ -4380,9 +4380,12 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
 
 // Will be removed
 int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name) {
-  int32_t field_address_id = SPVM_API_RUNTIME_get_field_address_id_by_name(env->runtime, basic_type_name, field_name);
   
-  return field_address_id;
+  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(env->runtime, basic_type_id, field_name);
+  
+  return field->address_id;
 }
 
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t field_address_id) {
