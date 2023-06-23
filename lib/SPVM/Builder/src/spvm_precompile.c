@@ -400,8 +400,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE:
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT:
       {
-        basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        basic_type_id = opcode->operand2;
+        int32_t field_index = opcode->operand3;
         field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
         assert(field);
         break;
@@ -418,8 +418,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD:
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD:
       {
-        basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        basic_type_id = opcode->operand2;
+        int32_t field_index = opcode->operand3;
         field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
         assert(field);
         break;
@@ -2246,8 +2246,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE:
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT:
       {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type_id, field_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2329,8 +2329,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT:
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF:
       {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type_id, field_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2357,43 +2357,43 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, decl_field, ");
-            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
+            SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
             SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
             break;
           }
@@ -2408,8 +2408,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type_id, field_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2438,8 +2438,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type_id, field_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2468,8 +2468,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type_id, field_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);

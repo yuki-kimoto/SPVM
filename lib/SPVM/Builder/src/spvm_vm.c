@@ -937,8 +937,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -947,8 +947,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -957,8 +957,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -968,8 +968,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -978,8 +978,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -988,8 +988,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -998,8 +998,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         void* object = object_vars[opcode->operand1];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -1008,78 +1008,78 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field, byte_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field, byte_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field, short_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field, short_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field, int_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field, int_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field, long_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field, long_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field, float_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field, float_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field, double_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field, double_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
-        SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field, object_vars[opcode->operand2], &error_id, object_header_size);
+        SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field, object_vars[opcode->operand1], &error_id, object_header_size);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = object_vars[opcode->operand0];
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
         
@@ -1087,8 +1087,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         void* object = object_vars[opcode->operand0];
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
@@ -1097,8 +1097,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         void* object = object_vars[opcode->operand0];
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
@@ -1107,8 +1107,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 & 0xFF;
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
         void* object = object_vars[opcode->operand1];
         
         void* field = env->api->runtime->get_field(env->runtime, field_current_basic_type_id, field_index);
