@@ -3357,7 +3357,7 @@ _xs_new_mulnum_array_from_bin(...)
   
   int32_t mulnum_field_address_id = basic_type_fields_base_address_id;
   
-  int32_t field_length = basic_type_fields_length;
+  int32_t fields_length = basic_type_fields_length;
   
   int32_t field_native_stack_length;
   void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_address_id);
@@ -3392,17 +3392,17 @@ _xs_new_mulnum_array_from_bin(...)
     }
   }
   
-  if (binary_length % (field_native_stack_length * field_length) != 0) {
-    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, field_length, __func__, FILE_NAME, __LINE__);
+  if (binary_length % (field_native_stack_length * fields_length) != 0) {
+    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, fields_length, __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t array_length = binary_length / field_length / field_native_stack_length;
+  int32_t array_length = binary_length / fields_length / field_native_stack_length;
 
   void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, array_length);
 
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
-  int32_t copy_length = field_length * array_length * field_native_stack_length;
+  int32_t copy_length = fields_length * array_length * field_native_stack_length;
   switch (mulnum_field_type_basic_type_id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
       int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
@@ -3861,7 +3861,7 @@ _xs_to_elems(...)
         void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
         
         HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-        int32_t field_length = basic_type_fields_length;
+        int32_t fields_length = basic_type_fields_length;
         for (int32_t field_index = 0; field_index < basic_type_fields_length; field_index++) {
           int32_t mulnum_field_address_id = basic_type_fields_base_address_id + field_index;
           void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_address_id);
@@ -3873,32 +3873,32 @@ _xs_to_elems(...)
           int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
           switch (mulnum_field_type_basic_type_id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-              int8_t field_value = ((int8_t*)elems)[(field_length * index) + field_index];
+              int8_t field_value = ((int8_t*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-              int16_t field_value = ((int16_t*)elems)[(field_length * index) + field_index];
+              int16_t field_value = ((int16_t*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-              int32_t field_value = ((int32_t*)elems)[(field_length * index) + field_index];
+              int32_t field_value = ((int32_t*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-              int64_t field_value = ((int64_t*)elems)[(field_length * index) + field_index];
+              int64_t field_value = ((int64_t*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-              float field_value = ((float*)elems)[(field_length * index) + field_index];
+              float field_value = ((float*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-              double field_value = ((double*)elems)[(field_length * index) + field_index];
+              double field_value = ((double*)elems)[(fields_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
@@ -4065,7 +4065,7 @@ _xs_to_bin(...)
       int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
       int32_t basic_type_fields_base_address_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, basic_type_id);
       
-      int32_t field_length = basic_type_fields_length;
+      int32_t fields_length = basic_type_fields_length;
       
       void* mulnum_field = env->api->runtime->get_field(runtime, basic_type_id, 0);
       int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
@@ -4073,37 +4073,37 @@ _xs_to_bin(...)
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 2));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length * 2));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
           int32_t* elems = env->get_elems_int(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length * 8));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
           float* elems = env->get_elems_float(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 4));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length * 4));
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, stack, spvm_array);
           
-          sv_binary = sv_2mortal(newSVpvn((char*)elems, field_length * length * 8));
+          sv_binary = sv_2mortal(newSVpvn((char*)elems, fields_length * length * 8));
           break;
         }
         default: {
