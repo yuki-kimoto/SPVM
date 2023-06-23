@@ -370,7 +370,7 @@ Examples:
 
 =head2 get_field_offset
 
-  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_id);
+  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
 
 Gets the offset of the field given the field ID. The field ID must be a valid field ID obtained with the field_id function.
 
@@ -729,193 +729,117 @@ Examples:
 
 =head2 get_field_byte
 
-  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
 If an object and field ID are specified, the byte field value will be returned as a C language int8_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int8_t field_value = env->get_field_byte(env, stack, object, field_id);
-
 =head2 get_field_short
 
-  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If you specify the object and field ID, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int16_t field_value = env->get_field_short(env, stack, object, field_id);
+If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_field_int
 
-  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
 If an object and a field ID are specified, the value of the int type field will be returned as a C language int32_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int32_t field_value = env->get_field_int(env, stack, object, field_id);
-
 =head2 get_field_long
 
-  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If you specify the object and field ID, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int64_t field_value = env->get_field_long(env, stack, object, field_id);
+If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_field_float
 
-  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If you specify the object and field ID, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  float field_value = env->get_field_float(env, stack, object, field_id);
+If an object and a field, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_field_double
 
-  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If you specify the object and field ID, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  double field_value = env->get_field_double(env, stack, object, field_id);
+If an object and a field, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_field_object
 
-  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id);
+  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If you specify the object and field ID, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  void* field_value = env->get_field_object(env, stack, object, field_id);
+If an object and a field, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
 
 =head2 set_field_byte
 
-  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int8_t value);
+  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
 
-If an address of a class variable is given, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int8_t field_value = 5;
-  env->set_field_byte(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_short
 
-  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int16_t value);
+  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
 
-If an address of a class variable is given, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int16_t field_value = 5;
-  env->set_field_short(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_int
 
-  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int32_t value);
+  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
 
-If an address of a class variable is given, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int32_t field_value = 5;
-  env->set_field_int(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_long
 
-  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, int64_t value);
+  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
 
-If an address of a class variable is given, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int64_t field_value = 5;
-  env->set_field_long(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_float
 
-  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, float value);
+  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
 
-If an address of a class variable is given, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  float field_value = 1.5f;
-  env->set_field_float(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_double
 
-  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, double value);
+  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
 
-If an address of a class variable is given, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  double field_value = 1.55;
-  env->set_field_double(env, stack, object, field_id, field_value);
+If an object and a field is given, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 set_field_object
 
-  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_id, void* value);
+  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
 
-The object and field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
-
-Examples:
-
-  int32_t field_id = env->get_field_id(env, object, "x");
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
-  void* object = env->new_object(env, stack, basic_type_id);
-  env->set_field_object(env, stack, object, field_id, object);
+An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 =head2 get_class_var_byte
 
   int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If an address of a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
 =head2 get_class_var_short
 
   int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If an address of a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
 =head2 get_class_var_int
 
   int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If an address of a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
 =head2 get_class_var_long
 
   int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If an address of a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
 =head2 get_class_var_float
 
   float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If an address of a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
 
 =head2 get_class_var_double
 
@@ -933,37 +857,37 @@ When an object and a class variable ID are specified, the value of the object ty
 
   void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);
 
-If an address of a class variable is given, the value is set to the byte type class variable.
+If a class variable is given, the value is set to the byte type class variable.
 
 =head2 set_class_var_short
 
   void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);
 
-If an address of a class variable is given, the value is set to the short type class variable.
+If a class variable is given, the value is set to the short type class variable.
 
 =head2 set_class_var_int
 
   void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);
 
-If an address of a class variable is given, the value is set to the int type class variable.
+If a class variable is given, the value is set to the int type class variable.
 
 =head2 set_class_var_long
 
   void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);
 
-If an address of a class variable is given, the value is set to the long type class variable.
+If a class variable is given, the value is set to the long type class variable.
 
 =head2 set_class_var_float
 
   void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);
 
-If an address of a class variable is given, the value is set to the float type class variable.
+If a class variable is given, the value is set to the float type class variable.
 
 =head2 set_class_var_double
 
   void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);
 
-If an address of a class variable is given, the value is set to the double type class variable.
+If a class variable is given, the value is set to the double type class variable.
 
 =head2 set_class_var_object
 
