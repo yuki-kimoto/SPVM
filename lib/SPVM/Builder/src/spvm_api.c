@@ -3346,8 +3346,6 @@ int32_t SPVM_API_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
 
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
   
-  SPVM_RUNTIME_FIELD* field = NULL;
-  
   // Compiler
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -3359,32 +3357,13 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
   
   SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
-
+  
   // Type dimension
   if (object->type_dimension != 0) {
     return NULL;
   }
-
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
   
-  while (1) {
-    if (!parent_basic_type) {
-      break;
-    }
-    
-    // Method
-    field = SPVM_API_RUNTIME_get_field_by_name(runtime, object_basic_type->id, field_name);
-    if (field) {
-      break;
-    }
-    
-    if (parent_basic_type->parent_id != -1) {
-      parent_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, parent_basic_type->parent_id);
-    }
-    else {
-      parent_basic_type = NULL;
-    }
-  }
+  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, object_basic_type->id, field_name);
   
   return field;
 }
