@@ -64,8 +64,8 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_BASIC_TYPE));
   
   // Fields
-  basic_type->fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->unmerged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->unmerged_field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
   // Class variables
   basic_type->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

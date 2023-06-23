@@ -631,7 +631,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(type->basic_type->fields, field);
+        SPVM_LIST_push(type->basic_type->unmerged_fields, field);
         
         // Getter
         if (field->has_getter) {
@@ -763,7 +763,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         for (int32_t i = 0; i < anon_method_fields->length; i++) {
           SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
           
-          SPVM_LIST_push(type->basic_type->fields, anon_method_field);
+          SPVM_LIST_push(type->basic_type->unmerged_fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
         }
         
@@ -779,8 +779,8 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   }
   
   // Field declarations
-  for (int32_t i = 0; i < type->basic_type->fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->fields, i);
+  for (int32_t i = 0; i < type->basic_type->unmerged_fields->length; i++) {
+    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->unmerged_fields, i);
 
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -801,13 +801,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     field->index = i;
     const char* field_name = field->op_name->uv.name;
 
-    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->field_symtable, field_name, strlen(field_name));
+    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" basic type.\n  at %s line %d", field_name, basic_type_name, field->op_field->file, field->op_field->line);
     }
     else {
-      SPVM_HASH_set(type->basic_type->field_symtable, field_name, strlen(field_name), field);
+      SPVM_HASH_set(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
       field->current_basic_type = type->basic_type;
@@ -987,10 +987,10 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     if (type->basic_type->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_module->file, op_module->line);
     }
-    if (type->basic_type->fields->length == 0) {
+    if (type->basic_type->unmerged_fields->length == 0) {
       SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", op_module->file, op_module->line);
     }
-    else if (type->basic_type->fields->length > 255) {
+    else if (type->basic_type->unmerged_fields->length > 255) {
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_module->file, op_module->line);
     }
   }

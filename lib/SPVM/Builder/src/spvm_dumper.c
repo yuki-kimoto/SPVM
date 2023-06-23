@@ -190,7 +190,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     
     // Field information
     fprintf(stderr, "  fields\n");
-    SPVM_LIST* fields = basic_type->fields;
+    SPVM_LIST* fields = basic_type->unmerged_fields;
     {
       int32_t j;
       for (j = 0; j < fields->length; j++) {
@@ -415,7 +415,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       fprintf(stderr, "ref");
     }
     else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
+      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->unmerged_fields, 0);
       assert(first_field);
       
       SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);

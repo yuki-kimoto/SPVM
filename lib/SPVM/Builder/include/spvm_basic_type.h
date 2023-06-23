@@ -24,8 +24,8 @@ struct spvm_basic_type {
   SPVM_TYPE* type;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
-  SPVM_LIST* fields;
-  SPVM_HASH* field_symtable;
+  SPVM_LIST* unmerged_fields;
+  SPVM_HASH* unmerged_field_symtable;
   SPVM_LIST* merged_fields;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
