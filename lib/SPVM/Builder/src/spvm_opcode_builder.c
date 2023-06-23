@@ -1439,32 +1439,39 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       int32_t call_stack_id_out;
                       switch (element_type->basic_type->id) {
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_BYTE);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_SHORT);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_INT);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_LONG);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_FLOAT);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_MULNUM_ARRAY_FIELD_DOUBLE);
                           call_stack_id_out = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_dist);
                           break;
-                        default:
+                        }
+                        default: {
                           assert(0);
+                        }
                       }
                       
                       // Field absolute name symbol
@@ -1591,7 +1598,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         }
-                        // Value field access
+                        // Mulnum field access
                         else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                           SPVM_OPCODE opcode = {0};
                           
