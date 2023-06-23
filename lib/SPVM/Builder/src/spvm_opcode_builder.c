@@ -1433,7 +1433,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       
                       // Call field
                       SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
-                      SPVM_FIELD* field = array_field_access->unmerged_field;
+                      
+                      SPVM_FIELD* unmerged_field = array_field_access->unmerged_field;
+                      SPVM_FIELD* field = SPVM_HASH_get(unmerged_field->current_basic_type->field_symtable, unmerged_field->name, strlen(unmerged_field->name));
                       
                       // Array type
                       SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_array_field_access->first);
