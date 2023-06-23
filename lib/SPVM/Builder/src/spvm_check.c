@@ -3512,7 +3512,7 @@ void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_B
                 call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_ref_vars, var_decl);
               }
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->unmerged_fields, 0);
+                SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->merged_fields, 0);
                 assert(first_field);
                 
                 SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
