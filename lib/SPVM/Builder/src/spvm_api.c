@@ -3394,8 +3394,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack,
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   
   if (method) {
-    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, method);
-    if (!is_class_method) {
+    if (!method->is_class_method) {
       return NULL;
     }
   }
@@ -3408,8 +3407,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VAL
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   
   if (method) {
-    int32_t is_class_method = SPVM_API_RUNTIME_get_method_is_class_method(env->runtime, method);
-    if (is_class_method) {
+    if (method->is_class_method) {
       return NULL;
     }
   }

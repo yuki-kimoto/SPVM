@@ -187,7 +187,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
               }
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
               {
-                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_basic_type->unmerged_fields, 0);
+                SPVM_FIELD* arg_mulnum_field = SPVM_LIST_get(arg_basic_type->merged_fields, 0);
                 SPVM_TYPE* arg_mulnum_field_type = arg_mulnum_field->type;
                 SPVM_BASIC_TYPE* arg_mulnum_field_basic_type = arg_mulnum_field_type->basic_type;
                 
@@ -752,7 +752,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_cur->first);
                     }
                     else if (SPVM_TYPE_is_mulnum_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-                      SPVM_FIELD* first_field = SPVM_LIST_get(return_type->basic_type->unmerged_fields, 0);
+                      SPVM_FIELD* first_field = SPVM_LIST_get(return_type->basic_type->merged_fields, 0);
                       assert(first_field);
                       
                       SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -861,7 +861,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->var_decl->is_arg) {
                     // Multi numeric type
                     if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->unmerged_fields, 0);
+                      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->merged_fields, 0);
                       assert(first_field);
                       
                       SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -907,7 +907,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
-                      int32_t fields_length = type->basic_type->unmerged_fields->length;
+                      int32_t fields_length = type->basic_type->merged_fields->length;
                       
                       opcode.operand0 = call_stack_id_out;
                       opcode.operand2 = fields_length;
@@ -1154,7 +1154,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
                             else if (SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
 
-                              SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->unmerged_fields, 0);
+                              SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->merged_fields, 0);
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -1196,7 +1196,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   assert(0);
                               }
                               
-                              int32_t fields_length = arg_type->basic_type->unmerged_fields->length;
+                              int32_t fields_length = arg_type->basic_type->merged_fields->length;
                               opcode.operand0 = call_stack_id_arg;
                               opcode.operand1 = fields_length;
                               
@@ -1336,7 +1336,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         // Multi numeric type
                         else if (SPVM_TYPE_is_mulnum_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
 
-                          SPVM_FIELD* first_field = SPVM_LIST_get(call_method_return_type->basic_type->unmerged_fields, 0);
+                          SPVM_FIELD* first_field = SPVM_LIST_get(call_method_return_type->basic_type->merged_fields, 0);
                           assert(first_field);
                           
                           SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -1485,7 +1485,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
                       int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
                       
-                      int32_t fields_length = array_basic_type->unmerged_fields->length;
+                      int32_t fields_length = array_basic_type->merged_fields->length;
                       int32_t field_offset = field->index;
 
                       opcode.operand0 = call_stack_id_out;
@@ -1737,7 +1737,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_term_array);
 
                       if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                        SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->unmerged_fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->merged_fields, 0);
                         
                         SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
                         
@@ -1782,7 +1782,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         int32_t call_stack_id_array = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_array);
                         int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
-                        int32_t fields_length = array_type->basic_type->unmerged_fields->length;
+                        int32_t fields_length = array_type->basic_type->merged_fields->length;
 
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_array;
@@ -1918,7 +1918,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_assign_src);
                       
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->unmerged_fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->merged_fields, 0);
                       
                         SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
 
@@ -1956,7 +1956,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
 
                         int32_t call_stack_id_in = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_assign_src);
-                        int32_t fields_length = src_type->basic_type->unmerged_fields->length;
+                        int32_t fields_length = src_type->basic_type->merged_fields->length;
                         
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_in;
@@ -2030,7 +2030,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                         
-                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->unmerged_fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(src_type->basic_type->merged_fields, 0);
                         assert(first_field);
                         
                         SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -3516,7 +3516,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       // Multi numeric type
                       if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                         
-                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->unmerged_fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->merged_fields, 0);
                         assert(first_field);
                         
                         SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -3568,7 +3568,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                         }
 
-                        int32_t fields_length = type_dist->basic_type->unmerged_fields->length;
+                        int32_t fields_length = type_dist->basic_type->merged_fields->length;
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_in;
                         opcode.operand2 = fields_length;
@@ -4374,7 +4374,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
                       else if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
-                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->unmerged_fields, 0);
+                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->merged_fields, 0);
                         assert(first_field);
                         
                         SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
@@ -4427,7 +4427,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                         }
 
-                        int32_t fields_length = type_dist->basic_type->unmerged_fields->length;
+                        int32_t fields_length = type_dist->basic_type->merged_fields->length;
                         opcode.operand0 = call_stack_id_out;
                         opcode.operand1 = call_stack_id_in;
                         opcode.operand2 = fields_length;
@@ -4622,7 +4622,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                     }
                   }
                   else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                    SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->unmerged_fields, 0);
+                    SPVM_FIELD* first_field = SPVM_LIST_get(array_type->basic_type->merged_fields, 0);
                   
                     SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
 
@@ -4661,7 +4661,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                     int32_t call_stack_id_array = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_array);
                     int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
-                    int32_t fields_length = array_type->basic_type->unmerged_fields->length;
+                    int32_t fields_length = array_type->basic_type->merged_fields->length;
                     
                     opcode.operand0 = call_stack_id_array;
                     opcode.operand1 = call_stack_id_index;
@@ -5001,7 +5001,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                   int32_t call_stack_id_invocant = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_invocant);
                   int32_t call_stack_id_index = SPVM_OPCODE_BUILDER_get_call_stack_id(compiler, op_term_index);
 
-                  int32_t fields_length = array_basic_type->unmerged_fields->length;
+                  int32_t fields_length = array_basic_type->merged_fields->length;
                   int32_t field_offset = field->index;
                   
                   opcode.operand0 = call_stack_id_invocant;
