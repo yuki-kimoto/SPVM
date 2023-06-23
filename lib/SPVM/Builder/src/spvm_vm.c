@@ -1163,13 +1163,19 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
         int32_t class_var_current_basic_type_id = opcode->operand0;
         int32_t class_var_index = opcode->operand1;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var_current_basic_type_id, class_var_index, object_vars[opcode->operand2]);
+        
+        void* class_var = env->api->runtime->get_class_var(env->runtime, class_var_current_basic_type_id, class_var_index);
+        
+        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT_V2(env, stack, class_var, object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
         int32_t class_var_current_basic_type_id = opcode->operand0;
         int32_t class_var_index = opcode->operand1;
-        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var_current_basic_type_id, class_var_index);
+        
+        void* class_var = env->api->runtime->get_class_var(env->runtime, class_var_current_basic_type_id, class_var_index);
+        
+        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF_V2(env, stack, class_var);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
