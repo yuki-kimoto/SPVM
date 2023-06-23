@@ -1514,6 +1514,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand0 = call_stack_id_invocant;
                         opcode.operand1 = op_assign_src->uv.field_access->field->address_id;
+                        opcode.operand3 = op_assign_src->uv.field_access->field->index + (op_assign_src->uv.field_access->field->current_basic_type->id << 8);
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
@@ -1529,6 +1530,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand0 = call_stack_id_invocant;
                         opcode.operand1 = op_assign_src->uv.field_access->field->address_id;
+                        opcode.operand3 = op_assign_src->uv.field_access->field->index + (op_assign_src->uv.field_access->field->current_basic_type->id << 8);
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
@@ -1544,6 +1546,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         opcode.operand1 = call_stack_id_invocant;
                         opcode.operand2 = op_assign_src->uv.field_access->field->address_id;
+                        opcode.operand3 = op_assign_src->uv.field_access->field->index + (op_assign_src->uv.field_access->field->current_basic_type->id << 8);
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                         SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_array, eval_block_stack_goto_opcode_rel_index->length, unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, method->op_method, op_assign_src->line);
