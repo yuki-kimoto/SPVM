@@ -2305,7 +2305,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_DOUBLE(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", objec, decl_field, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
