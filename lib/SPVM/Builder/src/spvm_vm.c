@@ -1101,7 +1101,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t class_var_current_basic_type_id = opcode->operand1;
         int32_t class_var_index = opcode->operand2;
         
-        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &object_vars[opcode->operand0], class_var_current_basic_type_id, class_var_index);
+        void* class_var = env->api->runtime->get_class_var(env->runtime, class_var_current_basic_type_id, class_var_index);
+        
+        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT_V2(env, stack, &object_vars[opcode->operand0], class_var);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
