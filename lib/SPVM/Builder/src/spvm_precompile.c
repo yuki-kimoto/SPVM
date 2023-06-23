@@ -5239,8 +5239,8 @@ void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
-  SPVM_STRING_BUFFER_add(string_buffer, "field_index");
+void SPVM_PRECOMPILE_add_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "field");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(basic_type_name));
@@ -5261,9 +5261,24 @@ void SPVM_PRECOMPILE_add_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER*
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
+int32_t SPVM_PRECOMPILE_contains_class_var(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* class_var_name) {
+  
+  const char* label = "class_var";
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, class_var_name);
+  
+  return found;
+}
+
+int32_t SPVM_PRECOMPILE_contains_field(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
+  
+  const char* label = "field";
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
+  
+  return found;
+}
+
 int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name) {
   
-  // method__BASIC_TYPE_NAME__METHOD_NAME__
   const char* label = "method";
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, method_name);
   
@@ -5272,7 +5287,6 @@ int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char*
 
 int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name) {
   
-  // basic_type_id__BASIC_TYPE_NAME__
   const char* label = "basic_type_id";
   
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, NULL);
@@ -5282,26 +5296,7 @@ int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, cons
 
 int32_t SPVM_PRECOMPILE_contains_field_address_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
   
-  // field_address_id__BASIC_TYPE_NAME__FIELD_NAME__
   const char* label = "field_address_id";
-  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
-  
-  return found;
-}
-
-int32_t SPVM_PRECOMPILE_contains_class_var(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* class_var_name) {
-  
-  // class_var__BASIC_TYPE_NAME__METHOD_NAME__
-  const char* label = "class_var";
-  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, class_var_name);
-  
-  return found;
-}
-
-int32_t SPVM_PRECOMPILE_contains_field_index(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
-  
-  // field_address_id__BASIC_TYPE_NAME__METHOD_NAME__
-  const char* label = "field_index";
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
   
   return found;
