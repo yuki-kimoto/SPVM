@@ -133,7 +133,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved33,
     SPVM_API_RUNTIME_get_class_var_name_id,
     NULL, // reserved35
-    SPVM_API_RUNTIME_get_field_address_id_by_index,
+    NULL, // reserved36,
     SPVM_API_RUNTIME_get_field_address_id_by_name,
     SPVM_API_RUNTIME_get_field_name_id,
     NULL, // reserved39
@@ -1125,22 +1125,6 @@ int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIM
   int32_t address_id = field->address_id;
   
   return address_id;
-}
-
-// Will be removed
-int32_t SPVM_API_RUNTIME_get_field_address_id_by_index(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t field_index) {
-  
-  int32_t field_address_id = -1;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  if (basic_type) {
-    if (field_index >= 0 && field_index < basic_type->fields_length) {
-      field_address_id = basic_type->fields_base_address_id + field_index;
-    }
-  }
-  
-  return field_address_id;
 }
 
 // Will be removed

@@ -1,3 +1,9 @@
+0.989011 2023-06-23
+  [Incompatibe Changes]
+    * The following Native Runtime APIs were removed.
+    
+      int32_t (*get_field_address_id_by_index)(void* runtime, int32_t basic_type_id, int32_t field_index);
+    
 0.989010 2023-06-22
   [New Features]
     * The following Native Runtime APIs were added.
