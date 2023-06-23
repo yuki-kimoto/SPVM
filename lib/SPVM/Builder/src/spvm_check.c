@@ -470,6 +470,11 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
     }
     
+    if (!(merged_fields->length <= 65535)) {
+      SPVM_COMPILER_error(compiler, "The length of the merged fields in the \"%s\" class must be lower than 65535.\n  at %s line %d", basic_type->op_module->file, basic_type->op_module->line);
+      return;
+    }
+    
     basic_type->fields = merged_fields;
     
     // Add parent interfaces
