@@ -478,6 +478,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
       field->index = field_index;
+      SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
     }
     
     basic_type->fields = merged_fields;
