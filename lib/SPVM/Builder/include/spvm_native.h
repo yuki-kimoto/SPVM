@@ -331,6 +331,7 @@ struct spvm_env {
   void (*set_field_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
   void* (*get_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
   void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+  int32_t (*get_field_offset_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
 };
 
 struct spvm_env_runtime {

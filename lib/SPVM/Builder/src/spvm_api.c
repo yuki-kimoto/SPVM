@@ -331,6 +331,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_set_field_object_v2,
     SPVM_API_get_field,
     SPVM_API_get_class_var_object_address,
+    SPVM_API_get_field_offset_v2,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4576,5 +4577,9 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, int32_t fiel
   // Field
   SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
   
+  return field->offset;
+}
+
+int32_t SPVM_API_get_field_offset_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_FIELD* field) {
   return field->offset;
 }
