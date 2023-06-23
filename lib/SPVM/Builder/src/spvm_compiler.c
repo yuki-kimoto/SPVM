@@ -788,8 +788,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // fields
   int32_t* field_32bit_ptr = runtime_codes_ptr;
-  for (int32_t field_id = 0; field_id < compiler->fields->length; field_id++) {
-    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_id);
+  for (int32_t field_address_id = 0; field_address_id < compiler->fields->length; field_address_id++) {
+    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_address_id);
     SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
     
     runtime_field->address_id = field->address_id;

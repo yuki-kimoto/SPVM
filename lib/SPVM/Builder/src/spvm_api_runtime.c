@@ -217,7 +217,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type,
     SPVM_API_RUNTIME_get_field,
     SPVM_API_RUNTIME_get_method,
-    SPVM_API_RUNTIME_get_field_by_address_id,
+    NULL, // reserved120,
     NULL, // reserved121
     SPVM_API_RUNTIME_get_class_var_by_name,
     SPVM_API_RUNTIME_get_field_by_name,
@@ -227,7 +227,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_index,
     NULL, // reserved128,
     SPVM_API_RUNTIME_get_class_var_index,
-    SPVM_API_RUNTIME_get_field_address_id,
     SPVM_API_RUNTIME_get_field_index,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
@@ -1103,31 +1102,6 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_ty
   return isa;
 }
 
-// Will be removed
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_address_id(SPVM_RUNTIME* runtime, int32_t field_address_id) {
-  
-  if (field_address_id < 0) {
-    return NULL;
-  }
-  
-  if (field_address_id >= runtime->fields_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[field_address_id];
-  
-  return field;
-}
-
-// Will be removed
-int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
-  
-  int32_t address_id = field->address_id;
-  
-  return address_id;
-}
-
-// Will be removed
 int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   int32_t basic_type_id = basic_type->id;
   

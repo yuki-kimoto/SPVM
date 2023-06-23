@@ -114,7 +114,7 @@ struct spvm_env {
   void* runtime;
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   int32_t (*get_field_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
-  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
+  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
   void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
@@ -155,20 +155,20 @@ struct spvm_env {
   double* (*get_elems_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   void* (*get_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
   void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* object);
-  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
-  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, int8_t value);
-  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, int16_t value);
-  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, int32_t value);
-  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, int64_t value);
-  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, float value);
-  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, double value);
-  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id, void* value);
+  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
+  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
+  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
+  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
+  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
+  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
+  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
   int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
   int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
   int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
@@ -315,23 +315,8 @@ struct spvm_env {
   void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error, const char* func_name, const char* file, int32_t line);
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
-  int8_t (*get_field_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  int16_t (*get_field_short_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  int32_t (*get_field_int_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  int64_t (*get_field_long_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  float (*get_field_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  double (*get_field_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  void* (*get_field_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-  void (*set_field_byte_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
-  void (*set_field_short_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
-  void (*set_field_int_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
-  void (*set_field_long_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
-  void (*set_field_float_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
-  void (*set_field_double_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
-  void (*set_field_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
   void* (*get_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
   void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-  int32_t (*get_field_offset_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
 };
 
 struct spvm_env_runtime {
@@ -465,7 +450,6 @@ struct spvm_env_runtime {
   int32_t (*get_method_index)(void* runtime, void* method);
   void* reserved128;
   int32_t (*get_class_var_index)(void* runtime, void* class_var);
-  int32_t (*get_field_address_id)(void* runtime, void* field);
   int32_t (*get_field_index)(void* runtime, void* field);
 };
 
