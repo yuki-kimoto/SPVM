@@ -2677,6 +2677,10 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 
 #define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, invocant_decl_basic_type_id, decl_method_index, args_stack_length) (error_id = env->call_method_raw(env, stack, env->api->runtime->get_method(env->runtime, invocant_decl_basic_type_id, decl_method_index), args_stack_length))
 
+#define SPVM_IMPLEMENT_CALL_CLASS_METHOD_V2(env, stack, error_id, method, args_stack_length) (error_id = env->call_method_raw(env, stack, method, args_stack_length))
+
+#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC_V2(env, stack, error_id, method, args_stack_length) (error_id = env->call_method_raw(env, stack, method, args_stack_length))
+
 static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* interface_name, const char* method_name, int32_t args_stack_length, int32_t* error_id, char* tmp_buffer, int32_t tmp_buffer_length) {
   
   *error_id = 0;
