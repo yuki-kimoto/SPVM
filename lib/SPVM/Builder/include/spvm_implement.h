@@ -1421,6 +1421,20 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, basic_type_id, class_var_index) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)&((SPVM_VALUE*)env->class_vars_heap)[env->api->runtime->get_basic_type_class_vars_base_address_id(env->runtime, basic_type_id) + class_var_index], NULL))
 
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_BYTE_V2(env, stack, out, class_var) (out = env->get_class_var_byte(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_SHORT_V2(env, stack, out, class_var) (out = env->get_class_var_short(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_INT_V2(env, stack, out, class_var) (out = env->get_class_var_int(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_LONG_V2(env, stack, out, class_var) (out = env->get_class_var_long(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT_V2(env, stack, out, class_var) (out = env->get_class_var_float(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE_V2(env, stack, out, class_var) (out = env->get_class_var_double(env, stack, class_var))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT_V2(env, stack, out, class_var) (out = env->get_class_var_object(env, stack, class_var))
+
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE_V2(env, stack, class_var, in) (env->set_class_var_byte(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT_V2(env, stack, class_var, in) (env->set_class_var_short(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_INT_V2(env, stack, class_var, in) (env->set_class_var_int(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_LONG_V2(env, stack, class_var, in) (env->set_class_var_long(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT_V2(env, stack, class_var, in) (env->set_class_var_float(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE_V2(env, stack, class_var, in) (env->set_class_var_double(env, stack, class_var, in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT_V2(env, stack, class_var, in) (env->set_class_var_object(env, stack, class_var, in))
 
 #define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack)))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
