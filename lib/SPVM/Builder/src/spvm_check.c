@@ -431,14 +431,13 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     for (int32_t basic_type_id = basic_type_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_stack, basic_type_id);
       
-      // All fields
       SPVM_LIST* fields = basic_type->unmerged_fields;
       int32_t field_index = 0;
       int32_t fields_length = fields->length;
       for (int32_t field_index = 0; field_index < fields_length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
 
-        SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_field(compiler, basic_type->parent, field->name);
+        SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
         if (found_field_in_super_class) {
           SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" basic type.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
           compile_error = 1;
@@ -3674,7 +3673,7 @@ SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
   return found_method;
 }
 
-SPVM_FIELD* SPVM_CHECK_search_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
+SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
   SPVM_FIELD* found_field = NULL;
   
   if (basic_type) {
