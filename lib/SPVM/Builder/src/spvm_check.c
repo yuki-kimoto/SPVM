@@ -470,7 +470,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
     }
     
-    basic_type->merged_fields = merged_fields;
+    basic_type->fields = merged_fields;
     
     // Add parent interfaces
     basic_type->interfaces = merged_interfaces;
@@ -856,8 +856,8 @@ void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* b
   int32_t offset_size;
   
   // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < basic_type->merged_fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, merged_field_index);
+  for (int32_t merged_field_index = 0; merged_field_index < basic_type->fields->length; merged_field_index++) {
+    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->fields, merged_field_index);
     SPVM_TYPE* merged_field_type = merged_field->type;
     
     int32_t next_offset;
@@ -3512,7 +3512,7 @@ void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_B
                 call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_ref_vars, var_decl);
               }
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->merged_fields, 0);
+                SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                 assert(first_field);
                 
                 SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);

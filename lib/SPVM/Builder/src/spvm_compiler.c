@@ -717,9 +717,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->methods_base_address_id = -1;
     }
     
-    runtime_basic_type->fields_length = basic_type->merged_fields->length;
-    if (basic_type->merged_fields->length > 0) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->merged_fields, 0);
+    runtime_basic_type->fields_length = basic_type->fields->length;
+    if (basic_type->fields->length > 0) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
       runtime_basic_type->fields_base_address_id = field->address_id;
     }
     else {
