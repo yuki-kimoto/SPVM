@@ -426,7 +426,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
     
     SPVM_BASIC_TYPE* cur_basic_type = basic_type;
-    int32_t merged_fields_original_offset_set = 0;
     int32_t merged_fields_index = 0;
     for (int32_t basic_type_id = basic_type_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_stack, basic_type_id);
@@ -447,10 +446,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         SPVM_FIELD* new_field;
         if (strcmp(field->current_basic_type->name, cur_basic_type->name) == 0) {
           new_field = field;
-          if (!merged_fields_original_offset_set) {
-            basic_type->merged_fields_original_offset = merged_fields_index;
-            merged_fields_original_offset_set = 1;
-          }
         }
         // Clone field
         else {
@@ -910,14 +905,6 @@ void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* b
   }
 
   basic_type->fields_size = offset;
-  
-  int32_t merged_fields_original_offset = basic_type->merged_fields_original_offset;
-  for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->merged_fields, field_index + merged_fields_original_offset);
-    SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
-    
-    field->offset = merged_field->offset;
-  }
 }
 
 void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
