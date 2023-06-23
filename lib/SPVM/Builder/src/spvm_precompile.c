@@ -313,8 +313,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
@@ -351,6 +352,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     int32_t basic_type_id = -1;
     int32_t field_address_id = -1;
     void* class_var = NULL;
+    void* field = NULL;
     void* method = NULL;
     int32_t id_set = 1;
     switch(opcode_id) {
@@ -401,6 +403,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT:
       {
         field_address_id = opcode->operand2;
+        basic_type_id = opcode->operand3 >> 8;
+        int32_t field_index = opcode->operand3 & 0xFF;
+        field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
+        assert(field);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE:
@@ -416,6 +422,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD:
       {
         field_address_id = opcode->operand1;
+        basic_type_id = opcode->operand3 >> 8;
+        int32_t field_index = opcode->operand3 & 0xFF;
+        field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
+        assert(field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
@@ -486,6 +496,37 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
       }
       
+      if (class_var) {
+        assert(basic_type_id >= 0);
+        
+        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
+        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
+        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
+        int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
+        
+        if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
+          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        }
+      }
+      
       if (field_address_id >= 0) {
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         
@@ -518,29 +559,29 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
       }
       
-      if (class_var) {
+      if (field) {
         assert(basic_type_id >= 0);
         
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
+        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
+        int32_t found = SPVM_PRECOMPILE_contains_field(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, field_name);
         
         if (!found) {
           SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
-          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
-          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(env, stack, \"");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(env, stack, \"");
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
+          SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
                                                 "      goto END_OF_METHOD;\n"
@@ -2243,7 +2284,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t field_address_id = opcode->operand2;
         int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 && 0xFF;
+        int32_t field_index = opcode->operand3 & 0xFF;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2268,6 +2309,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
@@ -2329,7 +2374,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t field_address_id = opcode->operand1;
         int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 && 0xFF;
+        int32_t field_index = opcode->operand3 & 0xFF;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2354,6 +2399,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
@@ -2411,7 +2460,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_address_id = opcode->operand1;
         int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 && 0xFF;
+        int32_t field_index = opcode->operand3 & 0xFF;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2436,6 +2485,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
         
@@ -2444,7 +2497,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_address_id = opcode->operand1;
         int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 && 0xFF;
+        int32_t field_index = opcode->operand3 & 0xFF;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2470,6 +2523,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_address_id, &error_id, object_header_size);\n");
         
         break;
@@ -2477,7 +2534,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_address_id = opcode->operand2;
         int32_t field_current_basic_type_id = opcode->operand3 >> 8;
-        int32_t field_index = opcode->operand3 && 0xFF;
+        int32_t field_index = opcode->operand3 & 0xFF;
         
         SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_address_id(runtime, field_address_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, field_current_basic_type_id);
@@ -2502,6 +2559,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(field_address_id >= 0);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_address_id, &error_id, object_header_size);\n");
         
