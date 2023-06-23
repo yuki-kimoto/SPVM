@@ -559,7 +559,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t found = SPVM_PRECOMPILE_contains_class_var_index(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
+        int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
         
         if (!found) {
           SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
@@ -5442,14 +5442,8 @@ int32_t SPVM_PRECOMPILE_contains_access_id(SPVM_PRECOMPILE* precompile, const ch
   
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, name_abs);
   
-  int32_t found = 0;
   const char* found_ptr = strstr(string, name_abs);
-  if (found_ptr) {
-    char after_ch = *(found_ptr + length);
-    if (!(after_ch >= 'A' && after_ch <= 'Z')) {
-      found = 1;
-    }
-  }
+  int32_t found = !!found_ptr;
   
   SPVM_ALLOCATOR_free_memory_block_unmanaged(name_abs);
   
