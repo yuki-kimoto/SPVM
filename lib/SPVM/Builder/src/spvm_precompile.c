@@ -5294,6 +5294,26 @@ void SPVM_PRECOMPILE_add_method_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_B
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
+void SPVM_PRECOMPILE_add_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "method");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, method_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(method_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
+int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name) {
+  
+  // method__BASIC_TYPE_NAME__METHOD_NAME__
+  const char* label = "method";
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, method_name);
+  
+  return found;
+}
+
 int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name) {
   
   // basic_type_id__BASIC_TYPE_NAME__

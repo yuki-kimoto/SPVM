@@ -100,6 +100,8 @@ int32_t SPVM_PRECOMPILE_contains_field_index(SPVM_PRECOMPILE* precompile, const 
 
 int32_t SPVM_PRECOMPILE_contains_method_index(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name);
 
+int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name);
+
 void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
 
 void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
@@ -111,5 +113,7 @@ void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFF
 void SPVM_PRECOMPILE_add_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
 void SPVM_PRECOMPILE_add_method_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
+
+void SPVM_PRECOMPILE_add_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
 
 #endif
