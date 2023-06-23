@@ -352,7 +352,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     int32_t field_address_id = -1;
     void* class_var = NULL;
     int32_t field_index = -1;
-    void* method_ = NULL;
+    void* method = NULL;
     int32_t id_set = 1;
     switch(opcode_id) {
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECKING: {
@@ -451,7 +451,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         basic_type_id = opcode->operand0;
         int32_t method_index = opcode->operand1;
-        method_ = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
+        method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
         break;
       }
       default: {
@@ -550,10 +550,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
       }
       
-      if (method_) {
+      if (method) {
         assert(basic_type_id >= 0);
         
-        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method_);
+        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, method);
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
