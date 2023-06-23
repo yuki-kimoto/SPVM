@@ -71,7 +71,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
 
 int32_t SPVM_API_RUNTIME_get_field_address_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field);
 int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field);
-int32_t SPVM_API_RUNTIME_get_field_address_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name, const char* field_name);
 int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field);
 int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field);
 int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) ;
