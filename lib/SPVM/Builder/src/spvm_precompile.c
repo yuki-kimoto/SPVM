@@ -2316,45 +2316,45 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_BYTE_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_SHORT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_SHORT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_INT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_INT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_LONG(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_LONG_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_FLOAT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_FLOAT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_DOUBLE(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_DOUBLE_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", objec, decl_field, &error_id, object_header_size);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_OBJECT(env, stack, ");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_OBJECT_V2(env, stack, ");
             SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-            SPVM_STRING_BUFFER_add(string_buffer, ", object, field_address_id, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field, &error_id, object_header_size);\n");
             break;
           }
           default: {
