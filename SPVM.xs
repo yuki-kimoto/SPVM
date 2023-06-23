@@ -4065,11 +4065,9 @@ _xs_to_bin(...)
       int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
       int32_t basic_type_fields_base_address_id = env->api->runtime->get_basic_type_fields_base_address_id(env->runtime, basic_type_id);
       
-      int32_t mulnum_field_address_id = basic_type_fields_base_address_id;
-      
       int32_t field_length = basic_type_fields_length;
       
-      void* mulnum_field = env->api->runtime->get_field_by_address_id(runtime, mulnum_field_address_id);
+      void* mulnum_field = env->api->runtime->get_field(runtime, basic_type_id, 0);
       int32_t mulnum_field_type_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
       switch (mulnum_field_type_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
