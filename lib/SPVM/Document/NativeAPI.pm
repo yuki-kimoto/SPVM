@@ -31,7 +31,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    14 runtime
    15 get_basic_type_id
    16 get_field
-   17 get_field_offset
+   17 reserved17
    18 get_class_var
    19 get_class_method
    20 get_instance_method
@@ -367,12 +367,6 @@ Returns a field given an object and field name. If the field does not exist, ret
 Examples:
 
   void* field = env->get_field(env, object, "x");
-
-=head2 get_field_offset
-
-  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
-
-Gets the offset of the field given the field ID. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_class_var
 

@@ -228,6 +228,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved128,
     SPVM_API_RUNTIME_get_class_var_index,
     SPVM_API_RUNTIME_get_field_index,
+    SPVM_API_RUNTIME_get_field_offset,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -615,11 +616,18 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   return found_field;
 }
 
-int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* field) {
+int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t index = field->index;
   
   return index;
+}
+
+int32_t SPVM_API_RUNTIME_get_field_offset(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
+  
+  int32_t offset = field->offset;
+  
+  return offset;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_name_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {

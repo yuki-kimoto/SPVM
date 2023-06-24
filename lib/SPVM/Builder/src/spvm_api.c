@@ -114,7 +114,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     NULL, // runtime
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field,
-    SPVM_API_get_field_offset,
+    NULL, // reserved17,
     SPVM_API_get_class_var,
     SPVM_API_get_class_method,
     SPVM_API_get_instance_method,
@@ -4318,8 +4318,4 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t bas
   assert(errno == 0);
   
   return version_number;
-}
-
-int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_FIELD* field) {
-  return field->offset;
 }

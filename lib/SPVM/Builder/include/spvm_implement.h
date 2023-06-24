@@ -1185,7 +1185,7 @@ static inline void SPVM_IMPLEMENT_ARRAY_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1198,7 +1198,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, void* field, int32_t* error_id, int32_t object_header_short_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1212,7 +1212,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
 
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* field, int32_t* error_id, int32_t object_header_int_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1226,7 +1226,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
 
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, void* field, int32_t* error_id, int32_t object_header_long_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1240,7 +1240,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
 
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, void* field, int32_t* error_id, int32_t object_header_float_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1254,7 +1254,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
 
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, void* field, int32_t* error_id, int32_t object_header_double_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1267,7 +1267,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
 }
 
 static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1281,7 +1281,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1294,7 +1294,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1307,7 +1307,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1320,7 +1320,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1333,7 +1333,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1346,7 +1346,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1359,7 +1359,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* in, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1373,7 +1373,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
 }
 
 static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1387,7 +1387,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
 }
 
 static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1405,7 +1405,7 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1418,7 +1418,7 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* field, int32_t* error_id, int32_t object_header_size) {
-  int32_t field_offset = env->get_field_offset(env, stack, field);
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
   if (object == NULL) {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);

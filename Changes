@@ -1,4 +1,9 @@
 0.989011 2023-06-23
+  [New Features]
+    * The following Native Runtime API were added.
+
+      int32_t (*get_field_offset)(void* runtime, void* field);
+
   [Incompatibe Changes]
     * The following Native Runtime APIs were removed.
     
@@ -23,10 +28,6 @@
       -  int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
       +  void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
       
-    * The following Native APIs were removed.
-
-      -  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
-      +  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, void* field);
       -  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
       -  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
       -  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_address_id);
@@ -62,6 +63,9 @@
       +  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
       +  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
 
+    * The following Native APIs were removed.
+
+      -  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
 0.989010 2023-06-22
   [New Features]
     * The following Native Runtime APIs were added.
