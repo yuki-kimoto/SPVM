@@ -112,8 +112,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_isa,
     SPVM_API_elem_isa,
     NULL, // runtime
-    SPVM_API_get_basic_type_id, // Asserted
-    SPVM_API_get_field_id,
+    SPVM_API_get_basic_type_id,
+    SPVM_API_get_field,
     SPVM_API_get_field_offset,
     SPVM_API_get_class_var,
     SPVM_API_get_class_method,
@@ -292,8 +292,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
     SPVM_API_strerror_string,
-    SPVM_API_get_basic_type_id_by_name, // Asserted
-    SPVM_API_get_field_id_static, // Asserted
+    SPVM_API_get_basic_type_id_by_name,
+    SPVM_API_get_field_static,
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
     SPVM_API_get_method,
@@ -315,7 +315,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_muldim_array_by_name,
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
-    SPVM_API_get_field,
     SPVM_API_get_class_var_object_address,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4319,64 +4318,6 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, int32_t bas
   assert(errno == 0);
   
   return version_number;
-}
-
-// Will be removed
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
-  (void)env;
-  
-  int32_t field_address_id = -1;
-  
-  // Compiler
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (!object) {
-    return -1;
-  }
-  
-  // Basic type
-  int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-  
-  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
-
-  // Type dimension
-  if (object->type_dimension != 0) {
-    return -1;
-  }
-
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
-  
-  while (1) {
-    if (!parent_basic_type) {
-      break;
-    }
-    
-    // Method
-    SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, object_basic_type->id, field_name);
-    if (field) {
-      field_address_id = field->address_id;
-      break;
-    }
-    
-    if (parent_basic_type->parent_id != -1) {
-      parent_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, parent_basic_type->parent_id);
-    }
-    else {
-      parent_basic_type = NULL;
-    }
-  }
-  
-  return field_address_id;
-}
-
-// Will be removed
-int32_t SPVM_API_get_field_id_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name) {
-  
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(env->runtime, basic_type_name);
-  
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(env->runtime, basic_type_id, field_name);
-  
-  return field->address_id;
 }
 
 int32_t SPVM_API_get_field_offset(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_FIELD* field) {

@@ -32,7 +32,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->elem_isa != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_basic_type_id != &env_array[15]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_id != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_offset != &env_array[17]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_class_var != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_class_method != &env_array[19]) { stack[0].ival = 0; return 0; }
@@ -212,7 +212,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->is_pointer_class != &env_array[193]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror_string != &env_array[194]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_basic_type_id_by_name != &env_array[195]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_field_id_static != &env_array[196]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_field_static != &env_array[196]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->items != &env_array[197]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_instance_method_static_by_name != &env_array[198]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method != &env_array[199]) { stack[0].ival = 0; return 0; }

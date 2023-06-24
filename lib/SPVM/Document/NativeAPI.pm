@@ -30,7 +30,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    13 elem_isa
    14 runtime
    15 get_basic_type_id
-   16 get_field_id
+   16 get_field
    17 get_field_offset
    18 get_class_var
    19 get_class_method
@@ -210,7 +210,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   193 is_pointer_class
   194 strerror_string
   195 get_basic_type_id_by_name
-  196 get_field_id_static
+  196 get_field_static
   197 items
   198 call_instance_method_static_by_name
   199 get_method
@@ -358,15 +358,15 @@ Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
-=head2 get_field_id
+=head2 get_field
 
-  int32_t (*get_field_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
+  void* (*get_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 
-Gets the ID of the field given an object and field name. If the field does not exist, a value less than 0 is returned.
+Returns a field given an object and field name. If the field does not exist, returns NULL.
 
 Examples:
 
-  int32_t field_id = env->get_field_id(env, object, "x");
+  void* field = env->get_field(env, object, "x");
 
 =head2 get_field_offset
 
@@ -1976,15 +1976,15 @@ Gets the basic_type id by the basic_type name.
 
 If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
-=head2 get_field_id_static
+=head2 get_field_static
 
-  int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
+  void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
 
 Gets the ID of the field given an basic type name and field name. If the field does not exist, a value less than 0 is returned.
 
 Examples:
 
-  int32_t field_id = env->get_field_id_static(env, stack, "Point", "x");
+  void* field = env->get_field_static(env, stack, "Point", "x");
 
 =head2 items
 
