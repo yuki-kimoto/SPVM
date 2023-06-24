@@ -9,6 +9,9 @@
     * The following Native APIs were changed.
       -  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
       +  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+      
+      -  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+      +  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
     * The following Native APIs were removed.
 

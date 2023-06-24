@@ -296,7 +296,7 @@ struct spvm_env {
   int32_t (*get_field_id_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
   int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line);
-  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
   const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);

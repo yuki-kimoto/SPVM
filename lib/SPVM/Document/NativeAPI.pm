@@ -388,7 +388,7 @@ Examples:
 
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
 
-Gets a class method address by the basic type id and the method name. If the class method does not exists, a negative value is returned.
+Gets a class method address by the basic type ID and the method name. If the class method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
@@ -1123,7 +1123,7 @@ Creates a C<sprintf> formatted message with file name and line number and set it
 
 Last three arguments are the function name, the file name, and the line number.
 
-Returns value is the basic type id of the L<Error|SPVM::Error> class. 
+Returns value is the basic type ID of the L<Error|SPVM::Error> class. 
 
 Examples:
 
@@ -1648,7 +1648,7 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
   void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
 
-Gets an instance method by the basic type id and the method name. If the instance method does not exists, a negative value is returned.
+Gets an instance method by the basic type ID and the method name. If the instance method does not exists, a negative value is returned.
 
 This ID is used by L<"call_method_raw">.
 
@@ -2023,15 +2023,13 @@ Examples:
 
 =head2 get_method
 
-  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Gets a method address by the basic type id and the method name. If the method does not exists, a negative value is returned.
-
-This ID is used by L<"call_method_raw">.
+Returns a method given a basic type ID and a method name. If the method does not exists, returns NULL.
 
 Examples:
 
-  void* method = env->get_method(env, basic_type_id, "get");
+  void* method = env->get_method(env, "Foo", "get");
 
 =head2 strerror_nolen
 
@@ -2085,7 +2083,7 @@ Returns the L<version number|SPVM::Document::Language/"Version Number"> of the S
 
   const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type id.
+Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type ID.
 
 If the version string in the basic_type is not defined, returns NULL.
 
@@ -2093,7 +2091,7 @@ If the version string in the basic_type is not defined, returns NULL.
 
   double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type id.
+Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type ID.
 
 If the version string in the basic_type is not defined, returns -1.
 
