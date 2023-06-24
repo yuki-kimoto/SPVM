@@ -3387,9 +3387,9 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const
   return method;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
   
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
+  SPVM_RUNTIME_METHOD* method = env->get_method(env, stack, basic_type_name, method_name);
   
   if (method) {
     if (!method->is_class_method) {
@@ -3400,9 +3400,9 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack,
   return method;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
   
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
+  SPVM_RUNTIME_METHOD* method = env->get_method(env, stack, basic_type_name, method_name);
   
   if (method) {
     if (method->is_class_method) {

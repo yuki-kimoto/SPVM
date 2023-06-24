@@ -386,15 +386,13 @@ Examples:
 
 =head2 get_class_method
 
-  void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+  void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Gets a class method address by the basic type ID and the method name. If the class method does not exists, a negative value is returned.
-
-This ID is used by L<"call_method_raw">.
+Returns a class method given a basic type name and a method name. If the class method does not exists, returns NULL.
 
 Examples:
 
-  void* method = env->get_class_method(env, basic_type_id, "get");
+  void* method = env->get_class_method(env, "Foo", "get");
 
 =head2 get_instance_method
 
@@ -1646,15 +1644,13 @@ The same as C<dump_raw>, and push the created object to the mortal stack. Use th
 
 =head2 get_instance_method_static
 
-  void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* method_name);
+  void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Gets an instance method by the basic type ID and the method name. If the instance method does not exists, a negative value is returned.
-
-This ID is used by L<"call_method_raw">.
+Returns an instance method given a basic type name and a method name. If the instance method does not exists, returns NULL.
 
 Examples:
   
-  void* method = env->get_instance_method_static(env, basic_type_id, "get");
+  void* method = env->get_instance_method_static(env, "Foo", "get");
 
 =head2 get_bool_object_value
 

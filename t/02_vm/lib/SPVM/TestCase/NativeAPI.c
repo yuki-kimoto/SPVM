@@ -1698,8 +1698,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   
   void* minimal = stack[0].oval;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "TestCase::Minimal");
-  void* method = env->get_instance_method_static(env, stack, basic_type_id, "x");
+  void* method = env->get_instance_method_static(env, stack, "TestCase::Minimal", "x");
   if (!method) { return 0; }
   
   int32_t ret;
