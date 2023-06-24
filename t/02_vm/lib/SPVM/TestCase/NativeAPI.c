@@ -240,6 +240,31 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__get_class_var(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t e;
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
+  
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  env->set_class_var_int(env, stack, class_var, INT32_MIN);
+  
+  int32_t value = env->get_class_var_int(env, stack, class_var);
+  
+  if (!(value == INT32_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e;

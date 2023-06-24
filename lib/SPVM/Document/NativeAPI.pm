@@ -376,13 +376,13 @@ Gets the offset of the field given the field ID. The field ID must be a valid fi
 
 =head2 get_class_var
 
-  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
+  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 
-Gets a class variable address given the basic type ID and class variable name. If the class variable does not exist, a value less than 0 is returned.
+Returns a class variable given a basic type name and a class variable name. If the class variable does not exist, returns NULL.
 
 Examples:
 
-  void* class_var = env->get_class_var(env, basic_type_id, "$VAR");
+  void* class_var = env->get_class_var(env, "MyClass", "$VAR");
 
 =head2 get_class_method
 

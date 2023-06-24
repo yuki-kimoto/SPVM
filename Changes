@@ -6,6 +6,10 @@
       int32_t (*get_field_address_id_by_name)(void* runtime, const char* basic_type_name, const char* field_name);
     * The length of the merged fields in a class must be lower than 65535.
 
+    * The following Native APIs were changed.
+      -  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name);
+      +  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+
     * The following Native APIs were removed.
 
       -  int32_t (*get_field_offset)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t field_address_id);
@@ -44,14 +48,6 @@
       +  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
       +  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
       +  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
-
-
-
-
-
-
-
-
 
 0.989010 2023-06-22
   [New Features]

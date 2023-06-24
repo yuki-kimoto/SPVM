@@ -3361,7 +3361,13 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field_static(SPVM_ENV* env, SPVM_VALUE* stack, 
   return field;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, const char* class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
+  
+  int32_t basic_type_id = SPVM_API_get_basic_type_id(env, stack, basic_type_name);
+  
+  if (basic_type_id < 0) {
+    return NULL;
+  }
   
   SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_name(env->runtime, basic_type_id, class_var_name);
   
