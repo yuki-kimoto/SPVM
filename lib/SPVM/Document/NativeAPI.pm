@@ -1125,7 +1125,7 @@ Examples:
 
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<new_object> function, but you can specify basic type name directly.
+This is the same as C<new_object> function, but you can specify basic type name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1141,7 +1141,7 @@ Examples:
     void* object, const char* field_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_byte> function, but you can specify field name directly.
+This is the same as C<set_field_byte> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1157,7 +1157,7 @@ Examples:
     void* object, const char* field_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_short> function, but you can specify field name directly.
+This is the same as C<set_field_short> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1173,7 +1173,7 @@ Examples:
     void* object, const char* field_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_int> function, but you can specify field name directly.
+This is the same as C<set_field_int> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1189,7 +1189,7 @@ Examples:
     void* object, const char* field_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_long> function, but you can specify field name directly.
+This is the same as C<set_field_long> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1205,7 +1205,7 @@ Examples:
     void* object, const char* field_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_float> function, but you can specify field name directly.
+This is the same as C<set_field_float> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1221,7 +1221,7 @@ Examples:
     void* object, const char* field_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_double> function, but you can specify field name directly.
+This is the same as C<set_field_double> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1237,7 +1237,7 @@ Examples:
     void* object, const char* field_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_field_object> function, but you can specify field name directly.
+This is the same as C<set_field_object> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1253,7 +1253,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_byte> function, but you can specify field name directly.
+This is the same as C<get_field_byte> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1269,7 +1269,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_short> function, but you can specify field name directly.
+This is the same as C<get_field_short> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1285,7 +1285,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_int> function, but you can specify field name directly.
+This is the same as C<get_field_int> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1301,7 +1301,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_long> function, but you can specify field name directly.
+This is the same as C<get_field_long> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1317,7 +1317,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_float> function, but you can specify field name directly.
+This is the same as C<get_field_float> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1333,7 +1333,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_double> function, but you can specify field name directly.
+This is the same as C<get_field_double> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1349,7 +1349,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_field_object> function, but you can specify field name directly.
+This is the same as C<get_field_object> function, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1365,7 +1365,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_byte> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_byte> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1381,7 +1381,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_short> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_short> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1397,7 +1397,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_int> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_int> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1413,7 +1413,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_long> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_long> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1429,7 +1429,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_float> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_float> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1445,7 +1445,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_double> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_double> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1461,7 +1461,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<set_class_var_object> function, but you can specify the basic type name directly.
+This is the same as C<set_class_var_object> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1477,7 +1477,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_byte> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_byte> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1493,7 +1493,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_short> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_short> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1509,7 +1509,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_int> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_int> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1525,7 +1525,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_long> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_long> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1541,7 +1541,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_float> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_float> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1557,7 +1557,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_double> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_double> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1573,7 +1573,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<get_class_var_object> function, but you can specify the basic type name directly.
+This is the same as C<get_class_var_object> function, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1916,7 +1916,7 @@ Examples:
 
   void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as L</"new_pointer"> function, but you can specify basic type name directly.
+This is the same as L</"new_pointer"> function, but you can specify basic type name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
