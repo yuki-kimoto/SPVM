@@ -1,3 +1,7 @@
+0.989012 2023-06-26
+  [Bug Fix]
+    * A bug was fixed: Some native APIs had not returned correct error return values.
+    
 0.989011 2023-06-25
   [New Features]
     * The following Native Runtime API were added.
