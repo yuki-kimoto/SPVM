@@ -1,7 +1,20 @@
 0.989012 2023-06-26
   [Bug Fix]
     * A bug was fixed: Some native APIs had not returned correct error return values.
-    
+
+  [Incompatibe Changes]
+    * The following Native APIs were changed.
+      -  int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_nam
+      e, const char* file, int32_t line);
+      -  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32
+      _t line);
+      +  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const c
+      har* func_name, const char* file, int32_t line);
+      +  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char
+      * file, int32_t line);
+      -  int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line);
+      +  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
+
 0.989011 2023-06-25
   [New Features]
     * The following Native Runtime API were added.

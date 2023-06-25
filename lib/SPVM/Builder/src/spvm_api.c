@@ -726,67 +726,69 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   }
 }
 
-int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
+void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  
+  *error = 0;
   
   int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   if (!method) {
-    return env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
+    *error = env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
+    return;
   }
-  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
-  if (error) {
+  *error = env->call_method_raw(env, stack, method, args_stack_length);
+  if (*error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return error;
   }
-  
-  return 0;
 }
 
-int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
+void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  
+  *error = 0;
   
   int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type_id, method_name);
   if (!method) {
-    return env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
+    *error = env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
+    return;
   }
-  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
+  *error = env->call_method_raw(env, stack, method, args_stack_length);
   if (error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return error;
   }
-  
-  return 0;
 }
 
-int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, const char* func_name, const char* file, int32_t line) {
+void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line) {
+  
+  *error = 0;
   
   SPVM_OBJECT* object = stack[0].oval;
   
   if (object == NULL) {
-    return env->die(env, stack, "The object must be defined", func_name, file, line);
+    *error = env->die(env, stack, "The object must be defined", func_name, file, line);
+    return;
   };
   
   if (object->type_dimension > 0) {
-    return env->die(env, stack, "The type dimension of the object must be equal to 0", func_name, file, line);
+    *error = env->die(env, stack, "The type dimension of the object must be equal to 0", func_name, file, line);
+    return;
   };
   
   SPVM_RUNTIME_METHOD* method = env->get_instance_method(env, stack, object, method_name);
   if (!method) {
     const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
-    return env->die(env, stack, "The %s instance method is not found in the %s class or its super class", method_name, basic_type_name, func_name, file, line);
+    *error = env->die(env, stack, "The %s instance method is not found in the %s class or its super class", method_name, basic_type_name, func_name, file, line);
+    return;
   };
   
-  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
+  *error = env->call_method_raw(env, stack, method, args_stack_length);
   
-  if (error) {
+  if (*error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return error;
   }
-  
-  return 0;
 }
 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line) {

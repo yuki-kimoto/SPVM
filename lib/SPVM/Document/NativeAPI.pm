@@ -1585,38 +1585,34 @@ Examples:
 
 =head2 call_class_method_by_name
 
-  int32_t (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* method_name, int32_t args_stack_length,
-    const char* func_name, const char* file, int32_t line);
+  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is same as C<call_method_raw> function, but you can specify the basic type name and method name directly.
+Calls a class method given the basic type name and method name.
 
 Examples:
-
+  
+  int32_t error = 0;
   int32_t output;
   {
     int32_t args_stack_length = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, __func__, __FILE__, __LINE__);
-    if (error) {
-      return error;
-    }
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, &error, __func__, __FILE__, __LINE__);
+    if (error) { return error; }
+    
     output = stack[0].ival;
   }
 
 =head2 call_instance_method_by_name
 
-  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* method_name, int32_t args_stack_length,
-    const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
+
+Calls an instance method given the method name.
 
 =head2 get_field_string_chars_by_name
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
-
-Examples:
 
 =head2 free_env_prepared
   
@@ -1992,22 +1988,19 @@ Examples:
 
 =head2 call_instance_method_static_by_name
 
-  int32_t (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* method_name, int32_t args_stack_length,
-    const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method by the basic type name and the method name.
 
 Examples:
-
+  
+  int32_t error = 0;
   int32_t output;
   {
     int32_t args_stack_length = 1;
     stack[0].oval = obj_point;
-    int32_t error = env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, __func__, __FILE__, __LINE__);
-    if (error) {
-      return error;
-    }
+    env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, &error, __func__, __FILE__, __LINE__);
+    if (error) { return error; }
     output = stack[0].ival;
   }
 
