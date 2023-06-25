@@ -734,11 +734,11 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return 1;
   }
-  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
-  if (e) {
+  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
+  if (error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return e;
+    return error;
   }
   
   return 0;
@@ -752,11 +752,11 @@ int32_t SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* 
     env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return 1;
   }
-  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
-  if (e) {
+  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
+  if (error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return e;
+    return error;
   }
   
   return 0;
@@ -783,12 +783,12 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, 
     return 1;
   };
   
-  int32_t e = env->call_method_raw(env, stack, method, args_stack_length);
+  int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
   
-  if (e) {
+  if (error) {
     const char* message = env->get_chars(env, stack, env->get_exception(env, stack));
     env->die(env, stack, "%s", message, func_name, file, line);
-    return e;
+    return error;
   }
   
   return 0;
@@ -1668,17 +1668,17 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
   
   int32_t mortal = 0;
-  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
+  int32_t error = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
   
-  return e;
+  return error;
 }
 
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length) {
   
   int32_t mortal = 1;
-  int32_t e = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
+  int32_t error = SPVM_API_call_method_common(env, stack, method, args_stack_length, mortal);
   
-  return e;
+  return error;
 }
 
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length, int32_t mortal) {
@@ -3957,7 +3957,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
 
 int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error = 0;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3970,17 +3970,17 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (init_method_index >= 0) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method(env->runtime, basic_type_id, init_method_index);
       int32_t items = 0;
-      e = env->call_method_raw(env, stack, init_method, items);
-      if (e) { break; }
+      error = env->call_method_raw(env, stack, init_method, items);
+      if (error) { break; }
     }
   }
   
-  return e;
+  return error;
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {
   
-  int32_t e = 0;
+  int32_t error = 0;
   
   if (!obj_program_name) {
     return env->die(env, stack, "The obj_program_name must be defined", __func__, FILE_NAME, __LINE__);
@@ -3991,15 +3991,15 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return env->die(env, stack, "The obj_program_name must be a string", __func__, FILE_NAME, __LINE__);
   }
   
-  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
   
   return 0;
 }
 
 int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv) {
   
-  int32_t e = 0;
+  int32_t error = 0;
   
   if (!obj_argv) {
     return env->die(env, stack, "The obj_argv must be defined", __func__, FILE_NAME, __LINE__);
@@ -4010,18 +4010,18 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return env->die(env, stack, "The obj_argv must be a string array", __func__, FILE_NAME, __LINE__);
   }
   
-  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  env->set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
   
   return 0;
 }
 
 int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
   
-  int32_t e = 0;
+  int32_t error = 0;
   
-  env->set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  env->set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
   
   return 0;
 }
