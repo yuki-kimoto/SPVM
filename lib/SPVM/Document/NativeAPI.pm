@@ -1131,9 +1131,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_byte_by_name
 
@@ -1147,9 +1147,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_short_by_name
 
@@ -1163,9 +1163,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_short_by_name(env, stack, object, "short_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_short_by_name(env, stack, object, "short_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_int_by_name
 
@@ -1179,9 +1179,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_int_by_name(env, stack, object, "int_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_int_by_name(env, stack, object, "int_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_long_by_name
 
@@ -1195,9 +1195,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_long_by_name(env, stack, object, "long_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_long_by_name(env, stack, object, "long_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_float_by_name
 
@@ -1211,9 +1211,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_float_by_name(env, stack, object, "float_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_double_by_name
 
@@ -1227,9 +1227,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_double_by_name(env, stack, object, "double_value", 13, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_field_object_by_name
 
@@ -1243,9 +1243,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_byte_by_name
 
@@ -1259,9 +1259,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_short_by_name
 
@@ -1275,9 +1275,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_int_by_name
 
@@ -1291,9 +1291,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_long_by_name
 
@@ -1307,9 +1307,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_float_by_name
 
@@ -1323,9 +1323,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_double_by_name
 
@@ -1339,9 +1339,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_field_object_by_name
 
@@ -1355,9 +1355,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_byte_by_name
 
@@ -1371,9 +1371,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_short_by_name
 
@@ -1387,9 +1387,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_int_by_name
 
@@ -1403,9 +1403,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_long_by_name
 
@@ -1419,9 +1419,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_float_by_name
 
@@ -1435,9 +1435,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_double_by_name
 
@@ -1451,9 +1451,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 set_class_var_object_by_name
 
@@ -1467,9 +1467,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_byte_by_name
 
@@ -1483,9 +1483,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_short_by_name
 
@@ -1499,9 +1499,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_int_by_name
 
@@ -1515,9 +1515,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_long_by_name
 
@@ -1531,9 +1531,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_float_by_name
 
@@ -1547,9 +1547,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_double_by_name
 
@@ -1563,9 +1563,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t e;
-  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_class_var_object_by_name
 
@@ -1579,9 +1579,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
   
-  int32_t e;
-  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 call_class_method_by_name
 
@@ -1924,9 +1924,9 @@ This is same as L</"new_pointer"> function, but you can specify basic type name 
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-  int32_t e;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &e, __func__, __FILE__, __LINE__);
-  if (e) { return e; }
+  int32_t error = 0;
+  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error, __func__, __FILE__, __LINE__);
+  if (error) { return error; }
 
 =head2 get_elem_string
 
