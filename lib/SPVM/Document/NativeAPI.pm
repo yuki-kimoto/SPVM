@@ -404,7 +404,7 @@ Examples:
 
   void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
-Creates a new object with a basic type ID. The basic type ID must be the correct base type ID return by C<get_basic_type_id> function.
+Creates a new object with a basic type ID. The basic type ID must be the correct base type ID return by the L</"get_basic_type_id"> Native API.
 
 =head2 new_object
 
@@ -517,7 +517,7 @@ Examples:
 
   void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Creates a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+Creates a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by the L</"get_basic_type_id"> Native API.
 
 =head2 new_object_array
 
@@ -534,7 +534,7 @@ Examples:
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
 
-Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
+Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
@@ -552,7 +552,7 @@ Examples:
 
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
 
-Creates a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<basic_type_id> function.
+Creates a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by the L</"basic_type_id"> Native API.
 
 =head2 new_mulnum_array
 
@@ -1125,7 +1125,7 @@ Examples:
 
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<new_object> function, but you can specify basic type name directly.
+This is the same as the L</"new_object"> Native API, but you can specify basic type name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1141,7 +1141,7 @@ Examples:
     void* object, const char* field_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_byte> function, but you can specify field name directly.
+This is the same as the L</"set_field_byte"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1157,7 +1157,7 @@ Examples:
     void* object, const char* field_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_short> function, but you can specify field name directly.
+This is the same as the L</"set_field_short"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1173,7 +1173,7 @@ Examples:
     void* object, const char* field_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_int> function, but you can specify field name directly.
+This is the same as the L</"set_field_int"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1189,7 +1189,7 @@ Examples:
     void* object, const char* field_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_long> function, but you can specify field name directly.
+This is the same as the L</"set_field_long"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1205,7 +1205,7 @@ Examples:
     void* object, const char* field_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_float> function, but you can specify field name directly.
+This is the same as the L</"set_field_float"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1221,7 +1221,7 @@ Examples:
     void* object, const char* field_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_double> function, but you can specify field name directly.
+This is the same as the L</"set_field_double"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1237,7 +1237,7 @@ Examples:
     void* object, const char* field_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_field_object> function, but you can specify field name directly.
+This is the same as the L</"set_field_object"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
@@ -1253,7 +1253,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_byte> function, but you can specify field name directly.
+This is the same as the L</"get_field_byte"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1269,7 +1269,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_short> function, but you can specify field name directly.
+This is the same as the L</"get_field_short"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1285,7 +1285,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_int> function, but you can specify field name directly.
+This is the same as the L</"get_field_int"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1301,7 +1301,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_long> function, but you can specify field name directly.
+This is the same as the L</"get_field_long"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1317,7 +1317,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_float> function, but you can specify field name directly.
+This is the same as the L</"get_field_float"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1333,7 +1333,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_double> function, but you can specify field name directly.
+This is the same as the L</"get_field_double"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1349,7 +1349,7 @@ Examples:
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_field_object> function, but you can specify field name directly.
+This is the same as the L</"get_field_object"> Native API, but you can specify field name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1365,7 +1365,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int8_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_byte> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_byte"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1381,7 +1381,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int16_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_short> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_short"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1397,7 +1397,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int32_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_int> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_int"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1413,7 +1413,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, int64_t value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_long> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_long"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1429,7 +1429,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, float value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_float> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_float"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1445,7 +1445,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, double value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_double> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_double"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1461,7 +1461,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name, void* value,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<set_class_var_object> function, but you can specify the basic type name directly.
+This is the same as the L</"set_class_var_object"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1477,7 +1477,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_byte> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_byte"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1493,7 +1493,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_short> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_short"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1509,7 +1509,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_int> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_int"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1525,7 +1525,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_long> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_long"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1541,7 +1541,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_float> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_float"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1557,7 +1557,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_double> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_double"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1573,7 +1573,7 @@ Examples:
     const char* basic_type_name, const char* class_var_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-This is the same as C<get_class_var_object> function, but you can specify the basic type name directly.
+This is the same as the L</"get_class_var_object"> Native API, but you can specify the basic type name directly.
 
 If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
 
@@ -1618,7 +1618,7 @@ Calls an instance method given the method name.
   
   void (*free_env_prepared)(SPVM_ENV* env);
 
-Frees the environment prepared by C<SPVM_NATIVE_new_env_prepared> function.
+Frees the environment prepared by the L</"SPVM_NATIVE_new_env_prepared"> Native API.
 
 =head2 dump_raw
 
@@ -1898,7 +1898,7 @@ The alias for the following code using L</"dump">.
 
   void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
 
-Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
+Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by the L</"get_basic_type_id"> Native API.
 
 =head2 new_pointer_object
 
