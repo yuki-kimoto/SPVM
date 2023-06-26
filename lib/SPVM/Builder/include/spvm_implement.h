@@ -1436,7 +1436,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_LONG(env, stack, out, class_var) (out = env->get_class_var_long(env, stack, class_var))
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT(env, stack, out, class_var) (out = env->get_class_var_float(env, stack, class_var))
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, out, class_var) (out = env->get_class_var_double(env, stack, class_var))
-#define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, out, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_class_var_object(env, stack, class_var), (intptr_t)env->api->runtime->object_ref_count_offset))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, out, class_var, object_ref_count_offset) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_class_var_object(env, stack, class_var), (intptr_t)env->api->runtime->object_ref_count_offset))
 
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var, in) (env->set_class_var_byte(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, class_var, in) (env->set_class_var_short(env, stack, class_var, in))
@@ -1444,10 +1444,10 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, class_var, in) (env->set_class_var_long(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, class_var, in) (env->set_class_var_float(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, class_var, in) (env->set_class_var_double(env, stack, class_var, in))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), in, (intptr_t)env->api->runtime->object_ref_count_offset))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), NULL, (intptr_t)env->api->runtime->object_ref_count_offset))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in, object_ref_count_offset) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), in, (intptr_t)env->api->runtime->object_ref_count_offset))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var, object_ref_count_offset) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), NULL, (intptr_t)env->api->runtime->object_ref_count_offset))
 
-#define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack), (intptr_t)env->api->runtime->object_ref_count_offset))
+#define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out, object_ref_count_offset) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack), (intptr_t)env->api->runtime->object_ref_count_offset))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack) (env->set_exception(env, stack, NULL))
 
