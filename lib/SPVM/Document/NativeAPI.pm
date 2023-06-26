@@ -17,7 +17,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
     0 class_vars_heap
     1 reserved1
     2 reserved2
-    3 object_ref_count_offset
+    3 reserved3
     4 reserved4
     5 reserved5
     6 reserved6
@@ -238,20 +238,6 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   void* class_vars_heap;
 
 The pointer to the storage area of the class variables. This is used internally.
-
-=head2 object_ref_count_offset
-
-  void* object_ref_count_offset;
-
-The reference count offset in the object structure. This is used internally.
-
-=head2 object_type_category_offset
-
-  void* object_type_category_offset;
-
-The offset of runtime type category in object structure. This is used internally.
-
-This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
 
 =head2 api
 

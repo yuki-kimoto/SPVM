@@ -8,6 +8,7 @@
       void* object_type_dimension_offset;
       void* object_length_offset;
       void* object_header_size;
+      void* object_ref_count_offset;
       
     * The following Native Runtime APIs were removed.
       

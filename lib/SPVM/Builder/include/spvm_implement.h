@@ -141,9 +141,9 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
-#define SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset)))
+#define SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset)))
 
-#define SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))++)
+#define SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset))++)
 
 static inline void SPVM_IMPLEMENT_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
   if (object != NULL) {
@@ -151,7 +151,7 @@ static inline void SPVM_IMPLEMENT_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
-#define SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->object_ref_count_offset))--)
+#define SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset))--)
 
 static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
   if (object != NULL) {

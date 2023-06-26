@@ -100,7 +100,7 @@ struct spvm_env {
   void* class_vars_heap;
   void* reserved1;
   void* reserved2;
-  void* object_ref_count_offset;
+  void* reserved3;
   void* reserved4;
   void* reserved5;
   void* reserved6;
