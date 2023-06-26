@@ -316,7 +316,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->object_header_size;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->object_ref_count_offset;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = (intptr_t)env->object_length_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = (intptr_t)env->api->runtime->object_length_offset;\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_address_id = SPVM_API_RUNTIME_get_method_opcodes_base_address_id(runtime, current_method);
