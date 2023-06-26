@@ -19,7 +19,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
     2 reserved2
     3 object_ref_count_offset
     4 reserved4
-    5 object_type_dimension_offset
+    5 reserved5
     6 reserved6
     7 object_length_offset
     8 api
@@ -250,12 +250,6 @@ The byte size of the object's header. This is used internally.
   void* object_ref_count_offset;
 
 The reference count offset in the object structure. This is used internally.
-
-=head2 object_type_dimension_offset
-
-  void* object_type_dimension_offset;
-
-The offset of type dimension in object structure. This is used internally.
 
 =head2 object_type_category_offset
 

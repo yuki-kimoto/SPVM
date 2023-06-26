@@ -93,9 +93,9 @@ Runtime native APIs have its IDs.
   69 object_header_size
   70 object_weaken_backref_head_offset
   71 object_ref_count_offset
-  72 object_basic_type_id_offset
-  73 object_type_dimension_offset
-  74 object_flag_offset
+  72 reserved72
+  73 reserved73
+  74 reserved74
   75 object_length_offset
   76 get_allocator
   77 build
@@ -330,25 +330,9 @@ Runtime native APIs have its IDs.
 
   void* object_header_size;
 
-=head2 object_weaken_backref_head_offset
-
-  void* object_weaken_backref_head_offset;
-
 =head2 object_ref_count_offset
 
   void* object_ref_count_offset;
-
-=head2 object_basic_type_id_offset
-
-  void* object_basic_type_id_offset;
-
-=head2 object_type_dimension_offset
-
-  void* object_type_dimension_offset;
-
-=head2 object_flag_offset
-
-  void* object_flag_offset;
 
 =head2 object_length_offset
 

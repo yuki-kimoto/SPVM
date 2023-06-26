@@ -102,7 +102,7 @@ struct spvm_env {
   void* reserved2;
   void* object_ref_count_offset;
   void* reserved4;
-  void* object_type_dimension_offset;
+  void* reserved5;
   void* reserved6;
   void* object_length_offset;
   SPVM_ENV_API* api;
@@ -392,7 +392,7 @@ struct spvm_env_runtime {
   void* reserved70;
   void* object_ref_count_offset;
   void* reserved72;
-  void* object_type_dimension_offset;
+  void* reserved73;
   void* reserved74;
   void* object_length_offset;
   void* (*get_allocator)(void* runtime);
