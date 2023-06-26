@@ -853,26 +853,26 @@ void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* b
   int32_t offset_size;
   
   // 8 byte data
-  for (int32_t merged_field_index = 0; merged_field_index < basic_type->fields->length; merged_field_index++) {
-    SPVM_FIELD* merged_field = SPVM_LIST_get(basic_type->fields, merged_field_index);
-    SPVM_TYPE* merged_field_type = merged_field->type;
+  for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+    SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+    SPVM_TYPE* field_type = field->type;
     
     int32_t next_offset;
-    if (SPVM_TYPE_is_double_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_long_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+    if (SPVM_TYPE_is_double_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+      || SPVM_TYPE_is_long_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       offset_size = 8;
     }
-    else if (SPVM_TYPE_is_float_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)
-      || SPVM_TYPE_is_int_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+    else if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)
+      || SPVM_TYPE_is_int_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       offset_size = 4;
     }
-    else if (SPVM_TYPE_is_short_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+    else if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       offset_size = 2;
     }
-    else if (SPVM_TYPE_is_byte_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+    else if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       offset_size = 1;
     }
-    else if (SPVM_TYPE_is_object_type(compiler, merged_field_type->basic_type->id, merged_field_type->dimension, merged_field_type->flag)) {
+    else if (SPVM_TYPE_is_object_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
       offset_size = sizeof(void*);
     }
     else {
@@ -895,12 +895,12 @@ void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* b
       
       assert(offset % alignment_size == 0);
     }
-
-    merged_field->offset = offset;
+    
+    field->offset = offset;
     
     offset += offset_size;
   }
-
+  
   basic_type->fields_size = offset;
 }
 
