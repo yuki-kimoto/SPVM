@@ -106,6 +106,23 @@ static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_
   return field;
 }
 
+static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, char* message, int32_t* error_id) {
+  
+  void* field = env->get_field_static(env, stack, basic_type_name, field_name);
+  
+  if (!field) {
+    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+    return -1;
+  }
+  
+  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
+  
+  return field_offset;
+}
+
 static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, char* message, int32_t* error_id) {
 
   void* class_var = env->get_class_var(env, stack, basic_type_name, class_var_name);
