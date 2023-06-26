@@ -169,14 +169,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     ref_vars = (void**)&call_stack[call_stack_offset];
     call_stack_offset += current_method->call_stack_ref_vars_length * sizeof(void*);
   }
-
+  
+  int32_t object_header_size = (intptr_t)env->object_header_size;
+  int32_t object_weaken_backref_head_offset = (intptr_t)env->object_weaken_backref_head_offset;
+  int32_t object_ref_count_offset = (intptr_t)env->object_ref_count_offset;
+  int32_t object_basic_type_id_offset = (intptr_t)env->object_basic_type_id_offset;
+  int32_t object_type_dimension_offset = (intptr_t)env->object_type_dimension_offset;
+  int32_t object_flag_offset = (intptr_t)env->object_flag_offset;
+  int32_t object_length_offset = (intptr_t)env->object_length_offset;
+  
   // Buffer for string convertion
   // double need 17 digit
   // int64_t need 21 gidit (-9223372036854775808 + (null character))
   char tmp_buffer[256];
   
-  int32_t object_header_size = (intptr_t)env->object_header_size;
-
   // Execute operation codes
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[current_method_opcodes_base_address_id + opcode_rel_index]);

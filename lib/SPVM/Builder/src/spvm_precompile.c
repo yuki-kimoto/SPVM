@@ -141,9 +141,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->runtime->get_method_by_name(env->runtime, current_basic_type_id, current_method_name);\n");
   
-  // Object header byte size
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->object_header_size;\n");
-  
   // object variable declarations
   int32_t call_stack_object_vars_length = SPVM_API_RUNTIME_get_method_call_stack_object_vars_length(runtime, current_method);
   if (call_stack_object_vars_length > 0) {
@@ -316,6 +313,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->object_header_size;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_weaken_backref_head_offset = (intptr_t)env->object_weaken_backref_head_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->object_ref_count_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id_offset = (intptr_t)env->object_basic_type_id_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_type_dimension_offset = (intptr_t)env->object_type_dimension_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_flag_offset = (intptr_t)env->object_flag_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = (intptr_t)env->object_length_offset;\n");
   
   SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
   int32_t method_opcodes_base_address_id = SPVM_API_RUNTIME_get_method_opcodes_base_address_id(runtime, current_method);
