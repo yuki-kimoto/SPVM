@@ -166,7 +166,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_set_native_method_address,
     SPVM_API_RUNTIME_get_precompile_method_address,
     SPVM_API_RUNTIME_set_precompile_method_address,
-    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
+    NULL, // reserved69
     NULL, // reserved70
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     NULL, // reserved72
