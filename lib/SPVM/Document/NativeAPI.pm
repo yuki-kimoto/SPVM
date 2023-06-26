@@ -20,7 +20,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
     3 object_ref_count_offset
     4 object_basic_type_id_offset
     5 object_type_dimension_offset
-    6 object_flag_offset
+    6 reserved6
     7 object_length_offset
     8 api
     9 allocator
@@ -276,12 +276,6 @@ The offset of type dimension in object structure. This is used internally.
 The offset of runtime type category in object structure. This is used internally.
 
 This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
-
-=head2 object_flag_offset
-
-  void* object_flag_offset;
-
-The offset of flag in object structure. This is used internally.
 
 =head2 object_length_offset
 

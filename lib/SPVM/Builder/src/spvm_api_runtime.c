@@ -171,7 +171,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)-1, // object_basic_type_id_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
+    NULL, // reserved74
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     SPVM_API_RUNTIME_get_allocator,
     SPVM_API_RUNTIME_build,

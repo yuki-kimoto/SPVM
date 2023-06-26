@@ -1,3 +1,9 @@
+0.989014 2023-06-26
+  [Incompatibe Changes]
+    * The following Native APIs were removed.
+      
+      void* object_flag_offset;
+      
 0.989013 2023-06-26
   [New Features]
     * The following methods were added.

@@ -96,8 +96,6 @@ union spvm_value {
 
 
 
-
-
 struct spvm_env {
   void* class_vars_heap;
   void* object_header_size;
@@ -105,7 +103,7 @@ struct spvm_env {
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
-  void* object_flag_offset;
+  void* reserved6;
   void* object_length_offset;
   SPVM_ENV_API* api;
   void* allocator;
@@ -395,7 +393,7 @@ struct spvm_env_runtime {
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
-  void* object_flag_offset;
+  void* reserved74;
   void* object_length_offset;
   void* (*get_allocator)(void* runtime);
   void (*build)(void* runtime, int32_t* runtime_codes);
