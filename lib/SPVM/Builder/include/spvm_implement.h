@@ -143,11 +143,11 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 
 #define SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset)))
 
-#define SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset))++)
+#define SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset))++)
 
 static inline void SPVM_IMPLEMENT_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
   if (object != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object);
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object, env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -165,7 +165,7 @@ static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack
 static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object, int32_t object_ref_count_offset) {
   void* tmp_object = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);
   if (tmp_object != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, tmp_object);
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, tmp_object, object_ref_count_offset);
   }
   if (*(void**)(dist_address) != NULL) {
     if (__builtin_expect(SPVM_IMPLEMENT_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
@@ -2599,7 +2599,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
   *(void**)&stack[0] = in;
   if (in != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in);
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in, env->api->runtime->object_ref_count_offset);
   }
 }
 
