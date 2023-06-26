@@ -1805,8 +1805,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Increment ref count of return value
         if (!error) {
           if (method_return_type_is_object) {
-            if (*(void**)&stack[0] != NULL) {
-              SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0], env->api->runtime->object_ref_count_offset);
+            SPVM_OBJECT* return_object = *(void**)&stack[0];
+            if (return_object != NULL) {
+              return_object->ref_count++;
             }
           }
         }
@@ -1817,8 +1818,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Decrement ref count of return value
         if (!error) {
           if (method_return_type_is_object) {
-            if (*(void**)&stack[0] != NULL) {
-              SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0], env->api->runtime->object_ref_count_offset);
+            SPVM_OBJECT* return_object = *(void**)&stack[0];
+            if (return_object != NULL) {
+              return_object->ref_count--;
             }
           }
         }
