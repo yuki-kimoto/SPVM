@@ -315,7 +315,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF: {
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &object_vars[opcode->operand0], NULL);
+        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &object_vars[opcode->operand0], NULL, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO: {

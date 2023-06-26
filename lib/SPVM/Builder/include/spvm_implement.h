@@ -162,7 +162,7 @@ static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack
 
 #define SPVM_IMPLEMENT_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
 
-static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object) {
+static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object, int32_t object_ref_count_offset) {
   void* tmp_object = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);
   if (tmp_object != NULL) {
     SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, tmp_object);
@@ -379,13 +379,13 @@ static inline void SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE_ZERO(SPVM_ENV* env, SPVM_VA
 #define SPVM_IMPLEMENT_MOVE_LONG(out, in) (out = in)
 #define SPVM_IMPLEMENT_MOVE_FLOAT(out, in) (out = in)
 #define SPVM_IMPLEMENT_MOVE_DOUBLE(out, in) (out = in)
-#define SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, out, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, in))
+#define SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, out, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, in, object_ref_count_offset))
 
 static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t cast_basic_type_id, int32_t cast_type_dimension, int32_t* error_id) {
   void* object = in;
   int32_t isa = env->isa(env, stack, object, cast_basic_type_id, cast_type_dimension);
   if (isa) {
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, in);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, in, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
   else {
     void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
@@ -402,7 +402,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY(SPVM_ENV* env, SPV
     *error_id = 1;
   }
   else {
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -430,7 +430,7 @@ static inline void SPVM_IMPLEMENT_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void*
   }
   else {
     void* string3 = env->concat_raw(env, stack, string1, string2);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string3);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string3, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -655,7 +655,7 @@ static inline void SPVM_IMPLEMENT_NEW_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, v
   }
   else {
     // Push object
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -668,7 +668,7 @@ static inline void SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* st
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -687,7 +687,7 @@ static inline void SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(SPVM_ENV* env, SPVM_VALUE* st
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -706,7 +706,7 @@ static inline void SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(SPVM_ENV* env, SPVM_VALUE* st
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -725,7 +725,7 @@ static inline void SPVM_IMPLEMENT_NEW_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stac
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -744,7 +744,7 @@ static inline void SPVM_IMPLEMENT_NEW_SHORT_ARRAY(SPVM_ENV* env, SPVM_VALUE* sta
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -763,7 +763,7 @@ static inline void SPVM_IMPLEMENT_NEW_INT_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -782,7 +782,7 @@ static inline void SPVM_IMPLEMENT_NEW_LONG_ARRAY(SPVM_ENV* env, SPVM_VALUE* stac
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -801,7 +801,7 @@ static inline void SPVM_IMPLEMENT_NEW_FLOAT_ARRAY(SPVM_ENV* env, SPVM_VALUE* sta
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -820,7 +820,7 @@ static inline void SPVM_IMPLEMENT_NEW_DOUBLE_ARRAY(SPVM_ENV* env, SPVM_VALUE* st
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -839,7 +839,7 @@ static inline void SPVM_IMPLEMENT_NEW_STRING(SPVM_ENV* env, SPVM_VALUE* stack, v
   }
   else {
     env->make_read_only(env, stack, string);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out , string);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out , string, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -852,7 +852,7 @@ static inline void SPVM_IMPLEMENT_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stac
       *error_id = 1;
     }
     else {
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
@@ -994,7 +994,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
       *error_id = 1;
     }
     else { 
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, ((void**)((intptr_t)array + object_header_size))[index]);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, ((void**)((intptr_t)array + object_header_size))[index], (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
 }
@@ -1121,7 +1121,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
     }
     else {
       void** element_address = &((void**)((intptr_t)array + object_header_size))[index];
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, element_address, in);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, element_address, in, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
 }
@@ -1143,7 +1143,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
       void* object = in;
       int32_t elem_isa = env->elem_isa(env, stack, array, object);
       if (elem_isa) {
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, element_address, object);
+        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, element_address, object, (intptr_t)env->api->runtime->object_ref_count_offset);
       }
       else {
         void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ELEMENT_ASSIGN_NON_ASSIGNABLE_TYPE]);
@@ -1168,7 +1168,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VA
     }
     else {
       void* object_address = &((void**)((intptr_t)array + object_header_size))[index];
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, NULL);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, NULL, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
 }
@@ -1276,7 +1276,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   }
   else {
     void* get_field_object = *(void**)((intptr_t)object + object_header_size + field_offset);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, get_field_object);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, get_field_object, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -1368,7 +1368,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   }
   else {
     void* get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, in);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, in, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -1382,7 +1382,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
   }
   else {
     void* get_field_object_address = (void**)((intptr_t)object + object_header_size + field_offset);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, NULL, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -1436,7 +1436,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_LONG(env, stack, out, class_var) (out = env->get_class_var_long(env, stack, class_var))
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_FLOAT(env, stack, out, class_var) (out = env->get_class_var_float(env, stack, class_var))
 #define SPVM_IMPLEMENT_GET_CLASS_VAR_DOUBLE(env, stack, out, class_var) (out = env->get_class_var_double(env, stack, class_var))
-#define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, out, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_class_var_object(env, stack, class_var)))
+#define SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, out, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_class_var_object(env, stack, class_var), (intptr_t)env->api->runtime->object_ref_count_offset))
 
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_BYTE(env, stack, class_var, in) (env->set_class_var_byte(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_SHORT(env, stack, class_var, in) (env->set_class_var_short(env, stack, class_var, in))
@@ -1444,10 +1444,10 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, class_var, in) (env->set_class_var_long(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, class_var, in) (env->set_class_var_float(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, class_var, in) (env->set_class_var_double(env, stack, class_var, in))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), in))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), NULL))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), in, (intptr_t)env->api->runtime->object_ref_count_offset))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, env->get_class_var_object_address(env, stack, class_var), NULL, (intptr_t)env->api->runtime->object_ref_count_offset))
 
-#define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack)))
+#define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, env->get_exception(env, stack), (intptr_t)env->api->runtime->object_ref_count_offset))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack) (env->set_exception(env, stack, NULL))
 
@@ -1549,13 +1549,13 @@ static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, vo
   }
   else {
     void* type_name = env->get_type_name_raw(env, stack, object);
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, type_name);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, type_name, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
 static inline void SPVM_IMPLEMENT_DUMP(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
   void* dump = env->dump_raw(env, stack, object);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, dump);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, dump, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t* error_id) {
@@ -1567,11 +1567,11 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
     }
     else {
       void* new_object_raw = env->copy_raw(env, stack, object);
-      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, new_object_raw);
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, new_object_raw, (intptr_t)env->api->runtime->object_ref_count_offset);
     }
   }
   else {
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
@@ -2208,42 +2208,42 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, 
   snprintf(tmp_buffer, tmp_buffer_length, "%" PRId8, value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, char* tmp_buffer, int32_t tmp_buffer_length) {
   snprintf(tmp_buffer, tmp_buffer_length, "%" PRId16, value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, char* tmp_buffer, int32_t tmp_buffer_length) {
   snprintf(tmp_buffer, tmp_buffer_length, "%" PRId32, value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, char* tmp_buffer, int32_t tmp_buffer_length) {
   snprintf(tmp_buffer, tmp_buffer_length, "%" PRId64, value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, char* tmp_buffer, int32_t tmp_buffer_length) {
   snprintf(tmp_buffer, tmp_buffer_length, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, char* tmp_buffer, int32_t tmp_buffer_length) {
   snprintf(tmp_buffer, tmp_buffer_length, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_raw(env, stack, tmp_buffer, string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {
@@ -2252,14 +2252,14 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV*
   void* byte_array = env->new_byte_array_raw(env, stack, src_string_length);
   int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
   memcpy(byte_array_data, src_string_data, src_string_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, byte_array);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, byte_array, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_byte_array) {
   int32_t src_byte_array_length = env->length(env, stack, src_byte_array);
   int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);
   void* string = env->new_string_raw(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, string, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, int32_t object_header_size) {
@@ -2267,7 +2267,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* 
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int8_t*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, int32_t object_header_size) {
@@ -2275,7 +2275,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int16_t*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, int32_t object_header_size) {
@@ -2283,7 +2283,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* en
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int32_t*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, int32_t object_header_size) {
@@ -2291,7 +2291,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* 
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(int64_t*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, int32_t object_header_size) {
@@ -2299,7 +2299,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(float*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, int32_t object_header_size) {
@@ -2307,7 +2307,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_E
   void* object = env->new_object_raw(env, stack, basic_type_id);
   SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_header_size);
   *(double*)&fields[0] = value;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error_id, int32_t object_header_size) {
@@ -2478,7 +2478,7 @@ static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VA
 #define SPVM_IMPLEMENT_GET_STACK_DOUBLE(out, stack, stack_index) (out = *(double*)&stack[stack_index])
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index]);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index], (intptr_t)env->api->runtime->object_ref_count_offset);
 }
 
 #define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
@@ -2582,10 +2582,10 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, doubl
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index) {
   int32_t args_length = env->get_args_stack_length(env, stack);
   if (stack_index >= args_length) {
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
   else {
-    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index]);
+    SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, *(void**)&stack[stack_index], (intptr_t)env->api->runtime->object_ref_count_offset);
   }
 }
 
