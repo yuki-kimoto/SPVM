@@ -2754,8 +2754,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_index, int8_t default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2764,8 +2764,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_index, int16_t default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2774,8 +2774,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2784,8 +2784,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_index, int64_t default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2794,8 +2794,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_index, float default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2804,8 +2804,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_index, double default_value) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     *out = default_value;
   }
   else {
@@ -2814,8 +2814,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, doubl
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index, int32_t object_ref_count_offset) {
-  int32_t args_length = env->get_args_stack_length(env, stack);
-  if (stack_index >= args_length) {
+  int32_t items = env->items(env, stack);
+  if (stack_index >= items) {
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL, object_ref_count_offset);
   }
   else {
