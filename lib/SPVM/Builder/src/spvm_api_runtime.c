@@ -229,10 +229,10 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_index,
     SPVM_API_RUNTIME_get_field_index,
     SPVM_API_RUNTIME_get_field_offset,
-    SPVM_API_RUNTIME_get_arg_v2,
-    SPVM_API_RUNTIME_get_arg_basic_type_id_v2,
-    SPVM_API_RUNTIME_get_arg_type_dimension_v2,
-    SPVM_API_RUNTIME_get_arg_type_flag_v2,
+    SPVM_API_RUNTIME_get_arg,
+    SPVM_API_RUNTIME_get_arg_basic_type_id,
+    SPVM_API_RUNTIME_get_arg_type_dimension,
+    SPVM_API_RUNTIME_get_arg_type_flag,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -895,55 +895,7 @@ int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, S
   return mortal_stack_length;
 }
 
-SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, int32_t arg_id) {
-  
-  if (arg_id < 0) {
-    return NULL;
-  }
-  
-  if (arg_id >= runtime->args_length) {
-    return NULL;
-  }
-
-  SPVM_RUNTIME_ARG* arg = &runtime->args[arg_id];
-  
-  return arg;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, int32_t arg_id) {
-  
-  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
-  
-  assert(arg);
-  
-  int32_t basic_type_id = arg->basic_type_id;
-  
-  return basic_type_id;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t arg_id) {
-  
-  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
-  
-  assert(arg);
-  
-  int32_t type_dimension = arg->type_dimension;
-  
-  return type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id) {
-  
-  SPVM_RUNTIME_ARG* arg = SPVM_API_RUNTIME_get_arg(runtime, arg_id);
-  
-  assert(arg);
-  
-  int32_t type_flag = arg->type_flag;
-  
-  return type_flag;
-}
-
-SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
+SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
   
   if (arg_index < 0) {
     return NULL;
@@ -958,21 +910,21 @@ SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIM
   return arg;
 }
 
-int32_t SPVM_API_RUNTIME_get_arg_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
   
   int32_t basic_type_id = arg->basic_type_id;
   
   return basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_arg_type_dimension_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
   
   int32_t type_dimension = arg->type_dimension;
   
   return type_dimension;
 }
 
-int32_t SPVM_API_RUNTIME_get_arg_type_flag_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
   
   int32_t type_flag = arg->type_flag;
   
