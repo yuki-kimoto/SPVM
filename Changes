@@ -4,6 +4,7 @@
       
       void* object_flag_offset;
       void* object_weaken_backref_head;
+      void* object_basic_type_id_offset;
       
 0.989013 2023-06-26
   [New Features]

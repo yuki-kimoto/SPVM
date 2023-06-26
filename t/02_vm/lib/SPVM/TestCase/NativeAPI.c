@@ -20,9 +20,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->object_header_size != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved2 != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_ref_count_offset != &env_array[3]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_basic_type_id_offset != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved4 != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_type_dimension_offset != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_flag_offset != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved6 != &env_array[6]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_length_offset != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->allocator != &env_array[9]) { stack[0].ival = 0; return 0; }
@@ -2320,7 +2320,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->object_header_size != &env_array[69]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved70 != &env_array[70]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_ref_count_offset != &env_array[71]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->object_basic_type_id_offset != &env_array[72]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved72 != &env_array[72]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_type_dimension_offset != &env_array[73]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved74 != &env_array[74]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_length_offset != &env_array[75]) { stack[0].ival = 0; return 0; }

@@ -101,7 +101,7 @@ struct spvm_env {
   void* object_header_size;
   void* reserved2;
   void* object_ref_count_offset;
-  void* object_basic_type_id_offset;
+  void* reserved4;
   void* object_type_dimension_offset;
   void* reserved6;
   void* object_length_offset;
@@ -391,7 +391,7 @@ struct spvm_env_runtime {
   void* object_header_size;
   void* reserved70;
   void* object_ref_count_offset;
-  void* object_basic_type_id_offset;
+  void* reserved72;
   void* object_type_dimension_offset;
   void* reserved74;
   void* object_length_offset;
