@@ -3,6 +3,7 @@
     * The following Native APIs were removed.
       
       void* object_flag_offset;
+      void* object_weaken_backref_head;
       
 0.989013 2023-06-26
   [New Features]

@@ -171,7 +171,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   }
   
   int32_t object_header_size = (intptr_t)env->object_header_size;
-  int32_t object_weaken_backref_head_offset = (intptr_t)env->object_weaken_backref_head_offset;
   int32_t object_ref_count_offset = (intptr_t)env->object_ref_count_offset;
   int32_t object_basic_type_id_offset = (intptr_t)env->object_basic_type_id_offset;
   int32_t object_type_dimension_offset = (intptr_t)env->object_type_dimension_offset;

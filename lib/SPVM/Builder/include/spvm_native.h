@@ -99,7 +99,7 @@ union spvm_value {
 struct spvm_env {
   void* class_vars_heap;
   void* object_header_size;
-  void* object_weaken_backref_head_offset;
+  void* reserved2;
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
@@ -389,7 +389,7 @@ struct spvm_env_runtime {
   void* (*get_precompile_method_address)(SPVM_ENV*, void* method);
   void (*set_precompile_method_address)(void* runtime, void* method, void* address);
   void* object_header_size;
-  void* object_weaken_backref_head_offset;
+  void* reserved70;
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;

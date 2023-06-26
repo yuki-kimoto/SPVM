@@ -16,7 +16,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
 
     0 class_vars_heap
     1 object_header_size
-    2 object_weaken_backref_head_offset
+    2 reserved2
     3 object_ref_count_offset
     4 object_basic_type_id_offset
     5 object_type_dimension_offset
@@ -244,12 +244,6 @@ The pointer to the storage area of the class variables. This is used internally.
   void* object_header_size;
 
 The byte size of the object's header. This is used internally.
-
-=head2 object_weaken_backref_head_offset
-
-  void* object_weaken_backref_head_offset;
-
-The offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
 
 =head2 object_ref_count_offset
 

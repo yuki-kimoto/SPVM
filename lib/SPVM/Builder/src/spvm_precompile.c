@@ -315,7 +315,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->object_header_size;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_weaken_backref_head_offset = (intptr_t)env->object_weaken_backref_head_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->object_ref_count_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id_offset = (intptr_t)env->object_basic_type_id_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_type_dimension_offset = (intptr_t)env->object_type_dimension_offset;\n");
