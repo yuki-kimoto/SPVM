@@ -1,5 +1,5 @@
 class TestCase {
-  version "1.001003_004000";
+  version "1.001003004000";
   
   use TestCase::EnumA;
   use TestCase::EnumB;
