@@ -705,7 +705,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         if (method_mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
-          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+          SPVM_STRING_BUFFER_add(string_buffer, ", object_ref_count_offset);\n");
         }
         break;
       }
@@ -5093,7 +5093,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t current_method_return_type_flag = SPVM_API_RUNTIME_get_method_return_type_flag(runtime, current_method);
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_is_object_type(runtime, current_method_return_basic_type_id, current_method_return_type_dimension, current_method_return_type_flag);
   if (method_return_type_check_runtime_assignability_to_any_object) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval, env->api->runtime->object_ref_count_offset); }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, stack[0].oval, object_ref_count_offset); }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
   "  return error_id;\n"

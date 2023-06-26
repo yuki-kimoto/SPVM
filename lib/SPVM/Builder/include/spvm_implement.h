@@ -141,21 +141,15 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
-#define SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_ref_count_offset)))
+#define SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset)))
 
 #define SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset))++)
 
-static inline void SPVM_IMPLEMENT_INC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
-  if (object != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, object, env->api->runtime->object_ref_count_offset);
-  }
-}
-
 #define SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset))--)
 
-static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object) {
+static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t object_ref_count_offset) {
   if (object != NULL) {
-    if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, env->api->runtime->object_ref_count_offset); }
+    if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset); }
     else { env->dec_ref_count(env, stack, object); }
   }
 }
@@ -175,12 +169,12 @@ static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack
   *(void**)(dist_address) = tmp_object;
 }
 
-static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top, int32_t object_ref_count_offset) {
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
     int32_t var_index = mortal_stack[mortal_stack_index];
     void** object_address = (void**)&object_vars[var_index];
     if (*object_address != NULL) {
-      if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, *object_address, object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *object_address, env->api->runtime->object_ref_count_offset); }
+      if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, *object_address,object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *object_address, object_ref_count_offset); }
       else { env->dec_ref_count(env, stack, *object_address); }
       *object_address = NULL;
     }
@@ -2599,7 +2593,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in, int32_t object_ref_count_offset) {
   *(void**)&stack[0] = in;
   if (in != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in, env->api->runtime->object_ref_count_offset);
+    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in, object_ref_count_offset);
   }
 }
 
