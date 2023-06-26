@@ -4244,9 +4244,9 @@ int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_M
 
 const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  const char* spvm_version = SPVM_VERSION;
+  const char* spvm_version_string = SPVM_NATIVE_VERSION_STRING;
   
-  return spvm_version;
+  return spvm_version_string;
 }
 
 double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -4257,19 +4257,9 @@ double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t spvm_version_string_length = strlen(spvm_version_string);
   
-  char spvm_version_string_without_hyphen[20] = {0};
-  int32_t spvm_version_string_without_hyphen_length = 0;
-  for (int32_t i = 0; i < spvm_version_string_length; i++) {
-    char ch = spvm_version_string[i];
-    if (!(ch == '_')) {
-      spvm_version_string_without_hyphen[spvm_version_string_without_hyphen_length] = ch;
-      spvm_version_string_without_hyphen_length++;
-    }
-  }
-  
   char *end;
   errno = 0;
-  double version_number = strtod(spvm_version_string_without_hyphen, &end);
+  double version_number = strtod(spvm_version_string, &end);
   assert(*end == '\0');
   assert(errno == 0);
   

@@ -9,6 +9,14 @@
 #include <string.h>
 #include <stdarg.h>
 
+#define SPVM_NATIVE_VERSION_NUMBER 0.989012
+
+#define SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x) #x
+
+#define SPVM_NATIVE_CREATE_VERSION_STRING(x) SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x)
+
+#define SPVM_NATIVE_VERSION_STRING SPVM_NATIVE_CREATE_VERSION_STRING(SPVM_NATIVE_VERSION_NUMBER);
+
 struct spvm_env;
 typedef struct spvm_env SPVM_ENV;
 
@@ -47,12 +55,6 @@ union spvm_value {
   float* fref;
   double* dref;
 };
-
-
-
-
-
-
 
 
 

@@ -759,13 +759,13 @@ sub get_version_string {
 sub get_spvm_version_string {
   
   my $builder_dir = &get_builder_dir_from_config_class;
-  my $spvm_api_header_file = "$builder_dir/include/spvm_api.h";
+  my $spvm_api_header_file = "$builder_dir/include/spvm_native.h";
   
   open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
   local $/;
   my $content = <$spvm_module_fh>;
   my $version_string;
-  if ($content =~ /#define\s+SPVM_VERSION\s*"([\d\._]+)"/) {
+  if ($content =~ /#define\s+SPVM_NATIVE_VERSION_NUMBER\s* ([\d\._]+)/) {
     $version_string = $1;
   }
   

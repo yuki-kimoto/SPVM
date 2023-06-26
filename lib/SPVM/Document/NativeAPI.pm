@@ -2347,6 +2347,16 @@ The basic type category for the any object type.
 
 The type flags.
 
+=head1 Version
+
+=head2 SPVM_NATIVE_VERSION_NUMBER
+
+The version number of the SPVM language.
+
+=head2 SPVM_NATIVE_VERSION_STRING
+
+The version string of the SPVM language.
+
 =head1 Utility Functions
 
 =head2 spvm_warn

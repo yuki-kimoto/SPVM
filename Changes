@@ -11,6 +11,12 @@
       The get_array_unsafe field in the List class was added.
       The get_array_unsafe field in the StringList class was added.
       The get_string_unsafe field in the StringBuffer class was added.
+   
+   * The following Native API constant value were added.
+      
+      SPVM_NATIVE_VERSION_NUMBER
+      
+      SPVM_NATIVE_VERSION_STRING
       
   [Incompatibe Changes]
     * The following fields were removed.
