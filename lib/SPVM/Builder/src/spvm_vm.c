@@ -2316,7 +2316,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, current_method_return_basic_type_id, current_method_return_type_dimension, current_method_return_type_flag);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
-          SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+          SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0], env->api->runtime->object_ref_count_offset);
         }
       }
     }

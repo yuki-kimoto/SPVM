@@ -1818,7 +1818,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         if (!error) {
           if (method_return_type_is_object) {
             if (*(void**)&stack[0] != NULL) {
-              SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0]);
+              SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0], env->api->runtime->object_ref_count_offset);
             }
           }
         }
