@@ -738,7 +738,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
     if (basic_type->anon_basic_types->length > 0) {
       SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, 0);
-      runtime_basic_type->anon_basic_types_base_address_id = anon_basic_type->anon_basic_type_id;
+      runtime_basic_type->anon_basic_types_base_address_id = anon_basic_type->anon_basic_type_base_address_id;
     }
     else {
       runtime_basic_type->anon_basic_types_base_address_id = -1;
@@ -915,7 +915,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   int32_t* anon_basic_type_32bit_ptr = runtime_codes_ptr;
   for (int32_t anon_basic_type_id = 0; anon_basic_type_id < compiler->anon_basic_types->length; anon_basic_type_id++) {
     SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(compiler->anon_basic_types, anon_basic_type_id);
-    int32_t anon_basic_type_id = anon_basic_type->anon_basic_type_id;
+    int32_t anon_basic_type_id = anon_basic_type->anon_basic_type_base_address_id;
     *anon_basic_type_32bit_ptr = anon_basic_type->id;
     anon_basic_type_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
   }
