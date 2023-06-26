@@ -266,13 +266,13 @@ class DoubleList {
   method to_array : double[] () {
     my $length = $self->length;
     
-    my $array = new double[$length];
+    my $new_array = new double[$length];
     
     my $elements = $self->{values};
     
-    Array->memcpy_double($array, 0, $elements, 0, $length);
+    Array->memcpy_double($new_array, 0, $elements, 0, $length);
     
-    return $array;
+    return $new_array;
   }
   
   method unshift : void ($element : double) {

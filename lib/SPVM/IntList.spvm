@@ -266,13 +266,13 @@ class IntList {
   method to_array : int[] () {
     my $length = $self->length;
     
-    my $array = new int[$length];
+    my $new_array = new int[$length];
     
     my $elements = $self->{values};
     
-    Array->memcpy_int($array, 0, $elements, 0, $length);
+    Array->memcpy_int($new_array, 0, $elements, 0, $length);
     
-    return $array;
+    return $new_array;
   }
   
   method unshift : void ($element : int) {

@@ -141,8 +141,8 @@ class StringBuffer {
   }
   
   method to_string : string () {
-    my $string = Fn->substr($self->{value}, 0, $self->{length});
-    return $string;
+    my $new_string = Fn->substr($self->{value}, 0, $self->{length});
+    return $new_string;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {

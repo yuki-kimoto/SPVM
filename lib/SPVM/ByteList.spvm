@@ -266,13 +266,13 @@ class ByteList {
   method to_array : byte[] () {
     my $length = $self->length;
     
-    my $array = new byte[$length];
+    my $new_array = new byte[$length];
     
     my $elements = $self->{values};
     
-    Array->memcpy_byte($array, 0, $elements, 0, $length);
+    Array->memcpy_byte($new_array, 0, $elements, 0, $length);
     
-    return $array;
+    return $new_array;
   }
   
   method unshift : void ($element : int) {

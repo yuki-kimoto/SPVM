@@ -270,9 +270,9 @@ class List {
   
   method to_array : object[] () {
     my $length = $self->{length};
-    my $array = Array->new_proto($self->{values}, $length);
-    Array->memcpy_object_address($array, 0, $self->{values}, 0, $length);
-    return $array;
+    my $new_array = Array->new_proto($self->{values}, $length);
+    Array->memcpy_object_address($new_array, 0, $self->{values}, 0, $length);
+    return $new_array;
   }
   
   method unshift : void ($element : object) {
