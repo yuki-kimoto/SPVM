@@ -1,4 +1,6 @@
 0.989014 2023-06-26
+  [Bug Fix]
+    * The bug that the get_field_static Native API didn't work well was fixed.
   [Incompatibe Changes]
     * The following Native APIs were removed.
       
