@@ -270,8 +270,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       // Copy has_precomile_attribute from anon method defined basic type
       if (method->anon_method_defined_basic_type_name) {
         SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->anon_method_defined_basic_type_name, strlen(method->anon_method_defined_basic_type_name));
-
-        SPVM_LIST_push(anon_method_defined_basic_type->anon_methods, method);
         basic_type->is_precompile = anon_method_defined_basic_type->is_precompile;
       }
     }
