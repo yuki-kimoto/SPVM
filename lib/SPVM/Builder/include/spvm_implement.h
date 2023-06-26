@@ -2596,7 +2596,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 #define SPVM_IMPLEMENT_RETURN_FLOAT(stack, in) (*(float*)&stack[0] = in)
 #define SPVM_IMPLEMENT_RETURN_DOUBLE(stack, in) (*(double*)&stack[0] = in)
 
-static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
+static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in, int32_t object_ref_count_offset) {
   *(void**)&stack[0] = in;
   if (in != NULL) {
     SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in, env->api->runtime->object_ref_count_offset);

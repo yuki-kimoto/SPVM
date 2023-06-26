@@ -2221,7 +2221,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_RETURN_OBJECT: {
-        SPVM_IMPLEMENT_RETURN_OBJECT(env, stack, object_vars[opcode->operand0]);
+        SPVM_IMPLEMENT_RETURN_OBJECT(env, stack, object_vars[opcode->operand0], object_ref_count_offset);
         opcode_rel_index = opcode->operand1;
         continue;
       }
