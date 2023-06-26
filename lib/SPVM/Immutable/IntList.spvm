@@ -7,7 +7,7 @@ class Immutable::IntList {
   
   # Fields
   has length : ro int;
-  has values : int[];
+  has array : int[];
   
   # Class methods
   static method new : Immutable::IntList ($array : int[] = undef) {
@@ -22,7 +22,7 @@ class Immutable::IntList {
     my $self = &new_len($length);
     
     if ($array) {
-      Array->memcpy_int($self->{values}, 0, $array, 0, $length);
+      Array->memcpy_int($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -36,7 +36,7 @@ class Immutable::IntList {
     }
     
     $self->{length} = $length;
-    $self->{values} = new int[$length];
+    $self->{array} = new int[$length];
     
     return $self;
   }
@@ -53,7 +53,7 @@ class Immutable::IntList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -61,13 +61,13 @@ class Immutable::IntList {
   method to_array : int[] () {
     my $length = $self->length;
     
-    my $array = new int[$length];
+    my $new_array = new int[$length];
     
-    my $elements = $self->{values};
+    my $array = $self->{array};
     
-    Array->memcpy_int($array, 0, $elements, 0, $length);
+    Array->memcpy_int($new_array, 0, $array, 0, $length);
     
-    return $array;
+    return $new_array;
   }
   
 }

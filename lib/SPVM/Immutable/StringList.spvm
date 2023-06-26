@@ -7,7 +7,7 @@ class Immutable::StringList {
   
   # Fields
   has length : ro int;
-  has values : string[];
+  has array : string[];
   
   # Class methods
   static method new : Immutable::StringList ($array : string[] = undef) {
@@ -25,7 +25,7 @@ class Immutable::StringList {
       for (my $i = 0; $i < $length; $i++ ) {
         my $value = copy $array->[$i];
         make_read_only $value;
-        $self->{values}[$i] = $value;
+        $self->{array}[$i] = $value;
       }
     }
     
@@ -40,7 +40,7 @@ class Immutable::StringList {
     }
     
     $self->{length} = $length;
-    $self->{values} = new string[$length];
+    $self->{array} = new string[$length];
     
     return $self;
   }
@@ -57,7 +57,7 @@ class Immutable::StringList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -65,12 +65,12 @@ class Immutable::StringList {
   method to_array : string[] () {
     my $length = $self->length;
     
-    my $array = new string[$length];
+    my $new_array = new string[$length];
     
-    my $elements = $self->{values};
+    my $array = $self->{array};
     
-    Array->memcpy_string_address($array, 0, $elements, 0, $length);
+    Array->memcpy_string_address($new_array, 0, $array, 0, $length);
     
-    return $array;
+    return $new_array;
   }
 }

@@ -7,7 +7,7 @@ class Immutable::ByteList {
   
   # Fields
   has length : ro int;
-  has values : byte[];
+  has array : byte[];
   
   # Class methods
   static method new : Immutable::ByteList ($array : byte[] = undef) {
@@ -22,7 +22,7 @@ class Immutable::ByteList {
     my $self = &new_len($length);
     
     if ($array) {
-      Array->memcpy_byte($self->{values}, 0, $array, 0, $length);
+      Array->memcpy_byte($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -36,7 +36,7 @@ class Immutable::ByteList {
     }
     
     $self->{length} = $length;
-    $self->{values} = new byte[$length];
+    $self->{array} = new byte[$length];
     
     return $self;
   }
@@ -53,7 +53,7 @@ class Immutable::ByteList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -61,12 +61,12 @@ class Immutable::ByteList {
   method to_array : byte[] () {
     my $length = $self->length;
     
-    my $array = new byte[$length];
+    my $new_array = new byte[$length];
     
-    my $elements = $self->{values};
+    my $array = $self->{array};
     
-    Array->memcpy_byte($array, 0, $elements, 0, $length);
+    Array->memcpy_byte($new_array, 0, $array, 0, $length);
     
-    return $array;
+    return $new_array;
   }
 }

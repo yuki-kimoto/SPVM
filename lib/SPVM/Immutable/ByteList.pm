@@ -50,7 +50,7 @@ Creates a new L<Immutable::ByteList|SPVM::Immutable::ByteList> object using L</"
 
 The passed length to L</"new_len"> is the length of the $array. If the array is undef, the length is 0.
 
-The elements of the $array are copied to the values of the the created array.
+The elements of the $array are copied to the elements of the the created array.
 
 Examples:
 

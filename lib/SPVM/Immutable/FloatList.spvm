@@ -7,7 +7,7 @@ class Immutable::FloatList {
   
   # Fields
   has length : ro int;
-  has values : float[];
+  has array : float[];
   
   # Class methods
   static method new : Immutable::FloatList ($array : float[] = undef) {
@@ -22,7 +22,7 @@ class Immutable::FloatList {
     my $self = &new_len($length);
     
     if ($array) {
-      Array->memcpy_float($self->{values}, 0, $array, 0, $length);
+      Array->memcpy_float($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -36,7 +36,7 @@ class Immutable::FloatList {
     }
     
     $self->{length} = $length;
-    $self->{values} = new float[$length];
+    $self->{array} = new float[$length];
     
     return $self;
   }
@@ -53,7 +53,7 @@ class Immutable::FloatList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -61,12 +61,12 @@ class Immutable::FloatList {
   method to_array : float[] () {
     my $length = $self->length;
     
-    my $array = new float[$length];
+    my $new_array = new float[$length];
     
-    my $elements = $self->{values};
+    my $array = $self->{array};
     
-    Array->memcpy_float($array, 0, $elements, 0, $length);
+    Array->memcpy_float($new_array, 0, $array, 0, $length);
     
-    return $array;
+    return $new_array;
   }
 }

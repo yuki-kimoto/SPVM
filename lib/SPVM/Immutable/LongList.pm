@@ -50,7 +50,7 @@ Create a new L<Immutable::LongList|SPVM::Immutable::LongList> object using L</"n
 
 The passed length to L</"new_len"> is the length of the array. If the array is undef, the length is 0.
 
-The elements of the array are copied to the values of the the created array.
+The elements of the array are copied to the elements of the the created array.
 
 Examples:
 
