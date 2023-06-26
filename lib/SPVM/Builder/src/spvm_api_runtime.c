@@ -953,7 +953,7 @@ SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIM
     return NULL;
   }
   
-  SPVM_RUNTIME_ARG* arg = &runtime->args[method->args_base_address_id];
+  SPVM_RUNTIME_ARG* arg = &runtime->args[method->args_base_address_id + arg_index];
   
   return arg;
 }
