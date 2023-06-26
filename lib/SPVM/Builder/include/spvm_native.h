@@ -104,7 +104,7 @@ struct spvm_env {
   void* reserved4;
   void* reserved5;
   void* reserved6;
-  void* object_length_offset;
+  void* reserved7;
   SPVM_ENV_API* api;
   void* allocator;
   SPVM_ENV* (*new_env_raw)();

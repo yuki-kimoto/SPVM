@@ -21,7 +21,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
     4 reserved4
     5 reserved5
     6 reserved6
-    7 object_length_offset
+    7 reserved7
     8 api
     9 allocator
    10 new_env_raw
@@ -258,12 +258,6 @@ The reference count offset in the object structure. This is used internally.
 The offset of runtime type category in object structure. This is used internally.
 
 This value is always C<NULL>, because SPVM 0.9511+, this value is any more used.
-
-=head2 object_length_offset
-
-  void* object_length_offset;
-
-The length offset in the object structure. This is used internally.
 
 =head2 api
 

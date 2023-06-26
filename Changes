@@ -6,6 +6,7 @@
       void* object_weaken_backref_head;
       void* object_basic_type_id_offset;
       void* object_type_dimension_offset;
+      void* object_length_offset;
       
     * The following Native Runtime APIs were removed.
       
