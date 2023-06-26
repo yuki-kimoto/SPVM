@@ -125,8 +125,7 @@ static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VAL
 
 static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, char* message, int32_t* error_id) {
 
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type_id, method_name);
+  void* method = env->get_method(env, stack, basic_type_name, method_name);
   
   if (!method) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], method_name);
