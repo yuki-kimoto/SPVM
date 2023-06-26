@@ -312,7 +312,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->api->runtime->object_header_size;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->api->runtime->object_ref_count_offset;\n");
@@ -2307,6 +2307,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
@@ -2390,6 +2394,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, decl_field, ");
@@ -2469,6 +2477,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, decl_field, &error_id, object_header_size);\n");
         
         break;
@@ -2499,6 +2511,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, decl_field, &error_id, object_header_size);\n");
         
         break;
@@ -2527,6 +2543,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, decl_field, &error_id, object_header_size);\n");
