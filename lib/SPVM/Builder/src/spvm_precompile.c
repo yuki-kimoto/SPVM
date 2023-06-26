@@ -310,7 +310,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
   
@@ -519,37 +518,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
-                                                "    }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        }
-      }
-      
-      if (field) {
-        assert(basic_type_id >= 0);
-        
-        int32_t field_name_id = SPVM_API_RUNTIME_get_field_name_id(runtime, field);
-        const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field_name_id);
-        int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
-        const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t found = SPVM_PRECOMPILE_contains_field(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, field_name);
-        
-        if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
-          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
-          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(env, stack, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-          SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", message, &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
                                                 "      goto END_OF_METHOD;\n"
@@ -2303,10 +2271,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2390,10 +2354,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2473,10 +2433,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2507,10 +2463,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2540,10 +2492,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  field_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)field_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
