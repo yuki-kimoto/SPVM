@@ -66,7 +66,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'MIT License'));
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'version "0.001_001";'));
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'version "0.001";'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -179,7 +179,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   my $spvm_module_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_module_file);
   ok(SPVM::Builder::Util::file_contains($spvm_module_file, "class Foo {"));
-  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'version "0.001_001";'));
+  ok(SPVM::Builder::Util::file_contains($spvm_module_file, 'version "0.001";'));
   
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
@@ -549,7 +549,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   
   my $mymeta_json = 'MYMETA.json';
   ok(-f $mymeta_json);
-  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001_001"));
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
   
   chdir($save_cur_dir) or die;
 }

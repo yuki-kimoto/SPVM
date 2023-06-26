@@ -266,7 +266,7 @@ sub generate_spvm_module_file {
     $attributes = ": interface_t ";
   }
 
-  my $version_decl = 'version "0.001_001";';
+  my $version_decl = 'version "0.001";';
   
   my $only_lib_files = $self->only_lib_files;
   if ($only_lib_files) {
@@ -470,7 +470,7 @@ EOS
 EOS
   }
   
-  my $version_decl = 'our $VERSION = "0.001_001";';
+  my $version_decl = 'our $VERSION = "0.001";';
   
   my $only_lib_files = $self->only_lib_files;
   if ($only_lib_files) {
