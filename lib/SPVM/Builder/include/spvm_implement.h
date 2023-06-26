@@ -94,9 +94,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID_BY_NAME(SPVM_ENV* env, SP
 
 static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, char* message, int32_t* error_id) {
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
-  
-  void* field = env->api->runtime->get_field_by_name(env->runtime, basic_type_id, field_name);
+  void* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
     snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
