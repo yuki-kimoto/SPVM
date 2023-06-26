@@ -237,7 +237,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* new_object_raw = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_stack_length = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t items = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t entity_method_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string = NULL;\n");
@@ -4987,7 +4987,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_stack_length = opcode->operand2;
+        int32_t items = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -5002,8 +5002,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  args_stack_length = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, items);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
@@ -5014,14 +5014,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_stack_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, items);\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_stack_length = opcode->operand2;
+        int32_t items = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -5036,8 +5036,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  args_stack_length = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, items);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
@@ -5049,14 +5049,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
-                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_stack_length);\n");
+                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, items);\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_stack_length = opcode->operand2;
+        int32_t items = opcode->operand2;
         
         int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
         const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
@@ -5071,12 +5071,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  args_stack_length = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, args_stack_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, items);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  object = stack[0].oval;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, basic_type_name, method_name, args_stack_length, &error_id, tmp_buffer, sizeof(tmp_buffer));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, object, basic_type_name, method_name, items, &error_id, tmp_buffer, sizeof(tmp_buffer));\n");
         
         break;
       }

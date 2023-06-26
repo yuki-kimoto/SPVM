@@ -8,6 +8,6 @@
 #include "spvm_native.h"
 #include "spvm_runtime_method.h"
 
-int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_stack_length);
+int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items);
 
 #endif

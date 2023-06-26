@@ -1493,9 +1493,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VA
   }
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_method_raw(env, stack, method, args_stack_length);
+    int32_t error = env->call_method_raw(env, stack, method, items);
     if (error) {
       return 1;
     }
@@ -1522,10 +1522,10 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   }
   void* obj_point = NULL;
   {
-    int32_t args_stack_length = 2;
+    int32_t items = 2;
     stack[0].ival = 1;
     stack[1].ival = 2;
-    error = env->call_method(env, stack, method, args_stack_length);
+    error = env->call_method(env, stack, method, items);
     if (error) { return error; }
     obj_point = stack[0].oval;
   }
@@ -1557,9 +1557,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) {
       return error;
     }
@@ -1581,9 +1581,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) {
       return error;
     }
@@ -1607,9 +1607,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "x", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "x", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; }
     output = stack[0].ival;
   }
@@ -1627,9 +1627,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_exception
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "not_found", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "not_found", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; };
     output = stack[0].ival;
   }
@@ -1650,9 +1650,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_by_name(env, stack, "x", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_by_name(env, stack, "x", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; }
     output = stack[0].ival;
   }
@@ -1670,9 +1670,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_by_name(env, stack, "not_found", args_stack_length, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_by_name(env, stack, "not_found", items, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; };
     output = stack[0].ival;
   }
@@ -1707,8 +1707,8 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   
   int32_t ret;
   {
-    int32_t args_stack_length = 0;
-    env->call_method(env, stack, method, args_stack_length);
+    int32_t items = 0;
+    env->call_method(env, stack, method, items);
     if (error) { return error; }
     ret = stack[0].ival;
   }

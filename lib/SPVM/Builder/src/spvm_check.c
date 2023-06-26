@@ -189,7 +189,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
       
       // Argument limit check
-      int32_t args_stack_length = 0;
+      int32_t items = 0;
       SPVM_TYPE* last_arg_type = NULL;
       int32_t found_optional_arg = 0;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
@@ -245,10 +245,10 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         }
         
         if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
-          args_stack_length += arg_type->basic_type->unmerged_fields->length;
+          items += arg_type->basic_type->unmerged_fields->length;
         }
         else {
-          args_stack_length++;
+          items++;
         }
         
         if (arg_index == method->args_length - 1) {
@@ -256,7 +256,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         }
       }
       
-      if (!(args_stack_length <= 255)) {
+      if (!(items <= 255)) {
         SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }

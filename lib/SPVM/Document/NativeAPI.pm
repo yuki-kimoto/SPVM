@@ -855,7 +855,7 @@ If you specify a pointer object and a C language pointer, the C language pointer
 
 =head2 call_method_raw
 
-  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
+  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1535,7 +1535,7 @@ Examples:
 
 =head2 call_class_method_by_name
 
-  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Calls a class method given the basic type name and method name.
 
@@ -1544,9 +1544,9 @@ Examples:
   int32_t error = 0;
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_stack_length, &error, __func__, __FILE__, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error, __func__, __FILE__, __LINE__);
     if (error) { return error; }
     
     output = stack[0].ival;
@@ -1554,7 +1554,7 @@ Examples:
 
 =head2 call_instance_method_by_name
 
-  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method given the method name.
 
@@ -1938,7 +1938,7 @@ Examples:
 
 =head2 call_instance_method_static_by_name
 
-  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_stack_length, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method by the basic type name and the method name.
 
@@ -1947,9 +1947,9 @@ Examples:
   int32_t error = 0;
   int32_t output;
   {
-    int32_t args_stack_length = 1;
+    int32_t items = 1;
     stack[0].oval = obj_point;
-    env->call_instance_method_static_by_name(env, stack, "Point", "x", args_stack_length, &error, __func__, __FILE__, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "Point", "x", items, &error, __func__, __FILE__, __LINE__);
     if (error) { return error; }
     output = stack[0].ival;
   }
@@ -2030,7 +2030,7 @@ If the version string in the basic_type is not defined, returns -1.
 
 =head2 call_method
 
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_stack_length);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
