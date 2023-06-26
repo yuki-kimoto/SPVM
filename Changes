@@ -1,3 +1,30 @@
+0.989013 2023-06-26
+  [New Features]
+    * The following methods were added.
+      
+      The get_array_unsafe field in the ByteList class was added.
+      The get_array_unsafe field in the ShortList class was added.
+      The get_array_unsafe field in the IntList class was added.
+      The get_array_unsafe field in the LongList class was added.
+      The get_array_unsafe field in the FloatList class was added.
+      The get_array_unsafe field in the DoubleList class was added.
+      The get_array_unsafe field in the List class was added.
+      The get_array_unsafe field in the StringList class was added.
+      The get_string_unsafe field in the StringBuffer class was added.
+      
+  [Incompatibe Changes]
+    * The following fields were removed.
+    
+      The values field in the ByteList class was removed.
+      The values field in the ShortList class was removed.
+      The values field in the IntList class was removed.
+      The values field in the LongList class was removed.
+      The values field in the FloatList class was removed.
+      The values field in the DoubleList class was removed.
+      The values field in the List class was removed.
+      The values field in the StringList class was removed.
+      The value field in the StringBuffer class was removed.
+    
 0.989012 2023-06-26
   [Bug Fix]
     * A bug was fixed: Some native APIs had not returned correct error return values.

@@ -75,15 +75,6 @@ The capacity. This is the length of the internally reserved elements to extend t
 
 The length of the list.
 
-=head2 values
-
-  has values : ro string[];
-
-The values. This is the internally used array, but it can be manipulated directly.
-
-  my $elements = $list->values;
-  $valeus->[0] = "d";
-
 =head1 Class Methods
 
 =head2 new
@@ -246,6 +237,14 @@ The length of the $list must be greater than 0. Otherwise an exception is thrown
   method to_array : string[] ();
 
 Converts the list to an array.
+
+=head2 get_array_unsafe
+
+  method get_array_unsafe : string[] ();
+
+Gets the internally array.
+
+This array is unsafe because it continues to point to the old array if the internal array is extended.
 
 =head2 unshift
 

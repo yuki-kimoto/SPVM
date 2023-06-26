@@ -13,7 +13,7 @@ class ByteList {
   # Fields
   has capacity : ro int;
   has length : ro int;
-  has values : ro byte[];
+  has array : byte[];
   
   # Class methods
   static method new : ByteList ($array : byte[] = undef, $capacity : int = -1) {
@@ -28,7 +28,7 @@ class ByteList {
     my $self = &new_len($length, $capacity);
     
     if ($array) {
-      Array->memcpy_byte($self->{values}, 0, $array, 0, $length);
+      Array->memcpy_byte($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -51,7 +51,7 @@ class ByteList {
     
     $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new byte[$capacity];
+    $self->{array} = new byte[$capacity];
     
     return $self;
   }
@@ -68,7 +68,7 @@ class ByteList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -87,7 +87,7 @@ class ByteList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
@@ -105,9 +105,9 @@ class ByteList {
       die "The length of the \$list must be greater than 0.";
     }
     
-    my $element = $self->{values}[$length - 1];
+    my $element = $self->{array}[$length - 1];
     
-    $self->{values}[$length - 1] = 0;
+    $self->{array}[$length - 1] = 0;
     
     $self->{length}--;
     
@@ -120,7 +120,7 @@ class ByteList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{values}[$length] = (byte)$element;
+    $self->{array}[$length] = (byte)$element;
     
     $self->{length} = $new_length;
   }
@@ -136,7 +136,7 @@ class ByteList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     my $remove_value = $elements->[$index];
     
     my $dist_index = $index;
@@ -170,10 +170,10 @@ class ByteList {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_byte($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
+    Array->memmove_byte($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Array->memcpy_byte($self->{values}, $offset, $replace, 0, $replace_length);
+      Array->memcpy_byte($self->{array}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -188,9 +188,9 @@ class ByteList {
     
     if ($new_capacity > $capacity) {
       my $length = $self->{length};
-      my $new_values = new byte[$new_capacity];
-      Array->memcpy_byte($new_values, 0, $self->{values}, 0, $length);
-      $self->{values} = $new_values;
+      my $new_array = new byte[$new_capacity];
+      Array->memcpy_byte($new_array, 0, $self->{array}, 0, $length);
+      $self->{array} = $new_array;
       $self->{capacity} = $new_capacity;
     }
   }
@@ -204,10 +204,10 @@ class ByteList {
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
-      Array->memset_byte($self->{values}, 0, $length, $new_length - $length);
+      Array->memset_byte($self->{array}, 0, $length, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      Array->memset_byte($self->{values}, 0, $new_length, $length - $new_length);
+      Array->memset_byte($self->{array}, 0, $new_length, $length - $new_length);
     }
     
     $self->{length} = $new_length;
@@ -224,7 +224,7 @@ class ByteList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    $self->{values}[$index] = (byte)$element;
+    $self->{array}[$index] = (byte)$element;
   }
   
   method set_array : void ($array : byte[]) {
@@ -240,7 +240,7 @@ class ByteList {
       die "The length of the \$array must be the \$same as the length of the \$list.";
     }
     
-    Array->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
+    Array->memcpy_byte($self->{array}, 0, $array, 0, $cur_length);
   }
   
   method shift : int () {
@@ -250,7 +250,7 @@ class ByteList {
       die "The length of the \$list must be greater than 0.";
     }
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     my $element = $elements->[0];
     
@@ -268,21 +268,25 @@ class ByteList {
     
     my $new_array = new byte[$length];
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     Array->memcpy_byte($new_array, 0, $elements, 0, $length);
     
     return $new_array;
   }
   
+  method get_array_unsafe : byte[] () {
+    return $self->{array};
+  }
+  
   method unshift : void ($element : int) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
-
+    
     $self->_maybe_extend($new_length);
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     Array->memmove_byte($elements, 1, $elements, 0, $length);
     
@@ -302,13 +306,13 @@ class ByteList {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_values = new byte[$new_capacity];
+    my $new_array = new byte[$new_capacity];
     
     my $length = $self->{length};
-    my $elements = $self->{values};
-    Array->memcpy_byte($new_values, 0, $elements, 0, $length);
+    my $elements = $self->{array};
+    Array->memcpy_byte($new_array, 0, $elements, 0, $length);
     
-    $self->{values} = $new_values;
+    $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
 }

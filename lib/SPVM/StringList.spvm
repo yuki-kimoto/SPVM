@@ -13,7 +13,7 @@ class StringList {
   # Fields
   has capacity : ro int;
   has length : ro int;
-  has values : ro string[];
+  has array : string[];
   
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
@@ -28,7 +28,7 @@ class StringList {
     my $self = &new_len($length, $capacity);
     
     if ($array) {
-      Array->memcpy_string_address($self->{values}, 0, $array, 0, $length);
+      Array->memcpy_string_address($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -51,7 +51,7 @@ class StringList {
     
     $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new string[$capacity];
+    $self->{array} = new string[$capacity];
     
     return $self;
   }
@@ -68,7 +68,7 @@ class StringList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $element = $self->{values}[$index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -87,7 +87,7 @@ class StringList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
@@ -105,9 +105,9 @@ class StringList {
       die "The length of the \$list must be greater than 0.";
     }
     
-    my $element = $self->{values}[$length - 1];
+    my $element = $self->{array}[$length - 1];
     
-    $self->{values}[$length - 1] = 0;
+    $self->{array}[$length - 1] = 0;
     
     $self->{length}--;
     
@@ -120,7 +120,7 @@ class StringList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{values}[$length] = $element;
+    $self->{array}[$length] = $element;
     
     $self->{length} = $new_length;
   }
@@ -136,7 +136,7 @@ class StringList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     my $remove_value = $elements->[$index];
     
     my $dist_index = $index;
@@ -170,10 +170,10 @@ class StringList {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_string_address($self->{values}, $offset + $replace_length, $self->{values}, $offset + $remove_length, $move_length);
+    Array->memmove_string_address($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Array->memcpy_string_address($self->{values}, $offset, $replace, 0, $replace_length);
+      Array->memcpy_string_address($self->{array}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -188,9 +188,9 @@ class StringList {
     
     if ($new_capacity > $capacity) {
       my $length = $self->{length};
-      my $new_values = new string[$new_capacity];
-      Array->memcpy_string_address($new_values, 0, $self->{values}, 0, $length);
-      $self->{values} = $new_values;
+      my $new_array = new string[$new_capacity];
+      Array->memcpy_string_address($new_array, 0, $self->{array}, 0, $length);
+      $self->{array} = $new_array;
       $self->{capacity} = $new_capacity;
     }
   }
@@ -204,10 +204,10 @@ class StringList {
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
-      Array->memset_string($self->{values}, undef, $length, $new_length - $length);
+      Array->memset_string($self->{array}, undef, $length, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      Array->memset_string($self->{values}, undef, $new_length, $length - $new_length);
+      Array->memset_string($self->{array}, undef, $new_length, $length - $new_length);
     }
     
     $self->{length} = $new_length;
@@ -224,7 +224,7 @@ class StringList {
       die "The \$index must be less than the length of the \$list.";
     }
     
-    $self->{values}[$index] = $element;
+    $self->{array}[$index] = $element;
   }
   
   method set_array : void ($array : string[]) {
@@ -240,7 +240,7 @@ class StringList {
       die "The length of the \$array must be the \$same as the length of the \$list.";
     }
     
-    Array->memcpy_string_address($self->{values}, 0, $array, 0, $cur_length);
+    Array->memcpy_string_address($self->{array}, 0, $array, 0, $cur_length);
   }
   
   method shift : string () {
@@ -250,7 +250,7 @@ class StringList {
       die "The length of the \$list must be greater than 0.";
     }
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     my $element = $elements->[0];
     
@@ -268,21 +268,25 @@ class StringList {
     
     my $new_array = new string[$length];
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
     
     return $new_array;
   }
   
+  method get_array_unsafe : string[] () {
+    return $self->{array};
+  }
+  
   method unshift : void ($element : string) {
     my $length = $self->{length};
     
     my $new_length = $length + 1;
-
+    
     $self->_maybe_extend($new_length);
     
-    my $elements = $self->{values};
+    my $elements = $self->{array};
     
     Array->memmove_string_address($elements, 1, $elements, 0, $length);
     
@@ -302,13 +306,13 @@ class StringList {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_values = new string[$new_capacity];
+    my $new_array = new string[$new_capacity];
     
     my $length = $self->{length};
-    my $elements = $self->{values};
-    Array->memcpy_string_address($new_values, 0, $elements, 0, $length);
+    my $elements = $self->{array};
+    Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
     
-    $self->{values} = $new_values;
+    $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
 }

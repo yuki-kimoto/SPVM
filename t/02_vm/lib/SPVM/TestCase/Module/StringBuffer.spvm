@@ -19,19 +19,6 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    # value
-    {
-      my $buffer = StringBuffer->new;
-      $buffer->push("abc");
-      
-      my $value = $buffer->value;
-      $value->[0] = 'd';
-      
-      unless ($buffer->to_string eq "dbc") {
-        return 0;
-      }
-    }
-    
     return 1;
   }
   
@@ -230,6 +217,23 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method get_string_unsafe : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = (mutable string)$buffer->get_string_unsafe;
+      $value->[0] = 'd';
+      
+      unless ($buffer->to_string eq "dbc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method replace : int () {
     {
       my $target = StringBuffer->new;
@@ -336,14 +340,14 @@ class TestCase::Module::StringBuffer {
     }
     {
       my $buffer = StringBuffer->new("abc");
-      my $value = $buffer->value;
+      my $value = (mutable string)$buffer->get_string_unsafe;
       my $string = $buffer->to_string;
       $buffer->reserve(5);
       unless ($buffer->capacity == 5) {
         return 0;
       }
       
-      if ($buffer->value == $value) {
+      if ((mutable string)$buffer->get_string_unsafe == $value) {
         return 0;
       }
       
@@ -361,7 +365,7 @@ class TestCase::Module::StringBuffer {
       my $buffer = StringBuffer->new;
       $buffer->push("abc");
       
-      my $value = $buffer->value;
+      my $value = (mutable string)$buffer->get_string_unsafe;
       
       my $length = $buffer->length;
       

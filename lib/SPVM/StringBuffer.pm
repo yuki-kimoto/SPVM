@@ -48,15 +48,6 @@ The capacity. This is the length of the internally reserved characters to extend
 
 The length of the string buffer.
 
-=head2 value
-
-  has value : ro mutable string;
-
-The value. This is the internally used string, but it can be manipulated directly.
-
-  my $value = $buffer->value;
-  $valeu->[0] = 'a';
-
 =head1 Class Methods
 
 =head2 new
@@ -125,8 +116,6 @@ Reserves the characters that size is the $new_capacity.
 
 If the $new_capacity is greater than the capacity of the string buffer, the capacity of the string buffer is extended to the $new_capacity.
 
-Note that L</"value"> is replaced with the new value and the value of the original string buffer are copied to the new value in the above case.
-
 Exceptions:
 
 The $new_capacity must be greater than or equal to 0. Otherwise an exception is thrown.
@@ -135,7 +124,15 @@ The $new_capacity must be greater than or equal to 0. Otherwise an exception is 
 
   method to_string : string ();
 
-Convert the string buffer to a string.
+Creates a new string with the length of the buffer and copies all characters in the buffer into the new string, and returns it.
+
+=head2 get_string_unsafe
+
+  method get_string_unsafe : string ();
+
+Gets the internally string. 
+
+This buffer is unsafe because it continues to point to the old string if the internal string is extended.
 
 =head1 Copyright & License
 

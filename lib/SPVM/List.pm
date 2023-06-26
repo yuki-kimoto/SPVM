@@ -84,12 +84,6 @@ The capacity. This is the length of the internally reserved elements to extend t
 
 The length of the list.
 
-=head2 values
-
-  has values : ro object[];
-
-The values. This is the elements in the internally used array, but it can be manipulated directly.
-
 =head1 Class Methods
 
 =head2 new
@@ -100,7 +94,7 @@ Creates a new C<List> object using L</"new_len">.
 
 The passed length to L</"new_len"> is the length of the $array. If the array is undef, the length is 0.
 
-The element's addresses of the object array are copied to the values of the the created array.
+The element's addresses of the object array are copied to the elements of the the created array.
   
   # object[]
   my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
@@ -205,8 +199,6 @@ Reserves the elements with the $new_capacity.
 
 If the $new_capacity is greater than the capacity of the list, the capacity of the list is extended to the $new_capacity.
 
-Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
-
 Exceptions:
 
 The $new_capacity must be greater than or equal to 0. Otherwise an exception is thrown.
@@ -273,7 +265,15 @@ The length of the $list must be greater than 0. Otherwise an exception is thrown
 
   method to_array : object[] ();
 
-Converts the list to an array.
+Creates a new array and copies all elements of the list into the new array, and returns it.
+
+=head2 get_array_unsafe
+
+  method get_array_unsafe : object[] ();
+
+Gets the internally array.
+
+This array is unsafe because it continues to point to the old array if the internal array is extended.
 
 =head2 unshift
 

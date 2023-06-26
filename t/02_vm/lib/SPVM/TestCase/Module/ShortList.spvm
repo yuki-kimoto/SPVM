@@ -14,20 +14,6 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      # values
-      my $values = $list->values;
-      $values->[2] = 4;
-      
-      unless ($list->values->[0] == 1) {
-        return 0;
-      }
-      unless ($list->values->[1] == 2) {
-        return 0;
-      }
-      unless ($list->values->[2] == 4) {
-        return 0;
-      }
-      
       # capacity
       unless ($list->capacity == 4) {
         return 0;
@@ -545,14 +531,14 @@ class TestCase::Module::ShortList {
     }
     {
       my $list = ShortList->new([(short)1, 2, 3]);
-      my $values = $list->values;
+      my $values = $list->get_array_unsafe;
       my $array = $list->to_array;
       $list->reserve(5);
       unless ($list->capacity == 5) {
         return 0;
       }
       
-      if ($list->values == $values) {
+      if ($list->get_array_unsafe == $values) {
         return 0;
       }
       
@@ -796,6 +782,25 @@ class TestCase::Module::ShortList {
       unless ($length == 3) {
         return 0;
       }
+    }
+    
+    return 1;
+  }
+  
+  static method get_array_unsafe : int () {
+    my $list = ShortList->new([(short)1, 2, 3]);
+    
+    my $array = $list->get_array_unsafe;
+    $array->[2] = 4;
+    
+    unless ($list->get_array_unsafe->[0] == 1) {
+      return 0;
+    }
+    unless ($list->get_array_unsafe->[1] == 2) {
+      return 0;
+    }
+    unless ($list->get_array_unsafe->[2] == 4) {
+      return 0;
     }
     
     return 1;

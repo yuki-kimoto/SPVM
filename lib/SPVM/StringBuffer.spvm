@@ -13,7 +13,7 @@ class StringBuffer {
   # Fields
   has capacity : ro int;
   has length : ro int;
-  has value : ro mutable string;
+  has string : mutable string;
   
   # Class methods
   static method new : StringBuffer ($string : string = undef, $capacity : int = -1) {
@@ -28,7 +28,7 @@ class StringBuffer {
     my $self = &new_len($length, $capacity);
     
     if ($string) {
-      Fn->memcpy($self->{value}, 0, $string, 0, $length);
+      Fn->memcpy($self->{string}, 0, $string, 0, $length);
     }
     
     return $self;
@@ -49,7 +49,7 @@ class StringBuffer {
     }
     
     my $self = new StringBuffer;
-    $self->{value} = (mutable string)new_string_len($capacity);
+    $self->{string} = (mutable string)new_string_len($capacity);
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     
@@ -80,7 +80,7 @@ class StringBuffer {
     my $new_length = $buffer_length + $length;
     $self->_maybe_extend($new_length);
     
-    Fn->memcpy($self->{value}, $buffer_length, $string, $offset, $length);
+    Fn->memcpy($self->{string}, $buffer_length, $string, $offset, $length);
     
     $self->{length} += $length;
   }
@@ -91,7 +91,7 @@ class StringBuffer {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{value}[$self->{length}++] = (byte)$char;
+    $self->{string}[$self->{length}++] = (byte)$char;
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : string) {
@@ -115,10 +115,10 @@ class StringBuffer {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Fn->memmove($self->{value}, $offset + $replace_length, $self->{value}, $offset + $remove_length, $move_length);
+    Fn->memmove($self->{string}, $offset + $replace_length, $self->{string}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Fn->memcpy($self->{value}, $offset, $replace, 0, $replace_length);
+      Fn->memcpy($self->{string}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -133,16 +133,20 @@ class StringBuffer {
     
     if ($new_capacity > $capacity) {
       my $length = $self->{length};
-      my $new_value = (mutable string)new_string_len $new_capacity;
-      Fn->memcpy($new_value, 0, $self->{value}, 0, $length);
-      $self->{value} = $new_value;
+      my $new_buffer = (mutable string)new_string_len $new_capacity;
+      Fn->memcpy($new_buffer, 0, $self->{string}, 0, $length);
+      $self->{string} = $new_buffer;
       $self->{capacity} = $new_capacity;
     }
   }
   
   method to_string : string () {
-    my $new_string = Fn->substr($self->{value}, 0, $self->{length});
+    my $new_string = Fn->substr($self->{string}, 0, $self->{length});
     return $new_string;
+  }
+  
+  method get_string_unsafe : string () {
+    return $self->{string};
   }
   
   private method _maybe_extend : void ($min_capacity : int) {
@@ -157,14 +161,14 @@ class StringBuffer {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_value = (mutable string)new_string_len $new_capacity;
+    my $new_buffer = (mutable string)new_string_len $new_capacity;
     
     my $length = $self->{length};
-    my $value = $self->{value};
+    my $buffer = $self->{string};
     
-    Fn->memcpy($new_value, 0, $value, 0, $length);
+    Fn->memcpy($new_buffer, 0, $buffer, 0, $length);
     
-    $self->{value} = $new_value;
+    $self->{string} = $new_buffer;
     $self->{capacity} = $new_capacity;
   }
 }

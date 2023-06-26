@@ -26,6 +26,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::StringBuffer->replace);
   ok(SPVM::TestCase::Module::StringBuffer->reserve);
   ok(SPVM::TestCase::Module::StringBuffer->to_string);
+  ok(SPVM::TestCase::Module::StringBuffer->get_string_unsafe);
   
   # Extra
   ok(SPVM::TestCase::Module::StringBuffer->extra);
