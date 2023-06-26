@@ -109,9 +109,14 @@ void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUN
 void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
 // Argument
+SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index);
 int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, int32_t arg_id);
 int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, int32_t arg_id);
 int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, int32_t arg_id);
+
+int32_t SPVM_API_RUNTIME_get_arg_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
+int32_t SPVM_API_RUNTIME_get_arg_type_dimension_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
+int32_t SPVM_API_RUNTIME_get_arg_type_flag_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
 
 // Opcode
 SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime);
