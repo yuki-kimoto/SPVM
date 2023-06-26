@@ -25,6 +25,9 @@
       The values field in the StringList class was removed.
       The value field in the StringBuffer class was removed.
     
+    * A version string cannot contain "_".
+      A version string must be able to be parsed by the C<strtod> C function. Otherwise a compilation error occurs.
+      
 0.989012 2023-06-26
   [Bug Fix]
     * A bug was fixed: Some native APIs had not returned correct error return values.

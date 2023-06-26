@@ -319,7 +319,7 @@ use Test::More;
     compile_ok($source);
   }
   {
-    my $source = 'class MyClass { version "123456789.123456789_123"; }';
+    my $source = 'class MyClass { version "123456789.123456789123"; }';
     compile_ok($source);
   }
   {

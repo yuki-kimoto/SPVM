@@ -2235,19 +2235,17 @@ If more than one class is defined in a module file, a compilation error occurs.
 
 =head2 Version Declaration
 
-The C<version> keyword declares the version of the class.
+The C<version> keyword declares the version string of a module.
 
   version VERSION_STRING;
 
 The operand VERSION_STRING is a version string.
 
-The version string is a version of a class such as C<"1.001003">.
-
-If the version has already been declared, a compilation error occurs.
+If the version string has already been declared, a compilation error occurs.
 
 A version string is the string type.
 
-This is composed of numbers C<0-9>, C<.> and C<_>. 
+It is composed of numbers C<0-9>, C<.>. 
 
 The following checks are performed.
 
@@ -2259,9 +2257,13 @@ A version string must begin with a number. Otherwise a compilation error occurs.
 
 A version string must end with a number. Otherwise a compilation error occurs.
 
+The number of C<.> in a version string must be less than or equal to 1. Otherwise a compilation error occurs.
+
 The length of characters after C<.> in a version string must be divisible by 3. Otherwise a compilation error occurs.
 
-The version string is saved to the version information of the class.
+A version number must be able to be parsed by the C<strtod> C function. Otherwise a compilation error occurs.
+
+The version string is saved to the version information of the module.
 
 Examples:
   
@@ -2281,23 +2283,17 @@ Examples:
     version "10.001003";
   }
   
-  class Foo {
-    version "1.001003_001";
-  }
-
 =head3 Version String
 
-The version string is a string that is parsed by the L<version declaration|/"Version Declaration">.
+The version string is the string represented version of a module.
 
-This is used as the version string of the SPVM language.
+It is declared by the L<version declaration|/"Version Declaration">.
 
 =head2 Version Number
 
-The version number is a floating point number created by the following steps.
+The version number is a floating point number created by the following way.
 
-1. C<_> is removed from a L<version string/"Version Declaration">.
-
-2. The string is converted to a floating point number by the C<strtod> C function.
+A L<version string/"Version Declaration"> is converted to a floating point number by the C<strtod> C function.
 
 =head2 Module Attribute
 

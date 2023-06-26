@@ -415,7 +415,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
             char ch = version_string[version_string_index];
             
-            if (!(ch == '.' || isdigit(ch) || ch == '_')) {
+            if (!(ch == '.' || isdigit(ch))) {
               invalid_char = 1;
               break;
             }
@@ -430,7 +430,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           }
           
           if (invalid_char) {
-            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\" or \"_\".\n  at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\".\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
@@ -452,6 +452,15 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           if (!(digits_after_dot % 3 == 0)) {
             SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
+          }
+          
+          {
+            char *end;
+            double double_value = strtod(version_string, &end);
+            if (*end != '\0') {
+              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+              break;
+            }
           }
         }
         
