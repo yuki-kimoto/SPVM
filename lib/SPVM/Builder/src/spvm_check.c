@@ -569,7 +569,14 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
           SPVM_LIST_push(method->var_decls, arg_var_decl);
         }
       }
-      
+    }
+  }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       // AST traversals
       if (method->op_block) {
         SPVM_CHECK_check_ast_check_op_types(compiler, basic_type, method);
