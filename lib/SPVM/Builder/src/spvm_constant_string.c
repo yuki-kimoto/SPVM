@@ -15,15 +15,15 @@ SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const ch
     return found_string;
   }
   else {
-    int32_t string_buffer_id = compiler->constant_strings_buffer->length;
+    int32_t string_pool_id = compiler->constant_string_pool->length;
     
-    SPVM_STRING_BUFFER_add_len_nullstr(compiler->constant_strings_buffer, (char*)value, length);
+    SPVM_STRING_BUFFER_add_len_nullstr(compiler->constant_string_pool, (char*)value, length);
     
     SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
-    string->value = (char*)(compiler->constant_strings_buffer->value + string_buffer_id);
+    string->value = (char*)(compiler->constant_string_pool->value + string_pool_id);
     string->length = length;
     string->id = compiler->constant_strings->length;
-    string->string_buffer_id = string_buffer_id;
+    string->string_pool_id = string_pool_id;
     
     SPVM_LIST_push(compiler->constant_strings, string);
     SPVM_HASH_set(compiler->constant_string_symtable, string->value, length, string);

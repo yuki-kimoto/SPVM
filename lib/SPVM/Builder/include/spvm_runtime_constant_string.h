@@ -10,7 +10,7 @@ struct spvm_runtime_constant_string {
   const char* value;
   int32_t length;
   int32_t id;
-  int32_t string_buffer_id;
+  int32_t string_pool_id;
 };
 
 #endif

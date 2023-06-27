@@ -57,7 +57,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
-  compiler->constant_strings_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  compiler->constant_string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Eternal information
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -488,14 +488,14 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   int32_t length = 0;
   
-  // constant_strings_buffer length
+  // constant_string_pool length
   length++;
   
-  // constant_strings_buffer 32bit length
+  // constant_string_pool 32bit length
   length++;
   
-  // constant_strings_buffer
-  length += (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
+  // constant_string_pool
+  length += (compiler->constant_string_pool->length / sizeof(int32_t)) + 1;
   
   // constant_strings length
   length++;
@@ -585,18 +585,18 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   *runtime_codes_ptr = runtime_codes_length;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer length
-  *runtime_codes_ptr = compiler->constant_strings_buffer->length;
+  // constant_string_pool length
+  *runtime_codes_ptr = compiler->constant_string_pool->length;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer 32bit length
-  int32_t constant_strings_buffer_32bit_length = (compiler->constant_strings_buffer->length / sizeof(int32_t)) + 1;
-  *runtime_codes_ptr = constant_strings_buffer_32bit_length;
+  // constant_string_pool 32bit length
+  int32_t constant_string_pool_32bit_length = (compiler->constant_string_pool->length / sizeof(int32_t)) + 1;
+  *runtime_codes_ptr = constant_string_pool_32bit_length;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer
-  memcpy(runtime_codes_ptr, compiler->constant_strings_buffer->value, sizeof(int32_t) * constant_strings_buffer_32bit_length);
-  runtime_codes_ptr += constant_strings_buffer_32bit_length;
+  // constant_string_pool
+  memcpy(runtime_codes_ptr, compiler->constant_string_pool->value, sizeof(int32_t) * constant_string_pool_32bit_length);
+  runtime_codes_ptr += constant_string_pool_32bit_length;
   
   // constant_strings length
   *runtime_codes_ptr = compiler->constant_strings->length;
@@ -615,7 +615,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     runtime_string->id = string->id;
     runtime_string->length = string->length;
-    runtime_string->string_buffer_id = string->string_buffer_id;
+    runtime_string->string_pool_id = string->string_pool_id;
     constant_string_32bit_ptr += sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t);
   }
   runtime_codes_ptr += constant_strings_32bit_length;

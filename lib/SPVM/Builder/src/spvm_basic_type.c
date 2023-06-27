@@ -66,7 +66,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   
   basic_type->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   basic_type->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
-  basic_type->constant_strings_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  basic_type->constant_string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Fields
   basic_type->unmerged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

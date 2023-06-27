@@ -34,7 +34,7 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
   runtime->constant_string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
-    runtime_string->value = &runtime->constant_strings_buffer[runtime_string->string_buffer_id];
+    runtime_string->value = &runtime->constant_string_pool[runtime_string->string_pool_id];
     SPVM_HASH_set(runtime->constant_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
   
@@ -43,7 +43,7 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
     SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_basic_type->name_id];
-    const char* runtime_basic_type_name = (const char*)&runtime->constant_strings_buffer[basic_type_name_string->string_buffer_id];
+    const char* runtime_basic_type_name = (const char*)&runtime->constant_string_pool[basic_type_name_string->string_pool_id];
     SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }
   
@@ -69,17 +69,17 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer length
-  runtime->constant_strings_buffer_length = *runtime_codes_ptr;
+  // constant_string_pool length
+  runtime->constant_string_pool_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer runtime codes length
-  int32_t constant_strings_buffer_runtime_codes_length = *runtime_codes_ptr;
+  // constant_string_pool runtime codes length
+  int32_t constant_string_pool_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // constant_strings_buffer
-  runtime->constant_strings_buffer = (const char*)runtime_codes_ptr;
-  runtime_codes_ptr += constant_strings_buffer_runtime_codes_length;
+  // constant_string_pool
+  runtime->constant_string_pool = (const char*)runtime_codes_ptr;
+  runtime_codes_ptr += constant_string_pool_runtime_codes_length;
   
   // constant_strings length
   runtime->constant_strings_length = *runtime_codes_ptr;
@@ -186,7 +186,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
 #ifdef SPVM_DEBUG_RUNTIME
   fprintf(stderr, "[RUNTIME MEMORY SIZE]\n");
   fprintf(stderr, "opcodes size: %d bytes\n", (int32_t)(sizeof(SPVM_OPCODE) * runtime->opcodes_length));
-  fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->constant_strings_buffer_length));
+  fprintf(stderr, "string_buffer size: %d bytes\n", (int32_t)(runtime->constant_string_pool_length));
   fprintf(stderr, "strings size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_CONSTANT_STRING) * runtime->constant_strings_length));
   fprintf(stderr, "basic_types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime->basic_types_length));
   fprintf(stderr, "types size: %d bytes\n", (int32_t)(sizeof(SPVM_RUNTIME_TYPE) * runtime->types_length));
