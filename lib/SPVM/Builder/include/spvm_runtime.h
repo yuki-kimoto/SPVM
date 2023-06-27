@@ -47,9 +47,6 @@ struct spvm_runtime {
   // Operation codes
   SPVM_OPCODE* opcodes;
   
-  // String symtable
-  SPVM_HASH* constant_string_symtable;
-  
   // Runtime Basic type symbol table
   SPVM_HASH* basic_type_symtable;
 };

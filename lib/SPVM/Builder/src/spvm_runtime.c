@@ -31,11 +31,9 @@ void SPVM_RUNTIME_build_symbol_table(SPVM_RUNTIME* runtime) {
   SPVM_ALLOCATOR* allocator = runtime->allocator;
   
   // Runtime string symtable
-  runtime->constant_string_symtable = SPVM_HASH_new_hash_permanent(allocator, 0);
   for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
     runtime_string->value = &runtime->constant_string_pool[runtime_string->string_pool_id];
-    SPVM_HASH_set(runtime->constant_string_symtable, runtime_string->value, strlen(runtime_string->value), runtime_string);
   }
   
   // Runtime basic type symtable
