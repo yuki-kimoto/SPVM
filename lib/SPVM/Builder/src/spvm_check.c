@@ -504,9 +504,10 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Check method compatibility
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    
+    // Check method compatibility
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
@@ -607,19 +608,15 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         }
       }
     }
-  }
-
-  // Resolve fields
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
+    // Resolve fields
     for (int32_t i = 0; i < basic_type->fields->length; i++) {
       // Field
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
-
+      
       // Create field id
       field->address_id = compiler->fields->length;
-
+      
       // Add field to compiler
       SPVM_LIST_push(compiler->fields, field);
     }
