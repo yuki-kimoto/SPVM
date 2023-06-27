@@ -302,7 +302,7 @@ A pointer to the runtime information. This is used internally.
 
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-Gets the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
+Gets the base type ID given the name of the base type. If it does not exist, a value less than 0 is returned.
 
 Examples:
 
@@ -343,8 +343,6 @@ Examples:
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
 
 Gets an instance method address by the object and the method name. If the instance method does not exist, a negative value is returned.
-
-This ID is used by L<"call_method_raw">.
 
 Examples:
 
@@ -673,127 +671,127 @@ Examples:
 
   int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and field ID are specified, the byte field value will be returned as a C language int8_t type value. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field are specified, the byte field value will be returned as a C language int8_t type value. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_short
 
   int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_int
 
   int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field ID are specified, the value of the int type field will be returned as a C language int32_t type value. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field are specified, the value of the int type field will be returned as a C language int32_t type value. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_long
 
   int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_float
 
   float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field, the value of the float type field will be returned as a C language float type value. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_double
 
   double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field, the value of the double type field will be returned as a double type value in C language. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 get_field_object
 
   void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
+If an object and a field, the value of the object type field is returned as a void* type value in C language. The field must be a valid field obtained with the L</"get_field"> Native API If the field is a weak reference, it will be removed.
 
 =head2 set_field_byte
 
   void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
 
-If an object and a field is given, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the byte type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_short
 
   void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
 
-If an object and a field is given, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the short type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_int
 
   void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
 
-If an object and a field is given, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the int type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_long
 
   void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
 
-If an object and a field is given, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the long type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_float
 
   void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
 
-If an object and a field is given, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the float type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_double
 
   void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
 
-If an object and a field is given, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
+If an object and a field is given, the value is set to the double type field. The field must be a valid field obtained with the L</"get_field"> Native API
 
 =head2 set_field_object
 
   void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
 
-An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field must be a valid field obtained with the L</"get_field"> Native API After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 =head2 get_class_var_byte
 
   int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_short
 
   int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_int
 
   int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_long
 
   int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_float
 
   float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_double
 
   double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If you specify an object and a class variable ID, the value of the double type class variable is returned as a C type double type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+If you specify an object and a class variable, the value of the double type class variable is returned as a C type double type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 get_class_var_object
 
   void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-When an object and a class variable ID are specified, the value of the object type class variable is returned as a C language void* type value. The class variable ID must be a valid class variable ID obtained with the field_id function.
+When an object and a class variable are specified, the value of the object type class variable is returned as a C language void* type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
 
 =head2 set_class_var_byte
 
@@ -835,7 +833,7 @@ If a class variable is given, the value is set to the double type class variable
 
   void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
 
-If a class variable is given, the value of the class variable and set the value to the object type class variable. The class variable ID must be a valid class variable ID obtained with the class variable_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+If a class variable is given, the value of the class variable and set the value to the object type class variable. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 =head2 get_pointer
 
@@ -1908,7 +1906,7 @@ If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
   void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
 
-Gets the ID of the field given an basic type name and field name. If the field does not exist, a value less than 0 is returned.
+Gets the field given an basic type name and field name. If the field does not exist, a value less than 0 is returned.
 
 Examples:
 
