@@ -555,17 +555,6 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
           }
         }
       }
-    }
-  }
-  
-  // Check syntax and generate operations in basic types
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    SPVM_LIST* methods = basic_type->methods;
-    
-    // Check syntax and generate operations in methods
-    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
       assert(method->current_basic_type->module_file);
       
