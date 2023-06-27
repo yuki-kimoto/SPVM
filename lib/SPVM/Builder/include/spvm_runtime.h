@@ -35,9 +35,6 @@ struct spvm_runtime {
   // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
   
-  // The length of class variables
-  int32_t class_vars_length;
-  
   // Fields
   SPVM_RUNTIME_FIELD* fields;
   

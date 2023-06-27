@@ -105,10 +105,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)runtime_codes_ptr;
   runtime_codes_ptr += basic_types_runtime_codes_length;
   
-  // class_vars length
-  runtime->class_vars_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
   // class_vars runtime codes length
   int32_t class_vars_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
