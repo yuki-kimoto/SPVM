@@ -39,13 +39,13 @@
 #include "spvm_allow.h"
 
 void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
-  // Resolve type ops
+  // Check type ops
   SPVM_CHECK_check_op_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
   
-  // Resolve basic types
+  // Check basic types
   SPVM_CHECK_check_basic_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
@@ -229,7 +229,7 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Resolve inheritance
+    // Check inheritance
     SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(basic_type_merge_stack, basic_type);
     
@@ -306,7 +306,7 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
     basic_type->fields = merged_fields;
     
     
-    // Resolve fields
+    // Check fields
     for (int32_t i = 0; i < basic_type->fields->length; i++) {
       // Field
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
@@ -684,7 +684,7 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
         SPVM_CHECK_check_ast_check_if_block_need_leave_scope(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
-        // AST traversal - Resolve call stack ids of variable declarations
+        // AST traversal - Check call stack ids of variable declarations
         SPVM_CHECK_check_ast_check_call_stack_ids(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
@@ -2828,7 +2828,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             assert(op_cur->first->id == SPVM_OP_C_ID_LIST);
                 
             
-            // Resolve method
+            // Check method
             SPVM_CHECK_check_call_method(compiler, op_cur, basic_type->name);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
@@ -3503,7 +3503,7 @@ void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BAS
               
               SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, var_decl->op_var_decl);
               
-              // Resolve mem id
+              // Check mem id
               int32_t call_stack_id;
               if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_object_vars, var_decl);
