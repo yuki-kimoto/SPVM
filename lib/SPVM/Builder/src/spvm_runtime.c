@@ -153,10 +153,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
   runtime_codes_ptr += args_runtime_codes_length;
   
-  // anon_basic_type_basic_types length
-  runtime->anon_basic_types_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
   // anon_basic_type_basic_types runtime codes length
   int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;

@@ -48,9 +48,6 @@ struct spvm_runtime {
   // Anon nethod ids
   int32_t* anon_basic_type_ids;
   
-  // The length of anon basic_types
-  int32_t anon_basic_types_length;
-  
   // Operation codes
   SPVM_OPCODE* opcodes;
   
